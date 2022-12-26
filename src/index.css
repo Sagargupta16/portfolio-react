@@ -23,6 +23,50 @@
     --container-width-md: 86%;
     --container-width-sm: 90%;
 }
+:root .theme2{
+    --color-bg: #2B3A55;
+    --color-bg-variant: #CE7777;
+    --color-primary: #E8C4C4;
+    --color-primary-variant: rgba(242,229,229, 0.5);
+    --color-white: #fff;
+    --color-light: rgba(255, 255, 255, 0.6);
+
+    --transition: all 0.4s ease-in-out;
+
+    --container-width-lg: 75%;
+    --container-width-md: 86%;
+    --container-width-sm: 90%;
+}
+:root .theme3 {
+    --color-bg: #222831;
+    --color-bg-variant: #393E46;
+    --color-primary: #00ADB5;
+    --color-primary-variant: rgba(238, 238, 238, 0.5);
+    --color-white: #fff;
+    --color-light: rgba(255, 255, 255, 0.6);
+
+    --transition: all 0.4s ease-in-out;
+
+    --container-width-lg: 75%;
+    --container-width-md: 86%;
+    --container-width-sm: 90%;
+}
+
+:root .theme4{
+    --color-bg: #0A2647;
+    --color-bg-variant: #144272;
+    --color-primary: #82AAE3;
+    --color-primary-variant: rgba(32,82,149, 0.5);
+    --color-white: #fff;
+    --color-light: rgba(255, 255, 255, 0.6);
+
+    --transition: all 0.4s ease-in-out;
+
+    --container-width-lg: 75%;
+    --container-width-md: 86%;
+    --container-width-sm: 90%;
+}
+
 html{
     scroll-behavior: smooth;
 }

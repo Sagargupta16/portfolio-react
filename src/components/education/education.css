@@ -3,7 +3,6 @@
     grid-template-columns: 0.1fr auto;
     grid-gap: 0.2rem;
     align-items: center;
-    height: 80vh;
 }
 .education__item {
     background: var(--color-bg-variant);
@@ -21,6 +20,12 @@
 
 .education__item h3 {
     color: var(--color-primary);
+}
+
+@media screen and (max-width: 1024px) {
+    .education__item{
+        height: 10rem;
+    }
 }
 
 @media screen and (max-width: 600px) {

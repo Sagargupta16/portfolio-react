@@ -47,13 +47,13 @@ function Skill() {
                 <small className='text-light'>Beginner</small>
               </div>
             </article>
-            {/* <article className='skill__details'>
+            <article className='skill__details'>
               <BsPatchCheckFill className='skill__details-icons'/>
               <div>
               <h4>Express Js</h4>
               <small className='text-light'>Beginner</small>
               </div>
-            </article> */}
+            </article>
             <article className='skill__details'>
               <BsPatchCheckFill className='skill__details-icons'/>
               <div>
@@ -190,6 +190,43 @@ function Skill() {
           </div>
         </div>
         {/* Tools End */}
+        {/* Soft Skills Start*/}
+        <div className="skill__item">
+          <h3>Soft Skills</h3>
+          <div className="skill__content">
+            <article className='skill__details'>
+              <BsPatchCheckFill className='skill__details-icons'/>
+              <div>
+              <h4>Problem Solving</h4>
+              </div>
+            </article>
+            <article className='skill__details'>
+              <BsPatchCheckFill className='skill__details-icons'/>
+              <div>
+              <h4>Leadership</h4>
+              </div>
+            </article>
+            <article className='skill__details'>
+              <BsPatchCheckFill className='skill__details-icons'/>
+              <div>
+              <h4>Teamwork</h4>
+              </div>
+            </article>
+            <article className='skill__details'>
+              <BsPatchCheckFill className='skill__details-icons'/>
+              <div>
+              <h4>Critical Thinking</h4>
+              </div>
+            </article>
+            <article className='skill__details'>
+              <BsPatchCheckFill className='skill__details-icons'/>
+              <div>
+              <h4>Communication</h4>
+              </div>
+            </article>
+          </div>
+        </div>
+        {/* Soft Skills Ends*/}
       </div>
     </section>
   )

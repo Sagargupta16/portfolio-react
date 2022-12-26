@@ -1,14 +1,16 @@
 .skill__container{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 2rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 2rem;
 }
 .skill__item{
     background: var(--color-bg-variant);
     padding: 2.4rem 2rem;
     border-radius: 2rem;
     border : 1px solid transparent;
-    width: 100%;
+    width: 45%;
     transition: var(--transition);
 }
 .skill__item:hover{
@@ -43,7 +45,7 @@
 }
 
 @media screen and (max-width: 600px) {
-    .skill__container{
-        grid-template-columns: repeat(1, 1fr);
+    .skill__item{
+        width: 100%;
     }
 }

@@ -15,10 +15,6 @@ const services = () => {
           <ul className="service__list">
             <li>
               <GiCheckMark className='service__list-icon' />
-              <p>Web design</p>
-            </li>
-            <li>
-              <GiCheckMark className='service__list-icon' />
               <p>Responsive design</p>
             </li>
             <li>
@@ -32,6 +28,10 @@ const services = () => {
             <li>
               <GiCheckMark className='service__list-icon' />
               <p>Animation effects</p>
+            </li>
+            <li>
+              <GiCheckMark className='service__list-icon' />
+              <p>Mobile design</p>
             </li>
           </ul>
         </article>
@@ -47,19 +47,19 @@ const services = () => {
             </li>
             <li>
               <GiCheckMark className='service__list-icon' />
-              <p>Responsive design</p>
+              <p>Frontend & Backend Connectivity</p>
             </li>
             <li>
               <GiCheckMark className='service__list-icon' />
-              <p>Fast & Easy Navigation</p>
+              <p>Backend Design</p>
             </li>
             <li>
               <GiCheckMark className='service__list-icon' />
-              <p>Modern UI design</p>
+              <p>Component Creation</p>
             </li>
             <li>
               <GiCheckMark className='service__list-icon' />
-              <p>Animation effects</p>
+              <p>Model Creation</p>
             </li>
           </ul>
         </article>

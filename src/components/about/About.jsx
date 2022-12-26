@@ -34,14 +34,16 @@ const About = () => {
               <small>40+ Contests</small>
             </article>
           </div>
-          <p>
-            👋 Hi, my name is Sagar Gupta, from Shivpuri, MP, India.<br/>
-            I'm an Postgraduate 🎓 from NIT Warangal.<br/>
-            I'm a Web developer & Programmer who loves to write clean and efficient code.<br/>
-            Apart from web development I love Problem Solving with use of Data Structures and Algorithms in Efficient Way.
-          </p>
-          <a href="#contact" className="btn btn-primary">Let's Talk</a>
         </div>
+        <div className='about__text'>
+            <p>
+              👋 Hi, my name is Sagar Gupta, from Shivpuri, MP, India.<br/>
+              I'm an Postgraduate 🎓 from NIT Warangal.<br/>
+              I'm a Web developer & Programmer who loves to write clean and efficient code.<br/>
+              Apart from web development I love Problem Solving with use of Data Structures and Algorithms in Efficient Way.
+            </p>
+            <a href="#contact" className="btn btn-primary">Let's Talk</a>
+          </div>
       </div>
     </section>
   )
