@@ -13,7 +13,7 @@ nav{
     border-radius: 3rem;
     backdrop-filter: blur(15px);
 }
-.nav-container a {
+a {
     display: flex;
     align-items: center;
     width: fit-content;
@@ -50,12 +50,12 @@ nav a.active{
     color: var(--color-bg);
 }
 
-.mob-hid{
-    display: none;
-}
-
-@media screen and (min-width: 600px){
-    .mob-hid {
-        display: flex;
+@media screen and (max-width: 600px){
+    nav a{
+        padding: 0.4rem;
+        font-size: 1rem;
+    }
+    nav a[alt]:hover::after{
+        bottom: -60%;
     }
 }

@@ -1,23 +1,29 @@
 import React from 'react'
+import { useLayoutEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import './nav.css'
 import {RiHome3Line,RiServiceLine} from 'react-icons/ri'
 import {AiOutlineUser,AiOutlineMessage} from 'react-icons/ai'
 import {GoPencil} from 'react-icons/go'
 import {GiSuitcase,GiChatBubble,GiSkills} from 'react-icons/gi'
-import { useState } from 'react'
+
+
 const Nav = () => {
   const [activeNav, setActiveNav] = useState('#');
+  useLayoutEffect(() => {
+    if(activeNav==='#') window.scrollTo(0, 0);
+    else window.scrollTo(0, window.innerHeight);
+  });
   return (
     <nav>
-      <a href='# ' onClick={()=> setActiveNav('#')} className={activeNav === '#' ? 'active' : ''}  
-      alt="Home"><RiHome3Line/></a>
-      <a href='#about' onClick={()=> setActiveNav('#about')} className={activeNav === '#about' ? 'active' : ''} alt="About" ><AiOutlineUser/></a>
-      <a href='#education' onClick={()=> setActiveNav('#education')} className={activeNav === '#education' ? 'active' : ''} alt="Education"><GoPencil/></a>
-      <a href='#skill' onClick={()=> setActiveNav('#skill')} className={activeNav === '#skill' ? 'mob-hid active' : 'mob-hid'} alt="Skills"><GiSkills/></a>
-      <a href='#services' onClick={()=> setActiveNav('#services')} className={activeNav === '#services' ? 'active' : ''} alt="Services"><RiServiceLine/></a>
-      <a href='#portfolio'onClick={()=> setActiveNav('#portfolio')} className={ activeNav === '#portfolio' ? 'mob-hid active' : 'mob-hid'} alt="Portfolio" ><GiSuitcase/></a>
-      <a href='#testimonial'onClick={()=> setActiveNav('#testimonial')} className={ activeNav === '#testimonial' ? 'mob-hid active' : 'mob-hid'} alt="Testimonials" ><GiChatBubble/></a>
-      <a href='#contact'onClick={()=> setActiveNav('#contact')} className={activeNav === '#contact' ? 'active' : ''} alt="Contact" ><AiOutlineMessage/></a>
+      <Link to="/" className={activeNav === '#' ? 'active' : ''} onClick={() => setActiveNav('#')} alt="Home"><RiHome3Line/></Link>
+      <Link to="/about" className={activeNav === 'about' ? 'active' : ''} onClick={() => setActiveNav('about')} alt="about"><AiOutlineUser/></Link>
+      <Link to="/education" className={activeNav === 'education' ? 'active' : ''} onClick={() => setActiveNav('education')} alt="education"><GoPencil/></Link>
+      <Link to="/skill" className={activeNav === 'skill' ? 'active' : ''} onClick={() => setActiveNav('skill')} alt="skill"><GiSkills/></Link>
+      <Link to="/services" className={activeNav === 'services' ? 'active' : ''} onClick={() => setActiveNav('services')} alt="services"><RiServiceLine/></Link>
+      <Link to="/portfolio" className={activeNav === 'portfolio' ? 'active' : ''} onClick={() => setActiveNav('portfolio')} alt="portfolio"><GiSuitcase/></Link>
+      <Link to="/testimonial" className={activeNav === 'testimonial' ? 'active' : ''} onClick={() => setActiveNav('testimonial')} alt="testimonial"><GiChatBubble/></Link>
+      <Link to="/contact" className={activeNav === 'contact' ? 'active' : ''} onClick={() => setActiveNav('contact')} alt="contact"><AiOutlineMessage/></Link>
     </nav>
   )
 }

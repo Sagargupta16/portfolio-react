@@ -76,6 +76,7 @@ html{
 }
 
 body{
+    margin-top: -4rem;
     font-family: 'Poppins', sans-serif;
     background-color: var(--color-bg);
     color: var(--color-white);
