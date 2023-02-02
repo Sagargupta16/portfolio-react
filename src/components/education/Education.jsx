@@ -16,7 +16,7 @@ const Education = () => {
                 </h3>
                 <h4 className="education__title">Master's in Computer Applications (MCA)</h4>
                 <p className="education__text">National Institute of Technology Warangal -- Warangal , Telangana </p>
-                <p className="education__text">CGPA: 8.44 (Till Sem-2)</p>
+                <p className="education__text">CGPA: 8.47 (Till Sem-3)</p>
             </div>
             <GoPrimitiveDot/>
             <div className="education__item">

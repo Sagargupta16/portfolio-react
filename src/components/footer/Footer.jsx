@@ -21,7 +21,7 @@ const Footer = () => {
         <li><Link to="/contact">Contact</Link></li>
       </ul>
       <div className="footer__socials">
-        <a href="https://www.instagram.com/sagar_seth16/" target="_blank" rel="noreferrer"><FaInstagram/></a>
+        <a href="https://www.instagram.com/sagar_sethh/" target="_blank" rel="noreferrer"><FaInstagram/></a>
         <a href="https://twitter.com/SagarGupta1610" target="_blank" rel="noreferrer"><FaTwitter/></a>
         <a href="https://www.linkedin.com/in/sagar-gupta-16-10/" target="_blank" rel="noreferrer"><FaLinkedin/></a>
         <a href="https://github.com/Sagargupta16" target="_blank" rel="noreferrer"><FaGithub/></a>

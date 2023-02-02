@@ -15,7 +15,7 @@ const Nav = () => {
     else window.scrollTo(0, window.innerHeight);
   });
   return (
-    <nav>
+    <nav >
       <Link to="/" className={activeNav === '#' ? 'active' : ''} onClick={() => setActiveNav('#')} alt="Home"><RiHome3Line/></Link>
       <Link to="/about" className={activeNav === 'about' ? 'active' : ''} onClick={() => setActiveNav('about')} alt="about"><AiOutlineUser/></Link>
       <Link to="/education" className={activeNav === 'education' ? 'active' : ''} onClick={() => setActiveNav('education')} alt="education"><GoPencil/></Link>
