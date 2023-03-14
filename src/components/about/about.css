@@ -51,6 +51,7 @@
     background: transparent;
     border-color: var(--color-primary-variant);
     cursor: default;
+    backdrop-filter: blur(5px);
 }
 .about__icon{
     color: var(--color-primary);

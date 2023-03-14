@@ -26,12 +26,12 @@ const About = () => {
             <article className='about__card'>
               <MdDeveloperMode className='about__icon'/>
               <h5>Projects</h5>
-              <small>10+ Projects</small>
+              <small>15+ Projects</small>
             </article>
             <article className='about__card'>
               <SiCodersrank className='about__icon'/>
               <h5>CP</h5>
-              <small>40+ Contests</small>
+              <small>50+ Contests</small>
             </article>
           </div>
         </div>

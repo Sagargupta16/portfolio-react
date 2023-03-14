@@ -18,8 +18,10 @@ const App = () => {
   return (
     <Router>
       <Nav />
-      <Header />
       <Switch>
+        <Route exact path="/">
+          <Header />
+        </Route>
         <Route path="/about">
           <About />
         </Route>

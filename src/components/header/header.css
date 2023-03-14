@@ -28,6 +28,39 @@ header{
     bottom: 3rem;
 }
 
+.header__socials a{
+    font-size: 1.2rem;
+    color: var(--color-primary);
+    transition: var(--transition);
+    position: relative;
+    overflow: visible;
+}
+
+.header__socials a[alt]:hover{
+    transform: scale(1.05);
+}
+
+.header__socials a[alt]:hover::after{
+    content: attr(alt);
+    font-size: 0.8rem;
+    width: 10rem;
+    position: absolute;
+    color: var(--color-white);
+    font-weight: bold;
+    margin-left: 7rem;
+    transform: translateX(-50%);
+    transition: var(--transition);
+    overflow: visible;
+    text-align: left;
+}
+
+
+
+.header__socials a:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
 .header__socials::after{
     content: '';
     width: 1px;
@@ -45,6 +78,7 @@ header{
     margin-top: 4rem;
     border-radius: 12rem 12rem 0 0;
     overflow: hidden;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* ========== Scroll Down ========== */

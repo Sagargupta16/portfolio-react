@@ -1,30 +1,17 @@
 footer{
     background: var(--color-primary);
-    padding: 3rem 0;
+    padding: 0;
     text-align: center;
     font-size: 0.9rem;
     margin-top: 7rem;
 }
 
-footer a{
-    color: var(--color-bg);
-    text-decoration: none;
-}
-
 .footer__logo{
+    cursor: default;
+    color: var(--color-bg);
     font-size: 2rem;
     font-weight: 500;
-    margin-bottom: 2rem;
     display: inline-block;
-}
-
-.permalinks{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto 3rem;
-    gap: 2rem;
 }
 
 .footer__socials{
@@ -53,13 +40,10 @@ footer a{
 
 .footer__copyright{
     color: var(--color-bg);
-    margin-bottom: 4rem;
+    padding-bottom: 0.4rem;
 }
 
 @media screen and (max-width: 600px){
-    .permalinks{
-        flex-direction: column;
-    }
     .footer__socials{
         margin-bottom: 2.6rem;
     }

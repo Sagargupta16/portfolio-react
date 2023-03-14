@@ -11,19 +11,18 @@ import {GiSuitcase,GiChatBubble,GiSkills} from 'react-icons/gi'
 const Nav = () => {
   const [activeNav, setActiveNav] = useState('#');
   useLayoutEffect(() => {
-    if(activeNav==='#') window.scrollTo(0, 0);
-    else window.scrollTo(0, window.innerHeight);
+    window.scrollTo(0, 0);
   });
   return (
     <nav >
       <Link to="/" className={activeNav === '#' ? 'active' : ''} onClick={() => setActiveNav('#')} alt="Home"><RiHome3Line/></Link>
-      <Link to="/about" className={activeNav === 'about' ? 'active' : ''} onClick={() => setActiveNav('about')} alt="about"><AiOutlineUser/></Link>
-      <Link to="/education" className={activeNav === 'education' ? 'active' : ''} onClick={() => setActiveNav('education')} alt="education"><GoPencil/></Link>
-      <Link to="/skill" className={activeNav === 'skill' ? 'active' : ''} onClick={() => setActiveNav('skill')} alt="skill"><GiSkills/></Link>
-      <Link to="/services" className={activeNav === 'services' ? 'active' : ''} onClick={() => setActiveNav('services')} alt="services"><RiServiceLine/></Link>
-      <Link to="/portfolio" className={activeNav === 'portfolio' ? 'active' : ''} onClick={() => setActiveNav('portfolio')} alt="portfolio"><GiSuitcase/></Link>
-      <Link to="/testimonial" className={activeNav === 'testimonial' ? 'active' : ''} onClick={() => setActiveNav('testimonial')} alt="testimonial"><GiChatBubble/></Link>
-      <Link to="/contact" className={activeNav === 'contact' ? 'active' : ''} onClick={() => setActiveNav('contact')} alt="contact"><AiOutlineMessage/></Link>
+      <Link to="/about" className={activeNav === 'about' ? 'active' : ''} onClick={() => setActiveNav('about')} alt="About"><AiOutlineUser/></Link>
+      <Link to="/education" className={activeNav === 'education' ? 'active' : ''} onClick={() => setActiveNav('education')} alt="Education"><GoPencil/></Link>
+      <Link to="/skill" className={activeNav === 'skill' ? 'active' : ''} onClick={() => setActiveNav('skill')} alt="Skills"><GiSkills/></Link>
+      <Link to="/services" className={activeNav === 'services' ? 'active' : ''} onClick={() => setActiveNav('services')} alt="Services"><RiServiceLine/></Link>
+      <Link to="/portfolio" className={activeNav === 'portfolio' ? 'active' : ''} onClick={() => setActiveNav('portfolio')} alt="Portfolio"><GiSuitcase/></Link>
+      <Link to="/testimonial" className={activeNav === 'testimonial' ? 'active' : ''} onClick={() => setActiveNav('testimonial')} alt="Testimonial"><GiChatBubble/></Link>
+      <Link to="/contact" className={activeNav === 'contact' ? 'active' : ''} onClick={() => setActiveNav('contact')} alt="Contact"><AiOutlineMessage/></Link>
     </nav>
   )
 }
