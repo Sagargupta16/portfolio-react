@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper";
+// import { Pagination } from "swiper";
 
 const data = [
   {
@@ -49,7 +49,7 @@ const Testimonial = () => {
       <h2>Testimonials</h2>
       
         <Swiper className='container testimonials__container'
-        pagination={{dynamicBullets: true,}} loop={true} modules={[Pagination]}
+        // pagination={{dynamicBullets: true,}} loop={true} modules={[Pagination]}
         >
             {
               data.map(({avatar,name,designation,review},id) => {

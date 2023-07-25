@@ -1,6 +1,6 @@
 import React from 'react'
 import './education.css'
-import {GoPrimitiveDot} from 'react-icons/go'
+import {GoDot} from 'react-icons/go'
 import EducationItem from './educationitem'
 
 const EducationArray = [
@@ -43,7 +43,7 @@ const Education = () => {
         {EducationArray.map((item) => {
           return (
             <>
-                <GoPrimitiveDot />
+                <GoDot />
                 <EducationItem item={item} />
             </>
           );

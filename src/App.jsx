@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import Header from './components/header/Header'
 import Nav from './components/nav/Nav'
@@ -18,32 +18,16 @@ const App = () => {
   return (
     <Router>
       <Nav />
-      <Switch>
-        <Route exact path="/">
-          <Header />
-        </Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/education">
-          <Education />
-        </Route>
-        <Route path="/skill">
-          <Skill />
-        </Route>
-        <Route path="/services">
-          <Services />
-        </Route>
-        <Route path="/portfolio">
-          <Portfolio />
-        </Route>
-        <Route path="/testimonial">
-          <Testimonial />
-        </Route>
-        <Route path="/contact">
-          <Contact />
-        </Route>
-      </Switch>
+        <Routes>
+          <Route exact path="/" element={<Header />}></Route>
+          <Route path="/about" element={<About />}></Route>
+          <Route path="/education" element={<Education />}></Route>
+          <Route path="/skill" element={<Skill />}></Route>
+          <Route path="/services" element={<Services />}></Route>
+          <Route path="/portfolio" element={<Portfolio />}></Route>
+          <Route path="/testimonial" element={<Testimonial />}></Route>
+          <Route path="/contact" element={<Contact />}></Route>
+        </Routes>
       <Footer />
     </Router>
   )
