@@ -40,11 +40,14 @@
     "eject": "react-scripts eject",
     "start": "react-scripts start",
     "test": "react-scripts test",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d build"
   },
   "version": "0.1.0",
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "gh-pages": "^5.0.0",
     "prettier": "3.0.0"
   }
 }
