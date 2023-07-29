@@ -1,10 +1,10 @@
-import React from 'react'
-import './skill.css'
-import {BsPatchCheckFill} from 'react-icons/bs'
+import React from "react";
+import "./skill.css";
+import { BsPatchCheckFill } from "react-icons/bs";
 
 function Skill() {
   return (
-    <section id='skill'>
+    <section id="skill">
       <h5>What Skills I Have</h5>
       <h2>My Skills</h2>
       <div className="container skill__container">
@@ -12,53 +12,53 @@ function Skill() {
         <div className="skill__item">
           <h3>Fullstack Development</h3>
           <div className="skill__content">
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
                 <h4>HTML</h4>
-                <small className='text-light'>Experienced</small>
+                <small className="text-light">Experienced</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
                 <h4>CSS</h4>
-                <small className='text-light'>Experienced</small>
+                <small className="text-light">Experienced</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
                 <h4>JavaScript</h4>
-                <small className='text-light'>Intermediate</small>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
                 <h4>React JS</h4>
-                <small className='text-light'>Experienced</small>
+                <small className="text-light">Experienced</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
                 <h4>Node Js</h4>
-                <small className='text-light'>Beginner</small>
+                <small className="text-light">Beginner</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Express Js</h4>
-              <small className='text-light'>Beginner</small>
+                <h4>Express Js</h4>
+                <small className="text-light">Beginner</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Mongo DB</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>Mongo DB</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
           </div>
@@ -68,39 +68,39 @@ function Skill() {
         <div className="skill__item">
           <h3>Programming Languages</h3>
           <div className="skill__content">
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>C++</h4>
-              <small className='text-light'>Experienced</small>
+                <h4>C++</h4>
+                <small className="text-light">Experienced</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Java</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>Java</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>C</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>C</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>R</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>R</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Python</h4>
-              <small className='text-light'>beginner</small>
+                <h4>Python</h4>
+                <small className="text-light">beginner</small>
               </div>
             </article>
           </div>
@@ -110,39 +110,39 @@ function Skill() {
         <div className="skill__item">
           <h3>Coursework</h3>
           <div className="skill__content">
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Data Structures</h4>
-              <small className='text-light'>Experienced</small>
+                <h4>Data Structures</h4>
+                <small className="text-light">Experienced</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Web Development</h4>
-              <small className='text-light'>Experienced</small>
+                <h4>Web Development</h4>
+                <small className="text-light">Experienced</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>OOPs</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>OOPs</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Game Development</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>Game Development</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Databases</h4>
-              <small className='text-light'>Beginner</small>
+                <h4>Databases</h4>
+                <small className="text-light">Beginner</small>
               </div>
             </article>
           </div>
@@ -152,39 +152,39 @@ function Skill() {
         <div className="skill__item">
           <h3>Tools , Editors and IDEs</h3>
           <div className="skill__content">
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Unity Engine</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>Unity Engine</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>VS Code</h4>
-              <small className='text-light'>Experienced</small>
+                <h4>VS Code</h4>
+                <small className="text-light">Experienced</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Oracle DB</h4>
-              <small className='text-light'>Beginner</small>
+                <h4>Oracle DB</h4>
+                <small className="text-light">Beginner</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>R Studio</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>R Studio</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>IntelliJ</h4>
-              <small className='text-light'>Intermediate</small>
+                <h4>IntelliJ</h4>
+                <small className="text-light">Intermediate</small>
               </div>
             </article>
           </div>
@@ -194,34 +194,34 @@ function Skill() {
         <div className="skill__item">
           <h3>Soft Skills</h3>
           <div className="skill__content">
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Problem Solving</h4>
+                <h4>Problem Solving</h4>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Leadership</h4>
+                <h4>Leadership</h4>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Teamwork</h4>
+                <h4>Teamwork</h4>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Critical Thinking</h4>
+                <h4>Critical Thinking</h4>
               </div>
             </article>
-            <article className='skill__details'>
-              <BsPatchCheckFill className='skill__details-icons'/>
+            <article className="skill__details">
+              <BsPatchCheckFill className="skill__details-icons" />
               <div>
-              <h4>Communication</h4>
+                <h4>Communication</h4>
               </div>
             </article>
           </div>
@@ -229,7 +229,7 @@ function Skill() {
         {/* Soft Skills Ends*/}
       </div>
     </section>
-  )
+  );
 }
 
-export default Skill
+export default Skill;

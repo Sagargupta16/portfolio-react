@@ -1,36 +1,25 @@
-import React from 'react'
+import React from "react";
 import { GiCheckMark } from "react-icons/gi";
 
 const serviceitem = (props) => {
+  const { title, list } = props.item;
   return (
     <article className="service">
       <div className="service__head">
-        <h3>UI Design</h3>
+        <h3>{title}</h3>
       </div>
       <ul className="service__list">
-        <li>
-          <GiCheckMark className="service__list-icon" />
-          <p>Responsive design</p>
-        </li>
-        <li>
-          <GiCheckMark className="service__list-icon" />
-          <p>Fast & Easy Navigation</p>
-        </li>
-        <li>
-          <GiCheckMark className="service__list-icon" />
-          <p>Modern UI design</p>
-        </li>
-        <li>
-          <GiCheckMark className="service__list-icon" />
-          <p>Animation effects</p>
-        </li>
-        <li>
-          <GiCheckMark className="service__list-icon" />
-          <p>Mobile design</p>
-        </li>
+        {list.map((item) => {
+          return (
+            <li>
+              <GiCheckMark className="service__list-icon" />
+              <p>{item}</p>
+            </li>
+          );
+        })}
       </ul>
     </article>
   );
-}
+};
 
-export default serviceitem
+export default serviceitem;

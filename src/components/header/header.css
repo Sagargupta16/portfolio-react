@@ -1,114 +1,128 @@
-header{
-    height: 100vh;
-    padding-top: 2rem;
-    overflow: hidden;
+header {
+  height: 100vh;
+  padding-top: 2rem;
+  overflow: hidden;
 }
-.header__container{
-    text-align: center;
-    position: relative;
-    height: 100%;
+.header__container {
+  text-align: center;
+  position: relative;
+  height: 100%;
 }
 
 /* ========== CTA ========== */
-.cta{
-    margin-top: 2.5rem;
-    display: flex;
-    gap: 1.2rem;
-    justify-content: center;
+.cta {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
 }
 
 /* ========== Socials ========== */
-.header__socials{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-    position: absolute;
-    left : 0;
-    bottom: 3rem;
+.header__socials {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  position: absolute;
+  left: 0;
+  bottom: 3rem;
 }
 
-.header__socials a{
-    font-size: 1.2rem;
-    color: var(--color-primary);
-    transition: var(--transition);
-    position: relative;
-    overflow: visible;
+.header__socials a {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  transition: var(--transition);
+  position: relative;
+  overflow: visible;
 }
 
-.header__socials a[alt]:hover{
-    transform: scale(1.05);
+.header__socials a[alt]:hover {
+  transform: scale(1.05);
 }
 
-.header__socials a[alt]:hover::after{
-    content: attr(alt);
-    font-size: 0.8rem;
-    width: 10rem;
-    position: absolute;
-    color: var(--color-white);
-    font-weight: bold;
-    margin-left: 7rem;
-    transform: translateX(-50%);
-    transition: var(--transition);
-    overflow: visible;
-    text-align: left;
+.header__socials a[alt]:hover::after {
+  content: attr(alt);
+  font-size: 0.8rem;
+  width: 10rem;
+  position: absolute;
+  color: var(--color-white);
+  font-weight: bold;
+  margin-left: 7rem;
+  transform: translateX(-50%);
+  transition: var(--transition);
+  overflow: visible;
+  text-align: left;
 }
 
-
-
-.header__socials a:hover{
-    transform: scale(1.1);
-    cursor: pointer;
+.header__socials a:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
-.header__socials::after{
-    content: '';
-    width: 1px;
-    height: 2rem;
-    background-color: var(--color-primary);
+.header__socials::after {
+  content: "";
+  width: 1px;
+  height: 2rem;
+  background-color: var(--color-primary);
 }
 
 /* ========== Me ========== */
-.me{
-    background: linear-gradient(var(--color-primary), transparent);
-    width: 22rem;
-    height: 30rem;
-    position: absolute;
-    left : calc(50% - 11rem);
-    margin-top: 4rem;
-    border-radius: 12rem 12rem 0 0;
-    overflow: hidden;
-    box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.4);
+.me {
+  background: linear-gradient(var(--color-primary), transparent);
+  width: 25rem;
+  height: 30rem;
+  position: absolute;
+  left: calc(50% - 13rem);
+  margin-top: 4rem;
+  border-radius: 6rem 6rem 0 0;
+  box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.4);
+}
+
+.me img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: visible;
 }
 
 /* ========== Scroll Down ========== */
-.scroll__down{
-    position: absolute;
-    right: -2.3rem;
-    bottom: 5rem;
-    transform: rotate(90deg);
-    font-weight: 300;
-    font-size: 0.9rem;
-}
+/* .scroll__down {
+  position: absolute;
+  right: -2.3rem;
+  bottom: 5rem;
+  transform: rotate(90deg);
+  font-weight: 300;
+  font-size: 0.9rem;
+} */
 
 /* ========== MEDIA QUERIES ========== */
 
-@media screen and (max-width: 1024px){
-    header{
-        height: 100vh;
-    }
-    
+@media screen and (max-width: 1024px) {
+  header {
+    height: 100vh;
+  }
+  .me {
+    width: 20rem;
+    height: 25rem;
+    left: calc(50% - 10rem);
+  }
 }
 
-@media screen and (max-width: 600px){
-    header{
-        height: 100vh;
-    }
-    .header__socials , .scroll__down{
-        display: none;
-    }
+@media screen and (max-width: 600px) {
+  header {
+    height: 100vh;
+  }
+  .header__socials,
+  .scroll__down {
+    display: none;
+  }
+  .me {
+    width: 15rem;
+    height: 20rem;
+    left: calc(50% - 7.5rem);
+  }
 }
 
 .cursor {
-    animation: blink 1s linear infinite forwards;
+  animation: blink 1s linear infinite forwards;
 }
