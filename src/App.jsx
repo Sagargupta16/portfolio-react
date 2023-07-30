@@ -26,7 +26,7 @@ const App = () => {
 
   return (
     <>
-      {screenWidth > 600 ? (
+      {/* {screenWidth > 600 ? ( */}
         <Router basename="/Portfolio-React">
           <Nav />
           <Routes>
@@ -42,7 +42,7 @@ const App = () => {
           </Routes>
           <Footer />
         </Router>
-      ) : (
+      {/* ) : (
         <>
           <Header />
           <About />
@@ -55,7 +55,7 @@ const App = () => {
           <Contact />
           <Footer />
         </>
-      )}
+      )} */}
     </>
   );
 };
