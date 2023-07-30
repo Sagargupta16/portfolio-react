@@ -17,14 +17,14 @@ const App = () => {
     <Router>
       <Nav />
       <Routes>
-        <Route exact path="/" element={<Header />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/education" element={<Education />}></Route>
-        <Route path="/skill" element={<Skill />}></Route>
-        <Route path="/services" element={<Services />}></Route>
-        <Route path="/portfolio" element={<Portfolio />}></Route>
-        <Route path="/testimonial" element={<Testimonial />}></Route>
-        <Route path="/contact" element={<Contact />}></Route>
+        <Route exact path="portfolio-react/" element={<Header />}></Route>
+        <Route path="portfolio-react/about" element={<About />}></Route>
+        <Route path="portfolio-react/education" element={<Education />}></Route>
+        <Route path="portfolio-react/skill" element={<Skill />}></Route>
+        <Route path="portfolio-react/services" element={<Services />}></Route>
+        <Route path="portfolio-react/portfolio" element={<Portfolio />}></Route>
+        <Route path="portfolio-react/testimonial" element={<Testimonial />}></Route>
+        <Route path="portfolio-react/contact" element={<Contact />}></Route>
       </Routes>
       <Footer />
     </Router>
