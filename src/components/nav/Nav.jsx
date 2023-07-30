@@ -13,12 +13,13 @@ const Nav = () => {
     if (currentURL.endsWith("/")) setActiveNav("#");
     else if (currentURL.endsWith("/about")) setActiveNav("about");
     else if (currentURL.endsWith("/education")) setActiveNav("education");
+    else if (currentURL.endsWith("/experience")) setActiveNav("experience");
     else if (currentURL.endsWith("/skill")) setActiveNav("skill");
     else if (currentURL.endsWith("/services")) setActiveNav("services");
     else if (currentURL.endsWith("/portfolio")) setActiveNav("portfolio");
     else if (currentURL.endsWith("/testimonial")) setActiveNav("testimonial");
     else if (currentURL.endsWith("/contact")) setActiveNav("contact");
-  }, [activeNav]);
+  }, [setActiveNav]);
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);

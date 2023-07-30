@@ -37,6 +37,7 @@
 }
 
 .contact__form {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;

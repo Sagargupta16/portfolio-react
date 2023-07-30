@@ -6,7 +6,6 @@
   border: 0;
   outline: 0;
   box-sizing: border-box;
-  list-style: none;
   text-decoration: none;
 }
 :root {
@@ -28,28 +27,12 @@
   --color-bg-variant: #ce7777;
   --color-primary: #e8c4c4;
   --color-primary-variant: rgba(242, 229, 229, 0.5);
-  --color-white: #fff;
-  --color-light: rgba(255, 255, 255, 0.6);
-
-  --transition: all 0.4s ease-in-out;
-
-  --container-width-lg: 75%;
-  --container-width-md: 86%;
-  --container-width-sm: 90%;
 }
 :root .theme3 {
   --color-bg: #222831;
   --color-bg-variant: #393e46;
   --color-primary: #00adb5;
   --color-primary-variant: rgba(238, 238, 238, 0.5);
-  --color-white: #fff;
-  --color-light: rgba(255, 255, 255, 0.6);
-
-  --transition: all 0.4s ease-in-out;
-
-  --container-width-lg: 75%;
-  --container-width-md: 86%;
-  --container-width-sm: 90%;
 }
 
 :root .theme4 {
@@ -57,14 +40,6 @@
   --color-bg-variant: #144272;
   --color-primary: #82aae3;
   --color-primary-variant: rgba(32, 82, 149, 0.5);
-  --color-white: #fff;
-  --color-light: rgba(255, 255, 255, 0.6);
-
-  --transition: all 0.4s ease-in-out;
-
-  --container-width-lg: 75%;
-  --container-width-md: 86%;
-  --container-width-sm: 90%;
 }
 
 html {
@@ -182,5 +157,9 @@ img {
   }
   section > h2 {
     margin-bottom: 2rem;
+  }
+  section {
+    margin-top: 4rem;
+    min-height: 0;
   }
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import "./education.css";
-import { GoDot } from "react-icons/go";
-import EducationItem from "./educationitem";
+import EducationItem from "./EducationItem.jsx";
 
 const EducationArray = [
   {
@@ -41,12 +40,7 @@ const Education = () => {
       <h2>My Education</h2>
       <div className="container education__container">
         {EducationArray.map((item) => {
-          return (
-            <>
-              <GoDot />
-              <EducationItem item={item} />
-            </>
-          );
+          return <EducationItem item={item} />;
         })}
       </div>
     </section>

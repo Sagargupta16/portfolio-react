@@ -1,9 +1,16 @@
+/* Experience container */
 .experience__container {
-  display: grid;
-  grid-template-columns: 0.1fr auto;
-  grid-gap: 0.2rem;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+  height: 100%;
+  padding: 2rem 0;
 }
+
+/* Experience item */
 .experience__item {
   background: var(--color-bg-variant);
   padding: 1rem 0 1rem 2rem;
@@ -13,31 +20,182 @@
   transition: var(--transition);
   border-radius: 20px;
 }
+
 .experience__item:hover {
   background: transparent;
   border: 1px solid var(--color-primary);
   backdrop-filter: blur(5px);
 }
 
-.experience__item h3 {
-  color: var(--color-primary);
+/* Experience date */
+.experience__date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 2rem;
+  margin-bottom: 1rem;
 }
 
-.experience__date {
+.experience__date__icon {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--color-primary);
 }
 
-@media screen and (max-width: 1024px) {
-  .experience__item {
-    height: 10rem;
-  }
+.experience__date__icon > svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: var(--color-primary);
 }
 
-@media screen and (max-width: 600px) {
-  .experience__item {
-    font-size: 0.9rem;
-  }
+.experience__date__icon > span {
+  font-weight: 500;
+}
+
+/* Experience dropdown */
+.experience__dropdown {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.experience__dropdown:hover {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.experience__dropdown__icon {
+  margin-top: 0.3rem;
+}
+
+/* Experience title */
+.experience__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Experience position */
+.experience__position {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Experience company */
+.experience__company {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Experience location */
+.experience__location {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.experience__location__inperson {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.experience__location__inperson > svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: var(--color-primary);
+  margin-right: 0.5rem;
+}
+
+/* Experience item description */
+.experience__item__description {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+.experience__item__description h4 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.experience__item__description ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  line-height: 1.5rem;
+  list-style: disc;
+}
+
+/* Experience item skills */
+.experience__item__skills {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0 0 1rem 2rem;
+  width: 100%;
+  height: 100%;
+  margin: 1rem 0;
+}
+
+.experience__item__skills h4 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.experience__item__skills__list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  line-height: 1.5rem;
+}
+
+.experience__item__skills__list span {
+  font-size: 1rem;
+  font-weight: 500;
+  background: var(--color-bg);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
+.experience__item__skills__list span:hover {
+  background: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.experience__item__description,
+.experience__item__skills {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0.3rem 0;
+}
+
+.experience__item__description.active,
+.experience__item__skills.active {
+  padding: 0 2rem 1rem 2rem;
+  margin: 1rem 0;
+  max-height: 100%;
 }

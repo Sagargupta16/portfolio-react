@@ -47,9 +47,15 @@ const About = () => {
             Apart from web development I love Problem Solving with use of Data
             Structures and Algorithms in Efficient Way.
           </p>
-          <a href="contact" className="btn btn-primary">
-            Let's Talk
-          </a>
+          {window.screen.width > 600 ? (
+            <a href="/Portfolio-React/contact" className="btn btn-primary">
+              Let's Talk
+            </a>
+          ) : (
+            <a href="#contact" className="btn btn-primary">
+              Let's Talk
+            </a>
+          )}
         </div>
       </div>
     </section>

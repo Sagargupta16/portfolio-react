@@ -1,7 +1,7 @@
 import React from "react";
 import { BsFillCalendarEventFill } from "react-icons/bs";
 
-const educationitem = (props) => {
+const EducationItem = (props) => {
   const { item } = props;
   return (
     <div className="education__item">
@@ -16,4 +16,4 @@ const educationitem = (props) => {
   );
 };
 
-export default educationitem;
+export default EducationItem;
