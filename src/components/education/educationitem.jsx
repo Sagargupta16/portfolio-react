@@ -2,7 +2,7 @@ import React from "react";
 import { BsFillCalendarEventFill } from "react-icons/bs";
 
 const EducationItem = (props) => {
-  const { item } = props;
+  const {item} = props;
   return (
     <div className="education__item">
       <h3 className="education__date">
