@@ -1,6 +1,6 @@
 import React from "react";
 import "./education.css";
-import EducationItem from "./EducationItem.jsx";
+import EducationItem from "./EducationItem";
 
 const EducationArray = [
   {
