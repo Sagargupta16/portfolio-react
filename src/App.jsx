@@ -44,16 +44,18 @@ const App = () => {
         </Router>
       ) : (
         <>
-          <Header />
-          <About />
-          <Education />
-          <Experience />
-          <Skill />
-          <Services />
-          <Portfolio />
-          <Testimonial />
-          <Contact />
-          <Footer />
+          <Router basename="/Portfolio-React">
+            <Header />
+            <About />
+            <Education />
+            <Experience />
+            <Skill />
+            <Services />
+            <Portfolio />
+            <Testimonial />
+            <Contact />
+            <Footer />
+          </Router>
         </>
       )}
     </>
