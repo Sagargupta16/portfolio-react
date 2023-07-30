@@ -32,7 +32,7 @@
       "react-app/jest"
     ]
   },
-  "homepage": "https://sagargupta.me/Portfolio-React/",
+  "homepage": ".",
   "name": "portfolio-react",
   "private": true,
   "scripts": {
