@@ -5,6 +5,7 @@ import Header from "./components/header/Header";
 import Nav from "./components/nav/Nav";
 import About from "./components/about/About";
 import Education from "./components/education/Education";
+import Experience from "./components/experience/Experience";
 import Skill from "./components/skill/Skill";
 import Services from "./components/services/Services";
 import Portfolio from "./components/portfolio/Portfolio";
@@ -20,6 +21,7 @@ const App = () => {
         <Route exact path="/" element={<Header />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/education" element={<Education />}></Route>
+        <Route path="/experience" element={<Experience />}></Route>
         <Route path="/skill" element={<Skill />}></Route>
         <Route path="/services" element={<Services />}></Route>
         <Route path="/portfolio" element={<Portfolio />}></Route>

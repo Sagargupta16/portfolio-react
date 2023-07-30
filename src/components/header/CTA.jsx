@@ -1,6 +1,5 @@
 import React from "react";
 import CV from "../../assets/Resume.pdf";
-import { Link } from "react-router-dom";
 
 function CTA() {
   return (
@@ -8,9 +7,9 @@ function CTA() {
       <a href={CV} download className="btn">
         Download CV
       </a>
-      <Link to="/contact" className="btn btn-primary">
+      <a href="/Portfolio-React/contact" className="btn btn-primary">
         Let's Talk
-      </Link>
+      </a>
     </div>
   );
 }

@@ -1,13 +1,25 @@
-import { React, useLayoutEffect, useState } from "react";
+import { React, useEffect, useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./nav.css";
 import { RiHome3Line, RiServiceLine } from "react-icons/ri";
 import { AiOutlineUser, AiOutlineMessage } from "react-icons/ai";
-import { GoPencil } from "react-icons/go";
+import { GoBriefcase, GoPencil } from "react-icons/go";
 import { GiSuitcase, GiChatBubble, GiSkills } from "react-icons/gi";
 
 const Nav = () => {
   const [activeNav, setActiveNav] = useState("#");
+  useEffect(() => {
+    const currentURL = window.location.href;
+    if (currentURL.endsWith("/")) setActiveNav("#");
+    else if (currentURL.endsWith("/about")) setActiveNav("about");
+    else if (currentURL.endsWith("/education")) setActiveNav("education");
+    else if (currentURL.endsWith("/skill")) setActiveNav("skill");
+    else if (currentURL.endsWith("/services")) setActiveNav("services");
+    else if (currentURL.endsWith("/portfolio")) setActiveNav("portfolio");
+    else if (currentURL.endsWith("/testimonial")) setActiveNav("testimonial");
+    else if (currentURL.endsWith("/contact")) setActiveNav("contact");
+  }, [activeNav]);
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   });
@@ -37,6 +49,14 @@ const Nav = () => {
           alt="Education"
         >
           <GoPencil />
+        </Link>
+        <Link
+          to="/experience"
+          className={activeNav === "experience" ? "active" : ""}
+          onClick={() => setActiveNav("experience")}
+          alt="Experience"
+        >
+          <GoBriefcase />
         </Link>
         <Link
           to="/skill"

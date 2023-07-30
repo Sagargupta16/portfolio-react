@@ -47,7 +47,7 @@ const About = () => {
             Apart from web development I love Problem Solving with use of Data
             Structures and Algorithms in Efficient Way.
           </p>
-          <a href="#contact" className="btn btn-primary">
+          <a href="contact" className="btn btn-primary">
             Let's Talk
           </a>
         </div>
