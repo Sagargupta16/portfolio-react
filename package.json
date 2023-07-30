@@ -32,7 +32,7 @@
       "react-app/jest"
     ]
   },
-  "homepage": ".",
+  "homepage": "./portfolio-react",
   "name": "portfolio-react",
   "private": true,
   "scripts": {
