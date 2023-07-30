@@ -1,17 +1,24 @@
-name: Build and Deploy
+name: 'Build and Deploy React app to GitHub Pages'
 
 on:
   push:
-    branches: ["master"]
-  pull_request:
-    branches: ["main"]
+    branches:
+      - master
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
 
-      - name: Build and Deploy React app to GitHub Pages
-        uses: omkartapale/react-deployment-gh-pages@v1.0.0
+    - name: Build and Deploy
+      env:
+        REACT_APP_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        npm install
+        npm run build
+        npm run deploy
