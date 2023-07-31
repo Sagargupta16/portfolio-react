@@ -4,7 +4,7 @@ import ME from "../../assets/me-about.jpg";
 import { BsCodeSlash } from "react-icons/bs";
 import { MdDeveloperMode } from "react-icons/md";
 import { SiCodersrank } from "react-icons/si";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const About = () => {
   return (

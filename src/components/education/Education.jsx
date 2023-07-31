@@ -32,7 +32,7 @@ const Education = () => {
       text: "Kids Garden School -- Shivpuri , MP",
       cgpa: "CGPA: 7.40",
     },
-  ];  
+  ];
   return (
     <section id="education">
       <h5>What Qualifications I have</h5>

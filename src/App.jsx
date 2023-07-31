@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Header from "./components/header/Header";
@@ -14,21 +14,22 @@ import Contact from "./components/contact/Contact";
 import Footer from "./components/footer/Footer";
 
 const App = () => {
-  const [screenWidth, setScreenWidth] = React.useState(window.screen.width);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [activeNav, setActiveNav] = useState("#");
 
   useEffect(() => {
-    const handleResize = () => setScreenWidth(window.screen.width);
+    const handleResize = () => setScreenWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [screenWidth]);
+  }, []);
 
   return (
     <>
       {screenWidth > 600 ? (
         <Router basename="/portfolio-react">
-          <Nav />
+          <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
           <Routes>
             <Route exact path="/" element={<Header />}></Route>
             <Route path="/about" element={<About />}></Route>
