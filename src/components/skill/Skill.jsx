@@ -2,231 +2,53 @@ import React from "react";
 import "./skill.css";
 import { BsPatchCheckFill } from "react-icons/bs";
 
+const skills = {
+  "Programming Languages": [
+    "C++", "Python", "C", "Java", "R", "JavaScript", "SQL", "HTML", "CSS"
+  ],
+  "Frameworks and Libraries": [
+    "React JS", "Node JS", "Express JS", "Mongo DB", "Bootstrap", "Material UI", "Fast-API", "Rest-API", "Pandas", "NumPy", "Matplotlib"
+  ],
+  "Cloud and Databases": [
+    "AWS", "AWS EC2", "AWS ECR", "AWS RDS", "MongoDB", "MySQL"
+  ],
+  "Tools, Editors, and IDEs": [
+    "Git", "VS Code", "Eclipse", "Jupyter Notebook", "Android Studio", "Docker", "Ansible", "SonarQube", "Github Actions", "Unity Engine"
+  ],
+  "Operating Systems": [
+    "Windows", "Linux", "Android"
+  ],
+  "Soft Skills": [
+    "Teamwork", "Leadership", "Communication", "Time Management", "Problem Solving", "Critical Thinking"
+  ],
+  "Coursework": [
+    "Data Structures", "Object-Oriented Programming", "Web Development", "Game Development", "Database Management Systems", "Operating Systems", "Computer Networks", "Software Engineering", "Artificial Intelligence", "Cloud Computing"
+  ],
+  
+  "Areas of Interest": [
+    "Full Stack Development", "Web Development", "Game Development", "Cloud Computing", "Data Science", "DevOps"
+  ]
+};
+
 function Skill() {
   return (
     <section id="skill">
       <h5>What Skills I Have</h5>
       <h2>My Skills</h2>
       <div className="container skill__container">
-        {/* Full Stack Start */}
-        <div className="skill__item">
-          <h3>Fullstack Development</h3>
-          <div className="skill__content">
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>HTML</h4>
-                <small className="text-light">Experienced</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>CSS</h4>
-                <small className="text-light">Experienced</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>JavaScript</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>React JS</h4>
-                <small className="text-light">Experienced</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Node Js</h4>
-                <small className="text-light">Beginner</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Express Js</h4>
-                <small className="text-light">Beginner</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Mongo DB</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
+        {Object.keys(skills).map((skill, index) => (
+          <div className="skill__card" key={index}>
+            <h3 className="skill__title">{skill}</h3>
+            <div className="skill__list">
+              {skills[skill].map((item, index) => (
+                <div key={index} className="skill__item">
+                  <BsPatchCheckFill className="skill__icon" />
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-        {/* FullStack End */}
-        {/* Programming Start */}
-        <div className="skill__item">
-          <h3>Programming Languages</h3>
-          <div className="skill__content">
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>C++</h4>
-                <small className="text-light">Experienced</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Java</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>C</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>R</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Python</h4>
-                <small className="text-light">beginner</small>
-              </div>
-            </article>
-          </div>
-        </div>
-        {/* Programming End */}
-        {/* CourseWork Start */}
-        <div className="skill__item">
-          <h3>Coursework</h3>
-          <div className="skill__content">
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Data Structures</h4>
-                <small className="text-light">Experienced</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Web Development</h4>
-                <small className="text-light">Experienced</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>OOPs</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Game Development</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Databases</h4>
-                <small className="text-light">Beginner</small>
-              </div>
-            </article>
-          </div>
-        </div>
-        {/* CourseWork End */}
-        {/* Tools Start */}
-        <div className="skill__item">
-          <h3>Tools , Editors and IDEs</h3>
-          <div className="skill__content">
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Unity Engine</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>VS Code</h4>
-                <small className="text-light">Experienced</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Oracle DB</h4>
-                <small className="text-light">Beginner</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>R Studio</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>IntelliJ</h4>
-                <small className="text-light">Intermediate</small>
-              </div>
-            </article>
-          </div>
-        </div>
-        {/* Tools End */}
-        {/* Soft Skills Start*/}
-        <div className="skill__item">
-          <h3>Soft Skills</h3>
-          <div className="skill__content">
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Problem Solving</h4>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Leadership</h4>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Teamwork</h4>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Critical Thinking</h4>
-              </div>
-            </article>
-            <article className="skill__details">
-              <BsPatchCheckFill className="skill__details-icons" />
-              <div>
-                <h4>Communication</h4>
-              </div>
-            </article>
-          </div>
-        </div>
-        {/* Soft Skills Ends*/}
+        ))}
       </div>
     </section>
   );

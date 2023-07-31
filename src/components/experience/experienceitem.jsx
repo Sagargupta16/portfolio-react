@@ -23,14 +23,14 @@ const ExperienceItem = (props) => {
             <span className="experience__dropdown__icon">
               <CiCircleChevUp />
             </span>
-            <span>Less</span>
+            <span className="experoence__dropdown__text">Less</span>
           </div>
         ) : (
           <div className="experience__dropdown" onClick={dropdown}>
             <span className="experience__dropdown__icon">
               <CiCircleChevDown />
             </span>
-            <span>More</span>
+            <span className="experoence__dropdown__text">More</span>
           </div>
         )}
       </h3>

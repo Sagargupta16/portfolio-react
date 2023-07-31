@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./nav.css";
 import { RiHome3Line, RiServiceLine } from "react-icons/ri";
@@ -8,6 +8,11 @@ import { GiSuitcase, GiChatBubble, GiSkills } from "react-icons/gi";
 
 const Nav = () => {
   const location = useLocation();
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <>
       <nav className="nav">

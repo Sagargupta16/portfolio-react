@@ -18,7 +18,7 @@ header {
 }
 
 /* ========== Socials ========== */
-.header__socials {
+.header__socials__left {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,7 +28,7 @@ header {
   bottom: 3rem;
 }
 
-.header__socials a {
+.header__socials__left a {
   font-size: 1.2rem;
   color: var(--color-primary);
   transition: var(--transition);
@@ -36,11 +36,11 @@ header {
   overflow: visible;
 }
 
-.header__socials a[alt]:hover {
+.header__socials__left a[alt]:hover {
   transform: scale(1.05);
 }
 
-.header__socials a[alt]:hover::after {
+.header__socials__left a[alt]:hover::after {
   content: attr(alt);
   font-size: 0.8rem;
   width: 10rem;
@@ -54,12 +54,60 @@ header {
   text-align: left;
 }
 
-.header__socials a:hover {
+.header__socials__left a:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
 
-.header__socials::after {
+.header__socials__left::after {
+  content: "";
+  width: 1px;
+  height: 2rem;
+  background-color: var(--color-primary);
+}
+
+.header__socials__right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  position: absolute;
+  right: 0;
+  bottom: 3rem;
+}
+
+.header__socials__right a {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  transition: var(--transition);
+  position: relative;
+  overflow: visible;
+}
+
+.header__socials__right a[alt]:hover {
+  transform: scale(1.05);
+}
+
+.header__socials__right a[alt]:hover::after {
+  content: attr(alt);
+  font-size: 0.8rem;
+  width: 10rem;
+  position: absolute;
+  color: var(--color-white);
+  font-weight: bold;
+  margin-left: -6rem;
+  transform: translateX(-50%);
+  transition: var(--transition);
+  overflow: visible;
+  text-align: right;
+}
+
+.header__socials__right a:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.header__socials__right::after {
   content: "";
   width: 1px;
   height: 2rem;
