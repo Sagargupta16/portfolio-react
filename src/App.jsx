@@ -27,7 +27,7 @@ const App = () => {
   return (
     <>
       {screenWidth > 600 ? (
-        <Router>
+        <Router basename="/portfolio-react">
           <Nav />
           <Routes>
             <Route exact path="/" element={<Header />}></Route>
@@ -44,7 +44,7 @@ const App = () => {
         </Router>
       ) : (
         <>
-          <Router>
+          <Router basename="/portfolio-react">
             <Header />
             <About />
             <Education />

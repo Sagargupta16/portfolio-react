@@ -1,6 +1,6 @@
 import React from "react";
 import "./experience.css";
-import ExperienceItem from "./ExperienceItem";
+import ExperienceItem from "./experienceitem";
 
 const Experience = () => {
   const ExperienceArray = [
