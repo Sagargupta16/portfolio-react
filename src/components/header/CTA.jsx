@@ -1,5 +1,6 @@
 import React from "react";
 import CV from "../../assets/Resume.pdf";
+import {Link} from "react-router-dom";
 
 function CTA() {
   return (
@@ -8,9 +9,9 @@ function CTA() {
         Download CV
       </a>
       {window.screen.width > 600 ? (
-        <a href="/Portfolio-React/contact" className="btn btn-primary">
+        <Link to="/contact" className="btn btn-primary">
           Let's Talk
-        </a>
+        </Link>
       ) : (
         <a href="#contact" className="btn btn-primary">
           Let's Talk

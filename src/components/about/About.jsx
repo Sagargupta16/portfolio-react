@@ -4,6 +4,7 @@ import ME from "../../assets/me-about.jpg";
 import { BsCodeSlash } from "react-icons/bs";
 import { MdDeveloperMode } from "react-icons/md";
 import { SiCodersrank } from "react-icons/si";
+import {Link} from "react-router-dom";
 
 const About = () => {
   return (
@@ -48,9 +49,9 @@ const About = () => {
             Structures and Algorithms in Efficient Way.
           </p>
           {window.screen.width > 600 ? (
-            <a href="/Portfolio-React/contact" className="btn btn-primary">
+            <Link to="/contact" className="btn btn-primary">
               Let's Talk
-            </a>
+            </Link>
           ) : (
             <a href="#contact" className="btn btn-primary">
               Let's Talk
