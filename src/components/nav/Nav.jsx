@@ -4,7 +4,7 @@ import "./nav.css";
 import { RiHome3Line, RiServiceLine } from "react-icons/ri";
 import { AiOutlineUser, AiOutlineMessage } from "react-icons/ai";
 import { GoBriefcase, GoPencil } from "react-icons/go";
-import { GiSuitcase, GiChatBubble, GiSkills } from "react-icons/gi";
+import { GiSuitcase, /* GiChatBubble,*/ GiSkills } from "react-icons/gi";
 
 const Nav = () => {
   const location = useLocation();
@@ -65,13 +65,13 @@ const Nav = () => {
         >
           <GiSuitcase />
         </Link>
-        <Link
+        {/* <Link
           to="/testimonial"
           className={location.pathname === "/testimonial" ? "active" : ""}
           alt="Testimonial"
         >
           <GiChatBubble />
-        </Link>
+        </Link> */}
         <Link
           to="/contact"
           className={location.pathname === "/contact" ? "active" : ""}

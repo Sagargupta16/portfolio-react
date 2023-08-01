@@ -67,7 +67,7 @@ body {
 .container {
   max-width: var(--container-width-lg);
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 1rem;
   cursor: default;
 }
 
