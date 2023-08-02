@@ -9,8 +9,8 @@ const Experience = () => {
       date: "May 2023 - July 2023",
       title: "Software Developer Associate",
       position: "Internship",
-      company: "Ikarus 3D",
-      location: "Mohali (Punjab), India",
+      company: "Ikarus-3D",
+      location: "Mohali , Punjab",
       description: {
         1: "Automated CI/CD workflow using GitHub Actions to handle web app linting, testing, building, and deployment.",
         2: "Containerized the application using Docker and deployed it on AWS using ECR and ECS.",

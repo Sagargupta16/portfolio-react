@@ -7,10 +7,8 @@ import emailjs from "emailjs-com";
 
 const Contact = () => {
   const form = useRef();
-
   const sendEmail = (e) => {
     e.preventDefault();
-
     emailjs
       .sendForm(
         "service_lyt547p",
@@ -35,16 +33,20 @@ const Contact = () => {
       <div className="container contact__container">
         <div className="contact__options">
           <article className="contact__option">
-            <MdOutlineEmail className="contact__icon" />
-            <h4>Email</h4>
+            <h4>
+              <MdOutlineEmail className="contact__icon" />
+              Email Me
+            </h4>
             <h5>sg85207@gmail.com</h5>
             <a href="mailto:sg85207@gmail.com" target="_blank" rel="noreferrer">
               Send a Message
             </a>
           </article>
           <article className="contact__option">
-            <ImWhatsapp className="contact__icon" />
-            <h4>WhatsApp</h4>
+            <h4>
+              <ImWhatsapp className="contact__icon" />
+              WhatsApp Me
+            </h4>
             <h5>+91-8770532413</h5>
             <a
               href="https://wa.me/+918770532413"
@@ -55,8 +57,10 @@ const Contact = () => {
             </a>
           </article>
           <article className="contact__option">
-            <IoCallOutline className="contact__icon" />
-            <h4>Call me</h4>
+            <h4>
+              <IoCallOutline className="contact__icon" />
+              Call me
+            </h4>
             <h5>+91-8770532413</h5>
             <a href="tel:+918770532413" target="_blank" rel="noreferrer">
               Call
@@ -77,7 +81,7 @@ const Contact = () => {
             placeholder="Your Message"
             required
           ></textarea>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="">
             Send Message
           </button>
         </form>

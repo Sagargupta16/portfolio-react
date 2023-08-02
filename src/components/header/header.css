@@ -117,13 +117,14 @@ header {
 /* ========== Me ========== */
 .me {
   background: linear-gradient(var(--color-primary), transparent);
-  width: 25rem;
-  height: 30rem;
+  width: 35%;
+  height: 60%;
   position: absolute;
-  left: calc(50% - 13rem);
+  left: calc(50% - 17.5%);
   margin-top: 4rem;
   border-radius: 6rem 6rem 0 0;
   box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.4);
+  bottom: -3rem;
 }
 
 .me img {

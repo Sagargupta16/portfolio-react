@@ -9,10 +9,6 @@
   text-decoration: none;
 }
 :root {
-  --color-bg: #1f1f38;
-  --color-bg-variant: #2c2c6c;
-  --color-primary: #4db5ff;
-  --color-primary-variant: rgba(77, 181, 255, 0.5);
   --color-white: #fff;
   --color-light: rgba(255, 255, 255, 0.6);
 
@@ -22,6 +18,14 @@
   --container-width-md: 86%;
   --container-width-sm: 90%;
 }
+
+:root .theme1 {
+  --color-bg: #1f1f38;
+  --color-bg-variant: #2c2c6c;
+  --color-primary: #4db5ff;
+  --color-primary-variant: rgba(77, 181, 255, 0.5);
+}
+
 :root .theme2 {
   --color-bg: #2b3a55;
   --color-bg-variant: #ce7777;
@@ -32,18 +36,41 @@
   --color-bg: #222831;
   --color-bg-variant: #393e46;
   --color-primary: #00adb5;
-  --color-primary-variant: rgba(238, 238, 238, 0.5);
+  /* --color-primary-variant: rgba(238, 238, 238, 0.5); */
+  --color-primary-variant: rgba(0, 173, 181, 0.5);
 }
 
 :root .theme4 {
-  --color-bg: #0a2647;
+  --color-bg: rgb(10, 38, 71);
   --color-bg-variant: #144272;
-  --color-primary: #82aae3;
-  --color-primary-variant: rgba(32, 82, 149, 0.5);
+  --color-primary: rgb(130, 170, 227);
+  --color-primary-variant: rgba(130, 170, 227, 0.5);
 }
 
 html {
   scroll-behavior: smooth;
+  font-size: 95%;
+  background: var(--color-bg);
+
+  @media screen and (max-width: 600px) {
+    font-size: 90%;
+    ::-webkit-scrollbar {
+      display: block;
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--color-bg-variant);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-primary);
+      border-radius: 10px;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    font-size: 85%;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -52,11 +79,10 @@ html {
 
 body {
   font-family: "Poppins", sans-serif;
-  background-color: var(--color-bg);
   color: var(--color-white);
   line-height: 1.7;
-  background-image: url(../src/assets/bg-texture.png);
-  overflow-x: hidden;
+  background: url(../src/assets/bg-texture.png), var(--color-bg);
+  background-size: 10px 10px;
 }
 
 .root {

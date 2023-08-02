@@ -33,7 +33,6 @@
   justify-content: space-between;
   align-items: center;
   padding-right: 2rem;
-  margin-bottom: 1rem;
 }
 
 .experience__date__icon {
@@ -77,7 +76,7 @@
 
 /* Experience title */
 .experience__title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
@@ -94,7 +93,6 @@
   align-items: center;
   padding-right: 2rem;
   font-size: 1.1rem;
-  font-weight: 600;
 }
 
 /* Experience location */
@@ -143,6 +141,7 @@
   margin-top: 0.5rem;
   line-height: 1.5rem;
   list-style: disc;
+  padding-left: 1rem;
 }
 
 /* Experience item skills */
@@ -177,12 +176,13 @@
   font-weight: 500;
   background: var(--color-bg);
   padding: 0.5rem 1rem;
-  border-radius: 20px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-primary-variant);
+  transition: var(--transition);
 }
 
 .experience__item__skills__list span:hover {
-  background: var(--color-primary);
-  color: var(--color-bg);
+  border-color: var(--color-primary);
 }
 
 .experience__item__description,

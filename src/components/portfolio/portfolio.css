@@ -96,14 +96,15 @@
 .portfolio__item__feature {
   background: var(--color-bg);
   padding: 0.5rem 1rem;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   font-size: 0.8rem;
+  border: 1px solid var(--color-bg-variant);
+  transition: var(--transition);
 }
 
 .portfolio__item__tool:hover,
 .portfolio__item__feature:hover {
-  background: var(--color-primary);
-  color: var(--color-bg);
+  border-color: var(--color-primary);
 }
 
 .portfolio__item__features {
