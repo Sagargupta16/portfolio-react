@@ -1,121 +1,113 @@
-.nav-btn {
-  position: fixed;
-  right: 2rem;
-  top: 2rem;
-  z-index: 2;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  outline: none;
-  padding: 0.5rem;
-  transition: var(--transition);
-  background-color: var(--color-primary);
-  border-radius: 10%;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.nav-btn__line {
-  width: 1rem;
-  height: 0.1rem;
-  background: var(--color-bg);
-  margin: 0.1rem 0;
-  transition: var(--transition);
-}
-
 .nav {
-  background: rgba(0, 0, 0, 0.3);
-  width: max-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: 1.2rem;
-  padding: 0.4rem 1.7rem;
-  z-index: 2;
+  height: 4rem;
+  width: 100%;
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 2rem;
-  border-radius: 3rem;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-}
-a {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  height: fit-content;
-  padding: 0.5rem;
-  border-radius: 50%;
+  top: 0;
+  background-color: var(--color-bg-variant);
+  opacity: 0.7;
+  z-index: 100;
   transition: var(--transition);
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  padding: 0 1rem;
+  border-radius: 0 0 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.nav__logo {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.nav__list {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav__list a,
+.nav__list button {
+  aspect-ratio: 1/1;
+  padding: 1rem;
+  text-decoration: none;
+  font-size: 1.2rem;
+  text-align: center;
+  transition: var(--transition);
+  border-radius: 1rem 1rem 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-white);
+}
+
+.nav__list button {
+  background-color: transparent;
+  border: none;
   cursor: pointer;
 }
-.nav a {
-  background: transparent;
-  padding: 0.9rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  overflow: hidden;
-  color: var(--color-light);
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-.nav a:hover {
-  background: rgba(255, 255, 255, 0.3);
-  overflow: visible;
-}
-.nav a[alt]:hover {
-  transform: scale(1.05);
-}
-.nav a[alt]:hover::after {
+
+.nav__list a[alt]:hover::after {
   content: attr(alt);
   font-size: 0.8rem;
+  width: 10rem;
   position: absolute;
-  top: 100%;
   color: var(--color-white);
   font-weight: bold;
-  left: 50%;
-  transform: translateX(-50%);
-  transition: var(--transition);
-  bottom: -50%;
+  margin-top: 5rem;
 }
 
-.nav a.active {
-  background: var(--color-primary);
-  color: var(--color-bg);
-  border: 1px solid var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary);
+.nav__list a:hover {
+  background: url(../../assets/bg-texture.png), var(--color-bg);
+  background-size: 10px 10px;
+  color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-@media screen and (max-width: 900px) {
-  .nav a {
-    font-size: 0.7rem;
+.nav__list .active {
+  background: url(../../assets/bg-texture.png), var(--color-bg);
+  background-size: 10px 10px;
+  color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  & > svg {
+    color: var(--color-primary);
   }
 }
 
 @media screen and (max-width: 600px) {
-  .nav-btn {
-    right: 1rem;
-    top: 1rem;
+  .nav__logo {
+    display: none;
   }
   .nav {
-    bottom: 1rem;
-    padding: 0.4rem 0.8rem;
+    height: 4rem;
+    padding: 0 1rem;
+    justify-content: space-around;
   }
-  .nav-btn__line {
-    width: 0.8rem;
-    height: 0.08rem;
+  .nav__logo {
+    font-size: 1.2rem;
+    margin-left: 1rem;
   }
-  .nav a {
-    font-size: 0.6rem;
-    padding: 0.6rem;
+  .nav__list {
+    width: 100%;
+    justify-content: space-around;
+    gap: 0;
+  }
+  .nav__list a,
+  .nav__list button {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .nav__list a[alt]:hover::after {
+    display: none;
   }
 }

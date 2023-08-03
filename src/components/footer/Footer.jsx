@@ -6,7 +6,7 @@ import { FaInstagram, FaLinkedin, FaGithub, FaTwitter } from "react-icons/fa";
 const Footer = () => {
   return (
     <footer id="footer">
-      <div className="footer__logo">SAGAR</div>
+      <div className="footer__logo">SG</div>
       <div className="footer__socials">
         <a
           href="https://www.instagram.com/sagar_sethh/"

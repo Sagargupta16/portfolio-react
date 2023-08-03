@@ -15,7 +15,7 @@ const Header = () => {
     "Tech Enthusiast",
   ];
   return (
-    <header>
+    <section className="header" id="header">
       <div className="container header__container">
         <h5>Hey Myself</h5>
         <h1>Sagar Gupta</h1>
@@ -31,7 +31,7 @@ const Header = () => {
           Scroll Down
         </a> */}
       </div>
-    </header>
+    </section>
   );
 };
 

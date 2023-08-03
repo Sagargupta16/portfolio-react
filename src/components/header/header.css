@@ -1,6 +1,5 @@
-header {
-  height: 100vh;
-  padding-top: 2rem;
+.header {
+  height: 89vh;
   overflow: hidden;
 }
 .header__container {
@@ -147,9 +146,6 @@ header {
 /* ========== MEDIA QUERIES ========== */
 
 @media screen and (max-width: 1024px) {
-  header {
-    height: 100vh;
-  }
   .me {
     width: 20rem;
     height: 25rem;
@@ -158,9 +154,6 @@ header {
 }
 
 @media screen and (max-width: 600px) {
-  header {
-    height: 100vh;
-  }
   .header__socials,
   .scroll__down {
     display: none;

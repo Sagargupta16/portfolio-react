@@ -54,19 +54,6 @@ html {
 
   @media screen and (max-width: 600px) {
     font-size: 90%;
-    ::-webkit-scrollbar {
-      display: block;
-      width: 5px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--color-bg-variant);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--color-primary);
-      border-radius: 10px;
-    }
   }
   @media screen and (max-width: 400px) {
     font-size: 85%;
@@ -109,7 +96,7 @@ h1 {
   font-size: 2.5rem;
 }
 section {
-  margin-top: 2rem;
+  padding-top: 5rem;
   min-height: 100vh;
 }
 section > h2,
@@ -169,9 +156,6 @@ img {
 @media screen and (max-width: 1024px) {
   .container {
     max-width: var(--container-width-md);
-  }
-  section {
-    margin-top: 6rem;
   }
 }
 
