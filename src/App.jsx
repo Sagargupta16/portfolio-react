@@ -46,6 +46,7 @@ const App = () => {
       ) : (
         <>
           <Router basename="/portfolio-react">
+            <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
             <Header />
             <About />
             <Education />

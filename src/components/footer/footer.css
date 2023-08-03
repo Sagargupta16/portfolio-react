@@ -4,6 +4,11 @@ footer {
   text-align: center;
   font-size: 0.9rem;
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .footer__logo {
@@ -19,7 +24,6 @@ footer {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin-bottom: 4rem;
 }
 
 .footer__socials a {
@@ -45,10 +49,4 @@ footer {
 .footer__copyright {
   color: var(--color-bg);
   padding-bottom: 0.4rem;
-}
-
-@media screen and (max-width: 600px) {
-  .footer__socials {
-    margin-bottom: 2.6rem;
-  }
 }
