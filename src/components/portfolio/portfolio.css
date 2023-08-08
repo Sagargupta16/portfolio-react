@@ -150,4 +150,7 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+  .portfolio__item-image {
+    height: 100%;
+  }
 }

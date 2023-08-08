@@ -31,28 +31,28 @@ The portfolio is built using the following technologies:
 ## Key Features:
 
 - **Single Page Application for Mobile View:**
-   The portfolio is designed as a single-page application (SPA) for an optimal mobile viewing experience. Users can seamlessly scroll through the content, eliminating the need for page reloads and ensuring a smooth and engaging mobile interaction.
+  The portfolio is designed as a single-page application (SPA) for an optimal mobile viewing experience. Users can seamlessly scroll through the content, eliminating the need for page reloads and ensuring a smooth and engaging mobile interaction.
 
 - **Multi-Page Application for Desktop & Tablet View:**
-   To enhance usability on larger screens, the portfolio transforms into a multi-page application using routes for desktop and tablet views. This design choice ensures a more organized and structured presentation, allowing users to navigate between different sections effortlessly.
+  To enhance usability on larger screens, the portfolio transforms into a multi-page application using routes for desktop and tablet views. This design choice ensures a more organized and structured presentation, allowing users to navigate between different sections effortlessly.
 
 - **Cool Hover Effects, Shadowing & Overall Structure:**
-   The portfolio boasts eye-catching hover effects that add a touch of interactivity and liveliness to the user experience. Additionally, strategic use of shadowing and well-defined overall structure contributes to a visually appealing and aesthetically pleasing interface.
+  The portfolio boasts eye-catching hover effects that add a touch of interactivity and liveliness to the user experience. Additionally, strategic use of shadowing and well-defined overall structure contributes to a visually appealing and aesthetically pleasing interface.
 
 - **Smooth Navigation with 0 Refresh Rate:**
-   Navigation within the portfolio is incredibly smooth, facilitated by a seamless user interface that eliminates the need for page refreshes. This ensures a delightful user experience, as visitors can effortlessly explore various sections without any interruptions.
+  Navigation within the portfolio is incredibly smooth, facilitated by a seamless user interface that eliminates the need for page refreshes. This ensures a delightful user experience, as visitors can effortlessly explore various sections without any interruptions.
 
 - **Detailed Content:**
-   Every section of the portfolio is meticulously crafted to provide detailed and comprehensive information. Whether it's showcasing projects, skills, or professional experiences, users can expect to find in-depth insights that highlight the depth of expertise.
+  Every section of the portfolio is meticulously crafted to provide detailed and comprehensive information. Whether it's showcasing projects, skills, or professional experiences, users can expect to find in-depth insights that highlight the depth of expertise.
 
 - **Email Js to Receive Direct Mails in Contact Section:**
-   The contact section of the portfolio is equipped with Email JS integration, allowing visitors to reach out directly by sending emails through the platform. This feature ensures a convenient and secure means of communication.
+  The contact section of the portfolio is equipped with Email JS integration, allowing visitors to reach out directly by sending emails through the platform. This feature ensures a convenient and secure means of communication.
 
 - **Used Flex & Grid Displays According to Requirement:**
-   Employing a responsive design approach, the portfolio utilizes both Flexbox and Grid displays to adapt the layout according to specific requirements. This flexibility enables the content to adapt seamlessly to various screen sizes and devices.
+  Employing a responsive design approach, the portfolio utilizes both Flexbox and Grid displays to adapt the layout according to specific requirements. This flexibility enables the content to adapt seamlessly to various screen sizes and devices.
 
 - **Fully Responsive Site:**
-   The portfolio is meticulously designed to be fully responsive across all devices, including mobiles, tablets, and desktops. This responsiveness ensures that users can access and enjoy a consistent and optimized experience, irrespective of the device they use.
+  The portfolio is meticulously designed to be fully responsive across all devices, including mobiles, tablets, and desktops. This responsiveness ensures that users can access and enjoy a consistent and optimized experience, irrespective of the device they use.
 
 With this impressive array of key features, my portfolio demonstrates my commitment to providing a cutting-edge user experience while showcasing my skills and accomplishments in a visually captivating manner.
 
@@ -71,6 +71,7 @@ With this impressive array of key features, my portfolio demonstrates my commitm
 ---
 
 ## :floppy_disk: Project Files Structure
+
 ```bash
 - .github
   |-- workflows
@@ -135,36 +136,37 @@ With this impressive array of key features, my portfolio demonstrates my commitm
 ```
 
 ## 📼 How to Run Locally
+
 To run this portfolio locally on your machine, follow these simple steps:
 
 To run this portfolio locally on your machine, follow these simple steps:
 
 1. **Clone the Repo:**
    Clone this repository to your local machine using the following command:
+
    ```bash
    git clone https://github.com/Sagargupta16/portfolio-react
 
+   ```
+
 2. **Install Node & NPM:**
-Ensure you have Node.js and npm (Node Package Manager) installed on your system. If you don't have them already, download and install them from the official Node.js website.
+   Ensure you have Node.js and npm (Node Package Manager) installed on your system. If you don't have them already, download and install them from the official Node.js website.
 
 3. **Install Dependencies:**
-Navigate to the project's root directory in your terminal or command prompt, and run the following command to install all the necessary dependencies:
-    ``` bash
-    npm install
+   Navigate to the project's root directory in your terminal or command prompt, and run the following command to install all the necessary dependencies:
+   ``` bash
+   npm install
 
 4. **Start the Development Server:**
-After installing the dependencies, start the development server with the following command:
-    ``` bash
-    npm start
+   After installing the dependencies, start the development server with the following command:
+   ``` bash
+   npm start
 
 5. **View the Portfolio:**
-Once the development server has started successfully, open your web browser and navigate to `http://localhost:3000/portfolio-react`. You should now be able to see and interact with the portfolio locally on your machine.
+   Once the development server has started successfully, open your web browser and navigate to `http://localhost:3000/portfolio-react`. You should now be able to see and interact with the portfolio locally on your machine.
 
 With these steps, you can easily run the portfolio locally, explore its features, and make any desired modifications to suit your needs. Happy coding!
-
 
 ---
 
 ## Project Images
-
-
