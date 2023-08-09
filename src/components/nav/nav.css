@@ -69,14 +69,14 @@
 
 .nav__list a:hover {
   background: url(../../assets/bg-texture.png), var(--color-bg);
-  background-size: 10px 10px;
+  background-size: 5px 5px;
   color: var(--color-primary);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .nav__list .active {
   background: url(../../assets/bg-texture.png), var(--color-bg);
-  background-size: 10px 10px;
+  background-size: 5px 5px;
   color: var(--color-primary);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
   & > svg {
@@ -87,15 +87,13 @@
 @media screen and (max-width: 600px) {
   .nav__logo {
     display: none;
+    font-size: 1.2rem;
+    margin-left: 1rem;
   }
   .nav {
     height: 4rem;
     padding: 0 1rem;
     justify-content: space-around;
-  }
-  .nav__logo {
-    font-size: 1.2rem;
-    margin-left: 1rem;
   }
   .nav__list {
     width: 100%;

@@ -9,7 +9,7 @@ const Education = () => {
       date: "2021 - 2024",
       title: "Master's in Computer Applications (MCA)",
       text: "National Institute of Technology Warangal -- Warangal , Telangana",
-      cgpa: "CGPA: 8.47 (Till Sem-3)",
+      cgpa: "CGPA: 8.43 (Till Sem-4)",
     },
     {
       id: 2,
@@ -39,7 +39,7 @@ const Education = () => {
       <h2>My Education</h2>
       <div className="container education__container">
         {EducationArray.map((item) => {
-          return <EducationItem item={item} />;
+          return <EducationItem item={item} key={item.id} />;
         })}
       </div>
     </section>

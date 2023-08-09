@@ -154,13 +154,19 @@ To run this portfolio locally on your machine, follow these simple steps:
 
 3. **Install Dependencies:**
    Navigate to the project's root directory in your terminal or command prompt, and run the following command to install all the necessary dependencies:
-   ``` bash
+
+   ```bash
    npm install
+
+   ```
 
 4. **Start the Development Server:**
    After installing the dependencies, start the development server with the following command:
-   ``` bash
+
+   ```bash
    npm start
+
+   ```
 
 5. **View the Portfolio:**
    Once the development server has started successfully, open your web browser and navigate to `http://localhost:3000/portfolio-react`. You should now be able to see and interact with the portfolio locally on your machine.

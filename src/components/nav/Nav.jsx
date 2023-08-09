@@ -1,11 +1,10 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./nav.css";
 import { RiHome3Line, RiServiceLine } from "react-icons/ri";
 import { AiOutlineUser, AiOutlineMessage } from "react-icons/ai";
 import { GoBriefcase, GoPencil } from "react-icons/go";
 import { GiSuitcase, /* GiChatBubble,*/ GiSkills } from "react-icons/gi";
-import { useEffect, useState } from "react";
 
 const Nav = () => {
   const location = useLocation();
