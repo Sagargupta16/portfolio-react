@@ -111,16 +111,6 @@
   filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.6)) brightness(1.1) contrast(1.1);
 }
 
-/* ========== Scroll Down ========== */
-/* .scroll__down {
-  position: absolute;
-  right: -2.3rem;
-  bottom: 5rem;
-  transform: rotate(90deg);
-  font-weight: 300;
-  font-size: 0.9rem;
-} */
-
 /* ========== MEDIA QUERIES ========== */
 
 @media screen and (max-width: 1024px) {

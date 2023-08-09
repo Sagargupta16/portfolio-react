@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
 
-const PortfolioItem = (props) => {
-  const [show, setShow] = useState(false);
-  const { data } = props;
-  const dropdown = () => {
-    setShow(!show);
+const PortfolioItem = ({ data }) => {
+  const [isExpanded, setExpanded] = useState(false);
+
+  const toggleExpansion = () => {
+    setExpanded(!isExpanded);
   };
+
   return (
     <article key={data.id} className="portfolio__item">
       <div className="portfolio__item-image">
@@ -15,54 +16,47 @@ const PortfolioItem = (props) => {
 
       <h3 className="portfolio__item-title">
         <div className="portfolio__item-title__text">{data.title}</div>
-        {show ? (
-          <div className="portfolio__dropdown" onClick={dropdown}>
-            <span className="portfolio__dropdown__icon">
-              <CiCircleChevUp />
-            </span>
-            <span className="portfolio__dropdown__text">Less</span>
-          </div>
-        ) : (
-          <div className="portfolio__dropdown" onClick={dropdown}>
-            <span className="portfolio__dropdown__icon">
-              <CiCircleChevDown />
-            </span>
-            <span className="portfolio__dropdown__text">More</span>
-          </div>
-        )}
+        <div className="portfolio__dropdown" onClick={toggleExpansion}>
+          <span className="portfolio__dropdown__icon">
+            {isExpanded ? <CiCircleChevUp /> : <CiCircleChevDown />}
+          </span>
+          <span className="portfolio__dropdown__text">
+            {isExpanded ? "Less" : "More"}
+          </span>
+        </div>
       </h3>
-      <div className={`portfolio__item__description ${show ? "active" : ""}`}>
+      <div
+        className={`portfolio__item__description ${isExpanded ? "active" : ""}`}
+      >
         <p>{data.description}</p>
       </div>
-      <div className={`portfolio__item__tools ${show ? "active" : ""}`}>
+      <div className={`portfolio__item__tools ${isExpanded ? "active" : ""}`}>
         <h4>Tools & Technologies</h4>
         <div className="portfolio__item__tools__list">
-          {data.tools_tech.map((tool) => {
-            return (
-              <div key={tool} className="portfolio__item__tool">
-                {tool}
-              </div>
-            );
-          })}
+          {data.tools_tech.map((tool) => (
+            <div key={tool} className="portfolio__item__tool">
+              {tool}
+            </div>
+          ))}
         </div>
       </div>
-      <div className={`portfolio__item__features ${show ? "active" : ""}`}>
+      <div
+        className={`portfolio__item__features ${isExpanded ? "active" : ""}`}
+      >
         <h4>Features</h4>
         <div className="portfolio__item__features__list">
-          {data.features.map((feature) => {
-            return (
-              <div key={feature} className="portfolio__item__feature">
-                {feature}
-              </div>
-            );
-          })}
+          {data.features.map((feature) => (
+            <div key={feature} className="portfolio__item__feature">
+              {feature}
+            </div>
+          ))}
         </div>
       </div>
       <div className="portfolio__item-cta">
         <a href={data.github} className="btn" target="_blank" rel="noreferrer">
           Github
         </a>
-        {data.live !== "#" ? (
+        {data.live !== "#" && (
           <a
             href={data.live}
             className="btn btn-primary"
@@ -71,8 +65,6 @@ const PortfolioItem = (props) => {
           >
             Live
           </a>
-        ) : (
-          <></>
         )}
       </div>
     </article>

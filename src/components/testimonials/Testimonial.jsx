@@ -1,9 +1,6 @@
 import React from "react";
 import "./testimonial.css";
 import AVTR1 from "../../assets/me.png";
-import AVTR2 from "../../assets/me.png";
-import AVTR3 from "../../assets/me.png";
-import AVTR4 from "../../assets/me.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -21,7 +18,7 @@ const data = [
   },
   {
     id: 2,
-    avatar: AVTR2,
+    avatar: AVTR1,
     name: "Mr. XYZ",
     designation: "CEO, ABC",
     review:
@@ -29,7 +26,7 @@ const data = [
   },
   {
     id: 3,
-    avatar: AVTR3,
+    avatar: AVTR1,
     name: "Mr. PQR",
     designation: "CEO, PQR",
     review:
@@ -37,7 +34,7 @@ const data = [
   },
   {
     id: 4,
-    avatar: AVTR4,
+    avatar: AVTR1,
     name: "Mr. XYZS",
     designation: "CEO, PQR",
     review:
