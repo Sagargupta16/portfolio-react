@@ -47,7 +47,7 @@ const Experience = () => {
       <h2>My Experience</h2>
       <div className="container experience__container">
         {ExperienceArray.map((item) => {
-          return <ExperienceItem item={item} />;
+          return <ExperienceItem item={item} key={item.id} />;
         })}
       </div>
     </section>

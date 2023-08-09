@@ -22,7 +22,7 @@ const About = () => {
             <article className="about__card">
               <BsCodeSlash className="about__icon" />
               <h5>Coding</h5>
-              <small>1000+ Questions</small>
+              <small>1500+ Questions</small>
             </article>
             <article className="about__card">
               <MdDeveloperMode className="about__icon" />
@@ -32,7 +32,7 @@ const About = () => {
             <article className="about__card">
               <SiCodersrank className="about__icon" />
               <h5>CP</h5>
-              <small>50+ Contests</small>
+              <small>70+ Contests</small>
             </article>
           </div>
         </div>

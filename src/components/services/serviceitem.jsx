@@ -11,7 +11,7 @@ const serviceitem = (props) => {
       <ul className="service__list">
         {list.map((item) => {
           return (
-            <li>
+            <li key={item}>
               <GiCheckMark className="service__list-icon" />
               <p>{item}</p>
             </li>

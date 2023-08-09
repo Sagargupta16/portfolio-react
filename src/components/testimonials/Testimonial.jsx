@@ -1,9 +1,9 @@
 import React from "react";
 import "./testimonial.css";
-import AVTR1 from "../../assets/avatar1.jpg";
-import AVTR2 from "../../assets/avatar2.jpg";
-import AVTR3 from "../../assets/avatar3.jpg";
-import AVTR4 from "../../assets/avatar4.jpg";
+import AVTR1 from "../../assets/me.png";
+import AVTR2 from "../../assets/me.png";
+import AVTR3 from "../../assets/me.png";
+import AVTR4 from "../../assets/me.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -59,8 +59,8 @@ const Testimonial = () => {
       >
         {data.map(({ id, avatar, name, designation, review }) => {
           return (
-            <SwiperSlide>
-              <div key={id} className="testimonial">
+            <SwiperSlide key={id}>
+              <div className="testimonial">
                 <div className="recommenders__avatar">
                   <img src={avatar} alt="Recommenders avatar" />
                 </div>

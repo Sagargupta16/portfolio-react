@@ -15,38 +15,43 @@ footer {
   cursor: default;
   color: var(--color-bg);
   font-size: 2rem;
-  font-weight: 500;
+  font-weight: 600;
   display: inline-block;
+  text-decoration: none;
+  transition: var(--transition);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
 }
 
 .footer__socials {
-  font-size: 1rem;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 2rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
 }
 
 .footer__socials a {
-  background: var(--color-bg);
-  color: var(--color-white);
-  padding: 0.5rem;
-  border-radius: 0.7rem;
-  display: flex;
-  align-items: center;
-  border: 1px solid transparent;
+  color: var(--color-bg);
+  text-decoration: none;
+  transition: var(--transition);
+  padding: 0.5rem 0.5rem 0;
+  padding-bottom: 0;
+  border-radius: 1rem;
 }
 
 .footer__socials a:hover {
-  background: transparent;
-  color: var(--color-bg);
-  border: 1px solid var(--color-bg);
+  transform: scale(1.1);
+  background-color: var(--color-bg);
+  color: var(--color-primary);
 }
 
 .footer__socials a svg {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .footer__copyright {
   color: var(--color-bg);
   padding-bottom: 0.4rem;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
 }
