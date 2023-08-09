@@ -25,42 +25,42 @@ const App = () => {
     };
   }, []);
 
+  const RouterWrapper = ({ children }) => (
+    <Router basename="/portfolio-react">
+      <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
+      {children}
+      <Footer />
+    </Router>
+  );
+
   return (
-    <>
+    <RouterWrapper>
       {screenWidth > 600 ? (
-        <Router basename="/portfolio-react">
-          <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
-          <Routes>
-            <Route exact path="/" element={<Header />}></Route>
-            <Route path="/about" element={<About />}></Route>
-            <Route path="/education" element={<Education />}></Route>
-            <Route path="/experience" element={<Experience />}></Route>
-            <Route path="/skill" element={<Skill />}></Route>
-            <Route path="/services" element={<Services />}></Route>
-            <Route path="/portfolio" element={<Portfolio />}></Route>
-            <Route path="/testimonial" element={<Testimonial />}></Route>
-            <Route path="/contact" element={<Contact />}></Route>
-          </Routes>
-          <Footer />
-        </Router>
+        <Routes>
+          <Route path="/" element={<Header />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/education" element={<Education />} />
+          <Route path="/experience" element={<Experience />} />
+          <Route path="/skill" element={<Skill />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/testimonial" element={<Testimonial />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
       ) : (
         <>
-          <Router basename="/portfolio-react">
-            <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
-            <Header />
-            <About />
-            <Education />
-            <Experience />
-            <Skill />
-            <Services />
-            <Portfolio />
-            {/* <Testimonial /> */}
-            <Contact />
-            <Footer />
-          </Router>
+          <Header />
+          <About />
+          <Education />
+          <Experience />
+          <Skill />
+          <Services />
+          <Portfolio />
+          {/* <Testimonial /> */}
+          <Contact />
         </>
       )}
-    </>
+    </RouterWrapper>
   );
 };
 

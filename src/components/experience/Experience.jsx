@@ -3,14 +3,14 @@ import "./experience.css";
 import ExperienceItem from "./experienceitem";
 
 const Experience = () => {
-  const ExperienceArray = [
+  const experienceArray = [
     {
       id: 1,
       date: "May 2023 - July 2023",
       title: "Software Developer Associate",
       position: "Internship",
       company: "Ikarus-3D",
-      location: "Mohali , Punjab",
+      location: "Mohali, Punjab",
       description: {
         1: "Automated CI/CD workflow using GitHub Actions to handle web app linting, testing, building, and deployment.",
         2: "Containerized the application using Docker and deployed it on AWS using ECR and ECS.",
@@ -41,14 +41,15 @@ const Experience = () => {
       ],
     },
   ];
+
   return (
     <section id="experience">
-      <h5>What Qualifications I have</h5>
+      <h5>What Qualifications I Have</h5>
       <h2>My Experience</h2>
       <div className="container experience__container">
-        {ExperienceArray.map((item) => {
-          return <ExperienceItem item={item} key={item.id} />;
-        })}
+        {experienceArray.map((item) => (
+          <ExperienceItem item={item} key={item.id} />
+        ))}
       </div>
     </section>
   );
