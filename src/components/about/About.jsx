@@ -7,6 +7,27 @@ import { SiCodersrank } from "react-icons/si";
 import { Link } from "react-router-dom";
 
 const About = () => {
+  const cardData = [
+    {
+      id: 1,
+      icon: <BsCodeSlash className="about__icon" />,
+      title: "Coding",
+      count: "1500+ Questions",
+    },
+    {
+      id: 2,
+      icon: <MdDeveloperMode className="about__icon" />,
+      title: "Projects",
+      count: "15+ Projects",
+    },
+    {
+      id: 3,
+      icon: <SiCodersrank className="about__icon" />,
+      title: "CP",
+      count: "70+ Contests",
+    },
+  ];
+
   return (
     <section id="about">
       <h5>Get to Know</h5>
@@ -19,44 +40,33 @@ const About = () => {
         </div>
         <div className="about__content">
           <div className="about__cards">
-            <article className="about__card">
-              <BsCodeSlash className="about__icon" />
-              <h5>Coding</h5>
-              <small>1000+ Questions</small>
-            </article>
-            <article className="about__card">
-              <MdDeveloperMode className="about__icon" />
-              <h5>Projects</h5>
-              <small>15+ Projects</small>
-            </article>
-            <article className="about__card">
-              <SiCodersrank className="about__icon" />
-              <h5>CP</h5>
-              <small>50+ Contests</small>
-            </article>
+            {cardData.map((card) => (
+              <article className="about__card" key={card.id}>
+                {card.icon}
+                <h5>{card.title}</h5>
+                <small>{card.count}</small>
+              </article>
+            ))}
           </div>
         </div>
         <div className="about__text">
           <p>
             👋 Hi, my name is Sagar Gupta, from Shivpuri, MP, India.
             <br />
-            I'm an Postgraduate 🎓 from NIT Warangal.
+            I'm a Postgraduate 🎓 from NIT Warangal.
             <br />
             I'm a Web developer & Programmer who loves to write clean and
             efficient code.
             <br />
-            Apart from web development I love Problem Solving with use of Data
-            Structures and Algorithms in Efficient Way.
+            Apart from web development, I love Problem Solving using Data
+            Structures and Algorithms in an Efficient Way.
           </p>
-          {window.screen.width > 600 ? (
-            <Link to="/contact" className="btn btn-primary">
-              Let's Talk
-            </Link>
-          ) : (
-            <a href="#contact" className="btn btn-primary">
-              Let's Talk
-            </a>
-          )}
+          <Link
+            to={window.screen.width > 600 ? "/contact" : "#contact"}
+            className="btn btn-primary"
+          >
+            Let's Talk
+          </Link>
         </div>
       </div>
     </section>

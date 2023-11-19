@@ -68,7 +68,6 @@ const skills = {
     "Artificial Intelligence",
     "Cloud Computing",
   ],
-
   "Areas of Interest": [
     "Full Stack Development",
     "Web Development",

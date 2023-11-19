@@ -45,7 +45,7 @@ const services = () => {
       <h2>Services</h2>
       <div className="container services__container">
         {ServiceArray.map((item) => {
-          return <ServiceItem item={item} />;
+          return <ServiceItem item={item} key={item.id} />;
         })}
       </div>
     </section>
