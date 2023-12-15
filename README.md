@@ -1,4 +1,4 @@
-# Contact Manager
+# Personal Portfolio
 
 #### Project deployed link -> [Portfolio-react](https://sagargupta.me/portfolio-react)
 
