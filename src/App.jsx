@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PropTypes from "prop-types";
-
 import Header from "./components/header/Header";
 import Nav from "./components/nav/Nav";
 import About from "./components/about/About";
@@ -13,6 +12,20 @@ import Portfolio from "./components/portfolio/Portfolio";
 import Testimonial from "./components/testimonials/Testimonial";
 import Contact from "./components/contact/Contact";
 import Footer from "./components/footer/Footer";
+
+const RouterWrapper = ({ children, activeNav, setActiveNav }) => (
+  <Router basename="/portfolio-react">
+    <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
+    {children}
+    <Footer />
+  </Router>
+);
+
+RouterWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+  activeNav: PropTypes.string.isRequired,
+  setActiveNav: PropTypes.func.isRequired,
+};
 
 const App = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -26,20 +39,8 @@ const App = () => {
     };
   }, []);
 
-  const RouterWrapper = ({ children }) => (
-    <Router basename="/portfolio-react">
-      <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
-      {children}
-      <Footer />
-    </Router>
-  );
-
-  RouterWrapper.propTypes = {
-    children: PropTypes.node.isRequired,
-  };
-
   return (
-    <RouterWrapper>
+    <RouterWrapper activeNav={activeNav} setActiveNav={setActiveNav}>
       {screenWidth > 600 ? (
         <Routes>
           <Route path="/" element={<Header />} />

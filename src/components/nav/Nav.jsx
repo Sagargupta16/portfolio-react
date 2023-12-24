@@ -88,10 +88,12 @@ const Nav = () => {
           : navItems.map((item) => (
               <button
                 aria-label={item.label}
-                className={activeSection === item.to.substr(1) ? "active" : ""}
+                className={
+                  activeSection === item.to.substring(1) ? "active" : ""
+                }
                 onClick={() =>
                   document
-                    .getElementById(item.to.substr(1))
+                    .getElementById(item.to.substring(1))
                     .scrollIntoView({ behavior: "smooth" })
                 }
                 key={item.to}

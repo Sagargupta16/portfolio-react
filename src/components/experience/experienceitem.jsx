@@ -11,13 +11,6 @@ const ExperienceItem = ({ item }) => {
     setShow(!show);
   };
 
-  // Function to handle keyboard events for accessibility
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      toggleDropdown();
-    }
-  };
-
   return (
     <div className="experience__item">
       <h3 className="experience__date">
@@ -25,20 +18,14 @@ const ExperienceItem = ({ item }) => {
           <BsFillCalendarEventFill />
           {item.date}
         </span>
-        <div
-          className="experience__dropdown"
-          onClick={toggleDropdown}
-          onKeyPress={handleKeyPress}
-          role="button"
-          tabIndex={0}
-        >
+        <button className="experience__dropdown" onClick={toggleDropdown}>
           <span className="experience__dropdown__icon">
             {show ? <CiCircleChevUp /> : <CiCircleChevDown />}
           </span>
           <span className="experience__dropdown__text">
             {show ? "Less" : "More"}
           </span>
-        </div>
+        </button>
       </h3>
       <h4 className="experience__title">
         {item.title},
@@ -62,16 +49,16 @@ const ExperienceItem = ({ item }) => {
       <div className={`experience__item__description ${show ? "active" : ""}`}>
         <h4>What I did?</h4>
         <ul>
-          {Object.values(item.description).map((desc, index) => (
-            <li key={`desc-${index}-${desc}`}>{desc}</li>
+          {Object.values(item.description).map((desc) => (
+            <li key={`desc-${desc}`}>{desc}</li> // Assuming each `desc` is unique
           ))}
         </ul>
       </div>
       <div className={`experience__item__skills ${show ? "active" : ""}`}>
         <h4>Skills I Learned & Used!</h4>
         <div className="experience__item__skills__list">
-          {item.skills.map((skill, index) => (
-            <span key={`skill-${index}-${skill}`}>{skill}</span>
+          {item.skills.map((skill) => (
+            <span key={`skill-${skill}`}>{skill}</span> // Assuming each `skill` is unique
           ))}
         </div>
       </div>
