@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { BsFillCalendarEventFill } from "react-icons/bs";
 
 const EducationItem = (props) => {
@@ -17,3 +18,12 @@ const EducationItem = (props) => {
 };
 
 export default EducationItem;
+
+EducationItem.propTypes = {
+  item: PropTypes.shape({
+    date: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    cgpa: PropTypes.string.isRequired,
+  }).isRequired,
+};
