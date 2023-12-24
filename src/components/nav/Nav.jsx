@@ -4,7 +4,7 @@ import "./nav.css";
 import { RiHome3Line, RiServiceLine } from "react-icons/ri";
 import { AiOutlineUser, AiOutlineMessage } from "react-icons/ai";
 import { GoBriefcase, GoPencil } from "react-icons/go";
-import { GiSuitcase, /* GiChatBubble,*/ GiSkills } from "react-icons/gi";
+import { GiSuitcase, GiSkills } from "react-icons/gi";
 
 const Nav = () => {
   const location = useLocation();
@@ -32,13 +32,12 @@ const Nav = () => {
       "skill",
       "services",
       "portfolio",
-      // "testimonial",
       "contact",
     ];
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100;
-      const currentSection = sections.filter((section) => {
+      const currentSection = sections.find((section) => {
         const sectionElement = document.getElementById(section);
         if (sectionElement) {
           const sectionTop = sectionElement.offsetTop;
@@ -47,86 +46,61 @@ const Nav = () => {
         }
         return false;
       });
-      if (currentSection.length > 0) {
-        setActiveSection(currentSection[0]);
-      }
+      setActiveSection(currentSection || "");
     };
 
-    window.onload = handleScroll;
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [screenWidth]);
+  }, []);
 
   const navItems = [
-    { to: "/", icon: <RiHome3Line />, alt: "Home" },
-    { to: "/about", icon: <AiOutlineUser />, alt: "About" },
-    { to: "/education", icon: <GoPencil />, alt: "Education" },
-    { to: "/experience", icon: <GoBriefcase />, alt: "Experience" },
-    { to: "/skill", icon: <GiSkills />, alt: "Skills" },
-    { to: "/services", icon: <RiServiceLine />, alt: "Services" },
-    { to: "/portfolio", icon: <GiSuitcase />, alt: "Portfolio" },
-    // { to: "/testimonial", icon: <GiChatBubble />, alt: "Testimonial" },
-    { to: "/contact", icon: <AiOutlineMessage />, alt: "Contact" },
-  ];
-
-  const sections = [
-    { id: "header", alt: "Home", icon: <RiHome3Line /> },
-    { id: "about", alt: "About", icon: <AiOutlineUser /> },
-    { id: "education", alt: "Education", icon: <GoPencil /> },
-    { id: "experience", alt: "Experience", icon: <GoBriefcase /> },
-    { id: "skill", alt: "Skills", icon: <GiSkills /> },
-    { id: "services", alt: "Services", icon: <RiServiceLine /> },
-    { id: "portfolio", alt: "Portfolio", icon: <GiSuitcase /> },
-    // { id: "testimonial", alt: "Testimonial", icon: <GiChatBubble /> },
-    { id: "contact", alt: "Contact", icon: <AiOutlineMessage /> },
+    { to: "/", icon: <RiHome3Line />, label: "Home" },
+    { to: "/about", icon: <AiOutlineUser />, label: "About" },
+    { to: "/education", icon: <GoPencil />, label: "Education" },
+    { to: "/experience", icon: <GoBriefcase />, label: "Experience" },
+    { to: "/skill", icon: <GiSkills />, label: "Skills" },
+    { to: "/services", icon: <RiServiceLine />, label: "Services" },
+    { to: "/portfolio", icon: <GiSuitcase />, label: "Portfolio" },
+    { to: "/contact", icon: <AiOutlineMessage />, label: "Contact" },
   ];
 
   return (
-    <>
-      <nav className="nav">
-        <div className="nav__logo">
-          <Link to="/">
-            <span className="nav__logo--text">SG</span>
-          </Link>
-        </div>
-        <div className="nav__list">
-          {screenWidth > 600 ? (
-            <>
-              {navItems.map((item) => (
-                <Link
-                  to={item.to}
-                  className={location.pathname === item.to ? "active" : ""}
-                  alt={item.alt}
-                  key={item.to}
-                >
-                  {item.icon}
-                </Link>
-              ))}
-            </>
-          ) : (
-            <>
-              {sections.map((section) => (
-                <button
-                  alt={section.alt}
-                  className={activeSection === section.id ? "active" : ""}
-                  onClick={() =>
-                    document
-                      .getElementById(section.id)
-                      .scrollIntoView({ behavior: "smooth" })
-                  }
-                  key={section.id}
-                >
-                  {section.icon}
-                </button>
-              ))}
-            </>
-          )}
-        </div>
-      </nav>
-    </>
+    <nav className="nav">
+      <div className="nav__logo">
+        <Link to="/" aria-label="Home">
+          <span className="nav__logo--text">SG</span>
+        </Link>
+      </div>
+      <div className="nav__list">
+        {screenWidth > 600
+          ? navItems.map((item) => (
+              <Link
+                to={item.to}
+                className={location.pathname === item.to ? "active" : ""}
+                aria-label={item.label}
+                key={item.to}
+              >
+                {item.icon}
+              </Link>
+            ))
+          : navItems.map((item) => (
+              <button
+                aria-label={item.label}
+                className={activeSection === item.to.substr(1) ? "active" : ""}
+                onClick={() =>
+                  document
+                    .getElementById(item.to.substr(1))
+                    .scrollIntoView({ behavior: "smooth" })
+                }
+                key={item.to}
+              >
+                {item.icon}
+              </button>
+            ))}
+      </div>
+    </nav>
   );
 };
 

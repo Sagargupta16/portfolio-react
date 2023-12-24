@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import Header from "./components/header/Header";
 import Nav from "./components/nav/Nav";
@@ -32,6 +33,10 @@ const App = () => {
       <Footer />
     </Router>
   );
+
+  RouterWrapper.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
 
   return (
     <RouterWrapper>

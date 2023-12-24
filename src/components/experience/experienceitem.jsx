@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { BsFillCalendarEventFill } from "react-icons/bs";
 import { IoLocationSharp } from "react-icons/io5";
 import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
@@ -10,6 +11,13 @@ const ExperienceItem = ({ item }) => {
     setShow(!show);
   };
 
+  // Function to handle keyboard events for accessibility
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      toggleDropdown();
+    }
+  };
+
   return (
     <div className="experience__item">
       <h3 className="experience__date">
@@ -17,7 +25,13 @@ const ExperienceItem = ({ item }) => {
           <BsFillCalendarEventFill />
           {item.date}
         </span>
-        <div className="experience__dropdown" onClick={toggleDropdown}>
+        <div
+          className="experience__dropdown"
+          onClick={toggleDropdown}
+          onKeyPress={handleKeyPress}
+          role="button"
+          tabIndex={0}
+        >
           <span className="experience__dropdown__icon">
             {show ? <CiCircleChevUp /> : <CiCircleChevDown />}
           </span>
@@ -49,7 +63,7 @@ const ExperienceItem = ({ item }) => {
         <h4>What I did?</h4>
         <ul>
           {Object.values(item.description).map((desc, index) => (
-            <li key={index}>{desc}</li>
+            <li key={`desc-${index}-${desc}`}>{desc}</li>
           ))}
         </ul>
       </div>
@@ -57,12 +71,25 @@ const ExperienceItem = ({ item }) => {
         <h4>Skills I Learned & Used!</h4>
         <div className="experience__item__skills__list">
           {item.skills.map((skill, index) => (
-            <span key={index}>{skill}</span>
+            <span key={`skill-${index}-${skill}`}>{skill}</span>
           ))}
         </div>
       </div>
     </div>
   );
+};
+
+ExperienceItem.propTypes = {
+  item: PropTypes.shape({
+    date: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    position: PropTypes.string.isRequired,
+    company: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    location_type: PropTypes.string.isRequired,
+    description: PropTypes.objectOf(PropTypes.string).isRequired,
+    skills: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
 };
 
 export default ExperienceItem;
