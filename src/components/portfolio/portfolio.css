@@ -57,6 +57,9 @@
   font-size: 1.2rem;
   cursor: pointer;
   transition: var(--transition);
+  background: transparent;
+  border: none;
+  color: var(--color-text);
 }
 
 .portfolio__dropdown:hover {

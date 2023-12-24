@@ -9,13 +9,6 @@ const PortfolioItem = ({ data }) => {
     setExpanded(!isExpanded);
   };
 
-  // Function to handle keyboard events for accessibility
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      toggleExpansion();
-    }
-  };
-
   return (
     <article className="portfolio__item">
       <div className="portfolio__item-image">
@@ -24,20 +17,14 @@ const PortfolioItem = ({ data }) => {
 
       <h3 className="portfolio__item-title">
         <div className="portfolio__item-title__text">{data.title}</div>
-        <div
-          className="portfolio__dropdown"
-          onClick={toggleExpansion}
-          onKeyPress={handleKeyPress}
-          role="button"
-          tabIndex={0}
-        >
+        <button className="portfolio__dropdown" onClick={toggleExpansion}>
           <span className="portfolio__dropdown__icon">
             {isExpanded ? <CiCircleChevUp /> : <CiCircleChevDown />}
           </span>
           <span className="portfolio__dropdown__text">
             {isExpanded ? "Less" : "More"}
           </span>
-        </div>
+        </button>
       </h3>
       <div
         className={`portfolio__item__description ${isExpanded ? "active" : ""}`}
@@ -47,8 +34,8 @@ const PortfolioItem = ({ data }) => {
       <div className={`portfolio__item__tools ${isExpanded ? "active" : ""}`}>
         <h4>Tools & Technologies</h4>
         <div className="portfolio__item__tools__list">
-          {data.tools_tech.map((tool, index) => (
-            <div key={`tool-${index}`} className="portfolio__item__tool">
+          {data.tools_tech.map((tool) => (
+            <div key={tool} className="portfolio__item__tool">
               {tool}
             </div>
           ))}
@@ -59,8 +46,8 @@ const PortfolioItem = ({ data }) => {
       >
         <h4>Features</h4>
         <div className="portfolio__item__features__list">
-          {data.features.map((feature, index) => (
-            <div key={`feature-${index}`} className="portfolio__item__feature">
+          {data.features.map((feature) => (
+            <div key={feature} className="portfolio__item__feature">
               {feature}
             </div>
           ))}
