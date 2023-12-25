@@ -81,7 +81,7 @@
 
 .header__socials__left::after,
 .header__socials__right::after {
-  content: "";
+  content: '';
   width: 1px;
   height: 2rem;
   background-color: var(--color-primary);

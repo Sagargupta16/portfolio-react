@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { BsFillCalendarEventFill } from "react-icons/bs";
+import React from 'react'
+import PropTypes from 'prop-types'
+import { BsFillCalendarEventFill } from 'react-icons/bs'
 
-const EducationItem = (props) => {
-  const { item } = props;
+const EducationItem = props => {
+  const { item } = props
   return (
     <div className="education__item">
       <h3 className="education__date">
@@ -14,16 +14,16 @@ const EducationItem = (props) => {
       <p className="education__text">{item.text}</p>
       <p className="education__text">{item.cgpa}</p>
     </div>
-  );
-};
+  )
+}
 
-export default EducationItem;
+export default EducationItem
 
 EducationItem.propTypes = {
   item: PropTypes.shape({
     date: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
-    cgpa: PropTypes.string.isRequired,
-  }).isRequired,
-};
+    cgpa: PropTypes.string.isRequired
+  }).isRequired
+}

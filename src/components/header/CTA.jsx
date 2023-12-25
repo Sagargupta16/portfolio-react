@@ -1,6 +1,6 @@
-import React from "react";
-import CV from "../../assets/Resume.pdf";
-import { Link } from "react-router-dom";
+import React from 'react'
+import CV from '../../assets/Resume.pdf'
+import { Link } from 'react-router-dom'
 
 function CTA() {
   return (
@@ -18,7 +18,7 @@ function CTA() {
         </a>
       )}
     </div>
-  );
+  )
 }
 
-export default CTA;
+export default CTA
