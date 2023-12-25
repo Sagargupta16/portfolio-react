@@ -1,19 +1,19 @@
-import React from "react";
-import "./header.css";
-import CtaComponent from "./CTA"; // Renamed the import to CtaComponent
-import ME from "../../assets/me.png";
-import HeaderSocials from "./HeaderSocials";
-import TwComponent from "./TW"; // Renamed the import to TwComponent
+import React from 'react'
+import './header.css'
+import CtaComponent from './CTA' // Renamed the import to CtaComponent
+import ME from '../../assets/me.png'
+import HeaderSocials from './HeaderSocials'
+import TwComponent from './TW' // Renamed the import to TwComponent
 
 const Header = () => {
   const words = [
-    "Fullstack Developer",
-    "Competitive Programmer",
-    "Problem Solver",
-    "Data Structures and Algorithms Enthusiast",
-    "Open Source Contributor",
-    "Tech Enthusiast",
-  ];
+    'Fullstack Developer',
+    'Competitive Programmer',
+    'Problem Solver',
+    'Data Structures and Algorithms Enthusiast',
+    'Open Source Contributor',
+    'Tech Enthusiast'
+  ]
 
   return (
     <section className="header" id="header">
@@ -30,7 +30,7 @@ const Header = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { BsFillCalendarEventFill } from "react-icons/bs";
-import { IoLocationSharp } from "react-icons/io5";
-import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { BsFillCalendarEventFill } from 'react-icons/bs'
+import { IoLocationSharp } from 'react-icons/io5'
+import { CiCircleChevDown, CiCircleChevUp } from 'react-icons/ci'
 
 const ExperienceItem = ({ item }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
   const toggleDropdown = () => {
-    setShow(!show);
-  };
+    setShow(!show)
+  }
 
   return (
     <div className="experience__item">
@@ -23,7 +23,7 @@ const ExperienceItem = ({ item }) => {
             {show ? <CiCircleChevUp /> : <CiCircleChevDown />}
           </span>
           <span className="experience__dropdown__text">
-            {show ? "Less" : "More"}
+            {show ? 'Less' : 'More'}
           </span>
         </button>
       </h3>
@@ -34,9 +34,9 @@ const ExperienceItem = ({ item }) => {
       <h3 className="experience__company">
         <span>{item.company}</span>
         <span className="experience__location">
-          {item.location_type === "Remote" ? (
+          {item.location_type === 'Remote' ? (
             <span className="experience__location__remote">
-              {" "}
+              {' '}
               ({item.location})
             </span>
           ) : (
@@ -46,25 +46,25 @@ const ExperienceItem = ({ item }) => {
           )}
         </span>
       </h3>
-      <div className={`experience__item__description ${show ? "active" : ""}`}>
+      <div className={`experience__item__description ${show ? 'active' : ''}`}>
         <h4>What I did?</h4>
         <ul>
-          {Object.values(item.description).map((desc) => (
+          {Object.values(item.description).map(desc => (
             <li key={`desc-${desc}`}>{desc}</li> // Assuming each `desc` is unique
           ))}
         </ul>
       </div>
-      <div className={`experience__item__skills ${show ? "active" : ""}`}>
+      <div className={`experience__item__skills ${show ? 'active' : ''}`}>
         <h4>Skills I Learned & Used!</h4>
         <div className="experience__item__skills__list">
-          {item.skills.map((skill) => (
+          {item.skills.map(skill => (
             <span key={`skill-${skill}`}>{skill}</span> // Assuming each `skill` is unique
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 ExperienceItem.propTypes = {
   item: PropTypes.shape({
@@ -75,8 +75,8 @@ ExperienceItem.propTypes = {
     location: PropTypes.string.isRequired,
     location_type: PropTypes.string.isRequired,
     description: PropTypes.objectOf(PropTypes.string).isRequired,
-    skills: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
-};
+    skills: PropTypes.arrayOf(PropTypes.string).isRequired
+  }).isRequired
+}
 
-export default ExperienceItem;
+export default ExperienceItem

@@ -1,32 +1,32 @@
-import React from "react";
-import "./about.css";
-import ME from "../../assets/me-about.jpg";
-import { BsCodeSlash } from "react-icons/bs";
-import { MdDeveloperMode } from "react-icons/md";
-import { SiCodersrank } from "react-icons/si";
-import { Link } from "react-router-dom";
+import React from 'react'
+import './about.css'
+import ME from '../../assets/me-about.jpg'
+import { BsCodeSlash } from 'react-icons/bs'
+import { MdDeveloperMode } from 'react-icons/md'
+import { SiCodersrank } from 'react-icons/si'
+import { Link } from 'react-router-dom'
 
 const About = () => {
   const cardData = [
     {
       id: 1,
       icon: <BsCodeSlash className="about__icon" />,
-      title: "Coding",
-      count: "1500+ Questions",
+      title: 'Coding',
+      count: '1500+ Questions'
     },
     {
       id: 2,
       icon: <MdDeveloperMode className="about__icon" />,
-      title: "Projects",
-      count: "15+ Projects",
+      title: 'Projects',
+      count: '15+ Projects'
     },
     {
       id: 3,
       icon: <SiCodersrank className="about__icon" />,
-      title: "CP",
-      count: "70+ Contests",
-    },
-  ];
+      title: 'CP',
+      count: '70+ Contests'
+    }
+  ]
 
   return (
     <section id="about">
@@ -40,7 +40,7 @@ const About = () => {
         </div>
         <div className="about__content">
           <div className="about__cards">
-            {cardData.map((card) => (
+            {cardData.map(card => (
               <article className="about__card" key={card.id}>
                 {card.icon}
                 <h5>{card.title}</h5>
@@ -62,7 +62,7 @@ const About = () => {
             Structures and Algorithms in an Efficient Way.
           </p>
           <Link
-            to={window.screen.width > 600 ? "/contact" : "#contact"}
+            to={window.screen.width > 600 ? '/contact' : '#contact'}
             className="btn btn-primary"
           >
             Let's Talk
@@ -70,7 +70,7 @@ const About = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default About;
+export default About

@@ -1,7 +1,7 @@
-import React from "react";
-import { Typewriter } from "react-simple-typewriter";
-import "react-simple-typewriter/dist/index";
-import PropTypes from "prop-types"; // Import PropTypes
+import React from 'react'
+import { Typewriter } from 'react-simple-typewriter'
+import 'react-simple-typewriter/dist/index'
+import PropTypes from 'prop-types' // Import PropTypes
 
 const TW = ({ words }) => {
   // Destructure words from props
@@ -15,11 +15,11 @@ const TW = ({ words }) => {
       deleteSpeed={50}
       delaySpeed={1000}
     />
-  );
-};
+  )
+}
 
 TW.propTypes = {
-  words: PropTypes.arrayOf(PropTypes.string).isRequired, // Define PropTypes for words
-};
+  words: PropTypes.arrayOf(PropTypes.string).isRequired // Define PropTypes for words
+}
 
-export default TW;
+export default TW

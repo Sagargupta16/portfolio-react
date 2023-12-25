@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import PropTypes from "prop-types";
-import Header from "./components/header/Header";
-import Nav from "./components/nav/Nav";
-import About from "./components/about/About";
-import Education from "./components/education/Education";
-import Experience from "./components/experience/Experience";
-import Skill from "./components/skill/Skill";
-import Services from "./components/services/Services";
-import Portfolio from "./components/portfolio/Portfolio";
-import Testimonial from "./components/testimonials/Testimonial";
-import Contact from "./components/contact/Contact";
-import Footer from "./components/footer/Footer";
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import Header from './components/header/Header'
+import Nav from './components/nav/Nav'
+import About from './components/about/About'
+import Education from './components/education/Education'
+import Experience from './components/experience/Experience'
+import Skill from './components/skill/Skill'
+import Services from './components/services/Services'
+import Portfolio from './components/portfolio/Portfolio'
+import Testimonial from './components/testimonials/Testimonial'
+import Contact from './components/contact/Contact'
+import Footer from './components/footer/Footer'
 
 const RouterWrapper = ({ children, activeNav, setActiveNav }) => (
   <Router basename="/portfolio-react">
@@ -19,25 +19,25 @@ const RouterWrapper = ({ children, activeNav, setActiveNav }) => (
     {children}
     <Footer />
   </Router>
-);
+)
 
 RouterWrapper.propTypes = {
   children: PropTypes.node.isRequired,
   activeNav: PropTypes.string.isRequired,
-  setActiveNav: PropTypes.func.isRequired,
-};
+  setActiveNav: PropTypes.func.isRequired
+}
 
 const App = () => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const [activeNav, setActiveNav] = useState("#");
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+  const [activeNav, setActiveNav] = useState('#')
 
   useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
+    const handleResize = () => setScreenWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   return (
     <RouterWrapper activeNav={activeNav} setActiveNav={setActiveNav}>
@@ -67,7 +67,7 @@ const App = () => {
         </>
       )}
     </RouterWrapper>
-  );
-};
+  )
+}
 
-export default App;
+export default App

@@ -106,6 +106,37 @@ textarea {
   transform: translateY(-0.2rem);
 }
 
+.feedback-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
+.error {
+  color: #ff0000;
+  background: #ff00001a;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ff0000;
+  margin-top: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+.success {
+  color: #00ff00;
+  background: #00ff001a;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #00ff00;
+  margin-top: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
 @media screen and (max-width: 1024px) {
   .container.contact__container {
     grid-template-columns: 1fr;

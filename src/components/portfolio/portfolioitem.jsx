@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { CiCircleChevDown, CiCircleChevUp } from 'react-icons/ci'
 
 const PortfolioItem = ({ data }) => {
-  const [isExpanded, setExpanded] = useState(false);
+  const [isExpanded, setExpanded] = useState(false)
 
   const toggleExpansion = () => {
-    setExpanded(!isExpanded);
-  };
+    setExpanded(!isExpanded)
+  }
 
   return (
     <article className="portfolio__item">
@@ -22,19 +22,19 @@ const PortfolioItem = ({ data }) => {
             {isExpanded ? <CiCircleChevUp /> : <CiCircleChevDown />}
           </span>
           <span className="portfolio__dropdown__text">
-            {isExpanded ? "Less" : "More"}
+            {isExpanded ? 'Less' : 'More'}
           </span>
         </button>
       </h3>
       <div
-        className={`portfolio__item__description ${isExpanded ? "active" : ""}`}
+        className={`portfolio__item__description ${isExpanded ? 'active' : ''}`}
       >
         <p>{data.description}</p>
       </div>
-      <div className={`portfolio__item__tools ${isExpanded ? "active" : ""}`}>
+      <div className={`portfolio__item__tools ${isExpanded ? 'active' : ''}`}>
         <h4>Tools & Technologies</h4>
         <div className="portfolio__item__tools__list">
-          {data.tools_tech.map((tool) => (
+          {data.tools_tech.map(tool => (
             <div key={tool} className="portfolio__item__tool">
               {tool}
             </div>
@@ -42,11 +42,11 @@ const PortfolioItem = ({ data }) => {
         </div>
       </div>
       <div
-        className={`portfolio__item__features ${isExpanded ? "active" : ""}`}
+        className={`portfolio__item__features ${isExpanded ? 'active' : ''}`}
       >
         <h4>Features</h4>
         <div className="portfolio__item__features__list">
-          {data.features.map((feature) => (
+          {data.features.map(feature => (
             <div key={feature} className="portfolio__item__feature">
               {feature}
             </div>
@@ -57,7 +57,7 @@ const PortfolioItem = ({ data }) => {
         <a href={data.github} className="btn" target="_blank" rel="noreferrer">
           Github
         </a>
-        {data.live !== "#" && (
+        {data.live !== '#' && (
           <a
             href={data.live}
             className="btn btn-primary"
@@ -69,8 +69,8 @@ const PortfolioItem = ({ data }) => {
         )}
       </div>
     </article>
-  );
-};
+  )
+}
 
 PortfolioItem.propTypes = {
   data: PropTypes.shape({
@@ -81,8 +81,8 @@ PortfolioItem.propTypes = {
     tools_tech: PropTypes.arrayOf(PropTypes.string).isRequired,
     features: PropTypes.arrayOf(PropTypes.string).isRequired,
     github: PropTypes.string.isRequired,
-    live: PropTypes.string,
-  }).isRequired,
-};
+    live: PropTypes.string
+  }).isRequired
+}
 
-export default PortfolioItem;
+export default PortfolioItem
