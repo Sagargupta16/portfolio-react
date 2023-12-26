@@ -6,7 +6,7 @@
 
 ## :pencil: About The Project
 
-personal portfolio - A dynamic and interactive React application showcasing my skills, projects, and professional journey. This platform serves as a comprehensive hub of information, providing insights into my background, achievements, and expertise.
+Personal Portfolio - A dynamic and interactive React application showcasing my skills, projects, and professional journey. This platform serves as a comprehensive hub of information, providing insights into my background, achievements, and expertise.
 
 ---
 
