@@ -1,6 +1,6 @@
 # Personal Portfolio
 
-#### Project deployed link -> [Portfolio-react](https://sagargupta.me/portfolio-react)
+#### Project deployed link -> [Portfolio-react](https://sagargupta.life/portfolio-react)
 
 ---
 
