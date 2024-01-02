@@ -10,7 +10,7 @@ import {
   SiTwitter
 } from 'react-icons/si'
 
-const socials_profile = [
+const socialProfiles = [
   {
     id: 1,
     name: 'LinkedIn',
@@ -37,7 +37,7 @@ const socials_profile = [
   }
 ]
 
-const coding_profile = [
+const codingProfiles = [
   {
     id: 1,
     name: 'Leetcode',
@@ -64,34 +64,28 @@ const coding_profile = [
   }
 ]
 
-function HeaderSocials() {
+const HeaderSocials = () => {
+  const renderSocialLinks = profiles => {
+    return profiles.map(profile => (
+      <a
+        key={profile.id}
+        href={profile.link}
+        target="_blank"
+        rel="noreferrer"
+        alt={profile.name}
+      >
+        {profile.icon}
+      </a>
+    ))
+  }
+
   return (
     <div className="header__socials">
       <div className="header__socials__left">
-        {socials_profile.map(social => (
-          <a
-            key={social.id}
-            href={social.link}
-            target="_blank"
-            rel="noreferrer"
-            alt={social.name}
-          >
-            {social.icon}
-          </a>
-        ))}
+        {renderSocialLinks(socialProfiles)}
       </div>
       <div className="header__socials__right">
-        {coding_profile.map(social => (
-          <a
-            key={social.id}
-            href={social.link}
-            target="_blank"
-            rel="noreferrer"
-            alt={social.name}
-          >
-            {social.icon}
-          </a>
-        ))}
+        {renderSocialLinks(codingProfiles)}
       </div>
     </div>
   )

@@ -50,7 +50,7 @@ const ExperienceItem = ({ item }) => {
         <h4>What I did?</h4>
         <ul>
           {Object.values(item.description).map(desc => (
-            <li key={`desc-${desc}`}>{desc}</li> // Assuming each `desc` is unique
+            <li key={`desc-${desc}`}>{desc}</li>
           ))}
         </ul>
       </div>
@@ -58,7 +58,7 @@ const ExperienceItem = ({ item }) => {
         <h4>Skills I Learned & Used!</h4>
         <div className="experience__item__skills__list">
           {item.skills.map(skill => (
-            <span key={`skill-${skill}`}>{skill}</span> // Assuming each `skill` is unique
+            <span key={`skill-${skill}`}>{skill}</span>
           ))}
         </div>
       </div>

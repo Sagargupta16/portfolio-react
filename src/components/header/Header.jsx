@@ -1,12 +1,12 @@
 import React from 'react'
 import './header.css'
-import CtaComponent from './CTA' // Renamed the import to CtaComponent
+import CtaComponent from './CTA'
 import ME from '../../assets/me.png'
 import HeaderSocials from './HeaderSocials'
-import TwComponent from './TW' // Renamed the import to TwComponent
+import TwComponent from './TW'
 
 const Header = () => {
-  const words = [
+  const roles = [
     'Fullstack Developer',
     'Competitive Programmer',
     'Problem Solver',
@@ -21,7 +21,7 @@ const Header = () => {
         <h5>Hey Myself</h5>
         <h1>Sagar Gupta</h1>
         <h5 className="text-light">
-          I'm a <TwComponent words={words} />
+          I'm a <TwComponent roles={roles} />
         </h5>
         <CtaComponent />
         <HeaderSocials />

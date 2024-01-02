@@ -1,14 +1,28 @@
+/* General Styles */
+:root {
+  --color-primary: #007bff;
+  --color-white: #ffffff;
+  --transition: 0.3s ease-in-out;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styles */
 .header {
   height: 89vh;
   overflow: hidden;
 }
+
 .header__container {
   text-align: center;
   position: relative;
   height: 100%;
 }
 
-/* ========== CTA ========== */
+/* CTA Styles */
 .cta {
   margin-top: 2.5rem;
   display: flex;
@@ -16,7 +30,7 @@
   justify-content: center;
 }
 
-/* ========== Socials ========== */
+/* Socials Styles */
 .header__socials__left,
 .header__socials__right {
   display: flex;
@@ -40,9 +54,9 @@
 .header__socials__right a {
   font-size: 1.2rem;
   color: var(--color-primary);
-  transition: var(--transition);
   position: relative;
   overflow: visible;
+  transition: transform var(--transition);
 }
 
 .header__socials__left a[alt]:hover,
@@ -59,7 +73,7 @@
   color: var(--color-white);
   font-weight: bold;
   transform: translateX(-50%);
-  transition: var(--transition);
+  transition: transform var(--transition);
   overflow: visible;
 }
 
@@ -87,7 +101,7 @@
   background-color: var(--color-primary);
 }
 
-/* ========== Me ========== */
+/* Me Styles */
 .me {
   background:
     linear-gradient(var(--color-primary), transparent),
@@ -111,8 +125,7 @@
   filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.6)) brightness(1.1) contrast(1.1);
 }
 
-/* ========== MEDIA QUERIES ========== */
-
+/* Media Queries */
 @media screen and (max-width: 1024px) {
   .me {
     width: 20rem;
@@ -133,6 +146,7 @@
   }
 }
 
+/* Cursor Animation */
 .cursor {
   animation: blink 1s linear infinite forwards;
 }
