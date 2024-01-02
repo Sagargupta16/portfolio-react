@@ -18,13 +18,13 @@ const About = () => {
       id: 2,
       icon: <MdDeveloperMode className="about__icon" />,
       title: 'Projects',
-      count: '15+ Projects'
+      count: '20+ Projects'
     },
     {
       id: 3,
       icon: <SiCodersrank className="about__icon" />,
       title: 'CP',
-      count: '70+ Contests'
+      count: '100+ Contests'
     }
   ]
 
@@ -61,12 +61,15 @@ const About = () => {
             Apart from web development, I love Problem Solving using Data
             Structures and Algorithms in an Efficient Way.
           </p>
-          <Link
-            to={window.screen.width > 600 ? '/contact' : '#contact'}
-            className="btn btn-primary"
-          >
-            Let's Talk
-          </Link>
+          {window.screen.width > 600 ? (
+            <Link to="/contact" className="btn btn-primary">
+              Let's Talk
+            </Link>
+          ) : (
+            <a href="#contact" className="btn btn-primary">
+              Let's Talk
+            </a>
+          )}
         </div>
       </div>
     </section>

@@ -1,13 +1,12 @@
 import React from 'react'
 import { Typewriter } from 'react-simple-typewriter'
 import 'react-simple-typewriter/dist/index'
-import PropTypes from 'prop-types' // Import PropTypes
+import PropTypes from 'prop-types'
 
-const TW = ({ words }) => {
-  // Destructure words from props
+const TW = ({ roles }) => {
   return (
     <Typewriter
-      words={words}
+      words={roles}
       loop
       cursor
       cursorStyle="_"
@@ -19,7 +18,7 @@ const TW = ({ words }) => {
 }
 
 TW.propTypes = {
-  words: PropTypes.arrayOf(PropTypes.string).isRequired // Define PropTypes for words
+  roles: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default TW

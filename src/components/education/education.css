@@ -5,18 +5,18 @@
   align-items: flex-start;
   gap: 1rem;
   width: 100%;
-  height: 100%;
   padding: 2rem 0;
 }
+
 .education__item {
   background: var(--color-bg-variant);
   padding: 1rem 0 1rem 2rem;
   border: 1px solid transparent;
   width: 100%;
-  height: 100%;
   transition: var(--transition);
   border-radius: 20px;
 }
+
 .education__item:hover {
   background: transparent;
   border: 1px solid var(--color-primary);

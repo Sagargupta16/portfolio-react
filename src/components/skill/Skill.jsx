@@ -4,77 +4,85 @@ import { BsPatchCheckFill } from 'react-icons/bs'
 
 const skills = {
   'Programming Languages': [
-    'C++',
-    'Python',
     'C',
-    'Java',
-    'R',
-    'JavaScript',
-    'SQL',
+    'C++',
+    'CSS',
     'HTML',
-    'CSS'
+    'Java',
+    'JavaScript',
+    'Python',
+    'R',
+    'SQL'
   ],
   'Frameworks and Libraries': [
-    'React JS',
-    'Node JS',
-    'Express JS',
-    'Mongo DB',
     'Bootstrap',
-    'Material UI',
+    'Express JS',
     'Fast-API',
-    'Rest-API',
-    'Pandas',
+    'Material UI',
+    'Mongo DB',
+    'Node JS',
     'NumPy',
-    'Matplotlib'
+    'Pandas',
+    'React JS',
+    'Rest-API'
   ],
   'Cloud and Databases': [
     'AWS',
     'AWS EC2',
+    'AWS ECS',
     'AWS ECR',
     'AWS RDS',
     'MongoDB',
     'MySQL'
   ],
   'Tools, Editors, and IDEs': [
-    'Git',
-    'VS Code',
-    'Eclipse',
-    'Jupyter Notebook',
     'Android Studio',
-    'Docker',
     'Ansible',
-    'SonarQube',
+    'Docker',
+    'Eclipse',
+    'Git',
     'Github Actions',
-    'Unity Engine'
+    'Jupyter Notebook',
+    'SonarQube',
+    'Unity Engine',
+    'VS Code'
   ],
-  'Operating Systems': ['Windows', 'Linux', 'Android'],
-  'Soft Skills': [
-    'Teamwork',
-    'Leadership',
-    'Communication',
-    'Time Management',
-    'Problem Solving',
-    'Critical Thinking'
-  ],
+  'Operating Systems': ['Android', 'Linux', 'Windows'],
   Coursework: [
-    'Data Structures',
-    'Object-Oriented Programming',
-    'Web Development',
-    'Game Development',
-    'Database Management Systems',
-    'Operating Systems',
-    'Computer Networks',
-    'Software Engineering',
+    'Advance Data Structures',
+    'Algorithm Design and Analysis',
     'Artificial Intelligence',
-    'Cloud Computing'
+    'Cloud Computing',
+    'Computer Networks',
+    'Data Structures',
+    'Database Management Systems',
+    'Deep Learning',
+    'Game Development',
+    'Machine Learning',
+    'Object-Oriented Programming',
+    'Operating Systems',
+    'Software Engineering',
+    'Software Testing',
+    'Soft Computing',
+    'Web Development'
+  ],
+  'Soft Skills': [
+    'Adaptability',
+    'Communication',
+    'Creativity',
+    'Critical Thinking',
+    'Leadership',
+    'Problem Solving',
+    'Teamwork',
+    'Time Management'
   ],
   'Areas of Interest': [
-    'Full Stack Development',
-    'Web Development',
-    'Game Development',
     'Cloud Computing',
     'Data Science',
-    'DevOps'
+    'DevOps',
+    'Full Stack Development',
+    'Game Development',
+    'Web Development'
   ]
 }
 
@@ -88,7 +96,7 @@ function Skill() {
           <div className="skill__card" key={skillCategory}>
             <h3 className="skill__title">{skillCategory}</h3>
             <div className="skill__list">
-              {skills[skillCategory].map(skillItem => (
+              {skills[skillCategory].sort().map(skillItem => (
                 <div key={skillItem} className="skill__item">
                   <BsPatchCheckFill className="skill__icon" />
                   {skillItem}
