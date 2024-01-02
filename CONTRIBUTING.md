@@ -9,19 +9,23 @@ Please note that this project adheres to the [Contributor Covenant Code of Condu
 ## How to Contribute
 
 1. **Fork the repository:**
+
    - Fork the repository to your GitHub account.
 
 2. **Clone your fork:**
+
    ```bash
    git clone https://github.com/Sagargupta16/portfolio-react.git
    ```
 
 3. **Create a new branch:**
+
    ```bash
    git checkout -b feature/your-feature
    ```
 
 4. **Make your changes and commit:**
+
    ```bash
    git add .
    git commit -m "Add your commit message here"
@@ -31,7 +35,6 @@ Please note that this project adheres to the [Contributor Covenant Code of Condu
    ```bash
    git push origin feature/your-feature
    ```
-   
 6. **Open a pull request:**
    Open a pull request on the main repository explaining your changes.
    Reference any relevant issues.

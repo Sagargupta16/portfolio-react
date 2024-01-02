@@ -6,14 +6,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "format": "prettier . --write",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.0.0",
     "emailjs-com": "^3.2.0",
@@ -23,13 +22,15 @@
     "react-router-dom": "^6.14.2",
     "react-scripts": "^5.0.1",
     "react-simple-typewriter": "^5.0.0",
-    "swiper": "^10.0.4",
+    "swiper": "^10.3.1",
     "typewriter-effect": "^2.19.0",
     "web-vitals": "^3.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/jest-dom": "^6.1.6",
     "gh-pages": "^6.1.1",
+    "nyc": "^15.1.0",
     "prettier": "3.0.0"
   },
   "eslintConfig": {
@@ -48,6 +49,21 @@
       ">0.2%",
       "not dead",
       "not op_mini all"
+    ]
+  },
+  "nyc": {
+    "report-dir": "coverage",
+    "all": true,
+    "extension": [
+      ".js",
+      ".jsx"
+    ],
+    "include": [
+      "src/**/*.{js,jsx}"
+    ],
+    "exclude": [
+      "**/*.test.{js,jsx}",
+      "src/serviceWorker.js"
     ]
   }
 }

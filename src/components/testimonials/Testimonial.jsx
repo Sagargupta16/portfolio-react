@@ -2,10 +2,10 @@ import React from 'react'
 import './testimonial.css'
 import AVTR1 from '../../assets/me.png'
 
-import { Swiper, SwiperSlide } from 'swiper/react'
+// import { Swiper, SwiperSlide } from 'swiper/react'
 
-import 'swiper/css'
-import 'swiper/css/pagination'
+// import 'swiper/css'
+// import 'swiper/css/pagination'
 
 const data = [
   {
@@ -44,27 +44,27 @@ const Testimonial = () => {
       <h5>Recommendation from friends</h5>
       <h2>Testimonials</h2>
 
-      <Swiper
+      {/* <Swiper
         className="container testimonials__container"
         pagination={{
           clickable: true
         }}
-      >
-        {data.map(({ id, avatar, name, designation, review }) => {
-          return (
-            <SwiperSlide key={id}>
-              <div className="testimonial">
-                <div className="recommenders__avatar">
-                  <img src={avatar} alt="Recommenders avatar" />
-                </div>
-                <h5 className="recommenders__name">{name}</h5>
-                <p className="recommenders__designation">{designation}</p>
-                <small className="recommenders__review">{review}</small>
-              </div>
-            </SwiperSlide>
-          )
-        })}
-      </Swiper>
+      > */}
+      {data.map(({ id, avatar, name, designation, review }) => {
+        return (
+          // <SwiperSlide key={id}>
+          <div className="testimonial">
+            <div className="recommenders__avatar">
+              <img src={avatar} alt="Recommenders avatar" />
+            </div>
+            <h5 className="recommenders__name">{name}</h5>
+            <p className="recommenders__designation">{designation}</p>
+            <small className="recommenders__review">{review}</small>
+          </div>
+          // </SwiperSlide>
+        )
+      })}
+      {/* </Swiper> */}
     </section>
   )
 }
