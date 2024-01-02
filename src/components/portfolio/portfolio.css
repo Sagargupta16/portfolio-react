@@ -38,6 +38,8 @@
 .portfolio__item-image img {
   object-fit: fill;
   border-radius: 1.5rem;
+  height: inherit;
+  width: 100%;
 }
 
 .portfolio__item-title {
@@ -47,6 +49,13 @@
   padding: 0 0.5rem;
   width: 100%;
   align-items: flex-end;
+}
+
+.portfolio__item-title div {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .portfolio__dropdown {

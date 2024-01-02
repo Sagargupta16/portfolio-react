@@ -6,22 +6,26 @@ const socialLinks = [
   {
     id: 1,
     icon: <FaInstagram />,
-    link: 'https://www.instagram.com/sagar_sethh/'
+    link: 'https://www.instagram.com/sagar_sethh/',
+    title: 'Instagram'
   },
   {
     id: 2,
     icon: <FaTwitter />,
-    link: 'https://twitter.com/SagarGupta1610'
+    link: 'https://twitter.com/SagarGupta1610',
+    title: 'Twitter'
   },
   {
     id: 3,
     icon: <FaLinkedin />,
-    link: 'https://www.linkedin.com/in/sagar-gupta-16-10/'
+    link: 'https://www.linkedin.com/in/sagar-gupta-16-10/',
+    title: 'LinkedIn'
   },
   {
     id: 4,
     icon: <FaGithub />,
-    link: 'https://github.com/Sagargupta16'
+    link: 'https://github.com/Sagargupta16',
+    title: 'GitHub'
   }
 ]
 
@@ -29,22 +33,22 @@ const Footer = () => {
   return (
     <footer id="footer">
       <div className="footer__logo">SG</div>
-      <div className="footer__socials">
+      <nav className="footer__socials">
         {socialLinks.map(socialLink => (
           <a
             key={socialLink.id}
             href={socialLink.link}
             target="_blank"
             rel="noreferrer"
+            title={socialLink.title}
           >
             {socialLink.icon}
           </a>
         ))}
-      </div>
-
-      <div className="footer__copyright">
+      </nav>
+      <address className="footer__copyright">
         <small>© Sagar Gupta. All rights reserved.</small>
-      </div>
+      </address>
     </footer>
   )
 }

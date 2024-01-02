@@ -3,6 +3,7 @@ import './portfolio.css'
 import IMG1 from '../../assets/projects_images/project-1.png'
 import IMG2 from '../../assets/projects_images/project-2.png'
 import IMG3 from '../../assets/projects_images/project-3.png'
+import IMG4 from '../../assets/projects_images/project-4.png'
 import IMG5 from '../../assets/projects_images/project-5.png'
 import IMG6 from '../../assets/projects_images/project-6.png'
 import IMG7 from '../../assets/projects_images/project-7.png'
@@ -17,9 +18,35 @@ import PortFolioItem from './portfolioitem'
 
 const data = [
   {
+    id: 4,
+    image: IMG4,
+    title: 'Leetcode Rating Predictor',
+    description:
+      'This is a Leetcode Rating Predictor which is made using Deep Learning. It is used to predict the rating of a user on Leetcode.',
+    tools_tech: [
+      'React',
+      'FastAPI',
+      'Numpy',
+      'Pandas',
+      'Tensorflow',
+      'GraphQL'
+    ],
+    features: [
+      'Deep Learning Model',
+      'Extensive Data Analysis',
+      'Interactive Web Interface',
+      'Automated Data Fetching',
+      'Data Preprocessing',
+      'Backend Server',
+      'Scalable Architecture'
+    ],
+    github: 'https://github.com/Sagargupta16/LeetCode_Rating_Predictor',
+    live: 'https://leetcode-rating-predictor.onrender.com/'
+  },
+  {
     id: 1,
     image: IMG1,
-    title: 'Portfolio-React',
+    title: 'Portfolio React',
     description:
       'This is my portfolio website which is made using ReactJS. It shows my skills, projects, and other details.',
     tools_tech: ['React', 'React-Routers', 'React-Icons', 'CSS', 'JavaScript'],
@@ -27,16 +54,16 @@ const data = [
       'Responsive',
       'Single Page Application For Mobile View',
       'Multi Page Application For Desktop View',
-      ' Awesome UI Pages',
+      'Awesome UI Pages',
       'Smooth Scrolling'
     ],
     github: 'https://github.com/Sagargupta16/portfolio-react',
-    live: 'https://sagargupta.me/portfolio-react/'
+    live: 'https://sagargupta.life/portfolio-react/'
   },
   {
     id: 2,
     image: IMG2,
-    title: 'Contact-Manager',
+    title: 'Contact Manager',
     description:
       'This is a contact manager web app which is made using ReactJS. It is used to store contacts and their details.',
     tools_tech: [
@@ -57,7 +84,7 @@ const data = [
       'Search Feature'
     ],
     github: 'https://github.com/Sagargupta16/Contact-Manager-Mern',
-    live: 'https://sagargupta.me/contact-manager/'
+    live: 'https://sagargupta.life/contact-manager/'
   },
   {
     id: 3,
@@ -76,12 +103,12 @@ const data = [
       'Email contact form'
     ],
     github: 'https://github.com/Sagargupta16/PortFolio',
-    live: 'https://sagargupta.me/PortFolio/'
+    live: 'https://sagargupta.life/PortFolio/'
   },
   {
     id: 5,
     image: IMG5,
-    title: 'Snake-Game',
+    title: 'Snake Game',
     description:
       'This is a Classic Snake Game which is made using Unity Game Engine.',
     tools_tech: ['Unity', 'C#'],
@@ -98,7 +125,7 @@ const data = [
   {
     id: 6,
     image: IMG6,
-    title: 'MineSweeper-Game',
+    title: 'MineSweeper Game',
     description:
       'This is a MineSweeper Game which is made using Unity Game Engine.',
     tools_tech: ['Unity', 'C#'],
@@ -114,7 +141,7 @@ const data = [
   {
     id: 8,
     image: IMG8,
-    title: 'Flappy-Bird-Game',
+    title: 'Flappy Bird Game',
     description:
       'This is a Flappy Bird Game which is made using Unity Game Engine.',
     tools_tech: ['Unity', 'C#'],
@@ -125,18 +152,18 @@ const data = [
   {
     id: 7,
     image: IMG7,
-    title: 'Tic-Tac-Toe',
+    title: 'Tic Tac Toe',
     description:
       'This is a Tic-Tac-Toe game which is made using HTML, CSS, and JavaScript.',
     tools_tech: ['HTML', 'CSS', 'JavaScript'],
     features: ['Difficulty Beginner or Advanced', 'Vs Computer'],
     github: 'https://github.com/Sagargupta16/Tic-Tac-Toe',
-    live: 'https://sagargupta.me/Tic-Tac-Toe/'
+    live: 'https://sagargupta.life/Tic-Tac-Toe/'
   },
   {
     id: 9,
     image: IMG9,
-    title: 'PacMan-Game',
+    title: 'PacMan Game',
     description: 'This is a PacMan Game which is made using Unity Game Engine.',
     tools_tech: ['Unity', 'C#'],
     features: [
@@ -151,7 +178,7 @@ const data = [
   {
     id: 10,
     image: IMG10,
-    title: 'Music-Player',
+    title: 'Music Player',
     description:
       'This is a music player web app which is made using HTML, CSS, and JavaScript. It is used to play music.',
     tools_tech: ['HTML', 'CSS', 'JavaScript'],
@@ -162,18 +189,18 @@ const data = [
       'Next/Previous Songs'
     ],
     github: 'https://github.com/Sagargupta16/Music-Web-App',
-    live: 'https://sagargupta.me/Music-Web-App/'
+    live: 'https://sagargupta.life/Music-Web-App/'
   },
   {
     id: 11,
     image: IMG11,
-    title: 'Guess-The-Number-Game',
+    title: 'Guess The Number Game',
     description:
       'This is a Guess The Number Game where you have to guess the number between 1 to 1000. It is made using HTML, CSS, and JavaScript.',
     tools_tech: ['HTML', 'CSS', 'JavaScript'],
     features: ['Randomize Number', 'Restart', 'Check Score'],
     github: 'https://github.com/Sagargupta16/Guess-The-Number-Game',
-    live: 'https://sagargupta.me/Guess-The-Number-Game/'
+    live: 'https://sagargupta.life/Guess-The-Number-Game/'
   }
 ]
 
@@ -181,7 +208,7 @@ const data2 = [
   {
     id: 1,
     image: IMG12,
-    title: 'Study-Hub',
+    title: 'Study Hub',
     description:
       'This is a Study Hub web app which is made using HTML , CSS & JavaScript. It is an prototype of a website which is used to study online.',
     tools_tech: ['HTML', 'CSS', 'JavaScript'],
@@ -192,7 +219,7 @@ const data2 = [
   {
     id: 2,
     image: IMG13,
-    title: 'Tour-vibes',
+    title: 'Tour Vibes',
     description:
       'This is an Full Stack web app which is made using React , NodeJS , ExpressJS , MongoDB. It is an prototype of a website which is used to See blogs of Tourist Places.',
     tools_tech: ['React', 'NodeJS', 'ExpressJS', 'MongoDB'],
@@ -209,21 +236,23 @@ const data2 = [
 ]
 
 const Portfolio = () => {
+  const renderPortfolioItems = projects => {
+    return projects.map(project => (
+      <PortFolioItem key={project.id} data={project} />
+    ))
+  }
+
   return (
     <section id="portfolio">
       <h5>My Recent Works</h5>
       <h2>Portfolio</h2>
       <h3 className="portfolio__heading"> My Personal Projects</h3>
       <div className="container portfolio__container">
-        {data.map(data => {
-          return <PortFolioItem key={data.id} data={data} />
-        })}
+        {renderPortfolioItems(data)}
       </div>
       <h3 className="portfolio__heading">Collaborative Projects</h3>
       <div className="container portfolio__container">
-        {data2.map(data => {
-          return <PortFolioItem key={data.id} data={data} />
-        })}
+        {renderPortfolioItems(data2)}
       </div>
     </section>
   )

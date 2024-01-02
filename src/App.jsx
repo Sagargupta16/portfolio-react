@@ -9,7 +9,7 @@ import Experience from './components/experience/Experience'
 import Skill from './components/skill/Skill'
 import Services from './components/services/Services'
 import Portfolio from './components/portfolio/Portfolio'
-import Testimonial from './components/testimonials/Testimonial'
+// import Testimonial from './components/testimonials/Testimonial'
 import Contact from './components/contact/Contact'
 import Footer from './components/footer/Footer'
 
@@ -50,7 +50,7 @@ const App = () => {
           <Route path="/skill" element={<Skill />} />
           <Route path="/services" element={<Services />} />
           <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/testimonial" element={<Testimonial />} />
+          {/* <Route path="/testimonial" element={<Testimonial />} /> */}
           <Route path="/contact" element={<Contact />} />
         </Routes>
       ) : (

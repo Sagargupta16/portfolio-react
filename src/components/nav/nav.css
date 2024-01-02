@@ -57,10 +57,10 @@
   cursor: pointer;
 }
 
-.nav__list a[alt]:hover::after {
-  content: attr(alt);
+.nav__list a[aria-label]:hover::after {
+  content: attr(aria-label);
   font-size: 0.8rem;
-  width: 10rem;
+  width: 5rem;
   position: absolute;
   color: var(--color-white);
   font-weight: bold;
