@@ -1,7 +1,9 @@
 .portfolio__heading {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   text-align: center;
   width: 100%;
+  margin: 1rem 0;
+  color: var(--color-white);
 }
 
 .portfolio__container {

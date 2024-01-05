@@ -16,7 +16,7 @@ import IMG13 from '../../assets/projects_images/project-13.jpg'
 
 import PortFolioItem from './portfolioitem'
 
-const data = [
+const personalProjects = [
   {
     id: 4,
     image: IMG4,
@@ -204,7 +204,7 @@ const data = [
   }
 ]
 
-const data2 = [
+const collabProjects = [
   {
     id: 1,
     image: IMG12,
@@ -248,11 +248,11 @@ const Portfolio = () => {
       <h2>Portfolio</h2>
       <h3 className="portfolio__heading"> My Personal Projects</h3>
       <div className="container portfolio__container">
-        {renderPortfolioItems(data)}
+        {renderPortfolioItems(personalProjects)}
       </div>
       <h3 className="portfolio__heading">Collaborative Projects</h3>
       <div className="container portfolio__container">
-        {renderPortfolioItems(data2)}
+        {renderPortfolioItems(collabProjects)}
       </div>
     </section>
   )

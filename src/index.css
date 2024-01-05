@@ -11,39 +11,15 @@
 :root {
   --color-white: #fff;
   --color-light: rgba(255, 255, 255, 0.6);
-
   --transition: all 0.4s ease-in-out;
-
   --container-width-lg: 75%;
   --container-width-md: 86%;
   --container-width-sm: 90%;
-}
 
-:root .theme1 {
-  --color-bg: #1f1f38;
-  --color-bg-variant: #2c2c6c;
-  --color-primary: #4db5ff;
-  --color-primary-variant: rgba(77, 181, 255, 0.5);
-}
-
-:root .theme2 {
-  --color-bg: #2b3a55;
-  --color-bg-variant: #ce7777;
-  --color-primary: #e8c4c4;
-  --color-primary-variant: rgba(242, 229, 229, 0.5);
-}
-:root .theme3 {
-  --color-bg: #222831;
-  --color-bg-variant: #393e46;
-  --color-primary: #00adb5;
-  --color-primary-variant: rgba(0, 173, 181, 0.5);
-}
-
-:root .theme4 {
-  --color-bg: rgb(10, 38, 71);
-  --color-bg-variant: #144272;
-  --color-primary: rgb(130, 170, 227);
-  --color-primary-variant: rgba(130, 170, 227, 0.5);
+  --color-bg: #1e1e26;
+  --color-bg-variant: #2c2c33;
+  --color-primary: #ffcc66;
+  --color-primary-variant: rgba(255, 204, 102, 0.5);
 }
 
 html {
@@ -62,12 +38,12 @@ html {
 ::-webkit-scrollbar {
   display: none;
 }
-
 body {
   font-family: 'Poppins', sans-serif;
   color: var(--color-white);
   line-height: 1.7;
   background: url(./assets/bg-texture.png) var(--color-bg) center center/5px 5px;
+  user-select: none;
 }
 .root {
   min-height: 100vh;
@@ -76,7 +52,8 @@ body {
 
 .container {
   max-width: var(--container-width-lg);
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   padding: 1rem;
   cursor: default;
 }

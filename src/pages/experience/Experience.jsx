@@ -42,12 +42,63 @@ const Experience = () => {
     }
   ]
 
+  const positionOfResponsibilityArray = [
+    {
+      id: 1,
+      date: 'August 2023 - Present',
+      title: 'Additional Secretary',
+      position: '',
+      company: 'CSES, NIT Warangal',
+      location: 'Warangal, Telangana',
+      description: {
+        1: 'Part of the core team of the club, responsible for the smooth functioning of the club.',
+        2: 'Organized and conducted various events, workshops, and competitions for the club.',
+        3: 'Git & GitHub Workshop',
+        4: 'Frontend Workshop',
+        5: 'Backend Workshop',
+        6: 'Code 2 Start: Coding Contest'
+      },
+      skills: [
+        'Communication',
+        'Leadership',
+        'Teamwork',
+        'Management',
+        'Git',
+        'GitHub',
+        'React',
+        'Nodejs'
+      ]
+    },
+    {
+      id: 2,
+      date: 'August 2023 - Present',
+      title: 'Class Representative',
+      position: '',
+      company: 'MCA, NIT Warangal',
+      location: 'Warangal, Telangana',
+      description: {
+        1: 'Facilitate effective communication between students and faculty, representing the class in meetings.',
+        2: 'Manage class attendance records and administrative tasks with precision and efficiency.',
+        3: 'Oversee the class WhatsApp group for streamlined information dissemination.',
+        4: 'Collaborate with class representatives to address student concerns and enhance the learning environment.'
+      },
+      skills: ['Communication', 'Leadership', 'Teamwork', 'Management']
+    }
+  ]
+
   return (
     <section id="experience">
-      <h5>What Qualifications I Have</h5>
+      <h5>Experience I got!!</h5>
       <h2>My Experience</h2>
-      <div className="container experience__container">
+      <div className="experience__container container">
+        <h3 className="experience__heading">Industrial Experiece</h3>
         {experienceArray.map(item => (
+          <ExperienceItem item={item} key={item.id} />
+        ))}
+      </div>
+      <div className="experience__container container">
+        <h3 className="experience__heading">Position of Responsibility</h3>
+        {positionOfResponsibilityArray.map(item => (
           <ExperienceItem item={item} key={item.id} />
         ))}
       </div>

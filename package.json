@@ -31,7 +31,8 @@
     "@testing-library/jest-dom": "^6.1.6",
     "gh-pages": "^6.1.1",
     "nyc": "^15.1.0",
-    "prettier": "3.0.0"
+    "prettier": "3.0.0",
+    "sass": "^1.69.7"
   },
   "eslintConfig": {
     "extends": [
