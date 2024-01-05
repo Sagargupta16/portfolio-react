@@ -212,13 +212,13 @@
   overflow: hidden;
   padding: 0;
   margin: 0.3rem 0;
+  transition: var(--transition);
 }
 
 .experience__item__description.active,
 .experience__item__skills.active {
-  padding: 0 2rem 1rem 1rem;
-  margin: 1rem 0;
-  max-height: 100%;
+  max-height: 30rem;
+  padding: 0 1rem 1rem 1rem;
 }
 
 @media screen and (max-width: 600px) {
