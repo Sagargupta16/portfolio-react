@@ -117,7 +117,7 @@ const Theme = () => {
     []
   )
 
-  const [currentThemeIndex, setCurrentThemeIndex] = useState(Math.floor(Math.random() * themes.length) % themes.length)
+  const [currentThemeIndex, setCurrentThemeIndex] = useState(Math.floor(Math.random()*themes.length)%themes.length)
 
   const nextTheme = () => {
     const nextIndex = Math.floor(Math.random() * themes.length) % themes.length
