@@ -30,13 +30,11 @@ const Contact = () => {
     let isValid = true
     const newErrors = {}
 
-    // Validate name
     if (formData.name.length < 3 || formData.name.length > 30) {
       newErrors.name = 'Name should be between 3 and 30 characters'
       isValid = false
     }
 
-    // Validate email
     const emailPattern =
       /^([\w.%+-]+)@((gmail\.com)|(official\.com)|(student\.nitw\.ac\.in))$/
     if (!emailPattern.test(formData.email)) {
@@ -44,7 +42,6 @@ const Contact = () => {
       isValid = false
     }
 
-    // Validate message
     if (formData.message.length < 10) {
       newErrors.message = 'Message should be at least 10 characters'
       isValid = false
@@ -52,7 +49,6 @@ const Contact = () => {
 
     setErrors(newErrors)
 
-    // Update feedback HTML
     setFeedbackHTML(() =>
       Object.keys(newErrors).map((key, index) => (
         <p key={index} className="error">

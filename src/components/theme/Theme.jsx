@@ -4,22 +4,19 @@ import themes from './themes'
 
 const Theme = () => {
   const nextTheme = () => {
-    const nextIndex = Math.floor(Math.random() * themes.length) % themes.length
-    const root = document.documentElement
-    const currentTheme = themes[nextIndex]
-
-    Object.entries(currentTheme.colors).forEach(([property, value]) => {
-      root.style.setProperty(`--color-${property}`, value)
+    const currentTheme =
+      themes[Math.floor(Math.random() * themes.length) % themes.length]
+    Object.keys(currentTheme.colors).forEach(property => {
+      document.documentElement.style.setProperty(
+        `--color-${property}`,
+        currentTheme.colors[property]
+      )
     })
   }
 
   return (
     <div className="theme">
-      <div
-        onClick={() => {
-          nextTheme()
-        }}
-      >
+      <div onClick={nextTheme}>
         <AiOutlineBgColors />
       </div>
     </div>
