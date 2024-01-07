@@ -1,6 +1,6 @@
 import React from 'react'
 import './about.css'
-import ME from '../../assets/me-about.jpg'
+import ME from '../../assets/images/me-about.jpg'
 import { BsCodeSlash } from 'react-icons/bs'
 import { MdDeveloperMode } from 'react-icons/md'
 import { SiCodersrank } from 'react-icons/si'
@@ -12,7 +12,7 @@ const About = () => {
       id: 1,
       icon: <BsCodeSlash className="about__icon" />,
       title: 'Coding',
-      count: '1500+ Questions'
+      count: '2000+ Questions'
     },
     {
       id: 2,

@@ -42,7 +42,8 @@ body {
   font-family: 'Poppins', sans-serif;
   color: var(--color-white);
   line-height: 1.7;
-  background: url(./assets/bg-texture.png) var(--color-bg) center center/5px 5px;
+  background: url(./assets/images/bg-texture.png) var(--color-bg) center
+    center/5px 5px;
   user-select: none;
 }
 .root {

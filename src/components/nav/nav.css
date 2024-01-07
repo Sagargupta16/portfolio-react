@@ -68,14 +68,14 @@
 }
 
 .nav__list a:hover {
-  background: url(../../assets/bg-texture.png), var(--color-bg);
+  background: url(../../assets/images/bg-texture.png), var(--color-bg);
   background-size: 5px 5px;
   color: var(--color-primary);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .nav__list .active {
-  background: url(../../assets/bg-texture.png), var(--color-bg);
+  background: url(../../assets/images/bg-texture.png), var(--color-bg);
   background-size: 5px 5px;
   color: var(--color-primary);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
