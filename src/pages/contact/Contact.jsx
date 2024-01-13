@@ -35,8 +35,7 @@ const Contact = () => {
       isValid = false
     }
 
-    const emailPattern =
-      /^([\w.%+-]+)@((gmail\.com)|(official\.com)|(student\.nitw\.ac\.in))$/
+    const emailPattern = /^([\w.%+-]+)@((gmail\.com)|(official\.com)|(student\.nitw\.ac\.in))$/
     if (!emailPattern.test(formData.email)) {
       newErrors.email = 'Invalid email address'
       isValid = false
@@ -67,12 +66,7 @@ const Contact = () => {
 
     if (validateForm()) {
       try {
-        const result = await emailjs.sendForm(
-          'service_lyt547p',
-          'template_yz438w6',
-          form.current,
-          'PAcL61ygLI8WYG16R'
-        )
+        const result = await emailjs.sendForm('service_lyt547p', 'template_yz438w6', form.current, 'PAcL61ygLI8WYG16R')
         console.log(result.text)
         setSuccessMessage('Message sent successfully!')
       } catch (error) {
@@ -160,13 +154,7 @@ const Contact = () => {
             onChange={handleInputChange}
             required
           />
-          <input
-            name="email"
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
+          <input name="email" placeholder="Your Email" value={formData.email} onChange={handleInputChange} required />
           <textarea
             name="message"
             rows="7"
@@ -176,9 +164,7 @@ const Contact = () => {
             required
           />
           <button type="submit">Send Message</button>
-          {feedbackHTML && (
-            <div className="feedback-container">{feedbackHTML}</div>
-          )}
+          {feedbackHTML && <div className="feedback-container">{feedbackHTML}</div>}
           {successMessage && <p className="success">{successMessage}</p>}
         </form>
       </div>

@@ -2,13 +2,7 @@ const ServiceArray = [
   {
     id: 1,
     title: 'UI/UX Design',
-    list: [
-      'Web Design',
-      'Mobile App Design',
-      'Wireframing',
-      'Prototyping',
-      'User Research'
-    ]
+    list: ['Web Design', 'Mobile App Design', 'Wireframing', 'Prototyping', 'User Research']
   },
   {
     id: 2,
@@ -24,35 +18,17 @@ const ServiceArray = [
   {
     id: 3,
     title: 'Competitive Programming',
-    list: [
-      'Data Structures',
-      'Algorithms',
-      'Problem Solving',
-      'Dynamic Programming',
-      'Code Debugging'
-    ]
+    list: ['Data Structures', 'Algorithms', 'Problem Solving', 'Dynamic Programming', 'Code Debugging']
   },
   {
     id: 4,
     title: 'Data Science',
-    list: [
-      'Data Analysis',
-      'Data Visualization',
-      'Machine Learning',
-      'Deep Learning',
-      'Natural Language Processing'
-    ]
+    list: ['Data Analysis', 'Data Visualization', 'Machine Learning', 'Deep Learning', 'Natural Language Processing']
   },
   {
     id: 5,
     title: 'Cloud Computing',
-    list: [
-      'Cloud Deployment',
-      'Cloud Storage',
-      'Cloud Security',
-      'Cloud Networking',
-      'Cloud Monitoring'
-    ]
+    list: ['Cloud Deployment', 'Cloud Storage', 'Cloud Security', 'Cloud Networking', 'Cloud Monitoring']
   },
   {
     id: 6,

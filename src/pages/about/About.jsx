@@ -55,11 +55,9 @@ const About = () => {
             <br />
             I'm a Postgraduate 🎓 from NIT Warangal.
             <br />
-            I'm a Web developer & Programmer who loves to write clean and
-            efficient code.
+            I'm a Web developer & Programmer who loves to write clean and efficient code.
             <br />
-            Apart from web development, I love Problem Solving using Data
-            Structures and Algorithms in an Efficient Way.
+            Apart from web development, I love Problem Solving using Data Structures and Algorithms in an Efficient Way.
           </p>
           {window.screen.width > 600 ? (
             <Link to="/contact" className="btn btn-primary">
