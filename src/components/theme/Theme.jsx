@@ -11,7 +11,7 @@ const Theme = () => {
   }
 
   return (
-    <div className="theme" onClick={nextTheme}>
+    <div className="theme" onClick={nextTheme} title="Change theme">
       <AiOutlineBgColors />
     </div>
   )
