@@ -1,15 +1,5 @@
 const skills = {
-  'Programming Languages': [
-    'C',
-    'C++',
-    'CSS',
-    'HTML',
-    'Java',
-    'JavaScript',
-    'Python',
-    'R',
-    'SQL'
-  ],
+  'Programming Languages': ['C', 'C++', 'CSS', 'HTML', 'Java', 'JavaScript', 'Python', 'R', 'SQL'],
   'Frameworks and Libraries': [
     'Bootstrap',
     'Express JS',
@@ -22,15 +12,7 @@ const skills = {
     'React JS',
     'Rest-API'
   ],
-  'Cloud and Databases': [
-    'AWS',
-    'AWS EC2',
-    'AWS ECS',
-    'AWS ECR',
-    'AWS RDS',
-    'MongoDB',
-    'MySQL'
-  ],
+  'Cloud and Databases': ['AWS', 'AWS EC2', 'AWS ECS', 'AWS ECR', 'AWS RDS', 'MongoDB', 'MySQL'],
   'Tools, Editors, and IDEs': [
     'Android Studio',
     'Ansible',

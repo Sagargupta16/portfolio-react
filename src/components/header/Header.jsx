@@ -20,7 +20,7 @@ const Header = () => {
       <div className="container header__container">
         <h5>Hey Myself</h5>
         <h1>Sagar Gupta</h1>
-        <h5 className="text-light">
+        <h5 className="text-light tw_comp">
           I'm a <TwComponent roles={roles} />
         </h5>
         <CtaComponent />

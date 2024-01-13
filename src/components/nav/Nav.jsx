@@ -24,16 +24,7 @@ const Nav = () => {
   }, [])
 
   useEffect(() => {
-    const sections = [
-      'header',
-      'about',
-      'education',
-      'experience',
-      'skill',
-      'services',
-      'portfolio',
-      'contact'
-    ]
+    const sections = ['', 'about', 'education', 'experience', 'skill', 'services', 'portfolio', 'contact']
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100
@@ -67,9 +58,18 @@ const Nav = () => {
   ]
 
   const handleNavItemClick = item => {
-    const sectionId =
-      item.to.substring(1).length > 0 ? item.to.substring(1) : 'header'
-    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' })
+    const sectionId = item.to.substring(1).length > 0 ? item.to.substring(1) : 'header'
+
+    const sectionElement = document.getElementById(sectionId)
+    if (sectionElement) {
+      const offset = -50 // Set your desired offset here
+      const offsetTop = sectionElement.offsetTop + offset
+
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      })
+    }
   }
 
   return (
@@ -94,9 +94,7 @@ const Nav = () => {
           : navItems.map(item => (
               <button
                 aria-label={item.label}
-                className={
-                  activeSection === item.to.substring(1) ? 'active' : ''
-                }
+                className={activeSection === item.to.substring(1) ? 'active' : ''}
                 onClick={() => handleNavItemClick(item)}
                 key={item.to}
               >

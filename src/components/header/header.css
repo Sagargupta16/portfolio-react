@@ -1,28 +1,15 @@
-/* General Styles */
-:root {
-  --color-primary: #007bff;
-  --color-white: #ffffff;
-  --transition: 0.3s ease-in-out;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-/* Header Styles */
 .header {
   height: 89vh;
   overflow: hidden;
 }
-
 .header__container {
   text-align: center;
-  position: relative;
   height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
-/* CTA Styles */
+/* ========== CTA ========== */
 .cta {
   margin-top: 2.5rem;
   display: flex;
@@ -30,33 +17,48 @@ body {
   justify-content: center;
 }
 
-/* Socials Styles */
+.tw_comp {
+  display: flex;
+  gap: 0.2rem;
+  justify-content: center;
+}
+.header__socials {
+  display: flex;
+  gap: 1.2rem;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ========== Socials ========== */
 .header__socials__left,
 .header__socials__right {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 0.8rem;
-  position: absolute;
   bottom: 3rem;
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8)) contrast(1.2) saturate(1.2);
+  width: 20px;
+  z-index: 1;
+  position: relative;
 }
 
 .header__socials__left {
-  left: 0;
+  align-items: flex-start;
 }
 
 .header__socials__right {
-  right: 0;
+  align-items: flex-end;
 }
 
 .header__socials__left a,
 .header__socials__right a {
   font-size: 1.2rem;
   color: var(--color-primary);
+  transition: var(--transition);
   position: relative;
   overflow: visible;
-  transition: transform var(--transition);
 }
 
 .header__socials__left a[alt]:hover,
@@ -73,7 +75,7 @@ body {
   color: var(--color-white);
   font-weight: bold;
   transform: translateX(-50%);
-  transition: transform var(--transition);
+  transition: var(--transition);
   overflow: visible;
 }
 
@@ -98,35 +100,37 @@ body {
   content: '';
   width: 1px;
   height: 2rem;
+  margin: 0 10px 0 10px;
   background-color: var(--color-primary);
 }
 
-/* Me Styles */
+/* ========== Me ========== */
 .me {
   background:
     linear-gradient(var(--color-primary), transparent),
-    url(../../assets/images/bg-texture.png) var(--color-primary) center
-      center/5px 5px;
-  width: 35%;
+    url(../../assets/images/bg-texture.png) var(--color-primary) center center/5px 5px;
+  width: 25rem;
   min-width: 20rem;
   height: 60%;
   position: absolute;
-  left: calc(50% - 17.5%);
+  left: calc(50% - 12.5rem);
   margin-top: 4rem;
   border-radius: 6rem 6rem 0 0;
   box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.3);
   bottom: -3rem;
+  overflow: hidden;
 }
 
 .me img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  overflow: visible;
+  position: absolute;
   filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.6)) brightness(1.1) contrast(1.1);
 }
 
-/* Media Queries */
+/* ========== MEDIA QUERIES ========== */
+
 @media screen and (max-width: 1024px) {
   .me {
     width: 20rem;
@@ -144,10 +148,10 @@ body {
     width: 15rem;
     height: 20rem;
     left: calc(50% - 10rem);
+    bottom: 3rem;
   }
 }
 
-/* Cursor Animation */
 .cursor {
   animation: blink 1s linear infinite forwards;
 }

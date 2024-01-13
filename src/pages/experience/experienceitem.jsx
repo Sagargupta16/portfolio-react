@@ -19,26 +19,18 @@ const ExperienceItem = ({ item }) => {
           {item.date}
         </span>
         <button className="experience__dropdown" onClick={toggleDropdown}>
-          <span className="experience__dropdown__icon">
-            {show ? <CiCircleChevUp /> : <CiCircleChevDown />}
-          </span>
-          <span className="experience__dropdown__text">
-            {show ? 'Less' : 'More'}
-          </span>
+          <span className="experience__dropdown__icon">{show ? <CiCircleChevUp /> : <CiCircleChevDown />}</span>
+          <span className="experience__dropdown__text">{show ? 'Less' : 'More'}</span>
         </button>
       </h3>
       <h4 className="experience__title">
-        {item.title},
-        <span className="experience__position"> {item.position}</span>
+        {item.title},<span className="experience__position"> {item.position}</span>
       </h4>
       <h3 className="experience__company">
         <span>{item.company}</span>
         <span className="experience__location">
           {item.location === 'Remote' ? (
-            <span className="experience__location__remote">
-              {' '}
-              ({item.location})
-            </span>
+            <span className="experience__location__remote"> ({item.location})</span>
           ) : (
             <span className="experience__location__inperson">
               <IoLocationSharp /> {item.location}

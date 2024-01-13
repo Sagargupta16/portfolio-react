@@ -1,10 +1,7 @@
 import React from 'react'
 import './experience.css'
 import ExperienceItem from './experienceitem'
-import {
-  experienceArray,
-  positionOfResponsibilityArray
-} from './experienceArray'
+import { experienceArray, positionOfResponsibilityArray } from './experienceArray'
 
 const Experience = () => {
   return (

@@ -4,17 +4,7 @@ import 'react-simple-typewriter/dist/index'
 import PropTypes from 'prop-types'
 
 const TW = ({ roles }) => {
-  return (
-    <Typewriter
-      words={roles}
-      loop
-      cursor
-      cursorStyle="_"
-      typeSpeed={70}
-      deleteSpeed={50}
-      delaySpeed={1000}
-    />
-  )
+  return <Typewriter words={roles} loop cursor cursorStyle="_" typeSpeed={70} deleteSpeed={50} delaySpeed={1000} />
 }
 
 TW.propTypes = {

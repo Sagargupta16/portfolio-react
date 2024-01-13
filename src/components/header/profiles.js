@@ -1,13 +1,7 @@
 import { BsLinkedin } from 'react-icons/bs'
 import { FaGithub } from 'react-icons/fa'
 import { FiInstagram } from 'react-icons/fi'
-import {
-  SiCodechef,
-  SiGeeksforgeeks,
-  SiHackerrank,
-  SiLeetcode,
-  SiTwitter
-} from 'react-icons/si'
+import { SiCodechef, SiGeeksforgeeks, SiHackerrank, SiLeetcode, SiTwitter } from 'react-icons/si'
 
 const socialProfiles = [
   {

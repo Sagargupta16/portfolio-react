@@ -1,18 +1,19 @@
 .nav {
   height: 4rem;
-  width: 100%;
   position: fixed;
-  top: 0;
-  background-color: var(--color-bg-variant);
+  background-color: var(--color-bg);
   opacity: 0.7;
   z-index: 100;
   transition: var(--transition);
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
-  padding: 0 1rem;
-  border-radius: 0 0 1rem 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 1rem;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  width: calc(100% - 2rem);
+  top: 0;
 }
 
 .nav__logo {
@@ -25,7 +26,7 @@
   justify-content: center;
   align-items: center;
   margin-left: 3rem;
-  margin-bottom: 0.5rem;
+  /* margin-bottom: 0.5rem; */
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
 }
 
@@ -68,14 +69,14 @@
 }
 
 .nav__list a:hover {
-  background: url(../../assets/images/bg-texture.png), var(--color-bg);
+  background: url(../../assets/images/bg-texture.png), var(--color-bg-variant);
   background-size: 5px 5px;
   color: var(--color-primary);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .nav__list .active {
-  background: url(../../assets/images/bg-texture.png), var(--color-bg);
+  background: url(../../assets/images/bg-texture.png), var(--color-bg-variant);
   background-size: 5px 5px;
   color: var(--color-primary);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
@@ -84,16 +85,9 @@
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
   .nav__logo {
     display: none;
-    font-size: 1.2rem;
-    margin-left: 1rem;
-  }
-  .nav {
-    height: 4rem;
-    padding: 0 1rem;
-    justify-content: space-around;
   }
   .nav__list {
     width: 100%;

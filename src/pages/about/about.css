@@ -10,12 +10,7 @@
   width: 20rem;
   height: 20rem;
   border-radius: 2rem;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    var(--color-primary),
-    transparent
-  );
+  background: linear-gradient(45deg, transparent, var(--color-primary), transparent);
   display: grid;
   place-items: center;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);

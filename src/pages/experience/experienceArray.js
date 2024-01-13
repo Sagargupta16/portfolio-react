@@ -53,16 +53,7 @@ const positionOfResponsibilityArray = [
       5: 'Backend Workshop',
       6: 'Code 2 Start: Coding Contest'
     },
-    skills: [
-      'Communication',
-      'Leadership',
-      'Teamwork',
-      'Management',
-      'Git',
-      'GitHub',
-      'React',
-      'Nodejs'
-    ]
+    skills: ['Communication', 'Leadership', 'Teamwork', 'Management', 'Git', 'GitHub', 'React', 'Nodejs']
   },
   {
     id: 2,

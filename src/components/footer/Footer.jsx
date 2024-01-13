@@ -8,13 +8,7 @@ const Footer = () => {
       <div className="footer__logo">SG</div>
       <nav className="footer__socials">
         {socialLinks.map(socialLink => (
-          <a
-            key={socialLink.id}
-            href={socialLink.link}
-            target="_blank"
-            rel="noreferrer"
-            title={socialLink.title}
-          >
+          <a key={socialLink.id} href={socialLink.link} target="_blank" rel="noreferrer" title={socialLink.title}>
             {socialLink.icon}
           </a>
         ))}

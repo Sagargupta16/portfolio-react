@@ -19,14 +19,7 @@ const personalProjects = [
     title: 'Leetcode Rating Predictor',
     description:
       'This is a Leetcode Rating Predictor which is made using Deep Learning. It is used to predict the rating of a user on Leetcode.',
-    tools_tech: [
-      'React',
-      'FastAPI',
-      'Numpy',
-      'Pandas',
-      'Tensorflow',
-      'GraphQL'
-    ],
+    tools_tech: ['React', 'FastAPI', 'Numpy', 'Pandas', 'Tensorflow', 'GraphQL'],
     features: [
       'Deep Learning Model',
       'Extensive Data Analysis',
@@ -62,15 +55,7 @@ const personalProjects = [
     title: 'Contact Manager',
     description:
       'This is a contact manager web app which is made using ReactJS. It is used to store contacts and their details.',
-    tools_tech: [
-      'React',
-      'React-Routers',
-      'NodeJS',
-      'ExpressJS',
-      'MongoDB',
-      'CSS',
-      'JavaScript'
-    ],
+    tools_tech: ['React', 'React-Routers', 'NodeJS', 'ExpressJS', 'MongoDB', 'CSS', 'JavaScript'],
     features: [
       'Responsive',
       'Multi Page Application',
@@ -105,16 +90,9 @@ const personalProjects = [
     id: 5,
     image: IMG5,
     title: 'Snake Game',
-    description:
-      'This is a Classic Snake Game which is made using Unity Game Engine.',
+    description: 'This is a Classic Snake Game which is made using Unity Game Engine.',
     tools_tech: ['Unity', 'C#'],
-    features: [
-      'Snake Speed control',
-      'Food generation Speed Control',
-      'Score',
-      'Game Over Screen',
-      'Main Menu Screen'
-    ],
+    features: ['Snake Speed control', 'Food generation Speed Control', 'Score', 'Game Over Screen', 'Main Menu Screen'],
     github: 'https://github.com/Sagargupta16/Snake-Game__UnityEngine',
     live: '#'
   },
@@ -122,15 +100,9 @@ const personalProjects = [
     id: 6,
     image: IMG6,
     title: 'MineSweeper Game',
-    description:
-      'This is a MineSweeper Game which is made using Unity Game Engine.',
+    description: 'This is a MineSweeper Game which is made using Unity Game Engine.',
     tools_tech: ['Unity', 'C#'],
-    features: [
-      'Difficulty Easy, Medium or Hard',
-      'Score',
-      'Game Over Screen',
-      'Main Menu Screen'
-    ],
+    features: ['Difficulty Easy, Medium or Hard', 'Score', 'Game Over Screen', 'Main Menu Screen'],
     github: 'https://github.com/Sagargupta16/Minesweeper-Game__UnityEngine',
     live: '#'
   },
@@ -138,8 +110,7 @@ const personalProjects = [
     id: 8,
     image: IMG8,
     title: 'Flappy Bird Game',
-    description:
-      'This is a Flappy Bird Game which is made using Unity Game Engine.',
+    description: 'This is a Flappy Bird Game which is made using Unity Game Engine.',
     tools_tech: ['Unity', 'C#'],
     features: ['Smooth Gameplay', 'End Bar'],
     github: 'https://github.com/Sagargupta16/FlappyBird-Game__UnityEngine',
@@ -149,8 +120,7 @@ const personalProjects = [
     id: 7,
     image: IMG7,
     title: 'Tic Tac Toe',
-    description:
-      'This is a Tic-Tac-Toe game which is made using HTML, CSS, and JavaScript.',
+    description: 'This is a Tic-Tac-Toe game which is made using HTML, CSS, and JavaScript.',
     tools_tech: ['HTML', 'CSS', 'JavaScript'],
     features: ['Difficulty Beginner or Advanced', 'Vs Computer'],
     github: 'https://github.com/Sagargupta16/Tic-Tac-Toe',
@@ -162,12 +132,7 @@ const personalProjects = [
     title: 'PacMan Game',
     description: 'This is a PacMan Game which is made using Unity Game Engine.',
     tools_tech: ['Unity', 'C#'],
-    features: [
-      'Smooth Gameplay',
-      'Score',
-      'Game Over Screen',
-      'Main Menu Screen'
-    ],
+    features: ['Smooth Gameplay', 'Score', 'Game Over Screen', 'Main Menu Screen'],
     github: 'https://github.com/Sagargupta16/PacMan-Game__UnityEngine',
     live: '#'
   },
@@ -178,12 +143,7 @@ const personalProjects = [
     description:
       'This is a music player web app which is made using HTML, CSS, and JavaScript. It is used to play music.',
     tools_tech: ['HTML', 'CSS', 'JavaScript'],
-    features: [
-      'Cool UI',
-      'Randomize Songs',
-      'Play/Pause Songs',
-      'Next/Previous Songs'
-    ],
+    features: ['Cool UI', 'Randomize Songs', 'Play/Pause Songs', 'Next/Previous Songs'],
     github: 'https://github.com/Sagargupta16/Music-Web-App',
     live: 'https://sagargupta.life/Music-Web-App/'
   },
@@ -219,13 +179,7 @@ const collabProjects = [
     description:
       'This is an Full Stack web app which is made using React , NodeJS , ExpressJS , MongoDB. It is an prototype of a website which is used to See blogs of Tourist Places.',
     tools_tech: ['React', 'NodeJS', 'ExpressJS', 'MongoDB'],
-    features: [
-      'Responsive',
-      'Multi Page Application',
-      'Smooth UI',
-      'Authentication',
-      'CRUD Operations'
-    ],
+    features: ['Responsive', 'Multi Page Application', 'Smooth UI', 'Authentication', 'CRUD Operations'],
     github: 'https://github.com/Sagargupta16/tour-vibes',
     live: '#'
   }

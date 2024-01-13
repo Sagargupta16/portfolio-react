@@ -18,17 +18,11 @@ const PortfolioItem = ({ data }) => {
       <h3 className="portfolio__item-title">
         <div className="portfolio__item-title__text">{data.title}</div>
         <button className="portfolio__dropdown" onClick={toggleExpansion}>
-          <span className="portfolio__dropdown__icon">
-            {isExpanded ? <CiCircleChevUp /> : <CiCircleChevDown />}
-          </span>
-          <span className="portfolio__dropdown__text">
-            {isExpanded ? 'Less' : 'More'}
-          </span>
+          <span className="portfolio__dropdown__icon">{isExpanded ? <CiCircleChevUp /> : <CiCircleChevDown />}</span>
+          <span className="portfolio__dropdown__text">{isExpanded ? 'Less' : 'More'}</span>
         </button>
       </h3>
-      <div
-        className={`portfolio__item__description ${isExpanded ? 'active' : ''}`}
-      >
+      <div className={`portfolio__item__description ${isExpanded ? 'active' : ''}`}>
         <p>{data.description}</p>
       </div>
       <div className={`portfolio__item__tools ${isExpanded ? 'active' : ''}`}>
@@ -41,9 +35,7 @@ const PortfolioItem = ({ data }) => {
           ))}
         </div>
       </div>
-      <div
-        className={`portfolio__item__features ${isExpanded ? 'active' : ''}`}
-      >
+      <div className={`portfolio__item__features ${isExpanded ? 'active' : ''}`}>
         <h4>Features</h4>
         <div className="portfolio__item__features__list">
           {data.features.map(feature => (
@@ -58,12 +50,7 @@ const PortfolioItem = ({ data }) => {
           Github
         </a>
         {data.live !== '#' && (
-          <a
-            href={data.live}
-            className="btn btn-primary"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={data.live} className="btn btn-primary" target="_blank" rel="noreferrer">
             Live
           </a>
         )}
