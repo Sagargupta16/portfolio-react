@@ -1,12 +1,12 @@
 .theme {
   position: fixed;
   top: 6rem;
-  right: 1.5rem;
+  right: 1rem;
   z-index: 100;
   height: 2.5rem;
   width: 2.5rem;
   background-color: var(--color-bg-variant);
-  border-radius: 15px;
+  border-radius: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,4 +19,20 @@
 .theme:hover {
   background-color: var(--color-primary);
   color: var(--color-bg);
+}
+
+.theme:hover::after {
+  content: 'Switch Theme';
+  position: absolute;
+  top: 2.5rem;
+  font-size: 0.6rem;
+  color: var(--color-primary);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
+}
+
+.theme svg {
+  height: 1.5rem;
+  width: 1.5rem;
 }

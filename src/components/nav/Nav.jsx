@@ -62,7 +62,7 @@ const Nav = () => {
 
     const sectionElement = document.getElementById(sectionId)
     if (sectionElement) {
-      const offset = -50 // Set your desired offset here
+      const offset = -50
       const offsetTop = sectionElement.offsetTop + offset
 
       window.scrollTo({

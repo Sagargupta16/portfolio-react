@@ -6,7 +6,7 @@
   z-index: 100;
   transition: var(--transition);
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
-  padding: 1rem;
+  padding: 0 1rem;
   border-radius: 1rem;
   margin: 1rem;
   display: flex;
@@ -26,7 +26,6 @@
   justify-content: center;
   align-items: center;
   margin-left: 3rem;
-  /* margin-bottom: 0.5rem; */
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
 }
 
@@ -35,6 +34,7 @@
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
+  height: 100%;
 }
 
 .nav__list a,
@@ -45,14 +45,11 @@
   font-size: 1.2rem;
   text-align: center;
   transition: var(--transition);
-  border-radius: 1rem 1rem 0 0;
+  border-radius: 1rem;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   color: var(--color-white);
-}
-
-.nav__list button {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -60,21 +57,17 @@
 
 .nav__list a[aria-label]:hover::after {
   content: attr(aria-label);
-  font-size: 0.8rem;
-  width: 5rem;
+  font-size: 0.7rem;
+  width: 4rem;
   position: absolute;
   color: var(--color-white);
   font-weight: bold;
-  margin-top: 5rem;
+  margin-top: 2.5rem;
+  text-align: center;
 }
 
-.nav__list a:hover {
-  background: url(../../assets/images/bg-texture.png), var(--color-bg-variant);
-  background-size: 5px 5px;
-  color: var(--color-primary);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-}
-
+.nav__list button:hover,
+.nav__list a:hover,
 .nav__list .active {
   background: url(../../assets/images/bg-texture.png), var(--color-bg-variant);
   background-size: 5px 5px;

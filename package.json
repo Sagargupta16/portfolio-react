@@ -2,7 +2,7 @@
   "name": "portfolio-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://sagargupta.me/portfolio-react/",
+  "homepage": "https://sagargupta.life/portfolio-react/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
