@@ -9,6 +9,27 @@
   margin: 0;
 }
 
+/* ========== HEADER TYPOGRAPHY ========== */
+.header__container h1 {
+  font-size: 3rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  margin: 0.5rem 0;
+  line-height: 1.2;
+}
+
+.header__container h5 {
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-normal);
+  color: var(--color-light);
+  margin: 0.5rem 0;
+}
+
+.header__container h5:first-child {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 /* ========== CTA ========== */
 .cta {
   margin-top: 2.5rem;
@@ -59,6 +80,19 @@
   transition: var(--transition);
   position: relative;
   overflow: visible;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.header__socials__left a svg,
+.header__socials__right a svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .header__socials__left a[alt]:hover,
@@ -70,23 +104,26 @@
 .header__socials__right a[alt]:hover::after {
   content: attr(alt);
   font-size: 0.8rem;
-  width: 10rem;
   position: absolute;
   color: var(--color-white);
   font-weight: bold;
-  transform: translateX(-50%);
   transition: var(--transition);
-  overflow: visible;
+  white-space: nowrap;
+  z-index: 10;
 }
 
 .header__socials__left a[alt]:hover::after {
-  margin-left: 6rem;
+  left: calc(100% + 0.5rem);
   text-align: left;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .header__socials__right a[alt]:hover::after {
-  margin-left: -7rem;
+  right: calc(100% + 0.5rem);
   text-align: right;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .header__socials__left a:hover,
@@ -132,6 +169,14 @@
 /* ========== MEDIA QUERIES ========== */
 
 @media screen and (max-width: 1024px) {
+  .header__container h1 {
+    font-size: 2.5rem;
+  }
+  
+  .header__container h5 {
+    font-size: 1.1rem;
+  }
+  
   .me {
     width: 20rem;
     height: 25rem;
@@ -140,6 +185,18 @@
 }
 
 @media screen and (max-width: 600px) {
+  .header__container h1 {
+    font-size: 2rem;
+  }
+  
+  .header__container h5 {
+    font-size: 1rem;
+  }
+  
+  .header__container h5:first-child {
+    font-size: 0.9rem;
+  }
+  
   .header__socials,
   .scroll__down {
     display: none;

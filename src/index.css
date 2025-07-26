@@ -1,80 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Clicker+Script&family=Poppins:wght@200;300;400;500;600&family=Roboto&display=swap');
+/* ========== MAIN STYLESHEET ========== */
+/* Import all modular CSS files in the correct order */
 
-* {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-}
-:root {
-  --color-white: #fff;
-  --color-light: rgba(255, 255, 255, 0.6);
-  --transition: all 0.4s ease-in-out;
-  --container-width-lg: 80%;
-  --container-width-md: 90%;
-  --container-width-sm: 90%;
+/* 1. CSS Custom Properties (Variables) */
+@import './styles/variables.css';
 
-  --color-bg: #1e1e26;
-  --color-bg-variant: #2c2c33;
-  --color-primary: #ffcc66;
-  --color-primary-variant: rgba(255, 204, 102, 0.5);
-}
+/* 2. Base styles and reset */
+@import './styles/base.css';
 
-html {
-  scroll-behavior: smooth;
-  font-size: 95%;
-  background: url(./assets/images/bg-texture.png) var(--color-bg-variant) center center/5px 5px;
+/* 3. Typography system */
+@import './styles/typography.css';
 
-  @media screen and (max-width: 600px) {
-    font-size: 90%;
-  }
-  @media screen and (max-width: 400px) {
-    font-size: 85%;
-  }
-}
+/* 4. Layout utilities */
+@import './styles/layout.css';
 
-::-webkit-scrollbar {
-  display: none;
-}
-body {
-  font-family: 'Poppins', sans-serif;
-  color: var(--color-white);
-  line-height: 1.7;
-  user-select: none;
-}
-.root {
-  min-height: 100vh;
-}
-/* ========== GENERAL STYLES ========== */
+/* 5. Component styles */
+@import './styles/components.css';
 
-.container {
-  max-width: var(--container-width-lg);
-  margin-left: auto;
-  margin-right: auto;
-  padding: 1rem;
-  cursor: default;
-}
+/* 6. Utility classes */
+@import './styles/utilities.css';
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 500;
-}
-h1 {
-  font-size: 2.5rem;
-}
+/* 7. Responsive design and media queries */
+@import './styles/responsive.css';
+
+/* ========== LEGACY COMPATIBILITY ========== */
+/* Keep some legacy selectors for backward compatibility */
+
+/* Legacy section selector - use .section class instead */
 section {
   min-height: 100vh;
-  margin: 6rem 1rem 1rem 1rem;
-  padding: 2rem;
+  margin: var(--spacing-4xl) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-xl);
   background-color: var(--color-bg);
-  border-radius: 1rem;
-  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
+  border-radius: var(--radius-md);
+  filter: drop-shadow(var(--shadow-light));
   backdrop-filter: blur(5px);
   position: relative;
   z-index: 1;
@@ -84,80 +42,70 @@ section {
   flex-direction: column;
   justify-content: center;
 }
+
 section > h2,
 section > h5 {
   text-align: center;
   color: var(--color-light);
 }
+
 section > h2 {
   color: var(--color-primary);
-  margin-bottom: 3rem;
+  margin-bottom: var(--spacing-2xl);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
 }
-.text-light {
-  color: var(--color-light);
+
+section > h5 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-sm);
 }
+
+/* Legacy heading styles */
+h1 {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+h2 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-medium);
+}
+
+h3 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-medium);
+}
+
+h4 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+}
+
+h5 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-normal);
+}
+
+h6 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Legacy link styles */
 a {
   color: var(--color-primary);
   transition: var(--transition);
   cursor: pointer;
 }
+
 a:hover {
   color: var(--color-white);
 }
-.btn {
-  width: max-content;
-  display: inline-block;
-  padding: 0.75rem 1.2rem;
-  border-radius: 0.4rem;
-  background-color: transparent;
-  backdrop-filter: blur(5px);
-  color: var(--color-primary);
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--color-primary);
-  transition: var(--transition);
-}
-.btn:hover {
-  background-color: var(--color-white);
-  color: var(--color-bg);
-  border-color: transparent;
-  transform: translateY(-2px);
-  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.4);
-}
-.btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-bg);
-  border-color: transparent;
-}
 
+/* Legacy image styles */
 img {
   display: block;
   width: 100%;
   object-fit: cover;
-}
-
-/* ========== Media Queries (Medium devices)  ========== */
-
-@media screen and (max-width: 1024px) {
-  .container {
-    max-width: var(--container-width-md);
-  }
-}
-
-/* ========== Media Queries (Small devices)  ========== */
-
-@media screen and (max-width: 600px) {
-  body {
-    margin-top: 6rem;
-  }
-  .container {
-    max-width: var(--container-width-sm);
-  }
-  section > h2 {
-    margin-bottom: 2rem;
-  }
-  section {
-    min-height: 0;
-    margin: 1rem;
-  }
 }

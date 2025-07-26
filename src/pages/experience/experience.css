@@ -1,8 +1,11 @@
 .experience__heading {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   text-align: center;
   width: 100%;
   color: var(--color-white);
+  font-weight: var(--font-weight-semibold);
+  margin: 1rem 0;
+  letter-spacing: 0.5px;
 }
 
 /* Experience container */
@@ -222,6 +225,11 @@
 }
 
 @media screen and (max-width: 600px) {
+  .experience__heading {
+    font-size: 1.4rem;
+    margin: 0.5rem 0;
+  }
+  
   .experience__date {
     padding-right: 0;
   }

@@ -1,0 +1,264 @@
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* ========== MOBILE FIRST APPROACH ========== */
+
+/* Base styles (mobile) are defined in other files */
+
+/* ========== UTILITY CLASSES FOR RESPONSIVE DESIGN ========== */
+
+/* Hide/show on different screen sizes */
+.hide-mobile {
+  display: none;
+}
+
+.hide-tablet {
+  display: block;
+}
+
+.hide-desktop {
+  display: block;
+}
+
+/* ========== TABLET STYLES (768px and up) ========== */
+@media screen and (min-width: 768px) {
+  .hide-mobile {
+    display: block;
+  }
+  
+  .hide-tablet {
+    display: none;
+  }
+  
+  .show-tablet {
+    display: block;
+  }
+  
+  /* Tablet-specific container */
+  .container {
+    max-width: var(--container-width-md);
+  }
+  
+  /* Tablet grid utilities */
+  .tablet\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .tablet\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .tablet\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  /* Tablet flex utilities */
+  .tablet\:flex-row {
+    flex-direction: row;
+  }
+  
+  .tablet\:flex-col {
+    flex-direction: column;
+  }
+}
+
+/* ========== DESKTOP STYLES (1024px and up) ========== */
+@media screen and (min-width: 1024px) {
+  .hide-desktop {
+    display: none;
+  }
+  
+  .show-desktop {
+    display: block;
+  }
+  
+  /* Desktop container */
+  .container {
+    max-width: var(--container-width-lg);
+  }
+  
+  /* Desktop grid utilities */
+  .desktop\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .desktop\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .desktop\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .desktop\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ========== BREAKPOINT-SPECIFIC ADJUSTMENTS ========== */
+
+/* Medium devices (tablets) */
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 90%;
+  }
+  
+  .section {
+    margin: var(--spacing-2xl) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+    padding: var(--spacing-lg);
+  }
+  
+  .heading-1 {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .heading-2 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-xl);
+  }
+}
+
+/* Small devices (mobile phones) */
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 85%;
+  }
+  
+  body {
+    margin-top: var(--spacing-4xl);
+  }
+  
+  .container {
+    max-width: var(--container-width-sm);
+    padding: var(--spacing-sm);
+  }
+  
+  .section {
+    min-height: auto;
+    margin: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+  
+  .heading-1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .heading-2 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .heading-3 {
+    font-size: var(--font-size-lg);
+  }
+  
+  /* Mobile-specific button adjustments */
+  .btn {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .btn--small {
+    width: auto;
+  }
+  
+  /* Mobile card adjustments */
+  .card {
+    padding: var(--spacing-lg);
+  }
+  
+  /* Mobile grid adjustments */
+  .grid-cols-2,
+  .grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Mobile flex adjustments */
+  .flex {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .mobile\:flex-col {
+    flex-direction: column;
+  }
+  
+  .mobile\:text-center {
+    text-align: center;
+  }
+  
+  .mobile\:w-full {
+    width: 100%;
+  }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 80%;
+  }
+  
+  .container {
+    padding: var(--spacing-xs);
+  }
+  
+  .section {
+    margin: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+  
+  .heading-1 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .heading-2 {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* ========== PRINT STYLES ========== */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .section {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+  }
+}
+
+/* ========== HIGH CONTRAST MODE ========== */
+@media (prefers-contrast: high) {
+  :root {
+    --color-bg: #000;
+    --color-bg-variant: #111;
+    --color-primary: #ffff00;
+    --color-white: #fff;
+    --color-light: #ccc;
+  }
+}
+
+/* ========== REDUCED MOTION ========== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
