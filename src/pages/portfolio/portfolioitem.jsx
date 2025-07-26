@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { CiCircleChevDown, CiCircleChevUp } from 'react-icons/ci'
 
 const PortfolioItem = ({ data }) => {
-  const [isExpanded, setExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const toggleExpansion = () => {
-    setExpanded(!isExpanded)
+    setIsExpanded(!isExpanded)
   }
 
   return (

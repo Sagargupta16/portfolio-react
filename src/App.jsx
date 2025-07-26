@@ -15,7 +15,14 @@ import Footer from './components/layout/Footer'
 import Theme from './components/layout/Theme'
 
 const RouterWrapper = ({ children, activeNav, setActiveNav }) => (
-  <Router basename="/portfolio-react" className="router">
+  <Router 
+    basename="/portfolio-react" 
+    className="router"
+    future={{
+      v7_startTransition: true,
+      v7_relativeSplatPath: true
+    }}
+  >
     <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
     <Theme />
     {children}

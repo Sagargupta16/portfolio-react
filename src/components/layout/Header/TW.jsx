@@ -1,6 +1,5 @@
 import React from 'react'
 import { Typewriter } from 'react-simple-typewriter'
-import 'react-simple-typewriter/dist/index'
 import PropTypes from 'prop-types'
 
 const TW = ({ roles }) => {

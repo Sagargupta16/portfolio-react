@@ -19,13 +19,16 @@ export const getCodingProfiles = () => personalData.coding_profiles;
 
 // Education
 export const getEducation = () => educationData;
+export const getEducationData = () => educationData;
 
 // Experience
 export const getExperience = () => experienceData.professional_experience;
+export const getExperienceData = () => experienceData;
 export const getPositionsOfResponsibility = () => experienceData.positions_of_responsibility;
 
 // Skills
 export const getSkills = () => skillsData;
+export const getSkillsData = () => skillsData;
 export const getProgrammingLanguages = () => skillsData.programming_languages;
 export const getFrameworksAndLibraries = () => skillsData.frameworks_and_libraries;
 export const getCloudAndDevOps = () => skillsData.cloud_and_devops;
@@ -38,19 +41,23 @@ export const getAreasOfInterest = () => skillsData.areas_of_interest;
 
 // Services
 export const getServices = () => servicesData;
+export const getServicesData = () => servicesData;
 
 // Projects
 export const getProjects = () => projectsData;
+export const getProjectsData = () => projectsData;
 export const getPersonalProjects = () => projectsData.personal_projects;
 export const getCollaborativeProjects = () => projectsData.collaborative_projects;
 
 // Achievements and Certifications
 export const getCertifications = () => achievementsData.certifications;
 export const getAchievements = () => achievementsData.achievements;
+export const getAchievementsData = () => achievementsData;
 export const getCodingPlatformStats = () => achievementsData.coding_platform_stats;
 
 // Contact
 export const getContactInfo = () => contactData;
+export const getContactData = () => contactData;
 export const getContactOptions = () => contactData.contact_options;
 export const getEmailConfig = () => contactData.email_config;
 
