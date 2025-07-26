@@ -1,7 +1,7 @@
 import React from 'react'
-import './services.css'
+import './Services.css'
 import ServiceItem from './serviceitem'
-import ServiceArray from './servicesArray'
+import ServiceArray from './ServicesArray'
 
 const Services = () => (
   <section id="services">
@@ -16,3 +16,4 @@ const Services = () => (
 )
 
 export default Services
+

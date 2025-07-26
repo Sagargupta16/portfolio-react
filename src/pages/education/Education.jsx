@@ -1,7 +1,7 @@
 import React from 'react'
-import './education.css'
+import './Education.css'
 import EducationItem from './educationitem'
-import educationArray from './educationArray'
+import educationArray from './EducationArray'
 
 const Education = () => {
   return (
@@ -18,3 +18,4 @@ const Education = () => {
 }
 
 export default Education
+

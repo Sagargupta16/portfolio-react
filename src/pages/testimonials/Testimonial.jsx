@@ -1,5 +1,5 @@
 import React from 'react'
-import './testimonial.css'
+import './Testimonial.css'
 import AVTR1 from '../../assets/images/me.png'
 
 const data = [
@@ -65,3 +65,4 @@ const Testimonial = () => {
 }
 
 export default Testimonial
+

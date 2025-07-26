@@ -73,3 +73,4 @@ PortfolioItem.propTypes = {
 }
 
 export default PortfolioItem
+

@@ -1,6 +1,6 @@
 import { AiOutlineBgColors } from 'react-icons/ai'
-import './theme.css'
-import themes from './themes'
+import './Theme.css'
+import themes from './Themes'
 
 const Theme = () => {
   const nextTheme = () => {

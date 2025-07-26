@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://sagargupta.life/portfolio-react/",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set NODE_OPTIONS=--no-deprecation && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
@@ -21,7 +21,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.7.1",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "^5.1.0-next.26",
     "react-simple-typewriter": "^5.0.0",
     "swiper": "^11.2.10",
     "typewriter-effect": "^2.19.0",

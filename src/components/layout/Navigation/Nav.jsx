@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import './nav.css'
+import './Nav.css'
 import { RiHome3Line, RiServiceLine } from 'react-icons/ri'
 import { AiOutlineUser, AiOutlineMessage } from 'react-icons/ai'
 import { GoBriefcase, GoPencil } from 'react-icons/go'

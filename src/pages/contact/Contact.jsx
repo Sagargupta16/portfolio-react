@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import './contact.css'
+import './Contact.css'
 import { MdOutlineEmail } from 'react-icons/md'
 import { ImWhatsapp } from 'react-icons/im'
 import { IoCallOutline } from 'react-icons/io5'
@@ -171,3 +171,4 @@ const Contact = () => {
 }
 
 export default Contact
+

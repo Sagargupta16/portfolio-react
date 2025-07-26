@@ -1,7 +1,7 @@
 import React from 'react'
-import './skill.css'
+import './Skill.css'
 import { BsPatchCheckFill } from 'react-icons/bs'
-import skills from './skillsArray'
+import skills from './SkillsArray'
 
 function Skill() {
   return (
@@ -28,3 +28,4 @@ function Skill() {
 }
 
 export default Skill
+

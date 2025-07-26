@@ -1,5 +1,5 @@
 import React from 'react'
-import './about.css'
+import './About.css'
 import ME from '../../assets/images/me-about.jpg'
 import { BsCodeSlash } from 'react-icons/bs'
 import { MdDeveloperMode } from 'react-icons/md'
@@ -81,3 +81,4 @@ const About = () => {
 }
 
 export default About
+

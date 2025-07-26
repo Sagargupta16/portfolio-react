@@ -1,7 +1,7 @@
 import React from 'react'
-import './portfolio.css'
+import './Portfolio.css'
 import PortFolioItem from './portfolioitem'
-import personalProjects, { collabProjects } from './projectsArray'
+import personalProjects, { collabProjects } from './ProjectsArray'
 
 const Portfolio = () => {
   const renderPortfolioItems = projects => {
@@ -25,3 +25,4 @@ const Portfolio = () => {
 }
 
 export default Portfolio
+

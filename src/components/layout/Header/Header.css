@@ -108,7 +108,7 @@
 .me {
   background:
     linear-gradient(var(--color-primary), transparent),
-    url(../../assets/images/bg-texture.png) var(--color-primary) center center/5px 5px;
+    url(../../../assets/images/bg-texture.png) var(--color-primary) center center/5px 5px;
   width: 25rem;
   min-width: 20rem;
   height: 60%;

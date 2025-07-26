@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import Header from './components/header/Header'
-import Nav from './components/nav/Nav'
+import Header from './components/layout/Header'
+import Nav from './components/layout/Navigation'
 import About from './pages/about/About'
 import Education from './pages/education/Education'
 import Experience from './pages/experience/Experience'
@@ -11,8 +11,8 @@ import Services from './pages/services/Services'
 import Portfolio from './pages/portfolio/Portfolio'
 // import Testimonial from './components/testimonials/Testimonial'
 import Contact from './pages/contact/Contact'
-import Footer from './components/footer/Footer'
-import Theme from './components/theme/Theme'
+import Footer from './components/layout/Footer'
+import Theme from './components/layout/Theme'
 
 const RouterWrapper = ({ children, activeNav, setActiveNav }) => (
   <Router basename="/portfolio-react" className="router">

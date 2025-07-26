@@ -27,3 +27,4 @@ EducationItem.propTypes = {
     cgpa: PropTypes.string.isRequired
   }).isRequired
 }
+
