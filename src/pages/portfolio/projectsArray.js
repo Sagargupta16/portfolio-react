@@ -14,26 +14,47 @@ import IMG13 from '../../assets/images/projects_images/project-13.jpg'
 
 const personalProjects = [
   {
-    id: 4,
+    id: 1,
+    image: IMG13,
+    title: 'Placemento: MCA Placement Portal',
+    description:
+      'Developed a comprehensive Placement Portal website for MCA students with robust security, intuitive UX, and interactive data visualization using MERN stack.',
+    tools_tech: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'AG Grid', 'AG Charts', 'JWT', 'Nodemailer'],
+    features: [
+      'Secure Authentication with Role-based Access',
+      'Forgot Password Functionality via Email',
+      'Customized AG Grid and AG Charts for Enhanced UI',
+      'Robust Backend APIs with Security Measures',
+      'Rate Limiting and Logging',
+      'Interactive Data Visualization',
+      'User-friendly UI Design',
+      'MERN Stack Architecture'
+    ],
+    github: 'https://github.com/Sagargupta16/Placemento',
+    live: '#'
+  },
+  {
+    id: 2,
     image: IMG4,
     title: 'Leetcode Rating Predictor',
     description:
-      'This is a Leetcode Rating Predictor which is made using Deep Learning. It is used to predict the rating of a user on Leetcode.',
-    tools_tech: ['React', 'FastAPI', 'Numpy', 'Pandas', 'Tensorflow', 'GraphQL'],
+      'Developed LeetCode Rating Predictor using LSTM model for accurate contest performance forecasts with React frontend and FastAPI backend.',
+    tools_tech: ['React', 'FastAPI', 'Numpy', 'Pandas', 'Tensorflow', 'GraphQL', 'LSTM', 'MinMaxScaler'],
     features: [
-      'Deep Learning Model',
+      'LSTM Deep Learning Model',
+      'Precise Rating Predictions',
+      'User-friendly React Frontend',
+      'Efficient FastAPI Backend',
+      'GraphQL Integration',
+      'Data Normalization with MinMaxScaler',
       'Extensive Data Analysis',
-      'Interactive Web Interface',
-      'Automated Data Fetching',
-      'Data Preprocessing',
-      'Backend Server',
-      'Scalable Architecture'
+      'Interactive Web Interface'
     ],
     github: 'https://github.com/Sagargupta16/LeetCode_Rating_Predictor',
     live: 'https://leetcode-rating-predictor.onrender.com/'
   },
   {
-    id: 1,
+    id: 3,
     image: IMG1,
     title: 'Portfolio React',
     description:
@@ -50,7 +71,7 @@ const personalProjects = [
     live: 'https://sagargupta.life/portfolio-react/'
   },
   {
-    id: 2,
+    id: 4,
     image: IMG2,
     title: 'Contact Manager',
     description:

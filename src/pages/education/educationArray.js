@@ -1,10 +1,10 @@
 const educationArray = [
   {
     id: 1,
-    date: '2021 - 2024',
+    date: 'August 2021 - June 2024',
     title: "Master's in Computer Applications (MCA)",
     text: 'National Institute of Technology Warangal -- Warangal, Telangana',
-    cgpa: 'CGPA: 8.43 (Till Sem-4)'
+    cgpa: 'CGPA: 8.38'
   },
   {
     id: 2,

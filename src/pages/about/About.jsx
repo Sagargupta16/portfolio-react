@@ -12,7 +12,7 @@ const About = () => {
       id: 1,
       icon: <BsCodeSlash className="about__icon" />,
       title: 'Coding',
-      count: '2000+ Questions'
+      count: '1100+ Questions'
     },
     {
       id: 2,
@@ -53,11 +53,13 @@ const About = () => {
           <p>
             👋 Hi, my name is Sagar Gupta, from Shivpuri, MP, India.
             <br />
-            I'm a Postgraduate 🎓 from NIT Warangal.
+            I'm a MCA Graduate 🎓 from NIT Warangal with experience at Amazon Web Services.
             <br />
-            I'm a Web developer & Programmer who loves to write clean and efficient code.
+            I'm a DevOps & Cloud Engineer, Full-Stack Developer who loves to write clean and efficient code.
             <br />
-            Apart from web development, I love Problem Solving using Data Structures and Algorithms in an Efficient Way.
+            Currently working at AWS Professional Services, specializing in Infrastructure Automation and DevOps solutions.
+            <br />
+            Apart from web development, I love Problem Solving using Data Structures and Algorithms, and have solved 1100+ problems on various platforms.
           </p>
           {window.screen.width > 600 ? (
             <Link to="/contact" className="btn btn-primary">

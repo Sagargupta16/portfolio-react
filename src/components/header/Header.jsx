@@ -7,10 +7,13 @@ import TwComponent from './TW'
 
 const Header = () => {
   const roles = [
-    'Fullstack Developer',
+    'AWS Professional Services Engineer',
+    'DevOps & Cloud Engineer',
+    'Full-Stack Developer', 
     'Competitive Programmer',
     'Problem Solver',
     'Data Structures and Algorithms Enthusiast',
+    'MLOps Engineer',
     'Open Source Contributor',
     'Tech Enthusiast'
   ]

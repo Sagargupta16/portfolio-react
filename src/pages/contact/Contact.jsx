@@ -35,7 +35,7 @@ const Contact = () => {
       isValid = false
     }
 
-    const emailPattern = /^([\w.%+-]+)@((gmail\.com)|(official\.com)|(student\.nitw\.ac\.in))$/
+    const emailPattern = /^([\w.%+-]+)@((gmail\.com)|(official\.com)|(student\.nitw\.ac\.in)|(sg85207@gmail\.com))$/
     if (!emailPattern.test(formData.email)) {
       newErrors.email = 'Invalid email address'
       isValid = false
