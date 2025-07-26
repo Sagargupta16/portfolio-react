@@ -9,7 +9,6 @@ import Experience from './pages/experience/Experience'
 import Skill from './pages/skill/Skill'
 import Services from './pages/services/Services'
 import Portfolio from './pages/portfolio/Portfolio'
-// import Testimonial from './components/testimonials/Testimonial'
 import Contact from './pages/contact/Contact'
 import Footer from './components/layout/Footer'
 import Theme from './components/layout/Theme'
@@ -59,7 +58,6 @@ const App = () => {
           <Route path="/skill" element={<Skill />} />
           <Route path="/services" element={<Services />} />
           <Route path="/portfolio" element={<Portfolio />} />
-          {/* <Route path="/testimonial" element={<Testimonial />} /> */}
           <Route path="/contact" element={<Contact />} />
         </Routes>
       ) : (
@@ -71,7 +69,6 @@ const App = () => {
           <Skill />
           <Services />
           <Portfolio />
-          {/* <Testimonial /> */}
           <Contact />
         </>
       )}

@@ -16,6 +16,15 @@ import Theme from '../components/layout/Theme'
 import App from '../App'
 import { MemoryRouter } from 'react-router-dom'
 
+// Helper function to render with router when needed
+const renderWithRouter = (component) => {
+  return render(
+    <MemoryRouter>
+      {component}
+    </MemoryRouter>
+  )
+}
+
 // Mock window.scrollTo for Navigation component
 beforeEach(() => {
   Object.defineProperty(window, 'scrollTo', {
@@ -122,7 +131,7 @@ describe('Page Components', () => {
   })
 
   test('renders Contact without crashing', () => {
-    render(<Contact />)
+    renderWithRouter(<Contact />)
     expect(screen.getByText(/Get In Touch/i)).toBeInTheDocument()
   })
 })
