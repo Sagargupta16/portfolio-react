@@ -3,7 +3,7 @@ import './contact.css'
 import { MdOutlineEmail } from 'react-icons/md'
 import { ImWhatsapp } from 'react-icons/im'
 import { IoCallOutline } from 'react-icons/io5'
-import emailjs from 'emailjs-com'
+import emailjs from '@emailjs/browser'
 
 const Contact = () => {
   const form = useRef()

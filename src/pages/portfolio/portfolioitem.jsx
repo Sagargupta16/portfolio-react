@@ -61,7 +61,7 @@ const PortfolioItem = ({ data }) => {
 
 PortfolioItem.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

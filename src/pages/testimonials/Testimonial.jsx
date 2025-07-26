@@ -1,6 +1,6 @@
 import React from 'react'
 import './testimonial.css'
-import AVTR1 from '../../assets/me.png'
+import AVTR1 from '../../assets/images/me.png'
 
 // import { Swiper, SwiperSlide } from 'swiper/react'
 

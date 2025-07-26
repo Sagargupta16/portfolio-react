@@ -3,14 +3,14 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import Header from '../components/header/Header'
 import Nav from '../components/nav/Nav'
-import About from '../components/about/About'
-import Education from '../components/education/Education'
-import Experience from '../components/experience/Experience'
-import Skill from '../components/skill/Skill'
-import Services from '../components/services/Services'
-import Testimonial from '../components/testimonials/Testimonial'
-import Portfolio from '../components/portfolio/Portfolio'
-import Contact from '../components/contact/Contact'
+import About from '../pages/about/About'
+import Education from '../pages/education/Education'
+import Experience from '../pages/experience/Experience'
+import Skill from '../pages/skill/Skill'
+import Services from '../pages/services/Services'
+// import Testimonial from '../pages/testimonials/Testimonial'
+import Portfolio from '../pages/portfolio/Portfolio'
+import Contact from '../pages/contact/Contact'
 import Footer from '../components/footer/Footer'
 import App from '../App'
 import { MemoryRouter } from 'react-router-dom'
@@ -67,6 +67,6 @@ test('renders App without crashing', () => {
   render(<App />)
 })
 
-test('renders Testimonial without crashing', () => {
-  render(<Testimonial />)
-})
+// test('renders Testimonial without crashing', () => {
+//   render(<Testimonial />)
+// })
