@@ -66,7 +66,7 @@ export const getAllData = () => ({
   contact: contactData
 });
 
-export default {
+const dataLoader = {
   getPersonalInfo,
   getName,
   getRoles,
@@ -96,3 +96,5 @@ export default {
   getEmailConfig,
   getAllData
 };
+
+export default dataLoader;
