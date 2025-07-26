@@ -4,25 +4,17 @@ import CtaComponent from './CTA'
 import ME from '../../assets/images/me.png'
 import HeaderSocials from './HeaderSocials'
 import TwComponent from './TW'
+import { getName, getRoles } from '../../data/dataLoader'
 
 const Header = () => {
-  const roles = [
-    'AWS Professional Services Engineer',
-    'DevOps & Cloud Engineer',
-    'Full-Stack Developer', 
-    'Competitive Programmer',
-    'Problem Solver',
-    'Data Structures and Algorithms Enthusiast',
-    'MLOps Engineer',
-    'Open Source Contributor',
-    'Tech Enthusiast'
-  ]
+  const name = getName()
+  const roles = getRoles()
 
   return (
     <section className="header" id="header">
       <div className="container header__container">
         <h5>Hey Myself</h5>
-        <h1>Sagar Gupta</h1>
+        <h1>{name}</h1>
         <h5 className="text-light tw_comp">
           I'm a <TwComponent roles={roles} />
         </h5>

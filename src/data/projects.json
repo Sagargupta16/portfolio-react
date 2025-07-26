@@ -1,0 +1,77 @@
+{
+  "personal_projects": [
+    {
+      "id": 1,
+      "image": "project-13.jpg",
+      "title": "Placemento: MCA Placement Portal",
+      "description": "Developed a comprehensive Placement Portal website for MCA students with robust security, intuitive UX, and interactive data visualization using MERN stack.",
+      "date": "December 2023 - February 2024",
+      "tools_tech": ["MongoDB", "Express.js", "React.js", "Node.js", "AG Grid", "AG Charts", "JWT", "Nodemailer"],
+      "features": [
+        "Secure Authentication with Role-based Access",
+        "Forgot Password Functionality via Email",
+        "Customized AG Grid and AG Charts for Enhanced UI",
+        "Robust Backend APIs with Security Measures",
+        "Rate Limiting and Logging",
+        "Interactive Data Visualization",
+        "User-friendly UI Design",
+        "MERN Stack Architecture"
+      ],
+      "github": "https://github.com/Sagargupta16/Placemento",
+      "live": "#"
+    },
+    {
+      "id": 2,
+      "image": "project-4.png",
+      "title": "Leetcode Rating Predictor",
+      "description": "Developed LeetCode Rating Predictor using LSTM model for accurate contest performance forecasts with React frontend and FastAPI backend.",
+      "date": "November - December 2023",
+      "tools_tech": ["React", "FastAPI", "Numpy", "Pandas", "Tensorflow", "GraphQL", "LSTM", "MinMaxScaler"],
+      "features": [
+        "LSTM Deep Learning Model",
+        "Precise Rating Predictions",
+        "User-friendly React Frontend",
+        "Efficient FastAPI Backend",
+        "GraphQL Integration",
+        "Data Normalization with MinMaxScaler",
+        "Extensive Data Analysis",
+        "Interactive Web Interface"
+      ],
+      "github": "https://github.com/Sagargupta16/LeetCode_Rating_Predictor",
+      "live": "https://leetcode-rating-predictor.onrender.com/"
+    },
+    {
+      "id": 3,
+      "image": "project-1.png",
+      "title": "Portfolio React",
+      "description": "This is my portfolio website which is made using ReactJS. It shows my skills, projects, and other details.",
+      "tools_tech": ["React", "React-Routers", "React-Icons", "CSS", "JavaScript"],
+      "features": [
+        "Responsive",
+        "Single Page Application For Mobile View",
+        "Multi Page Application For Desktop View",
+        "Awesome UI Pages",
+        "Smooth Scrolling"
+      ],
+      "github": "https://github.com/Sagargupta16/portfolio-react",
+      "live": "https://sagargupta.life/portfolio-react/"
+    },
+    {
+      "id": 4,
+      "image": "project-2.png",
+      "title": "Contact Manager",
+      "description": "This is a contact manager web app which is made using ReactJS. It is used to store contacts and their details.",
+      "tools_tech": ["React", "React-Routers", "NodeJS", "ExpressJS", "MongoDB", "CSS", "JavaScript"],
+      "features": [
+        "Responsive",
+        "Multi Page Application",
+        "CRUD Operations",
+        "Routing with 0 refresh rate",
+        "Dark-Mode",
+        "Search Feature"
+      ],
+      "github": "https://github.com/Sagargupta16/Contact-Manager-Mern",
+      "live": "https://sagargupta.life/contact-manager/"
+    }
+  ]
+}

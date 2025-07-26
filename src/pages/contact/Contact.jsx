@@ -99,40 +99,38 @@ const Contact = () => {
     setSuccessMessage('')
   }
 
-  const contactOptions = [
-    {
-      id: 1,
-      icon: <MdOutlineEmail className="contact__icon" />,
-      title: 'Email Me',
-      value: 'sg85207@gmail.com',
-      link: 'mailto:sg85207@gmail.com',
-      message: 'Send a Mail'
-    },
-    {
-      id: 2,
-      icon: <ImWhatsapp className="contact__icon" />,
-      title: 'WhatsApp Me',
-      value: '+91-8770532413',
-      link: 'https://wa.me/+918770532413',
-      message: 'Send a Message'
-    },
-    {
-      id: 3,
-      icon: <IoCallOutline className="contact__icon" />,
-      title: 'Call me',
-      value: '+91-8770532413',
-      link: 'tel:+918770532413',
-      message: 'Call Now'
-    }
-  ]
-
   return (
     <section id="contact">
       <h5>Get In Touch</h5>
       <h2>Contact Me</h2>
       <div className="container contact__container">
         <div className="contact__options">
-          {contactOptions.map(option => (
+          {[
+            {
+              id: 1,
+              icon: <MdOutlineEmail className="contact__icon" />,
+              title: 'Email Me',
+              value: 'sg85207@gmail.com',
+              link: 'mailto:sg85207@gmail.com',
+              message: 'Send a Mail'
+            },
+            {
+              id: 2,
+              icon: <ImWhatsapp className="contact__icon" />,
+              title: 'WhatsApp Me',
+              value: '+91-8770532413',
+              link: 'https://wa.me/+918770532413',
+              message: 'Send a Message'
+            },
+            {
+              id: 3,
+              icon: <IoCallOutline className="contact__icon" />,
+              title: 'Call me',
+              value: '+91-8770532413',
+              link: 'tel:+918770532413',
+              message: 'Call Now'
+            }
+          ].map(option => (
             <article className="contact__option" key={option.id}>
               <h4>
                 {option.icon}

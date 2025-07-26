@@ -1,0 +1,94 @@
+{
+  "certifications": [
+    {
+      "id": 1,
+      "name": "AWS Certified Cloud Practitioner",
+      "type": "Industry Certification",
+      "issuer": "Amazon Web Services"
+    },
+    {
+      "id": 2,
+      "name": "AWS Certified AI Practitioner",
+      "type": "Industry Certification",
+      "issuer": "Amazon Web Services"
+    },
+    {
+      "id": 3,
+      "name": "AWS Certified Solutions Architect – Associate",
+      "type": "Industry Certification",
+      "issuer": "Amazon Web Services"
+    },
+    {
+      "id": 4,
+      "name": "AWS Certified Machine Learning Engineer – Associate",
+      "type": "Industry Certification",
+      "issuer": "Amazon Web Services"
+    },
+    {
+      "id": 5,
+      "name": "HashiCorp Certified: Terraform Associate",
+      "type": "Industry Certification",
+      "issuer": "HashiCorp"
+    }
+  ],
+  "achievements": [
+    {
+      "id": 1,
+      "title": "4th Position in TriNIT Hackathon",
+      "type": "Competition"
+    },
+    {
+      "id": 2,
+      "title": "1st Position in Coding Cauldron Online VERSION 23'",
+      "organizer": "NIT-Trichy",
+      "type": "Competition"
+    },
+    {
+      "id": 3,
+      "title": "1st Position in QFiesta IGNOSI 22'",
+      "organizer": "NIT-Warangal",
+      "type": "Competition"
+    },
+    {
+      "id": 4,
+      "title": "1289th Position (Top 5%) at Google Kick-start Round E '22",
+      "type": "Competition",
+      "certificate": true
+    },
+    {
+      "id": 5,
+      "title": "3rd Position in INFOTREK '22 LOGIC HEAD",
+      "organizer": "NIT-Trichy",
+      "type": "Competition"
+    },
+    {
+      "id": 6,
+      "title": "3rd Position in Event MOTHRA - VERSION '21",
+      "organizer": "NIT-Trichy",
+      "type": "Competition",
+      "certificate": true
+    }
+  ],
+  "coding_platform_stats": {
+    "leetcode": {
+      "username": "Sagargupta1610",
+      "problems_solved": "1100+",
+      "contests_participated": "80+",
+      "rating": "1950+"
+    },
+    "geeksforgeeks": {
+      "username": "sagargupta10",
+      "problems_solved": "350+"
+    },
+    "hackerrank": {
+      "username": "Sagargupta1610",
+      "problem_solving": "6 Star",
+      "cpp": "5 Star"
+    },
+    "codechef": {
+      "username": "sagargupta_16",
+      "rating": "3 Star",
+      "contests": "20+ Rated Contests"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "date": "August 2021 - June 2024",
+    "title": "Master's in Computer Applications (MCA)",
+    "institution": "National Institute of Technology Warangal",
+    "location": "Warangal, Telangana",
+    "cgpa": "8.38",
+    "display_text": "National Institute of Technology Warangal -- Warangal, Telangana"
+  },
+  {
+    "id": 2,
+    "date": "2018 - 2021",
+    "title": "Bachelor's in Computer Applications (BCA)",
+    "institution": "Sanskar College Of Professional Studies (DAVV University)",
+    "location": "Indore, MP",
+    "cgpa": "7.34",
+    "display_text": "Sanskar College Of Professional Studies (DAVV University) -- Indore, MP"
+  },
+  {
+    "id": 3,
+    "date": "2016 - 2018",
+    "title": "Higher Secondary School (PCM+PE)",
+    "institution": "Happy Days School",
+    "location": "Shivpuri, MP",
+    "cgpa": "8.59",
+    "display_text": "Happy Days School -- Shivpuri, MP"
+  },
+  {
+    "id": 4,
+    "date": "2014 - 2016",
+    "title": "High School",
+    "institution": "Kids Garden School",
+    "location": "Shivpuri, MP",
+    "cgpa": "7.40",
+    "display_text": "Kids Garden School -- Shivpuri, MP"
+  }
+]

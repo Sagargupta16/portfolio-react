@@ -1,0 +1,79 @@
+{
+  "programming_languages": ["C++", "Python", "Java", "JavaScript", "SQL", "HTML", "CSS"],
+  "frameworks_and_libraries": [
+    "React",
+    "Express.js",
+    "Fast-API",
+    "Rest-API",
+    "Node.js",
+    "MongoDB",
+    "Numpy",
+    "Pandas",
+    "Tensorflow",
+    "Bootstrap",
+    "Material UI"
+  ],
+  "cloud_and_devops": [
+    "AWS",
+    "AWS EC2",
+    "AWS ECS",
+    "AWS ECR",
+    "AWS CloudWatch",
+    "AWS EventBridge",
+    "AWS SNS",
+    "AWS EBS",
+    "AWS Detective",
+    "AWS X-Ray",
+    "AWS CodePipeline",
+    "AWS CodeBuild",
+    "AWS CodeDeploy",
+    "Terraform",
+    "Docker",
+    "Ansible"
+  ],
+  "tools_editors_and_ides": [
+    "Git",
+    "GitHub Actions",
+    "VS Code",
+    "SonarQube",
+    "Unity Engine",
+    "Jupyter Notebook",
+    "Android Studio",
+    "Eclipse"
+  ],
+  "databases": ["MongoDB", "MySQL", "AWS RDS"],
+  "operating_systems": ["Linux", "Windows", "Android"],
+  "coursework": [
+    "Cloud Computing",
+    "Data Structures and Algorithms",
+    "Database Management Systems",
+    "Game Development",
+    "Web Technologies",
+    "Image Processing",
+    "Machine Learning",
+    "Deep Learning",
+    "Artificial Intelligence",
+    "Software Engineering",
+    "Computer Networks",
+    "Operating Systems",
+    "Object-Oriented Programming"
+  ],
+  "soft_skills": [
+    "Leadership",
+    "Teamwork",
+    "Communication",
+    "Critical Thinking",
+    "Problem Solving",
+    "Adaptability",
+    "Creativity",
+    "Time Management"
+  ],
+  "areas_of_interest": [
+    "Full-Stack Development",
+    "DevOps",
+    "MLOps",
+    "Cloud Computing",
+    "Data Science",
+    "Game Development"
+  ]
+}

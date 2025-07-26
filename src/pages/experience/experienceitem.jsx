@@ -39,7 +39,7 @@ const ExperienceItem = ({ item }) => {
         </span>
       </h3>
       <div className={`experience__item__description ${show ? 'active' : ''}`}>
-        <h4>My Contribution!</h4>
+        <h4>{item.project}</h4>
         <ul>
           {Object.values(item.description).map(desc => (
             <li key={`desc-${desc}`}>{desc}</li>
@@ -65,6 +65,7 @@ ExperienceItem.propTypes = {
     position: PropTypes.string.isRequired,
     company: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
+    project: PropTypes.string.isRequired,
     description: PropTypes.objectOf(PropTypes.string).isRequired,
     skills: PropTypes.arrayOf(PropTypes.string).isRequired
   }).isRequired

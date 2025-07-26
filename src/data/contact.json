@@ -1,0 +1,34 @@
+{
+  "contact_options": [
+    {
+      "id": 1,
+      "icon": "MdOutlineEmail",
+      "title": "Email Me",
+      "value": "sg85207@gmail.com",
+      "link": "mailto:sg85207@gmail.com",
+      "message": "Send a Mail"
+    },
+    {
+      "id": 2,
+      "icon": "ImWhatsapp",
+      "title": "WhatsApp Me",
+      "value": "+91-8770532413",
+      "link": "https://wa.me/+918770532413",
+      "message": "Send a Message"
+    },
+    {
+      "id": 3,
+      "icon": "IoCallOutline",
+      "title": "Call me",
+      "value": "+91-8770532413",
+      "link": "tel:+918770532413",
+      "message": "Call Now"
+    }
+  ],
+  "email_config": {
+    "service_id": "service_lyt547p",
+    "template_id": "template_yz438w6",
+    "public_key": "PAcL61ygLI8WYG16R",
+    "validation_pattern": "/^([\\w.%+-]+)@((gmail\\.com)|(official\\.com)|(student\\.nitw\\.ac\\.in)|(sg85207@gmail\\.com))$/"
+  }
+}
