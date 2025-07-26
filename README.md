@@ -6,13 +6,13 @@
 
 ## :pencil: About The Project
 
-Personal Portfolio - A dynamic and interactive React application showcasing my skills, projects, and professional journey. This platform serves as a comprehensive hub of information, providing insights into my background, achievements, and expertise.
+Personal Portfolio - A dynamic and interactive React application showcasing my professional journey as a DevOps & Cloud Engineer at Amazon Web Services. This platform serves as a comprehensive hub featuring my AWS expertise, infrastructure automation projects, and technical achievements. Built with a modern JSON-based data architecture for easy maintenance and updates.
 
 ---
 
 ## :cloud: Overview
 
-This is a React Application. The primary objective of this project is to present a visually appealing and user-friendly interface that highlights my accomplishments and abilities to potential clients, collaborators, and employers. By encapsulating my experiences and talents in one central location, this portfolio aims to leave a lasting impression and demonstrate my commitment to excellence in the field.
+This React application presents my professional experience at AWS Professional Services, specializing in DevOps Infrastructure Automation and Cloud solutions. The portfolio demonstrates my expertise with Terraform, AWS services, and modern development practices. With a centralized JSON data management system, the portfolio is designed for easy content updates while maintaining a visually appealing and user-friendly interface.
 
 ---
 
@@ -20,15 +20,37 @@ This is a React Application. The primary objective of this project is to present
 
 The portfolio is built using the following technologies:
 
-- **React:** The core framework for building an efficient and interactive user interface.
-- **HTML/CSS:** To structure and style the components and layout of the application.
-- **JavaScript:** For implementing dynamic and functional features on the site.
-- **Responsive Design:** Ensuring the portfolio looks great and functions well on various devices and screen sizes.
-- **Hosting Platform:** This is deployed on a Github Pages through a Github Action Workflow.
+- **React 18.3.1:** The core framework for building an efficient and interactive user interface.
+- **JavaScript ES6+:** For implementing dynamic and functional features throughout the application.
+- **HTML5/CSS3:** Modern web standards for structuring and styling components with responsive design.
+- **JSON Data Architecture:** Centralized data management system for easy content updates and maintenance.
+- **React Router:** For seamless navigation between different sections and pages.
+- **React Icons:** Comprehensive icon library for enhanced visual elements.
+- **EmailJS:** Direct email integration for the contact form functionality.
+- **PropTypes:** Type checking for React components to ensure reliability.
+- **GitHub Pages:** Deployment platform with automated CI/CD through GitHub Actions.
+
+### **AWS & DevOps Technologies Featured:**
+- **AWS Services:** EventBridge, CloudWatch, SNS, EBS, AWS Detective, ECS, CodePipeline, X-Ray
+- **Infrastructure as Code:** Terraform, tftest for unit testing
+- **DevOps Tools:** Docker, CI/CD pipelines, Blue-Green deployments
+- **Monitoring & Observability:** AWS X-Ray, CloudWatch, distributed tracing
 
 ---
 
-## Key Features:
+## Key Features
+
+- **JSON-Based Data Architecture:**
+  All portfolio content is centralized in JSON files within the `src/data/` folder, making it incredibly easy to update personal information, projects, skills, and experience without touching component code.
+
+- **Modular Data Loading System:**
+  Custom `dataLoader.js` utility provides structured access to all portfolio data through dedicated getter functions, ensuring consistent data access across components.
+
+- **Professional AWS Experience Showcase:**
+  Detailed presentation of current role at AWS Professional Services, featuring infrastructure automation projects, Terraform expertise, and cloud solutions.
+
+- **Dynamic Project Display:**
+  Smart project rendering system that maps JSON data to visual components, automatically handling project images and metadata.
 
 - **Single Page Application for Mobile View:**
   The portfolio is designed as a single-page application (SPA) for an optimal mobile viewing experience. Users can seamlessly scroll through the content, eliminating the need for page reloads and ensuring a smooth and engaging mobile interaction.
@@ -40,7 +62,7 @@ The portfolio is built using the following technologies:
   The portfolio boasts eye-catching hover effects that add a touch of interactivity and liveliness to the user experience. Additionally, strategic use of shadowing and well-defined overall structure contributes to a visually appealing and aesthetically pleasing interface.
 
 - **Smooth Navigation with 0 Refresh Rate:**
-  Navigation within the portfolio is incredibly smooth, facilitated by a seamless user interface that eliminates the need for page refreshes. This ensures a delightful user experience, as visitors can effortlessly explore various sections without any interruptions.
+  Navigation within the portfolio is incredibly smooth, facilitated by a seameless user interface that eliminates the need for page refreshes. This ensures a delightful user experience, as visitors can effortlessly explore various sections without any interruptions.
 
 - **Detailed Content:**
   Every section of the portfolio is meticulously crafted to provide detailed and comprehensive information. Whether it's showcasing projects, skills, or professional experiences, users can expect to find in-depth insights that highlight the depth of expertise.
@@ -60,13 +82,16 @@ With this impressive array of key features, my portfolio demonstrates my commitm
 
 ## 🔮 Future Enhancements
 
-- **Testimonial Section:** Add a dedicated section to showcase testimonials from clients and collaborators.
-- **Gallery Section:** Create an engaging gallery to display images, screenshots, and interactive demos of completed projects.
-- **Up to Date According to My Professional Journey:** Regularly update the portfolio with the latest projects, skills, and accomplishments.
-- **More UI Enhancements:** Introduce additional UI improvements to enhance user experience and navigation.
-- **Adding Animation at Various Places:** Strategically implement animations in different sections to make the website more engaging.
-- **Refined Mobile Experience:** Optimize and fine-tune the mobile experience for better usability on various devices.
-- **Integration of Blog Section:** Incorporate a blog section to share insights, tutorials, and industry-related content.
+- **Enhanced Data Management:** Add more sophisticated data validation and error handling for JSON files.
+- **Component Testing:** Expand test coverage for all portfolio components with comprehensive unit tests.
+- **Performance Optimization:** Implement lazy loading and code splitting for better performance.
+- **Animation Library Integration:** Add smooth transitions and animations using libraries like Framer Motion.
+- **Dark/Light Theme Toggle:** Implement dynamic theme switching with CSS variables.
+- **Blog Integration:** Add a technical blog section to share insights about AWS and DevOps.
+- **Interactive Project Demos:** Embed live demos and interactive elements for showcased projects.
+- **SEO Optimization:** Enhance meta tags and structured data for better search engine visibility.
+- **Progressive Web App:** Convert to PWA for offline functionality and mobile app-like experience.
+- **Real-time Analytics:** Integrate analytics to track portfolio engagement and performance.
 
 ---
 
@@ -79,13 +104,49 @@ With this impressive array of key features, my portfolio demonstrates my commitm
 - public
   |-- favicon.ico
   |-- index.html
+  |-- favicon_io/
 - src
   |-- assets
   |   |-- images
-  |   |   |-- project1.png
-  |   |   |-- project2.png
-  |   |   |-- ...
+  |   |   |-- me.png
+  |   |   |-- me-about.jpg
+  |   |   |-- bg-texture.png
+  |   |   |-- projects_images/
+  |   |   |   |-- project-1.png to project-13.jpg
+  |   |-- cursors
+  |       |-- cursor-1.svg
   |-- components
+  |   |-- ErrorBoundary/
+  |   |-- Loading/
+  |   |-- footer
+  |   |   |-- Footer.jsx
+  |   |   |-- footer.css
+  |   |   |-- socialLinks.js
+  |   |-- header
+  |   |   |-- Header.jsx
+  |   |   |-- HeaderSocials.jsx
+  |   |   |-- CTA.jsx
+  |   |   |-- TW.jsx
+  |   |   |-- header.css
+  |   |   |-- profiles.js
+  |   |-- nav
+  |   |   |-- Nav.jsx
+  |   |   |-- nav.css
+  |   |-- theme
+  |       |-- Theme.jsx
+  |       |-- theme.css
+  |       |-- themes.js
+  |-- data (JSON Data Architecture)
+  |   |-- personal.json
+  |   |-- education.json
+  |   |-- experience.json
+  |   |-- skills.json
+  |   |-- services.json
+  |   |-- projects.json
+  |   |-- achievements.json
+  |   |-- contact.json
+  |   |-- dataLoader.js
+  |-- pages
   |   |-- about
   |   |   |-- About.jsx
   |   |   |-- about.css
@@ -95,37 +156,32 @@ With this impressive array of key features, my portfolio demonstrates my commitm
   |   |-- education
   |   |   |-- Education.jsx
   |   |   |-- education.css
+  |   |   |-- educationArray.js
   |   |   |-- educationitem.jsx
   |   |-- experience
   |   |   |-- Experience.jsx
   |   |   |-- experience.css
+  |   |   |-- experienceArray.js
   |   |   |-- experienceitem.jsx
-  |   |-- footer
-  |   |   |-- Footer.jsx
-  |   |   |-- footer.css
-  |   |-- header
-  |   |   |-- CTA.jsx
-  |   |   |-- Header.jsx
-  |   |   |-- HeaderSocials.jsx
-  |   |   |-- TW.jsx
-  |   |   |-- header.css
-  |   |-- nav
-  |   |   |-- Nav.jsx
-  |   |   |-- nav.css
   |   |-- portfolio
   |   |   |-- Portfolio.jsx
   |   |   |-- portfolio.css
   |   |   |-- portfolioitem.jsx
+  |   |   |-- projectsArray.js
   |   |-- services
   |   |   |-- Services.jsx
   |   |   |-- serviceitem.jsx
   |   |   |-- services.css
+  |   |   |-- servicesArray.js
   |   |-- skill
   |   |   |-- Skill.jsx
   |   |   |-- skill.css
+  |   |   |-- skillsArray.js
   |   |-- testimonials
   |       |-- Testimonial.jsx
   |       |-- testimonial.css
+  |-- __tests__
+      |-- Components.test.js
   |-- App.jsx
   |-- index.css
   |-- index.js
@@ -135,7 +191,45 @@ With this impressive array of key features, my portfolio demonstrates my commitm
 - package.json
 ```
 
-## 📼 How to Run Locally
+## � JSON Data Architecture
+
+This portfolio uses a modern JSON-based data management system for easy content updates:
+
+### **Data Files Location:** `src/data/`
+
+- **`personal.json`** - Personal information, bio, statistics, social profiles
+- **`education.json`** - Educational background and academic achievements  
+- **`experience.json`** - Professional experience and positions of responsibility
+- **`skills.json`** - Technical skills categorized by type (languages, frameworks, cloud, etc.)
+- **`services.json`** - Services offered and capabilities
+- **`projects.json`** - Personal and collaborative projects with details
+- **`achievements.json`** - Certifications, achievements, and coding platform stats
+- **`contact.json`** - Contact information and communication preferences
+
+### **Data Loader System:** `src/data/dataLoader.js`
+
+Provides structured access functions for all data:
+```javascript
+// Examples of available functions
+getPersonalInfo()     // Get all personal data
+getName()             // Get name specifically  
+getExperience()       // Get professional experience
+getSkills()           // Get all skills data
+getProjects()         // Get all projects
+// ... and many more specific getters
+```
+
+### **How to Update Your Portfolio:**
+
+1. **Add New Experience:** Edit `experience.json` → Add new job entry
+2. **Update Skills:** Edit `skills.json` → Add new technologies to relevant categories
+3. **Add New Project:** Edit `projects.json` → Add project details and image reference
+4. **Update Bio:** Edit `personal.json` → Modify about section or statistics
+5. **Add Certification:** Edit `achievements.json` → Add new certifications
+
+**No code changes needed!** The components automatically reflect JSON data updates.
+
+## �📼 How to Run Locally
 
 To run this portfolio locally on your machine, follow these simple steps:
 
@@ -171,7 +265,31 @@ To run this portfolio locally on your machine, follow these simple steps:
 5. **View the Portfolio:**
    Once the development server has started successfully, open your web browser and navigate to `http://localhost:3000/portfolio-react`. You should now be able to see and interact with the portfolio locally on your machine.
 
-With these steps, you can easily run the portfolio locally, explore its features, and make any desired modifications to suit your needs. Happy coding!
+## 🧪 Testing
+
+The portfolio includes a comprehensive test suite to ensure all components work correctly:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage report  
+npm test -- --coverage --watchAll=false
+
+# Run tests in watch mode (for development)
+npm test -- --watch
+```
+
+**Test Coverage:**
+- All major components (Header, About, Education, Experience, Skills, Services, Portfolio, Contact, Footer)
+- JSON data loader functionality
+- Component rendering and basic functionality
+- Currently achieving 67%+ test coverage
+
+**Test Files:**
+- `src/__tests__/Components.test.js` - Main component testing suite
+
+With these steps, you can easily run the portfolio locally, explore its features, and make any desired modifications to suit your needs. The JSON data architecture makes updates simple and maintainable!
 
 ---
 
