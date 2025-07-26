@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import './Experience.css'
+import './experience.css'
 import ExperienceItem from './experienceitem'
 import { experienceArray, positionOfResponsibilityArray } from './ExperienceArray'
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'
