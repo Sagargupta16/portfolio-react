@@ -2,11 +2,6 @@ import React from 'react'
 import './testimonial.css'
 import AVTR1 from '../../assets/images/me.png'
 
-// import { Swiper, SwiperSlide } from 'swiper/react'
-
-// import 'swiper/css'
-// import 'swiper/css/pagination'
-
 const data = [
   {
     id: 1,
@@ -53,7 +48,7 @@ const Testimonial = () => {
       {data.map(({ id, avatar, name, designation, review }) => {
         return (
           // <SwiperSlide key={id}>
-          <div className="testimonial">
+          <div className="testimonial" key={id}>
             <div className="recommenders__avatar">
               <img src={avatar} alt="Recommenders avatar" />
             </div>

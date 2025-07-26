@@ -49,8 +49,8 @@ const Contact = () => {
     setErrors(newErrors)
 
     setFeedbackHTML(() =>
-      Object.keys(newErrors).map((key, index) => (
-        <p key={index} className="error">
+      Object.keys(newErrors).map((key) => (
+        <p key={key} className="error">
           {newErrors[key]}
         </p>
       ))
