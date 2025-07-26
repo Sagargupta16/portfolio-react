@@ -1,5 +1,8 @@
 # Personal Portfolio
 
+[![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml)
+[![Security Analysis](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml)
+
 #### Project deployed link -> [Portfolio-react](https://sagargupta.live/portfolio-react)
 
 ---
