@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import './Contact.css'
 import { MdOutlineEmail } from 'react-icons/md'
 import { ImWhatsapp } from 'react-icons/im'
 import { IoCallOutline } from 'react-icons/io5'
 import emailjs from '@emailjs/browser'
+import { fadeInUp, fadeInLeft, fadeInRight, cardHover, hoverScale } from '../../utils/animations'
 
 const Contact = () => {
   const form = useRef()
@@ -100,11 +102,22 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact">
-      <h5>Get In Touch</h5>
-      <h2>Contact Me</h2>
+    <motion.section 
+      id="contact"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      <motion.h5 variants={fadeInUp}>Get In Touch</motion.h5>
+      <motion.h2 variants={fadeInUp}>Contact Me</motion.h2>
       <div className="container contact__container">
-        <div className="contact__options">
+        <motion.div 
+          className="contact__options"
+          variants={fadeInLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           {[
             {
               id: 1,
@@ -130,43 +143,85 @@ const Contact = () => {
               link: 'tel:+918770532413',
               message: 'Call Now'
             }
-          ].map(option => (
-            <article className="contact__option" key={option.id}>
+          ].map((option, index) => (
+            <motion.article 
+              className="contact__option" 
+              key={option.id}
+              variants={cardHover}
+              whileHover="hover"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2 }}
+            >
               <h4>
                 {option.icon}
                 {option.title}
               </h4>
               <h5>{option.value}</h5>
-              <a href={option.link} target="_blank" rel="noreferrer">
+              <motion.a 
+                href={option.link} 
+                target="_blank" 
+                rel="noreferrer"
+                variants={hoverScale}
+                whileHover="hover"
+                whileTap="tap"
+              >
                 {option.message}
-              </a>
-            </article>
+              </motion.a>
+            </motion.article>
           ))}
-        </div>
-        <form ref={form} onSubmit={sendEmail} className="contact__form">
-          <input
+        </motion.div>
+        <motion.form 
+          ref={form} 
+          onSubmit={sendEmail} 
+          className="contact__form"
+          variants={fadeInRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.input
             type="text"
             name="name"
             placeholder="Your Full Name"
             value={formData.name}
             onChange={handleInputChange}
             required
+            whileFocus={{ scale: 1.02, borderColor: "#4db5ff" }}
+            transition={{ duration: 0.2 }}
           />
-          <input name="email" placeholder="Your Email" value={formData.email} onChange={handleInputChange} required />
-          <textarea
+          <motion.input 
+            name="email" 
+            placeholder="Your Email" 
+            value={formData.email} 
+            onChange={handleInputChange} 
+            required 
+            whileFocus={{ scale: 1.02, borderColor: "#4db5ff" }}
+            transition={{ duration: 0.2 }}
+          />
+          <motion.textarea
             name="message"
             rows="7"
             placeholder="Your Message"
             value={formData.message}
             onChange={handleInputChange}
             required
+            whileFocus={{ scale: 1.02, borderColor: "#4db5ff" }}
+            transition={{ duration: 0.2 }}
           />
-          <button type="submit">Send Message</button>
+          <motion.button 
+            type="submit"
+            variants={hoverScale}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            Send Message
+          </motion.button>
           {feedbackHTML && <div className="feedback-container">{feedbackHTML}</div>}
           {successMessage && <p className="success">{successMessage}</p>}
-        </form>
+        </motion.form>
       </div>
-    </section>
+    </motion.section>
   )
 }
 

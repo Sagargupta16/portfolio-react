@@ -16,10 +16,13 @@
 /* 5. Component styles */
 @import './styles/components.css';
 
-/* 6. Utility classes */
+/* 6. Animation styles */
+@import './styles/animations.css';
+
+/* 7. Utility classes */
 @import './styles/utilities.css';
 
-/* 7. Responsive design and media queries */
+/* 8. Responsive design and media queries */
 @import './styles/responsive.css';
 
 /* ========== LEGACY COMPATIBILITY ========== */

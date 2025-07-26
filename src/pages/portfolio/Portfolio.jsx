@@ -1,26 +1,78 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import './Portfolio.css'
 import PortFolioItem from './portfolioitem'
 import personalProjects, { collabProjects } from './ProjectsArray'
+import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'
 
 const Portfolio = () => {
   const renderPortfolioItems = projects => {
-    return projects.map(project => <PortFolioItem key={project.id} data={project} />)
+    return projects.map((project, index) => (
+      <motion.div
+        key={project.id}
+        variants={staggerItem}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        transition={{ delay: index * 0.1 }}
+      >
+        <PortFolioItem data={project} />
+      </motion.div>
+    ))
   }
 
   return (
-    <section id="portfolio">
-      <h5>My Recent Works</h5>
-      <h2>Portfolio</h2>
-      <div className="container portfolio__container">
-        <h3 className="portfolio__heading"> My Personal Projects</h3>
-        <div className="portfolio__section">{renderPortfolioItems(personalProjects)}</div>
-      </div>
-      <div className="container portfolio__container">
-        <h3 className="portfolio__heading">Collaborative Projects</h3>
-        <div className="portfolio__section">{renderPortfolioItems(collabProjects)}</div>
-      </div>
-    </section>
+    <motion.section 
+      id="portfolio"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+    >
+      <motion.h5 variants={fadeInUp}>My Recent Works</motion.h5>
+      <motion.h2 variants={fadeInUp}>Portfolio</motion.h2>
+      <motion.div 
+        className="container portfolio__container"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        <motion.h3 className="portfolio__heading" variants={fadeInUp}>
+          My Personal Projects
+        </motion.h3>
+        <motion.div 
+          className="portfolio__section"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {renderPortfolioItems(personalProjects)}
+        </motion.div>
+      </motion.div>
+      {collabProjects && collabProjects.length > 0 && (
+        <motion.div 
+          className="container portfolio__container"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.h3 className="portfolio__heading" variants={fadeInUp}>
+            Collaborative Projects
+          </motion.h3>
+          <motion.div 
+            className="portfolio__section"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {renderPortfolioItems(collabProjects)}
+          </motion.div>
+        </motion.div>
+      )}
+    </motion.section>
   )
 }
 

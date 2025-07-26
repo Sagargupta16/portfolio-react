@@ -1,24 +1,48 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import { GiCheckMark } from 'react-icons/gi'
+import { cardHover, staggerContainer, staggerItem, iconBounce } from '../../utils/animations'
 
 const serviceitem = props => {
   const { title, list } = props.item
   return (
-    <article className="service">
+    <motion.article 
+      className="service"
+      variants={cardHover}
+      whileHover="hover"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="service__head">
         <h3>{title}</h3>
       </div>
-      <ul className="service__list">
-        {list.map(item => {
+      <motion.ul 
+        className="service__list"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        {list.map((item, index) => {
           return (
-            <li key={item}>
-              <GiCheckMark className="service__list-icon" />
+            <motion.li 
+              key={item}
+              variants={staggerItem}
+              transition={{ delay: index * 0.1 }}
+            >
+              <motion.div
+                variants={iconBounce}
+                whileHover="hover"
+              >
+                <GiCheckMark className="service__list-icon" />
+              </motion.div>
               <p>{item}</p>
-            </li>
+            </motion.li>
           )
         })}
-      </ul>
-    </article>
+      </motion.ul>
+    </motion.article>
   )
 }
 

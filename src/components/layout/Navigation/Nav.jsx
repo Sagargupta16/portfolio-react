@@ -1,10 +1,12 @@
 import React, { useLayoutEffect, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import './Nav.css'
 import { RiHome3Line, RiServiceLine } from 'react-icons/ri'
 import { AiOutlineUser, AiOutlineMessage } from 'react-icons/ai'
 import { GoBriefcase, GoPencil } from 'react-icons/go'
 import { GiSuitcase, GiSkills } from 'react-icons/gi'
+import { hoverScale, staggerContainer, staggerItem } from '../../../utils/animations'
 
 const Nav = () => {
   const location = useLocation()
@@ -73,36 +75,63 @@ const Nav = () => {
   }
 
   return (
-    <nav className="nav">
-      <div className="nav__logo">
+    <motion.nav 
+      className="nav"
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      <motion.div 
+        className="nav__logo"
+        variants={hoverScale}
+        whileHover="hover"
+        whileTap="tap"
+      >
         <Link to="/" aria-label="Home">
           <span className="nav__logo--text">SG</span>
         </Link>
-      </div>
-      <div className="nav__list">
+      </motion.div>
+      <motion.div 
+        className="nav__list"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
         {screenWidth > 600
-          ? navItems.map(item => (
-              <Link
-                to={item.to}
-                className={location.pathname === item.to ? 'active' : ''}
-                aria-label={item.label}
+          ? navItems.map((item, index) => (
+              <motion.div
                 key={item.to}
+                variants={staggerItem}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {item.icon}
-              </Link>
+                <Link
+                  to={item.to}
+                  className={location.pathname === item.to ? 'active' : ''}
+                  aria-label={item.label}
+                >
+                  {item.icon}
+                </Link>
+              </motion.div>
             ))
-          : navItems.map(item => (
-              <button
+          : navItems.map((item, index) => (
+              <motion.button
+                key={item.to}
                 aria-label={item.label}
                 className={activeSection === item.to.substring(1) ? 'active' : ''}
                 onClick={() => handleNavItemClick(item)}
-                key={item.to}
+                variants={staggerItem}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: index * 0.1 }}
               >
                 {item.icon}
-              </button>
+              </motion.button>
             ))}
-      </div>
-    </nav>
+      </motion.div>
+    </motion.nav>
   )
 }
 
