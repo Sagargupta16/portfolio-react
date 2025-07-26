@@ -11,9 +11,15 @@ const Theme = () => {
   }
 
   return (
-    <div className="theme" onClick={nextTheme} title="Change theme">
+    <button
+      className="theme"
+      onClick={nextTheme}
+      title="Change theme"
+      type="button"
+      aria-label="Change theme"
+    >
       <AiOutlineBgColors />
-    </div>
+    </button>
   )
 }
 
