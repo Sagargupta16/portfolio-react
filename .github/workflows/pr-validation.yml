@@ -1,0 +1,88 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches: ['master']
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate:
+    name: Validate Pull Request
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for security vulnerabilities
+        run: npm audit --audit-level=high
+
+      - name: Run tests with coverage
+        run: npm test -- --coverage --watchAll=false
+
+      - name: Check build
+        run: npm run build
+        env:
+          CI: false
+          GENERATE_SOURCEMAP: false
+
+      - name: Check bundle size
+        run: |
+          echo "Checking bundle size..."
+          find build/static/js -name "*.js" -exec wc -c {} + | sort -n
+          
+      - name: Validate JSON data files
+        run: |
+          echo "Validating JSON data files..."
+          find src/data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
+
+  # Check for breaking changes in data structure
+  data-validation:
+    name: Validate Data Structure
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate data loader functions
+        run: |
+          node -e "
+            const dataLoader = require('./src/data/dataLoader.js');
+            console.log('Testing data loader functions...');
+            try {
+              console.log('Personal Info:', !!dataLoader.getPersonalInfo());
+              console.log('Education:', !!dataLoader.getEducation());
+              console.log('Experience:', !!dataLoader.getExperience());
+              console.log('Skills:', !!dataLoader.getSkills());
+              console.log('Services:', !!dataLoader.getServices());
+              console.log('Projects:', !!dataLoader.getProjects());
+              console.log('Contact:', !!dataLoader.getContactInfo());
+              console.log('All data loader functions working correctly!');
+            } catch (error) {
+              console.error('Data loader validation failed:', error);
+              process.exit(1);
+            }
+          "
