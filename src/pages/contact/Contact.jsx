@@ -37,9 +37,9 @@ const Contact = () => {
       isValid = false
     }
 
-    const emailPattern = /^([\w.%+-]+)@((gmail\.com)|(official\.com)|(student\.nitw\.ac\.in)|(sg85207@gmail\.com))$/
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailPattern.test(formData.email)) {
-      newErrors.email = 'Invalid email address'
+      newErrors.email = 'Please enter a valid email address'
       isValid = false
     }
 
@@ -69,10 +69,10 @@ const Contact = () => {
     if (validateForm()) {
       try {
         const result = await emailjs.sendForm('service_lyt547p', 'template_yz438w6', form.current, 'PAcL61ygLI8WYG16R')
-        console.log(result.text)
-        setSuccessMessage('Message sent successfully!')
+        if (result.status === 200) {
+          setSuccessMessage('Message sent successfully!')
+        }
       } catch (error) {
-        console.log(error.text)
         setErrors({
           general: 'Error sending message. Please try again later.'
         })

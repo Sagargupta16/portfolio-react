@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
@@ -11,7 +12,7 @@ const AnimatedNumber = ({ value, duration = 2 }) => {
     if (!isInView) return
 
     // Extract number from string (e.g., "CGPA: 8.5" -> 8.5)
-    const numericValue = parseFloat(value.match(/[\d.]+/)?.[0] || 0)
+    const numericValue = parseFloat(value?.match(/[\d.]+/)?.[0] || 0)
     
     if (numericValue === 0) {
       setDisplayValue(value)
@@ -27,7 +28,7 @@ const AnimatedNumber = ({ value, duration = 2 }) => {
         clearInterval(timer)
       } else {
         // Replace the number in the original string
-        const animatedValue = value.replace(/[\d.]+/, start.toFixed(1))
+        const animatedValue = value?.replace(/[\d.]+/, start.toFixed(1))
         setDisplayValue(animatedValue)
       }
     }, 1000 / 60)
@@ -45,6 +46,11 @@ const AnimatedNumber = ({ value, duration = 2 }) => {
       {displayValue}
     </motion.span>
   )
+}
+
+AnimatedNumber.propTypes = {
+  value: PropTypes.string.isRequired,
+  duration: PropTypes.number
 }
 
 export default AnimatedNumber

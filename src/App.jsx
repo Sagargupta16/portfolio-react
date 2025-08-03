@@ -12,8 +12,9 @@ import Portfolio from './pages/portfolio/Portfolio'
 import Contact from './pages/contact/Contact'
 import Footer from './components/layout/Footer'
 import Theme from './components/layout/Theme'
+import ErrorBoundary from './components/common/ErrorBoundary'
 
-const RouterWrapper = ({ children, activeNav, setActiveNav }) => (
+const RouterWrapper = ({ children }) => (
   <Router 
     basename="/portfolio-react" 
     className="router"
@@ -22,7 +23,7 @@ const RouterWrapper = ({ children, activeNav, setActiveNav }) => (
       v7_relativeSplatPath: true
     }}
   >
-    <Nav setActiveNav={setActiveNav} activeNav={activeNav} />
+    <Nav />
     <Theme />
     {children}
     <Footer />
@@ -30,14 +31,11 @@ const RouterWrapper = ({ children, activeNav, setActiveNav }) => (
 )
 
 RouterWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
-  activeNav: PropTypes.string.isRequired,
-  setActiveNav: PropTypes.func.isRequired
+  children: PropTypes.node.isRequired
 }
 
 const App = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
-  const [activeNav, setActiveNav] = useState('#')
 
   useEffect(() => {
     const handleResize = () => setScreenWidth(window.innerWidth)
@@ -48,31 +46,33 @@ const App = () => {
   }, [])
 
   return (
-    <RouterWrapper activeNav={activeNav} setActiveNav={setActiveNav}>
-      {screenWidth > 600 ? (
-        <Routes>
-          <Route path="/" element={<Header />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/education" element={<Education />} />
-          <Route path="/experience" element={<Experience />} />
-          <Route path="/skill" element={<Skill />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      ) : (
-        <>
-          <Header />
-          <About />
-          <Education />
-          <Experience />
-          <Skill />
-          <Services />
-          <Portfolio />
-          <Contact />
-        </>
-      )}
-    </RouterWrapper>
+    <ErrorBoundary>
+      <RouterWrapper>
+        {screenWidth > 600 ? (
+          <Routes>
+            <Route path="/" element={<Header />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/education" element={<Education />} />
+            <Route path="/experience" element={<Experience />} />
+            <Route path="/skill" element={<Skill />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        ) : (
+          <>
+            <Header />
+            <About />
+            <Education />
+            <Experience />
+            <Skill />
+            <Services />
+            <Portfolio />
+            <Contact />
+          </>
+        )}
+      </RouterWrapper>
+    </ErrorBoundary>
   )
 }
 

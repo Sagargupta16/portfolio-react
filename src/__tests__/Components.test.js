@@ -19,7 +19,12 @@ import { MemoryRouter } from 'react-router-dom'
 // Helper function to render with router when needed
 const renderWithRouter = (component) => {
   return render(
-    <MemoryRouter>
+    <MemoryRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       {component}
     </MemoryRouter>
   )

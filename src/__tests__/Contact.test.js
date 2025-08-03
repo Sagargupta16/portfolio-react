@@ -1,6 +1,6 @@
 // Contact.test.js - Detailed Contact component tests
 import React from 'react'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -16,7 +16,12 @@ jest.mock('@emailjs/browser', () => ({
 // Helper function to render with router
 const renderWithRouter = (component) => {
   return render(
-    <MemoryRouter>
+    <MemoryRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       {component}
     </MemoryRouter>
   )

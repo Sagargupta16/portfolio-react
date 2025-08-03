@@ -2,7 +2,7 @@
   "personal_projects": [
     {
       "id": 1,
-      "image": "Leetcode Rating Predictor.png",
+      "image": "leetcode-rating-predictor.png",
       "title": "Leetcode Rating Predictor",
       "description": "A Python-based tool that predicts user ratings in LeetCode contests using machine learning. It fetches contest data, processes it, and applies a LSTM model for accurate predictions.",
       "date": "December 2023",
@@ -178,7 +178,7 @@
     },
     {
       "id": 19,
-      "image": "guess the number.png",
+      "image": "guess-the-number.png",
       "title": "Guess The Number Game",
       "description": "A simple interactive game where players have to guess a randomly generated number, implemented using JavaScript with an engaging UI.",
       "date": "June 2022",

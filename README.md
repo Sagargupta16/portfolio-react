@@ -5,6 +5,12 @@
 
 #### Project deployed link -> [Portfolio-react](https://sagargupta.live/portfolio-react)
 
+[![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml)
+[![Security Analysis](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml)
+![Test Coverage](https://img.shields.io/badge/coverage-72%25-brightgreen)
+![Node Version](https://img.shields.io/badge/node-18.20.4-green)
+![React Version](https://img.shields.io/badge/react-18.3.1-blue)
+
 ---
 
 ## :pencil: About The Project
