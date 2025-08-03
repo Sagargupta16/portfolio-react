@@ -1,7 +1,10 @@
 {
-  "programming_languages": ["C++", "Python", "Java", "JavaScript", "SQL", "HTML", "CSS"],
+  "programming_languages": ["C++", "Python", "JavaScript", "TypeScript", "Java", "C#", "SQL", "HTML5", "CSS3", "R", "HCL"],
   "frameworks_and_libraries": [
     "React",
+    "Next.js",
+    "Redux",
+    "React Router",
     "Express.js",
     "Fast-API",
     "Rest-API",
@@ -9,9 +12,13 @@
     "MongoDB",
     "Numpy",
     "Pandas",
-    "Tensorflow",
+    "TensorFlow",
+    "PyTorch",
+    "Matplotlib",
+    "Jupyter",
     "Bootstrap",
-    "Material UI"
+    "Material UI",
+    "Tailwind CSS"
   ],
   "cloud_and_devops": [
     "AWS",
@@ -29,7 +36,10 @@
     "AWS CodeDeploy",
     "Terraform",
     "Docker",
-    "Ansible"
+    "GitHub Actions",
+    "Ansible",
+    "CI/CD",
+    "Infrastructure as Code"
   ],
   "tools_editors_and_ides": [
     "Git",
@@ -39,10 +49,31 @@
     "Unity Engine",
     "Jupyter Notebook",
     "Android Studio",
-    "Eclipse"
+    "Eclipse",
+    "GraphQL",
+    "JWT",
+    "Nodemailer",
+    "EmailJS",
+    "GitHub Copilot",
+    "ChatGPT",
+    "Claude",
+    "Cursor AI"
   ],
   "databases": ["MongoDB", "MySQL", "AWS RDS"],
   "operating_systems": ["Linux", "Windows", "Android"],
+  "ai_ml_tools": [
+    "TensorFlow",
+    "PyTorch",
+    "NumPy",
+    "Pandas",
+    "Matplotlib",
+    "Jupyter",
+    "LSTM",
+    "Neural Networks",
+    "Deep Learning",
+    "Image Processing",
+    "Scikit-Learn"
+  ],
   "coursework": [
     "Cloud Computing",
     "Data Structures and Algorithms",

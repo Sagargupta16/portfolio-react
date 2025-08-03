@@ -1,6 +1,6 @@
 {
   "name": "Sagar Gupta",
-  "title": "AWS Professional Services Engineer",
+  "title": "ProServe (Cloud Consultant) - DevOps at AWS",
   "location": "Shivpuri, MP, India",
   "contact": {
     "email": "sg85207@gmail.com",
@@ -9,8 +9,9 @@
     "github": "Sagargupta16"
   },
   "roles": [
-    "AWS Professional Services Engineer",
-    "DevOps & Cloud Engineer",
+    "ProServe (Cloud Consultant) - DevOps",
+    "AWS Cloud Solutions Specialist",
+    "DevOps Infrastructure Automation Expert",
     "Full-Stack Developer", 
     "Competitive Programmer",
     "Problem Solver",
@@ -21,15 +22,17 @@
   ],
   "about": {
     "greeting": "👋 Hi, my name is Sagar Gupta, from Shivpuri, MP, India.",
-    "education": "I'm a MCA Graduate 🎓 from NIT Warangal with experience at Amazon Web Services.",
-    "profession": "I'm a DevOps & Cloud Engineer, Full-Stack Developer who loves to write clean and efficient code.",
-    "current_role": "Currently working at AWS Professional Services, specializing in Infrastructure Automation and DevOps solutions.",
-    "passion": "Apart from web development, I love Problem Solving using Data Structures and Algorithms, and have solved 1100+ problems on various platforms."
+    "education": "I'm a MCA Graduate 🎓 from NIT Warangal with First Class with Distinction and currently working at Amazon Web Services (AWS).",
+    "profession": "I'm a ProServe (Cloud Consultant) - DevOps at AWS, specializing in Full Stack Development, DevOps Engineering, and AWS Cloud Infrastructure with a strong focus on automation and scalable cloud solutions.",
+    "current_role": "Currently working as ProServe (Cloud Consultant) - DevOps at Amazon Web Services, specializing in DevOps Infrastructure Automation, Terraform, AWS Cloud Solutions, and CI/CD Pipelines.",
+    "passion": "Apart from cloud development, I love Problem Solving using Data Structures and Algorithms, and have solved 1100+ problems with 1950+ LeetCode rating across various platforms."
   },
   "statistics": {
     "coding_questions": "1100+ Questions",
-    "projects": "20+ Projects",
-    "contests": "100+ Contests"
+    "leetcode_rating": "1950+ Rating",
+    "projects": "25+ Projects",
+    "contests": "100+ Contests",
+    "aws_certifications": "4 AWS Certifications"
   },
   "social_profiles": [
     {

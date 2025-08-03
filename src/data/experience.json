@@ -3,17 +3,17 @@
     {
       "id": 1,
       "date": "August 2024 - Present",
-      "title": "Professional Services",
-      "position": "",
+      "title": "ProServe (Cloud Consultant) - DevOps",
+      "position": "Full-time",
       "company": "Amazon Web Services",
       "location": "Hyderabad, India",
       "project": "DevOps Infrastructure Automation - State Street",
       "description": {
         "1": "Developed and maintained reusable Terraform modules for critical AWS services including EventBridge, CloudWatch, SNS, EBS, and AWS Detective, ensuring standardized infrastructure deployment.",
-        "2": "Implemented comprehensive unit testing framework using tftest to validate Terraform modules, ensuring infrastructure reliability.",
-        "3": "Designed and delivered technical specifications and user guides aligned with enterprise security hardening guidelines.",
-        "4": "Collaborated closely with stakeholders to gather requirements and ensure delivery of infrastructure solutions meeting business needs.",
-        "5": "Working on DevOps Infrastructure Automation project for State Street."
+        "2": "Implemented comprehensive unit testing framework using tftest to validate Terraform modules, ensuring infrastructure reliability and security compliance.",
+        "3": "Designed and delivered technical specifications and user guides aligned with enterprise security hardening guidelines and AWS Well-Architected Framework.",
+        "4": "Collaborated closely with stakeholders to gather requirements and ensure delivery of infrastructure solutions meeting business needs and compliance standards.",
+        "5": "Leading DevOps Infrastructure Automation project for State Street, focusing on scalable cloud solutions and CI/CD pipeline optimization."
       },
       "skills": [
         "AWS",
@@ -27,7 +27,9 @@
         "Git",
         "DevOps",
         "Infrastructure Automation",
-        "Unit Testing"
+        "Unit Testing",
+        "CI/CD",
+        "Security Compliance"
       ]
     },
     {
