@@ -5,7 +5,7 @@
   "contact": {
     "email": "sg85207@gmail.com",
     "phone": "+91-8770532413",
-    "linkedin": "sagar-gupta-16-10",
+    "linkedin": "sagar16gupta",
     "github": "Sagargupta16"
   },
   "roles": [
@@ -21,24 +21,24 @@
     "Tech Enthusiast"
   ],
   "about": {
-    "greeting": "👋 Hi, my name is Sagar Gupta, from Shivpuri, MP, India.",
-    "education": "I'm a MCA Graduate 🎓 from NIT Warangal with First Class with Distinction and currently working at Amazon Web Services (AWS).",
-    "profession": "I'm a ProServe (Cloud Consultant) - DevOps at AWS, specializing in Full Stack Development, DevOps Engineering, and AWS Cloud Infrastructure with a strong focus on automation and scalable cloud solutions.",
-    "current_role": "Currently working as ProServe (Cloud Consultant) - DevOps at Amazon Web Services, specializing in DevOps Infrastructure Automation, Terraform, AWS Cloud Solutions, and CI/CD Pipelines.",
-    "passion": "Apart from cloud development, I love Problem Solving using Data Structures and Algorithms, and have solved 1100+ problems with 1950+ LeetCode rating across various platforms."
+    "greeting": "👋 Hi, my name is Sagar Gupta.",
+    "current_role": "💼 Currently working as ProServe (Cloud Consultant) - DevOps at Amazon Web Services (AWS).",
+    "education": "🎓 I completed my Master's in Computer Applications (MCA) from National Institute of Technology, Warangal.",
+    "specialization": "🚀 Specializing in DevOps Infrastructure Automation, Terraform, AWS Cloud Solutions, and CI/CD Pipelines.",
+    "competitive_programming": "🏆 Competitive Programming: 1950+ LeetCode rating, 1100+ problems solved, 80+ contests participated."
   },
   "statistics": {
     "coding_questions": "1100+ Questions",
     "leetcode_rating": "1950+ Rating",
     "projects": "25+ Projects",
-    "contests": "100+ Contests",
+    "contests": "80+ Contests",
     "aws_certifications": "4 AWS Certifications"
   },
   "social_profiles": [
     {
       "id": 1,
       "name": "LinkedIn",
-      "link": "https://www.linkedin.com/in/sagar-gupta-16-10/",
+      "link": "https://www.linkedin.com/in/sagar16gupta/",
       "icon": "BsLinkedin"
     },
     {
@@ -64,7 +64,7 @@
     {
       "id": 1,
       "name": "Leetcode",
-      "link": "https://leetcode.com/Sagargupta1610/",
+      "link": "https://leetcode.com/SAGARGUPTA16/",
       "icon": "SiLeetcode",
       "stats": "1100+ problems solved, 80+ contests, 1950+ rating"
     },
