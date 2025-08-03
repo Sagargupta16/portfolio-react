@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import './Skill.css'
+import './skill.css'
 import { BsPatchCheckFill } from 'react-icons/bs'
 import skills from './SkillsArray'
 import { fadeInUp, staggerContainer, staggerItem, cardHover, iconBounce } from '../../utils/animations'

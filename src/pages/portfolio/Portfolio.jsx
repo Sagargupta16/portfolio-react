@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import './Portfolio.css'
+import './portfolio.css'
 import PortFolioItem from './portfolioitem'
 import personalProjects, { collabProjects } from './ProjectsArray'
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'

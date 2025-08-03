@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import './Education.css'
+import './education.css'
 import EducationItem from './educationitem'
 import educationArray from './EducationArray'
 import FloatingEducationElements from './FloatingElements'

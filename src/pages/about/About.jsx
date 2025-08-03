@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import './About.css'
+import './about.css'
 import ME from '../../assets/images/me-about.jpg'
 import { BsCodeSlash } from 'react-icons/bs'
 import { MdDeveloperMode } from 'react-icons/md'
