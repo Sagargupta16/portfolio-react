@@ -12,13 +12,13 @@ const PortfolioItem = ({ data }) => {
   }
 
   return (
-    <motion.article 
+    <motion.article
       className="portfolio__item"
       variants={cardHover}
       whileHover="hover"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       <div className="portfolio__item-image">
         <img src={data.image} alt={data.title} />
@@ -26,8 +26,8 @@ const PortfolioItem = ({ data }) => {
 
       <h3 className="portfolio__item-title">
         <div className="portfolio__item-title__text">{data.title}</div>
-        <motion.button 
-          className="portfolio__dropdown" 
+        <motion.button
+          className="portfolio__dropdown"
           onClick={toggleExpansion}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -36,12 +36,12 @@ const PortfolioItem = ({ data }) => {
           <span className="portfolio__dropdown__text">{isExpanded ? 'Less' : 'More'}</span>
         </motion.button>
       </h3>
-      
+
       <AnimatePresence>
         {isExpanded && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -52,8 +52,8 @@ const PortfolioItem = ({ data }) => {
               <h4>Tools & Technologies</h4>
               <div className="portfolio__item__tools__list">
                 {data.tools_tech.map((tool, index) => (
-                  <motion.div 
-                    key={tool} 
+                  <motion.div
+                    key={tool}
                     className="portfolio__item__tool"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -68,8 +68,8 @@ const PortfolioItem = ({ data }) => {
               <h4>Features</h4>
               <div className="portfolio__item__features__list">
                 {data.features.map((feature, index) => (
-                  <motion.div 
-                    key={feature} 
+                  <motion.div
+                    key={feature}
                     className="portfolio__item__feature"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -83,12 +83,12 @@ const PortfolioItem = ({ data }) => {
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       <div className="portfolio__item-cta">
-        <motion.a 
-          href={data.github} 
-          className="btn" 
-          target="_blank" 
+        <motion.a
+          href={data.github}
+          className="btn"
+          target="_blank"
           rel="noreferrer"
           variants={hoverScale}
           whileHover="hover"
@@ -97,10 +97,10 @@ const PortfolioItem = ({ data }) => {
           Github
         </motion.a>
         {data.live !== '#' && (
-          <motion.a 
-            href={data.live} 
-            className="btn btn-primary" 
-            target="_blank" 
+          <motion.a
+            href={data.live}
+            className="btn btn-primary"
+            target="_blank"
             rel="noreferrer"
             variants={hoverScale}
             whileHover="hover"
@@ -128,4 +128,3 @@ PortfolioItem.propTypes = {
 }
 
 export default PortfolioItem
-

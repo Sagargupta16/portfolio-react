@@ -179,11 +179,11 @@
   .header__container h1 {
     font-size: 2.5rem;
   }
-  
+
   .header__container h5 {
     font-size: 1.1rem;
   }
-  
+
   .me {
     width: 20rem;
     height: 25rem;
@@ -195,20 +195,20 @@
   .header__container h1 {
     font-size: 2rem;
   }
-  
+
   .header__container h5 {
     font-size: 1rem;
   }
-  
+
   .header__container h5:first-child {
     font-size: 0.9rem;
   }
-  
+
   .header__socials,
   .scroll__down {
     display: none !important;
   }
-  
+
   .me {
     width: 15rem;
     height: 20rem;

@@ -18,6 +18,7 @@ src/styles/
 ## 🎨 Design System
 
 ### Colors
+
 - `--color-primary`: Main brand color (#ffcc66)
 - `--color-bg`: Background color (#1e1e26)
 - `--color-bg-variant`: Secondary background (#2c2c33)
@@ -25,6 +26,7 @@ src/styles/
 - `--color-light`: Muted text color
 
 ### Spacing System
+
 - `--spacing-xs`: 0.25rem (4px)
 - `--spacing-sm`: 0.5rem (8px)
 - `--spacing-md`: 1rem (16px)
@@ -33,6 +35,7 @@ src/styles/
 - `--spacing-2xl`: 3rem (48px)
 
 ### Typography Scale
+
 - `--font-size-xs`: 0.75rem
 - `--font-size-sm`: 0.875rem
 - `--font-size-base`: 1rem
@@ -45,6 +48,7 @@ src/styles/
 ## 🛠 Usage Examples
 
 ### Typography Classes
+
 ```html
 <h1 class="heading-1">Main Title</h1>
 <h2 class="heading-2">Section Title</h2>
@@ -53,6 +57,7 @@ src/styles/
 ```
 
 ### Layout Classes
+
 ```html
 <div class="flex justify-center items-center gap-md">
   <button class="btn">Button 1</button>
@@ -67,6 +72,7 @@ src/styles/
 ```
 
 ### Component Classes
+
 ```html
 <!-- Buttons -->
 <button class="btn">Default Button</button>
@@ -81,10 +87,11 @@ src/styles/
 </div>
 
 <!-- Images -->
-<img src="image.jpg" class="img img--rounded img--shadow" alt="Description">
+<img src="image.jpg" class="img img--rounded img--shadow" alt="Description" />
 ```
 
 ### Utility Classes
+
 ```html
 <!-- Spacing -->
 <div class="p-lg m-xl">Content with padding and margin</div>
@@ -100,6 +107,7 @@ src/styles/
 ```
 
 ### Responsive Classes
+
 ```html
 <!-- Hide/show on different screens -->
 <div class="hide-mobile show-tablet">Tablet and desktop only</div>
@@ -120,6 +128,7 @@ src/styles/
 ### From Old CSS to New CSS
 
 #### Old way:
+
 ```css
 .my-component {
   background-color: var(--color-bg-variant);
@@ -134,6 +143,7 @@ src/styles/
 ```
 
 #### New way:
+
 ```html
 <div class="card flex justify-center items-center gap-lg transition">
   <!-- Content -->
@@ -143,24 +153,29 @@ src/styles/
 ### Component Updates
 
 #### Buttons
+
 - Replace `btn-primary` with `btn btn--primary`
 - Use `btn--small`, `btn--large` for size variants
 - Use `btn--outline` for outlined buttons
 
 #### Cards
+
 - Use `card` base class
 - Add `card--centered` for centered content
 - Add `card--shadow` for drop shadows
 - Add `card--interactive` for clickable cards
 
 #### Typography
+
 - Use semantic heading classes: `heading-1`, `heading-2`, etc.
 - Use utility classes: `text-light`, `text-primary`, `text-center`
 
 ## 🔧 Customization
 
 ### Adding New Colors
+
 Add to `variables.css`:
+
 ```css
 :root {
   --color-success: #10b981;
@@ -170,7 +185,9 @@ Add to `variables.css`:
 ```
 
 ### Adding New Spacing
+
 Add to `variables.css`:
+
 ```css
 :root {
   --spacing-5xl: 8rem;
@@ -179,13 +196,20 @@ Add to `variables.css`:
 ```
 
 Then create utility classes in `utilities.css`:
+
 ```css
-.p-5xl { padding: var(--spacing-5xl); }
-.m-5xl { margin: var(--spacing-5xl); }
+.p-5xl {
+  padding: var(--spacing-5xl);
+}
+.m-5xl {
+  margin: var(--spacing-5xl);
+}
 ```
 
 ### Creating New Components
+
 Add to `components.css`:
+
 ```css
 .my-component {
   /* Base styles */
@@ -217,6 +241,7 @@ The system uses a mobile-first approach:
 3. **Desktop**: 1024px and up
 
 Use responsive prefixes:
+
 - `tablet:` for tablet and up
 - `desktop:` for desktop and up
 - `mobile:` for mobile-specific overrides
@@ -224,12 +249,14 @@ Use responsive prefixes:
 ## 🌙 Theme Support
 
 The system supports theme switching:
+
 - Add `data-theme="light"` to `<html>` for light theme
 - Add `data-theme="dark"` to `<html>` for dark theme (default)
 
 ## ♿ Accessibility
 
 The system includes:
+
 - Focus management with `focus-visible`
 - High contrast mode support
 - Reduced motion support
@@ -239,6 +266,7 @@ The system includes:
 ## 🚀 Performance
 
 Benefits of the new structure:
+
 - **Modular loading**: Only load what you need
 - **Better caching**: Separate files cache independently
 - **Smaller bundles**: Tree-shaking friendly

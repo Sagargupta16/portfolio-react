@@ -17,7 +17,7 @@ import App from '../App'
 import { MemoryRouter } from 'react-router-dom'
 
 // Helper function to render with router when needed
-const renderWithRouter = (component) => {
+const renderWithRouter = component => {
   return render(
     <MemoryRouter
       future={{
@@ -41,14 +41,14 @@ beforeEach(() => {
   global.IntersectionObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
     unobserve: jest.fn(),
-    disconnect: jest.fn(),
+    disconnect: jest.fn()
   }))
 
   // Mock ResizeObserver
   global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
     unobserve: jest.fn(),
-    disconnect: jest.fn(),
+    disconnect: jest.fn()
   }))
 
   // Mock localStorage
@@ -57,9 +57,9 @@ beforeEach(() => {
       getItem: jest.fn(() => null),
       setItem: jest.fn(() => null),
       removeItem: jest.fn(() => null),
-      clear: jest.fn(() => null),
+      clear: jest.fn(() => null)
     },
-    writable: true,
+    writable: true
   })
 })
 

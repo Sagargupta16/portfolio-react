@@ -40,6 +40,7 @@ The portfolio is built using the following technologies:
 - **GitHub Pages:** Deployment platform with automated CI/CD through GitHub Actions.
 
 ### **AWS & DevOps Technologies Featured:**
+
 - **AWS Services:** EventBridge, CloudWatch, SNS, EBS, AWS Detective, ECS, CodePipeline, X-Ray
 - **Infrastructure as Code:** Terraform, tftest for unit testing
 - **DevOps Tools:** Docker, CI/CD pipelines, Blue-Green deployments
@@ -207,7 +208,7 @@ This portfolio uses a modern JSON-based data management system for easy content 
 ### **Data Files Location:** `src/data/`
 
 - **`personal.json`** - Personal information, bio, statistics, social profiles
-- **`education.json`** - Educational background and academic achievements  
+- **`education.json`** - Educational background and academic achievements
 - **`experience.json`** - Professional experience and positions of responsibility
 - **`skills.json`** - Technical skills categorized by type (languages, frameworks, cloud, etc.)
 - **`services.json`** - Services offered and capabilities
@@ -218,13 +219,14 @@ This portfolio uses a modern JSON-based data management system for easy content 
 ### **Data Loader System:** `src/data/dataLoader.js`
 
 Provides structured access functions for all data:
+
 ```javascript
 // Examples of available functions
-getPersonalInfo()     // Get all personal data
-getName()             // Get name specifically  
-getExperience()       // Get professional experience
-getSkills()           // Get all skills data
-getProjects()         // Get all projects
+getPersonalInfo() // Get all personal data
+getName() // Get name specifically
+getExperience() // Get professional experience
+getSkills() // Get all skills data
+getProjects() // Get all projects
 // ... and many more specific getters
 ```
 
@@ -282,7 +284,7 @@ The portfolio includes a comprehensive test suite to ensure all components work 
 # Run all tests
 npm test
 
-# Run tests with coverage report  
+# Run tests with coverage report
 npm test -- --coverage --watchAll=false
 
 # Run tests in watch mode (for development)
@@ -290,12 +292,14 @@ npm test -- --watch
 ```
 
 **Test Coverage:**
+
 - All major components (Header, About, Education, Experience, Skills, Services, Portfolio, Contact, Footer)
 - JSON data loader functionality
 - Component rendering and basic functionality
 - Currently achieving 67%+ test coverage
 
 **Test Files:**
+
 - `src/__tests__/Components.test.js` - Main component testing suite
 
 With these steps, you can easily run the portfolio locally, explore its features, and make any desired modifications to suit your needs. The JSON data architecture makes updates simple and maintainable!

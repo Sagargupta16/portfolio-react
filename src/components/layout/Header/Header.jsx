@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <section className="header" id="header">
-      <motion.div 
+      <motion.div
         className="container header__container"
         variants={staggerContainer}
         initial="hidden"
@@ -31,11 +31,7 @@ const Header = () => {
         <motion.div variants={fadeInUp}>
           <HeaderSocials />
         </motion.div>
-        <motion.div 
-          className="me"
-          variants={scaleIn}
-          {...floatingAnimation}
-        >
+        <motion.div className="me" variants={scaleIn} {...floatingAnimation}>
           <img src={ME} alt="me" />
         </motion.div>
       </motion.div>

@@ -39,12 +39,7 @@
       "description": "A Full Stack MERN application that helps users manage their contacts efficiently with user authentication and CRUD operations.",
       "date": "July 2022",
       "tools_tech": ["MongoDB", "Express.js", "React", "Node.js", "CORS", "JWT"],
-      "features": [
-        "User authentication",
-        "Contact CRUD operations",
-        "Responsive UI",
-        "Secure data storage"
-      ],
+      "features": ["User authentication", "Contact CRUD operations", "Responsive UI", "Secure data storage"],
       "github": "https://github.com/Sagargupta16/Contact-Manager-Mern",
       "live": "https://contact-manager-mern-cg19.onrender.com/"
     },
@@ -71,12 +66,7 @@
       "description": "A frontend music web player application with interactive controls and playlist management.",
       "date": "May 2022",
       "tools_tech": ["HTML5", "CSS3", "JavaScript"],
-      "features": [
-        "Music playback controls",
-        "Playlist management",
-        "Responsive design",
-        "Interactive UI"
-      ],
+      "features": ["Music playback controls", "Playlist management", "Responsive design", "Interactive UI"],
       "github": "https://github.com/Sagargupta16/Music-Web-App",
       "live": "https://sagargupta.life/Music-Web-App/"
     },
@@ -87,12 +77,7 @@
       "description": "Contains GitHub Actions CI/CD Pipeline codes, tests, and AWS deployment configurations for FARM stack applications.",
       "date": "November 2023",
       "tools_tech": ["AWS", "DevOps", "GitHub Actions", "CI/CD", "Python"],
-      "features": [
-        "Automated CI/CD pipeline",
-        "AWS deployment",
-        "Testing automation",
-        "Infrastructure as Code"
-      ],
+      "features": ["Automated CI/CD pipeline", "AWS deployment", "Testing automation", "Infrastructure as Code"],
       "github": "https://github.com/Sagargupta16/DevOps-AWS-FARM",
       "live": ""
     },
@@ -103,12 +88,7 @@
       "description": "A Next.js platform where brilliant minds converge and ideas collide in an inspiring symphony of creativity and innovation.",
       "date": "August 2023",
       "tools_tech": ["TypeScript", "Next.js", "MongoDB", "Tailwind CSS", "Clerk"],
-      "features": [
-        "Idea collaboration platform",
-        "User authentication",
-        "Modern UI/UX",
-        "Real-time interactions"
-      ],
+      "features": ["Idea collaboration platform", "User authentication", "Modern UI/UX", "Real-time interactions"],
       "github": "https://github.com/Sagargupta16/brainstorm-verse",
       "live": ""
     },
@@ -119,12 +99,7 @@
       "description": "A classic Pac-Man game recreated using Unity Engine with C# scripting for an authentic gaming experience.",
       "date": "June 2022",
       "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
-      "features": [
-        "Classic Pac-Man gameplay",
-        "Unity2D graphics",
-        "Interactive controls",
-        "Game physics"
-      ],
+      "features": ["Classic Pac-Man gameplay", "Unity2D graphics", "Interactive controls", "Game physics"],
       "github": "https://github.com/Sagargupta16/PacMan-Game__UnityEngine",
       "live": ""
     },
@@ -135,12 +110,7 @@
       "description": "Complete Blue-Green deployment pipeline using Terraform with automated CI/CD, containerized Node.js applications on ECS, and AWS security best practices.",
       "date": "July 2025",
       "tools_tech": ["Terraform", "AWS", "Docker", "ECS", "CI/CD", "HCL"],
-      "features": [
-        "Blue-Green deployment",
-        "Infrastructure as Code",
-        "AWS ECS integration",
-        "Automated CI/CD"
-      ],
+      "features": ["Blue-Green deployment", "Infrastructure as Code", "AWS ECS integration", "Automated CI/CD"],
       "github": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform",
       "live": ""
     },
@@ -151,12 +121,7 @@
       "description": "A machine learning project for predicting stock market trends using historical data and neural networks.",
       "date": "December 2023",
       "tools_tech": ["Python", "Machine Learning", "Neural Networks", "Data Analysis"],
-      "features": [
-        "Stock price prediction",
-        "Historical data analysis",
-        "ML model training",
-        "Trend visualization"
-      ],
+      "features": ["Stock price prediction", "Historical data analysis", "ML model training", "Trend visualization"],
       "github": "https://github.com/Sagargupta16/Stock-market-prediction",
       "live": ""
     },
@@ -167,12 +132,7 @@
       "description": "My original personal portfolio website built with vanilla HTML, CSS, and JavaScript showcasing my early web development skills.",
       "date": "May 2022",
       "tools_tech": ["HTML5", "CSS3", "JavaScript", "Flexbox", "Portfolio"],
-      "features": [
-        "Responsive design",
-        "Portfolio showcase",
-        "Interactive elements",
-        "Clean UI design"
-      ],
+      "features": ["Responsive design", "Portfolio showcase", "Interactive elements", "Clean UI design"],
       "github": "https://github.com/Sagargupta16/PortFolio",
       "live": "https://sagargupta.life/PortFolio/"
     },
@@ -183,12 +143,7 @@
       "description": "A simple interactive game where players have to guess a randomly generated number, implemented using JavaScript with an engaging UI.",
       "date": "June 2022",
       "tools_tech": ["JavaScript", "HTML5", "CSS3", "Game Development"],
-      "features": [
-        "Random number generation",
-        "Interactive gameplay",
-        "Score tracking",
-        "Responsive design"
-      ],
+      "features": ["Random number generation", "Interactive gameplay", "Score tracking", "Responsive design"],
       "github": "https://github.com/Sagargupta16/Guess-The-Number-Game",
       "live": "https://sagargupta16.github.io/Guess-The-Number-Game/"
     }

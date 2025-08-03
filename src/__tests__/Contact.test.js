@@ -14,7 +14,7 @@ jest.mock('@emailjs/browser', () => ({
 }))
 
 // Helper function to render with router
-const renderWithRouter = (component) => {
+const renderWithRouter = component => {
   return render(
     <MemoryRouter
       future={{
@@ -34,7 +34,7 @@ describe('Contact Component', () => {
 
   test('renders contact form elements', () => {
     renderWithRouter(<Contact />)
-    
+
     expect(screen.getByText(/Get In Touch/i)).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/Your Full Name/i)).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/Your Email/i)).toBeInTheDocument()
@@ -70,10 +70,13 @@ describe('Contact Component', () => {
     await user.click(submitButton)
 
     // Wait for the submission to complete
-    await waitFor(() => {
-      expect(mockSendForm).toHaveBeenCalledTimes(1)
-    }, { timeout: 3000 })
-    
+    await waitFor(
+      () => {
+        expect(mockSendForm).toHaveBeenCalledTimes(1)
+      },
+      { timeout: 3000 }
+    )
+
     // TODO: Fix JSDOM HTMLFormElement.submit limitation for EmailJS integration
   })
 
@@ -104,10 +107,13 @@ describe('Contact Component', () => {
     const submitButton = screen.getByRole('button', { name: /Send Message/i })
     await user.click(submitButton)
 
-    await waitFor(() => {
-      expect(mockSendForm).toHaveBeenCalledTimes(1)
-    }, { timeout: 3000 })
-    
+    await waitFor(
+      () => {
+        expect(mockSendForm).toHaveBeenCalledTimes(1)
+      },
+      { timeout: 3000 }
+    )
+
     // TODO: Fix JSDOM HTMLFormElement.submit limitation for EmailJS integration
   })
 
@@ -116,10 +122,10 @@ describe('Contact Component', () => {
     const user = userEvent.setup()
 
     const submitButton = screen.getByRole('button', { name: /Send Message/i })
-    
+
     // Try to submit empty form
     await user.click(submitButton)
-    
+
     // The HTML5 validation should prevent submission
     const nameInput = screen.getByPlaceholderText(/Your Full Name/i)
     expect(nameInput).toBeRequired()
@@ -128,7 +134,7 @@ describe('Contact Component', () => {
 
   test('shows contact information', () => {
     renderWithRouter(<Contact />)
-    
+
     // Check for contact cards
     expect(screen.getByText(/Email/i)).toBeInTheDocument()
     expect(screen.getByText(/WhatsApp/i)).toBeInTheDocument()

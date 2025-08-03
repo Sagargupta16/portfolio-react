@@ -2,20 +2,18 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import './experience.css'
 import ExperienceItem from './experienceitem'
-import { experienceArray, positionOfResponsibilityArray } from './ExperienceArray'
+import { getExperience, getPositionsOfResponsibility } from '../../data/dataLoader'
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'
 
 const Experience = () => {
+  const experienceArray = getExperience()
+  const positionOfResponsibilityArray = getPositionsOfResponsibility()
+
   return (
-    <motion.section 
-      id="experience"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-    >
+    <motion.section id="experience" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
       <motion.h5 variants={fadeInUp}>Experience I got!!</motion.h5>
       <motion.h2 variants={fadeInUp}>My Experience</motion.h2>
-      <motion.div 
+      <motion.div
         className="experience__container container"
         variants={staggerContainer}
         initial="hidden"
@@ -39,7 +37,7 @@ const Experience = () => {
         ))}
       </motion.div>
       {positionOfResponsibilityArray && positionOfResponsibilityArray.length > 0 && (
-        <motion.div 
+        <motion.div
           className="experience__container container"
           variants={staggerContainer}
           initial="hidden"
@@ -68,4 +66,3 @@ const Experience = () => {
 }
 
 export default Experience
-

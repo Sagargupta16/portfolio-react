@@ -8,7 +8,7 @@ import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'
 
 const Education = () => {
   return (
-    <motion.section 
+    <motion.section
       id="education"
       initial="hidden"
       whileInView="visible"
@@ -18,7 +18,7 @@ const Education = () => {
       <FloatingEducationElements />
       <motion.h5 variants={fadeInUp}>What Qualifications I Have</motion.h5>
       <motion.h2 variants={fadeInUp}>My Education</motion.h2>
-      <motion.div 
+      <motion.div
         className="container education__container"
         variants={staggerContainer}
         initial="hidden"
@@ -43,4 +43,3 @@ const Education = () => {
 }
 
 export default Education
-

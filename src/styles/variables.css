@@ -8,24 +8,24 @@
   --color-bg-variant: #2c2c33;
   --color-primary: #ffcc66;
   --color-primary-variant: rgba(255, 204, 102, 0.5);
-  
+
   /* ========== SHADOWS ========== */
   --shadow-light: 0 0 5px rgba(0, 0, 0, 0.4);
   --shadow-medium: 0 0 10px rgba(0, 0, 0, 0.4);
   --shadow-heavy: 0 0 15px rgba(0, 0, 0, 0.4);
   --shadow-inset: inset 0 0 5px rgba(0, 0, 0, 0.4);
-  
+
   /* ========== TRANSITIONS ========== */
   --transition: all 0.4s ease-in-out;
   --transition-fast: all 0.2s ease-in-out;
   --transition-slow: all 0.6s ease-in-out;
-  
+
   /* ========== LAYOUT ========== */
   --container-width-lg: 80%;
   --container-width-md: 90%;
   --container-width-sm: 90%;
   --max-width: 1200px;
-  
+
   /* ========== SPACING ========== */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -35,17 +35,17 @@
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
   --spacing-4xl: 6rem;
-  
+
   /* ========== BORDER RADIUS ========== */
   --radius-sm: 0.4rem;
   --radius-md: 1rem;
   --radius-lg: 2rem;
-  
+
   /* ========== TYPOGRAPHY ========== */
   --font-family-primary: 'Poppins', sans-serif;
   --font-family-secondary: 'Roboto', sans-serif;
   --font-family-accent: 'Clicker Script', cursive;
-  
+
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -54,16 +54,16 @@
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 2rem;
   --font-size-4xl: 2.5rem;
-  
+
   --font-weight-light: 200;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
-  
+
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.7;
-  
+
   /* ========== Z-INDEX ========== */
   --z-dropdown: 1000;
   --z-sticky: 1020;
@@ -75,14 +75,14 @@
 }
 
 /* ========== THEME VARIATIONS ========== */
-[data-theme="light"] {
+[data-theme='light'] {
   --color-bg: #f8f9fa;
   --color-bg-variant: #e9ecef;
   --color-white: #212529;
   --color-light: rgba(33, 37, 41, 0.6);
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --color-bg: #1e1e26;
   --color-bg-variant: #2c2c33;
   --color-white: #fff;

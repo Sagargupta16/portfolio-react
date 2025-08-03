@@ -90,12 +90,13 @@
 }
 
 /* Pulse animation for high achievers */
-.education__text:last-child[data-high-score="true"] {
+.education__text:last-child[data-high-score='true'] {
   animation: achievementPulse 2s ease-in-out infinite;
 }
 
 @keyframes achievementPulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 10px rgba(77, 181, 255, 0.5);
   }
   50% {
@@ -109,7 +110,8 @@
 }
 
 @keyframes subtleFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -129,7 +131,7 @@
     padding: 1.5rem;
     min-height: 180px;
   }
-  
+
   .education__title {
     font-size: 1rem;
   }

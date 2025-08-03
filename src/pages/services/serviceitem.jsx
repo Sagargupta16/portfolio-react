@@ -6,7 +6,7 @@ import { cardHover, staggerContainer, staggerItem, iconBounce } from '../../util
 const serviceitem = props => {
   const { title, list } = props.item
   return (
-    <motion.article 
+    <motion.article
       className="service"
       variants={cardHover}
       whileHover="hover"
@@ -17,7 +17,7 @@ const serviceitem = props => {
       <div className="service__head">
         <h3>{title}</h3>
       </div>
-      <motion.ul 
+      <motion.ul
         className="service__list"
         variants={staggerContainer}
         initial="hidden"
@@ -26,15 +26,8 @@ const serviceitem = props => {
       >
         {list.map((item, index) => {
           return (
-            <motion.li 
-              key={item}
-              variants={staggerItem}
-              transition={{ delay: index * 0.1 }}
-            >
-              <motion.div
-                variants={iconBounce}
-                whileHover="hover"
-              >
+            <motion.li key={item} variants={staggerItem} transition={{ delay: index * 0.1 }}>
+              <motion.div variants={iconBounce} whileHover="hover">
                 <GiCheckMark className="service__list-icon" />
               </motion.div>
               <p>{item}</p>
@@ -47,4 +40,3 @@ const serviceitem = props => {
 }
 
 export default serviceitem
-

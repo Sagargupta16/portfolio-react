@@ -39,11 +39,12 @@ const personalProjects = projectsData.personal_projects.map(project => ({
   image: imageMap[project.image] || EmptyImage // fallback to EmptyImage if image not found
 }))
 
-const collabProjects = projectsData.collaborative_projects ? 
-  projectsData.collaborative_projects.map(project => ({
-    ...project,
-    image: imageMap[project.image] || EmptyImage // fallback to EmptyImage if image not found
-  })) : []
+const collabProjects = projectsData.collaborative_projects
+  ? projectsData.collaborative_projects.map(project => ({
+      ...project,
+      image: imageMap[project.image] || EmptyImage // fallback to EmptyImage if image not found
+    }))
+  : []
 
 export default personalProjects
 export { collabProjects }

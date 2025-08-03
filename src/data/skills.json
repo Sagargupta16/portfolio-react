@@ -1,5 +1,17 @@
 {
-  "programming_languages": ["C++", "Python", "JavaScript", "TypeScript", "Java", "C#", "SQL", "HTML5", "CSS3", "R", "HCL"],
+  "programming_languages": [
+    "C++",
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "Java",
+    "C#",
+    "SQL",
+    "HTML5",
+    "CSS3",
+    "R",
+    "HCL"
+  ],
   "frameworks_and_libraries": [
     "React",
     "Next.js",

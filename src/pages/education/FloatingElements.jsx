@@ -28,11 +28,11 @@ const FloatingEducationElements = () => {
               color: 'var(--color-primary)'
             }}
             initial={{ opacity: 0, scale: 0, rotate: -180 }}
-            animate={{ 
-              opacity: 0.1, 
-              scale: 1, 
+            animate={{
+              opacity: 0.1,
+              scale: 1,
               rotate: 0,
-              y: [-10, 10, -10],
+              y: [-10, 10, -10]
             }}
             transition={{
               opacity: { delay: element.delay, duration: 1 },
@@ -42,7 +42,7 @@ const FloatingEducationElements = () => {
                 delay: element.delay + 1,
                 duration: 3,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: 'easeInOut'
               }
             }}
           >

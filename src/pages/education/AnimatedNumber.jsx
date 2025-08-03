@@ -13,7 +13,7 @@ const AnimatedNumber = ({ value, duration = 2 }) => {
 
     // Extract number from string (e.g., "CGPA: 8.5" -> 8.5)
     const numericValue = parseFloat(value?.match(/[\d.]+/)?.[0] || 0)
-    
+
     if (numericValue === 0) {
       setDisplayValue(value)
       return

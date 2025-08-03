@@ -9,7 +9,6 @@ Please note that this project adheres to the [Contributor Covenant Code of Condu
 ## How to Contribute
 
 1. **Fork the repository:**
-
    - Fork the repository to your GitHub account.
 
 2. **Clone your fork:**

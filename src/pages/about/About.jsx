@@ -7,7 +7,15 @@ import { MdDeveloperMode } from 'react-icons/md'
 import { SiCodersrank } from 'react-icons/si'
 import { Link } from 'react-router-dom'
 import { getStatistics, getAbout } from '../../data/dataLoader'
-import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, staggerItem, cardHover, iconBounce } from '../../utils/animations'
+import {
+  fadeInUp,
+  fadeInLeft,
+  fadeInRight,
+  staggerContainer,
+  staggerItem,
+  cardHover,
+  iconBounce
+} from '../../utils/animations'
 
 const About = () => {
   const statistics = getStatistics()
@@ -35,16 +43,11 @@ const About = () => {
   ]
 
   return (
-    <motion.section 
-      id="about"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-    >
+    <motion.section id="about" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
       <motion.h5 variants={fadeInUp}>Get to Know</motion.h5>
       <motion.h2 variants={fadeInUp}>About Me</motion.h2>
       <div className="container about__container">
-        <motion.div 
+        <motion.div
           className="about__me"
           variants={fadeInLeft}
           initial="hidden"
@@ -55,14 +58,14 @@ const About = () => {
             <img src={ME} alt="about me" />
           </div>
         </motion.div>
-        <motion.div 
+        <motion.div
           className="about__content"
           variants={fadeInRight}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <motion.div 
+          <motion.div
             className="about__cards"
             variants={staggerContainer}
             initial="hidden"
@@ -70,12 +73,7 @@ const About = () => {
             viewport={{ once: true }}
           >
             {cardData.map(card => (
-              <motion.article 
-                className="about__card" 
-                key={card.id}
-                variants={staggerItem}
-                whileHover={cardHover.hover}
-              >
+              <motion.article className="about__card" key={card.id} variants={staggerItem} whileHover={cardHover.hover}>
                 <motion.div variants={iconBounce} whileHover="hover">
                   {card.icon}
                 </motion.div>
@@ -85,7 +83,7 @@ const About = () => {
             ))}
           </motion.div>
         </motion.div>
-        <motion.div 
+        <motion.div
           className="about__text"
           variants={fadeInUp}
           initial="hidden"
@@ -119,4 +117,3 @@ const About = () => {
 }
 
 export default About
-

@@ -15,8 +15,8 @@ import Theme from './components/layout/Theme'
 import ErrorBoundary from './components/common/ErrorBoundary'
 
 const RouterWrapper = ({ children }) => (
-  <Router 
-    basename="/portfolio-react" 
+  <Router
+    basename="/portfolio-react"
     className="router"
     future={{
       v7_startTransition: true,

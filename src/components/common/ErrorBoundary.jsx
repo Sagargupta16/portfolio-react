@@ -18,7 +18,7 @@ class ErrorBoundary extends React.Component {
       error,
       errorInfo
     })
-    
+
     // You can also log the error to an error reporting service here
     // eslint-disable-next-line no-console
     console.error('Error caught by boundary:', error, errorInfo)
@@ -32,14 +32,16 @@ class ErrorBoundary extends React.Component {
       }
 
       return (
-        <div style={{ 
-          padding: '20px', 
-          textAlign: 'center', 
-          backgroundColor: '#f8f9fa',
-          border: '1px solid #dee2e6',
-          borderRadius: '8px',
-          margin: '20px'
-        }}>
+        <div
+          style={{
+            padding: '20px',
+            textAlign: 'center',
+            backgroundColor: '#f8f9fa',
+            border: '1px solid #dee2e6',
+            borderRadius: '8px',
+            margin: '20px'
+          }}
+        >
           <h2>Oops! Something went wrong</h2>
           <p>We're sorry for the inconvenience. Please try refreshing the page.</p>
           {process.env.NODE_ENV === 'development' && (
@@ -50,7 +52,7 @@ class ErrorBoundary extends React.Component {
               {this.state.errorInfo.componentStack}
             </details>
           )}
-          <button 
+          <button
             onClick={() => window.location.reload()}
             style={{
               marginTop: '15px',

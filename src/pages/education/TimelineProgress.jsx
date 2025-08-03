@@ -4,7 +4,7 @@ import { useRef } from 'react'
 
 const TimelineProgress = ({ totalItems, currentVisibleItem }) => {
   const progressPercentage = ((currentVisibleItem + 1) / totalItems) * 100
-  
+
   return (
     <motion.div
       className="timeline-progress"
@@ -20,7 +20,7 @@ const TimelineProgress = ({ totalItems, currentVisibleItem }) => {
       }}
       initial={{ height: 0 }}
       animate={{ height: `${progressPercentage}%` }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
     />
   )
 }

@@ -9,7 +9,7 @@ export const fadeInUp = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -24,7 +24,7 @@ export const fadeInDown = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -39,7 +39,7 @@ export const fadeInLeft = {
     x: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -54,7 +54,7 @@ export const fadeInRight = {
     x: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -69,7 +69,7 @@ export const scaleIn = {
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -95,7 +95,7 @@ export const staggerItem = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -106,7 +106,7 @@ export const floatingAnimation = {
     transition: {
       duration: 3,
       repeat: Infinity,
-      ease: "easeInOut"
+      ease: 'easeInOut'
     }
   }
 }
@@ -123,7 +123,7 @@ export const rotateIn = {
     scale: 1,
     transition: {
       duration: 0.8,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -138,7 +138,7 @@ export const slideInFromBottom = {
     y: 0,
     transition: {
       duration: 0.8,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -148,7 +148,7 @@ export const hoverScale = {
     scale: 1.05,
     transition: {
       duration: 0.2,
-      ease: "easeInOut"
+      ease: 'easeInOut'
     }
   },
   tap: {
@@ -160,10 +160,10 @@ export const cardHover = {
   hover: {
     scale: 1.03,
     y: -5,
-    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
     transition: {
       duration: 0.3,
-      ease: "easeOut"
+      ease: 'easeOut'
     }
   }
 }
@@ -174,7 +174,7 @@ export const iconBounce = {
     rotate: [0, -10, 10, 0],
     transition: {
       duration: 0.5,
-      ease: "easeInOut"
+      ease: 'easeInOut'
     }
   }
 }

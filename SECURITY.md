@@ -16,19 +16,15 @@ Please refer to this section to understand which versions of the project are cur
 If you discover a security vulnerability within this project, please follow these steps to report it:
 
 1. **Ensure the Vulnerability is Reproducible:**
-
    - Clearly outline the steps to reproduce the vulnerability.
 
 2. **Privately Notify the Project Team:**
-
    - Send an email to [sg85207@gmail.com](mailto:sg85207@gmail.com) with a detailed description of the vulnerability.
 
 3. **Responsiveness:**
-
    - You can expect an initial response within 48 hours acknowledging that your report has been received.
 
 4. **Scope and Impact Assessment:**
-
    - The project team will work with you to assess the scope and impact of the vulnerability.
 
 5. **Fix and Disclosure:**

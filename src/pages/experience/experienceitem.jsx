@@ -14,16 +14,16 @@ const ExperienceItem = ({ item }) => {
   }
 
   return (
-    <motion.div 
+    <motion.div
       className="experience__item"
       variants={cardHover}
       whileHover="hover"
       initial={{ opacity: 0, x: -50, scale: 0.95 }}
       animate={{ opacity: 1, x: 0, scale: 1 }}
-      transition={{ 
-        duration: 0.6, 
-        ease: "easeOut",
-        type: "spring",
+      transition={{
+        duration: 0.6,
+        ease: 'easeOut',
+        type: 'spring',
         stiffness: 100
       }}
     >
@@ -32,8 +32,8 @@ const ExperienceItem = ({ item }) => {
           <BsFillCalendarEventFill />
           {item.date}
         </span>
-        <motion.button 
-          className="experience__dropdown" 
+        <motion.button
+          className="experience__dropdown"
           onClick={toggleDropdown}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -57,12 +57,12 @@ const ExperienceItem = ({ item }) => {
           )}
         </span>
       </h3>
-      
+
       <AnimatePresence>
         {show && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -70,7 +70,7 @@ const ExperienceItem = ({ item }) => {
               <h4>{item.project || 'Responsibilities & Contributions'}</h4>
               <ul>
                 {Object.values(item.description).map((desc, index) => (
-                  <motion.li 
+                  <motion.li
                     key={`desc-${desc}`}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -85,7 +85,7 @@ const ExperienceItem = ({ item }) => {
               <h4>Skills I Learned & Used!</h4>
               <div className="experience__item__skills__list">
                 {item.skills.map((skill, index) => (
-                  <motion.span 
+                  <motion.span
                     key={`skill-${skill}`}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -117,4 +117,3 @@ ExperienceItem.propTypes = {
 }
 
 export default ExperienceItem
-

@@ -51,7 +51,7 @@ const Contact = () => {
     setErrors(newErrors)
 
     setFeedbackHTML(() =>
-      Object.keys(newErrors).map((key) => (
+      Object.keys(newErrors).map(key => (
         <p key={key} className="error">
           {newErrors[key]}
         </p>
@@ -102,16 +102,11 @@ const Contact = () => {
   }
 
   return (
-    <motion.section 
-      id="contact"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-    >
+    <motion.section id="contact" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
       <motion.h5 variants={fadeInUp}>Get In Touch</motion.h5>
       <motion.h2 variants={fadeInUp}>Contact Me</motion.h2>
       <div className="container contact__container">
-        <motion.div 
+        <motion.div
           className="contact__options"
           variants={fadeInLeft}
           initial="hidden"
@@ -144,8 +139,8 @@ const Contact = () => {
               message: 'Call Now'
             }
           ].map((option, index) => (
-            <motion.article 
-              className="contact__option" 
+            <motion.article
+              className="contact__option"
               key={option.id}
               variants={cardHover}
               whileHover="hover"
@@ -158,9 +153,9 @@ const Contact = () => {
                 {option.title}
               </h4>
               <h5>{option.value}</h5>
-              <motion.a 
-                href={option.link} 
-                target="_blank" 
+              <motion.a
+                href={option.link}
+                target="_blank"
                 rel="noreferrer"
                 variants={hoverScale}
                 whileHover="hover"
@@ -171,9 +166,9 @@ const Contact = () => {
             </motion.article>
           ))}
         </motion.div>
-        <motion.form 
-          ref={form} 
-          onSubmit={sendEmail} 
+        <motion.form
+          ref={form}
+          onSubmit={sendEmail}
           className="contact__form"
           variants={fadeInRight}
           initial="hidden"
@@ -187,16 +182,16 @@ const Contact = () => {
             value={formData.name}
             onChange={handleInputChange}
             required
-            whileFocus={{ scale: 1.02, borderColor: "#4db5ff" }}
+            whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
             transition={{ duration: 0.2 }}
           />
-          <motion.input 
-            name="email" 
-            placeholder="Your Email" 
-            value={formData.email} 
-            onChange={handleInputChange} 
-            required 
-            whileFocus={{ scale: 1.02, borderColor: "#4db5ff" }}
+          <motion.input
+            name="email"
+            placeholder="Your Email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+            whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
             transition={{ duration: 0.2 }}
           />
           <motion.textarea
@@ -206,15 +201,10 @@ const Contact = () => {
             value={formData.message}
             onChange={handleInputChange}
             required
-            whileFocus={{ scale: 1.02, borderColor: "#4db5ff" }}
+            whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
             transition={{ duration: 0.2 }}
           />
-          <motion.button 
-            type="submit"
-            variants={hoverScale}
-            whileHover="hover"
-            whileTap="tap"
-          >
+          <motion.button type="submit" variants={hoverScale} whileHover="hover" whileTap="tap">
             Send Message
           </motion.button>
           {feedbackHTML && <div className="feedback-container">{feedbackHTML}</div>}
@@ -226,4 +216,3 @@ const Contact = () => {
 }
 
 export default Contact
-
