@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import './Services.css'
+import './services.css'
 import ServiceItem from './serviceitem'
 import { getServices } from '../../data/dataLoader'
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'
