@@ -79,6 +79,10 @@ jest.mock('framer-motion', () => {
         get(_, prop) {
           return React.forwardRef((props, ref) => {
             const { children, ...otherProps } = props
+            // PropTypes validation for children
+            if (typeof children === 'undefined') {
+              throw new Error('children is required in mock component')
+            }
             // Filter out motion-specific props
             const filteredProps = Object.keys(otherProps).reduce((acc, key) => {
               if (!motionProps.has(key)) {

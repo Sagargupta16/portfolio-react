@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import React from 'react'
+import { motion } from 'framer-motion'
+
+import PropTypes from 'prop-types'
 
 const TimelineProgress = ({ totalItems, currentVisibleItem }) => {
   const progressPercentage = ((currentVisibleItem + 1) / totalItems) * 100
@@ -23,6 +24,11 @@ const TimelineProgress = ({ totalItems, currentVisibleItem }) => {
       transition={{ duration: 0.8, ease: 'easeOut' }}
     />
   )
+}
+
+TimelineProgress.propTypes = {
+  totalItems: PropTypes.number.isRequired,
+  currentVisibleItem: PropTypes.number.isRequired,
 }
 
 export default TimelineProgress

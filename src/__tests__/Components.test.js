@@ -13,7 +13,7 @@ import Portfolio from '../pages/portfolio/Portfolio'
 import Contact from '../pages/contact/Contact'
 import Footer from '../components/layout/Footer'
 import Theme from '../components/layout/Theme'
-import App from '../App'
+// import App from '../App' // removed unused import
 import { MemoryRouter } from 'react-router-dom'
 
 // Helper function to render with router when needed
