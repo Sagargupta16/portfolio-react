@@ -1,39 +1,34 @@
-name: CI/CD Pipeline
+name: Portfolio CI/CD
 
 on:
   push:
-    branches: ['master']
+    branches: [main, master]
   pull_request:
-    branches: ['master']
+    branches: [main, master]
 
-# Allow one concurrent deployment
 concurrency:
   group: 'pages-${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
-  # Test and validate
-  test:
-    name: Test & Validate
+  ci:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    timeout-minutes: 20
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 18
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
-        env:
-          NODE_ENV: development
+
+      - name: Lint code
+        run: npx eslint src/ --ext .js,.jsx --max-warnings 0
 
       - name: Validate JSON data files
         run: |
@@ -42,6 +37,12 @@ jobs:
 
       - name: Run tests with coverage
         run: npm test -- --coverage --watchAll=false
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
 
       - name: Security audit
         run: |
@@ -55,9 +56,83 @@ jobs:
           CI: false
           GENERATE_SOURCEMAP: false
 
-      - name: Upload coverage
+      - name: Check bundle size
+        run: npx bundlesize || echo "bundlesize not configured"
+        continue-on-error: true
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        env:
+          CI: false
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run deploy
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: 'pages-${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  test-lint-build-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npx eslint src/ --ext .js,.jsx --max-warnings 0
+
+      - name: Validate JSON data files
+        run: |
+          echo "Validating JSON data files..."
+          find src/data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
+
+      - name: Run tests with coverage
+        run: npm test -- --coverage --watchAll=false
+
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
-        if: success()
+        with:
+          file: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+      - name: Security audit
+        run: |
+          echo "Running security audit..."
+          npm audit --audit-level=high || echo "Security vulnerabilities found, but continuing build"
+        continue-on-error: true
+
+      - name: Build application
+        run: npm run build
+        env:
+          CI: false
+          GENERATE_SOURCEMAP: false
+
+      - name: Check bundle size
+        run: npx bundlesize || echo "bundlesize not configured"
+        continue-on-error: true
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        env:
+          CI: false
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run deploy
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false

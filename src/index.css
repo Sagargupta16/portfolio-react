@@ -30,9 +30,9 @@
 
 /* Legacy section selector - use .section class instead */
 section {
-  min-height: 100vh;
+  min-height: calc(100vh - 6rem);
   margin: var(--spacing-4xl) var(--spacing-md) var(--spacing-md) var(--spacing-md);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
   background-color: var(--color-bg);
   border-radius: var(--radius-md);
   filter: drop-shadow(var(--shadow-light));
