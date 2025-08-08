@@ -4,6 +4,48 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom'
 
+// Mock HTMLFormElement.prototype.submit to avoid JSDOM errors
+Object.defineProperty(HTMLFormElement.prototype, 'submit', {
+  value: jest.fn(),
+  writable: true,
+  configurable: true
+})
+
+// Mock console errors for known JSDOM limitations
+const originalConsoleError = console.error
+// eslint-disable-next-line no-console
+console.error = (...args) => {
+  if (
+    typeof args[0] === 'string' &&
+    (args[0].includes('Not implemented: HTMLFormElement.prototype.submit') ||
+     args[0].includes('Error: Not implemented'))
+  ) {
+    return
+  }
+  originalConsoleError(...args)
+}
+
+// Suppress React Router warnings in tests
+const originalConsoleWarn = console.warn
+beforeEach(() => {
+  // eslint-disable-next-line no-console
+  console.warn = (...args) => {
+    if (
+      typeof args[0] === 'string' &&
+      (args[0].includes('Router basename') || 
+       args[0].includes('does not start with the basename'))
+    ) {
+      return
+    }
+    originalConsoleWarn(...args)
+  }
+})
+
+afterEach(() => {
+  // eslint-disable-next-line no-console
+  console.warn = originalConsoleWarn
+})
+
 // Mock Framer Motion entirely for testing to avoid DOM API issues
 jest.mock('framer-motion', () => {
   const React = require('react')

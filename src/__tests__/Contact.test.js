@@ -123,6 +123,10 @@ describe('Contact Component', () => {
 
     const submitButton = screen.getByRole('button', { name: /Send Message/i })
 
+    // Mock HTMLFormElement.prototype.submit to avoid JSDOM error
+    const mockSubmit = jest.fn()
+    HTMLFormElement.prototype.submit = mockSubmit
+
     // Try to submit empty form
     await user.click(submitButton)
 
@@ -130,6 +134,9 @@ describe('Contact Component', () => {
     const nameInput = screen.getByPlaceholderText(/Your Full Name/i)
     expect(nameInput).toBeRequired()
     expect(nameInput.value).toBe('')
+    
+    // Restore original submit method
+    delete HTMLFormElement.prototype.submit
   })
 
   test('shows contact information', () => {
