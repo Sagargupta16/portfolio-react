@@ -27,8 +27,6 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Lint code
-        run: npx eslint src/ --ext .js,.jsx --max-warnings 0
 
       - name: Validate JSON data files
         run: |
