@@ -19,14 +19,16 @@ const Contact = () => {
   const [feedbackHTML, setFeedbackHTML] = useState('')
 
   useEffect(() => {
-    const feedbackTimer = setTimeout(() => {
-      setErrors({})
-      setSuccessMessage('')
-      setFeedbackHTML('')
-    }, 5000)
-
-    return () => clearTimeout(feedbackTimer)
-  }, [])
+    // Only clear messages after they are set, not on mount
+    if (Object.keys(errors).length > 0 || successMessage || feedbackHTML) {
+      const feedbackTimer = setTimeout(() => {
+        setErrors({})
+        setSuccessMessage('')
+        setFeedbackHTML('')
+      }, 5000)
+      return () => clearTimeout(feedbackTimer)
+    }
+  }, [errors, successMessage, feedbackHTML])
 
   const validateForm = () => {
     let isValid = true
