@@ -45,6 +45,12 @@ jobs:
       - name: Build React app
         run: npm run build
 
+      - name: Security audit
+        run: |
+          echo "Running security audit..."
+          npm audit --audit-level=high || echo "Security vulnerabilities found, but continuing build"
+        continue-on-error: true
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
@@ -63,17 +69,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Security audit
-        run: |
-          echo "Running security audit..."
-          npm audit --audit-level=high || echo "Security vulnerabilities found, but continuing build"
-        continue-on-error: true
-
-      - name: Build and Deploy to GitHub Pages
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        env:
-          CI: false
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm run deploy
