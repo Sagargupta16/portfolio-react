@@ -47,8 +47,6 @@ jobs:
           npm audit --audit-level=high || echo "Security vulnerabilities found, but continuing build"
         continue-on-error: true
 
-
-
       - name: Build and Deploy to GitHub Pages
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         env:

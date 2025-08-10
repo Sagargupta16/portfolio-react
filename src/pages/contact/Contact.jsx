@@ -5,7 +5,15 @@ import { MdOutlineEmail } from 'react-icons/md'
 import { ImWhatsapp } from 'react-icons/im'
 import { IoCallOutline } from 'react-icons/io5'
 import emailjs from '@emailjs/browser'
-import { fadeInUp, fadeInLeft, fadeInRight, cardHover, hoverScale } from '../../utils/animations'
+import {
+  fadeInUp,
+  fadeInLeft,
+  fadeInRight,
+  cardHover,
+  hoverScale,
+  staggerContainer,
+  staggerItem
+} from '../../utils/animations'
 
 const Contact = () => {
   const form = useRef()
@@ -104,17 +112,27 @@ const Contact = () => {
   }
 
   return (
-    <motion.section id="contact" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
-      <motion.h5 variants={fadeInUp}>Get In Touch</motion.h5>
-      <motion.h2 variants={fadeInUp}>Contact Me</motion.h2>
-      <div className="container contact__container">
-        <motion.div
-          className="contact__options"
-          variants={fadeInLeft}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
+    <motion.section
+      id="contact"
+      className="section contact-section"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      <motion.h5 className="section__subtitle" variants={fadeInUp}>
+        Get In Touch
+      </motion.h5>
+      <motion.h2 className="section__title" variants={fadeInUp}>
+        Contact Me
+      </motion.h2>
+      <motion.div
+        className="container contact__container"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        <motion.div className="contact__options" variants={staggerContainer}>
           {[
             {
               id: 1,
@@ -144,7 +162,7 @@ const Contact = () => {
             <motion.article
               className="contact__option"
               key={option.id}
-              variants={cardHover}
+              variants={staggerItem}
               whileHover="hover"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -172,7 +190,7 @@ const Contact = () => {
           ref={form}
           onSubmit={sendEmail}
           className="contact__form"
-          variants={fadeInRight}
+          variants={staggerItem}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -212,7 +230,7 @@ const Contact = () => {
           {feedbackHTML && <div className="feedback-container">{feedbackHTML}</div>}
           {successMessage && <p className="success">{successMessage}</p>}
         </motion.form>
-      </div>
+      </motion.div>
     </motion.section>
   )
 }

@@ -5,7 +5,7 @@ import './Nav.css'
 import { RiHome3Line, RiServiceLine } from 'react-icons/ri'
 import { AiOutlineUser, AiOutlineMessage } from 'react-icons/ai'
 import { GoBriefcase, GoPencil } from 'react-icons/go'
-import { GiSuitcase, GiSkills } from 'react-icons/gi'
+import { GiSuitcase, GiSkills, GiTrophy } from 'react-icons/gi'
 import { hoverScale, staggerContainer, staggerItem } from '../../../utils/animations'
 
 const Nav = () => {
@@ -56,7 +56,7 @@ const Nav = () => {
     { to: '/skill', icon: <GiSkills />, label: 'Skills' },
     { to: '/services', icon: <RiServiceLine />, label: 'Services' },
     { to: '/portfolio', icon: <GiSuitcase />, label: 'Portfolio' },
-    { to: '/achievement', icon: <GoBriefcase />, label: 'Achievement' },
+  { to: '/achievement', icon: <GiTrophy />, label: 'Achievement' },
     { to: '/contact', icon: <AiOutlineMessage />, label: 'Contact' }
   ]
 
