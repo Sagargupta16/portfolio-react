@@ -43,11 +43,46 @@ const themes = [
       primary: '#ff6600',
       'primary-variant': 'rgba(255, 102, 0, 0.5)'
     }
+  }
+];
+
+export default themes;
+      bg: '#1f2125',
+      'bg-variant': '#2e3238',
+      primary: '#ff99cc',
+      'primary-variant': 'rgba(255, 153, 204, 0.5)'
+    }
   },
   {
-    name: 'theme10',
+    name: 'theme11',
     colors: {
-      bg: '#1f2125',
+      bg: '#1d1f21',
+      'bg-variant': '#2e3133',
+      primary: '#66ffcc',
+      'primary-variant': 'rgba(102, 255, 204, 0.5)'
+    }
+  },
+  {
+    name: 'theme12',
+    colors: {
+      bg: '#1e1e26',
+      'bg-variant': '#2c2c33',
+      primary: '#ffcc66',
+      'primary-variant': 'rgba(255, 204, 102, 0.5)'
+    }
+  },
+  {
+    name: 'theme13',
+    colors: {
+      bg: '#0d0d0d',
+      'bg-variant': '#1a1a1a',
+      primary: '#00ffcc',
+      'primary-variant': 'rgba(0, 255, 204, 0.5)'
+    }
+  }
+];
+
+export default themes;
       'bg-variant': '#2e3238',
       primary: '#ff99cc',
       'primary-variant': 'rgba(255, 153, 204, 0.5)'

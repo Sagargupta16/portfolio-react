@@ -1,79 +1,40 @@
-// Animation variants for Framer Motion
-export const fadeInUp = {
+// Common transition configurations
+const transitions = {
+  default: { duration: 0.6, ease: 'easeOut' },
+  spring: { type: 'spring', stiffness: 100, damping: 10 },
+  quick: { duration: 0.3, ease: 'easeInOut' }
+}
+
+// Base animation variants
+const fadeBase = (direction = null) => ({
   hidden: {
     opacity: 0,
-    y: 60
+    ...(direction && { [direction]: 60 })
   },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut'
-    }
+    ...(direction && { [direction]: 0 }),
+    transition: transitions.default
   }
-}
+})
 
-export const fadeInDown = {
-  hidden: {
-    opacity: 0,
-    y: -60
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut'
-    }
-  }
-}
+// Fade animations with different directions
+export const fadeInUp = fadeBase('y')
+export const fadeInDown = fadeBase('-y')
+export const fadeInLeft = fadeBase('x')
+export const fadeInRight = fadeBase('-x')
 
-export const fadeInLeft = {
-  hidden: {
-    opacity: 0,
-    x: -60
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut'
-    }
-  }
-}
-
-export const fadeInRight = {
-  hidden: {
-    opacity: 0,
-    x: 60
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut'
-    }
-  }
-}
-
+// Scale animation
 export const scaleIn = {
-  hidden: {
-    opacity: 0,
-    scale: 0.8
-  },
+  hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut'
-    }
+    transition: transitions.default
   }
 }
 
+// Container for staggered animations
 export const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
@@ -85,19 +46,34 @@ export const staggerContainer = {
   }
 }
 
+// Stagger item animation
 export const staggerItem = {
-  hidden: {
-    opacity: 0,
-    y: 20
-  },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut'
-    }
+    transition: transitions.quick
   }
+}
+
+// Hover animations
+export const hover = {
+  scale: {
+    scale: 1.05,
+    transition: transitions.quick
+  },
+  lift: {
+    y: -5,
+    transition: transitions.quick
+  }
+}
+
+// Page transition
+export const pageTransition = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+  transition: transitions.default
 }
 
 export const floatingAnimation = {

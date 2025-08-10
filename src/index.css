@@ -1,28 +1,25 @@
-/* ========== MAIN STYLESHEET ========== */
-/* Import all modular CSS files in the correct order */
-
-/* 1. CSS Custom Properties (Variables) */
-@import './styles/variables.css';
-
-/* 2. Base styles and reset */
+/* Core styles and CSS reset */
 @import './styles/base.css';
 
-/* 3. Typography system */
+/* Design tokens and variables */
+@import './styles/variables.css';
+
+/* Typography system */
 @import './styles/typography.css';
 
-/* 4. Layout utilities */
+/* Layout utilities */
 @import './styles/layout.css';
 
-/* 5. Component styles */
+/* Component styles */
 @import './styles/components.css';
 
-/* 6. Animation styles */
-@import './styles/animations.css';
-
-/* 7. Utility classes */
+/* Utilities */
 @import './styles/utilities.css';
 
-/* 8. Responsive design and media queries */
+/* Animations */
+@import './styles/animations.css';
+
+/* Responsive design */
 @import './styles/responsive.css';
 
 /* ========== LEGACY COMPATIBILITY ========== */
