@@ -63,8 +63,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-          files: ./coverage/lcov.info
-          fail_ci_if_error: false
 
       - name: Security audit
         run: |
@@ -78,5 +76,4 @@ jobs:
           CI: false
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm run predeploy
           npm run deploy
