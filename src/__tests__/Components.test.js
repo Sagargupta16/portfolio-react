@@ -154,7 +154,7 @@ describe('App Component', () => {
         <Footer />
       </div>
     )
-    
+
     // Verify key components are rendered
     expect(screen.getByText('Download CV')).toBeInTheDocument()
     expect(screen.getByText(/Get To Know/i)).toBeInTheDocument()
@@ -166,7 +166,7 @@ describe('App Component', () => {
     // Test individual components that make up the app
     render(<About />)
     expect(screen.getByText(/Get To Know/i)).toBeInTheDocument()
-    
+
     render(<Education />)
     expect(screen.getByText(/Education/i)).toBeInTheDocument()
   })

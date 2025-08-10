@@ -59,9 +59,11 @@ describe('Contact Component', () => {
     await user.type(messageInput, 'Hello there! This is a test message with more than 10 characters.')
 
     // Wait for form state to update and verify values are set
-  await waitFor(() => expect(nameInput).toHaveValue('John Doe'))
-  await waitFor(() => expect(emailInput).toHaveValue('john@gmail.com'))
-  await waitFor(() => expect(messageInput).toHaveValue('Hello there! This is a test message with more than 10 characters.'))
+    await waitFor(() => expect(nameInput).toHaveValue('John Doe'))
+    await waitFor(() => expect(emailInput).toHaveValue('john@gmail.com'))
+    await waitFor(() =>
+      expect(messageInput).toHaveValue('Hello there! This is a test message with more than 10 characters.')
+    )
 
     // Get the submit button and click it - this should now work with our HTMLFormElement.submit mock
     const submitButton = screen.getByRole('button', { name: /Send Message/i })
@@ -95,9 +97,11 @@ describe('Contact Component', () => {
     await user.type(messageInput, 'Hello there! This is a test message with more than 10 characters.')
 
     // Wait for form state to update and verify values are set
-  await waitFor(() => expect(nameInput).toHaveValue('John Doe'))
-  await waitFor(() => expect(emailInput).toHaveValue('john@gmail.com'))
-  await waitFor(() => expect(messageInput).toHaveValue('Hello there! This is a test message with more than 10 characters.'))
+    await waitFor(() => expect(nameInput).toHaveValue('John Doe'))
+    await waitFor(() => expect(emailInput).toHaveValue('john@gmail.com'))
+    await waitFor(() =>
+      expect(messageInput).toHaveValue('Hello there! This is a test message with more than 10 characters.')
+    )
 
     // Get the submit button and click it - this should now work with our HTMLFormElement.submit mock
     const submitButton = screen.getByRole('button', { name: /Send Message/i })
@@ -130,7 +134,7 @@ describe('Contact Component', () => {
     const nameInput = screen.getByPlaceholderText(/Your Full Name/i)
     expect(nameInput).toBeRequired()
     expect(nameInput.value).toBe('')
-    
+
     // Restore original submit method
     delete HTMLFormElement.prototype.submit
   })
@@ -142,7 +146,6 @@ describe('Contact Component', () => {
     expect(screen.getByText(/Email/i)).toBeInTheDocument()
     expect(screen.getByText(/WhatsApp/i)).toBeInTheDocument()
   })
-
 
   test('does not submit if required fields are empty', async () => {
     renderWithRouter(<Contact />)

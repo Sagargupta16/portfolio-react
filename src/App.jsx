@@ -9,6 +9,7 @@ import Experience from './pages/experience/Experience'
 import Skill from './pages/skill/Skill'
 import Services from './pages/services/Services'
 import Portfolio from './pages/portfolio/Portfolio'
+import Achievement from './pages/achievement/Achievement'
 import Contact from './pages/contact/Contact'
 import Footer from './components/layout/Footer'
 import Theme from './components/layout/Theme'
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="/skill" element={<Skill />} />
             <Route path="/services" element={<Services />} />
             <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/achievement" element={<Achievement />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         ) : (
@@ -68,6 +70,7 @@ const App = () => {
             <Skill />
             <Services />
             <Portfolio />
+            <Achievement />
             <Contact />
           </>
         )}

@@ -18,7 +18,7 @@ console.error = (...args) => {
   if (
     typeof args[0] === 'string' &&
     (args[0].includes('Not implemented: HTMLFormElement.prototype.submit') ||
-     args[0].includes('Error: Not implemented'))
+      args[0].includes('Error: Not implemented'))
   ) {
     return
   }
@@ -32,8 +32,7 @@ beforeEach(() => {
   console.warn = (...args) => {
     if (
       typeof args[0] === 'string' &&
-      (args[0].includes('Router basename') || 
-       args[0].includes('does not start with the basename'))
+      (args[0].includes('Router basename') || args[0].includes('does not start with the basename'))
     ) {
       return
     }

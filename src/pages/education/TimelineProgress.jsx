@@ -28,7 +28,7 @@ const TimelineProgress = ({ totalItems, currentVisibleItem }) => {
 
 TimelineProgress.propTypes = {
   totalItems: PropTypes.number.isRequired,
-  currentVisibleItem: PropTypes.number.isRequired,
+  currentVisibleItem: PropTypes.number.isRequired
 }
 
 export default TimelineProgress

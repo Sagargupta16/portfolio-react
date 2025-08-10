@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import ErrorBoundary from '../components/common/ErrorBoundary';
+import React from 'react'
+import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
+import ErrorBoundary from '../components/common/ErrorBoundary'
 
 function ProblemChild() {
-  throw new Error('Test error!');
+  throw new Error('Test error!')
 }
 
 describe('ErrorBoundary', () => {
@@ -13,16 +13,16 @@ describe('ErrorBoundary', () => {
       <ErrorBoundary>
         <ProblemChild />
       </ErrorBoundary>
-    );
-    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
-  });
+    )
+    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument()
+  })
 
   it('renders children when no error', () => {
     render(
       <ErrorBoundary>
         <div>Safe Child</div>
       </ErrorBoundary>
-    );
-    expect(screen.getByText('Safe Child')).toBeInTheDocument();
-  });
-});
+    )
+    expect(screen.getByText('Safe Child')).toBeInTheDocument()
+  })
+})

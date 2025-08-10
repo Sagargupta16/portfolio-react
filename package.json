@@ -1,8 +1,8 @@
 {
   "name": "portfolio-react",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
-  "homepage": "https://sagargupta.life/portfolio-react/",
+  "homepage": "https://sagargupta.live/portfolio-react/",
   "scripts": {
     "start": "set NODE_OPTIONS=--no-deprecation && react-scripts start",
     "build": "react-scripts build",

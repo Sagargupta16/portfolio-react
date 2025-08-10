@@ -27,14 +27,13 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-
       - name: Validate JSON data files
         run: |
           echo "Validating JSON data files..."
           find src/data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
 
       - name: Run tests with coverage
-        run: npm test -- --coverage --watchAll=false
+        run: npm run test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
@@ -48,28 +47,13 @@ jobs:
           npm audit --audit-level=high || echo "Security vulnerabilities found, but continuing build"
         continue-on-error: true
 
-      - name: Build application
-        run: npm run build
-        env:
-          CI: false
-          GENERATE_SOURCEMAP: false
 
-      - name: Check bundle size
-        run: npx bundlesize || echo "bundlesize not configured"
-        continue-on-error: true
 
-      - name: Deploy to GitHub Pages
+      - name: Build and Deploy to GitHub Pages
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         env:
           CI: false
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run deploy
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './build'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        run: |
+          npm run predeploy
+          npm run deploy
