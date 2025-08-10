@@ -7,9 +7,6 @@ import { IoCallOutline } from 'react-icons/io5'
 import emailjs from '@emailjs/browser'
 import {
   fadeInUp,
-  fadeInLeft,
-  fadeInRight,
-  cardHover,
   hoverScale,
   staggerContainer,
   staggerItem
