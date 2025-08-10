@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/portfolio-react/static/css/main.3e12a7ac.css",
-    "main.js": "/portfolio-react/static/js/main.c67c19df.js",
-    "static/media/project-12.png": "/portfolio-react/static/media/project-12.efa6d0a5a36a372dbe4b.png",
+    "main.css": "/portfolio-react/static/css/main.040f4365.css",
+    "main.js": "/portfolio-react/static/js/main.57da0d9a.js",
+    "static/media/study-hub.png": "/portfolio-react/static/media/study-hub.efa6d0a5a36a372dbe4b.png",
     "static/media/me-about.jpg": "/portfolio-react/static/media/me-about.3eb99ee207f79435f76d.jpg",
-    "static/media/project-3.png": "/portfolio-react/static/media/project-3.2259e7f5e3045ea35516.png",
+    "static/media/portfolio.png": "/portfolio-react/static/media/portfolio.2259e7f5e3045ea35516.png",
     "static/media/me.png": "/portfolio-react/static/media/me.2974c1214b83424cec4f.png",
-    "static/media/project-1.png": "/portfolio-react/static/media/project-1.5a03102abcdf3ce0e6cf.png",
-    "static/media/project-10.png": "/portfolio-react/static/media/project-10.12fd70b18a6937a28b64.png",
+    "static/media/portfolio-react.png": "/portfolio-react/static/media/portfolio-react.5a03102abcdf3ce0e6cf.png",
+    "static/media/music-player.png": "/portfolio-react/static/media/music-player.12fd70b18a6937a28b64.png",
     "static/media/Resume.pdf": "/portfolio-react/static/media/Resume.b3392ced0dee56103c5b.pdf",
-    "static/media/project-6.png": "/portfolio-react/static/media/project-6.0274770487dd42eda55a.png",
-    "static/media/project-2.png": "/portfolio-react/static/media/project-2.4fede354817455fdef70.png",
-    "static/media/project-5.png": "/portfolio-react/static/media/project-5.e5f5ae4451ded76a70bc.png",
-    "static/media/project-7.png": "/portfolio-react/static/media/project-7.d1cfead1c5926ae7c3c6.png",
-    "static/media/project-11.png": "/portfolio-react/static/media/project-11.44cb33aea00fcdda4fe6.png",
-    "static/media/project-4.png": "/portfolio-react/static/media/project-4.7d7e22a06f4dce93d1d0.png",
+    "static/media/Minesweeper.png": "/portfolio-react/static/media/Minesweeper.0274770487dd42eda55a.png",
+    "static/media/contact-manager.png": "/portfolio-react/static/media/contact-manager.4fede354817455fdef70.png",
+    "static/media/snake-game.png": "/portfolio-react/static/media/snake-game.e5f5ae4451ded76a70bc.png",
+    "static/media/tic-tac-toe.png": "/portfolio-react/static/media/tic-tac-toe.d1cfead1c5926ae7c3c6.png",
+    "static/media/guess-the-number.png": "/portfolio-react/static/media/guess-the-number.44cb33aea00fcdda4fe6.png",
+    "static/media/leetcode-rating-predictor.png": "/portfolio-react/static/media/leetcode-rating-predictor.7d7e22a06f4dce93d1d0.png",
     "static/media/project-8.png": "/portfolio-react/static/media/project-8.1d8e10cea1f7ea03f73c.png",
-    "static/media/project-13.jpg": "/portfolio-react/static/media/project-13.b21896350fb9f837a54d.jpg",
+    "static/media/Empty.jpg": "/portfolio-react/static/media/Empty.b21896350fb9f837a54d.jpg",
     "index.html": "/portfolio-react/index.html",
-    "main.3e12a7ac.css.map": "/portfolio-react/static/css/main.3e12a7ac.css.map",
-    "main.c67c19df.js.map": "/portfolio-react/static/js/main.c67c19df.js.map"
+    "main.040f4365.css.map": "/portfolio-react/static/css/main.040f4365.css.map",
+    "main.57da0d9a.js.map": "/portfolio-react/static/js/main.57da0d9a.js.map"
   },
   "entrypoints": [
-    "static/css/main.3e12a7ac.css",
-    "static/js/main.c67c19df.js"
+    "static/css/main.040f4365.css",
+    "static/js/main.57da0d9a.js"
   ]
 }
