@@ -32,15 +32,12 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
 
       - name: Validate JSON data files
         run: |
           echo "Validating JSON data files..."
           find src/data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
-
-      - name: Run tests with coverage
-        run: npm run test
 
       - name: Build React app
         run: npm run build

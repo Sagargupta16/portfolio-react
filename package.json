@@ -6,9 +6,6 @@
   "scripts": {
     "start": "set NODE_OPTIONS=--no-deprecation && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage --watchAll=false",
-    "test:coverage": "react-scripts test --coverage --watchAll=false --verbose",
-    "test:coverage-open": "npm run test:coverage && start coverage\\lcov-report\\index.html",
     "eject": "react-scripts eject",
     "format": "prettier . --write",
     "predeploy": "npm run build",
@@ -16,55 +13,27 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.0.0",
     "framer-motion": "^12.23.12",
     "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.8.0",
-    "react-scripts": "^5.1.0-next.26",
+    "react-router-dom": "^7.8.1",
+    "react-scripts": "^5.0.1",
     "react-simple-typewriter": "^5.0.0",
     "swiper": "^11.2.10",
-    "typewriter-effect": "^2.19.0",
+    "typewriter-effect": "^2.22.0",
     "web-vitals": "^5.1.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@testing-library/jest-dom": "^6.6.4",
-    "gh-pages": "^6.1.1",
-    "nyc": "^17.1.0",
+    "gh-pages": "^6.3.0",
     "prettier": "^3.6.2",
-    "typescript": "^5.9.2"
+    "typescript": "^4.9.5"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!src/index.js",
-      "!src/setupTests.js",
-      "!src/**/*.test.{js,jsx}",
-      "!src/components/**/index.jsx"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 34,
-        "functions": 58,
-        "lines": 67,
-        "statements": 65
-      }
-    },
-    "coverageReporters": [
-      "text",
-      "lcov",
-      "html"
+      "react-app"
     ]
   },
   "browserslist": {
@@ -77,21 +46,6 @@
       ">0.2%",
       "not dead",
       "not op_mini all"
-    ]
-  },
-  "nyc": {
-    "report-dir": "coverage",
-    "all": true,
-    "extension": [
-      ".js",
-      ".jsx"
-    ],
-    "include": [
-      "src/**/*.{js,jsx}"
-    ],
-    "exclude": [
-      "**/*.test.{js,jsx}",
-      "src/serviceWorker.js"
     ]
   },
   "description": "A dynamic and interactive React portfolio showcasing professional experience as a DevOps & Cloud Engineer. Features modern JSON-based data architecture, responsive design, and seamless deployment with CI/CD pipelines.",

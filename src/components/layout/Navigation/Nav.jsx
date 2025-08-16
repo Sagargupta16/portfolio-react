@@ -56,7 +56,7 @@ const Nav = () => {
     { to: '/skill', icon: <GiSkills />, label: 'Skills' },
     { to: '/services', icon: <RiServiceLine />, label: 'Services' },
     { to: '/portfolio', icon: <GiSuitcase />, label: 'Portfolio' },
-  { to: '/achievement', icon: <GiTrophy />, label: 'Achievement' },
+    { to: '/achievement', icon: <GiTrophy />, label: 'Achievement' },
     { to: '/contact', icon: <AiOutlineMessage />, label: 'Contact' }
   ]
 

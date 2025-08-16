@@ -5,12 +5,7 @@ import { MdOutlineEmail } from 'react-icons/md'
 import { ImWhatsapp } from 'react-icons/im'
 import { IoCallOutline } from 'react-icons/io5'
 import emailjs from '@emailjs/browser'
-import {
-  fadeInUp,
-  hoverScale,
-  staggerContainer,
-  staggerItem
-} from '../../utils/animations'
+import { fadeInUp, hoverScale, staggerContainer, staggerItem } from '../../utils/animations'
 
 const Contact = () => {
   const form = useRef()

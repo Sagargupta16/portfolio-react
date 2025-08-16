@@ -31,12 +31,7 @@ const Achievement = () => {
           </motion.h2>
           <motion.ul className="achievement-list" variants={staggerContainer}>
             {certifications.map(cert => (
-              <motion.li
-                key={cert.id}
-                className="achievement-item"
-                variants={staggerItem}
-                whileHover={hoverScale}
-              >
+              <motion.li key={cert.id} className="achievement-item" variants={staggerItem} whileHover={hoverScale}>
                 <motion.h3 variants={fadeInUp}>{cert.name}</motion.h3>
                 <motion.p variants={fadeInUp}>Type: {cert.type}</motion.p>
                 <motion.p variants={fadeInUp}>Issuer: {cert.issuer}</motion.p>
@@ -50,12 +45,7 @@ const Achievement = () => {
           </motion.h2>
           <motion.ul className="achievement-list" variants={staggerContainer}>
             {achievements.map(item => (
-              <motion.li
-                key={item.id}
-                className="achievement-item"
-                variants={staggerItem}
-                whileHover={hoverScale}
-              >
+              <motion.li key={item.id} className="achievement-item" variants={staggerItem} whileHover={hoverScale}>
                 <motion.h3 variants={fadeInUp}>{item.title}</motion.h3>
                 {item.organizer && <motion.p variants={fadeInUp}>Organizer: {item.organizer}</motion.p>}
                 <motion.p variants={fadeInUp}>Type: {item.type}</motion.p>
@@ -74,12 +64,7 @@ const Achievement = () => {
           </motion.h2>
           <motion.ul className="achievement-list" variants={staggerContainer}>
             {Object.entries(coding_platform_stats).map(([platform, stats]) => (
-              <motion.li
-                key={platform}
-                className="achievement-item"
-                variants={staggerItem}
-                whileHover={hoverScale}
-              >
+              <motion.li key={platform} className="achievement-item" variants={staggerItem} whileHover={hoverScale}>
                 <motion.h3 variants={fadeInUp}>{platform.charAt(0).toUpperCase() + platform.slice(1)}</motion.h3>
                 {Object.entries(stats).map(([k, v]) => (
                   <motion.p key={k} variants={fadeInUp}>

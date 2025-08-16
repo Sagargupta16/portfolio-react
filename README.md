@@ -7,7 +7,7 @@
 
 [![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml)
 [![Security Analysis](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml)
-![Test Coverage](https://img.shields.io/badge/coverage-72%25-brightgreen)
+
 ![Node Version](https://img.shields.io/badge/node-18.20.4-green)
 ![React Version](https://img.shields.io/badge/react-18.3.1-blue)
 
@@ -93,7 +93,7 @@ With this impressive array of key features, my portfolio demonstrates my commitm
 ## 🔮 Future Enhancements
 
 - **Enhanced Data Management:** Add more sophisticated data validation and error handling for JSON files.
-- **Component Testing:** Expand test coverage for all portfolio components with comprehensive unit tests.
+
 - **Performance Optimization:** Implement lazy loading and code splitting for better performance.
 - **Animation Library Integration:** Add smooth transitions and animations using libraries like Framer Motion.
 - **Dark/Light Theme Toggle:** Implement dynamic theme switching with CSS variables.
@@ -187,11 +187,6 @@ With this impressive array of key features, my portfolio demonstrates my commitm
   |   |   |-- Skill.jsx
   |   |   |-- skill.css
   |   |   |-- skillsArray.js
-  |   |-- testimonials
-  |       |-- Testimonial.jsx
-  |       |-- testimonial.css
-  |-- __tests__
-      |-- Components.test.js
   |-- App.jsx
   |-- index.css
   |-- index.js
@@ -275,32 +270,6 @@ To run this portfolio locally on your machine, follow these simple steps:
 
 5. **View the Portfolio:**
    Once the development server has started successfully, open your web browser and navigate to `http://localhost:3000/portfolio-react`. You should now be able to see and interact with the portfolio locally on your machine.
-
-## 🧪 Testing
-
-The portfolio includes a comprehensive test suite to ensure all components work correctly:
-
-```bash
-# Run all tests
-npm test
-
-# Run tests with coverage report
-npm test -- --coverage --watchAll=false
-
-# Run tests in watch mode (for development)
-npm test -- --watch
-```
-
-**Test Coverage:**
-
-- All major components (Header, About, Education, Experience, Skills, Services, Portfolio, Contact, Footer)
-- JSON data loader functionality
-- Component rendering and basic functionality
-- Currently achieving 67%+ test coverage
-
-**Test Files:**
-
-- `src/__tests__/Components.test.js` - Main component testing suite
 
 With these steps, you can easily run the portfolio locally, explore its features, and make any desired modifications to suit your needs. The JSON data architecture makes updates simple and maintainable!
 
