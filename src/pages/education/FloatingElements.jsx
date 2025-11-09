@@ -1,5 +1,4 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import { FaGraduationCap, FaBook, FaCertificate, FaAward } from 'react-icons/fa'
 
 const FloatingEducationElements = () => {

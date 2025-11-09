@@ -1,5 +1,4 @@
-import React from 'react'
-import { Typewriter } from 'react-simple-typewriter'
+﻿import { Typewriter } from 'react-simple-typewriter'
 import PropTypes from 'prop-types'
 
 const TW = ({ roles }) => {

@@ -1,5 +1,4 @@
-import React from 'react'
-import './Footer.css'
+﻿import './Footer.css'
 import { getSocialProfiles } from '../../../data/dataLoader'
 import { BsLinkedin } from 'react-icons/bs'
 import { FaGithub } from 'react-icons/fa'
@@ -28,7 +27,7 @@ const Footer = () => {
         ))}
       </nav>
       <address className="footer__copyright">
-        <small>© Sagar Gupta. All rights reserved.</small>
+        <small>Â© Sagar Gupta. All rights reserved.</small>
       </address>
     </footer>
   )

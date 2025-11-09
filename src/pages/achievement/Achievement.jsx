@@ -1,5 +1,4 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import achievementsData from '../../data/achievements.json'
 import { fadeInUp, staggerContainer, staggerItem, hoverScale } from '../../utils/animations'
 import './achievement.css'

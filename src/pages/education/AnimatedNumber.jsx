@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
 
 const AnimatedNumber = ({ value, duration = 2 }) => {
   const ref = useRef(null)
@@ -12,7 +11,7 @@ const AnimatedNumber = ({ value, duration = 2 }) => {
     if (!isInView) return
 
     // Extract number from string (e.g., "CGPA: 8.5" -> 8.5)
-    const numericValue = parseFloat(value?.match(/[\d.]+/)?.[0] || 0)
+    const numericValue = Number.parseFloat(value?.match(/[\d.]+/)?.[0] || 0)
 
     if (numericValue === 0) {
       return

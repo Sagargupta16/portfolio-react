@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+﻿import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PropTypes from 'prop-types'
 import { CiCircleChevDown, CiCircleChevUp } from 'react-icons/ci'
@@ -7,9 +7,7 @@ import { cardHover, hoverScale } from '../../utils/animations'
 const PortfolioItem = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const toggleExpansion = () => {
-    setIsExpanded(!isExpanded)
-  }
+  const toggleExpansion = () => setIsExpanded(prev => !prev)
 
   return (
     <motion.article

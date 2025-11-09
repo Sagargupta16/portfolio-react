@@ -1,12 +1,12 @@
-import React, { useLayoutEffect, useEffect, useState } from 'react'
+import { useLayoutEffect, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import './Nav.css'
 import { RiHome3Line, RiServiceLine } from 'react-icons/ri'
 import { AiOutlineUser, AiOutlineMessage } from 'react-icons/ai'
 import { GoBriefcase, GoPencil } from 'react-icons/go'
 import { GiSuitcase, GiSkills, GiTrophy } from 'react-icons/gi'
 import { hoverScale, staggerContainer, staggerItem } from '../../../utils/animations'
+import './Nav.css'
 
 const Nav = () => {
   const location = useLocation()

@@ -1,5 +1,4 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import './experience.css'
 import ExperienceItem from './experienceitem'
 import { getExperience, getPositionsOfResponsibility } from '../../data/dataLoader'

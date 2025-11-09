@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Header from './components/layout/Header'
@@ -35,31 +35,41 @@ RouterWrapper.propTypes = {
   children: PropTypes.node.isRequired
 }
 
-const App = () => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+const useWindowWidth = () => {
+  const [width, setWidth] = useState(window.innerWidth)
 
   useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth)
+    const handleResize = () => setWidth(window.innerWidth)
     window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  return width
+}
+
+const App = () => {
+  const screenWidth = useWindowWidth()
+
+  const routes = [
+    { path: '/', element: <Header /> },
+    { path: '/about', element: <About /> },
+    { path: '/education', element: <Education /> },
+    { path: '/experience', element: <Experience /> },
+    { path: '/skill', element: <Skill /> },
+    { path: '/services', element: <Services /> },
+    { path: '/portfolio', element: <Portfolio /> },
+    { path: '/achievement', element: <Achievement /> },
+    { path: '/contact', element: <Contact /> }
+  ]
 
   return (
     <ErrorBoundary>
       <RouterWrapper>
         {screenWidth > 600 ? (
           <Routes>
-            <Route path="/" element={<Header />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/education" element={<Education />} />
-            <Route path="/experience" element={<Experience />} />
-            <Route path="/skill" element={<Skill />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/achievement" element={<Achievement />} />
-            <Route path="/contact" element={<Contact />} />
+            {routes.map(({ path, element }) => (
+              <Route key={path} path={path} element={element} />
+            ))}
           </Routes>
         ) : (
           <>

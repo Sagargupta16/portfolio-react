@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import './contact.css'
+import emailjs from '@emailjs/browser'
 import { MdOutlineEmail } from 'react-icons/md'
 import { ImWhatsapp } from 'react-icons/im'
 import { IoCallOutline } from 'react-icons/io5'
-import emailjs from '@emailjs/browser'
 import { fadeInUp, hoverScale, staggerContainer, staggerItem } from '../../utils/animations'
+import './contact.css'
 
 const Contact = () => {
   const form = useRef()

@@ -1,5 +1,4 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import './services.css'
 import ServiceItem from './serviceitem'
 import { getServices } from '../../data/dataLoader'

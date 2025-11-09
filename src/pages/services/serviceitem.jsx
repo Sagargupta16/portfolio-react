@@ -1,5 +1,4 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import { GiCheckMark } from 'react-icons/gi'
 import { cardHover, staggerContainer, staggerItem, iconBounce } from '../../utils/animations'
 

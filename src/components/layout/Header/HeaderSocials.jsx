@@ -1,5 +1,4 @@
-import React from 'react'
-import { socialProfiles, codingProfiles } from './Profiles'
+﻿import { socialProfiles, codingProfiles } from './Profiles'
 
 const HeaderSocials = () => {
   const renderSocialLinks = profiles => {

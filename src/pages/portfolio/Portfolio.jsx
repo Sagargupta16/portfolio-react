@@ -1,5 +1,4 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import './portfolio.css'
 import PortFolioItem from './portfolioitem'
 import personalProjects, { collabProjects } from './ProjectsArray'

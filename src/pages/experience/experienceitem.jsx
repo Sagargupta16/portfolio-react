@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+﻿import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PropTypes from 'prop-types'
 import { BsFillCalendarEventFill } from 'react-icons/bs'
@@ -9,9 +9,7 @@ import { cardHover } from '../../utils/animations'
 const ExperienceItem = ({ item }) => {
   const [show, setShow] = useState(false)
 
-  const toggleDropdown = () => {
-    setShow(!show)
-  }
+  const toggleDropdown = () => setShow(prev => !prev)
 
   return (
     <motion.div
