@@ -11,7 +11,7 @@ export default [
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 2024,
       sourceType: 'module',
       parserOptions: {
         ecmaFeatures: {

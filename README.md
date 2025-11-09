@@ -8,8 +8,10 @@
 [![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml)
 [![Security Analysis](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml)
 
-![Node Version](https://img.shields.io/badge/node-18.20.4-green)
-![React Version](https://img.shields.io/badge/react-18.3.1-blue)
+![Node Version](https://img.shields.io/badge/node-24.11.0-green)
+![React Version](https://img.shields.io/badge/react-19.2.0-blue)
+![Vite Version](https://img.shields.io/badge/vite-7.2.2-purple)
+![pnpm Version](https://img.shields.io/badge/pnpm-10.20.0-orange)
 
 ---
 
@@ -27,17 +29,38 @@ This React application presents my professional experience at AWS Professional S
 
 ## 💻 Tech Stack
 
-The portfolio is built using the following technologies:
+The portfolio is built using cutting-edge technologies and best practices:
 
-- **React 18.3.1:** The core framework for building an efficient and interactive user interface.
-- **JavaScript ES6+:** For implementing dynamic and functional features throughout the application.
-- **HTML5/CSS3:** Modern web standards for structuring and styling components with responsive design.
-- **JSON Data Architecture:** Centralized data management system for easy content updates and maintenance.
-- **React Router:** For seamless navigation between different sections and pages.
-- **React Icons:** Comprehensive icon library for enhanced visual elements.
-- **EmailJS:** Direct email integration for the contact form functionality.
-- **PropTypes:** Type checking for React components to ensure reliability.
-- **GitHub Pages:** Deployment platform with automated CI/CD through GitHub Actions.
+### **Core Technologies:**
+
+- **React 19.2.0:** Latest version with improved performance and new features
+- **Vite 7.2.2:** Lightning-fast build tool and development server
+- **Node.js 24.11.0 LTS:** Latest long-term support version
+- **pnpm 10.20.0:** Fast, disk space efficient package manager
+- **TypeScript 5.9.3:** Type-safe development support
+
+### **Development Tools:**
+
+- **ESLint 9.39.1:** Code quality and consistency with flat config
+- **Prettier 3.6.2:** Automated code formatting
+- **JavaScript ES2024:** Latest ECMAScript features
+- **React Router DOM 7.9.5:** Advanced client-side routing
+- **Framer Motion 12.23.24:** Smooth animations and transitions
+
+### **Build & Deployment:**
+
+- **GitHub Actions:** Automated CI/CD pipelines
+- **GitHub Pages:** Fast and reliable hosting
+- **Path Aliases:** Clean import statements with @ prefix
+- **Code Splitting:** Optimized bundle sizes with manual chunks
+- **StrictMode:** Enhanced development warnings and checks
+
+### **Code Quality:**
+
+- **JSON Data Architecture:** Centralized data management system
+- **PropTypes:** Runtime type checking for components
+- **EditorConfig:** Consistent coding styles across editors
+- **Environment Variables:** Secure configuration management
 
 ### **AWS & DevOps Technologies Featured:**
 
