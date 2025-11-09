@@ -74,7 +74,7 @@ const Contact = () => {
         if (result.status === 200) {
           setSuccessMessage('Message sent successfully!')
         }
-      } catch (error) {
+      } catch {
         setErrors({
           general: 'Error sending message. Please try again later.'
         })

@@ -1,9 +1,10 @@
-// Image handling
+// Image handling with dynamic imports
 export const getImageUrl = path => {
   try {
-    return require(`../assets/images/${path}`)
-  } catch (e) {
-    return require('../assets/images/Empty.jpg')
+    // For Vite, use static imports or URL constructor
+    return new URL(`../assets/images/${path}`, import.meta.url).href
+  } catch {
+    return new URL('../assets/images/Empty.jpg', import.meta.url).href
   }
 }
 

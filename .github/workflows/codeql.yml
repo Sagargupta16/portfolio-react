@@ -18,28 +18,33 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@v3
         with:
           languages: javascript
           queries: +security-and-quality
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
-      - name: Build application
-        run: npm run build
+      - name: Build application with Vite
+        run: pnpm build
         env:
           CI: false
           GENERATE_SOURCEMAP: false
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@v3

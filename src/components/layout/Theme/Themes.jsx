@@ -43,89 +43,9 @@ const themes = [
       primary: '#ff6600',
       'primary-variant': 'rgba(255, 102, 0, 0.5)'
     }
-  }
-];
-
-export default themes;
-      bg: '#1f2125',
-      'bg-variant': '#2e3238',
-      primary: '#ff99cc',
-      'primary-variant': 'rgba(255, 153, 204, 0.5)'
-    }
   },
   {
-    name: 'theme11',
-    colors: {
-      bg: '#1d1f21',
-      'bg-variant': '#2e3133',
-      primary: '#66ffcc',
-      'primary-variant': 'rgba(102, 255, 204, 0.5)'
-    }
-  },
-  {
-    name: 'theme12',
-    colors: {
-      bg: '#1e1e26',
-      'bg-variant': '#2c2c33',
-      primary: '#ffcc66',
-      'primary-variant': 'rgba(255, 204, 102, 0.5)'
-    }
-  },
-  {
-    name: 'theme13',
-    colors: {
-      bg: '#0d0d0d',
-      'bg-variant': '#1a1a1a',
-      primary: '#00ffcc',
-      'primary-variant': 'rgba(0, 255, 204, 0.5)'
-    }
-  }
-];
-
-export default themes;
-      'bg-variant': '#2e3238',
-      primary: '#ff99cc',
-      'primary-variant': 'rgba(255, 153, 204, 0.5)'
-    }
-  },
-  {
-    name: 'theme11',
-    colors: {
-      bg: '#1d1f21',
-      'bg-variant': '#2e3133',
-      primary: '#66ffcc',
-      'primary-variant': 'rgba(102, 255, 204, 0.5)'
-    }
-  },
-  {
-    name: 'theme12',
-    colors: {
-      bg: '#1e1e26',
-      'bg-variant': '#2c2c33',
-      primary: '#ffcc66',
-      'primary-variant': 'rgba(255, 204, 102, 0.5)'
-    }
-  },
-  {
-    name: 'theme13',
-    colors: {
-      bg: '#0d0d0d',
-      'bg-variant': '#1a1a1a',
-      primary: '#00ffcc',
-      'primary-variant': 'rgba(0, 255, 204, 0.5)'
-    }
-  },
-  {
-    name: 'theme14',
-    colors: {
-      bg: '#0c0c15',
-      'bg-variant': '#1b1b2a',
-      primary: '#ff6600',
-      'primary-variant': 'rgba(255, 102, 0, 0.5)'
-    }
-  },
-  {
-    name: 'theme15',
+    name: 'theme6',
     colors: {
       bg: '#141414',
       'bg-variant': '#262626',
@@ -134,7 +54,7 @@ export default themes;
     }
   },
   {
-    name: 'theme16',
+    name: 'theme7',
     colors: {
       bg: '#0f111a',
       'bg-variant': '#1f2538',
@@ -143,7 +63,7 @@ export default themes;
     }
   },
   {
-    name: 'theme17',
+    name: 'theme8',
     colors: {
       bg: '#121212',
       'bg-variant': '#1f1f1f',
@@ -152,7 +72,7 @@ export default themes;
     }
   },
   {
-    name: 'theme18',
+    name: 'theme9',
     colors: {
       bg: '#0e0e0e',
       'bg-variant': '#1c1c1c',
@@ -161,21 +81,12 @@ export default themes;
     }
   },
   {
-    name: 'theme19',
+    name: 'theme10',
     colors: {
       bg: '#101013',
       'bg-variant': '#1e1e24',
       primary: '#ff5050',
       'primary-variant': 'rgba(255, 80, 80, 0.5)'
-    }
-  },
-  {
-    name: 'theme20',
-    colors: {
-      bg: '#131417',
-      'bg-variant': '#1f2026',
-      primary: '#ff66b2',
-      'primary-variant': 'rgba(255, 102, 178, 0.5)'
     }
   }
 ]

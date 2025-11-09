@@ -6,7 +6,7 @@ import { useRef } from 'react'
 const AnimatedNumber = ({ value, duration = 2 }) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
-  const [displayValue, setDisplayValue] = useState(0)
+  const [displayValue, setDisplayValue] = useState(value)
 
   useEffect(() => {
     if (!isInView) return
@@ -15,7 +15,6 @@ const AnimatedNumber = ({ value, duration = 2 }) => {
     const numericValue = parseFloat(value?.match(/[\d.]+/)?.[0] || 0)
 
     if (numericValue === 0) {
-      setDisplayValue(value)
       return
     }
 

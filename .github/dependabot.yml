@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Enable version updates for npm
+  # Enable version updates for npm/pnpm
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
@@ -12,19 +12,20 @@ updates:
       prefix: 'chore'
       prefix-development: 'chore'
       include: 'scope'
-    reviewers:
-      - 'Sagargupta16'
     assignees:
       - 'Sagargupta16'
     labels:
       - 'dependencies'
       - 'javascript'
-    ignore:
-      # Ignore major version updates for React (manual review preferred)
-      - dependency-name: 'react'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'react-dom'
-        update-types: ['version-update:semver-major']
+    groups:
+      vite:
+        patterns:
+          - 'vite*'
+          - '@vitejs/*'
+      react:
+        patterns:
+          - 'react'
+          - 'react-dom'
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: 'github-actions'
@@ -34,8 +35,6 @@ updates:
     commit-message:
       prefix: 'ci'
       include: 'scope'
-    reviewers:
-      - 'Sagargupta16'
     assignees:
       - 'Sagargupta16'
     labels:

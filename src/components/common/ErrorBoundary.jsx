@@ -7,7 +7,7 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false, error: null, errorInfo: null }
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(_error) {
     // Update state so the next render will show the fallback UI
     return { hasError: true }
   }
@@ -20,7 +20,7 @@ class ErrorBoundary extends React.Component {
     })
 
     // You can also log the error to an error reporting service here
-    // eslint-disable-next-line no-console
+
     console.error('Error caught by boundary:', error, errorInfo)
   }
 
