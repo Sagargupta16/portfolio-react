@@ -1,18 +1,21 @@
+import { useCallback } from 'react'
 import { AiOutlineBgColors } from 'react-icons/ai'
-import './Theme.css'
 import themes from './themes.js'
+import './Theme.css'
 
 const Theme = () => {
-  const nextTheme = () => {
-    const currentTheme = themes[Math.floor(Math.random() * themes.length) % themes.length]
-    Object.keys(currentTheme.colors).forEach(property => {
-      document.documentElement.style.setProperty(`--color-${property}`, currentTheme.colors[property])
-    })
-  }
+  const nextTheme = useCallback(() => {
+    const randomIndex = Math.floor(Math.random() * themes.length)
+    const currentTheme = themes[randomIndex]
+
+    for (const [property, value] of Object.entries(currentTheme.colors)) {
+      document.documentElement.style.setProperty(`--color-${property}`, value)
+    }
+  }, [])
 
   return (
-    <button className="theme" onClick={nextTheme} title="Change theme" type="button" aria-label="Change theme">
-      <AiOutlineBgColors />
+    <button className="theme" onClick={nextTheme} title="Change theme" type="button" aria-label="Change color theme">
+      <AiOutlineBgColors aria-hidden="true" />
     </button>
   )
 }

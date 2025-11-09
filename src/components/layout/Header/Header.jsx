@@ -1,15 +1,16 @@
-﻿import { motion } from 'framer-motion'
-import './Header.css'
+﻿import { useMemo } from 'react'
+import { motion } from 'framer-motion'
 import CtaComponent from './CTA'
 import ME from '../../../assets/images/me.png'
 import HeaderSocials from './HeaderSocials'
 import TwComponent from './TW'
 import { getName, getRoles } from '../../../data/dataLoader'
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, floatingAnimation } from '../../../utils/animations'
+import './Header.css'
 
 const Header = () => {
-  const name = getName()
-  const roles = getRoles()
+  const name = useMemo(() => getName(), [])
+  const roles = useMemo(() => getRoles(), [])
 
   return (
     <section className="header" id="header">
@@ -22,7 +23,7 @@ const Header = () => {
         <motion.h5 variants={staggerItem}>Hey Myself</motion.h5>
         <motion.h1 variants={staggerItem}>{name}</motion.h1>
         <motion.h5 className="text-light tw_comp" variants={staggerItem}>
-          I'm a <TwComponent roles={roles} />
+          I&apos;m a <TwComponent roles={roles} />
         </motion.h5>
         <motion.div variants={staggerItem}>
           <CtaComponent />
@@ -31,7 +32,7 @@ const Header = () => {
           <HeaderSocials />
         </motion.div>
         <motion.div className="me" variants={scaleIn} {...floatingAnimation}>
-          <img src={ME} alt="me" />
+          <img src={ME} alt={`${name} - Professional headshot`} loading="eager" width="300" height="300" />
         </motion.div>
       </motion.div>
     </section>

@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+﻿import { useState, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PropTypes from 'prop-types'
 import { CiCircleChevDown, CiCircleChevUp } from 'react-icons/ci'
@@ -7,7 +7,9 @@ import { cardHover, hoverScale } from '../../utils/animations'
 const PortfolioItem = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const toggleExpansion = () => setIsExpanded(prev => !prev)
+  const toggleExpansion = useCallback(() => setIsExpanded(prev => !prev), [])
+
+  const hasLiveDemo = useMemo(() => data.live && data.live !== '#', [data.live])
 
   return (
     <motion.article
@@ -19,7 +21,7 @@ const PortfolioItem = ({ data }) => {
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       <div className="portfolio__item-image">
-        <img src={data.image} alt={data.title} />
+        <img src={data.image} alt={`${data.title} project screenshot`} loading="lazy" width="600" height="400" />
       </div>
 
       <h3 className="portfolio__item-title">
@@ -29,8 +31,12 @@ const PortfolioItem = ({ data }) => {
           onClick={toggleExpansion}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? 'Show less details' : 'Show more details'}
         >
-          <span className="portfolio__dropdown__icon">{isExpanded ? <CiCircleChevUp /> : <CiCircleChevDown />}</span>
+          <span className="portfolio__dropdown__icon" aria-hidden="true">
+            {isExpanded ? <CiCircleChevUp /> : <CiCircleChevDown />}
+          </span>
           <span className="portfolio__dropdown__text">{isExpanded ? 'Less' : 'More'}</span>
         </motion.button>
       </h3>
@@ -51,7 +57,7 @@ const PortfolioItem = ({ data }) => {
               <div className="portfolio__item__tools__list">
                 {data.tools_tech.map((tool, index) => (
                   <motion.div
-                    key={tool}
+                    key={`${tool}-${index}`}
                     className="portfolio__item__tool"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -67,7 +73,7 @@ const PortfolioItem = ({ data }) => {
               <div className="portfolio__item__features__list">
                 {data.features.map((feature, index) => (
                   <motion.div
-                    key={feature}
+                    key={`${feature}-${index}`}
                     className="portfolio__item__feature"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -87,24 +93,26 @@ const PortfolioItem = ({ data }) => {
           href={data.github}
           className="btn"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           variants={hoverScale}
           whileHover="hover"
           whileTap="tap"
+          aria-label={`View ${data.title} on GitHub`}
         >
           Github
         </motion.a>
-        {data.live !== '#' && (
+        {hasLiveDemo && (
           <motion.a
             href={data.live}
             className="btn btn-primary"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             variants={hoverScale}
             whileHover="hover"
             whileTap="tap"
+            aria-label={`View ${data.title} live demo`}
           >
-            Live
+            Live Demo
           </motion.a>
         )}
       </div>

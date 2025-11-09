@@ -47,13 +47,13 @@ class ErrorBoundary extends React.Component {
           {process.env.NODE_ENV === 'development' && (
             <details style={{ whiteSpace: 'pre-wrap', textAlign: 'left', marginTop: '20px' }}>
               <summary>Error Details (Development Only)</summary>
-              {this.state.error && this.state.error.toString()}
+              {this.state.error?.toString()}
               <br />
               {this.state.errorInfo.componentStack}
             </details>
           )}
           <button
-            onClick={() => window.location.reload()}
+            onClick={() => globalThis.location.reload()}
             style={{
               marginTop: '15px',
               padding: '10px 20px',

@@ -1,60 +1,37 @@
-﻿import { motion } from 'framer-motion'
-import './experience.css'
+﻿import { useMemo } from 'react'
+import { motion } from 'framer-motion'
 import ExperienceItem from './experienceitem'
 import { getExperience, getPositionsOfResponsibility } from '../../data/dataLoader'
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'
+import './experience.css'
 
 const Experience = () => {
   const experienceArray = getExperience()
   const positionOfResponsibilityArray = getPositionsOfResponsibility()
 
+  const hasResponsibilities = useMemo(() => positionOfResponsibilityArray?.length > 0, [positionOfResponsibilityArray])
+
   return (
-    <motion.section id="experience" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
+    <motion.section id="experience" initial="hidden" animate="visible">
       <motion.h5 variants={fadeInUp}>Experience I got!!</motion.h5>
       <motion.h2 variants={fadeInUp}>My Experience</motion.h2>
-      <motion.div
-        className="experience__container container"
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
+      <motion.div className="experience__container container" variants={staggerContainer}>
         <motion.h3 className="experience__heading" variants={fadeInUp}>
-          Industrial Experiece
+          Industrial Experience
         </motion.h3>
         {experienceArray.map((item, index) => (
-          <motion.div
-            key={item.id}
-            variants={staggerItem}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.2 }}
-          >
+          <motion.div key={item.id} variants={staggerItem} custom={index} transition={{ delay: index * 0.05 }}>
             <ExperienceItem item={item} />
           </motion.div>
         ))}
       </motion.div>
-      {positionOfResponsibilityArray && positionOfResponsibilityArray.length > 0 && (
-        <motion.div
-          className="experience__container container"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
+      {hasResponsibilities && (
+        <motion.div className="experience__container container" variants={staggerContainer}>
           <motion.h3 className="experience__heading" variants={fadeInUp}>
             Position of Responsibility
           </motion.h3>
           {positionOfResponsibilityArray.map((item, index) => (
-            <motion.div
-              key={item.id}
-              variants={staggerItem}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-            >
+            <motion.div key={item.id} variants={staggerItem} custom={index} transition={{ delay: index * 0.05 }}>
               <ExperienceItem item={item} />
             </motion.div>
           ))}

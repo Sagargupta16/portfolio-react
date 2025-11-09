@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect, useState } from 'react'
+import { useLayoutEffect, useEffect, useState, useMemo, useCallback } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { RiHome3Line, RiServiceLine } from 'react-icons/ri'
@@ -8,10 +8,26 @@ import { GiSuitcase, GiSkills, GiTrophy } from 'react-icons/gi'
 import { hoverScale, staggerContainer, staggerItem } from '../../../utils/animations'
 import './Nav.css'
 
+const NAV_ITEMS = [
+  { to: '/', icon: <RiHome3Line />, label: 'Home' },
+  { to: '/about', icon: <AiOutlineUser />, label: 'About' },
+  { to: '/education', icon: <GoPencil />, label: 'Education' },
+  { to: '/experience', icon: <GoBriefcase />, label: 'Experience' },
+  { to: '/skill', icon: <GiSkills />, label: 'Skills' },
+  { to: '/services', icon: <RiServiceLine />, label: 'Services' },
+  { to: '/portfolio', icon: <GiSuitcase />, label: 'Portfolio' },
+  { to: '/achievement', icon: <GiTrophy />, label: 'Achievement' },
+  { to: '/contact', icon: <AiOutlineMessage />, label: 'Contact' }
+]
+
+const SECTIONS = ['', 'about', 'education', 'experience', 'skill', 'services', 'portfolio', 'contact']
+
 const Nav = () => {
   const location = useLocation()
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
   const [activeSection, setActiveSection] = useState('')
+
+  const isWideScreen = useMemo(() => screenWidth > 600, [screenWidth])
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
@@ -26,11 +42,9 @@ const Nav = () => {
   }, [])
 
   useEffect(() => {
-    const sections = ['', 'about', 'education', 'experience', 'skill', 'services', 'portfolio', 'contact']
-
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100
-      const currentSection = sections.find(section => {
+      const currentSection = SECTIONS.find(section => {
         const sectionElement = document.getElementById(section)
         if (sectionElement) {
           const sectionTop = sectionElement.offsetTop
@@ -48,19 +62,7 @@ const Nav = () => {
     }
   }, [])
 
-  const navItems = [
-    { to: '/', icon: <RiHome3Line />, label: 'Home' },
-    { to: '/about', icon: <AiOutlineUser />, label: 'About' },
-    { to: '/education', icon: <GoPencil />, label: 'Education' },
-    { to: '/experience', icon: <GoBriefcase />, label: 'Experience' },
-    { to: '/skill', icon: <GiSkills />, label: 'Skills' },
-    { to: '/services', icon: <RiServiceLine />, label: 'Services' },
-    { to: '/portfolio', icon: <GiSuitcase />, label: 'Portfolio' },
-    { to: '/achievement', icon: <GiTrophy />, label: 'Achievement' },
-    { to: '/contact', icon: <AiOutlineMessage />, label: 'Contact' }
-  ]
-
-  const handleNavItemClick = item => {
+  const handleNavItemClick = useCallback(item => {
     const sectionId = item.to.substring(1).length > 0 ? item.to.substring(1) : 'header'
 
     const sectionElement = document.getElementById(sectionId)
@@ -73,7 +75,7 @@ const Nav = () => {
         behavior: 'smooth'
       })
     }
-  }
+  }, [])
 
   return (
     <motion.nav
@@ -83,13 +85,13 @@ const Nav = () => {
       transition={{ duration: 0.8, ease: 'easeOut' }}
     >
       <motion.div className="nav__logo" variants={hoverScale} whileHover="hover" whileTap="tap">
-        <Link to="/" aria-label="Home">
+        <Link to="/" aria-label="Go to home page">
           <span className="nav__logo--text">SG</span>
         </Link>
       </motion.div>
       <motion.div className="nav__list" variants={staggerContainer} initial="hidden" animate="visible">
-        {screenWidth > 600
-          ? navItems.map(item => (
+        {isWideScreen
+          ? NAV_ITEMS.map(item => (
               <motion.div
                 key={item.to}
                 variants={staggerItem}
@@ -101,7 +103,7 @@ const Nav = () => {
                 </Link>
               </motion.div>
             ))
-          : navItems.map((item, index) => (
+          : NAV_ITEMS.map((item, index) => (
               <motion.button
                 key={item.to}
                 aria-label={item.label}

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
 import { MdOutlineEmail } from 'react-icons/md'
@@ -6,6 +6,33 @@ import { ImWhatsapp } from 'react-icons/im'
 import { IoCallOutline } from 'react-icons/io5'
 import { fadeInUp, hoverScale, staggerContainer, staggerItem } from '../../utils/animations'
 import './contact.css'
+
+const CONTACT_OPTIONS = [
+  {
+    id: 1,
+    icon: <MdOutlineEmail className="contact__icon" />,
+    title: 'Email Me',
+    value: 'sg85207@gmail.com',
+    link: 'mailto:sg85207@gmail.com',
+    message: 'Send a Mail'
+  },
+  {
+    id: 2,
+    icon: <ImWhatsapp className="contact__icon" />,
+    title: 'WhatsApp Me',
+    value: '+91-8770532413',
+    link: 'https://wa.me/+918770532413',
+    message: 'Send a Message'
+  },
+  {
+    id: 3,
+    icon: <IoCallOutline className="contact__icon" />,
+    title: 'Call me',
+    value: '+91-8770532413',
+    link: 'tel:+918770532413',
+    message: 'Call Now'
+  }
+]
 
 const Contact = () => {
   const form = useRef()
@@ -30,7 +57,7 @@ const Contact = () => {
     }
   }, [errors, successMessage, feedbackHTML])
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     let isValid = true
     const newErrors = {}
 
@@ -61,104 +88,73 @@ const Contact = () => {
     )
 
     return isValid
-  }
+  }, [formData.name, formData.email, formData.message])
 
-  const sendEmail = async e => {
-    e.preventDefault()
+  const sendEmail = useCallback(
+    async e => {
+      e.preventDefault()
 
-    setErrors({}) // Clear previous errors
+      setErrors({}) // Clear previous errors
 
-    if (validateForm()) {
-      try {
-        const result = await emailjs.sendForm('service_lyt547p', 'template_yz438w6', form.current, 'PAcL61ygLI8WYG16R')
-        if (result.status === 200) {
-          setSuccessMessage('Message sent successfully!')
+      if (validateForm()) {
+        try {
+          const result = await emailjs.sendForm(
+            'service_lyt547p',
+            'template_yz438w6',
+            form.current,
+            'PAcL61ygLI8WYG16R'
+          )
+          if (result.status === 200) {
+            setSuccessMessage('Message sent successfully!')
+          }
+        } catch {
+          setErrors({
+            general: 'Error sending message. Please try again later.'
+          })
         }
-      } catch {
-        setErrors({
-          general: 'Error sending message. Please try again later.'
+
+        e.target.reset()
+        setFormData({
+          name: '',
+          email: '',
+          message: ''
         })
       }
+    },
+    [validateForm]
+  )
 
-      e.target.reset()
-      setFormData({
-        name: '',
-        email: '',
-        message: ''
-      })
-    }
-  }
-
-  const handleInputChange = e => {
+  const handleInputChange = useCallback(e => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
+    setFormData(prevData => ({
+      ...prevData,
       [name]: value
-    })
-    setErrors({
-      ...errors,
+    }))
+    setErrors(prevErrors => ({
+      ...prevErrors,
       [name]: undefined,
       general: undefined
-    })
+    }))
     setSuccessMessage('')
-  }
+  }, [])
 
   return (
-    <motion.section
-      id="contact"
-      className="section contact-section"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-    >
+    <motion.section id="contact" className="section contact-section" initial="hidden" animate="visible">
       <motion.h5 className="section__subtitle" variants={fadeInUp}>
         Get In Touch
       </motion.h5>
       <motion.h2 className="section__title" variants={fadeInUp}>
         Contact Me
       </motion.h2>
-      <motion.div
-        className="container contact__container"
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
+      <motion.div className="container contact__container" variants={staggerContainer}>
         <motion.div className="contact__options" variants={staggerContainer}>
-          {[
-            {
-              id: 1,
-              icon: <MdOutlineEmail className="contact__icon" />,
-              title: 'Email Me',
-              value: 'sg85207@gmail.com',
-              link: 'mailto:sg85207@gmail.com',
-              message: 'Send a Mail'
-            },
-            {
-              id: 2,
-              icon: <ImWhatsapp className="contact__icon" />,
-              title: 'WhatsApp Me',
-              value: '+91-8770532413',
-              link: 'https://wa.me/+918770532413',
-              message: 'Send a Message'
-            },
-            {
-              id: 3,
-              icon: <IoCallOutline className="contact__icon" />,
-              title: 'Call me',
-              value: '+91-8770532413',
-              link: 'tel:+918770532413',
-              message: 'Call Now'
-            }
-          ].map((option, index) => (
+          {CONTACT_OPTIONS.map((option, index) => (
             <motion.article
               className="contact__option"
               key={option.id}
               variants={staggerItem}
               whileHover="hover"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
+              transition={{ delay: index * 0.05 }}
             >
               <h4>
                 {option.icon}
@@ -168,25 +164,18 @@ const Contact = () => {
               <motion.a
                 href={option.link}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 variants={hoverScale}
                 whileHover="hover"
                 whileTap="tap"
+                aria-label={`${option.message} via ${option.title}`}
               >
                 {option.message}
               </motion.a>
             </motion.article>
           ))}
         </motion.div>
-        <motion.form
-          ref={form}
-          onSubmit={sendEmail}
-          className="contact__form"
-          variants={staggerItem}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
+        <motion.form ref={form} onSubmit={sendEmail} className="contact__form" variants={staggerItem}>
           <motion.input
             type="text"
             name="name"
@@ -196,15 +185,18 @@ const Contact = () => {
             required
             whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
             transition={{ duration: 0.2 }}
+            aria-label="Your full name"
           />
           <motion.input
             name="email"
+            type="email"
             placeholder="Your Email"
             value={formData.email}
             onChange={handleInputChange}
             required
             whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
             transition={{ duration: 0.2 }}
+            aria-label="Your email address"
           />
           <motion.textarea
             name="message"
@@ -215,6 +207,7 @@ const Contact = () => {
             required
             whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
             transition={{ duration: 0.2 }}
+            aria-label="Your message"
           />
           <motion.button type="submit" variants={hoverScale} whileHover="hover" whileTap="tap">
             Send Message
