@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import { BsFillCalendarEventFill } from 'react-icons/bs'
 import { IoLocationSharp } from 'react-icons/io5'
 import { CiCircleChevDown, CiCircleChevUp } from 'react-icons/ci'
-import { cardHover } from '../../utils/animations'
+import { cardHover } from '@utils/animations'
+import styles from './experience.module.css'
 
 const CARD_TRANSITION = {
   duration: 0.6,
@@ -24,7 +25,7 @@ const ExperienceItem = ({ item }) => {
 
   return (
     <motion.article
-      className="experience__item"
+      className={styles.experience__item}
       variants={cardHover}
       whileHover="hover"
       initial={{ opacity: 0, x: -50, scale: 0.95 }}
@@ -32,35 +33,35 @@ const ExperienceItem = ({ item }) => {
       transition={CARD_TRANSITION}
       aria-label={`${item.title} at ${item.company}`}
     >
-      <h3 className="experience__date">
-        <span className="experience__date__icon" aria-label={`Duration: ${item.date}`}>
+      <h3 className={styles.experience__date}>
+        <span className={styles.experience__date__icon} aria-label={`Duration: ${item.date}`}>
           <BsFillCalendarEventFill aria-hidden="true" />
           {item.date}
         </span>
         <motion.button
-          className="experience__dropdown"
+          className={styles.experience__dropdown}
           onClick={toggleDropdown}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           aria-expanded={show}
           aria-label={show ? 'Show less details' : 'Show more details'}
         >
-          <span className="experience__dropdown__icon" aria-hidden="true">
+          <span className={styles.experience__dropdown__icon} aria-hidden="true">
             {show ? <CiCircleChevUp /> : <CiCircleChevDown />}
           </span>
-          <span className="experience__dropdown__text">{show ? 'Less' : 'More'}</span>
+          <span className={styles.experience__dropdown__text}>{show ? 'Less' : 'More'}</span>
         </motion.button>
       </h3>
-      <h4 className="experience__title">
-        {item.title},<span className="experience__position"> {item.position}</span>
+      <h4 className={styles.experience__title}>
+        {item.title},<span className={styles.experience__position}> {item.position}</span>
       </h4>
-      <h3 className="experience__company">
+      <h3 className={styles.experience__company}>
         <span>{item.company}</span>
-        <span className="experience__location">
+        <span className={styles.experience__location}>
           {isRemote ? (
-            <span className="experience__location__remote"> ({item.location})</span>
+            <span className={styles.experience__location__remote}> ({item.location})</span>
           ) : (
-            <span className="experience__location__inperson">
+            <span className={styles.experience__location__inperson}>
               <IoLocationSharp aria-hidden="true" /> {item.location}
             </span>
           )}
@@ -76,7 +77,7 @@ const ExperienceItem = ({ item }) => {
             transition={{ duration: 0.3 }}
           >
             {hasDescription && (
-              <div className="experience__item__description active">
+              <div className={`${styles.experience__item__description} ${styles.active}`}>
                 <h4>{item.project || 'Responsibilities & Contributions'}</h4>
                 <ul>
                   {Object.values(item.description).map((desc, index) => (
@@ -93,9 +94,9 @@ const ExperienceItem = ({ item }) => {
               </div>
             )}
             {hasSkills && (
-              <div className="experience__item__skills active">
+              <div className={`${styles.experience__item__skills} ${styles.active}`}>
                 <h4>Skills I Learned & Used!</h4>
-                <div className="experience__item__skills__list">
+                <div className={styles.experience__item__skills__list}>
                   {item.skills.map((skill, index) => (
                     <motion.span
                       key={`${skill}-${index}`}

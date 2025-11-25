@@ -1,9 +1,9 @@
 ﻿import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import ExperienceItem from './experienceitem'
-import { getExperience, getPositionsOfResponsibility } from '../../data/dataLoader'
-import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'
-import './experience.css'
+import { getExperience, getPositionsOfResponsibility } from '@data/dataLoader'
+import { fadeInUp, staggerContainer, staggerItem } from '@utils/animations'
+import styles from './experience.module.css'
 
 const Experience = () => {
   const experienceArray = getExperience()
@@ -15,8 +15,8 @@ const Experience = () => {
     <motion.section id="experience" initial="hidden" animate="visible">
       <motion.h5 variants={fadeInUp}>Experience I got!!</motion.h5>
       <motion.h2 variants={fadeInUp}>My Experience</motion.h2>
-      <motion.div className="experience__container container" variants={staggerContainer}>
-        <motion.h3 className="experience__heading" variants={fadeInUp}>
+      <motion.div className={`${styles.experience__container} container`} variants={staggerContainer}>
+        <motion.h3 className={styles.experience__heading} variants={fadeInUp}>
           Industrial Experience
         </motion.h3>
         {experienceArray.map((item, index) => (
@@ -26,8 +26,8 @@ const Experience = () => {
         ))}
       </motion.div>
       {hasResponsibilities && (
-        <motion.div className="experience__container container" variants={staggerContainer}>
-          <motion.h3 className="experience__heading" variants={fadeInUp}>
+        <motion.div className={`${styles.experience__container} container`} variants={staggerContainer}>
+          <motion.h3 className={styles.experience__heading} variants={fadeInUp}>
             Position of Responsibility
           </motion.h3>
           {positionOfResponsibilityArray.map((item, index) => (

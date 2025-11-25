@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { AiOutlineBgColors } from 'react-icons/ai'
 import themes from './themes.js'
-import './Theme.css'
+import styles from './Theme.module.css'
 
 const Theme = () => {
   const nextTheme = useCallback(() => {
@@ -14,7 +14,13 @@ const Theme = () => {
   }, [])
 
   return (
-    <button className="theme" onClick={nextTheme} title="Change theme" type="button" aria-label="Change color theme">
+    <button
+      className={styles.theme}
+      onClick={nextTheme}
+      title="Change theme"
+      type="button"
+      aria-label="Change color theme"
+    >
       <AiOutlineBgColors aria-hidden="true" />
     </button>
   )

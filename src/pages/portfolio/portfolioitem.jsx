@@ -2,7 +2,8 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import PropTypes from 'prop-types'
 import { CiCircleChevDown, CiCircleChevUp } from 'react-icons/ci'
-import { cardHover, hoverScale } from '../../utils/animations'
+import { cardHover, hoverScale } from '@utils/animations'
+import styles from './portfolio.module.css'
 
 const PortfolioItem = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -13,31 +14,31 @@ const PortfolioItem = ({ data }) => {
 
   return (
     <motion.article
-      className="portfolio__item"
+      className={styles.portfolio__item}
       variants={cardHover}
       whileHover="hover"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      <div className="portfolio__item-image">
+      <div className={styles['portfolio__item-image']}>
         <img src={data.image} alt={`${data.title} project screenshot`} loading="lazy" width="600" height="400" />
       </div>
 
-      <h3 className="portfolio__item-title">
-        <div className="portfolio__item-title__text">{data.title}</div>
+      <h3 className={styles['portfolio__item-title']}>
+        <div className={styles['portfolio__item-title__text']}>{data.title}</div>
         <motion.button
-          className="portfolio__dropdown"
+          className={styles.portfolio__dropdown}
           onClick={toggleExpansion}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           aria-expanded={isExpanded}
           aria-label={isExpanded ? 'Show less details' : 'Show more details'}
         >
-          <span className="portfolio__dropdown__icon" aria-hidden="true">
+          <span className={styles.portfolio__dropdown__icon} aria-hidden="true">
             {isExpanded ? <CiCircleChevUp /> : <CiCircleChevDown />}
           </span>
-          <span className="portfolio__dropdown__text">{isExpanded ? 'Less' : 'More'}</span>
+          <span className={styles.portfolio__dropdown__text}>{isExpanded ? 'Less' : 'More'}</span>
         </motion.button>
       </h3>
 
@@ -49,16 +50,16 @@ const PortfolioItem = ({ data }) => {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="portfolio__item__description active">
+            <div className={`${styles.portfolio__item__description} ${styles.active}`}>
               <p>{data.description}</p>
             </div>
-            <div className="portfolio__item__tools active">
+            <div className={`${styles.portfolio__item__tools} ${styles.active}`}>
               <h4>Tools & Technologies</h4>
-              <div className="portfolio__item__tools__list">
+              <div className={styles.portfolio__item__tools__list}>
                 {data.tools_tech.map((tool, index) => (
                   <motion.div
                     key={`${tool}-${index}`}
-                    className="portfolio__item__tool"
+                    className={styles.portfolio__item__tool}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
@@ -68,13 +69,13 @@ const PortfolioItem = ({ data }) => {
                 ))}
               </div>
             </div>
-            <div className="portfolio__item__features active">
+            <div className={`${styles.portfolio__item__features} ${styles.active}`}>
               <h4>Features</h4>
-              <div className="portfolio__item__features__list">
+              <div className={styles.portfolio__item__features__list}>
                 {data.features.map((feature, index) => (
                   <motion.div
                     key={`${feature}-${index}`}
-                    className="portfolio__item__feature"
+                    className={styles.portfolio__item__feature}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -88,7 +89,7 @@ const PortfolioItem = ({ data }) => {
         )}
       </AnimatePresence>
 
-      <div className="portfolio__item-cta">
+      <div className={styles['portfolio__item-cta']}>
         <motion.a
           href={data.github}
           className="btn"

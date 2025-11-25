@@ -2,7 +2,8 @@
 import PropTypes from 'prop-types'
 import { BsFillCalendarEventFill } from 'react-icons/bs'
 import AnimatedNumber from './AnimatedNumber'
-import { cardHover, fadeInLeft, fadeInRight, iconBounce } from '../../utils/animations'
+import { cardHover, fadeInLeft, fadeInRight, iconBounce } from '@utils/animations'
+import styles from './education.module.css'
 
 const SINGLE_VIEWPORT = { once: true }
 const CARD_TRANSITION = {
@@ -35,7 +36,7 @@ const EducationItem = ({ item }) => {
 
   return (
     <motion.article
-      className="education__item"
+      className={styles.education__item}
       variants={cardHover}
       whileHover="hover"
       initial={{ opacity: 0, x: -50, scale: 0.95 }}
@@ -44,7 +45,7 @@ const EducationItem = ({ item }) => {
       aria-label={`${title} education details`}
     >
       <motion.h3
-        className="education__date"
+        className={styles.education__date}
         variants={fadeInLeft}
         initial="hidden"
         whileInView="visible"
@@ -61,7 +62,7 @@ const EducationItem = ({ item }) => {
         {date}
       </motion.h3>
       <motion.h4
-        className="education__title"
+        className={styles.education__title}
         variants={fadeInRight}
         initial="hidden"
         whileInView="visible"
@@ -71,7 +72,7 @@ const EducationItem = ({ item }) => {
         {title}
       </motion.h4>
       <motion.p
-        className="education__text"
+        className={styles.education__text}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={SINGLE_VIEWPORT}

@@ -5,8 +5,8 @@ import { RiHome3Line, RiServiceLine } from 'react-icons/ri'
 import { AiOutlineUser, AiOutlineMessage } from 'react-icons/ai'
 import { GoBriefcase, GoPencil } from 'react-icons/go'
 import { GiSuitcase, GiSkills, GiTrophy } from 'react-icons/gi'
-import { hoverScale, staggerContainer, staggerItem } from '../../../utils/animations'
-import './Nav.css'
+import { hoverScale, staggerContainer, staggerItem } from '@utils/animations'
+import styles from './Nav.module.css'
 
 const NAV_ITEMS = [
   { to: '/', icon: <RiHome3Line />, label: 'Home' },
@@ -79,17 +79,17 @@ const Nav = () => {
 
   return (
     <motion.nav
-      className="nav"
+      className={styles.nav}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
     >
-      <motion.div className="nav__logo" variants={hoverScale} whileHover="hover" whileTap="tap">
+      <motion.div className={styles.nav__logo} variants={hoverScale} whileHover="hover" whileTap="tap">
         <Link to="/" aria-label="Go to home page">
-          <span className="nav__logo--text">SG</span>
+          <span className={styles['nav__logo--text']}>SG</span>
         </Link>
       </motion.div>
-      <motion.div className="nav__list" variants={staggerContainer} initial="hidden" animate="visible">
+      <motion.div className={styles.nav__list} variants={staggerContainer} initial="hidden" animate="visible">
         {isWideScreen
           ? NAV_ITEMS.map(item => (
               <motion.div
@@ -98,7 +98,11 @@ const Nav = () => {
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link to={item.to} className={location.pathname === item.to ? 'active' : ''} aria-label={item.label}>
+                <Link
+                  to={item.to}
+                  className={location.pathname === item.to ? styles.active : ''}
+                  aria-label={item.label}
+                >
                   {item.icon}
                 </Link>
               </motion.div>
@@ -107,7 +111,7 @@ const Nav = () => {
               <motion.button
                 key={item.to}
                 aria-label={item.label}
-                className={activeSection === item.to.substring(1) ? 'active' : ''}
+                className={activeSection === item.to.substring(1) ? styles.active : ''}
                 onClick={() => handleNavItemClick(item)}
                 variants={staggerItem}
                 whileHover={{ scale: 1.1, y: -2 }}

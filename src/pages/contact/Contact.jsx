@@ -4,13 +4,13 @@ import emailjs from '@emailjs/browser'
 import { MdOutlineEmail } from 'react-icons/md'
 import { ImWhatsapp } from 'react-icons/im'
 import { IoCallOutline } from 'react-icons/io5'
-import { fadeInUp, hoverScale, staggerContainer, staggerItem } from '../../utils/animations'
-import './contact.css'
+import { fadeInUp, hoverScale, staggerContainer, staggerItem } from '@utils/animations'
+import styles from './contact.module.css'
 
 const CONTACT_OPTIONS = [
   {
     id: 1,
-    icon: <MdOutlineEmail className="contact__icon" />,
+    icon: <MdOutlineEmail className={styles.contact__icon} />,
     title: 'Email Me',
     value: 'sg85207@gmail.com',
     link: 'mailto:sg85207@gmail.com',
@@ -18,7 +18,7 @@ const CONTACT_OPTIONS = [
   },
   {
     id: 2,
-    icon: <ImWhatsapp className="contact__icon" />,
+    icon: <ImWhatsapp className={styles.contact__icon} />,
     title: 'WhatsApp Me',
     value: '+91-8770532413',
     link: 'https://wa.me/+918770532413',
@@ -26,7 +26,7 @@ const CONTACT_OPTIONS = [
   },
   {
     id: 3,
-    icon: <IoCallOutline className="contact__icon" />,
+    icon: <IoCallOutline className={styles.contact__icon} />,
     title: 'Call me',
     value: '+91-8770532413',
     link: 'tel:+918770532413',
@@ -81,7 +81,7 @@ const Contact = () => {
 
     setFeedbackHTML(() =>
       Object.keys(newErrors).map(key => (
-        <p key={key} className="error">
+        <p key={key} className={styles.error}>
           {newErrors[key]}
         </p>
       ))
@@ -139,18 +139,18 @@ const Contact = () => {
   }, [])
 
   return (
-    <motion.section id="contact" className="section contact-section" initial="hidden" animate="visible">
+    <motion.section id="contact" className="section" initial="hidden" animate="visible">
       <motion.h5 className="section__subtitle" variants={fadeInUp}>
         Get In Touch
       </motion.h5>
       <motion.h2 className="section__title" variants={fadeInUp}>
         Contact Me
       </motion.h2>
-      <motion.div className="container contact__container" variants={staggerContainer}>
-        <motion.div className="contact__options" variants={staggerContainer}>
+      <motion.div className={`container ${styles.contact__container}`} variants={staggerContainer}>
+        <motion.div className={styles.contact__options} variants={staggerContainer}>
           {CONTACT_OPTIONS.map((option, index) => (
             <motion.article
-              className="contact__option"
+              className={styles.contact__option}
               key={option.id}
               variants={staggerItem}
               whileHover="hover"
@@ -175,8 +175,9 @@ const Contact = () => {
             </motion.article>
           ))}
         </motion.div>
-        <motion.form ref={form} onSubmit={sendEmail} className="contact__form" variants={staggerItem}>
+        <motion.form ref={form} onSubmit={sendEmail} className={styles.contact__form} variants={staggerItem}>
           <motion.input
+            className={styles.input}
             type="text"
             name="name"
             placeholder="Your Full Name"
@@ -188,6 +189,7 @@ const Contact = () => {
             aria-label="Your full name"
           />
           <motion.input
+            className={styles.input}
             name="email"
             type="email"
             placeholder="Your Email"
@@ -199,6 +201,7 @@ const Contact = () => {
             aria-label="Your email address"
           />
           <motion.textarea
+            className={styles.textarea}
             name="message"
             rows="7"
             placeholder="Your Message"
@@ -209,11 +212,11 @@ const Contact = () => {
             transition={{ duration: 0.2 }}
             aria-label="Your message"
           />
-          <motion.button type="submit" variants={hoverScale} whileHover="hover" whileTap="tap">
+          <motion.button type="submit" className={styles.btn} variants={hoverScale} whileHover="hover" whileTap="tap">
             Send Message
           </motion.button>
-          {feedbackHTML && <div className="feedback-container">{feedbackHTML}</div>}
-          {successMessage && <p className="success">{successMessage}</p>}
+          {feedbackHTML && <div className={styles['feedback-container']}>{feedbackHTML}</div>}
+          {successMessage && <p className={styles.success}>{successMessage}</p>}
         </motion.form>
       </motion.div>
     </motion.section>

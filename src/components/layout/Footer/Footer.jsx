@@ -1,6 +1,6 @@
 ﻿import { useMemo } from 'react'
-import './Footer.css'
-import { getSocialProfiles } from '../../../data/dataLoader'
+import { getSocialProfiles } from '@data/dataLoader'
+import styles from './Footer.module.css'
 import { BsLinkedin } from 'react-icons/bs'
 import { FaGithub } from 'react-icons/fa'
 import { FiInstagram } from 'react-icons/fi'
@@ -18,11 +18,11 @@ const Footer = () => {
   const socialProfiles = useMemo(() => getSocialProfiles(), [])
 
   return (
-    <footer id="footer">
-      <div className="footer__logo" aria-label="Sagar Gupta logo">
+    <footer id="footer" className={styles.footer}>
+      <div className={styles.footer__logo} aria-label="Sagar Gupta logo">
         SG
       </div>
-      <nav className="footer__socials" aria-label="Social media links">
+      <nav className={styles.footer__socials} aria-label="Social media links">
         {socialProfiles.map((profile, index) => (
           <a
             key={profile.id || `social-${index}`}
@@ -35,7 +35,7 @@ const Footer = () => {
           </a>
         ))}
       </nav>
-      <address className="footer__copyright">
+      <address className={styles.footer__copyright}>
         <small>© Sagar Gupta. All rights reserved.</small>
       </address>
     </footer>

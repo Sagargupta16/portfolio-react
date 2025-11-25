@@ -1,7 +1,8 @@
 ﻿import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { GiCheckMark } from 'react-icons/gi'
-import { cardHover, staggerContainer, staggerItem, iconBounce } from '../../utils/animations'
+import { cardHover, staggerContainer, staggerItem, iconBounce } from '@utils/animations'
+import styles from './services.module.css'
 
 const SINGLE_VIEWPORT = { once: true }
 
@@ -12,7 +13,7 @@ const ServiceItem = props => {
 
   return (
     <motion.article
-      className="service"
+      className={styles.service}
       variants={cardHover}
       whileHover="hover"
       initial={{ opacity: 0, scale: 0.9 }}
@@ -21,12 +22,12 @@ const ServiceItem = props => {
       role="article"
       aria-label={`${title} service`}
     >
-      <div className="service__head">
+      <div className={styles.service__head}>
         <h3>{title}</h3>
       </div>
       {hasItems && (
         <motion.ul
-          className="service__list"
+          className={styles.service__list}
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
@@ -36,7 +37,7 @@ const ServiceItem = props => {
             return (
               <motion.li key={`${item}-${index}`} variants={staggerItem} transition={{ delay: index * 0.1 }}>
                 <motion.div variants={iconBounce} whileHover="hover" aria-hidden="true">
-                  <GiCheckMark className="service__list-icon" />
+                  <GiCheckMark className={styles['service__list-icon']} />
                 </motion.div>
                 <p>{item}</p>
               </motion.li>
