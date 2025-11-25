@@ -1,14 +1,15 @@
 ﻿import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import CV from '../../../assets/Resume.pdf'
+import CV from '@assets/Resume.pdf'
 import { Link } from 'react-router-dom'
-import { hoverScale } from '../../../utils/animations'
+import { hoverScale } from '@utils/animations'
+import styles from './Header.module.css'
 
 function CTA() {
   const isWideScreen = useMemo(() => window.innerWidth > 600, [])
 
   return (
-    <div className="cta">
+    <div className={styles.cta}>
       <motion.a
         href={CV}
         download

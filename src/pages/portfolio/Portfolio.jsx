@@ -2,8 +2,8 @@
 import { motion } from 'framer-motion'
 import PortFolioItem from './portfolioitem'
 import personalProjects, { collabProjects } from './ProjectsArray'
-import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations'
-import './portfolio.css'
+import { fadeInUp, staggerContainer, staggerItem } from '@utils/animations'
+import styles from './portfolio.module.css'
 
 const Portfolio = () => {
   const renderPortfolioItems = useCallback(
@@ -22,20 +22,20 @@ const Portfolio = () => {
     <motion.section id="portfolio" initial="hidden" animate="visible">
       <motion.h5 variants={fadeInUp}>My Recent Works</motion.h5>
       <motion.h2 variants={fadeInUp}>Portfolio</motion.h2>
-      <motion.div className="container portfolio__container" variants={staggerContainer}>
-        <motion.h3 className="portfolio__heading" variants={fadeInUp}>
+      <motion.div className={`container ${styles.portfolio__container}`} variants={staggerContainer}>
+        <motion.h3 className={styles.portfolio__heading} variants={fadeInUp}>
           My Personal Projects
         </motion.h3>
-        <motion.div className="portfolio__section" variants={staggerContainer}>
+        <motion.div className={styles.portfolio__section} variants={staggerContainer}>
           {renderPortfolioItems(personalProjects)}
         </motion.div>
       </motion.div>
       {hasCollabProjects && (
-        <motion.div className="container portfolio__container" variants={staggerContainer}>
-          <motion.h3 className="portfolio__heading" variants={fadeInUp}>
+        <motion.div className={`container ${styles.portfolio__container}`} variants={staggerContainer}>
+          <motion.h3 className={styles.portfolio__heading} variants={fadeInUp}>
             Collaborative Projects
           </motion.h3>
-          <motion.div className="portfolio__section" variants={staggerContainer}>
+          <motion.div className={styles.portfolio__section} variants={staggerContainer}>
             {renderPortfolioItems(collabProjects)}
           </motion.div>
         </motion.div>

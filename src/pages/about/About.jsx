@@ -4,7 +4,7 @@ import { BsCodeSlash } from 'react-icons/bs'
 import { MdDeveloperMode } from 'react-icons/md'
 import { SiCodersrank } from 'react-icons/si'
 import { Link } from 'react-router-dom'
-import { getStatistics, getAbout } from '../../data/dataLoader'
+import { getStatistics, getAbout } from '@data/dataLoader'
 import {
   fadeInUp,
   fadeInLeft,
@@ -13,8 +13,8 @@ import {
   staggerItem,
   cardHover,
   iconBounce
-} from '../../utils/animations'
-import './about.css'
+} from '@utils/animations'
+import styles from './about.module.css'
 import ME from '../../assets/images/me-about.jpg'
 
 const About = () => {
@@ -25,21 +25,21 @@ const About = () => {
     () => [
       {
         id: 1,
-        icon: <BsCodeSlash className="about__icon" aria-hidden="true" />,
+        icon: <BsCodeSlash className={styles.about__icon} aria-hidden="true" />,
         title: 'Coding',
         count: statistics.coding_questions,
         label: 'Coding questions solved'
       },
       {
         id: 2,
-        icon: <MdDeveloperMode className="about__icon" aria-hidden="true" />,
+        icon: <MdDeveloperMode className={styles.about__icon} aria-hidden="true" />,
         title: 'Projects',
         count: statistics.projects,
         label: 'Projects completed'
       },
       {
         id: 3,
-        icon: <SiCodersrank className="about__icon" aria-hidden="true" />,
+        icon: <SiCodersrank className={styles.about__icon} aria-hidden="true" />,
         title: 'CP',
         count: statistics.contests,
         label: 'Competitive programming contests'
@@ -52,17 +52,17 @@ const About = () => {
     <motion.section id="about" initial="hidden" animate="visible">
       <motion.h5 variants={fadeInUp}>Get to Know</motion.h5>
       <motion.h2 variants={fadeInUp}>About Me</motion.h2>
-      <div className="container about__container">
-        <motion.div className="about__me" variants={fadeInLeft}>
-          <div className="about__me-image">
+      <div className={`container ${styles.about__container}`}>
+        <motion.div className={styles.about__me} variants={fadeInLeft}>
+          <div className={styles['about__me-image']}>
             <img src={ME} alt="Sagar Gupta - Professional portrait" loading="lazy" width="400" height="400" />
           </div>
         </motion.div>
-        <motion.div className="about__content" variants={fadeInRight}>
-          <motion.div className="about__cards" variants={staggerContainer}>
+        <motion.div className={styles.about__content} variants={fadeInRight}>
+          <motion.div className={styles.about__cards} variants={staggerContainer}>
             {cardData.map(card => (
               <motion.article
-                className="about__card"
+                className={styles.about__card}
                 key={card.id}
                 variants={staggerItem}
                 whileHover={cardHover.hover}
@@ -77,7 +77,7 @@ const About = () => {
             ))}
           </motion.div>
         </motion.div>
-        <motion.div className="about__text" variants={fadeInUp}>
+        <motion.div className={styles.about__text} variants={fadeInUp}>
           <p>
             {aboutInfo.greeting}
             <br />

@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense, lazy } from 'react'
+import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import Header from './components/layout/Header'
-import Nav from './components/layout/Navigation'
-import About from './pages/about/About'
-import Education from './pages/education/Education'
-import Experience from './pages/experience/Experience'
-import Skill from './pages/skill/Skill'
-import Services from './pages/services/Services'
-import Portfolio from './pages/portfolio/Portfolio'
-import Achievement from './pages/achievement/Achievement'
-import Contact from './pages/contact/Contact'
-import Footer from './components/layout/Footer'
-import Theme from './components/layout/Theme'
-import ErrorBoundary from './components/common/ErrorBoundary'
+import Header from '@components/layout/Header'
+import Nav from '@components/layout/Navigation'
+import Footer from '@components/layout/Footer'
+import Theme from '@components/layout/Theme'
+import ErrorBoundary from '@components/common/ErrorBoundary'
+import Loading from '@components/common/Loading'
+
+const About = lazy(() => import('@pages/about/About'))
+const Education = lazy(() => import('@pages/education/Education'))
+const Experience = lazy(() => import('@pages/experience/Experience'))
+const Skill = lazy(() => import('@pages/skill/Skill'))
+const Services = lazy(() => import('@pages/services/Services'))
+const Portfolio = lazy(() => import('@pages/portfolio/Portfolio'))
+const Achievement = lazy(() => import('@pages/achievement/Achievement'))
+const Contact = lazy(() => import('@pages/contact/Contact'))
 
 const RouterWrapper = ({ children }) => (
   <Router
@@ -63,29 +66,33 @@ const App = () => {
   ]
 
   return (
-    <ErrorBoundary>
-      <RouterWrapper>
-        {screenWidth > 600 ? (
-          <Routes>
-            {routes.map(({ path, element }) => (
-              <Route key={path} path={path} element={element} />
-            ))}
-          </Routes>
-        ) : (
-          <>
-            <Header />
-            <About />
-            <Education />
-            <Experience />
-            <Skill />
-            <Services />
-            <Portfolio />
-            <Achievement />
-            <Contact />
-          </>
-        )}
-      </RouterWrapper>
-    </ErrorBoundary>
+    <HelmetProvider>
+      <ErrorBoundary>
+        <RouterWrapper>
+          <Suspense fallback={<Loading />}>
+            {screenWidth > 600 ? (
+              <Routes>
+                {routes.map(({ path, element }) => (
+                  <Route key={path} path={path} element={element} />
+                ))}
+              </Routes>
+            ) : (
+              <>
+                <Header />
+                <About />
+                <Education />
+                <Experience />
+                <Skill />
+                <Services />
+                <Portfolio />
+                <Achievement />
+                <Contact />
+              </>
+            )}
+          </Suspense>
+        </RouterWrapper>
+      </ErrorBoundary>
+    </HelmetProvider>
   )
 }
 

@@ -1,5 +1,6 @@
 ﻿import { useCallback } from 'react'
 import { socialProfiles, codingProfiles } from './Profiles'
+import styles from './Header.module.css'
 
 const HeaderSocials = () => {
   const renderSocialLinks = useCallback(profiles => {
@@ -17,9 +18,9 @@ const HeaderSocials = () => {
   }, [])
 
   return (
-    <div className="header__socials">
-      <div className="header__socials__left">{renderSocialLinks(socialProfiles)}</div>
-      <div className="header__socials__right">{renderSocialLinks(codingProfiles)}</div>
+    <div className={styles.header__socials}>
+      <div className={styles.header__socials__left}>{renderSocialLinks(socialProfiles)}</div>
+      <div className={styles.header__socials__right}>{renderSocialLinks(codingProfiles)}</div>
     </div>
   )
 }
