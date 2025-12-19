@@ -83,11 +83,11 @@ const About = () => {
             <br />
             {aboutInfo.education}
             <br />
-            {aboutInfo.profession}
-            <br />
             {aboutInfo.current_role}
             <br />
-            {aboutInfo.passion}
+            {aboutInfo.specialization}
+            <br />
+            {aboutInfo.competitive_programming}
           </p>
           <Link to="/contact" className="btn btn-primary">
             Let&apos;s Talk

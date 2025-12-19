@@ -12,14 +12,8 @@
   },
   {
     "id": 2,
-    "title": "DevOps & Cloud",
-    "list": [
-      "AWS Infrastructure",
-      "Terraform IaC",
-      "CI/CD Pipelines",
-      "Docker Containerization",
-      "Infrastructure Automation"
-    ]
+    "title": "DevOps & MLOps",
+    "list": ["AWS Infrastructure", "MLOps Pipelines", "Terraform IaC", "CI/CD Pipelines", "Docker Containerization"]
   },
   {
     "id": 3,

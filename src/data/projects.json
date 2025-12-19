@@ -2,6 +2,22 @@
   "personal_projects": [
     {
       "id": 1,
+      "image": "placemento.png",
+      "title": "Placemento - MCA Placement Portal",
+      "description": "Implemented a secure and scalable MERN-stack MCA Placement Portal with robust security, role-based access, and interactive data visualization using AG Grid and AG Charts.",
+      "date": "January 2024",
+      "tools_tech": ["MongoDB", "Express.js", "React", "Node.js", "AG Grid", "AG Charts"],
+      "features": [
+        "Role-based access control",
+        "Interactive data visualization",
+        "Secure authentication",
+        "Real-time placement tracking"
+      ],
+      "github": "",
+      "live": ""
+    },
+    {
+      "id": 2,
       "image": "leetcode-rating-predictor.png",
       "title": "Leetcode Rating Predictor",
       "description": "A Python-based tool that predicts user ratings in LeetCode contests using machine learning. It fetches contest data, processes it, and applies a LSTM model for accurate predictions.",
@@ -17,10 +33,10 @@
       "live": "https://leetcode-rating-predictor.onrender.com/"
     },
     {
-      "id": 2,
+      "id": 3,
       "image": "portfolio-react.png",
-      "title": "Portfolio React",
-      "description": "A comprehensive React application showcasing my skills, projects, and professional journey. This platform serves as a hub of information about my background, achievements, and expertise.",
+      "title": "Personal Portfolio",
+      "description": "Crafted an interactive portfolio website showcasing skills and achievements, optimized for multiple devices, with smooth refresh-free navigation.",
       "date": "October 2022",
       "tools_tech": ["React", "JavaScript", "CSS", "HTML", "EmailJS", "React Router"],
       "features": [
@@ -33,13 +49,13 @@
       "live": "https://sagargupta.live/portfolio-react/"
     },
     {
-      "id": 3,
+      "id": 4,
       "image": "contact-manager.png",
-      "title": "Contact Manager MERN",
-      "description": "A Full Stack MERN application that helps users manage their contacts efficiently with user authentication and CRUD operations.",
+      "title": "Contact Manager",
+      "description": "Engineered a full-stack MERN application to streamline contact management with complete user authentication and CRUD operations, featuring a user-friendly UI with dark/light modes.",
       "date": "July 2022",
       "tools_tech": ["MongoDB", "Express.js", "React", "Node.js", "CORS", "JWT"],
-      "features": ["User authentication", "Contact CRUD operations", "Responsive UI", "Secure data storage"],
+      "features": ["User authentication", "Contact CRUD operations", "Dark/Light mode", "Secure data storage"],
       "github": "https://github.com/Sagargupta16/Contact-Manager-Mern",
       "live": "https://contact-manager-mern-cg19.onrender.com/"
     },

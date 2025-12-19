@@ -38,8 +38,17 @@ const Achievement = () => {
                   whileHover={hoverScale}
                 >
                   <motion.h3 variants={fadeInUp}>{cert.name}</motion.h3>
-                  <motion.p variants={fadeInUp}>Type: {cert.type}</motion.p>
                   <motion.p variants={fadeInUp}>Issuer: {cert.issuer}</motion.p>
+                  {cert.level && <motion.p variants={fadeInUp}>Level: {cert.level}</motion.p>}
+                  {cert.issueDate && <motion.p variants={fadeInUp}>Issued: {cert.issueDate}</motion.p>}
+                  {cert.expiryDate && <motion.p variants={fadeInUp}>Expires: {cert.expiryDate}</motion.p>}
+                  {cert.credentialUrl && (
+                    <motion.p variants={fadeInUp}>
+                      <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="btn btn-sm">
+                        View Credential
+                      </a>
+                    </motion.p>
+                  )}
                 </motion.li>
               ))}
             </motion.ul>
@@ -61,7 +70,8 @@ const Achievement = () => {
                 >
                   <motion.h3 variants={fadeInUp}>{item.title}</motion.h3>
                   {item.organizer && <motion.p variants={fadeInUp}>Organizer: {item.organizer}</motion.p>}
-                  <motion.p variants={fadeInUp}>Type: {item.type}</motion.p>
+                  {item.date && <motion.p variants={fadeInUp}>Date: {item.date}</motion.p>}
+                  {item.description && <motion.p variants={fadeInUp}>{item.description}</motion.p>}
                   {item.certificate && (
                     <motion.span className={styles['achievement-date']} variants={fadeInUp}>
                       Certificate Available

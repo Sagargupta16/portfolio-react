@@ -7,7 +7,10 @@ const educationArray = educationData.map(edu => ({
   date: edu.date,
   title: edu.title,
   text: edu.display_text,
-  cgpa: `CGPA: ${edu.cgpa}`
+  cgpa: `CGPA: ${edu.cgpa}`,
+  percentage: edu.percentage,
+  achievements: edu.achievements || [],
+  skills: edu.skills || []
 }))
 
 export default educationArray

@@ -4,69 +4,178 @@
       "id": 1,
       "name": "AWS Certified Cloud Practitioner",
       "type": "Industry Certification",
-      "issuer": "Amazon Web Services"
+      "issuer": "Amazon Web Services",
+      "level": "Foundational",
+      "issueDate": "2025-06-28",
+      "expiryDate": "2028-06-28",
+      "credentialId": "315fe8a5-1e0b-418b-b139-e27018da152b",
+      "credentialUrl": "https://www.credly.com/badges/315fe8a5-1e0b-418b-b139-e27018da152b"
     },
     {
       "id": 2,
       "name": "AWS Certified AI Practitioner",
       "type": "Industry Certification",
-      "issuer": "Amazon Web Services"
+      "issuer": "Amazon Web Services",
+      "level": "Foundational",
+      "issueDate": "2025-07-07",
+      "expiryDate": "2028-07-07",
+      "credentialId": "e18d2154-e153-40b3-8f39-6684e561396e",
+      "credentialUrl": "https://www.credly.com/badges/e18d2154-e153-40b3-8f39-6684e561396e"
     },
     {
       "id": 3,
       "name": "AWS Certified Solutions Architect – Associate",
       "type": "Industry Certification",
-      "issuer": "Amazon Web Services"
+      "issuer": "Amazon Web Services",
+      "level": "Associate",
+      "issueDate": "2024-07-07",
+      "expiryDate": "2027-07-07",
+      "credentialId": "591e74ef-f6a8-4b77-82dc-07e06fb8060e",
+      "credentialUrl": "https://www.credly.com/badges/591e74ef-f6a8-4b77-82dc-07e06fb8060e"
     },
     {
       "id": 4,
       "name": "AWS Certified Machine Learning Engineer – Associate",
       "type": "Industry Certification",
-      "issuer": "Amazon Web Services"
+      "issuer": "Amazon Web Services",
+      "level": "Associate",
+      "issueDate": "2025-06-28",
+      "expiryDate": "2028-06-28",
+      "credentialId": "d6dc337a-0af5-48f8-b64f-eb2a5925f07b",
+      "credentialUrl": "https://www.credly.com/badges/d6dc337a-0af5-48f8-b64f-eb2a5925f07b"
     },
     {
       "id": 5,
       "name": "HashiCorp Certified: Terraform Associate (003)",
       "type": "Industry Certification",
-      "issuer": "HashiCorp"
+      "issuer": "HashiCorp",
+      "level": "Associate",
+      "issueDate": "2024-09-10",
+      "expiryDate": "2026-09-10",
+      "credentialId": "8b0723a5-bac7-4262-b5b6-20337b2979a1",
+      "credentialUrl": "https://www.credly.com/badges/8b0723a5-bac7-4262-b5b6-20337b2979a1"
+    },
+    {
+      "id": 6,
+      "name": "AWS Knowledge: Cloud Essentials",
+      "type": "Knowledge Badge",
+      "issuer": "Amazon Web Services",
+      "issueDate": "2024-06-15",
+      "credentialId": "d03e1d39-4e40-483d-9845-f11da0d01170",
+      "credentialUrl": "https://www.credly.com/badges/d03e1d39-4e40-483d-9845-f11da0d01170"
+    },
+    {
+      "id": 7,
+      "name": "AWS Knowledge: Architecting",
+      "type": "Knowledge Badge",
+      "issuer": "Amazon Web Services",
+      "issueDate": "2024-06-12",
+      "credentialId": "ca2a1336-e6e0-4e76-aa97-a919759d26d3",
+      "credentialUrl": "https://www.credly.com/badges/ca2a1336-e6e0-4e76-aa97-a919759d26d3"
+    },
+    {
+      "id": 8,
+      "name": "AWS Partner: Generative AI Essentials",
+      "type": "Partner Badge",
+      "issuer": "Amazon Web Services",
+      "issueDate": "2024-11-15",
+      "credentialId": "f9785728-0e06-4c8b-9d62-08d85f00085e",
+      "credentialUrl": "https://www.credly.com/badges/f9785728-0e06-4c8b-9d62-08d85f00085e"
+    },
+    {
+      "id": 9,
+      "name": "AWS Partner: Generative AI for Decision Makers",
+      "type": "Partner Badge",
+      "issuer": "Amazon Web Services",
+      "issueDate": "2024-11-29",
+      "expiryDate": "2026-11-29",
+      "credentialId": "efe96532-4f2e-49b5-8c9f-3f4a9c4e70dd",
+      "credentialUrl": "https://www.credly.com/badges/efe96532-4f2e-49b5-8c9f-3f4a9c4e70dd"
+    },
+    {
+      "id": 10,
+      "name": "AWS Partner: Generative AI on AWS Essentials",
+      "type": "Partner Badge",
+      "issuer": "Amazon Web Services",
+      "issueDate": "2024-12-06",
+      "expiryDate": "2026-12-06",
+      "credentialId": "5f15e265-5ad1-45dd-8e36-d59abb1d0fd5",
+      "credentialUrl": "https://www.credly.com/badges/5f15e265-5ad1-45dd-8e36-d59abb1d0fd5"
     }
   ],
   "achievements": [
     {
       "id": 1,
-      "title": "4th Position in TriNIT Hackathon",
+      "title": "1st Position at Coding Cauldron Online VERSION 23'",
+      "organizer": "NIT Trichy",
+      "date": "March 2023",
+      "description": "Problem Solving Coding Contest",
       "type": "Competition"
     },
     {
       "id": 2,
-      "title": "1st Position in Coding Cauldron Online VERSION 23'",
-      "organizer": "NIT-Trichy",
+      "title": "2nd Position at MANAGE THE DAMAGE - VERSION '23",
+      "organizer": "NIT Trichy",
+      "date": "March 2023",
+      "description": "Code Debugging and Optimization Event",
       "type": "Competition"
     },
     {
       "id": 3,
-      "title": "1st Position in QFiesta IGNOSI 22'",
-      "organizer": "NIT-Warangal",
+      "title": "1st Position at QFiesta -- IGNOSI 22'",
+      "organizer": "EA & HAM NITW",
+      "date": "December 2022",
+      "description": "National Institute of Technology Warangal",
       "type": "Competition"
     },
     {
       "id": 4,
-      "title": "1289th Position (Top 5%) at Google Kick-start Round E '22",
-      "type": "Competition",
-      "certificate": true
-    },
-    {
-      "id": 5,
-      "title": "3rd Position in INFOTREK '22 LOGIC HEAD",
-      "organizer": "NIT-Trichy",
+      "title": "2nd Position at Trial By Code -- IGNOSI 22'",
+      "organizer": "CSEA NITW",
+      "date": "December 2022",
+      "description": "A 1v1 Competitive Programming Contest, National Institute of Technology Warangal",
       "type": "Competition"
     },
     {
-      "id": 6,
-      "title": "3rd Position in Event MOTHRA - VERSION '21",
-      "organizer": "NIT-Trichy",
+      "id": 5,
+      "title": "1289th Position at Round E Google Kickstart 22'",
+      "organizer": "Google",
+      "date": "August 2022",
+      "description": "Ranked 1289th globally in competitive programming contest",
       "type": "Competition",
       "certificate": true
+    },
+    {
+      "id": 6,
+      "title": "3rd Position at INFOTREK - 22 LOGIC HEAD",
+      "organizer": "National Institute of Technology Tiruchirappalli",
+      "date": "June 2022",
+      "description": "Coding Competition Organized by NIT Trichy",
+      "type": "Competition"
+    },
+    {
+      "id": 7,
+      "title": "1699th Position at Google Kickstart Round B",
+      "organizer": "Google",
+      "date": "April 2022",
+      "description": "Global competitive programming contest",
+      "type": "Competition"
+    },
+    {
+      "id": 8,
+      "title": "3rd Position at MOTHRA - Version 21'",
+      "organizer": "National Institute of Technology Tiruchirappalli",
+      "date": "October 2021",
+      "description": "Organized By NIT Trichy",
+      "type": "Competition",
+      "certificate": true
+    },
+    {
+      "id": 9,
+      "title": "4th Position in TriNIT Hackathon",
+      "organizer": "NIT Warangal",
+      "description": "Hackathon Competition",
+      "type": "Competition"
     }
   ],
   "coding_platform_stats": {

@@ -62,6 +62,24 @@
   color: var(--color-white);
 }
 
+.achievement-item a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: var(--color-primary);
+  color: var(--color-bg);
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.achievement-item a:hover {
+  background: var(--color-white);
+  color: var(--color-bg);
+  transform: scale(1.05);
+}
+
 .achievement-date {
   font-size: 0.9rem;
   color: var(--color-light);
