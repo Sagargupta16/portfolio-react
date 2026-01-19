@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "framer-motion": "^12.26.0",
+    "framer-motion": "^12.27.0",
     "prop-types": "^15.8.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
