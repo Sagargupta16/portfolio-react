@@ -1,97 +1,170 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { BsCodeSlash } from 'react-icons/bs'
-import { MdDeveloperMode } from 'react-icons/md'
-import { SiCodersrank } from 'react-icons/si'
-import { Link } from 'react-router-dom'
-import { getStatistics, getAbout } from '@data/dataLoader'
-import {
-  fadeInUp,
-  fadeInLeft,
-  fadeInRight,
-  staggerContainer,
-  staggerItem,
-  cardHover,
-  iconBounce
-} from '@utils/animations'
-import styles from './about.module.css'
-import ME from '../../assets/images/me-about.jpg'
+import { Briefcase, GraduationCap, Rocket, Trophy } from 'lucide-react'
+import { getAbout, getStatistics } from '@data/dataLoader'
+import { sectionReveal, staggerContainer, staggerItem, fadeInLeft, fadeInRight, fadeInUp } from '@utils/animations'
+import SectionHeader from '@components/ui/SectionHeader'
+import AnimatedCounter from '@components/ui/AnimatedCounter'
+import DevAvatar from '@components/ui/DevAvatar'
+
+const HIGHLIGHT_ICONS = [
+  { Icon: Briefcase, color: '#06b6d4' },
+  { Icon: GraduationCap, color: '#a855f7' },
+  { Icon: Rocket, color: '#22c55e' },
+  { Icon: Trophy, color: '#f59e0b' }
+]
 
 const About = () => {
-  const statistics = getStatistics()
   const aboutInfo = getAbout()
+  const statistics = getStatistics()
 
-  const cardData = useMemo(
-    () => [
-      {
-        id: 1,
-        icon: <BsCodeSlash className={styles.about__icon} aria-hidden="true" />,
-        title: 'Coding',
-        count: statistics.coding_questions,
-        label: 'Coding questions solved'
-      },
-      {
-        id: 2,
-        icon: <MdDeveloperMode className={styles.about__icon} aria-hidden="true" />,
-        title: 'Projects',
-        count: statistics.projects,
-        label: 'Projects completed'
-      },
-      {
-        id: 3,
-        icon: <SiCodersrank className={styles.about__icon} aria-hidden="true" />,
-        title: 'CP',
-        count: statistics.contests,
-        label: 'Competitive programming contests'
-      }
-    ],
-    [statistics]
+  const highlights = useMemo(
+    () => [aboutInfo.current_role, aboutInfo.education, aboutInfo.specialization, aboutInfo.competitive_programming],
+    [aboutInfo]
   )
 
+  const statEntries = useMemo(() => Object.entries(statistics), [statistics])
+
   return (
-    <motion.section id="about" initial="hidden" animate="visible">
-      <motion.h5 variants={fadeInUp}>Get to Know</motion.h5>
-      <motion.h2 variants={fadeInUp}>About Me</motion.h2>
-      <div className={`container ${styles.about__container}`}>
-        <motion.div className={styles.about__me} variants={fadeInLeft}>
-          <div className={styles['about__me-image']}>
-            <img src={ME} alt="Sagar Gupta - Professional portrait" loading="lazy" width="400" height="400" />
-          </div>
-        </motion.div>
-        <motion.div className={styles.about__content} variants={fadeInRight}>
-          <motion.div className={styles.about__cards} variants={staggerContainer}>
-            {cardData.map(card => (
-              <motion.article
-                className={styles.about__card}
-                key={card.id}
-                variants={staggerItem}
-                whileHover={cardHover.hover}
-                aria-label={card.label}
-              >
-                <motion.div variants={iconBounce} whileHover="hover">
-                  {card.icon}
-                </motion.div>
-                <h5>{card.title}</h5>
-                <small>{card.count}</small>
-              </motion.article>
-            ))}
+    <motion.section
+      id="about"
+      className="py-24 px-6"
+      style={{ padding: '96px 24px' }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={sectionReveal}
+    >
+      <div style={{ maxWidth: 1152, margin: '0 auto' }}>
+        <SectionHeader title="About Me" subtitle="Get to know me" />
+
+        <motion.div
+          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'center' }}
+          variants={staggerContainer}
+        >
+          {/* Left Column - Animated Avatar */}
+          <motion.div variants={fadeInLeft} style={{ display: 'flex', justifyContent: 'center' }}>
+            <DevAvatar />
+          </motion.div>
+
+          {/* Right Column - Bio + Highlights */}
+          <motion.div variants={fadeInRight}>
+            {/* Status line */}
+            <p
+              style={{
+                fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                color: '#22c55e',
+                fontSize: 13,
+                marginBottom: 20,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8
+              }}
+            >
+              <span
+                className="animate-glow-pulse"
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  backgroundColor: '#22c55e',
+                  display: 'inline-block'
+                }}
+              />
+              currently building cloud infrastructure at AWS
+            </p>
+
+            {/* Greeting */}
+            <h3
+              style={{
+                fontSize: 28,
+                fontWeight: 700,
+                color: '#eeeef5',
+                marginBottom: 16,
+                lineHeight: 1.3
+              }}
+            >
+              {aboutInfo.greeting.replace(/^[^\s]+\s/, '')}
+            </h3>
+
+            {/* Highlights */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {highlights.map((text, i) => {
+                const { Icon, color } = HIGHLIGHT_ICONS[i]
+                const cleanText = text.replace(/^[^\s]+\s/, '')
+                return (
+                  <motion.div
+                    key={i}
+                    variants={staggerItem}
+                    style={{
+                      display: 'flex',
+                      gap: 14,
+                      alignItems: 'flex-start',
+                      padding: '14px 16px',
+                      borderRadius: 12,
+                      background: 'rgba(14, 14, 38, 0.6)',
+                      border: '1px solid rgba(38, 38, 85, 0.5)'
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 8,
+                        background: `${color}12`,
+                        border: `1px solid ${color}20`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        marginTop: 1
+                      }}
+                    >
+                      <Icon style={{ width: 16, height: 16, color }} />
+                    </div>
+                    <p style={{ color: '#a5a5c0', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{cleanText}</p>
+                  </motion.div>
+                )
+              })}
+            </div>
           </motion.div>
         </motion.div>
-        <motion.div className={styles.about__text} variants={fadeInUp}>
-          <p>
-            {aboutInfo.greeting}
-            <br />
-            {aboutInfo.education}
-            <br />
-            {aboutInfo.current_role}
-            <br />
-            {aboutInfo.specialization}
-            <br />
-            {aboutInfo.competitive_programming}
-          </p>
-          <Link to="/contact" className="btn btn-primary">
-            Let&apos;s Talk
-          </Link>
+
+        {/* Stats Row - Full Width */}
+        <motion.div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${statEntries.length}, 1fr)`,
+            gap: 16,
+            marginTop: 56
+          }}
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          {statEntries.map(([key, value]) => (
+            <motion.div
+              key={key}
+              variants={fadeInUp}
+              className="glass-card"
+              style={{ padding: '24px 16px', textAlign: 'center' }}
+            >
+              <AnimatedCounter value={value} />
+              <p
+                style={{
+                  color: '#6e6e90',
+                  fontSize: 11,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                  fontWeight: 600,
+                  marginTop: 8
+                }}
+              >
+                {key.replaceAll('_', ' ')}
+              </p>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </motion.section>

@@ -1,24 +1,32 @@
-﻿{
+{
   "personal_projects": [
     {
-      "id": 1,
-      "image": "placemento.png",
-      "title": "Placemento - MCA Placement Portal",
-      "description": "Implemented a secure and scalable MERN-stack MCA Placement Portal with robust security, role-based access, and interactive data visualization using AG Grid and AG Charts.",
-      "date": "January 2024",
-      "tools_tech": ["MongoDB", "Express.js", "React", "Node.js", "AG Grid", "AG Charts"],
+      "id": 15,
+      "title": "Ledger Sync",
+      "description": "A self-hosted personal finance application that transforms messy Excel exports into a beautiful, insightful financial dashboard with comprehensive analytics for your financial life.",
+      "date": "January 2026",
+      "tools_tech": ["TypeScript", "React", "Node.js", "Excel Processing", "Data Visualization"],
       "features": [
-        "Role-based access control",
-        "Interactive data visualization",
-        "Secure authentication",
-        "Real-time placement tracking"
+        "Excel transaction import",
+        "Financial analytics dashboard",
+        "Self-hosted deployment",
+        "Comprehensive spending insights"
       ],
-      "github": "",
+      "github": "https://github.com/Sagargupta16/ledger-sync",
+      "live": ""
+    },
+    {
+      "id": 13,
+      "title": "Blue Green AWS Terraform",
+      "description": "Complete Blue-Green deployment pipeline using Terraform with automated CI/CD, containerized Node.js applications on ECS, and AWS security best practices.",
+      "date": "July 2025",
+      "tools_tech": ["Terraform", "AWS", "Docker", "ECS", "CI/CD", "HCL"],
+      "features": ["Blue-Green deployment", "Infrastructure as Code", "AWS ECS integration", "Automated CI/CD"],
+      "github": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform",
       "live": ""
     },
     {
       "id": 2,
-      "image": "leetcode-rating-predictor.png",
       "title": "Leetcode Rating Predictor",
       "description": "A Python-based tool that predicts user ratings in LeetCode contests using machine learning. It fetches contest data, processes it, and applies a LSTM model for accurate predictions.",
       "date": "December 2023",
@@ -33,24 +41,37 @@
       "live": "https://leetcode-rating-predictor.onrender.com/"
     },
     {
-      "id": 3,
-      "image": "portfolio-react.png",
-      "title": "Personal Portfolio",
-      "description": "Crafted an interactive portfolio website showcasing skills and achievements, optimized for multiple devices, with smooth refresh-free navigation.",
-      "date": "October 2022",
-      "tools_tech": ["React", "JavaScript", "CSS", "HTML", "EmailJS", "React Router"],
-      "features": [
-        "Responsive design",
-        "Interactive project showcase",
-        "Contact form integration",
-        "Smooth animations"
-      ],
-      "github": "https://github.com/Sagargupta16/portfolio-react",
-      "live": "https://sagargupta.live/portfolio-react/"
+      "id": 7,
+      "title": "AWS DevOps Infrastructure",
+      "description": "Contains GitHub Actions CI/CD Pipeline codes, tests, and AWS deployment configurations for FARM stack applications.",
+      "date": "November 2023",
+      "tools_tech": ["AWS", "DevOps", "GitHub Actions", "CI/CD", "Python"],
+      "features": ["Automated CI/CD pipeline", "AWS deployment", "Testing automation", "Infrastructure as Code"],
+      "github": "https://github.com/Sagargupta16/DevOps-AWS-FARM",
+      "live": ""
+    },
+    {
+      "id": 14,
+      "title": "Stock Market Prediction",
+      "description": "A machine learning project for predicting stock market trends using historical data and neural networks.",
+      "date": "December 2023",
+      "tools_tech": ["Python", "Machine Learning", "Neural Networks", "Data Analysis"],
+      "features": ["Stock price prediction", "Historical data analysis", "ML model training", "Trend visualization"],
+      "github": "https://github.com/Sagargupta16/Stock-market-prediction",
+      "live": ""
+    },
+    {
+      "id": 11,
+      "title": "Brainstorm Verse",
+      "description": "A Next.js platform where brilliant minds converge and ideas collide in an inspiring symphony of creativity and innovation.",
+      "date": "August 2023",
+      "tools_tech": ["TypeScript", "Next.js", "MongoDB", "Tailwind CSS", "Clerk"],
+      "features": ["Idea collaboration platform", "User authentication", "Modern UI/UX", "Real-time interactions"],
+      "github": "https://github.com/Sagargupta16/brainstorm-verse",
+      "live": ""
     },
     {
       "id": 4,
-      "image": "contact-manager.png",
       "title": "Contact Manager",
       "description": "Engineered a full-stack MERN application to streamline contact management with complete user authentication and CRUD operations, featuring a user-friendly UI with dark/light modes.",
       "date": "July 2022",
@@ -61,7 +82,6 @@
     },
     {
       "id": 5,
-      "image": "Empty.jpg",
       "title": "Tour Vibes",
       "description": "A Travel Journal Web App built with MERN stack for sharing and discovering travel experiences.",
       "date": "March 2023",
@@ -76,41 +96,22 @@
       "live": ""
     },
     {
-      "id": 6,
-      "image": "music-player.png",
-      "title": "Music Web Player",
-      "description": "A frontend music web player application with interactive controls and playlist management.",
-      "date": "May 2022",
-      "tools_tech": ["HTML5", "CSS3", "JavaScript"],
-      "features": ["Music playback controls", "Playlist management", "Responsive design", "Interactive UI"],
-      "github": "https://github.com/Sagargupta16/Music-Web-App",
-      "live": "https://sagargupta.life/Music-Web-App/"
-    },
-    {
-      "id": 7,
-      "image": "Empty.jpg",
-      "title": "AWS DevOps Infrastructure",
-      "description": "Contains GitHub Actions CI/CD Pipeline codes, tests, and AWS deployment configurations for FARM stack applications.",
-      "date": "November 2023",
-      "tools_tech": ["AWS", "DevOps", "GitHub Actions", "CI/CD", "Python"],
-      "features": ["Automated CI/CD pipeline", "AWS deployment", "Testing automation", "Infrastructure as Code"],
-      "github": "https://github.com/Sagargupta16/DevOps-AWS-FARM",
-      "live": ""
-    },
-    {
-      "id": 11,
-      "image": "Empty.jpg",
-      "title": "Brainstorm Verse",
-      "description": "A Next.js platform where brilliant minds converge and ideas collide in an inspiring symphony of creativity and innovation.",
-      "date": "August 2023",
-      "tools_tech": ["TypeScript", "Next.js", "MongoDB", "Tailwind CSS", "Clerk"],
-      "features": ["Idea collaboration platform", "User authentication", "Modern UI/UX", "Real-time interactions"],
-      "github": "https://github.com/Sagargupta16/brainstorm-verse",
-      "live": ""
+      "id": 3,
+      "title": "Personal Portfolio",
+      "description": "Crafted an interactive portfolio website showcasing skills and achievements, optimized for multiple devices, with smooth refresh-free navigation.",
+      "date": "October 2022",
+      "tools_tech": ["React", "JavaScript", "CSS", "HTML", "EmailJS", "React Router"],
+      "features": [
+        "Responsive design",
+        "Interactive project showcase",
+        "Contact form integration",
+        "Smooth animations"
+      ],
+      "github": "https://github.com/Sagargupta16/portfolio-react",
+      "live": "https://sagargupta.live/portfolio-react/"
     },
     {
       "id": 12,
-      "image": "pac-man.png",
       "title": "PacMan Game Unity",
       "description": "A classic Pac-Man game recreated using Unity Engine with C# scripting for an authentic gaming experience.",
       "date": "June 2022",
@@ -120,56 +121,56 @@
       "live": ""
     },
     {
-      "id": 13,
-      "image": "Empty.jpg",
-      "title": "Blue Green AWS Terraform",
-      "description": "Complete Blue-Green deployment pipeline using Terraform with automated CI/CD, containerized Node.js applications on ECS, and AWS security best practices.",
-      "date": "July 2025",
-      "tools_tech": ["Terraform", "AWS", "Docker", "ECS", "CI/CD", "HCL"],
-      "features": ["Blue-Green deployment", "Infrastructure as Code", "AWS ECS integration", "Automated CI/CD"],
-      "github": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform",
-      "live": ""
-    },
-    {
-      "id": 14,
-      "image": "Empty.jpg",
-      "title": "Stock Market Prediction",
-      "description": "A machine learning project for predicting stock market trends using historical data and neural networks.",
-      "date": "December 2023",
-      "tools_tech": ["Python", "Machine Learning", "Neural Networks", "Data Analysis"],
-      "features": ["Stock price prediction", "Historical data analysis", "ML model training", "Trend visualization"],
-      "github": "https://github.com/Sagargupta16/Stock-market-prediction",
-      "live": ""
-    },
-    {
-      "id": 15,
-      "image": "portfolio.png",
-      "title": "Personal Portfolio",
-      "description": "My original personal portfolio website built with vanilla HTML, CSS, and JavaScript showcasing my early web development skills.",
-      "date": "May 2022",
-      "tools_tech": ["HTML5", "CSS3", "JavaScript", "Flexbox", "Portfolio"],
-      "features": ["Responsive design", "Portfolio showcase", "Interactive elements", "Clean UI design"],
-      "github": "https://github.com/Sagargupta16/PortFolio",
-      "live": "https://sagargupta.life/PortFolio/"
-    },
-    {
-      "id": 19,
-      "image": "guess-the-number.png",
-      "title": "Guess The Number Game",
-      "description": "A simple interactive game where players have to guess a randomly generated number, implemented using JavaScript with an engaging UI.",
+      "id": 16,
+      "title": "Minesweeper Game Unity",
+      "description": "A classic Minesweeper game recreated using Unity Engine with C# scripting, featuring grid-based gameplay and mine detection mechanics.",
       "date": "June 2022",
-      "tools_tech": ["JavaScript", "HTML5", "CSS3", "Game Development"],
-      "features": ["Random number generation", "Interactive gameplay", "Score tracking", "Responsive design"],
-      "github": "https://github.com/Sagargupta16/Guess-The-Number-Game",
-      "live": "https://sagargupta16.github.io/Guess-The-Number-Game/"
+      "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
+      "features": [
+        "Classic Minesweeper gameplay",
+        "Grid-based mine detection",
+        "Interactive controls",
+        "Unity2D graphics"
+      ],
+      "github": "https://github.com/Sagargupta16/Minesweeper-Game__UnityEngine",
+      "live": ""
+    },
+    {
+      "id": 17,
+      "title": "Snake Game Unity",
+      "description": "A classic Snake game built using Unity Engine with C# scripting, featuring smooth movement mechanics and score tracking.",
+      "date": "June 2022",
+      "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
+      "features": ["Classic Snake gameplay", "Smooth movement mechanics", "Score tracking", "Unity2D graphics"],
+      "github": "https://github.com/Sagargupta16/Snake-Game__UnityEngine",
+      "live": ""
+    },
+    {
+      "id": 18,
+      "title": "Flappy Bird Game Unity",
+      "description": "A Flappy Bird clone built using Unity Engine with C# scripting, featuring physics-based gameplay and obstacle generation.",
+      "date": "June 2022",
+      "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
+      "features": ["Flappy Bird gameplay", "Physics-based mechanics", "Procedural obstacles", "Unity2D graphics"],
+      "github": "https://github.com/Sagargupta16/FlappyBird-Game__UnityEngine",
+      "live": ""
+    },
+    {
+      "id": 6,
+      "title": "Music Web Player",
+      "description": "A frontend music web player application with interactive controls and playlist management.",
+      "date": "May 2022",
+      "tools_tech": ["HTML5", "CSS3", "JavaScript"],
+      "features": ["Music playback controls", "Playlist management", "Responsive design", "Interactive UI"],
+      "github": "https://github.com/Sagargupta16/Music-Web-App",
+      "live": "https://sagargupta.life/Music-Web-App/"
     }
   ],
   "collaborative_projects": [
     {
       "id": 1,
-      "image": "Empty.jpg",
       "title": "Lingua Connect",
-      "description": "An interactive online platform built on the MERN stack, connecting language learners with personalized tutors for tailored online lessons. Winner of TRINIT Hackathon.",
+      "description": "An interactive online platform built on the MERN stack, connecting language learners with personalized tutors for tailored online lessons.",
       "date": "March 2024",
       "tools_tech": ["MongoDB", "Express.js", "React", "Node.js", "Video Calls", "Payment Integration"],
       "features": [
@@ -182,33 +183,11 @@
       "github": "https://github.com/Sagargupta16/TRINIT_BugBiters_Dev",
       "live": "",
       "team": "BugBiters",
-      "achievement": "Winner - TRINIT Hackathon",
-      "organization": "TRINIT",
+      "organization": "TriNIT",
       "contributors": ["Sagargupta16", "Team Members"]
     },
     {
-      "id": 2,
-      "image": "Empty.jpg",
-      "title": "MCA NITW Website",
-      "description": "Official MCA Course Website for NIT Warangal, providing comprehensive information about the MCA program, faculty, and resources.",
-      "date": "February 2023",
-      "tools_tech": ["JavaScript", "React", "Express.js", "MongoDB", "Node.js", "CSS", "REST API"],
-      "features": [
-        "Course information portal",
-        "Faculty directory",
-        "Student resources",
-        "Responsive design",
-        "Content management"
-      ],
-      "github": "https://github.com/MCA-NITW/mca_nitw",
-      "live": "",
-      "team": "MCA NITW Development Team",
-      "organization": "MCA-NITW",
-      "contributors": ["Sagargupta16", "MCA NITW Team"]
-    },
-    {
       "id": 3,
-      "image": "Empty.jpg",
       "title": "Placemento",
       "description": "A comprehensive placement portal for MCA NITW students, facilitating job placements and connecting students with potential employers.",
       "date": "January 2024",
@@ -228,7 +207,6 @@
     },
     {
       "id": 4,
-      "image": "Empty.jpg",
       "title": "LeetCode Among Us",
       "description": "A competitive coding platform for MCA NITW students to practice LeetCode problems together and track progress.",
       "date": "August 2023",
@@ -243,6 +221,25 @@
       "github": "https://github.com/MCA-NITW/leetcode_among_us",
       "live": "https://leetcode-among-us.onrender.com/",
       "team": "MCA NITW Coding Team",
+      "organization": "MCA-NITW",
+      "contributors": ["Sagargupta16", "MCA NITW Team"]
+    },
+    {
+      "id": 2,
+      "title": "MCA NITW Website",
+      "description": "Official MCA Course Website for NIT Warangal, providing comprehensive information about the MCA program, faculty, and resources.",
+      "date": "February 2023",
+      "tools_tech": ["JavaScript", "React", "Express.js", "MongoDB", "Node.js", "CSS", "REST API"],
+      "features": [
+        "Course information portal",
+        "Faculty directory",
+        "Student resources",
+        "Responsive design",
+        "Content management"
+      ],
+      "github": "https://github.com/MCA-NITW/mca_nitw",
+      "live": "",
+      "team": "MCA NITW Development Team",
       "organization": "MCA-NITW",
       "contributors": ["Sagargupta16", "MCA NITW Team"]
     }

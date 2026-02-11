@@ -1,223 +1,219 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
-import { MdOutlineEmail } from 'react-icons/md'
-import { ImWhatsapp } from 'react-icons/im'
-import { IoCallOutline } from 'react-icons/io5'
-import { fadeInUp, hoverScale, staggerContainer, staggerItem } from '@utils/animations'
-import styles from './contact.module.css'
+import { Mail, MessageCircle, Phone, Send } from 'lucide-react'
+import { getContactOptions, getEmailConfig } from '@data/dataLoader'
+import { fadeInUp, staggerContainer } from '@utils/animations'
+import SectionHeader from '@components/ui/SectionHeader'
 
-const CONTACT_OPTIONS = [
-  {
-    id: 1,
-    icon: <MdOutlineEmail className={styles.contact__icon} />,
-    title: 'Email Me',
-    value: 'sg85207@gmail.com',
-    link: 'mailto:sg85207@gmail.com',
-    message: 'Send a Mail'
-  },
-  {
-    id: 2,
-    icon: <ImWhatsapp className={styles.contact__icon} />,
-    title: 'WhatsApp Me',
-    value: '+91-8770532413',
-    link: 'https://wa.me/+918770532413',
-    message: 'Send a Message'
-  },
-  {
-    id: 3,
-    icon: <IoCallOutline className={styles.contact__icon} />,
-    title: 'Call me',
-    value: '+91-8770532413',
-    link: 'tel:+918770532413',
-    message: 'Call Now'
-  }
-]
+const getIconForType = title => {
+  if (title.toLowerCase().includes('email')) return Mail
+  if (title.toLowerCase().includes('whatsapp')) return MessageCircle
+  if (title.toLowerCase().includes('call')) return Phone
+  return Mail
+}
 
 const Contact = () => {
-  const form = useRef()
+  const formRef = useRef()
+  const contactOptions = getContactOptions()
+  const emailConfig = getEmailConfig()
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   })
-  const [errors, setErrors] = useState({})
-  const [successMessage, setSuccessMessage] = useState('')
-  const [feedbackHTML, setFeedbackHTML] = useState('')
+  const [status, setStatus] = useState({ type: '', message: '' })
+  const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    // Only clear messages after they are set, not on mount
-    if (Object.keys(errors).length > 0 || successMessage || feedbackHTML) {
-      const feedbackTimer = setTimeout(() => {
-        setErrors({})
-        setSuccessMessage('')
-        setFeedbackHTML('')
-      }, 5000)
-      return () => clearTimeout(feedbackTimer)
-    }
-  }, [errors, successMessage, feedbackHTML])
-
-  const validateForm = useCallback(() => {
-    let isValid = true
-    const newErrors = {}
-
-    if (formData.name.length < 3 || formData.name.length > 30) {
-      newErrors.name = 'Name should be between 3 and 30 characters'
-      isValid = false
-    }
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailPattern.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
-      isValid = false
-    }
-
-    if (formData.message.length < 10) {
-      newErrors.message = 'Message should be at least 10 characters'
-      isValid = false
-    }
-
-    setErrors(newErrors)
-
-    setFeedbackHTML(() =>
-      Object.keys(newErrors).map(key => (
-        <p key={key} className={styles.error}>
-          {newErrors[key]}
-        </p>
-      ))
-    )
-
-    return isValid
-  }, [formData.name, formData.email, formData.message])
-
-  const sendEmail = useCallback(
-    async e => {
-      e.preventDefault()
-
-      setErrors({}) // Clear previous errors
-
-      if (validateForm()) {
-        try {
-          const result = await emailjs.sendForm(
-            'service_lyt547p',
-            'template_yz438w6',
-            form.current,
-            'PAcL61ygLI8WYG16R'
-          )
-          if (result.status === 200) {
-            setSuccessMessage('Message sent successfully!')
-          }
-        } catch {
-          setErrors({
-            general: 'Error sending message. Please try again later.'
-          })
-        }
-
-        e.target.reset()
-        setFormData({
-          name: '',
-          email: '',
-          message: ''
-        })
-      }
-    },
-    [validateForm]
-  )
-
-  const handleInputChange = useCallback(e => {
+  const handleChange = useCallback(e => {
     const { name, value } = e.target
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
-    }))
-    setErrors(prevErrors => ({
-      ...prevErrors,
-      [name]: undefined,
-      general: undefined
-    }))
-    setSuccessMessage('')
+    setFormData(prev => ({ ...prev, [name]: value }))
+    setStatus({ type: '', message: '' })
   }, [])
 
+  const handleSubmit = useCallback(
+    async e => {
+      e.preventDefault()
+      setIsLoading(true)
+      setStatus({ type: '', message: '' })
+
+      try {
+        const result = await emailjs.sendForm(
+          emailConfig.service_id,
+          emailConfig.template_id,
+          formRef.current,
+          emailConfig.public_key
+        )
+
+        if (result.status === 200) {
+          setStatus({ type: 'success', message: 'Message sent successfully!' })
+          setFormData({ name: '', email: '', message: '' })
+          formRef.current.reset()
+        }
+      } catch {
+        setStatus({
+          type: 'error',
+          message: 'Failed to send message. Please try again.'
+        })
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [emailConfig]
+  )
+
   return (
-    <motion.section id="contact" className="section" initial="hidden" animate="visible">
-      <motion.h5 className="section__subtitle" variants={fadeInUp}>
-        Get In Touch
-      </motion.h5>
-      <motion.h2 className="section__title" variants={fadeInUp}>
-        Contact Me
-      </motion.h2>
-      <motion.div className={`container ${styles.contact__container}`} variants={staggerContainer}>
-        <motion.div className={styles.contact__options} variants={staggerContainer}>
-          {CONTACT_OPTIONS.map((option, index) => (
-            <motion.article
-              className={styles.contact__option}
-              key={option.id}
-              variants={staggerItem}
-              whileHover="hover"
-              transition={{ delay: index * 0.05 }}
-            >
-              <h4>
-                {option.icon}
-                {option.title}
-              </h4>
-              <h5>{option.value}</h5>
-              <motion.a
+    <motion.section
+      id="contact"
+      className="py-24 px-6"
+      style={{ padding: '96px 24px' }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+    >
+      <SectionHeader title="Get In Touch" subtitle="Let's work together" />
+
+      <motion.div
+        className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8"
+        style={{ maxWidth: 896, margin: '0 auto', display: 'grid', gap: 32 }}
+        variants={staggerContainer}
+      >
+        {/* Contact Options - Left Column */}
+        <motion.div
+          className="lg:col-span-2 space-y-4"
+          style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
+          variants={fadeInUp}
+        >
+          {contactOptions.map(option => {
+            const IconComponent = getIconForType(option.title)
+
+            return (
+              <a
+                key={option.id}
                 href={option.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                variants={hoverScale}
-                whileHover="hover"
-                whileTap="tap"
-                aria-label={`${option.message} via ${option.title}`}
+                className="glass-card p-5 flex items-center gap-4 block hover:border-accent-cyan/30 transition-all duration-300"
+                style={{ padding: 20, display: 'flex', alignItems: 'center', gap: 16 }}
+                aria-label={`${option.title}: ${option.value}`}
               >
-                {option.message}
-              </motion.a>
-            </motion.article>
-          ))}
+                <div
+                  className="w-12 h-12 rounded-xl bg-accent-cyan/10 flex items-center justify-center shrink-0"
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 12,
+                    background: 'rgba(6,182,212,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}
+                >
+                  <IconComponent className="w-5 h-5 text-accent-cyan" style={{ color: '#06b6d4' }} />
+                </div>
+                <div className="min-w-0">
+                  <p
+                    className="text-text-muted text-xs uppercase tracking-wider font-medium"
+                    style={{
+                      color: '#6e6e90',
+                      fontSize: 12,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      fontWeight: 500
+                    }}
+                  >
+                    {option.title}
+                  </p>
+                  <p
+                    className="text-text-primary text-sm font-medium truncate mt-0.5"
+                    style={{ color: '#eeeef5', fontSize: 14, fontWeight: 500, marginTop: 2 }}
+                  >
+                    {option.value}
+                  </p>
+                </div>
+              </a>
+            )
+          })}
         </motion.div>
-        <motion.form ref={form} onSubmit={sendEmail} className={styles.contact__form} variants={staggerItem}>
-          <motion.input
-            className={styles.input}
-            type="text"
-            name="name"
-            placeholder="Your Full Name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-            whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
-            transition={{ duration: 0.2 }}
-            aria-label="Your full name"
-          />
-          <motion.input
-            className={styles.input}
-            name="email"
-            type="email"
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-            whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
-            transition={{ duration: 0.2 }}
-            aria-label="Your email address"
-          />
-          <motion.textarea
-            className={styles.textarea}
-            name="message"
-            rows="7"
-            placeholder="Your Message"
-            value={formData.message}
-            onChange={handleInputChange}
-            required
-            whileFocus={{ scale: 1.02, borderColor: '#4db5ff' }}
-            transition={{ duration: 0.2 }}
-            aria-label="Your message"
-          />
-          <motion.button type="submit" className={styles.btn} variants={hoverScale} whileHover="hover" whileTap="tap">
-            Send Message
-          </motion.button>
-          {feedbackHTML && <div className={styles['feedback-container']}>{feedbackHTML}</div>}
-          {successMessage && <p className={styles.success}>{successMessage}</p>}
-        </motion.form>
+
+        {/* Contact Form - Right Column */}
+        <motion.div className="lg:col-span-3" variants={fadeInUp}>
+          <form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            className="glass-card p-6 md:p-8 space-y-5"
+            style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 20 }}
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+            <textarea
+              name="message"
+              rows={5}
+              placeholder="Your Message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+              className="form-input resize-none"
+            />
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50"
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8
+              }}
+            >
+              {isLoading ? (
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  Send Message
+                </>
+              )}
+            </button>
+
+            {status.message && (
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`text-sm text-center font-medium ${
+                  status.type === 'success' ? 'text-accent-green' : 'text-red-400'
+                }`}
+                style={
+                  status.type === 'success'
+                    ? { color: '#22c55e', fontSize: 14, textAlign: 'center', fontWeight: 500 }
+                    : { color: '#ef4444', fontSize: 14, textAlign: 'center', fontWeight: 500 }
+                }
+              >
+                {status.message}
+              </motion.p>
+            )}
+          </form>
+        </motion.div>
       </motion.div>
     </motion.section>
   )

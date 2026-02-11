@@ -1,6 +1,6 @@
 {
   "name": "Sagar Gupta",
-  "title": "Professional Services (Cloud Consultant) - DevOps at AWS",
+  "title": "Professional Services (Cloud Consultant) - DevOps/MLOps at AWS",
   "location": "Shivpuri, MP, India",
   "contact": {
     "email": "sg85207@gmail.com",
@@ -9,7 +9,7 @@
     "github": "Sagargupta16"
   },
   "roles": [
-    "Professional Services (Cloud Consultant) - DevOps",
+    "Professional Services (Cloud Consultant) - DevOps/MLOps",
     "AWS Cloud Solutions Specialist",
     "DevOps Infrastructure Automation Expert",
     "MLOps Engineer",
@@ -22,7 +22,7 @@
   ],
   "about": {
     "greeting": "👋 Hi, my name is Sagar Gupta.",
-    "current_role": "💼 Currently working as Professional Services (Cloud Consultant) - DevOps at Amazon Web Services (AWS).",
+    "current_role": "💼 Currently working as Professional Services (Cloud Consultant) - DevOps/MLOps at Amazon Web Services (AWS).",
     "education": "🎓 I completed my Master of Computer Applications (MCA) from National Institute of Technology, Warangal with 8.38 CGPA.",
     "specialization": "🚀 Specializing in DevOps Infrastructure Automation, MLOps Pipelines, Terraform, AWS Cloud Solutions, and CI/CD.",
     "competitive_programming": "🏆 Competitive Programming: 1950+ LeetCode rating, 1100+ problems solved, 100+ contests participated."
@@ -32,7 +32,7 @@
     "leetcode_rating": "1950+ Rating",
     "projects": "25+ Projects",
     "contests": "100+ Contests",
-    "certifications": "5 Industry Certifications"
+    "certifications": "6 Industry Certifications"
   },
   "social_profiles": [
     {

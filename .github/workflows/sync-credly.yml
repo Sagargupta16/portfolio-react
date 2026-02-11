@@ -1,0 +1,41 @@
+name: Sync Credly Badges
+
+on:
+  # Run weekly on Monday at 6:00 AM UTC
+  schedule:
+    - cron: '0 6 * * 1'
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Fetch Credly badges
+        run: node scripts/sync-credly.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --quiet src/data/achievements.json && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push updates
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/achievements.json
+          git commit -m "chore: sync Credly badges [automated]"
+          git push

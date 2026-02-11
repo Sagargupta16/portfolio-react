@@ -62,12 +62,9 @@
     "tftest",
     "Infrastructure as Code"
   ],
-  "databases": ["MongoDB", "MongoDB Atlas", "MySQL", "PostgreSQL", "Redis", "DynamoDB"],
+  "databases": ["MongoDB", "MongoDB Atlas", "MySQL", "PostgreSQL", "Redis"],
   "developer_tools": [
-    "Git",
     "SonarQube",
-    "Unity Engine",
-    "tftest",
     "Visual Studio Code",
     "Jupyter Notebook",
     "Postman",
@@ -90,7 +87,7 @@
     "Image Processing",
     "MLOps"
   ],
-  "game_dev_tools": ["Unity 2D", "C# (Unity)", "Unity Engine"],
+  "game_dev_tools": ["Unity Engine", "Unity 2D", "C# (Unity)"],
   "computer_science_fundamentals": [
     "Data Structures & Algorithms",
     "Computer Networks",

@@ -1,50 +1,164 @@
-﻿import { useMemo } from 'react'
+import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { fadeInUp, staggerContainer, staggerItem } from '@utils/animations'
-import { BsPatchCheckFill } from 'react-icons/bs'
-import skills from './SkillsArray'
-import styles from './skill.module.css'
+import { getSkills } from '@data/dataLoader'
+import { sectionReveal, staggerContainer, staggerItem } from '@utils/animations'
+import SectionHeader from '@components/ui/SectionHeader'
 
-function Skill() {
-  const skillCategories = useMemo(() => Object.entries(skills), [])
+const CATEGORY_CONFIG = {
+  programming_languages: 'Programming Languages',
+  frameworks_and_libraries: 'Frameworks & Libraries',
+  cloud_platforms: 'AWS & Cloud',
+  devops_tools: 'DevOps & Infrastructure',
+  databases: 'Databases',
+  machine_learning: 'Machine Learning',
+  developer_tools: 'Developer Tools',
+  computer_science_fundamentals: 'CS Fundamentals',
+  ai_coding_assistants: 'AI Coding Assistants'
+}
+
+const SECONDARY_CATEGORIES = ['soft_skills', 'areas_of_interest', 'game_dev_tools']
+
+const Skill = () => {
+  const skills = getSkills()
+
+  const primaryCategories = useMemo(
+    () =>
+      Object.entries(CATEGORY_CONFIG)
+        .filter(([key]) => key in skills)
+        .map(([key, label]) => ({ key, label, items: skills[key] })),
+    [skills]
+  )
+
+  const secondaryCategories = useMemo(
+    () =>
+      SECONDARY_CATEGORIES.filter(key => key in skills).map(key => ({
+        key,
+        label: key.replaceAll('_', ' ').replaceAll(/\b\w/g, c => c.toUpperCase()),
+        items: skills[key]
+      })),
+    [skills]
+  )
 
   return (
-    <motion.section id="skill" initial="hidden" animate="visible">
-      <motion.h5 variants={fadeInUp}>What Skills I Have</motion.h5>
-      <motion.h2 variants={fadeInUp}>My Skills</motion.h2>
-      <motion.div className={`container ${styles.skill__container}`} variants={staggerContainer}>
-        {skillCategories.map(([skillCategory, skillItems], categoryIndex) => (
-          <motion.div
-            className={styles.skill__category}
-            key={skillCategory}
-            variants={staggerItem}
-            transition={{ delay: categoryIndex * 0.05 }}
-            aria-label={`${skillCategory} skills`}
-          >
-            <div className={styles['skill__category-header']}>
-              <h3 className={styles.skill__title}>{skillCategory}</h3>
-              <span className={styles.skill__count}>{skillItems.length} Skills</span>
-            </div>
-            <motion.div className={styles.skill__table}>
-              <div className={styles['skill__table-grid']}>
-                {skillItems.sort().map((skillItem, itemIndex) => (
-                  <motion.div
-                    key={`${skillItem}-${itemIndex}`}
-                    className={styles['skill__table-item']}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: itemIndex * 0.01 }}
-                    whileHover={{ scale: 1.02, backgroundColor: 'var(--color-primary-variant)' }}
-                  >
-                    <BsPatchCheckFill className={styles.skill__icon} />
-                    <span className={styles.skill__name}>{skillItem}</span>
-                  </motion.div>
+    <motion.section
+      id="skills"
+      className="py-24 px-6"
+      style={{ padding: '96px 24px' }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={sectionReveal}
+    >
+      <div className="max-w-6xl mx-auto" style={{ maxWidth: 1152, margin: '0 auto' }}>
+        <SectionHeader title="Skills & Technologies" subtitle="What I work with" />
+
+        <motion.div
+          className="space-y-12"
+          style={{ display: 'flex', flexDirection: 'column', gap: 48 }}
+          variants={staggerContainer}
+        >
+          {primaryCategories.map(({ key, label, items }) => (
+            <motion.div key={key} variants={staggerItem}>
+              <h3
+                className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-3"
+                style={{
+                  fontSize: 18,
+                  fontWeight: 600,
+                  color: '#eeeef5',
+                  marginBottom: 16,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12
+                }}
+              >
+                <div
+                  className="h-6 w-1 rounded-full bg-gradient-to-b from-accent-cyan to-accent-cyan/30"
+                  style={{
+                    height: 24,
+                    width: 4,
+                    borderRadius: 9999,
+                    background: 'linear-gradient(to bottom, #06b6d4, rgba(6,182,212,0.3))'
+                  }}
+                />
+                {label}
+              </h3>
+              <div className="flex flex-wrap gap-2.5" style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                {items.map(skill => (
+                  <span key={skill} className="skill-tag">
+                    {skill}
+                  </span>
                 ))}
               </div>
             </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Secondary Categories */}
+        {secondaryCategories.length > 0 && (
+          <motion.div
+            style={{ marginTop: 56, display: 'flex', flexDirection: 'column', gap: 32 }}
+            variants={staggerContainer}
+          >
+            <div
+              className="section-divider"
+              style={{
+                height: 1,
+                background:
+                  'linear-gradient(90deg, transparent 5%, rgba(38,38,85,0.5) 20%, rgba(6,182,212,0.5) 50%, rgba(38,38,85,0.5) 80%, transparent 95%)'
+              }}
+            />
+            <h3
+              style={{
+                fontSize: 20,
+                fontWeight: 600,
+                color: '#eeeef5',
+                textAlign: 'center'
+              }}
+            >
+              Other Skills
+            </h3>
+            {secondaryCategories.map(({ key, label, items }) => (
+              <motion.div key={key} variants={staggerItem}>
+                <h4
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 500,
+                    color: '#a5a5c0',
+                    marginBottom: 12,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10
+                  }}
+                >
+                  <div
+                    style={{
+                      height: 20,
+                      width: 3,
+                      borderRadius: 9999,
+                      background: 'linear-gradient(to bottom, #a855f7, rgba(168,85,247,0.3))'
+                    }}
+                  />
+                  {label}
+                </h4>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {items.map(skill => (
+                    <span
+                      key={skill}
+                      className="skill-tag"
+                      style={{
+                        fontSize: 12,
+                        padding: '5px 14px'
+                      }}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
-        ))}
-      </motion.div>
+        )}
+      </div>
     </motion.section>
   )
 }

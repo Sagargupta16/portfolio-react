@@ -1,92 +1,84 @@
-import { useEffect, useState, Suspense, lazy } from 'react'
-import { HelmetProvider } from 'react-helmet-async'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Header from '@components/layout/Header'
-import Nav from '@components/layout/Navigation'
-import Footer from '@components/layout/Footer'
-import Theme from '@components/layout/Theme'
+import { useEffect } from 'react'
+import Lenis from 'lenis'
+import Nav from '@components/layout/Navigation/Nav'
+import Hero from '@components/layout/Header/Hero'
+import Footer from '@components/layout/Footer/Footer'
 import ErrorBoundary from '@components/common/ErrorBoundary'
-import Loading from '@components/common/Loading'
+import About from '@pages/about/About'
+import Experience from '@pages/experience/Experience'
+import Skill from '@pages/skill/Skill'
+import Education from '@pages/education/Education'
+import Services from '@pages/services/Services'
+import Portfolio from '@pages/portfolio/Portfolio'
+import Achievement from '@pages/achievement/Achievement'
+import Contact from '@pages/contact/Contact'
+import GitHub from '@pages/github/GitHub'
 
-const About = lazy(() => import('@pages/about/About'))
-const Education = lazy(() => import('@pages/education/Education'))
-const Experience = lazy(() => import('@pages/experience/Experience'))
-const Skill = lazy(() => import('@pages/skill/Skill'))
-const Services = lazy(() => import('@pages/services/Services'))
-const Portfolio = lazy(() => import('@pages/portfolio/Portfolio'))
-const Achievement = lazy(() => import('@pages/achievement/Achievement'))
-const Contact = lazy(() => import('@pages/contact/Contact'))
-
-const RouterWrapper = ({ children }) => (
-  <Router
-    basename="/portfolio-react"
-    future={{
-      v7_startTransition: true,
-      v7_relativeSplatPath: true
-    }}
-  >
-    <Nav />
-    <Theme />
-    {children}
-    <Footer />
-  </Router>
-)
-
-const useWindowWidth = () => {
-  const [width, setWidth] = useState(window.innerWidth)
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  return width
-}
+const SectionDivider = () => <div className="section-divider" />
 
 const App = () => {
-  const screenWidth = useWindowWidth()
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true
+    })
 
-  const routes = [
-    { path: '/', element: <Header /> },
-    { path: '/about', element: <About /> },
-    { path: '/education', element: <Education /> },
-    { path: '/experience', element: <Experience /> },
-    { path: '/skill', element: <Skill /> },
-    { path: '/services', element: <Services /> },
-    { path: '/portfolio', element: <Portfolio /> },
-    { path: '/achievement', element: <Achievement /> },
-    { path: '/contact', element: <Contact /> }
-  ]
+    const raf = time => {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+    requestAnimationFrame(raf)
+
+    return () => lenis.destroy()
+  }, [])
 
   return (
-    <HelmetProvider>
-      <ErrorBoundary>
-        <RouterWrapper>
-          <Suspense fallback={<Loading />}>
-            {screenWidth > 600 ? (
-              <Routes>
-                {routes.map(({ path, element }) => (
-                  <Route key={path} path={path} element={element} />
-                ))}
-              </Routes>
-            ) : (
-              <>
-                <Header />
-                <About />
-                <Education />
-                <Experience />
-                <Skill />
-                <Services />
-                <Portfolio />
-                <Achievement />
-                <Contact />
-              </>
-            )}
-          </Suspense>
-        </RouterWrapper>
-      </ErrorBoundary>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <div className="relative min-h-screen bg-bg-primary">
+        <Nav />
+        <main>
+          <Hero />
+          <SectionDivider />
+          <div className="section-darker">
+            <About />
+          </div>
+          <SectionDivider />
+          <div className="section-dark">
+            <Experience />
+          </div>
+          <SectionDivider />
+          <div className="section-darker">
+            <Skill />
+          </div>
+          <SectionDivider />
+          <div className="section-dark">
+            <Portfolio />
+          </div>
+          <SectionDivider />
+          <div className="section-darker">
+            <Achievement />
+          </div>
+          <SectionDivider />
+          <div className="section-dark">
+            <Education />
+          </div>
+          <SectionDivider />
+          <div className="section-darker">
+            <Services />
+          </div>
+          <SectionDivider />
+          <div className="section-dark">
+            <GitHub />
+          </div>
+          <SectionDivider />
+          <div className="section-darker">
+            <Contact />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    </ErrorBoundary>
   )
 }
 

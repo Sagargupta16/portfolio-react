@@ -15,7 +15,7 @@
       "Class Representative, MCA Final Year (Aug 2023 - Jun 2024)",
       "Additional Secretary, CSEA - NITW (Aug 2023 - Jun 2024)"
     ],
-    "skills": ["Communication", "Algorithms", "Web Development", "Game Development"]
+    "skills": ["DSA", "Cloud Computing", "AI/ML", "Deep Learning", "Web Development", "Game Development", "Algorithms"]
   },
   {
     "id": 2,
@@ -28,7 +28,7 @@
     "cgpa": "7.34",
     "percentage": "73.4%",
     "display_text": "Devi Ahilya Vishwavidyalaya (DAVV) -- Indore, MP",
-    "skills": ["Communication"]
+    "skills": ["C++", "OOPs", "DBMS", "Data Structures", "Operating Systems", "Computer Networks"]
   },
   {
     "id": 3,
@@ -42,7 +42,7 @@
     "cgpa": "8.59",
     "percentage": "85.9%",
     "display_text": "Happy Days School -- Shivpuri, MP",
-    "skills": ["Communication"]
+    "skills": ["Mathematics", "Physics", "Chemistry"]
   },
   {
     "id": 4,

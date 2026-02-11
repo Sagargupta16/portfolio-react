@@ -1,113 +1,394 @@
-﻿import { useMemo } from 'react'
+import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import achievementsData from '@data/achievements.json'
-import { fadeInUp, staggerContainer, staggerItem, hoverScale } from '@utils/animations'
-import styles from './achievement.module.css'
+import { ShieldCheck, Trophy, ExternalLink, BookOpen } from 'lucide-react'
+import { getCertifications, getLearningBadges, getAchievements, getCodingPlatformStats } from '@data/dataLoader'
+import { fadeInUp, staggerContainer } from '@utils/animations'
+import SectionHeader from '@components/ui/SectionHeader'
+import AnimatedCounter from '@components/ui/AnimatedCounter'
+
+const LEVEL_ORDER = { Foundational: 0, Associate: 1, Professional: 2 }
 
 const Achievement = () => {
-  const { certifications = [], achievements = [], coding_platform_stats = {} } = achievementsData
+  const rawCertifications = useMemo(() => getCertifications(), [])
+  const learningBadges = useMemo(() => getLearningBadges(), [])
+  const achievements = useMemo(() => getAchievements(), [])
+  const codingStats = useMemo(() => getCodingPlatformStats(), [])
+  const platformEntries = useMemo(() => Object.entries(codingStats), [codingStats])
 
-  const hasCertifications = useMemo(() => certifications.length > 0, [certifications.length])
-  const hasAchievements = useMemo(() => achievements.length > 0, [achievements.length])
-  const hasCodingStats = useMemo(() => Object.keys(coding_platform_stats).length > 0, [coding_platform_stats])
-  const platformEntries = useMemo(() => Object.entries(coding_platform_stats), [coding_platform_stats])
+  const certifications = useMemo(
+    () => [...rawCertifications].sort((a, b) => (LEVEL_ORDER[a.level] ?? 99) - (LEVEL_ORDER[b.level] ?? 99)),
+    [rawCertifications]
+  )
+
+  const formatStatLabel = key => key.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase())
+
+  const isNumericStat = value => /^\d/.test(String(value))
 
   return (
     <motion.section
-      id="achievement"
-      className={`section ${styles['achievement-section']}`}
+      id="achievements"
+      className="py-24 px-6"
+      style={{ padding: '96px 24px' }}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
     >
-      <motion.div className={`container ${styles.achievement__container}`} variants={staggerContainer}>
-        <motion.h1 className="section__title" variants={fadeInUp}>
-          Achievements
-        </motion.h1>
+      <SectionHeader title="Achievements" subtitle="Milestones & certifications" />
 
-        {hasCertifications && (
-          <motion.div className={styles.achievement__block} variants={fadeInUp}>
-            <motion.h2 className="section__subtitle" variants={fadeInUp}>
+      <div style={{ maxWidth: 1152, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 56 }}>
+        {/* Certifications */}
+        {certifications.length > 0 && (
+          <div>
+            <motion.h3
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: '#eeeef5',
+                marginBottom: 24,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12
+              }}
+              variants={fadeInUp}
+            >
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 10,
+                  background: 'rgba(6,182,212,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <ShieldCheck style={{ width: 18, height: 18, color: '#06b6d4' }} />
+              </div>
               Certifications
-            </motion.h2>
-            <motion.ul className={styles['achievement-list']} variants={staggerContainer}>
+              <span style={{ fontSize: 13, fontWeight: 500, color: '#6e6e90', marginLeft: 4 }}>
+                ({certifications.length})
+              </span>
+            </motion.h3>
+            <motion.div style={{ display: 'flex', flexDirection: 'column', gap: 8 }} variants={staggerContainer}>
               {certifications.map(cert => (
-                <motion.li
-                  key={cert.id}
-                  className={styles['achievement-item']}
-                  variants={staggerItem}
-                  whileHover={hoverScale}
+                <motion.div
+                  key={cert.credentialId}
+                  className="glass-card"
+                  style={{
+                    padding: '14px 20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 16
+                  }}
+                  variants={fadeInUp}
                 >
-                  <motion.h3 variants={fadeInUp}>{cert.name}</motion.h3>
-                  <motion.p variants={fadeInUp}>Issuer: {cert.issuer}</motion.p>
-                  {cert.level && <motion.p variants={fadeInUp}>Level: {cert.level}</motion.p>}
-                  {cert.issueDate && <motion.p variants={fadeInUp}>Issued: {cert.issueDate}</motion.p>}
-                  {cert.expiryDate && <motion.p variants={fadeInUp}>Expires: {cert.expiryDate}</motion.p>}
+                  {cert.imageUrl ? (
+                    <img
+                      src={cert.imageUrl}
+                      alt={cert.name}
+                      loading="lazy"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 8,
+                        objectFit: 'contain',
+                        flexShrink: 0,
+                        background: 'rgba(255,255,255,0.03)'
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 8,
+                        background: 'rgba(6,182,212,0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}
+                    >
+                      <ShieldCheck style={{ width: 20, height: 20, color: '#06b6d4' }} />
+                    </div>
+                  )}
+                  <span style={{ fontSize: 15, fontWeight: 600, color: '#eeeef5', flex: 1, lineHeight: 1.4 }}>
+                    {cert.name}
+                  </span>
+                  {cert.level && (
+                    <span className="tag tag-purple" style={{ flexShrink: 0 }}>
+                      {cert.level}
+                    </span>
+                  )}
                   {cert.credentialUrl && (
-                    <motion.p variants={fadeInUp}>
-                      <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="btn btn-sm">
-                        View Credential
-                      </a>
-                    </motion.p>
+                    <a
+                      href={cert.credentialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: '#06b6d4',
+                        flexShrink: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 32,
+                        height: 32,
+                        borderRadius: 8
+                      }}
+                      title="View Credential"
+                    >
+                      <ExternalLink style={{ width: 16, height: 16 }} />
+                    </a>
                   )}
-                </motion.li>
+                </motion.div>
               ))}
-            </motion.ul>
-          </motion.div>
+            </motion.div>
+          </div>
         )}
 
-        {hasAchievements && (
-          <motion.div className={styles.achievement__block} variants={fadeInUp}>
-            <motion.h2 className="section__subtitle" variants={fadeInUp}>
-              Competitions & Awards
-            </motion.h2>
-            <motion.ul className={styles['achievement-list']} variants={staggerContainer}>
-              {achievements.map(item => (
-                <motion.li
-                  key={item.id}
-                  className={styles['achievement-item']}
-                  variants={staggerItem}
-                  whileHover={hoverScale}
+        {/* Learning Badges */}
+        {learningBadges.length > 0 && (
+          <div>
+            <motion.h3
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: '#eeeef5',
+                marginBottom: 24,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12
+              }}
+              variants={fadeInUp}
+            >
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 10,
+                  background: 'rgba(168,85,247,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <BookOpen style={{ width: 18, height: 18, color: '#a855f7' }} />
+              </div>
+              Learning & Training Badges
+              <span style={{ fontSize: 13, fontWeight: 500, color: '#6e6e90', marginLeft: 4 }}>
+                ({learningBadges.length})
+              </span>
+            </motion.h3>
+            <motion.div style={{ display: 'flex', flexDirection: 'column', gap: 6 }} variants={staggerContainer}>
+              {learningBadges.map(badge => (
+                <motion.div
+                  key={badge.credentialId}
+                  className="glass-card"
+                  style={{
+                    padding: '12px 20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 14
+                  }}
+                  variants={fadeInUp}
                 >
-                  <motion.h3 variants={fadeInUp}>{item.title}</motion.h3>
-                  {item.organizer && <motion.p variants={fadeInUp}>Organizer: {item.organizer}</motion.p>}
-                  {item.date && <motion.p variants={fadeInUp}>Date: {item.date}</motion.p>}
-                  {item.description && <motion.p variants={fadeInUp}>{item.description}</motion.p>}
-                  {item.certificate && (
-                    <motion.span className={styles['achievement-date']} variants={fadeInUp}>
-                      Certificate Available
-                    </motion.span>
+                  {badge.imageUrl ? (
+                    <img
+                      src={badge.imageUrl}
+                      alt={badge.name}
+                      loading="lazy"
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 6,
+                        objectFit: 'contain',
+                        flexShrink: 0,
+                        background: 'rgba(255,255,255,0.03)'
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 6,
+                        background: 'rgba(168,85,247,0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}
+                    >
+                      <BookOpen style={{ width: 14, height: 14, color: '#a855f7' }} />
+                    </div>
                   )}
-                </motion.li>
+                  <span style={{ fontSize: 14, fontWeight: 500, color: '#eeeef5', flex: 1, lineHeight: 1.4 }}>
+                    {badge.name}
+                  </span>
+                  {badge.credentialUrl && (
+                    <a
+                      href={badge.credentialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: '#a855f7',
+                        flexShrink: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 28,
+                        height: 28,
+                        borderRadius: 6
+                      }}
+                      title="View Credential"
+                    >
+                      <ExternalLink style={{ width: 14, height: 14 }} />
+                    </a>
+                  )}
+                </motion.div>
               ))}
-            </motion.ul>
-          </motion.div>
+            </motion.div>
+          </div>
         )}
 
-        {hasCodingStats && (
-          <motion.div className={styles.achievement__block} variants={fadeInUp}>
-            <motion.h2 className="section__subtitle" variants={fadeInUp}>
-              Coding Platform Stats
-            </motion.h2>
-            <motion.ul className={styles['achievement-list']} variants={staggerContainer}>
+        {/* Coding Platform Stats */}
+        {platformEntries.length > 0 && (
+          <div>
+            <motion.h3
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: '#eeeef5',
+                marginBottom: 24,
+                textAlign: 'center'
+              }}
+              variants={fadeInUp}
+            >
+              Coding Platforms
+            </motion.h3>
+            <motion.div
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 24 }}
+              variants={staggerContainer}
+            >
               {platformEntries.map(([platform, stats]) => (
-                <motion.li
+                <motion.div
                   key={platform}
-                  className={styles['achievement-item']}
-                  variants={staggerItem}
-                  whileHover={hoverScale}
+                  className="glass-card"
+                  style={{ padding: 28, textAlign: 'center' }}
+                  variants={fadeInUp}
                 >
-                  <motion.h3 variants={fadeInUp}>{platform.charAt(0).toUpperCase() + platform.slice(1)}</motion.h3>
-                  {Object.entries(stats).map(([k, v]) => (
-                    <motion.p key={k} variants={fadeInUp}>
-                      <strong>{k.replaceAll('_', ' ')}:</strong> {v}
-                    </motion.p>
-                  ))}
-                </motion.li>
+                  <h4
+                    className="gradient-text"
+                    style={{ fontSize: 18, fontWeight: 700, marginBottom: 20, textTransform: 'capitalize' }}
+                  >
+                    {platform}
+                  </h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    {Object.entries(stats)
+                      .filter(([key]) => key !== 'username')
+                      .map(([key, value]) => (
+                        <div key={`${platform}-${key}`}>
+                          {isNumericStat(value) ? (
+                            <AnimatedCounter value={String(value)} />
+                          ) : (
+                            <span
+                              className="glow-cyan-text"
+                              style={{
+                                color: '#06b6d4',
+                                fontSize: '1.875rem',
+                                fontWeight: 700,
+                                fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                                display: 'block'
+                              }}
+                            >
+                              {value}
+                            </span>
+                          )}
+                          <span
+                            style={{
+                              color: '#6e6e90',
+                              fontSize: 12,
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em',
+                              fontWeight: 500,
+                              marginTop: 4,
+                              display: 'block'
+                            }}
+                          >
+                            {formatStatLabel(key)}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </motion.div>
               ))}
-            </motion.ul>
-          </motion.div>
+            </motion.div>
+          </div>
         )}
-      </motion.div>
+
+        {/* Competition Wins */}
+        {achievements.length > 0 && (
+          <div>
+            <motion.h3
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: '#eeeef5',
+                marginBottom: 24,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12
+              }}
+              variants={fadeInUp}
+            >
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 10,
+                  background: 'rgba(245,158,11,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Trophy style={{ width: 18, height: 18, color: '#f59e0b' }} />
+              </div>
+              Competitions & Awards
+            </motion.h3>
+            <motion.div style={{ display: 'flex', flexDirection: 'column', gap: 10 }} variants={staggerContainer}>
+              {achievements.map(item => (
+                <motion.div
+                  key={item.id}
+                  className="glass-card"
+                  style={{
+                    padding: '16px 20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 16,
+                    flexWrap: 'wrap'
+                  }}
+                  variants={fadeInUp}
+                >
+                  <h4 style={{ fontSize: 15, fontWeight: 600, color: '#eeeef5', flex: 1, minWidth: 200 }}>
+                    {item.title}
+                  </h4>
+                  {item.organizer && (
+                    <span style={{ color: '#06b6d4', fontSize: 13, fontWeight: 500, flexShrink: 0 }}>
+                      {item.organizer}
+                    </span>
+                  )}
+                  {item.date && (
+                    <span className="tag tag-cyan" style={{ flexShrink: 0 }}>
+                      {item.date}
+                    </span>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        )}
+      </div>
     </motion.section>
   )
 }

@@ -6,7 +6,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 
 export default [
   {
-    ignores: ['build/**', 'dist/**', 'node_modules/**']
+    ignores: ['build/**', 'dist/**', 'node_modules/**', 'scripts/**']
   },
   js.configs.recommended,
   {
@@ -36,6 +36,9 @@ export default [
         Event: 'readonly',
         CustomEvent: 'readonly',
         IntersectionObserver: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        performance: 'readonly',
         module: 'readonly',
         globalThis: 'readonly'
       }
