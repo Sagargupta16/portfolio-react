@@ -29,6 +29,6 @@
     "service_id": "service_lyt547p",
     "template_id": "template_yz438w6",
     "public_key": "PAcL61ygLI8WYG16R",
-    "validation_pattern": "/^([\\w.%+-]+)@((gmail\\.com)|(official\\.com)|(student\\.nitw\\.ac\\.in)|(sg85207@gmail\\.com))$/"
+    "validation_pattern": "/^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$/"
   }
 }

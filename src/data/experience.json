@@ -84,11 +84,9 @@
       "project": "Web Application Containerization and Deployment",
       "description": {
         "1": "Led containerization of application with Docker and orchestrated deployment to AWS using ECR and ECS services.",
-        "2": "Implemented comprehensive CI/CD pipeline using GitHub Actions, automating build, test, and deployment processes.",
-        "3": "Standardized codebase with linting tools and deployed SonarQube on AWS EC2 with RDS integration for code analysis.",
-        "4": "Automated CI/CD workflow using GitHub Actions to handle web app linting, testing, building, and deployment.",
-        "5": "Implemented linting for Python (pylint, flake8, Black), JavaScript/TypeScript (ESLint), and CSS (Stylelint).",
-        "6": "Conducted unit testing with Pytest (Python) and Jest (JavaScript)."
+        "2": "Implemented comprehensive CI/CD pipeline using GitHub Actions, automating linting, testing, building, and deployment processes.",
+        "3": "Standardized codebase with multi-language linting (pylint, flake8, Black, ESLint, Stylelint) and unit testing (Pytest, Jest).",
+        "4": "Deployed SonarQube on AWS EC2 with RDS integration for continuous code quality analysis."
       },
       "skills": [
         "AWS",

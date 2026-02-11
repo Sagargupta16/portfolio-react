@@ -59,35 +59,5 @@
       "link": "https://twitter.com/Sagargupta1610/",
       "icon": "SiX"
     }
-  ],
-  "coding_profiles": [
-    {
-      "id": 1,
-      "name": "Leetcode",
-      "link": "https://leetcode.com/SAGARGUPTA16/",
-      "icon": "SiLeetcode",
-      "stats": "1260+ problems solved, 100+ contests, 1950+ rating"
-    },
-    {
-      "id": 2,
-      "name": "Codechef",
-      "link": "https://www.codechef.com/users/sagargupta_16",
-      "icon": "SiCodechef",
-      "stats": "3 Star Rating, 20+ contests"
-    },
-    {
-      "id": 3,
-      "name": "Geeksforgeeks",
-      "link": "https://auth.geeksforgeeks.org/user/sagargupta10",
-      "icon": "SiGeeksforgeeks",
-      "stats": "350+ problems solved"
-    },
-    {
-      "id": 4,
-      "name": "Hackerrank",
-      "link": "https://www.hackerrank.com/Sagargupta1610",
-      "icon": "SiHackerrank",
-      "stats": "6 Star Problem-Solving, 5 Star C++"
-    }
   ]
 }
