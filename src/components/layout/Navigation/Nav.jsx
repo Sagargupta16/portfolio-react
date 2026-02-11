@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import useMediaQuery from '@utils/useMediaQuery'
 
 const NAV_SECTIONS = [
   { id: 'about', label: 'About' },
@@ -15,6 +16,7 @@ const NAV_SECTIONS = [
 ]
 
 const Nav = () => {
+  const isMobile = useMediaQuery('(max-width: 1023px)')
   const [activeSection, setActiveSection] = useState('hero')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -63,13 +65,18 @@ const Nav = () => {
   return (
     <>
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'backdrop-blur-2xl shadow-lg shadow-black/30' : ''
-        }`}
         style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
           height: 64,
           backgroundColor: scrolled ? 'rgba(6, 6, 16, 0.92)' : 'rgba(6, 6, 16, 0.7)',
-          borderBottom: '1px solid rgba(38, 38, 85, 0.5)'
+          backdropFilter: scrolled ? 'blur(24px)' : 'none',
+          boxShadow: scrolled ? '0 10px 15px -3px rgba(0,0,0,0.3)' : 'none',
+          borderBottom: '1px solid rgba(38, 38, 85, 0.5)',
+          transition: 'background-color 0.3s, backdrop-filter 0.3s, box-shadow 0.3s'
         }}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -108,7 +115,7 @@ const Nav = () => {
           </button>
 
           {/* Desktop nav links */}
-          <div className="hidden lg:flex" style={{ alignItems: 'center', gap: 4 }}>
+          <div style={{ alignItems: 'center', gap: 4, display: isMobile ? 'none' : 'flex' }}>
             {NAV_SECTIONS.map(section => {
               const isActive = activeSection === section.id
               return (
@@ -148,12 +155,11 @@ const Nav = () => {
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{
               width: 40,
               height: 40,
-              display: 'flex',
+              display: isMobile ? 'flex' : 'none',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: 8,
@@ -180,8 +186,7 @@ const Nav = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="fixed inset-0 lg:hidden"
-            style={{ zIndex: 40 }}
+            style={{ position: 'fixed', inset: 0, zIndex: 40 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

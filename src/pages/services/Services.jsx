@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Cloud, Code, Trophy, Brain, Palette, Settings } from 'lucide-react'
 import { getServices } from '@data/dataLoader'
 import { fadeInUp, staggerContainer } from '@utils/animations'
+import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
 const iconMap = {
@@ -25,12 +26,13 @@ const ACCENT_COLORS = [
 
 const Services = () => {
   const services = useMemo(() => getServices(), [])
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   return (
     <motion.section
       id="services"
       className="py-24 px-6"
-      style={{ padding: '96px 24px' }}
+      style={{ padding: isMobile ? '64px 16px' : '96px 24px' }}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
@@ -39,7 +41,13 @@ const Services = () => {
 
       <motion.div
         className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        style={{ maxWidth: 1152, margin: '0 auto', display: 'grid', gap: 24 }}
+        style={{
+          maxWidth: 1152,
+          margin: '0 auto',
+          display: 'grid',
+          gap: 24,
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(320px, 1fr))'
+        }}
         variants={staggerContainer}
       >
         {services.map((service, i) => {

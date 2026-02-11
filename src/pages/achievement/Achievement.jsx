@@ -3,12 +3,14 @@ import { motion } from 'framer-motion'
 import { ShieldCheck, Trophy, ExternalLink, BookOpen, ArrowUpRight } from 'lucide-react'
 import { getCertifications, getLearningBadges, getAchievements, getCodingPlatformStats } from '@data/dataLoader'
 import { fadeInUp, staggerContainer } from '@utils/animations'
+import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
 
 const LEVEL_ORDER = { Foundational: 0, Associate: 1, Professional: 2 }
 
 const Achievement = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const rawCertifications = useMemo(() => getCertifications(), [])
   const learningBadges = useMemo(() => getLearningBadges(), [])
   const achievements = useMemo(() => getAchievements(), [])
@@ -28,7 +30,7 @@ const Achievement = () => {
     <motion.section
       id="achievements"
       className="py-24 px-6"
-      style={{ padding: '96px 24px' }}
+      style={{ padding: isMobile ? '64px 16px' : '96px 24px' }}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
@@ -267,7 +269,11 @@ const Achievement = () => {
               Coding Platforms
             </motion.h3>
             <motion.div
-              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 24 }}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(240px, 1fr))',
+                gap: 24
+              }}
               variants={staggerContainer}
             >
               {platformEntries.map(([platform, stats]) => (
@@ -398,7 +404,7 @@ const Achievement = () => {
                   key={item.id}
                   className="glass-card"
                   style={{
-                    padding: '16px 20px',
+                    padding: isMobile ? '14px 16px' : '16px 20px',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 16,

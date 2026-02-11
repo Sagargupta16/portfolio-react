@@ -3,240 +3,433 @@ import { motion } from 'framer-motion'
 import { MapPin, GraduationCap, Trophy, BookOpen } from 'lucide-react'
 import { getEducation } from '@data/dataLoader'
 import { sectionReveal, staggerContainer, staggerItem } from '@utils/animations'
+import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
 
-const EducationCard = ({ item, index }) => (
-  <motion.div
-    style={{ display: 'grid', gridTemplateColumns: '160px 40px 1fr', gap: 0 }}
-    variants={staggerItem}
-    custom={index}
-  >
-    {/* Left: Date + Location */}
-    <div style={{ paddingTop: 4, textAlign: 'right', paddingRight: 20 }}>
-      <span
-        style={{
-          fontFamily: 'JetBrains Mono, ui-monospace, monospace',
-          fontSize: 13,
-          fontWeight: 600,
-          color: '#a855f7'
-        }}
-      >
-        {item.date.split(' - ')[0]}
-      </span>
-      <span
-        style={{
-          display: 'block',
-          fontFamily: 'JetBrains Mono, ui-monospace, monospace',
-          fontSize: 11,
-          color: '#6e6e90',
-          marginTop: 2
-        }}
-      >
-        {item.date.includes(' - ') ? item.date.split(' - ')[1] : ''}
-      </span>
-      {item.location && (
-        <p
+const EducationCard = ({ item, index, isMobile }) => {
+  if (isMobile) {
+    return (
+      <motion.div variants={staggerItem} custom={index} style={{ marginBottom: 20 }}>
+        <div
+          className="glass-card"
           style={{
-            color: '#6e6e90',
-            fontSize: 12,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            gap: 4,
-            marginTop: 12
+            padding: '20px 18px',
+            borderLeft: '3px solid #a855f7'
           }}
         >
-          <MapPin size={11} style={{ flexShrink: 0 }} />
-          {item.location.split(',')[0]}
-        </p>
-      )}
-    </div>
-
-    {/* Center: Timeline track */}
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-      <div
-        style={{
-          width: 16,
-          height: 16,
-          borderRadius: '50%',
-          border: '2px solid #a855f7',
-          backgroundColor: '#060610',
-          marginTop: 6,
-          position: 'relative',
-          zIndex: 2,
-          flexShrink: 0
-        }}
-      >
-        <div
-          className="animate-glow-pulse"
-          style={{
-            position: 'absolute',
-            inset: 3,
-            borderRadius: '50%',
-            backgroundColor: '#a855f7'
-          }}
-        />
-      </div>
-      <div
-        style={{
-          width: 2,
-          flex: 1,
-          background: 'linear-gradient(to bottom, rgba(168,85,247,0.4), rgba(168,85,247,0.1))',
-          borderRadius: 1
-        }}
-      />
-    </div>
-
-    {/* Right: Content card */}
-    <div className="glass-card" style={{ padding: '24px 28px', marginBottom: 20 }}>
-      {/* Top row: Institution + CGPA */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: 8,
-              background: 'rgba(168,85,247,0.1)',
-              border: '1px solid rgba(168,85,247,0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
-            }}
-          >
-            <GraduationCap style={{ width: 14, height: 14, color: '#a855f7' }} />
-          </div>
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: '#eeeef5', lineHeight: 1.3 }}>{item.institution}</h3>
-        </div>
-
-        {/* CGPA badge - top right */}
-        {item.cgpa && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '6px 14px',
-              borderRadius: 10,
-              background: 'rgba(34,197,94,0.06)',
-              border: '1px solid rgba(34,197,94,0.12)',
-              flexShrink: 0
-            }}
-          >
+          {/* Date + Location at top */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
             <span
               style={{
-                color: '#22c55e',
-                fontWeight: 700,
-                fontSize: 16,
-                fontFamily: 'JetBrains Mono, ui-monospace, monospace'
+                fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                fontSize: 13,
+                fontWeight: 600,
+                color: '#a855f7'
               }}
             >
-              <AnimatedCounter value={item.cgpa} />
+              {item.date.split(' - ')[0]}
             </span>
-            {item.percentage && (
+            {item.date.includes(' - ') && (
               <span
                 style={{
+                  fontFamily: 'JetBrains Mono, ui-monospace, monospace',
                   fontSize: 11,
-                  color: '#6e6e90',
-                  fontFamily: 'JetBrains Mono, ui-monospace, monospace'
+                  color: '#6e6e90'
                 }}
               >
-                {item.percentage}
+                — {item.date.split(' - ')[1]}
+              </span>
+            )}
+            {item.location && (
+              <span
+                style={{
+                  color: '#6e6e90',
+                  fontSize: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  marginLeft: 'auto'
+                }}
+              >
+                <MapPin size={11} style={{ flexShrink: 0 }} />
+                {item.location.split(',')[0]}
               </span>
             )}
           </div>
+
+          {/* Institution + CGPA — stacked vertically on mobile */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+              <div
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 8,
+                  background: 'rgba(168,85,247,0.1)',
+                  border: '1px solid rgba(168,85,247,0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}
+              >
+                <GraduationCap style={{ width: 14, height: 14, color: '#a855f7' }} />
+              </div>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#eeeef5', lineHeight: 1.3 }}>{item.institution}</h3>
+            </div>
+
+            {item.cgpa && (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '6px 14px',
+                  borderRadius: 10,
+                  background: 'rgba(34,197,94,0.06)',
+                  border: '1px solid rgba(34,197,94,0.12)',
+                  alignSelf: 'flex-start'
+                }}
+              >
+                <span
+                  style={{
+                    color: '#22c55e',
+                    fontWeight: 700,
+                    fontSize: 16,
+                    fontFamily: 'JetBrains Mono, ui-monospace, monospace'
+                  }}
+                >
+                  <AnimatedCounter value={item.cgpa} />
+                </span>
+                {item.percentage && (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: '#6e6e90',
+                      fontFamily: 'JetBrains Mono, ui-monospace, monospace'
+                    }}
+                  >
+                    {item.percentage}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Degree title */}
+          <p style={{ color: '#06b6d4', fontWeight: 600, fontSize: 15, marginTop: 6 }}>{item.title}</p>
+
+          {/* Board / Field / Department */}
+          {(item.board || item.field || item.department) && (
+            <div style={{ marginTop: 6 }}>
+              {item.department && (
+                <p style={{ color: '#6e6e90', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <BookOpen size={12} style={{ flexShrink: 0 }} />
+                  {item.department}
+                </p>
+              )}
+              {item.board && <p style={{ color: '#6e6e90', fontSize: 13, marginTop: 3 }}>{item.board}</p>}
+              {item.field && <p style={{ color: '#6e6e90', fontSize: 13, marginTop: 3 }}>{item.field}</p>}
+            </div>
+          )}
+
+          {/* Achievements */}
+          {item.achievements?.length > 0 && (
+            <div style={{ marginTop: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+                <Trophy style={{ width: 13, height: 13, color: '#f59e0b' }} />
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: '#a5a5c0',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}
+                >
+                  Achievements
+                </span>
+              </div>
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {item.achievements.map((achievement, idx) => (
+                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                    <span
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: '50%',
+                        backgroundColor: 'rgba(245,158,11,0.5)',
+                        marginTop: 7,
+                        flexShrink: 0
+                      }}
+                    />
+                    <span style={{ color: '#a5a5c0', fontSize: 13, lineHeight: 1.6 }}>{achievement}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Skills */}
+          {item.skills?.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 14 }}>
+              {item.skills.map(skill => (
+                <span
+                  key={skill}
+                  style={{
+                    fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                    fontSize: 11,
+                    padding: '3px 10px',
+                    borderRadius: 6,
+                    background: 'rgba(168,85,247,0.08)',
+                    color: '#a855f7',
+                    border: '1px solid rgba(168,85,247,0.15)'
+                  }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.div
+      style={{ display: 'grid', gridTemplateColumns: '160px 40px 1fr', gap: 0 }}
+      variants={staggerItem}
+      custom={index}
+    >
+      {/* Left: Date + Location */}
+      <div style={{ paddingTop: 4, textAlign: 'right', paddingRight: 20 }}>
+        <span
+          style={{
+            fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+            fontSize: 13,
+            fontWeight: 600,
+            color: '#a855f7'
+          }}
+        >
+          {item.date.split(' - ')[0]}
+        </span>
+        <span
+          style={{
+            display: 'block',
+            fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+            fontSize: 11,
+            color: '#6e6e90',
+            marginTop: 2
+          }}
+        >
+          {item.date.includes(' - ') ? item.date.split(' - ')[1] : ''}
+        </span>
+        {item.location && (
+          <p
+            style={{
+              color: '#6e6e90',
+              fontSize: 12,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: 4,
+              marginTop: 12
+            }}
+          >
+            <MapPin size={11} style={{ flexShrink: 0 }} />
+            {item.location.split(',')[0]}
+          </p>
         )}
       </div>
 
-      {/* Degree title */}
-      <p style={{ color: '#06b6d4', fontWeight: 600, fontSize: 15, marginTop: 6, marginLeft: 38 }}>{item.title}</p>
-
-      {/* Board / Field / Department */}
-      {(item.board || item.field || item.department) && (
-        <div style={{ marginLeft: 38, marginTop: 6 }}>
-          {item.department && (
-            <p style={{ color: '#6e6e90', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <BookOpen size={12} style={{ flexShrink: 0 }} />
-              {item.department}
-            </p>
-          )}
-          {item.board && <p style={{ color: '#6e6e90', fontSize: 13, marginTop: 3 }}>{item.board}</p>}
-          {item.field && <p style={{ color: '#6e6e90', fontSize: 13, marginTop: 3 }}>{item.field}</p>}
+      {/* Center: Timeline track */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+        <div
+          style={{
+            width: 16,
+            height: 16,
+            borderRadius: '50%',
+            border: '2px solid #a855f7',
+            backgroundColor: '#060610',
+            marginTop: 6,
+            position: 'relative',
+            zIndex: 2,
+            flexShrink: 0
+          }}
+        >
+          <div
+            className="animate-glow-pulse"
+            style={{
+              position: 'absolute',
+              inset: 3,
+              borderRadius: '50%',
+              backgroundColor: '#a855f7'
+            }}
+          />
         </div>
-      )}
+        <div
+          style={{
+            width: 2,
+            flex: 1,
+            background: 'linear-gradient(to bottom, rgba(168,85,247,0.4), rgba(168,85,247,0.1))',
+            borderRadius: 1
+          }}
+        />
+      </div>
 
-      {/* Achievements */}
-      {item.achievements?.length > 0 && (
-        <div style={{ marginLeft: 38, marginTop: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-            <Trophy style={{ width: 13, height: 13, color: '#f59e0b' }} />
-            <span
+      {/* Right: Content card */}
+      <div className="glass-card" style={{ padding: '24px 28px', marginBottom: 20 }}>
+        {/* Top row: Institution + CGPA */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+            <div
               style={{
-                fontSize: 11,
-                fontWeight: 600,
-                color: '#a5a5c0',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
+                width: 28,
+                height: 28,
+                borderRadius: 8,
+                background: 'rgba(168,85,247,0.1)',
+                border: '1px solid rgba(168,85,247,0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
               }}
             >
-              Achievements
-            </span>
+              <GraduationCap style={{ width: 14, height: 14, color: '#a855f7' }} />
+            </div>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: '#eeeef5', lineHeight: 1.3 }}>{item.institution}</h3>
           </div>
-          <ul style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {item.achievements.map((achievement, idx) => (
-              <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+
+          {/* CGPA badge - top right */}
+          {item.cgpa && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '6px 14px',
+                borderRadius: 10,
+                background: 'rgba(34,197,94,0.06)',
+                border: '1px solid rgba(34,197,94,0.12)',
+                flexShrink: 0
+              }}
+            >
+              <span
+                style={{
+                  color: '#22c55e',
+                  fontWeight: 700,
+                  fontSize: 16,
+                  fontFamily: 'JetBrains Mono, ui-monospace, monospace'
+                }}
+              >
+                <AnimatedCounter value={item.cgpa} />
+              </span>
+              {item.percentage && (
                 <span
                   style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: '50%',
-                    backgroundColor: 'rgba(245,158,11,0.5)',
-                    marginTop: 7,
-                    flexShrink: 0
+                    fontSize: 11,
+                    color: '#6e6e90',
+                    fontFamily: 'JetBrains Mono, ui-monospace, monospace'
                   }}
-                />
-                <span style={{ color: '#a5a5c0', fontSize: 13, lineHeight: 1.6 }}>{achievement}</span>
-              </li>
-            ))}
-          </ul>
+                >
+                  {item.percentage}
+                </span>
+              )}
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Skills */}
-      {item.skills?.length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 14, marginLeft: 38 }}>
-          {item.skills.map(skill => (
-            <span
-              key={skill}
-              style={{
-                fontFamily: 'JetBrains Mono, ui-monospace, monospace',
-                fontSize: 11,
-                padding: '3px 10px',
-                borderRadius: 6,
-                background: 'rgba(168,85,247,0.08)',
-                color: '#a855f7',
-                border: '1px solid rgba(168,85,247,0.15)'
-              }}
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
-  </motion.div>
-)
+        {/* Degree title */}
+        <p style={{ color: '#06b6d4', fontWeight: 600, fontSize: 15, marginTop: 6, marginLeft: 38 }}>{item.title}</p>
+
+        {/* Board / Field / Department */}
+        {(item.board || item.field || item.department) && (
+          <div style={{ marginLeft: 38, marginTop: 6 }}>
+            {item.department && (
+              <p style={{ color: '#6e6e90', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <BookOpen size={12} style={{ flexShrink: 0 }} />
+                {item.department}
+              </p>
+            )}
+            {item.board && <p style={{ color: '#6e6e90', fontSize: 13, marginTop: 3 }}>{item.board}</p>}
+            {item.field && <p style={{ color: '#6e6e90', fontSize: 13, marginTop: 3 }}>{item.field}</p>}
+          </div>
+        )}
+
+        {/* Achievements */}
+        {item.achievements?.length > 0 && (
+          <div style={{ marginLeft: 38, marginTop: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+              <Trophy style={{ width: 13, height: 13, color: '#f59e0b' }} />
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: '#a5a5c0',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}
+              >
+                Achievements
+              </span>
+            </div>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {item.achievements.map((achievement, idx) => (
+                <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                  <span
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      backgroundColor: 'rgba(245,158,11,0.5)',
+                      marginTop: 7,
+                      flexShrink: 0
+                    }}
+                  />
+                  <span style={{ color: '#a5a5c0', fontSize: 13, lineHeight: 1.6 }}>{achievement}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Skills */}
+        {item.skills?.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 14, marginLeft: 38 }}>
+            {item.skills.map(skill => (
+              <span
+                key={skill}
+                style={{
+                  fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                  fontSize: 11,
+                  padding: '3px 10px',
+                  borderRadius: 6,
+                  background: 'rgba(168,85,247,0.08)',
+                  color: '#a855f7',
+                  border: '1px solid rgba(168,85,247,0.15)'
+                }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </motion.div>
+  )
+}
 
 const Education = () => {
   const education = useMemo(() => getEducation(), [])
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   return (
     <motion.section
       id="education"
       className="py-24 px-6"
-      style={{ padding: '96px 24px' }}
+      style={{ padding: isMobile ? '64px 16px' : '96px 24px' }}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
@@ -247,7 +440,7 @@ const Education = () => {
 
         <motion.div variants={staggerContainer}>
           {education.map((item, index) => (
-            <EducationCard key={item.id} item={item} index={index} />
+            <EducationCard key={item.id} item={item} index={index} isMobile={isMobile} />
           ))}
         </motion.div>
       </div>

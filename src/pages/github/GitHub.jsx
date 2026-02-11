@@ -2,14 +2,16 @@ import { motion } from 'framer-motion'
 import { GitHubCalendar } from 'react-github-calendar'
 import { ArrowRight } from 'lucide-react'
 import { fadeIn } from '@utils/animations'
+import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
 const GitHub = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)')
   return (
     <motion.section
       id="github"
       className="py-24 px-6"
-      style={{ padding: '96px 24px' }}
+      style={{ padding: isMobile ? '64px 16px' : '96px 24px' }}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
@@ -19,7 +21,7 @@ const GitHub = () => {
       <div className="max-w-5xl mx-auto text-center" style={{ maxWidth: 1024, margin: '0 auto', textAlign: 'center' }}>
         <motion.div
           className="glass-card p-6 md:p-10 overflow-x-auto"
-          style={{ padding: '24px 40px', overflowX: 'auto' }}
+          style={{ padding: isMobile ? '16px 12px' : '24px 40px', overflowX: 'auto' }}
           variants={fadeIn}
         >
           <GitHubCalendar username="Sagargupta16" colorScheme="dark" />

@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronUp } from 'lucide-react'
+import useMediaQuery from '@utils/useMediaQuery'
 
 const BackToTop = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const [visible, setVisible] = useState(false)
 
   const handleScroll = useCallback(() => {
@@ -34,11 +36,11 @@ const BackToTop = () => {
           transition={{ duration: 0.25 }}
           style={{
             position: 'fixed',
-            bottom: 32,
-            right: 32,
+            bottom: isMobile ? 20 : 32,
+            right: isMobile ? 20 : 32,
             zIndex: 50,
-            width: 44,
-            height: 44,
+            width: isMobile ? 40 : 44,
+            height: isMobile ? 40 : 44,
             borderRadius: 12,
             border: '1px solid rgba(6,182,212,0.3)',
             background: 'rgba(6,6,16,0.9)',

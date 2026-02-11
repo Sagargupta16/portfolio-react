@@ -6,6 +6,7 @@ import { sectionReveal, staggerContainer, staggerItem, fadeInLeft, fadeInRight, 
 import SectionHeader from '@components/ui/SectionHeader'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
 import DevAvatar from '@components/ui/DevAvatar'
+import useMediaQuery from '@utils/useMediaQuery'
 
 const HIGHLIGHT_ICONS = [
   { Icon: Briefcase, color: '#06b6d4' },
@@ -17,6 +18,7 @@ const HIGHLIGHT_ICONS = [
 const About = () => {
   const aboutInfo = getAbout()
   const statistics = getStatistics()
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   const highlights = useMemo(
     () => [aboutInfo.current_role, aboutInfo.education, aboutInfo.specialization, aboutInfo.competitive_programming],
@@ -28,8 +30,7 @@ const About = () => {
   return (
     <motion.section
       id="about"
-      className="py-24 px-6"
-      style={{ padding: '96px 24px' }}
+      style={{ padding: isMobile ? '64px 16px' : '96px 24px' }}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
@@ -39,12 +40,19 @@ const About = () => {
         <SectionHeader title="About Me" subtitle="Get to know me" />
 
         <motion.div
-          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'center' }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: isMobile ? 32 : 56,
+            alignItems: 'center'
+          }}
           variants={staggerContainer}
         >
           {/* Left Column - Animated Avatar */}
           <motion.div variants={fadeInLeft} style={{ display: 'flex', justifyContent: 'center' }}>
-            <DevAvatar />
+            <div style={isMobile ? { transform: 'scale(0.8)' } : undefined}>
+              <DevAvatar />
+            </div>
           </motion.div>
 
           {/* Right Column - Bio + Highlights */}
@@ -54,7 +62,7 @@ const About = () => {
               style={{
                 fontFamily: 'JetBrains Mono, ui-monospace, monospace',
                 color: '#22c55e',
-                fontSize: 13,
+                fontSize: isMobile ? 12 : 13,
                 marginBottom: 20,
                 display: 'flex',
                 alignItems: 'center',
@@ -68,7 +76,8 @@ const About = () => {
                   height: 8,
                   borderRadius: '50%',
                   backgroundColor: '#22c55e',
-                  display: 'inline-block'
+                  display: 'inline-block',
+                  flexShrink: 0
                 }}
               />
               currently building cloud infrastructure at AWS
@@ -77,7 +86,7 @@ const About = () => {
             {/* Greeting */}
             <h3
               style={{
-                fontSize: 28,
+                fontSize: isMobile ? 22 : 28,
                 fontWeight: 700,
                 color: '#eeeef5',
                 marginBottom: 16,
@@ -98,9 +107,9 @@ const About = () => {
                     variants={staggerItem}
                     style={{
                       display: 'flex',
-                      gap: 14,
+                      gap: isMobile ? 10 : 14,
                       alignItems: 'flex-start',
-                      padding: '14px 16px',
+                      padding: isMobile ? '12px 14px' : '14px 16px',
                       borderRadius: 12,
                       background: 'rgba(14, 14, 38, 0.6)',
                       border: '1px solid rgba(38, 38, 85, 0.5)'
@@ -122,7 +131,9 @@ const About = () => {
                     >
                       <Icon style={{ width: 16, height: 16, color }} />
                     </div>
-                    <p style={{ color: '#a5a5c0', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{cleanText}</p>
+                    <p style={{ color: '#a5a5c0', fontSize: isMobile ? 13 : 14, lineHeight: 1.6, margin: 0 }}>
+                      {cleanText}
+                    </p>
                   </motion.div>
                 )
               })}
@@ -134,9 +145,9 @@ const About = () => {
         <motion.div
           style={{
             display: 'grid',
-            gridTemplateColumns: `repeat(${statEntries.length}, 1fr)`,
-            gap: 16,
-            marginTop: 56
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : `repeat(${statEntries.length}, 1fr)`,
+            gap: isMobile ? 12 : 16,
+            marginTop: isMobile ? 40 : 56
           }}
           variants={staggerContainer}
           initial="hidden"
@@ -148,13 +159,13 @@ const About = () => {
               key={key}
               variants={fadeInUp}
               className="glass-card"
-              style={{ padding: '24px 16px', textAlign: 'center' }}
+              style={{ padding: isMobile ? '18px 12px' : '24px 16px', textAlign: 'center' }}
             >
               <AnimatedCounter value={value} />
               <p
                 style={{
                   color: '#6e6e90',
-                  fontSize: 11,
+                  fontSize: isMobile ? 10 : 11,
                   textTransform: 'uppercase',
                   letterSpacing: '0.06em',
                   fontWeight: 600,

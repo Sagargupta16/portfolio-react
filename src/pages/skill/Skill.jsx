@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { getSkills } from '@data/dataLoader'
 import { sectionReveal, staggerContainer, staggerItem } from '@utils/animations'
+import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
 const CATEGORY_CONFIG = {
@@ -19,6 +20,7 @@ const CATEGORY_CONFIG = {
 const SECONDARY_CATEGORIES = ['soft_skills', 'areas_of_interest', 'game_dev_tools']
 
 const Skill = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const skills = getSkills()
 
   const primaryCategories = useMemo(
@@ -43,7 +45,7 @@ const Skill = () => {
     <motion.section
       id="skills"
       className="py-24 px-6"
-      style={{ padding: '96px 24px' }}
+      style={{ padding: isMobile ? '64px 16px' : '96px 24px' }}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}

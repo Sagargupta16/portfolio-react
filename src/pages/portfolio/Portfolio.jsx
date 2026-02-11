@@ -4,6 +4,7 @@ import { ExternalLink, FolderGit2, Calendar, Users } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
 import { getPersonalProjects, getCollaborativeProjects } from '@data/dataLoader'
 import { staggerContainer, scaleIn } from '@utils/animations'
+import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
 const FILTERS = ['All', 'Personal', 'Collaborative']
@@ -219,6 +220,7 @@ const ProjectCard = ({ data }) => {
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('All')
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   const personalProjects = useMemo(() => getPersonalProjects(), [])
   const collaborativeProjects = useMemo(() => getCollaborativeProjects(), [])
@@ -236,7 +238,7 @@ const Portfolio = () => {
     <motion.section
       id="projects"
       className="py-24 px-6"
-      style={{ padding: '96px 24px' }}
+      style={{ padding: isMobile ? '64px 16px' : '96px 24px' }}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
@@ -245,7 +247,15 @@ const Portfolio = () => {
 
       <div className="max-w-6xl mx-auto" style={{ maxWidth: 1152, margin: '0 auto' }}>
         {/* Filter buttons */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 48, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: isMobile ? 8 : 12,
+            marginBottom: 48,
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}
+        >
           {FILTERS.map(filter => (
             <button
               key={filter}
@@ -275,7 +285,7 @@ const Portfolio = () => {
         <motion.div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(320px, 1fr))',
             gap: 20
           }}
           variants={staggerContainer}

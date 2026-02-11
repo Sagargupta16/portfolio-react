@@ -10,19 +10,35 @@
     },
     {
       "id": 2,
-      "icon": "ImWhatsapp",
-      "title": "WhatsApp Me",
-      "value": "+91-8770532413",
-      "link": "https://wa.me/+918770532413",
-      "message": "Send a Message"
+      "icon": "BsLinkedin",
+      "title": "LinkedIn",
+      "value": "sagar-gupta-16-10",
+      "link": "https://www.linkedin.com/in/sagar-gupta-16-10/",
+      "message": "Connect"
     },
     {
       "id": 3,
-      "icon": "IoCallOutline",
-      "title": "Call me",
-      "value": "+91-8770532413",
-      "link": "tel:+918770532413",
-      "message": "Call Now"
+      "icon": "FiInstagram",
+      "title": "Instagram",
+      "value": "@sagar_sethh",
+      "link": "https://www.instagram.com/sagar_sethh/",
+      "message": "Message Me"
+    },
+    {
+      "id": 4,
+      "icon": "FiCalendar",
+      "title": "Book a Call",
+      "value": "cal.com/sagar-gupta",
+      "link": "https://cal.com/sagar-gupta-4wssps",
+      "message": "Schedule"
+    },
+    {
+      "id": 5,
+      "icon": "FiGithub",
+      "title": "GitHub",
+      "value": "Sagargupta16",
+      "link": "https://github.com/Sagargupta16",
+      "message": "Follow"
     }
   ],
   "email_config": {
