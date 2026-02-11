@@ -1,7 +1,6 @@
 import { useEffect, useState, Suspense, lazy } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import Header from '@components/layout/Header'
 import Nav from '@components/layout/Navigation'
 import Footer from '@components/layout/Footer'
@@ -21,7 +20,6 @@ const Contact = lazy(() => import('@pages/contact/Contact'))
 const RouterWrapper = ({ children }) => (
   <Router
     basename="/portfolio-react"
-    className="router"
     future={{
       v7_startTransition: true,
       v7_relativeSplatPath: true
@@ -33,10 +31,6 @@ const RouterWrapper = ({ children }) => (
     <Footer />
   </Router>
 )
-
-RouterWrapper.propTypes = {
-  children: PropTypes.node.isRequired
-}
 
 const useWindowWidth = () => {
   const [width, setWidth] = useState(window.innerWidth)

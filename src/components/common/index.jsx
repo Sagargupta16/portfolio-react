@@ -1,5 +1,4 @@
 ﻿import { motion } from 'framer-motion'
-import PropTypes from 'prop-types'
 import { fadeInUp, hover } from '../../utils/animations'
 
 // Button component
@@ -15,13 +14,6 @@ export const Button = ({ children, variant = 'default', onClick, className = '',
   </motion.button>
 )
 
-Button.propTypes = {
-  children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['default', 'primary', 'outline', 'text']),
-  onClick: PropTypes.func,
-  className: PropTypes.string
-}
-
 // Card component
 export const Card = ({ children, className = '', animate = true, ...props }) => (
   <motion.div
@@ -33,12 +25,6 @@ export const Card = ({ children, className = '', animate = true, ...props }) => 
     {children}
   </motion.div>
 )
-
-Card.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-  animate: PropTypes.bool
-}
 
 // Section component
 export const Section = ({ children, title, className = '', ...props }) => (
@@ -58,12 +44,6 @@ export const Section = ({ children, title, className = '', ...props }) => (
   </motion.section>
 )
 
-Section.propTypes = {
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string,
-  className: PropTypes.string
-}
-
 // Container component
 export const Container = ({ children, className = '', ...props }) => (
   <div className={`container ${className}`} {...props}>
@@ -71,19 +51,9 @@ export const Container = ({ children, className = '', ...props }) => (
   </div>
 )
 
-Container.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string
-}
-
 // Icon component
 export const Icon = ({ icon: IconComponent, className = '', ...props }) => (
   <motion.div className={`icon ${className}`} whileHover={hover.scale} {...props}>
     <IconComponent />
   </motion.div>
 )
-
-Icon.propTypes = {
-  icon: PropTypes.elementType.isRequired,
-  className: PropTypes.string
-}

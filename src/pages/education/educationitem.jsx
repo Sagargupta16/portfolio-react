@@ -1,5 +1,4 @@
 ﻿import { motion } from 'framer-motion'
-import PropTypes from 'prop-types'
 import { BsFillCalendarEventFill } from 'react-icons/bs'
 import AnimatedNumber from './AnimatedNumber'
 import { cardHover, fadeInLeft, fadeInRight, iconBounce } from '@utils/animations'
@@ -94,15 +93,6 @@ const EducationItem = ({ item }) => {
       </motion.p>
     </motion.article>
   )
-}
-
-EducationItem.propTypes = {
-  item: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    cgpa: PropTypes.string.isRequired
-  }).isRequired
 }
 
 export default EducationItem

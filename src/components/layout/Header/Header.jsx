@@ -1,5 +1,4 @@
-﻿import { useMemo } from 'react'
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import CtaComponent from './CTA'
 import ME from '@assets/images/me.png'
 import HeaderSocials from './HeaderSocials'
@@ -9,8 +8,8 @@ import { fadeInUp, staggerContainer, staggerItem, scaleIn, floatingAnimation } f
 import styles from './Header.module.css'
 
 const Header = () => {
-  const name = useMemo(() => getName(), [])
-  const roles = useMemo(() => getRoles(), [])
+  const name = getName()
+  const roles = getRoles()
 
   return (
     <section className={styles.header} id="header">
@@ -32,7 +31,7 @@ const Header = () => {
           <HeaderSocials />
         </motion.div>
         <motion.div className={styles.me} variants={scaleIn} {...floatingAnimation}>
-          <img src={ME} alt={`${name} - Professional headshot`} loading="eager" width="300" height="300" />
+          <img src={ME} alt={`${name} - Professional headshot`} width="300" height="300" />
         </motion.div>
       </motion.div>
     </section>

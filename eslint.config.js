@@ -37,7 +37,7 @@ export default [
         CustomEvent: 'readonly',
         IntersectionObserver: 'readonly',
         module: 'readonly',
-        process: 'readonly'
+        globalThis: 'readonly'
       }
     },
     plugins: {
@@ -49,7 +49,6 @@ export default [
     rules: {
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
-      ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
@@ -58,7 +57,6 @@ export default [
       'no-unused-vars': [
         'error',
         {
-          varsIgnorePattern: '^React$',
           argsIgnorePattern: '^_'
         }
       ]

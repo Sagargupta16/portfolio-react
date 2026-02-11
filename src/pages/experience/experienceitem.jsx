@@ -1,6 +1,5 @@
 ﻿import { useState, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import PropTypes from 'prop-types'
 import { BsFillCalendarEventFill } from 'react-icons/bs'
 import { IoLocationSharp } from 'react-icons/io5'
 import { CiCircleChevDown, CiCircleChevUp } from 'react-icons/ci'
@@ -115,19 +114,6 @@ const ExperienceItem = ({ item }) => {
       </AnimatePresence>
     </motion.article>
   )
-}
-
-ExperienceItem.propTypes = {
-  item: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    position: PropTypes.string.isRequired,
-    company: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
-    project: PropTypes.string, // Optional field for positions of responsibility
-    description: PropTypes.objectOf(PropTypes.string).isRequired,
-    skills: PropTypes.arrayOf(PropTypes.string).isRequired
-  }).isRequired
 }
 
 export default ExperienceItem

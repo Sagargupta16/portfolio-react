@@ -43,6 +43,9 @@ yarn.lock
 *.sln
 *.sw?
 
+# AI tools
+.claude
+
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

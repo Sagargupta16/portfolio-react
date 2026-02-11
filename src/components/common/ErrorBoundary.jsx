@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -44,7 +43,7 @@ class ErrorBoundary extends React.Component {
         >
           <h2>Oops! Something went wrong</h2>
           <p>We're sorry for the inconvenience. Please try refreshing the page.</p>
-          {process.env.NODE_ENV === 'development' && (
+          {import.meta.env.DEV && (
             <details style={{ whiteSpace: 'pre-wrap', textAlign: 'left', marginTop: '20px' }}>
               <summary>Error Details (Development Only)</summary>
               {this.state.error?.toString()}
@@ -72,11 +71,6 @@ class ErrorBoundary extends React.Component {
 
     return this.props.children
   }
-}
-
-ErrorBoundary.propTypes = {
-  children: PropTypes.node.isRequired,
-  fallback: PropTypes.node
 }
 
 export default ErrorBoundary

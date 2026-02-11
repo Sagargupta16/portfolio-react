@@ -22,7 +22,6 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "framer-motion": "^12.29.0",
-    "prop-types": "^15.8.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-helmet-async": "^2.0.5",
@@ -30,7 +29,6 @@
     "react-router-dom": "^7.13.0",
     "react-simple-typewriter": "^5.0.1",
     "swiper": "^12.1.0",
-    "typewriter-effect": "^2.22.0",
     "web-vitals": "^5.1.0"
   },
   "devDependencies": {

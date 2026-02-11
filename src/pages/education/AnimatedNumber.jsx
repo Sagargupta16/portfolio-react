@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import PropTypes from 'prop-types'
 import { motion, useInView } from 'framer-motion'
 
 const AnimatedNumber = ({ value, duration = 2 }) => {
@@ -44,11 +43,6 @@ const AnimatedNumber = ({ value, duration = 2 }) => {
       {displayValue}
     </motion.span>
   )
-}
-
-AnimatedNumber.propTypes = {
-  value: PropTypes.string.isRequired,
-  duration: PropTypes.number
 }
 
 export default AnimatedNumber
