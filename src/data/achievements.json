@@ -277,21 +277,25 @@
   "coding_platform_stats": {
     "leetcode": {
       "username": "Sagargupta1610",
-      "problems_solved": "1100+",
-      "contests_participated": "80+",
+      "profile_url": "https://leetcode.com/u/Sagargupta1610",
+      "problems_solved": "1260+",
+      "contests_participated": "100+",
       "rating": "1950+"
     },
     "geeksforgeeks": {
       "username": "sagargupta10",
+      "profile_url": "https://www.geeksforgeeks.org/user/sagargupta10",
       "problems_solved": "350+"
     },
     "hackerrank": {
       "username": "Sagargupta1610",
+      "profile_url": "https://www.hackerrank.com/profile/Sagargupta1610",
       "problem_solving": "6 Star",
       "cpp": "5 Star"
     },
     "codechef": {
       "username": "sagargupta_16",
+      "profile_url": "https://www.codechef.com/users/sagargupta_16",
       "rating": "3 Star",
       "contests": "20+ Rated Contests"
     }

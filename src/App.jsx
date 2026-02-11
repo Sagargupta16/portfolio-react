@@ -4,6 +4,10 @@ import Nav from '@components/layout/Navigation/Nav'
 import Hero from '@components/layout/Header/Hero'
 import Footer from '@components/layout/Footer/Footer'
 import ErrorBoundary from '@components/common/ErrorBoundary'
+import ScrollProgress from '@components/ui/ScrollProgress'
+import BackToTop from '@components/ui/BackToTop'
+import Preloader from '@components/ui/Preloader'
+import KeyboardNav from '@components/ui/KeyboardNav'
 import About from '@pages/about/About'
 import Experience from '@pages/experience/Experience'
 import Skill from '@pages/skill/Skill'
@@ -35,6 +39,9 @@ const App = () => {
 
   return (
     <ErrorBoundary>
+      <Preloader />
+      <ScrollProgress />
+      <KeyboardNav />
       <div className="relative min-h-screen bg-bg-primary">
         <Nav />
         <main>
@@ -77,6 +84,7 @@ const App = () => {
           </div>
         </main>
         <Footer />
+        <BackToTop />
       </div>
     </ErrorBoundary>
   )

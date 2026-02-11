@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { ShieldCheck, Trophy, ExternalLink, BookOpen } from 'lucide-react'
+import { ShieldCheck, Trophy, ExternalLink, BookOpen, ArrowUpRight } from 'lucide-react'
 import { getCertifications, getLearningBadges, getAchievements, getCodingPlatformStats } from '@data/dataLoader'
 import { fadeInUp, staggerContainer } from '@utils/animations'
 import SectionHeader from '@components/ui/SectionHeader'
@@ -285,7 +285,7 @@ const Achievement = () => {
                   </h4>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                     {Object.entries(stats)
-                      .filter(([key]) => key !== 'username')
+                      .filter(([key]) => key !== 'username' && key !== 'profile_url')
                       .map(([key, value]) => (
                         <div key={`${platform}-${key}`}>
                           {isNumericStat(value) ? (
@@ -320,6 +320,42 @@ const Achievement = () => {
                         </div>
                       ))}
                   </div>
+                  {stats.profile_url && (
+                    <a
+                      href={stats.profile_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        marginTop: 18,
+                        padding: '8px 16px',
+                        borderRadius: 8,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: '#06b6d4',
+                        border: '1px solid rgba(6,182,212,0.25)',
+                        background: 'rgba(6,182,212,0.06)',
+                        textDecoration: 'none',
+                        transition: 'all 0.2s'
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = 'rgba(6,182,212,0.15)'
+                        e.currentTarget.style.borderColor = 'rgba(6,182,212,0.5)'
+                        e.currentTarget.style.boxShadow = '0 0 20px rgba(6,182,212,0.15)'
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = 'rgba(6,182,212,0.06)'
+                        e.currentTarget.style.borderColor = 'rgba(6,182,212,0.25)'
+                        e.currentTarget.style.boxShadow = 'none'
+                      }}
+                      aria-label={`View ${platform} profile`}
+                    >
+                      View Profile
+                      <ArrowUpRight size={14} />
+                    </a>
+                  )}
                 </motion.div>
               ))}
             </motion.div>
