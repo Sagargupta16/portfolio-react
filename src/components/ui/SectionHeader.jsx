@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import PropTypes from 'prop-types'
 import { fadeInUp, lineGrow } from '@utils/animations'
 
 const SectionHeader = ({ title, subtitle }) => {
@@ -66,6 +67,11 @@ const SectionHeader = ({ title, subtitle }) => {
       />
     </motion.div>
   )
+}
+
+SectionHeader.propTypes = {
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string
 }
 
 export default SectionHeader

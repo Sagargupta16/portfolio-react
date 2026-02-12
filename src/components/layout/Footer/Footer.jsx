@@ -1,16 +1,8 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { FaLinkedin, FaGithub, FaInstagram } from 'react-icons/fa6'
-import { SiX } from 'react-icons/si'
 import { getSocialProfiles } from '@data/dataLoader'
 import { staggerContainer, staggerItem } from '@utils/animations'
-
-const ICON_MAP = {
-  BsLinkedin: FaLinkedin,
-  FaGithub: FaGithub,
-  FiInstagram: FaInstagram,
-  SiX: SiX
-}
+import ICON_MAP from '@utils/iconMap'
 
 const Footer = () => {
   const socialProfiles = useMemo(() => getSocialProfiles(), [])

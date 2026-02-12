@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import PropTypes from 'prop-types'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, FolderGit2, Calendar, Users } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
@@ -216,6 +217,21 @@ const ProjectCard = ({ data }) => {
       </div>
     </motion.div>
   )
+}
+
+ProjectCard.propTypes = {
+  data: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    tools_tech: PropTypes.arrayOf(PropTypes.string),
+    github: PropTypes.string,
+    live: PropTypes.string,
+    category: PropTypes.string,
+    team: PropTypes.string,
+    achievement: PropTypes.string
+  }).isRequired
 }
 
 const Portfolio = () => {

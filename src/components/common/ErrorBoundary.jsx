@@ -20,7 +20,9 @@ class ErrorBoundary extends React.Component {
 
     // You can also log the error to an error reporting service here
 
-    console.error('Error caught by boundary:', error, errorInfo)
+    if (import.meta.env.DEV) {
+      console.error('Error caught by boundary:', error, errorInfo)
+    }
   }
 
   render() {
@@ -53,6 +55,7 @@ class ErrorBoundary extends React.Component {
           )}
           <button
             onClick={() => globalThis.location.reload()}
+            aria-label="Refresh the page"
             style={{
               marginTop: '15px',
               padding: '10px 20px',

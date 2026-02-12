@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useInView } from 'react-intersection-observer'
+import PropTypes from 'prop-types'
 
 const AnimatedCounter = ({ value, duration = 2 }) => {
   const [count, setCount] = useState(0)
@@ -52,6 +53,11 @@ const AnimatedCounter = ({ value, duration = 2 }) => {
       {suffix && <span className="text-accent-cyan/70">{suffix}</span>}
     </span>
   )
+}
+
+AnimatedCounter.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  duration: PropTypes.number
 }
 
 export default AnimatedCounter

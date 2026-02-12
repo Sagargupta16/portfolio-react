@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import PropTypes from 'prop-types'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, ChevronDown, ChevronUp, Building2, FolderGit2 } from 'lucide-react'
 import { getExperience, getPositionsOfResponsibility } from '@data/dataLoader'
@@ -618,6 +619,25 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
       </div>
     </motion.div>
   )
+}
+
+TimelineCard.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    company: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    date: PropTypes.string,
+    location: PropTypes.string,
+    position: PropTypes.string,
+    summary: PropTypes.string,
+    project: PropTypes.string,
+    projects: PropTypes.arrayOf(PropTypes.object),
+    description: PropTypes.object,
+    skills: PropTypes.arrayOf(PropTypes.string)
+  }).isRequired,
+  index: PropTypes.number.isRequired,
+  accentColor: PropTypes.string,
+  isMobile: PropTypes.bool.isRequired
 }
 
 const Experience = () => {

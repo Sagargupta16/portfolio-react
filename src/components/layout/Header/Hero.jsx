@@ -2,20 +2,12 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
-import { FaLinkedin, FaGithub, FaInstagram } from 'react-icons/fa6'
-import { SiX } from 'react-icons/si'
 import { ChevronDown } from 'lucide-react'
 import { getName, getRoles, getStatistics, getSocialProfiles } from '@data/dataLoader'
 import { staggerContainer, staggerItem } from '@utils/animations'
+import ICON_MAP from '@utils/iconMap'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
 import Resume from '@assets/Resume.pdf'
-
-const ICON_MAP = {
-  BsLinkedin: FaLinkedin,
-  FaGithub: FaGithub,
-  FiInstagram: FaInstagram,
-  SiX: SiX
-}
 
 const particlesOptions = {
   fullScreen: { enable: false },

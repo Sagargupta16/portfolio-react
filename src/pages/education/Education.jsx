@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import PropTypes from 'prop-types'
 import { motion } from 'framer-motion'
 import { MapPin, GraduationCap, Trophy, BookOpen } from 'lucide-react'
 import { getEducation } from '@data/dataLoader'
@@ -152,8 +153,8 @@ const EducationCard = ({ item, index, isMobile }) => {
                 </span>
               </div>
               <ul style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {item.achievements.map((achievement, idx) => (
-                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                {item.achievements.map(achievement => (
+                  <li key={achievement} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                     <span
                       style={{
                         width: 6,
@@ -419,6 +420,25 @@ const EducationCard = ({ item, index, isMobile }) => {
       </div>
     </motion.div>
   )
+}
+
+EducationCard.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    institution: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    date: PropTypes.string,
+    location: PropTypes.string,
+    cgpa: PropTypes.string,
+    percentage: PropTypes.string,
+    board: PropTypes.string,
+    field: PropTypes.string,
+    department: PropTypes.string,
+    achievements: PropTypes.arrayOf(PropTypes.string),
+    skills: PropTypes.arrayOf(PropTypes.string)
+  }).isRequired,
+  index: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool.isRequired
 }
 
 const Education = () => {
