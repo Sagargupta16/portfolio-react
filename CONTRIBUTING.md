@@ -1,4 +1,4 @@
-# Contributing to [Your Project Name]
+# Contributing to Portfolio-React
 
 Thank you for considering contributing to Portfolio-React! We appreciate your time and effort. By contributing, you help make this project better for everyone. Please follow the guidelines outlined in this document to ensure smooth collaboration.
 
@@ -54,6 +54,6 @@ All contributions will be reviewed by the maintainers. Be patient during the rev
 
 ### Code of Conduct Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at maintainers@example.com. The project team will review and investigate all complaints and respond appropriately. Confidentiality with regard to the reporter of an incident will be maintained.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at [sg85207@gmail.com](mailto:sg85207@gmail.com). The project team will review and investigate all complaints and respond appropriately. Confidentiality with regard to the reporter of an incident will be maintained.
 
 Thank you for your contribution! Happy coding!
