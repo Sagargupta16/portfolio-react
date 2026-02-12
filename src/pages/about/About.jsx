@@ -80,7 +80,7 @@ const About = () => {
                   flexShrink: 0
                 }}
               />
-              currently building cloud infrastructure at AWS
+              <span>currently building cloud infrastructure at AWS</span>
             </p>
 
             {/* Greeting */}
@@ -103,7 +103,7 @@ const About = () => {
                 const cleanText = text.replace(/^[^\s]+\s/, '')
                 return (
                   <motion.div
-                    key={i}
+                    key={text}
                     variants={staggerItem}
                     style={{
                       display: 'flex',

@@ -43,7 +43,7 @@ const KeyboardNav = () => {
 
       // Number keys 1-9 jump to sections (0 = hero handled by 't')
       if (e.key >= '1' && e.key <= '9') {
-        const index = parseInt(e.key)
+        const index = Number.parseInt(e.key, 10)
         if (index < SECTIONS.length) {
           e.preventDefault()
           scrollToSection(SECTIONS[index])
@@ -70,8 +70,8 @@ const KeyboardNav = () => {
   )
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    globalThis.addEventListener('keydown', handleKeyDown)
+    return () => globalThis.removeEventListener('keydown', handleKeyDown)
   }, [handleKeyDown])
 
   return null

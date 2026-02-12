@@ -22,7 +22,7 @@ const Achievement = () => {
     [rawCertifications]
   )
 
-  const formatStatLabel = key => key.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase())
+  const formatStatLabel = key => key.replaceAll('_', ' ').replaceAll(/\b\w/g, c => c.toUpperCase())
 
   const isNumericStat = value => /^\d/.test(String(value))
 

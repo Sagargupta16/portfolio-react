@@ -34,6 +34,10 @@
     "contests": "100+",
     "certifications": "6"
   },
+  "languages": [
+    { "name": "English", "level": "Professional Working" },
+    { "name": "Hindi", "level": "Native" }
+  ],
   "social_profiles": [
     {
       "id": 1,

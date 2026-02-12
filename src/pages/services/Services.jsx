@@ -85,9 +85,9 @@ const Services = () => {
               </h3>
 
               <ul className="space-y-3" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {service.list.map((item, idx) => (
+                {service.list.map(item => (
                   <li
-                    key={idx}
+                    key={item}
                     className="flex items-start gap-3 text-text-secondary text-sm leading-relaxed"
                     style={{
                       display: 'flex',

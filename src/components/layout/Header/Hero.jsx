@@ -61,7 +61,7 @@ const Hero = () => {
   const statsArray = useMemo(() => {
     return Object.entries(statistics).map(([key, value]) => ({
       key,
-      label: key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+      label: key.replaceAll('_', ' ').replaceAll(/\b\w/g, c => c.toUpperCase()),
       value
     }))
   }, [statistics])

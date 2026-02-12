@@ -86,7 +86,8 @@
         "1": "Led containerization of application with Docker and orchestrated deployment to AWS using ECR and ECS services.",
         "2": "Implemented comprehensive CI/CD pipeline using GitHub Actions, automating linting, testing, building, and deployment processes.",
         "3": "Standardized codebase with multi-language linting (pylint, flake8, Black, ESLint, Stylelint) and unit testing (Pytest, Jest).",
-        "4": "Deployed SonarQube on AWS EC2 with RDS integration for continuous code quality analysis."
+        "4": "Deployed SonarQube on AWS EC2 with RDS integration for continuous code quality analysis.",
+        "5": "Provisioned Forem platform using Ansible for streamlined infrastructure automation."
       },
       "skills": [
         "AWS",
@@ -97,6 +98,7 @@
         "Docker",
         "GitHub Actions",
         "SonarQube",
+        "Ansible",
         "Python",
         "JavaScript",
         "CI/CD",
@@ -116,10 +118,10 @@
       "position": "",
       "company": "CSEA - NITW",
       "location": "Warangal, Telangana",
-      "summary": "Organized events, workshops, and competitions as part of the core team of the CS club.",
+      "summary": "Part of the largest student body on campus, creating opportunities for students to learn, grow, and have fun.",
       "description": {
-        "1": "Part of the core team of the club, responsible for the smooth functioning of the club.",
-        "2": "Organized and conducted various events, workshops, and competitions for the club."
+        "1": "Member of the Contest Team, organizing competitive programming events and coding challenges.",
+        "2": "Member of the Development Team, building and maintaining web applications for the club."
       },
       "skills": ["Communication", "Leadership", "Teamwork", "Management", "Git", "GitHub", "React", "Nodejs"]
     },
@@ -133,9 +135,7 @@
       "summary": "Facilitated student-faculty communication and managed class operations for MCA Final Year.",
       "description": {
         "1": "Facilitate effective communication between students and faculty, representing the class in meetings.",
-        "2": "Manage class attendance records and administrative tasks with precision and efficiency.",
-        "3": "Oversee the class WhatsApp group for streamlined information dissemination.",
-        "4": "Collaborate with class representatives to address student concerns and enhance the learning environment."
+        "2": "Collaborate with class representatives to address student concerns and enhance the learning environment."
       },
       "skills": ["Communication", "Leadership", "Teamwork", "Management"]
     }

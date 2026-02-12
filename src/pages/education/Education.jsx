@@ -377,8 +377,8 @@ const EducationCard = ({ item, index, isMobile }) => {
               </span>
             </div>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {item.achievements.map((achievement, idx) => (
-                <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              {item.achievements.map(achievement => (
+                <li key={achievement} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                   <span
                     style={{
                       width: 6,

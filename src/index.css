@@ -74,7 +74,7 @@ body {
 
 /* Selection */
 ::selection {
-  background-color: rgba(6, 182, 212, 0.3);
+  background-color: #0e7490;
   color: #fff;
 }
 
@@ -292,7 +292,7 @@ img {
 
 /* ===== Gradient Buttons ===== */
 .btn-primary {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  background: linear-gradient(135deg, #0e7490, #155e75);
   color: #fff;
   font-weight: 600;
   border: none;
