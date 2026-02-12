@@ -6,10 +6,10 @@ import useMediaQuery from '@utils/useMediaQuery'
 const NAV_SECTIONS = [
   { id: 'about', label: 'About' },
   { id: 'experience', label: 'Experience' },
+  { id: 'education', label: 'Education' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
   { id: 'achievements', label: 'Awards' },
-  { id: 'education', label: 'Education' },
   { id: 'services', label: 'Services' },
   { id: 'github', label: 'GitHub' },
   { id: 'contact', label: 'Contact' }

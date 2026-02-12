@@ -56,19 +56,19 @@ const App = () => {
           </div>
           <SectionDivider />
           <div className="section-darker">
+            <Education />
+          </div>
+          <SectionDivider />
+          <div className="section-dark">
             <Skill />
           </div>
           <SectionDivider />
-          <div className="section-dark">
+          <div className="section-darker">
             <Portfolio />
           </div>
           <SectionDivider />
-          <div className="section-darker">
-            <Achievement />
-          </div>
-          <SectionDivider />
           <div className="section-dark">
-            <Education />
+            <Achievement />
           </div>
           <SectionDivider />
           <div className="section-darker">

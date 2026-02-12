@@ -73,7 +73,7 @@
       "imageUrl": "https://images.credly.com/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png"
     }
   ],
-  "learning_badges": [
+  "learningBadges": [
     {
       "id": 3,
       "name": "Well-Architected Proficient",
@@ -201,103 +201,120 @@
   "achievements": [
     {
       "id": 1,
-      "title": "1st Position at Coding Cauldron Online - Version 23'",
+      "title": "1st Place — Coding Cauldron Online, Version '23",
       "organizer": "NIT Trichy",
       "date": "March 2023",
-      "description": "Problem Solving Coding Contest",
-      "type": "Competition"
-    },
-    {
-      "id": 3,
-      "title": "1st Position at QFiesta - IGNOSI 22'",
-      "organizer": "EA & HAM NITW",
-      "date": "December 2022",
-      "description": "National Institute of Technology Warangal",
-      "type": "Competition"
-    },
-    {
-      "id": 5,
-      "title": "1289th Position at Round E - Google Kickstart 22'",
-      "organizer": "Google",
-      "date": "August 2022",
-      "description": "Ranked 1289th globally in competitive programming contest",
-      "type": "Competition",
-      "certificate": true
-    },
-    {
-      "id": 7,
-      "title": "1699th Position at Round B - Google Kickstart 22",
-      "organizer": "Google",
-      "date": "April 2022",
-      "description": "Global competitive programming contest",
       "type": "Competition"
     },
     {
       "id": 2,
-      "title": "2nd Position at MANAGE THE DAMAGE - Version '23",
+      "title": "1st Place — QFiesta, IGNOSI '22",
+      "organizer": "NIT Warangal",
+      "date": "December 2022",
+      "type": "Competition"
+    },
+    {
+      "id": 3,
+      "title": "2nd Place — Manage the Damage, Version '23",
       "organizer": "NIT Trichy",
       "date": "March 2023",
-      "description": "Code Debugging and Optimization Event",
       "type": "Competition"
     },
     {
       "id": 4,
-      "title": "2nd Position at Trial By Code - IGNOSI 22'",
-      "organizer": "CSEA NITW",
+      "title": "2nd Place — Trial By Code, IGNOSI '22",
+      "organizer": "NIT Warangal",
       "date": "December 2022",
-      "description": "A 1v1 Competitive Programming Contest, National Institute of Technology Warangal",
+      "type": "Competition"
+    },
+    {
+      "id": 5,
+      "title": "Rank 1289 — Google Kick Start '22, Round E",
+      "organizer": "Google",
+      "date": "August 2022",
       "type": "Competition"
     },
     {
       "id": 6,
-      "title": "3rd Position at INFOTREK - 22 LOGIC HEAD",
+      "title": "Rank 1699 — Google Kick Start '22, Round B",
+      "organizer": "Google",
+      "date": "April 2022",
+      "type": "Competition"
+    },
+    {
+      "id": 7,
+      "title": "3rd Place — Logic Head, INFOTREK '22",
       "organizer": "NIT Trichy",
       "date": "June 2022",
-      "description": "Coding Competition Organized by NIT Trichy",
       "type": "Competition"
     },
     {
       "id": 8,
-      "title": "3rd Position at MOTHRA - Version 21'",
+      "title": "3rd Place — MOTHRA, Version '21",
       "organizer": "NIT Trichy",
       "date": "October 2021",
-      "description": "Organized By NIT Trichy",
-      "type": "Competition",
-      "certificate": true
+      "type": "Competition"
     },
     {
       "id": 9,
-      "title": "4th Position in TriNIT Hackathon",
+      "title": "4th Place — TriNIT Hackathon",
       "organizer": "NIT Warangal",
       "date": "October 2023",
-      "description": "Built Lingua Connect with Team BugBiters",
-      "type": "Competition"
+      "type": "Hackathon"
     }
   ],
-  "coding_platform_stats": {
+  "codingPlatformStats": {
     "leetcode": {
       "username": "Sagargupta1610",
-      "profile_url": "https://leetcode.com/u/Sagargupta1610",
-      "problems_solved": "1260+",
-      "contests_participated": "100+",
-      "rating": "1950+"
+      "profileUrl": "https://leetcode.com/u/Sagargupta1610",
+      "displayStats": ["problemsSolved", "highestRating", "contestsParticipated"],
+      "problemsSolved": "1262+",
+      "highestRating": "2007",
+      "contestsParticipated": "110+",
+      "currentRating": "1880",
+      "badge": "Knight",
+      "topPercentage": "4.91%",
+      "globalRanking": "39606",
+      "easySolved": "465",
+      "mediumSolved": "646",
+      "hardSolved": "151",
+      "ranking": "11930",
+      "reputation": "270"
     },
     "geeksforgeeks": {
       "username": "sagargupta10",
-      "profile_url": "https://www.geeksforgeeks.org/user/sagargupta10",
-      "problems_solved": "350+"
+      "profileUrl": "https://www.geeksforgeeks.org/user/sagargupta10",
+      "displayStats": ["problemsSolved", "codingScore", "instituteRank"],
+      "problemsSolved": "500+",
+      "codingScore": "1899",
+      "instituteRank": "70",
+      "longestStreak": "160 Days",
+      "potdSolved": "431",
+      "articlesPublished": "1"
     },
     "hackerrank": {
       "username": "Sagargupta1610",
-      "profile_url": "https://www.hackerrank.com/profile/Sagargupta1610",
-      "problem_solving": "6 Star",
-      "cpp": "5 Star"
+      "profileUrl": "https://www.hackerrank.com/profile/Sagargupta1610",
+      "displayStats": ["problemSolving", "cpp", "certifications"],
+      "problemSolving": "6 Star",
+      "cpp": "5 Star",
+      "java": "Badge",
+      "python": "Badge",
+      "sql": "Badge",
+      "c": "Badge",
+      "daysOfCode": "Badge",
+      "certifications": "6 Verified"
     },
     "codechef": {
       "username": "sagargupta_16",
-      "profile_url": "https://www.codechef.com/users/sagargupta_16",
+      "profileUrl": "https://www.codechef.com/users/sagargupta_16",
+      "displayStats": ["highestRating", "contests", "problemsSolved"],
       "rating": "3 Star",
-      "contests": "20+ Rated Contests"
+      "highestRating": "1764",
+      "currentRating": "1675",
+      "division": "Div 2",
+      "contests": "28 Rated",
+      "problemsSolved": "121"
     }
   }
 }

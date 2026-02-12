@@ -22,7 +22,7 @@ const Achievement = () => {
     [rawCertifications]
   )
 
-  const formatStatLabel = key => key.replaceAll('_', ' ').replaceAll(/\b\w/g, c => c.toUpperCase())
+  const formatStatLabel = key => key.replaceAll(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase())
 
   const isNumericStat = value => /^\d/.test(String(value))
 
@@ -290,8 +290,10 @@ const Achievement = () => {
                     {platform}
                   </h4>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                    {Object.entries(stats)
-                      .filter(([key]) => key !== 'username' && key !== 'profile_url')
+                    {(stats.displayStats || Object.keys(stats))
+                      .filter(key => key !== 'username' && key !== 'profileUrl' && key !== 'displayStats')
+                      .map(key => [key, stats[key]])
+                      .filter(([, value]) => value !== undefined)
                       .map(([key, value]) => (
                         <div key={`${platform}-${key}`}>
                           {isNumericStat(value) ? (
@@ -326,9 +328,9 @@ const Achievement = () => {
                         </div>
                       ))}
                   </div>
-                  {stats.profile_url && (
+                  {stats.profileUrl && (
                     <a
-                      href={stats.profile_url}
+                      href={stats.profileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{

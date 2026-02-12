@@ -1,8 +1,5 @@
 @import 'tailwindcss';
 
-/* Force Tailwind to scan all source files upfront (fixes lazy-loaded component styles in dev) */
-@source "./";
-
 /* ===== Custom Theme ===== */
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;

@@ -71,21 +71,24 @@ const EducationCard = ({ item, index, isMobile }) => {
 
   const cardContent = (
     <>
-      {/* Institution + CGPA */}
+      {/* Institution + Degree + CGPA */}
       {isMobile ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {institutionRow}
+          <p style={{ color: '#06b6d4', fontWeight: 600, fontSize: 15 }}>{item.title}</p>
           {cgpaBadge}
         </div>
       ) : (
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
-          {institutionRow}
+          <div style={{ minWidth: 0, flex: 1 }}>
+            {institutionRow}
+            <p style={{ color: '#06b6d4', fontWeight: 600, fontSize: 15, marginTop: 4, marginLeft: ml }}>
+              {item.title}
+            </p>
+          </div>
           {cgpaBadge}
         </div>
       )}
-
-      {/* Degree title */}
-      <p style={{ color: '#06b6d4', fontWeight: 600, fontSize: 15, marginTop: 6, marginLeft: ml }}>{item.title}</p>
 
       {/* Board / Field / Department */}
       {(item.board || item.field || item.department) && (

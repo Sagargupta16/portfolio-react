@@ -25,14 +25,14 @@
     "current_role": "💼 Currently working as Professional Services (Cloud Consultant) - DevOps/MLOps at Amazon Web Services (AWS).",
     "education": "🎓 I completed my Master of Computer Applications (MCA) from National Institute of Technology, Warangal with 8.38 CGPA.",
     "specialization": "🚀 Specializing in DevOps Infrastructure Automation, MLOps Pipelines, Terraform, AWS Cloud Solutions, and CI/CD.",
-    "competitive_programming": "🏆 Competitive Programming: 1950+ LeetCode rating, 1260+ problems solved, 100+ contests participated."
+    "competitive_programming": "🏆 Competitive Programming: 2007 LeetCode rating (Knight), 2000+ problems solved across platforms, 140+ contests participated."
   },
   "statistics": {
-    "coding_questions": "1260+",
-    "leetcode_rating": "1950+",
+    "coding_questions": "2000+",
+    "leetcode_rating": "2007",
     "projects": "25+",
-    "contests": "100+",
-    "certifications": "6"
+    "contests": "140+",
+    "industry_certifications": "6"
   },
   "languages": [
     { "name": "English", "level": "Professional Working" },
