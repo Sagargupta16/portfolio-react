@@ -16,12 +16,204 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
 
   const hasExpandable = hasProjects || descriptionItems.length > 0 || item.skills?.length > 0
 
-  const innerMarginLeft = isMobile ? 0 : 38
+  const ml = isMobile ? 0 : 38
+  const descSize = isMobile ? 13 : 14
+
+  const renderBullets = (items, gap = 8, extraStyle = undefined) => (
+    <ul style={{ display: 'flex', flexDirection: 'column', gap, ...extraStyle }}>
+      {items.map(desc => (
+        <li
+          key={desc}
+          style={{
+            color: '#a5a5c0',
+            fontSize: descSize,
+            lineHeight: 1.7,
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 10
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              backgroundColor: `${accentColor}60`,
+              marginTop: 8,
+              flexShrink: 0
+            }}
+          />
+          {desc}
+        </li>
+      ))}
+    </ul>
+  )
+
+  const renderSkills = (skills, extraStyle) => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, ...extraStyle }}>
+      {skills.map(skill => (
+        <span
+          key={skill}
+          style={{
+            fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+            fontSize: 11,
+            padding: '3px 10px',
+            borderRadius: 6,
+            background: `${accentColor}10`,
+            color: accentColor,
+            border: `1px solid ${accentColor}20`
+          }}
+        >
+          {skill}
+        </span>
+      ))}
+    </div>
+  )
+
+  const cardContent = (
+    <>
+      {/* Company row */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+        <div
+          style={{
+            width: 28,
+            height: 28,
+            borderRadius: 8,
+            background: `${accentColor}12`,
+            border: `1px solid ${accentColor}20`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0
+          }}
+        >
+          <Building2 style={{ width: 14, height: 14, color: accentColor }} />
+        </div>
+        <h3 style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: '#eeeef5', lineHeight: 1.3 }}>
+          {item.company}
+        </h3>
+      </div>
+
+      {/* Title + Position */}
+      <p style={{ color: '#a855f7', fontWeight: 600, fontSize: isMobile ? 14 : 15, marginTop: 4, marginLeft: ml }}>
+        {item.title}
+        {item.position && (
+          <span
+            className="tag tag-purple"
+            style={{ marginLeft: 10, verticalAlign: 'middle', fontSize: 11, padding: '2px 8px' }}
+          >
+            {item.position}
+          </span>
+        )}
+      </p>
+
+      {/* Summary (always visible) */}
+      {item.summary && (
+        <p style={{ color: '#a5a5c0', fontSize: 13, lineHeight: 1.6, marginTop: 8, marginLeft: ml }}>{item.summary}</p>
+      )}
+
+      {/* Expandable Section */}
+      {hasExpandable && (
+        <>
+          <AnimatePresence>
+            {expanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                style={{ overflow: 'hidden', marginLeft: ml }}
+              >
+                {/* Multi-project: project names + descriptions + skills */}
+                {hasProjects &&
+                  item.projects.map((project, idx) => {
+                    const descs = Object.values(project.description || {})
+                    return (
+                      <div
+                        key={project.name}
+                        style={{
+                          marginTop: idx === 0 ? 16 : 20,
+                          paddingTop: idx === 0 ? 0 : 16,
+                          borderTop: idx === 0 ? 'none' : '1px solid rgba(38,38,85,0.3)'
+                        }}
+                      >
+                        <p
+                          style={{
+                            color: '#6e6e90',
+                            fontSize: 13,
+                            marginBottom: 10,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 6
+                          }}
+                        >
+                          <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
+                          {project.name}
+                        </p>
+                        {descs.length > 0 && renderBullets(descs)}
+                        {project.skills?.length > 0 && renderSkills(project.skills, { marginTop: 12 })}
+                      </div>
+                    )
+                  })}
+
+                {/* Single project: name + descriptions + skills */}
+                {!hasProjects && item.project && (
+                  <p
+                    style={{
+                      color: '#6e6e90',
+                      fontSize: 13,
+                      marginTop: 16,
+                      marginBottom: 10,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6
+                    }}
+                  >
+                    <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
+                    {item.project}
+                  </p>
+                )}
+                {!hasProjects && descriptionItems.length > 0 && renderBullets(descriptionItems, 10, { marginTop: 16 })}
+                {!hasProjects && item.skills?.length > 0 && renderSkills(item.skills, { marginTop: 16 })}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <button
+            onClick={() => setExpanded(prev => !prev)}
+            style={{
+              color: accentColor,
+              fontSize: 13,
+              fontWeight: 500,
+              cursor: 'pointer',
+              border: 'none',
+              background: 'none',
+              marginTop: 14,
+              marginLeft: ml,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: 0
+            }}
+          >
+            {expanded ? (
+              <>
+                Show less <ChevronUp size={14} />
+              </>
+            ) : (
+              <>
+                Show more <ChevronDown size={14} />
+              </>
+            )}
+          </button>
+        </>
+      )}
+    </>
+  )
 
   if (isMobile) {
     return (
       <motion.div variants={staggerItem} custom={index} style={{ marginBottom: 16 }}>
-        {/* Mobile: stacked card with colored left border */}
         <div
           className="glass-card"
           style={{
@@ -30,7 +222,7 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
             borderRadius: '0 12px 12px 0'
           }}
         >
-          {/* Date + Location row at top of card */}
+          {/* Mobile date + location row */}
           <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
             <span
               style={{
@@ -57,235 +249,7 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
               </span>
             )}
           </div>
-
-          {/* Company row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-            <div
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: 8,
-                background: `${accentColor}12`,
-                border: `1px solid ${accentColor}20`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}
-            >
-              <Building2 style={{ width: 14, height: 14, color: accentColor }} />
-            </div>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#eeeef5', lineHeight: 1.3 }}>{item.company}</h3>
-          </div>
-
-          {/* Title + Position */}
-          <p style={{ color: '#a855f7', fontWeight: 600, fontSize: 14, marginTop: 4 }}>
-            {item.title}
-            {item.position && (
-              <span
-                className="tag tag-purple"
-                style={{ marginLeft: 10, verticalAlign: 'middle', fontSize: 11, padding: '2px 8px' }}
-              >
-                {item.position}
-              </span>
-            )}
-          </p>
-
-          {/* Summary (always visible) */}
-          {item.summary && (
-            <p style={{ color: '#a5a5c0', fontSize: 13, lineHeight: 1.6, marginTop: 8 }}>{item.summary}</p>
-          )}
-
-          {/* Expandable Section */}
-          {hasExpandable && (
-            <>
-              <AnimatePresence>
-                {expanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    style={{ overflow: 'hidden' }}
-                  >
-                    {/* Multi-project: project names + descriptions + skills */}
-                    {hasProjects &&
-                      item.projects.map((project, idx) => {
-                        const descs = Object.values(project.description || {})
-                        return (
-                          <div
-                            key={project.name}
-                            style={{
-                              marginTop: idx === 0 ? 16 : 20,
-                              paddingTop: idx === 0 ? 0 : 16,
-                              borderTop: idx === 0 ? 'none' : '1px solid rgba(38,38,85,0.3)'
-                            }}
-                          >
-                            <p
-                              style={{
-                                color: '#6e6e90',
-                                fontSize: 13,
-                                marginBottom: 10,
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 6
-                              }}
-                            >
-                              <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
-                              {project.name}
-                            </p>
-                            {descs.length > 0 && (
-                              <ul style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                                {descs.map(desc => (
-                                  <li
-                                    key={desc}
-                                    style={{
-                                      color: '#a5a5c0',
-                                      fontSize: 13,
-                                      lineHeight: 1.7,
-                                      display: 'flex',
-                                      alignItems: 'flex-start',
-                                      gap: 10
-                                    }}
-                                  >
-                                    <span
-                                      style={{
-                                        width: 6,
-                                        height: 6,
-                                        borderRadius: '50%',
-                                        backgroundColor: `${accentColor}60`,
-                                        marginTop: 8,
-                                        flexShrink: 0
-                                      }}
-                                    />
-                                    {desc}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                            {project.skills?.length > 0 && (
-                              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 12 }}>
-                                {project.skills.map(skill => (
-                                  <span
-                                    key={skill}
-                                    style={{
-                                      fontFamily: 'JetBrains Mono, ui-monospace, monospace',
-                                      fontSize: 11,
-                                      padding: '3px 10px',
-                                      borderRadius: 6,
-                                      background: `${accentColor}10`,
-                                      color: accentColor,
-                                      border: `1px solid ${accentColor}20`
-                                    }}
-                                  >
-                                    {skill}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        )
-                      })}
-
-                    {/* Single project: name + descriptions + skills */}
-                    {!hasProjects && item.project && (
-                      <p
-                        style={{
-                          color: '#6e6e90',
-                          fontSize: 13,
-                          marginTop: 16,
-                          marginBottom: 10,
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 6
-                        }}
-                      >
-                        <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
-                        {item.project}
-                      </p>
-                    )}
-                    {!hasProjects && descriptionItems.length > 0 && (
-                      <ul style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                        {descriptionItems.map(desc => (
-                          <li
-                            key={desc}
-                            style={{
-                              color: '#a5a5c0',
-                              fontSize: 13,
-                              lineHeight: 1.7,
-                              display: 'flex',
-                              alignItems: 'flex-start',
-                              gap: 10
-                            }}
-                          >
-                            <span
-                              style={{
-                                width: 6,
-                                height: 6,
-                                borderRadius: '50%',
-                                backgroundColor: `${accentColor}60`,
-                                marginTop: 8,
-                                flexShrink: 0
-                              }}
-                            />
-                            {desc}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {!hasProjects && item.skills?.length > 0 && (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
-                        {item.skills.map(skill => (
-                          <span
-                            key={skill}
-                            style={{
-                              fontFamily: 'JetBrains Mono, ui-monospace, monospace',
-                              fontSize: 11,
-                              padding: '3px 10px',
-                              borderRadius: 6,
-                              background: `${accentColor}10`,
-                              color: accentColor,
-                              border: `1px solid ${accentColor}20`
-                            }}
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <button
-                onClick={() => setExpanded(prev => !prev)}
-                style={{
-                  color: accentColor,
-                  fontSize: 13,
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  border: 'none',
-                  background: 'none',
-                  marginTop: 14,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 4,
-                  padding: 0
-                }}
-              >
-                {expanded ? (
-                  <>
-                    Show less <ChevronUp size={14} />
-                  </>
-                ) : (
-                  <>
-                    Show more <ChevronDown size={14} />
-                  </>
-                )}
-              </button>
-            </>
-          )}
+          {cardContent}
         </div>
       </motion.div>
     )
@@ -340,7 +304,6 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
 
       {/* Center: Timeline track */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-        {/* Dot */}
         <div
           style={{
             width: 16,
@@ -364,7 +327,6 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
             }}
           />
         </div>
-        {/* Line */}
         <div
           style={{
             width: 2,
@@ -377,245 +339,7 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
 
       {/* Right: Content card */}
       <div className="glass-card" style={{ padding: '24px 28px', marginBottom: 20 }}>
-        {/* Company row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: 8,
-              background: `${accentColor}12`,
-              border: `1px solid ${accentColor}20`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
-            }}
-          >
-            <Building2 style={{ width: 14, height: 14, color: accentColor }} />
-          </div>
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: '#eeeef5', lineHeight: 1.3 }}>{item.company}</h3>
-        </div>
-
-        {/* Title + Position */}
-        <p style={{ color: '#a855f7', fontWeight: 600, fontSize: 15, marginTop: 4, marginLeft: innerMarginLeft }}>
-          {item.title}
-          {item.position && (
-            <span
-              className="tag tag-purple"
-              style={{ marginLeft: 10, verticalAlign: 'middle', fontSize: 11, padding: '2px 8px' }}
-            >
-              {item.position}
-            </span>
-          )}
-        </p>
-
-        {/* Summary (always visible) */}
-        {item.summary && (
-          <p
-            style={{
-              color: '#a5a5c0',
-              fontSize: 13,
-              lineHeight: 1.6,
-              marginTop: 8,
-              marginLeft: innerMarginLeft
-            }}
-          >
-            {item.summary}
-          </p>
-        )}
-
-        {/* Expandable Section */}
-        {hasExpandable && (
-          <>
-            <AnimatePresence>
-              {expanded && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                  style={{ overflow: 'hidden', marginLeft: innerMarginLeft }}
-                >
-                  {/* Multi-project: project names + descriptions + skills */}
-                  {hasProjects &&
-                    item.projects.map((project, idx) => {
-                      const descs = Object.values(project.description || {})
-                      return (
-                        <div
-                          key={project.name}
-                          style={{
-                            marginTop: idx === 0 ? 16 : 20,
-                            paddingTop: idx === 0 ? 0 : 16,
-                            borderTop: idx === 0 ? 'none' : '1px solid rgba(38,38,85,0.3)'
-                          }}
-                        >
-                          <p
-                            style={{
-                              color: '#6e6e90',
-                              fontSize: 13,
-                              marginBottom: 10,
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: 6
-                            }}
-                          >
-                            <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
-                            {project.name}
-                          </p>
-                          {descs.length > 0 && (
-                            <ul style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                              {descs.map(desc => (
-                                <li
-                                  key={desc}
-                                  style={{
-                                    color: '#a5a5c0',
-                                    fontSize: 14,
-                                    lineHeight: 1.7,
-                                    display: 'flex',
-                                    alignItems: 'flex-start',
-                                    gap: 10
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      width: 6,
-                                      height: 6,
-                                      borderRadius: '50%',
-                                      backgroundColor: `${accentColor}60`,
-                                      marginTop: 8,
-                                      flexShrink: 0
-                                    }}
-                                  />
-                                  {desc}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                          {project.skills?.length > 0 && (
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 12 }}>
-                              {project.skills.map(skill => (
-                                <span
-                                  key={skill}
-                                  style={{
-                                    fontFamily: 'JetBrains Mono, ui-monospace, monospace',
-                                    fontSize: 11,
-                                    padding: '3px 10px',
-                                    borderRadius: 6,
-                                    background: `${accentColor}10`,
-                                    color: accentColor,
-                                    border: `1px solid ${accentColor}20`
-                                  }}
-                                >
-                                  {skill}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
-
-                  {/* Single project: name + descriptions + skills */}
-                  {!hasProjects && item.project && (
-                    <p
-                      style={{
-                        color: '#6e6e90',
-                        fontSize: 13,
-                        marginTop: 16,
-                        marginBottom: 10,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 6
-                      }}
-                    >
-                      <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
-                      {item.project}
-                    </p>
-                  )}
-                  {!hasProjects && descriptionItems.length > 0 && (
-                    <ul style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                      {descriptionItems.map(desc => (
-                        <li
-                          key={desc}
-                          style={{
-                            color: '#a5a5c0',
-                            fontSize: 14,
-                            lineHeight: 1.7,
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            gap: 10
-                          }}
-                        >
-                          <span
-                            style={{
-                              width: 6,
-                              height: 6,
-                              borderRadius: '50%',
-                              backgroundColor: `${accentColor}60`,
-                              marginTop: 8,
-                              flexShrink: 0
-                            }}
-                          />
-                          {desc}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {!hasProjects && item.skills?.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
-                      {item.skills.map(skill => (
-                        <span
-                          key={skill}
-                          style={{
-                            fontFamily: 'JetBrains Mono, ui-monospace, monospace',
-                            fontSize: 11,
-                            padding: '3px 10px',
-                            borderRadius: 6,
-                            background: `${accentColor}10`,
-                            color: accentColor,
-                            border: `1px solid ${accentColor}20`
-                          }}
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <button
-              onClick={() => setExpanded(prev => !prev)}
-              style={{
-                color: accentColor,
-                fontSize: 13,
-                fontWeight: 500,
-                cursor: 'pointer',
-                border: 'none',
-                background: 'none',
-                marginTop: 14,
-                marginLeft: innerMarginLeft,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-                padding: 0
-              }}
-            >
-              {expanded ? (
-                <>
-                  Show less <ChevronUp size={14} />
-                </>
-              ) : (
-                <>
-                  Show more <ChevronDown size={14} />
-                </>
-              )}
-            </button>
-          </>
-        )}
+        {cardContent}
       </div>
     </motion.div>
   )

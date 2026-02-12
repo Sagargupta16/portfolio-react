@@ -10,6 +10,47 @@ import SectionHeader from '@components/ui/SectionHeader'
 
 const FILTERS = ['All', 'Personal', 'Collaborative']
 
+const ProjectLink = ({ href, label, ariaLabel, icon: Icon }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 6,
+      padding: '6px 14px',
+      borderRadius: 8,
+      fontSize: 12,
+      fontWeight: 500,
+      color: '#a5a5c0',
+      border: '1px solid #262655',
+      background: 'rgba(6,6,16,0.5)',
+      textDecoration: 'none',
+      transition: 'all 0.2s'
+    }}
+    onMouseEnter={e => {
+      e.currentTarget.style.color = '#06b6d4'
+      e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)'
+    }}
+    onMouseLeave={e => {
+      e.currentTarget.style.color = '#a5a5c0'
+      e.currentTarget.style.borderColor = '#262655'
+    }}
+    aria-label={ariaLabel}
+  >
+    <Icon size={14} />
+    {label}
+  </a>
+)
+
+ProjectLink.propTypes = {
+  href: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+  icon: PropTypes.elementType.isRequired
+}
+
 const ProjectCard = ({ data }) => {
   const hasGithub = data.github && data.github !== '' && data.github !== '#'
   const hasLive = data.live && data.live !== '' && data.live !== '#'
@@ -147,70 +188,20 @@ const ProjectCard = ({ data }) => {
             }}
           >
             {hasGithub && (
-              <a
+              <ProjectLink
                 href={data.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 14px',
-                  borderRadius: 8,
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#a5a5c0',
-                  border: '1px solid #262655',
-                  background: 'rgba(6,6,16,0.5)',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.color = '#06b6d4'
-                  e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.color = '#a5a5c0'
-                  e.currentTarget.style.borderColor = '#262655'
-                }}
-                aria-label={`View ${data.title} on GitHub`}
-              >
-                <FaGithub size={14} />
-                Source
-              </a>
+                label="Source"
+                ariaLabel={`View ${data.title} on GitHub`}
+                icon={FaGithub}
+              />
             )}
             {hasLive && (
-              <a
+              <ProjectLink
                 href={data.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 14px',
-                  borderRadius: 8,
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#a5a5c0',
-                  border: '1px solid #262655',
-                  background: 'rgba(6,6,16,0.5)',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.color = '#06b6d4'
-                  e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.color = '#a5a5c0'
-                  e.currentTarget.style.borderColor = '#262655'
-                }}
-                aria-label={`View ${data.title} live demo`}
-              >
-                <ExternalLink size={14} />
-                Live Demo
-              </a>
+                label="Live Demo"
+                ariaLabel={`View ${data.title} live demo`}
+                icon={ExternalLink}
+              />
             )}
           </div>
         )}
