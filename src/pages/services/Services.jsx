@@ -5,6 +5,7 @@ import { getServices } from '@data/dataLoader'
 import { fadeInUp, staggerContainer } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
+import GlassCard from '@components/ui/GlassCard'
 
 const iconMap = {
   'Full-Stack Development': Code,
@@ -55,14 +56,8 @@ const Services = () => {
           const colors = ACCENT_COLORS[i % ACCENT_COLORS.length]
 
           return (
-            <motion.div
-              key={service.id}
-              className="glass-card p-6 md:p-8 transition-all duration-300"
-              style={{ padding: 32 }}
-              variants={fadeInUp}
-            >
+            <GlassCard key={service.id} style={{ padding: 32 }} variants={fadeInUp}>
               <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center mb-5"
                 style={{
                   width: 56,
                   height: 56,
@@ -74,21 +69,15 @@ const Services = () => {
                   backgroundColor: colors.iconBg
                 }}
               >
-                <IconComponent className="w-7 h-7" style={{ color: colors.icon }} />
+                <IconComponent style={{ width: 28, height: 28, color: colors.icon }} />
               </div>
 
-              <h3
-                className="text-lg font-bold text-text-primary mb-4"
-                style={{ fontSize: 18, fontWeight: 700, color: '#eeeef5', marginBottom: 16 }}
-              >
-                {service.title}
-              </h3>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#eeeef5', marginBottom: 16 }}>{service.title}</h3>
 
-              <ul className="space-y-3" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {service.list.map(item => (
                   <li
                     key={item}
-                    className="flex items-start gap-3 text-text-secondary text-sm leading-relaxed"
                     style={{
                       display: 'flex',
                       alignItems: 'flex-start',
@@ -99,7 +88,6 @@ const Services = () => {
                     }}
                   >
                     <span
-                      className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
                       style={{
                         width: 6,
                         height: 6,
@@ -113,7 +101,7 @@ const Services = () => {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </GlassCard>
           )
         })}
       </motion.div>

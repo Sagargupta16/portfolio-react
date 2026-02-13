@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, FolderGit2, Calendar, Users } from 'lucide-react'
@@ -228,6 +228,16 @@ ProjectCard.propTypes = {
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('All')
+
+  const handleFilterChange = useCallback(filter => {
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        setActiveFilter(filter)
+      })
+    } else {
+      setActiveFilter(filter)
+    }
+  }, [])
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const personalProjects = useMemo(() => getPersonalProjects(), [])
@@ -267,7 +277,7 @@ const Portfolio = () => {
           {FILTERS.map(filter => (
             <button
               key={filter}
-              onClick={() => setActiveFilter(filter)}
+              onClick={() => handleFilterChange(filter)}
               className={activeFilter === filter ? 'btn-primary' : ''}
               style={
                 activeFilter === filter

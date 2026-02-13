@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Nav from '@components/layout/Navigation/Nav'
 import Hero from '@components/layout/Header/Hero'
 import Footer from '@components/layout/Footer/Footer'
@@ -20,14 +21,25 @@ import GitHub from '@pages/github/GitHub'
 
 const SectionDivider = () => <div className="section-divider" />
 
-const GlassBackground = () => (
-  <div className="glass-bg" aria-hidden="true">
-    <div className="glass-orb glass-orb-1" />
-    <div className="glass-orb glass-orb-2" />
-    <div className="glass-orb glass-orb-3" />
-    <div className="glass-orb glass-orb-4" />
-  </div>
-)
+const GlassBackground = () => {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll()
+
+  // Each orb moves at different parallax speeds
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -200])
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -350])
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, -150])
+  const y4 = useTransform(scrollYProgress, [0, 1], [0, -280])
+
+  return (
+    <div className="glass-bg" ref={ref} aria-hidden="true">
+      <motion.div className="glass-orb glass-orb-1" style={{ y: y1 }} />
+      <motion.div className="glass-orb glass-orb-2" style={{ y: y2 }} />
+      <motion.div className="glass-orb glass-orb-3" style={{ y: y3 }} />
+      <motion.div className="glass-orb glass-orb-4" style={{ y: y4 }} />
+    </div>
+  )
+}
 
 const App = () => {
   useEffect(() => {

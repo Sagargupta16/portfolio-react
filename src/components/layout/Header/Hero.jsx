@@ -77,7 +77,7 @@ const Hero = () => {
       setRoleIndex(prev => (prev + 1) % roles.length)
     }, 3000)
     return () => clearInterval(interval)
-  }, [roles.length])
+  }, [roles])
 
   const scrollToAbout = useCallback(() => {
     const el = document.querySelector('#about')
@@ -167,8 +167,8 @@ const Hero = () => {
           <span className="gradient-text-vivid">{name}</span>
         </motion.h1>
 
-        {/* Role cycling */}
-        <motion.div className="h-9 md:h-11 flex items-center justify-center overflow-hidden" variants={staggerItem}>
+        {/* Animated role cycling */}
+        <motion.div className="h-9 md:h-11 flex items-center justify-center" variants={staggerItem}>
           <AnimatePresence mode="wait">
             <motion.p
               key={roleIndex}
@@ -214,6 +214,38 @@ const Hero = () => {
           >
             Download Resume
           </motion.a>
+        </motion.div>
+
+        {/* Status widget */}
+        <motion.div variants={staggerItem}>
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '8px 16px',
+              borderRadius: 12,
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              fontSize: 13,
+              color: '#a5a5c0'
+            }}
+          >
+            <span style={{ fontSize: 14 }}>&#128640;</span>
+            <span>Currently building with</span>
+            <span
+              style={{
+                fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                fontWeight: 600,
+                color: '#06b6d4',
+                fontSize: 12
+              }}
+            >
+              AWS &middot; React &middot; GenAI
+            </span>
+          </div>
         </motion.div>
 
         {/* Social icons */}

@@ -3,89 +3,163 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const Preloader = () => {
   const [loading, setLoading] = useState(true)
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1800)
-    return () => clearTimeout(timer)
+    // Simulate loading progress
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval)
+          return 100
+        }
+        return prev + Math.random() * 15 + 5
+      })
+    }, 150)
+
+    const timer = setTimeout(() => {
+      setProgress(100)
+      setTimeout(() => setLoading(false), 300)
+    }, 1800)
+
+    return () => {
+      clearTimeout(timer)
+      clearInterval(interval)
+    }
   }, [])
+
+  const displayProgress = Math.min(Math.round(progress), 100)
 
   return (
     <AnimatePresence>
       {loading && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 200,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'rgba(6, 6, 16, 0.95)',
-            backdropFilter: 'blur(40px)',
-            WebkitBackdropFilter: 'blur(40px)',
-            flexDirection: 'column',
-            gap: 24
-          }}
-        >
-          {/* Ambient glow */}
-          <div
+        <>
+          {/* Top half */}
+          <motion.div
+            initial={{ y: 0 }}
+            exit={{ y: '-100%' }}
+            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.05 }}
             style={{
-              position: 'absolute',
-              width: 300,
-              height: 300,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15), transparent 70%)',
-              filter: 'blur(40px)'
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '50%',
+              zIndex: 201,
+              background: 'rgba(6, 6, 16, 0.98)',
+              backdropFilter: 'blur(40px)',
+              WebkitBackdropFilter: 'blur(40px)',
+              borderBottom: '1px solid rgba(6, 182, 212, 0.1)'
             }}
           />
 
-          {/* SG Logo with glow animation */}
+          {/* Bottom half */}
           <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            initial={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.05 }}
             style={{
-              fontSize: 48,
-              fontWeight: 700,
-              fontFamily: 'JetBrains Mono, ui-monospace, monospace',
-              color: '#06b6d4',
-              letterSpacing: '0.05em',
-              textShadow: '0 0 30px rgba(6,182,212,0.5), 0 0 60px rgba(6,182,212,0.25)',
-              position: 'relative',
-              zIndex: 1
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '50%',
+              zIndex: 201,
+              background: 'rgba(6, 6, 16, 0.98)',
+              backdropFilter: 'blur(40px)',
+              WebkitBackdropFilter: 'blur(40px)',
+              borderTop: '1px solid rgba(6, 182, 212, 0.1)'
             }}
-          >
-            {'<SG />'}
-          </motion.div>
+          />
 
-          {/* Loading bar */}
-          <div
+          {/* Center content (sits on top of both halves) */}
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             style={{
-              width: 120,
-              height: 2,
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: 2,
-              overflow: 'hidden',
-              position: 'relative',
-              zIndex: 1
+              position: 'fixed',
+              inset: 0,
+              zIndex: 202,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              gap: 28,
+              pointerEvents: 'none'
             }}
           >
-            <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: '100%' }}
-              transition={{ duration: 1, repeat: Infinity, ease: 'easeInOut' }}
+            {/* Ambient glow */}
+            <div
               style={{
-                width: '50%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, #06b6d4, transparent)',
-                borderRadius: 2
+                position: 'absolute',
+                width: 400,
+                height: 400,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 70%)',
+                filter: 'blur(50px)'
               }}
             />
-          </div>
-        </motion.div>
+
+            {/* SG Logo */}
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              style={{
+                fontSize: 52,
+                fontWeight: 700,
+                fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                color: '#06b6d4',
+                letterSpacing: '0.05em',
+                textShadow: '0 0 30px rgba(6,182,212,0.5), 0 0 60px rgba(6,182,212,0.25)',
+                position: 'relative',
+                zIndex: 1
+              }}
+            >
+              {'<SG />'}
+            </motion.div>
+
+            {/* Progress bar */}
+            <div
+              style={{
+                width: 160,
+                height: 2,
+                background: 'rgba(255, 255, 255, 0.04)',
+                borderRadius: 2,
+                overflow: 'hidden',
+                position: 'relative',
+                zIndex: 1
+              }}
+            >
+              <motion.div
+                style={{
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #06b6d4, #a855f7)',
+                  borderRadius: 2
+                }}
+                initial={{ width: '0%' }}
+                animate={{ width: `${displayProgress}%` }}
+                transition={{ duration: 0.15, ease: 'easeOut' }}
+              />
+            </div>
+
+            {/* Percentage */}
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              style={{
+                fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                fontSize: 12,
+                color: '#6e6e90',
+                position: 'relative',
+                zIndex: 1
+              }}
+            >
+              {displayProgress}%
+            </motion.span>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   )

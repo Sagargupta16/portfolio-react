@@ -1,8 +1,9 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
-import { Mail, Calendar, Send, ArrowUpRight, CheckCircle, XCircle } from 'lucide-react'
+import { Mail, Calendar, Send, ArrowUpRight } from 'lucide-react'
+import Toast from '@components/ui/Toast'
 import { getContactOptions, getEmailConfig } from '@data/dataLoader'
 import { fadeInUp, staggerContainer, staggerItem } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
@@ -63,9 +64,15 @@ const Contact = () => {
   const [status, setStatus] = useState({ type: '', message: '' })
   const [isLoading, setIsLoading] = useState(false)
 
+  const [toastVisible, setToastVisible] = useState(false)
+
   useEffect(() => {
-    if (status.type === 'success') {
-      const timer = setTimeout(() => setStatus({ type: '', message: '' }), 5000)
+    if (status.type) {
+      setToastVisible(true)
+      const timer = setTimeout(() => {
+        setToastVisible(false)
+        setTimeout(() => setStatus({ type: '', message: '' }), 300)
+      }, 5000)
       return () => clearTimeout(timer)
     }
   }, [status.type])
@@ -353,38 +360,18 @@ const Contact = () => {
                 </>
               )}
             </button>
-
-            <AnimatePresence>
-              {status.message && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    padding: '10px 16px',
-                    borderRadius: 10,
-                    fontSize: 14,
-                    fontWeight: 500,
-                    background: status.type === 'success' ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)',
-                    border:
-                      status.type === 'success' ? '1px solid rgba(34,197,94,0.2)' : '1px solid rgba(239,68,68,0.2)',
-                    color: status.type === 'success' ? '#22c55e' : '#ef4444'
-                  }}
-                >
-                  {status.type === 'success' ? (
-                    <CheckCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
-                  ) : (
-                    <XCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
-                  )}
-                  {status.message}
-                </motion.div>
-              )}
-            </AnimatePresence>
           </form>
+
+          {/* Glass toast notification */}
+          <Toast
+            message={status.message || ''}
+            type={status.type || 'success'}
+            visible={toastVisible}
+            onClose={() => {
+              setToastVisible(false)
+              setTimeout(() => setStatus({ type: '', message: '' }), 300)
+            }}
+          />
         </motion.div>
       </motion.div>
     </motion.section>

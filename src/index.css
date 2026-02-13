@@ -547,6 +547,30 @@ img {
     0 0 25px rgba(6, 182, 212, 0.06);
 }
 
+/* ===== Skeleton Loading ===== */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ===== Typewriter cursor ===== */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: #a855f7;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
 /* ===== GitHub Calendar Override ===== */
 .react-activity-calendar {
   margin: 0 auto;
@@ -555,4 +579,34 @@ img {
 .react-activity-calendar text {
   fill: var(--color-text-muted) !important;
   font-size: 0.75rem;
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .glass-orb {
+    animation: none !important;
+    opacity: 0.25;
+  }
+
+  .glass-card:hover {
+    transform: none;
+  }
+
+  .skill-tag:hover {
+    transform: none;
+  }
+
+  .btn-primary:hover,
+  .btn-outline:hover {
+    transform: none;
+  }
 }

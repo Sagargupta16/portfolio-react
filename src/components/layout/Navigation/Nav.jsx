@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import useMediaQuery from '@utils/useMediaQuery'
@@ -18,8 +18,10 @@ const NAV_SECTIONS = [
 const Nav = () => {
   const isMobile = useMediaQuery('(max-width: 1023px)')
   const [activeSection, setActiveSection] = useState('hero')
+  const [sectionProgress, setSectionProgress] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const progressRef = useRef(0)
 
   const handleScroll = useCallback(() => {
     const scrollY = window.scrollY
@@ -38,11 +40,15 @@ const Nav = () => {
 
         if (viewMiddle >= sectionTop && viewMiddle < sectionBottom) {
           current = section.id
+          // Calculate progress within the active section (0 to 1)
+          const rawProgress = (viewMiddle - sectionTop) / (sectionBottom - sectionTop)
+          progressRef.current = Math.max(0, Math.min(1, rawProgress))
         }
       }
     }
 
     setActiveSection(current)
+    setSectionProgress(progressRef.current)
   }, [])
 
   useEffect(() => {
@@ -133,7 +139,11 @@ const Nav = () => {
                     transition: 'all 0.2s ease',
                     color: isActive ? '#06b6d4' : 'rgba(165, 165, 192, 0.9)',
                     backgroundColor: isActive ? 'rgba(6, 182, 212, 0.1)' : 'transparent',
-                    backdropFilter: isActive ? 'blur(8px)' : 'none'
+                    backdropFilter: isActive ? 'blur(8px)' : 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    position: 'relative'
                   }}
                   onMouseEnter={e => {
                     if (!isActive) {
@@ -149,6 +159,20 @@ const Nav = () => {
                   }}
                   aria-label={`Navigate to ${section.label}`}
                 >
+                  {/* Progress dot */}
+                  {isActive && (
+                    <span
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: '50%',
+                        background: '#06b6d4',
+                        boxShadow: `0 0 ${6 + sectionProgress * 8}px rgba(6, 182, 212, ${0.3 + sectionProgress * 0.5})`,
+                        transition: 'box-shadow 0.15s ease',
+                        flexShrink: 0
+                      }}
+                    />
+                  )}
                   {section.label}
                 </button>
               )

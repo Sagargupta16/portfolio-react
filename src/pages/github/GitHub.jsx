@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { GitHubCalendar } from 'react-github-calendar'
 import { ArrowRight } from 'lucide-react'
@@ -5,8 +6,44 @@ import { fadeIn } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
+const CalendarSkeleton = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
+    {/* Skeleton rows mimicking the calendar grid */}
+    {Array.from({ length: 7 }).map((_, row) => (
+      <div key={row} style={{ display: 'flex', gap: 4 }}>
+        {Array.from({ length: 52 }).map((_, col) => (
+          <div
+            key={col}
+            className="skeleton"
+            style={{
+              width: 11,
+              height: 11,
+              borderRadius: 3,
+              opacity: 0.3 + Math.random() * 0.4,
+              animationDelay: `${(row * 52 + col) * 2}ms`
+            }}
+          />
+        ))}
+      </div>
+    ))}
+    {/* Month labels skeleton */}
+    <div style={{ display: 'flex', gap: 28, marginTop: 8 }}>
+      {Array.from({ length: 12 }).map((_, i) => (
+        <div key={i} className="skeleton" style={{ width: 24, height: 10, borderRadius: 3, opacity: 0.3 }} />
+      ))}
+    </div>
+  </div>
+)
+
 const GitHub = () => {
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const [calendarLoaded, setCalendarLoaded] = useState(false)
+
+  const handleTransformData = useCallback(contributions => {
+    setCalendarLoaded(true)
+    return contributions
+  }, [])
+
   return (
     <motion.section
       id="github"
@@ -24,7 +61,10 @@ const GitHub = () => {
           style={{ padding: isMobile ? '16px 12px' : '24px 40px', overflowX: 'auto' }}
           variants={fadeIn}
         >
-          <GitHubCalendar username="Sagargupta16" colorScheme="dark" />
+          {!calendarLoaded && <CalendarSkeleton />}
+          <div style={calendarLoaded ? {} : { position: 'absolute', opacity: 0, pointerEvents: 'none' }}>
+            <GitHubCalendar username="Sagargupta16" colorScheme="dark" transformData={handleTransformData} />
+          </div>
         </motion.div>
 
         <motion.a

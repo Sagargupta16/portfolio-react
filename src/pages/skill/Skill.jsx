@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
 import { getSkills } from '@data/dataLoader'
 import { sectionReveal, staggerContainer, staggerItem } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
@@ -18,6 +19,30 @@ const CATEGORY_CONFIG = {
 }
 
 const SECONDARY_CATEGORIES = ['soft_skills', 'areas_of_interest', 'game_dev_tools']
+
+const SkillTagGroup = ({ items }) => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
+
+  return (
+    <div ref={ref} className="flex flex-wrap gap-2.5" style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+      {items.map((skill, i) => (
+        <motion.span
+          key={skill}
+          className="skill-tag"
+          initial={{ opacity: 0, y: 12, scale: 0.9 }}
+          animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{
+            duration: 0.3,
+            delay: i * 0.04,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}
+        >
+          {skill}
+        </motion.span>
+      ))}
+    </div>
+  )
+}
 
 const Skill = () => {
   const isMobile = useMediaQuery('(max-width: 768px)')
@@ -84,13 +109,7 @@ const Skill = () => {
                 />
                 {label}
               </h3>
-              <div className="flex flex-wrap gap-2.5" style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-                {items.map(skill => (
-                  <span key={skill} className="skill-tag">
-                    {skill}
-                  </span>
-                ))}
-              </div>
+              <SkillTagGroup items={items} />
             </motion.div>
           ))}
         </motion.div>
