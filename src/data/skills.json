@@ -46,7 +46,9 @@
     "AWS CloudFormation",
     "AWS DynamoDB",
     "AWS CodeBuild",
-    "AWS CodeDeploy"
+    "AWS CodeDeploy",
+    "AWS VPC",
+    "AWS ALB"
   ],
   "devops_tools": [
     "Terraform",
@@ -107,7 +109,7 @@
     "Creativity",
     "Time Management"
   ],
-  "ai_coding_assistants": ["GitHub Copilot", "ChatGPT", "Claude", "Gemini", "Cursor AI"],
+  "ai_coding_assistants": ["GitHub Copilot", "Amazon Q", "ChatGPT", "Claude", "Gemini", "Cursor AI"],
   "areas_of_interest": [
     "Full-Stack Development",
     "DevOps",

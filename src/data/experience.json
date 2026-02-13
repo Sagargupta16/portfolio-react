@@ -12,15 +12,33 @@
         {
           "name": "DevOps Infrastructure Automation - State Street",
           "description": {
-            "1": "Developed and maintained reusable Terraform modules for core AWS services (EventBridge, CloudWatch, SNS, EBS, Detective), reducing infrastructure deployment time by up-to 80% and ensuring standardized architecture.",
-            "2": "Implemented comprehensive unit testing framework using tftest to validate Terraform modules, ensuring infrastructure reliability.",
-            "3": "Designed and delivered technical specifications and user guides that enforced enterprise security hardening guidelines, reducing compliance audit overhead.",
-            "4": "Collaborated closely with stakeholders to gather requirements and ensure delivery of infrastructure solutions meeting business needs."
+            "1": "Developed and maintained reusable Terraform modules for core AWS services (EventBridge, CloudWatch, SNS, EBS, Detective), reducing infrastructure deployment time by up to 80% across 38+ enabled services.",
+            "2": "Implemented comprehensive unit testing framework using tftest to validate Terraform modules, achieving high deployment confidence and infrastructure reliability.",
+            "3": "Designed and delivered technical specifications enforcing enterprise security hardening guidelines with 1000+ preventative controls, reducing compliance audit overhead.",
+            "4": "Achieved 10/10 CSAT score through close stakeholder collaboration, translating business requirements into scalable infrastructure solutions."
           },
-          "skills": ["AWS", "EventBridge", "CloudWatch", "SNS", "EBS", "Detective", "Terraform", "tftest"]
+          "skills": [
+            "AWS",
+            "EventBridge",
+            "CloudWatch",
+            "SNS",
+            "EBS",
+            "Detective",
+            "Terraform",
+            "tftest",
+            "Security Hardening"
+          ]
         },
         {
-          "name": "Medical Image Classification MLOps Pipeline",
+          "name": "DevSecOps Infrastructure Automation - DTCC",
+          "description": {
+            "1": "Refactored and created Terraform infrastructure modules to modernize legacy systems for cloud-native transformation in financial services.",
+            "2": "Integrated Amazon Q AI capabilities to accelerate code analysis, documentation, and migration assessments across the engagement."
+          },
+          "skills": ["AWS", "Terraform", "Amazon Q", "CloudFormation", "DevSecOps", "Cloud Migration"]
+        },
+        {
+          "name": "Medical Image Classification MLOps Pipeline - ProServe MLOps SME",
           "description": {
             "1": "Architected an end-to-end MLOps pipeline on AWS SageMaker, automating data processing, multi-model training, and ensemble model creation.",
             "2": "Implemented production-ready SageMaker endpoints with blue-green deployment, auto-scaling, and real-time monitoring for drift detection, providing zero-downtime model updates and automatic rollback capabilities.",
@@ -44,7 +62,7 @@
     {
       "id": 2,
       "date": "March 2024 - July 2024",
-      "title": "Associate Professional Services",
+      "title": "Associate Professional Services - DevOps",
       "position": "Internship",
       "company": "Amazon Web Services",
       "location": "Hyderabad, India",
@@ -101,12 +119,7 @@
         "Ansible",
         "Python",
         "JavaScript",
-        "CI/CD",
-        "Testing",
-        "Linting",
-        "DevOps",
-        "Infrastructure Automation",
-        "Deployment"
+        "CI/CD"
       ]
     }
   ],

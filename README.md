@@ -34,18 +34,18 @@ A modern, dark-themed personal portfolio showcasing my professional journey as a
 
 ## Sections
 
-| Section          | Description                                                              |
-| ---------------- | ------------------------------------------------------------------------ |
-| **Hero**         | Animated intro with particle background, role cycling, and key stats     |
-| **About**        | Bio, highlights, and animated stat counters                              |
-| **Experience**   | Timeline with expandable project details and skill tags                  |
-| **Education**    | Academic timeline with animated CGPA counters                            |
-| **Skills**       | Categorized skill grid (Cloud, DevOps, ML, Frameworks, etc.)             |
-| **Projects**     | Filterable cards (Personal / Collaborative) with tech tags               |
-| **Achievements** | Certifications, learning badges, coding platform stats, and competitions |
-| **Services**     | Service offerings grid                                                   |
-| **GitHub**       | Contribution heatmap                                                     |
-| **Contact**      | Contact form (EmailJS) + direct contact options                          |
+| Section               | Description                                                              |
+| --------------------- | ------------------------------------------------------------------------ |
+| **Hero**              | Animated intro with particle background, role cycling, and key stats     |
+| **About**             | Bio, highlights, and animated stat counters                              |
+| **Experience**        | Timeline with expandable project details and skill tags                  |
+| **Education**         | Academic timeline with animated CGPA counters                            |
+| **Skills**            | Categorized skill grid (Cloud, DevOps, ML, Frameworks, etc.)             |
+| **Personal Projects** | Filterable cards (Personal / Collaborative) with tech tags               |
+| **Achievements**      | Certifications, learning badges, coding platform stats, and competitions |
+| **Services**          | Service offerings grid                                                   |
+| **GitHub**            | Contribution heatmap                                                     |
+| **Contact**           | Contact form (EmailJS) + direct contact options                          |
 
 ---
 

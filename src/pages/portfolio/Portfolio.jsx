@@ -8,7 +8,7 @@ import { staggerContainer, scaleIn } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
-const FILTERS = ['All', 'Personal', 'Collaborative']
+const FILTERS = ['All', 'Personal', 'Team']
 
 const ProjectLink = ({ href, label, ariaLabel, icon: Icon }) => (
   <a
@@ -54,7 +54,7 @@ ProjectLink.propTypes = {
 const ProjectCard = ({ data }) => {
   const hasGithub = data.github && data.github !== '' && data.github !== '#'
   const hasLive = data.live && data.live !== '' && data.live !== '#'
-  const isCollab = data.category === 'Collaborative'
+  const isCollab = data.category === 'Team'
 
   return (
     <motion.div
@@ -234,10 +234,10 @@ const Portfolio = () => {
 
   const filteredProjects = useMemo(() => {
     const personal = personalProjects.map(p => ({ ...p, category: 'Personal' }))
-    const collab = collaborativeProjects.map(p => ({ ...p, category: 'Collaborative' }))
+    const collab = collaborativeProjects.map(p => ({ ...p, category: 'Team' }))
 
     if (activeFilter === 'Personal') return personal
-    if (activeFilter === 'Collaborative') return collab
+    if (activeFilter === 'Team') return collab
     return [...personal, ...collab]
   }, [activeFilter, personalProjects, collaborativeProjects])
 
@@ -250,7 +250,7 @@ const Portfolio = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
     >
-      <SectionHeader title="Projects" subtitle="Things I've built" />
+      <SectionHeader title="Personal Projects" subtitle="Things I've built" />
 
       <div className="max-w-6xl mx-auto" style={{ maxWidth: 1152, margin: '0 auto' }}>
         {/* Filter buttons */}

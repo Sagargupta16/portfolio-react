@@ -5,7 +5,7 @@
     "list": [
       "Frontend Development",
       "Backend Development",
-      "MERN Stack Development",
+      "API Development",
       "Responsive Web Design",
       "Web App Development"
     ]
@@ -13,7 +13,7 @@
   {
     "id": 2,
     "title": "DevOps & MLOps",
-    "list": ["AWS Infrastructure", "MLOps Pipelines", "Terraform IaC", "CI/CD Pipelines", "Docker Containerization"]
+    "list": ["Cloud Infrastructure", "MLOps Pipelines", "Infrastructure as Code", "CI/CD Pipelines", "Containerization"]
   },
   {
     "id": 3,
@@ -32,12 +32,12 @@
   },
   {
     "id": 6,
-    "title": "Technical Consulting",
+    "title": "Cloud Architecture & Consulting",
     "list": [
+      "Cloud Migration",
       "Architecture Design",
-      "Code Review",
+      "Security & Compliance",
       "Technical Documentation",
-      "Team Leadership",
       "Performance Optimization"
     ]
   }
