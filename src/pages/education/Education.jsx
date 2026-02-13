@@ -275,7 +275,7 @@ const EducationCard = ({ item, index, isMobile }) => {
             height: 16,
             borderRadius: '50%',
             border: '2px solid #a855f7',
-            backgroundColor: '#060610',
+            backgroundColor: 'rgba(6, 6, 16, 0.6)',
             marginTop: 6,
             position: 'relative',
             zIndex: 2,

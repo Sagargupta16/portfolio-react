@@ -55,7 +55,8 @@ const DevAvatar = () => {
             width: '100%',
             height: '100%',
             borderRadius: '50%',
-            background: '#0a0a14'
+            background: 'rgba(10, 10, 20, 0.8)',
+            backdropFilter: 'blur(8px)'
           }}
         />
       </motion.div>
@@ -66,7 +67,8 @@ const DevAvatar = () => {
           position: 'absolute',
           inset: 34,
           borderRadius: '50%',
-          background: 'radial-gradient(circle at 30% 30%, #12122a, #0a0a14)',
+          background: 'radial-gradient(circle at 30% 30%, rgba(18,18,42,0.9), rgba(10,10,20,0.85))',
+          backdropFilter: 'blur(12px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -113,7 +115,7 @@ const DevAvatar = () => {
           cy={center}
           r={orbitRadius}
           fill="none"
-          stroke="#1a1a2e"
+          stroke="rgba(255,255,255,0.06)"
           strokeWidth="1"
           strokeDasharray="4 6"
         />
@@ -135,8 +137,9 @@ const DevAvatar = () => {
               width: 36,
               height: 36,
               borderRadius: 10,
-              background: `${color}10`,
-              border: `1px solid ${color}25`,
+              background: `${color}0d`,
+              backdropFilter: 'blur(8px)',
+              border: `1px solid ${color}18`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'

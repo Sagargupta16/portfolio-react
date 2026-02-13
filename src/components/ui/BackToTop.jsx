@@ -42,9 +42,10 @@ const BackToTop = () => {
             width: isMobile ? 40 : 44,
             height: isMobile ? 40 : 44,
             borderRadius: 12,
-            border: '1px solid rgba(6,182,212,0.3)',
-            background: 'rgba(6,6,16,0.9)',
-            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            background: 'rgba(15,15,35,0.5)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
             color: '#06b6d4',
             cursor: 'pointer',
             display: 'flex',
@@ -54,13 +55,13 @@ const BackToTop = () => {
             boxShadow: '0 4px 20px rgba(0,0,0,0.4)'
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.borderColor = 'rgba(6,182,212,0.6)'
-            e.currentTarget.style.boxShadow = '0 0 25px rgba(6,182,212,0.2), 0 4px 20px rgba(0,0,0,0.4)'
+            e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)'
+            e.currentTarget.style.boxShadow = '0 0 25px rgba(6,182,212,0.15), 0 4px 20px rgba(0,0,0,0.3)'
             e.currentTarget.style.transform = 'translateY(-2px)'
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)'
-            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4)'
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)'
             e.currentTarget.style.transform = 'translateY(0)'
           }}
           aria-label="Back to top"

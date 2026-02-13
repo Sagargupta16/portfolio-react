@@ -134,7 +134,7 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
                         style={{
                           marginTop: idx === 0 ? 16 : 20,
                           paddingTop: idx === 0 ? 0 : 16,
-                          borderTop: idx === 0 ? 'none' : '1px solid rgba(38,38,85,0.3)'
+                          borderTop: idx === 0 ? 'none' : '1px solid rgba(255,255,255,0.04)'
                         }}
                       >
                         <p
@@ -310,7 +310,7 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
             height: 16,
             borderRadius: '50%',
             border: `2px solid ${accentColor}`,
-            backgroundColor: '#060610',
+            backgroundColor: 'rgba(6, 6, 16, 0.6)',
             marginTop: 6,
             position: 'relative',
             zIndex: 2,

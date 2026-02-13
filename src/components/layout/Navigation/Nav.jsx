@@ -72,10 +72,11 @@ const Nav = () => {
           right: 0,
           zIndex: 50,
           height: 64,
-          backgroundColor: scrolled ? 'rgba(6, 6, 16, 0.92)' : 'rgba(6, 6, 16, 0.7)',
-          backdropFilter: scrolled ? 'blur(24px)' : 'none',
-          boxShadow: scrolled ? '0 10px 15px -3px rgba(0,0,0,0.3)' : 'none',
-          borderBottom: '1px solid rgba(38, 38, 85, 0.5)',
+          backgroundColor: scrolled ? 'rgba(10, 10, 26, 0.6)' : 'rgba(10, 10, 26, 0.2)',
+          backdropFilter: scrolled ? 'blur(24px)' : 'blur(12px)',
+          WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'blur(12px)',
+          boxShadow: scrolled ? '0 10px 40px rgba(0,0,0,0.3), inset 0 -1px 0 rgba(255,255,255,0.04)' : 'none',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
           transition: 'background-color 0.3s, backdrop-filter 0.3s, box-shadow 0.3s'
         }}
         initial={{ y: -80, opacity: 0 }}
@@ -130,8 +131,9 @@ const Nav = () => {
                     cursor: 'pointer',
                     border: 'none',
                     transition: 'all 0.2s ease',
-                    color: isActive ? '#06b6d4' : '#a5a5c0',
-                    backgroundColor: isActive ? 'rgba(6, 182, 212, 0.15)' : 'transparent'
+                    color: isActive ? '#06b6d4' : 'rgba(165, 165, 192, 0.9)',
+                    backgroundColor: isActive ? 'rgba(6, 182, 212, 0.1)' : 'transparent',
+                    backdropFilter: isActive ? 'blur(8px)' : 'none'
                   }}
                   onMouseEnter={e => {
                     if (!isActive) {
@@ -141,7 +143,7 @@ const Nav = () => {
                   }}
                   onMouseLeave={e => {
                     if (!isActive) {
-                      e.currentTarget.style.color = '#a5a5c0'
+                      e.currentTarget.style.color = 'rgba(165, 165, 192, 0.9)'
                       e.currentTarget.style.backgroundColor = 'transparent'
                     }
                   }}
@@ -197,8 +199,9 @@ const Nav = () => {
               style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                backdropFilter: 'blur(4px)'
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)'
               }}
               onClick={() => setMobileMenuOpen(false)}
             />
@@ -211,8 +214,11 @@ const Nav = () => {
                 right: 0,
                 bottom: 0,
                 width: 288,
-                backgroundColor: '#0c0c1e',
-                borderLeft: '1px solid rgba(38, 38, 85, 0.7)'
+                backgroundColor: 'rgba(12, 12, 30, 0.7)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                borderLeft: '1px solid rgba(255, 255, 255, 0.06)',
+                boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.3)'
               }}
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -232,7 +238,7 @@ const Nav = () => {
                     border: 'none',
                     transition: 'all 0.2s',
                     color: activeSection === 'hero' ? '#06b6d4' : '#a5a5c0',
-                    backgroundColor: activeSection === 'hero' ? 'rgba(6, 182, 212, 0.1)' : 'transparent'
+                    backgroundColor: activeSection === 'hero' ? 'rgba(6, 182, 212, 0.08)' : 'transparent'
                   }}
                 >
                   Home
@@ -253,7 +259,7 @@ const Nav = () => {
                         border: 'none',
                         transition: 'all 0.2s',
                         color: isActive ? '#06b6d4' : '#a5a5c0',
-                        backgroundColor: isActive ? 'rgba(6, 182, 212, 0.1)' : 'transparent'
+                        backgroundColor: isActive ? 'rgba(6, 182, 212, 0.08)' : 'transparent'
                       }}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}

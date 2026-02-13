@@ -106,7 +106,7 @@ const Skill = () => {
               style={{
                 height: 1,
                 background:
-                  'linear-gradient(90deg, transparent 5%, rgba(38,38,85,0.5) 20%, rgba(6,182,212,0.5) 50%, rgba(38,38,85,0.5) 80%, transparent 95%)'
+                  'linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.04) 20%, rgba(6,182,212,0.3) 50%, rgba(255,255,255,0.04) 80%, transparent 95%)'
               }}
             />
             <h3

@@ -23,11 +23,25 @@ const Preloader = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: '#060610',
+            background: 'rgba(6, 6, 16, 0.95)',
+            backdropFilter: 'blur(40px)',
+            WebkitBackdropFilter: 'blur(40px)',
             flexDirection: 'column',
             gap: 24
           }}
         >
+          {/* Ambient glow */}
+          <div
+            style={{
+              position: 'absolute',
+              width: 300,
+              height: 300,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15), transparent 70%)',
+              filter: 'blur(40px)'
+            }}
+          />
+
           {/* SG Logo with glow animation */}
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
@@ -39,7 +53,9 @@ const Preloader = () => {
               fontFamily: 'JetBrains Mono, ui-monospace, monospace',
               color: '#06b6d4',
               letterSpacing: '0.05em',
-              textShadow: '0 0 30px rgba(6,182,212,0.5), 0 0 60px rgba(6,182,212,0.25)'
+              textShadow: '0 0 30px rgba(6,182,212,0.5), 0 0 60px rgba(6,182,212,0.25)',
+              position: 'relative',
+              zIndex: 1
             }}
           >
             {'<SG />'}
@@ -50,9 +66,11 @@ const Preloader = () => {
             style={{
               width: 120,
               height: 2,
-              background: 'rgba(38,38,85,0.5)',
+              background: 'rgba(255, 255, 255, 0.05)',
               borderRadius: 2,
-              overflow: 'hidden'
+              overflow: 'hidden',
+              position: 'relative',
+              zIndex: 1
             }}
           >
             <motion.div

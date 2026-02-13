@@ -111,8 +111,10 @@ const About = () => {
                       alignItems: 'flex-start',
                       padding: isMobile ? '12px 14px' : '14px 16px',
                       borderRadius: 12,
-                      background: 'rgba(14, 14, 38, 0.6)',
-                      border: '1px solid rgba(38, 38, 85, 0.5)'
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)',
+                      border: '1px solid rgba(255, 255, 255, 0.06)'
                     }}
                   >
                     <div

@@ -20,6 +20,15 @@ import GitHub from '@pages/github/GitHub'
 
 const SectionDivider = () => <div className="section-divider" />
 
+const GlassBackground = () => (
+  <div className="glass-bg" aria-hidden="true">
+    <div className="glass-orb glass-orb-1" />
+    <div className="glass-orb glass-orb-2" />
+    <div className="glass-orb glass-orb-3" />
+    <div className="glass-orb glass-orb-4" />
+  </div>
+)
+
 const App = () => {
   useEffect(() => {
     const lenis = new Lenis({
@@ -42,7 +51,8 @@ const App = () => {
       <Preloader />
       <ScrollProgress />
       <KeyboardNav />
-      <div className="relative min-h-screen bg-bg-primary">
+      <GlassBackground />
+      <div className="relative min-h-screen">
         <Nav />
         <main>
           <Hero />

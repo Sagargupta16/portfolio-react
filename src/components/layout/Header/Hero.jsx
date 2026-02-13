@@ -92,10 +92,37 @@ const Hero = () => {
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden flex items-center justify-center">
       {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-bg-primary/90 to-bg-secondary" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(6, 182, 212, 0.06) 0%, transparent 70%)'
+        }}
+      />
       <div className="absolute inset-0 grid-bg" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-accent-cyan/[0.03] rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-accent-purple/[0.04] rounded-full blur-[100px]" />
+      <div
+        className="absolute"
+        style={{
+          top: '10%',
+          left: '20%',
+          width: 500,
+          height: 500,
+          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.08), transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(60px)'
+        }}
+      />
+      <div
+        className="absolute"
+        style={{
+          bottom: '10%',
+          right: '10%',
+          width: 400,
+          height: 400,
+          background: 'radial-gradient(circle, rgba(168, 85, 247, 0.06), transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(60px)'
+        }}
+      />
 
       {/* Particles */}
       {engineInit && <Particles className="absolute inset-0 z-0" options={particlesOptions} />}
@@ -109,7 +136,22 @@ const Hero = () => {
       >
         {/* Terminal badge */}
         <motion.div variants={staggerItem}>
-          <span className="inline-flex items-center gap-2 font-mono text-sm text-accent-green bg-accent-green/[0.08] border border-accent-green/20 rounded-full px-4 py-1.5">
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+              fontSize: 14,
+              color: '#22c55e',
+              background: 'rgba(34, 197, 94, 0.06)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(34, 197, 94, 0.12)',
+              borderRadius: 9999,
+              padding: '6px 16px'
+            }}
+          >
             <span className="w-2 h-2 rounded-full bg-accent-green animate-glow-pulse" />
             {'// Cloud Consultant \u2014 DevOps/MLOps @ AWS'}
             <span className="animate-blink">|</span>
@@ -185,9 +227,32 @@ const Hero = () => {
                 href={profile.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl border border-border bg-bg-card/50 flex items-center justify-center text-text-secondary hover:text-accent-cyan hover:border-accent-cyan/40 transition-all duration-300"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 12,
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#a5a5c0',
+                  transition: 'all 0.3s'
+                }}
                 whileHover={{ scale: 1.15, y: -3 }}
                 whileTap={{ scale: 0.9 }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.color = '#06b6d4'
+                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.3)'
+                  e.currentTarget.style.background = 'rgba(6, 182, 212, 0.08)'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = '#a5a5c0'
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)'
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                }}
                 aria-label={`Visit ${profile.name} profile`}
               >
                 <IconComponent size={18} />

@@ -24,8 +24,9 @@ const ProjectLink = ({ href, label, ariaLabel, icon: Icon }) => (
       fontSize: 12,
       fontWeight: 500,
       color: '#a5a5c0',
-      border: '1px solid #262655',
-      background: 'rgba(6,6,16,0.5)',
+      border: '1px solid rgba(255, 255, 255, 0.06)',
+      background: 'rgba(255, 255, 255, 0.03)',
+      backdropFilter: 'blur(8px)',
       textDecoration: 'none',
       transition: 'all 0.2s'
     }}
@@ -35,7 +36,7 @@ const ProjectLink = ({ href, label, ariaLabel, icon: Icon }) => (
     }}
     onMouseLeave={e => {
       e.currentTarget.style.color = '#a5a5c0'
-      e.currentTarget.style.borderColor = '#262655'
+      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)'
     }}
     aria-label={ariaLabel}
   >
@@ -184,7 +185,7 @@ const ProjectCard = ({ data }) => {
               display: 'flex',
               gap: 8,
               paddingTop: 14,
-              borderTop: '1px solid rgba(38,38,85,0.3)'
+              borderTop: '1px solid rgba(255,255,255,0.04)'
             }}
           >
             {hasGithub && (
@@ -278,9 +279,10 @@ const Portfolio = () => {
                       fontFamily: 'JetBrains Mono, ui-monospace, monospace',
                       fontWeight: 500,
                       cursor: 'pointer',
-                      border: '1px solid #262655',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
                       color: '#a5a5c0',
-                      background: 'transparent'
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      backdropFilter: 'blur(8px)'
                     }
               }
             >

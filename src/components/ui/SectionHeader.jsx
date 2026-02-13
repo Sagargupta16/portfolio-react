@@ -5,7 +5,6 @@ import { fadeInUp, lineGrow } from '@utils/animations'
 const SectionHeader = ({ title, subtitle }) => {
   return (
     <motion.div
-      className="flex flex-col items-center gap-4 mb-16 text-center"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -21,7 +20,6 @@ const SectionHeader = ({ title, subtitle }) => {
     >
       {subtitle && (
         <span
-          className="inline-flex items-center gap-2 font-mono text-sm text-text-muted bg-bg-card/60 border border-border rounded-full px-4 py-1.5"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -29,20 +27,20 @@ const SectionHeader = ({ title, subtitle }) => {
             fontFamily: 'JetBrains Mono, ui-monospace, monospace',
             fontSize: 14,
             color: '#6e6e90',
-            backgroundColor: '#14142d',
-            border: '1px solid #262655',
+            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
             borderRadius: 9999,
             padding: '6px 16px'
           }}
         >
-          <span className="text-accent-cyan" style={{ color: '#06b6d4' }}>
-            {'>'}
-          </span>
+          <span style={{ color: '#06b6d4' }}>{'>'}</span>
           {subtitle}
         </span>
       )}
       <h2
-        className="gradient-text text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight"
+        className="gradient-text"
         style={{
           fontSize: '2.25rem',
           fontWeight: 700,
@@ -52,7 +50,6 @@ const SectionHeader = ({ title, subtitle }) => {
         {title}
       </h2>
       <motion.div
-        className="h-0.5 w-20 rounded-full mt-1 bg-gradient-to-r from-accent-cyan to-accent-purple"
         style={{
           height: 2,
           width: 80,
