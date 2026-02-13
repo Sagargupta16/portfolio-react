@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, FolderGit2, Calendar, Users } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
 import { getPersonalProjects, getCollaborativeProjects } from '@data/dataLoader'
-import { staggerContainer, scaleIn } from '@utils/animations'
+import { sectionReveal, staggerContainer, fadeInUp } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
@@ -52,7 +52,7 @@ ProjectLink.propTypes = {
   icon: PropTypes.elementType.isRequired
 }
 
-const ProjectCard = ({ data }) => {
+const ProjectCard = ({ data, index = 0 }) => {
   const hasGithub = data.github && data.github !== '' && data.github !== '#'
   const hasLive = data.live && data.live !== '' && data.live !== '#'
   const isCollab = data.category === 'Team'
@@ -61,12 +61,20 @@ const ProjectCard = ({ data }) => {
     <motion.div
       className="glass-card"
       style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
-      variants={scaleIn}
       layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.3 }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -20, scale: 0.95 }}
+      transition={{
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1],
+        delay: index * 0.1,
+        layout: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+      }}
+      whileHover={{
+        y: -6,
+        transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] }
+      }}
     >
       {/* Accent top bar */}
       <div
@@ -223,7 +231,8 @@ ProjectCard.propTypes = {
     category: PropTypes.string,
     team: PropTypes.string,
     achievement: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  index: PropTypes.number
 }
 
 const Portfolio = () => {
@@ -260,12 +269,13 @@ const Portfolio = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
+      variants={sectionReveal}
     >
       <SectionHeader title="Personal Projects" subtitle="Things I've built" />
 
       <div className="max-w-6xl mx-auto" style={{ maxWidth: 1152, margin: '0 auto' }}>
         {/* Filter buttons */}
-        <div
+        <motion.div
           style={{
             display: 'flex',
             gap: isMobile ? 8 : 12,
@@ -273,9 +283,10 @@ const Portfolio = () => {
             justifyContent: 'center',
             flexWrap: 'wrap'
           }}
+          variants={fadeInUp}
         >
-          {FILTERS.map(filter => (
-            <button
+          {FILTERS.map((filter, idx) => (
+            <motion.button
               key={filter}
               onClick={() => handleFilterChange(filter)}
               className={activeFilter === filter ? 'btn-primary' : ''}
@@ -295,11 +306,16 @@ const Portfolio = () => {
                       backdropFilter: 'blur(8px)'
                     }
               }
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1], delay: 0.1 + idx * 0.08 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
             >
               {filter}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
         <motion.div
           style={{
@@ -310,8 +326,8 @@ const Portfolio = () => {
           variants={staggerContainer}
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map(project => (
-              <ProjectCard key={`${project.category}-${project.id}`} data={project} />
+            {filteredProjects.map((project, idx) => (
+              <ProjectCard key={`${project.category}-${project.id}`} data={project} index={idx} />
             ))}
           </AnimatePresence>
         </motion.div>

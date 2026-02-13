@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, ChevronDown, ChevronUp, Building2, FolderGit2 } from 'lucide-react'
+import { MapPin, ChevronDown, Building2, FolderGit2 } from 'lucide-react'
 import { getExperience, getPositionsOfResponsibility } from '@data/dataLoader'
 import { sectionReveal, staggerContainer, staggerItem, fadeInUp } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
@@ -115,66 +115,102 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
       {/* Expandable Section */}
       {hasExpandable && (
         <>
-          <AnimatePresence>
+          <AnimatePresence initial={false}>
             {expanded && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                transition={{
+                  height: { duration: 0.8, ease: [0.4, 0, 0.2, 1] },
+                  opacity: { duration: 0.6, ease: [0.4, 0, 0.2, 1] }
+                }}
                 style={{ overflow: 'hidden', marginLeft: ml }}
               >
-                {/* Multi-project: project names + descriptions + skills */}
-                {hasProjects &&
-                  item.projects.map((project, idx) => {
-                    const descs = Object.values(project.description || {})
-                    return (
-                      <div
-                        key={project.name}
-                        style={{
-                          marginTop: idx === 0 ? 16 : 20,
-                          paddingTop: idx === 0 ? 0 : 16,
-                          borderTop: idx === 0 ? 'none' : '1px solid rgba(255,255,255,0.04)'
-                        }}
-                      >
-                        <p
+                <motion.div
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                >
+                  {/* Multi-project: project names + descriptions + skills */}
+                  {hasProjects &&
+                    item.projects.map((project, idx) => {
+                      const descs = Object.values(project.description || {})
+                      return (
+                        <motion.div
+                          key={project.name}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -12, transition: { duration: 0.4, delay: idx * 0.06 } }}
+                          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.15 + idx * 0.15 }}
                           style={{
-                            color: '#6e6e90',
-                            fontSize: 13,
-                            marginBottom: 10,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 6
+                            marginTop: idx === 0 ? 16 : 20,
+                            paddingTop: idx === 0 ? 0 : 16,
+                            borderTop: idx === 0 ? 'none' : '1px solid rgba(255,255,255,0.04)'
                           }}
                         >
-                          <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
-                          {project.name}
-                        </p>
-                        {descs.length > 0 && renderBullets(descs)}
-                        {project.skills?.length > 0 && renderSkills(project.skills, { marginTop: 12 })}
-                      </div>
-                    )
-                  })}
+                          <p
+                            style={{
+                              color: '#6e6e90',
+                              fontSize: 13,
+                              marginBottom: 10,
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 6
+                            }}
+                          >
+                            <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
+                            {project.name}
+                          </p>
+                          {descs.length > 0 && renderBullets(descs)}
+                          {project.skills?.length > 0 && renderSkills(project.skills, { marginTop: 12 })}
+                        </motion.div>
+                      )
+                    })}
 
-                {/* Single project: name + descriptions + skills */}
-                {!hasProjects && item.project && (
-                  <p
-                    style={{
-                      color: '#6e6e90',
-                      fontSize: 13,
-                      marginTop: 16,
-                      marginBottom: 10,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 6
-                    }}
-                  >
-                    <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
-                    {item.project}
-                  </p>
-                )}
-                {!hasProjects && descriptionItems.length > 0 && renderBullets(descriptionItems, 10, { marginTop: 16 })}
-                {!hasProjects && item.skills?.length > 0 && renderSkills(item.skills, { marginTop: 16 })}
+                  {/* Single project: name + descriptions + skills */}
+                  {!hasProjects && item.project && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12, transition: { duration: 0.4 } }}
+                      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.15 }}
+                      style={{
+                        color: '#6e6e90',
+                        fontSize: 13,
+                        marginTop: 16,
+                        marginBottom: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6
+                      }}
+                    >
+                      <FolderGit2 size={12} style={{ flexShrink: 0, color: '#6e6e90' }} />
+                      {item.project}
+                    </motion.p>
+                  )}
+                  {!hasProjects && descriptionItems.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12, transition: { duration: 0.4, delay: 0.08 } }}
+                      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
+                    >
+                      {renderBullets(descriptionItems, 10, { marginTop: 16 })}
+                    </motion.div>
+                  )}
+                  {!hasProjects && item.skills?.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12, transition: { duration: 0.4, delay: 0.15 } }}
+                      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.45 }}
+                    >
+                      {renderSkills(item.skills, { marginTop: 16 })}
+                    </motion.div>
+                  )}
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -196,15 +232,14 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
               padding: 0
             }}
           >
-            {expanded ? (
-              <>
-                Show less <ChevronUp size={14} />
-              </>
-            ) : (
-              <>
-                Show more <ChevronDown size={14} />
-              </>
-            )}
+            {expanded ? 'Show less' : 'Show more'}
+            <motion.span
+              animate={{ rotate: expanded ? 180 : 0 }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
+              <ChevronDown size={14} />
+            </motion.span>
           </button>
         </>
       )}
