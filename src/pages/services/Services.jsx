@@ -22,7 +22,7 @@ const ACCENT_COLORS = [
   { iconBg: 'rgba(34,197,94,0.1)', icon: '#22c55e', dot: '#22c55e', borderHover: 'rgba(34,197,94,0.4)' },
   { iconBg: 'rgba(245,158,11,0.1)', icon: '#f59e0b', dot: '#f59e0b', borderHover: 'rgba(245,158,11,0.4)' },
   { iconBg: 'rgba(236,72,153,0.1)', icon: '#ec4899', dot: '#ec4899', borderHover: 'rgba(236,72,153,0.4)' },
-  { iconBg: 'rgba(6,182,212,0.1)', icon: '#06b6d4', dot: '#06b6d4', borderHover: 'rgba(6,182,212,0.4)' }
+  { iconBg: 'rgba(99,102,241,0.1)', icon: '#6366f1', dot: '#6366f1', borderHover: 'rgba(99,102,241,0.4)' }
 ]
 
 const Services = () => {

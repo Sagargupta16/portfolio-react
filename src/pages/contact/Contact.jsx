@@ -332,6 +332,7 @@ const Contact = () => {
               type="submit"
               disabled={isLoading}
               className="btn-primary"
+              aria-label={isLoading ? 'Sending message...' : 'Send message'}
               style={{
                 width: '100%',
                 display: 'flex',

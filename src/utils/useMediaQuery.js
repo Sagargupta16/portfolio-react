@@ -1,15 +1,17 @@
-import { useMemo, useSyncExternalStore } from 'react'
+import { useCallback, useMemo, useSyncExternalStore } from 'react'
 
 const useMediaQuery = (query = '(max-width: 768px)') => {
-  const subscribe = useMemo(() => {
-    return callback => {
-      const mql = globalThis.matchMedia(query)
+  const mql = useMemo(() => globalThis.matchMedia(query), [query])
+
+  const subscribe = useCallback(
+    callback => {
       mql.addEventListener('change', callback)
       return () => mql.removeEventListener('change', callback)
-    }
-  }, [query])
+    },
+    [mql]
+  )
 
-  const getSnapshot = () => globalThis.matchMedia(query).matches
+  const getSnapshot = useCallback(() => mql.matches, [mql])
 
   return useSyncExternalStore(subscribe, getSnapshot)
 }

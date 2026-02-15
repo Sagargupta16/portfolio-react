@@ -366,25 +366,7 @@ img {
   transform: translateY(-2px);
 }
 
-/* Glass card variant - lighter */
-.glass-card-light {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
 
-/* Glass panel for sections */
-.glass-panel {
-  background: rgba(10, 10, 26, 0.3);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
 
 /* ===== Section Divider ===== */
 .section-divider {

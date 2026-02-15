@@ -4,10 +4,10 @@ const SECTIONS = [
   'hero',
   'about',
   'experience',
+  'education',
   'skills',
   'projects',
   'achievements',
-  'education',
   'services',
   'github',
   'contact'

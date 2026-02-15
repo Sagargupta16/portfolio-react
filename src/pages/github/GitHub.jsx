@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { GitHubCalendar } from 'react-github-calendar'
 import { ArrowRight } from 'lucide-react'
@@ -42,6 +42,12 @@ const GitHub = () => {
   const handleTransformData = useCallback(contributions => {
     setCalendarLoaded(true)
     return contributions
+  }, [])
+
+  // Fallback: hide skeleton after 10s if API never responds
+  useEffect(() => {
+    const timeout = setTimeout(() => setCalendarLoaded(true), 10000)
+    return () => clearTimeout(timeout)
   }, [])
 
   return (

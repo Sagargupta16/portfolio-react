@@ -48,6 +48,7 @@ const App = () => {
       easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smooth: true
     })
+    globalThis.__lenis = lenis
 
     const raf = time => {
       lenis.raf(time)
@@ -55,7 +56,10 @@ const App = () => {
     }
     requestAnimationFrame(raf)
 
-    return () => lenis.destroy()
+    return () => {
+      lenis.destroy()
+      delete globalThis.__lenis
+    }
   }, [])
 
   return (

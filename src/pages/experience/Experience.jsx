@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { MapPin, ChevronDown, Building2, FolderGit2 } from 'lucide-react'
 import { getExperience, getPositionsOfResponsibility } from '@data/dataLoader'
 import { sectionReveal, staggerContainer, staggerItem, fadeInUp } from '@utils/animations'
@@ -119,19 +119,30 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
             {expanded && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{
-                  height: { duration: 0.8, ease: [0.4, 0, 0.2, 1] },
-                  opacity: { duration: 0.6, ease: [0.4, 0, 0.2, 1] }
+                animate={{
+                  height: 'auto',
+                  opacity: 1,
+                  transition: {
+                    height: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
+                    opacity: { duration: 0.4, delay: 0.1 }
+                  }
                 }}
+                exit={{
+                  height: 0,
+                  opacity: 0,
+                  transition: {
+                    opacity: { duration: 0.2 },
+                    height: { duration: 0.4, ease: [0.4, 0, 0.2, 1], delay: 0.15 }
+                  }
+                }}
+                onAnimationComplete={() => globalThis.__lenis?.resize()}
                 style={{ overflow: 'hidden', marginLeft: ml }}
               >
                 <motion.div
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                  initial={{ y: -8 }}
+                  animate={{ y: 0 }}
+                  exit={{ y: -8 }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                 >
                   {/* Multi-project: project names + descriptions + skills */}
                   {hasProjects &&
@@ -140,10 +151,10 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
                       return (
                         <motion.div
                           key={project.name}
-                          initial={{ opacity: 0, y: 20 }}
+                          initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -12, transition: { duration: 0.4, delay: idx * 0.06 } }}
-                          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.15 + idx * 0.15 }}
+                          exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
+                          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1], delay: idx * 0.08 }}
                           style={{
                             marginTop: idx === 0 ? 16 : 20,
                             paddingTop: idx === 0 ? 0 : 16,
@@ -172,10 +183,10 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
                   {/* Single project: name + descriptions + skills */}
                   {!hasProjects && item.project && (
                     <motion.p
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12, transition: { duration: 0.4 } }}
-                      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.15 }}
+                      exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
+                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                       style={{
                         color: '#6e6e90',
                         fontSize: 13,
@@ -192,20 +203,20 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
                   )}
                   {!hasProjects && descriptionItems.length > 0 && (
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12, transition: { duration: 0.4, delay: 0.08 } }}
-                      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
+                      exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
+                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1], delay: 0.05 }}
                     >
                       {renderBullets(descriptionItems, 10, { marginTop: 16 })}
                     </motion.div>
                   )}
                   {!hasProjects && item.skills?.length > 0 && (
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12, transition: { duration: 0.4, delay: 0.15 } }}
-                      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.45 }}
+                      exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
+                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
                     >
                       {renderSkills(item.skills, { marginTop: 16 })}
                     </motion.div>
@@ -248,7 +259,7 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
 
   if (isMobile) {
     return (
-      <motion.div variants={staggerItem} custom={index} style={{ marginBottom: 16 }}>
+      <motion.div layout="position" variants={staggerItem} custom={index} style={{ marginBottom: 16 }} transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}>
         <div
           className="glass-card"
           style={{
@@ -292,9 +303,11 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
 
   return (
     <motion.div
+      layout="position"
       style={{ display: 'grid', gridTemplateColumns: '160px 40px 1fr', gap: 0 }}
       variants={staggerItem}
       custom={index}
+      transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}
     >
       {/* Left: Date + Location */}
       <div style={{ paddingTop: 4, textAlign: 'right', paddingRight: 20 }}>
@@ -420,11 +433,13 @@ const Experience = () => {
         <SectionHeader title="Experience" subtitle="Where I've worked" />
 
         {/* Professional Experience */}
-        <motion.div variants={staggerContainer}>
-          {experienceArray.map((item, index) => (
-            <TimelineCard key={item.id} item={item} index={index} accentColor="#06b6d4" isMobile={isMobile} />
-          ))}
-        </motion.div>
+        <LayoutGroup>
+          <motion.div variants={staggerContainer}>
+            {experienceArray.map((item, index) => (
+              <TimelineCard key={item.id} item={item} index={index} accentColor="#06b6d4" isMobile={isMobile} />
+            ))}
+          </motion.div>
+        </LayoutGroup>
 
         {/* Positions of Responsibility */}
         {hasPositions && (
@@ -453,11 +468,13 @@ const Experience = () => {
               Positions of Responsibility
             </motion.h3>
 
-            <motion.div variants={staggerContainer}>
-              {positionsArray.map((item, index) => (
-                <TimelineCard key={item.id} item={item} index={index} accentColor="#a855f7" isMobile={isMobile} />
-              ))}
-            </motion.div>
+            <LayoutGroup>
+              <motion.div variants={staggerContainer}>
+                {positionsArray.map((item, index) => (
+                  <TimelineCard key={item.id} item={item} index={index} accentColor="#a855f7" isMobile={isMobile} />
+                ))}
+              </motion.div>
+            </LayoutGroup>
           </>
         )}
       </div>
