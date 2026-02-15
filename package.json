@@ -6,7 +6,6 @@
   "homepage": "https://sagargupta.live/portfolio-react/",
   "scripts": {
     "dev": "vite",
-    "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
@@ -65,13 +64,12 @@
     ]
   },
   "description": "A dynamic and interactive React portfolio showcasing professional experience as a DevOps & Cloud Engineer. Features modern JSON-based data architecture, responsive design, and seamless deployment with CI/CD pipelines.",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sagargupta16/portfolio-react.git"
   },
   "author": "Sagar Gupta <sg85207@gmail.com>",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/Sagargupta16/portfolio-react/issues"
   }

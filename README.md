@@ -1,7 +1,6 @@
 # Sagar Gupta - Portfolio
 
 [![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml)
-[![Security Analysis](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/codeql.yml)
 
 ![React Version](https://img.shields.io/badge/react-19-blue)
 ![Vite Version](https://img.shields.io/badge/vite-7-purple)
@@ -27,7 +26,7 @@ A modern, dark-themed personal portfolio showcasing my professional journey as a
 | **Icons**         | Lucide React, React Icons            |
 | **Contact**       | EmailJS                              |
 | **GitHub**        | react-github-calendar                |
-| **Code Quality**  | ESLint, Prettier, Husky, lint-staged |
+| **Code Quality**  | ESLint, Prettier                     |
 | **Deployment**    | GitHub Actions, GitHub Pages         |
 
 ---
