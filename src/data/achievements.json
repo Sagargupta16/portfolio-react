@@ -1,18 +1,6 @@
 {
   "certifications": [
     {
-      "id": 5,
-      "name": "AWS Certified Solutions Architect – Associate",
-      "type": "Industry Certification",
-      "issuer": "Amazon Web Services Training and Certification",
-      "issueDate": "2024-07-07",
-      "credentialId": "591e74ef-f6a8-4b77-82dc-07e06fb8060e",
-      "credentialUrl": "https://www.credly.com/badges/591e74ef-f6a8-4b77-82dc-07e06fb8060e",
-      "level": "Associate",
-      "expiryDate": "2027-07-07",
-      "imageUrl": "https://images.credly.com/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png"
-    },
-    {
       "id": 1,
       "name": "AWS Certified Developer – Associate",
       "type": "Industry Certification",
@@ -23,6 +11,18 @@
       "level": "Associate",
       "expiryDate": "2029-01-31",
       "imageUrl": "https://images.credly.com/images/b9feab85-1a43-4f6c-99a5-631b88d5461b/image.png"
+    },
+    {
+      "id": 2,
+      "name": "AWS Certified AI Practitioner",
+      "type": "Industry Certification",
+      "issuer": "Amazon Web Services Training and Certification",
+      "issueDate": "2025-07-07",
+      "credentialId": "e18d2154-e153-40b3-8f39-6684e561396e",
+      "credentialUrl": "https://www.credly.com/badges/e18d2154-e153-40b3-8f39-6684e561396e",
+      "level": "Foundational",
+      "expiryDate": "2028-07-07",
+      "imageUrl": "https://images.credly.com/images/4d4693bb-530e-4bca-9327-de07f3aa2348/image.png"
     },
     {
       "id": 3,
@@ -49,16 +49,16 @@
       "imageUrl": "https://images.credly.com/images/0dc62494-dc94-469a-83af-e35309f27356/blob"
     },
     {
-      "id": 2,
-      "name": "AWS Certified AI Practitioner",
+      "id": 5,
+      "name": "AWS Certified Solutions Architect – Associate",
       "type": "Industry Certification",
       "issuer": "Amazon Web Services Training and Certification",
-      "issueDate": "2025-07-07",
-      "credentialId": "e18d2154-e153-40b3-8f39-6684e561396e",
-      "credentialUrl": "https://www.credly.com/badges/e18d2154-e153-40b3-8f39-6684e561396e",
-      "level": "Foundational",
-      "expiryDate": "2028-07-07",
-      "imageUrl": "https://images.credly.com/images/4d4693bb-530e-4bca-9327-de07f3aa2348/image.png"
+      "issueDate": "2024-07-07",
+      "credentialId": "591e74ef-f6a8-4b77-82dc-07e06fb8060e",
+      "credentialUrl": "https://www.credly.com/badges/591e74ef-f6a8-4b77-82dc-07e06fb8060e",
+      "level": "Associate",
+      "expiryDate": "2027-07-07",
+      "imageUrl": "https://images.credly.com/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png"
     },
     {
       "id": 6,
@@ -73,7 +73,27 @@
       "imageUrl": "https://images.credly.com/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png"
     }
   ],
-  "learningBadges": [
+  "learning_badges": [
+    {
+      "id": 1,
+      "name": "AWS Knowledge: Amazon Q Developer Fundamentals - Training Badge",
+      "type": "Knowledge Badge",
+      "issuer": "Amazon Web Services Training and Certification",
+      "issueDate": "2026-01-20",
+      "credentialId": "455690f2-a4f3-4122-be29-6b377b28dfda",
+      "credentialUrl": "https://www.credly.com/badges/455690f2-a4f3-4122-be29-6b377b28dfda",
+      "imageUrl": "https://images.credly.com/images/7c51f63c-14ef-4df9-a340-14938d05963a/blob"
+    },
+    {
+      "id": 2,
+      "name": "AWS Knowledge: Serverless - Training Badge",
+      "type": "Knowledge Badge",
+      "issuer": "Amazon Web Services Training and Certification",
+      "issueDate": "2026-01-16",
+      "credentialId": "5f3538f6-0bb1-4ff5-911b-d2701075392f",
+      "credentialUrl": "https://www.credly.com/badges/5f3538f6-0bb1-4ff5-911b-d2701075392f",
+      "imageUrl": "https://images.credly.com/images/0c20a5b7-b4e9-4c2f-8b68-342e00a85e05/blob"
+    },
     {
       "id": 3,
       "name": "Well-Architected Proficient",
@@ -83,17 +103,6 @@
       "credentialId": "ea4a5540-aa93-4f8b-96d2-9bf31de86f72",
       "credentialUrl": "https://www.credly.com/badges/ea4a5540-aa93-4f8b-96d2-9bf31de86f72",
       "imageUrl": "https://images.credly.com/images/b870667f-00a3-48d7-b988-9c02b441b883/image.png"
-    },
-    {
-      "id": 6,
-      "name": "AWS Generative AI Technical Intermediate (L200)",
-      "type": "Training Badge",
-      "issuer": "AWS Worldwide Field Enablement",
-      "issueDate": "2025-10-27",
-      "credentialId": "8b9674fa-8ff7-4ada-909d-f5102e7d1121",
-      "credentialUrl": "https://www.credly.com/badges/8b9674fa-8ff7-4ada-909d-f5102e7d1121",
-      "expiryDate": "2026-10-27",
-      "imageUrl": "https://images.credly.com/images/a5e0f58e-77c2-452d-b81d-79981315f238/blob"
     },
     {
       "id": 4,
@@ -116,34 +125,15 @@
       "imageUrl": "https://images.credly.com/images/8f006312-3154-45bf-a845-4a043641e83c/blob"
     },
     {
-      "id": 2,
-      "name": "AWS Knowledge: Serverless - Training Badge",
-      "type": "Knowledge Badge",
-      "issuer": "Amazon Web Services Training and Certification",
-      "issueDate": "2026-01-16",
-      "credentialId": "5f3538f6-0bb1-4ff5-911b-d2701075392f",
-      "credentialUrl": "https://www.credly.com/badges/5f3538f6-0bb1-4ff5-911b-d2701075392f",
-      "imageUrl": "https://images.credly.com/images/0c20a5b7-b4e9-4c2f-8b68-342e00a85e05/blob"
-    },
-    {
-      "id": 11,
-      "name": "AWS Knowledge: Architecting (Retired)",
-      "type": "Knowledge Badge",
-      "issuer": "Amazon Web Services Training and Certification",
-      "issueDate": "2024-09-26",
-      "credentialId": "ca2a1336-e6e0-4e76-aa97-a919759d26d3",
-      "credentialUrl": "https://www.credly.com/badges/ca2a1336-e6e0-4e76-aa97-a919759d26d3",
-      "imageUrl": "https://images.credly.com/images/519a6dba-f145-4c1a-85a2-1d173d6898d9/image.png"
-    },
-    {
-      "id": 1,
-      "name": "AWS Knowledge: Amazon Q Developer Fundamentals - Training Badge",
-      "type": "Knowledge Badge",
-      "issuer": "Amazon Web Services Training and Certification",
-      "issueDate": "2026-01-20",
-      "credentialId": "455690f2-a4f3-4122-be29-6b377b28dfda",
-      "credentialUrl": "https://www.credly.com/badges/455690f2-a4f3-4122-be29-6b377b28dfda",
-      "imageUrl": "https://images.credly.com/images/7c51f63c-14ef-4df9-a340-14938d05963a/blob"
+      "id": 6,
+      "name": "AWS Generative AI Technical Intermediate (L200)",
+      "type": "Training Badge",
+      "issuer": "AWS Worldwide Field Enablement",
+      "issueDate": "2025-10-27",
+      "credentialId": "8b9674fa-8ff7-4ada-909d-f5102e7d1121",
+      "credentialUrl": "https://www.credly.com/badges/8b9674fa-8ff7-4ada-909d-f5102e7d1121",
+      "expiryDate": "2026-10-27",
+      "imageUrl": "https://images.credly.com/images/a5e0f58e-77c2-452d-b81d-79981315f238/blob"
     },
     {
       "id": 7,
@@ -156,26 +146,6 @@
       "level": "Foundational",
       "expiryDate": "2026-10-27",
       "imageUrl": "https://images.credly.com/images/97c269f6-c8d0-40bd-8cbc-5c7834dbbc91/blob"
-    },
-    {
-      "id": 10,
-      "name": "AWS Partner: Generative AI Essentials - Training Badge",
-      "type": "Partner Badge",
-      "issuer": "Amazon Web Services Training and Certification",
-      "issueDate": "2024-10-01",
-      "credentialId": "f9785728-0e06-4c8b-9d62-08d85f00085e",
-      "credentialUrl": "https://www.credly.com/badges/f9785728-0e06-4c8b-9d62-08d85f00085e",
-      "imageUrl": "https://images.credly.com/images/4b547104-5ce9-43d5-8708-a7abb4b0c7ec/blob"
-    },
-    {
-      "id": 12,
-      "name": "AWS Knowledge: Cloud Essentials - Training Badge",
-      "type": "Knowledge Badge",
-      "issuer": "Amazon Web Services Training and Certification",
-      "issueDate": "2024-07-24",
-      "credentialId": "d03e1d39-4e40-483d-9845-f11da0d01170",
-      "credentialUrl": "https://www.credly.com/badges/d03e1d39-4e40-483d-9845-f11da0d01170",
-      "imageUrl": "https://images.credly.com/images/7cf036b0-c609-4378-a7be-9969e1dea7ab/blob"
     },
     {
       "id": 8,
@@ -196,6 +166,36 @@
       "credentialId": "af8b4f3b-0327-451e-ad85-a436f6bfca9a",
       "credentialUrl": "https://www.credly.com/badges/af8b4f3b-0327-451e-ad85-a436f6bfca9a",
       "imageUrl": "https://images.credly.com/images/e51a8579-188d-4363-8ed1-12ad164ef57b/blob"
+    },
+    {
+      "id": 10,
+      "name": "AWS Partner: Generative AI Essentials - Training Badge",
+      "type": "Partner Badge",
+      "issuer": "Amazon Web Services Training and Certification",
+      "issueDate": "2024-10-01",
+      "credentialId": "f9785728-0e06-4c8b-9d62-08d85f00085e",
+      "credentialUrl": "https://www.credly.com/badges/f9785728-0e06-4c8b-9d62-08d85f00085e",
+      "imageUrl": "https://images.credly.com/images/4b547104-5ce9-43d5-8708-a7abb4b0c7ec/blob"
+    },
+    {
+      "id": 11,
+      "name": "AWS Knowledge: Architecting (Retired)",
+      "type": "Knowledge Badge",
+      "issuer": "Amazon Web Services Training and Certification",
+      "issueDate": "2024-09-26",
+      "credentialId": "ca2a1336-e6e0-4e76-aa97-a919759d26d3",
+      "credentialUrl": "https://www.credly.com/badges/ca2a1336-e6e0-4e76-aa97-a919759d26d3",
+      "imageUrl": "https://images.credly.com/images/519a6dba-f145-4c1a-85a2-1d173d6898d9/image.png"
+    },
+    {
+      "id": 12,
+      "name": "AWS Knowledge: Cloud Essentials - Training Badge",
+      "type": "Knowledge Badge",
+      "issuer": "Amazon Web Services Training and Certification",
+      "issueDate": "2024-07-24",
+      "credentialId": "d03e1d39-4e40-483d-9845-f11da0d01170",
+      "credentialUrl": "https://www.credly.com/badges/d03e1d39-4e40-483d-9845-f11da0d01170",
+      "imageUrl": "https://images.credly.com/images/7cf036b0-c609-4378-a7be-9969e1dea7ab/blob"
     }
   ],
   "achievements": [
@@ -263,58 +263,5 @@
       "type": "Hackathon"
     }
   ],
-  "codingPlatformStats": {
-    "leetcode": {
-      "username": "Sagargupta1610",
-      "profileUrl": "https://leetcode.com/u/Sagargupta1610",
-      "displayStats": ["problemsSolved", "highestRating", "contestsParticipated"],
-      "problemsSolved": "1262+",
-      "highestRating": "2007",
-      "contestsParticipated": "110+",
-      "currentRating": "1880",
-      "badge": "Knight",
-      "topPercentage": "4.91%",
-      "globalRanking": "39606",
-      "easySolved": "465",
-      "mediumSolved": "646",
-      "hardSolved": "151",
-      "ranking": "11930",
-      "reputation": "270"
-    },
-    "geeksforgeeks": {
-      "username": "sagargupta10",
-      "profileUrl": "https://www.geeksforgeeks.org/user/sagargupta10",
-      "displayStats": ["problemsSolved", "codingScore", "instituteRank"],
-      "problemsSolved": "500+",
-      "codingScore": "1899",
-      "instituteRank": "70",
-      "longestStreak": "160 Days",
-      "potdSolved": "431",
-      "articlesPublished": "1"
-    },
-    "hackerrank": {
-      "username": "Sagargupta1610",
-      "profileUrl": "https://www.hackerrank.com/profile/Sagargupta1610",
-      "displayStats": ["problemSolving", "cpp", "certifications"],
-      "problemSolving": "6 Star",
-      "cpp": "5 Star",
-      "java": "Badge",
-      "python": "Badge",
-      "sql": "Badge",
-      "c": "Badge",
-      "daysOfCode": "Badge",
-      "certifications": "6 Verified"
-    },
-    "codechef": {
-      "username": "sagargupta_16",
-      "profileUrl": "https://www.codechef.com/users/sagargupta_16",
-      "displayStats": ["highestRating", "contests", "problemsSolved"],
-      "rating": "3 Star",
-      "highestRating": "1764",
-      "currentRating": "1675",
-      "division": "Div 2",
-      "contests": "28 Rated",
-      "problemsSolved": "121"
-    }
-  }
+  "coding_platform_stats": {}
 }
