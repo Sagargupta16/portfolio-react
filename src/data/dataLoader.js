@@ -22,8 +22,8 @@ export const getServices = () => servicesData
 export const getPersonalProjects = () => projectsData.personal_projects
 export const getCollaborativeProjects = () => projectsData.collaborative_projects
 export const getCertifications = () => achievementsData.certifications
-export const getLearningBadges = () => achievementsData.learningBadges || []
+export const getLearningBadges = () => achievementsData.learning_badges || []
 export const getAchievements = () => achievementsData.achievements
-export const getCodingPlatformStats = () => achievementsData.codingPlatformStats
+export const getCodingPlatformStats = () => achievementsData.coding_platform_stats || {}
 export const getContactOptions = () => contactData.contact_options
 export const getEmailConfig = () => contactData.email_config
