@@ -1,4 +1,5 @@
-import { useRef, useMemo } from 'react'
+/* eslint-disable react/no-unknown-property */
+import { useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { PerformanceMonitor } from '@react-three/drei'
 import * as THREE from 'three'
@@ -6,18 +7,19 @@ import FloatingGeometry from './FloatingGeometry'
 import useReducedMotion from '@utils/useReducedMotion'
 import useMediaQuery from '@utils/useMediaQuery'
 
+function createParticlePositions(count) {
+  const arr = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
+    arr[i * 3] = (Math.random() - 0.5) * 20
+    arr[i * 3 + 1] = (Math.random() - 0.5) * 20
+    arr[i * 3 + 2] = (Math.random() - 0.5) * 15
+  }
+  return arr
+}
+
 const ParticleField = ({ count = 300, reducedMotion = false }) => {
   const ref = useRef()
-
-  const positions = useMemo(() => {
-    const arr = new Float32Array(count * 3)
-    for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 20
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 20
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 15
-    }
-    return arr
-  }, [count])
+  const [positions] = useState(() => createParticlePositions(count))
 
   useFrame((_, delta) => {
     if (ref.current && !reducedMotion) {

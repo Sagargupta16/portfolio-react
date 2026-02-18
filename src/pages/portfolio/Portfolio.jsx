@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, FolderGit2, Calendar, Users } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
 import { getPersonalProjects, getCollaborativeProjects } from '@data/dataLoader'
-import { sectionRevealEnhanced, staggerContainer, fadeInUp, scaleRotateIn } from '@utils/animations'
+import { sectionRevealEnhanced, staggerContainer, fadeInUp } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
