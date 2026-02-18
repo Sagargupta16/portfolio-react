@@ -9,6 +9,8 @@ import ScrollProgress from '@components/ui/ScrollProgress'
 import BackToTop from '@components/ui/BackToTop'
 import Preloader from '@components/ui/Preloader'
 import KeyboardNav from '@components/ui/KeyboardNav'
+import SectionTransition from '@components/ui/SectionTransition'
+import ParallaxElements from '@components/ui/ParallaxElements'
 import About from '@pages/about/About'
 import Experience from '@pages/experience/Experience'
 import Skill from '@pages/skill/Skill'
@@ -19,8 +21,6 @@ import Achievement from '@pages/achievement/Achievement'
 import Contact from '@pages/contact/Contact'
 import GitHub from '@pages/github/GitHub'
 
-const SectionDivider = () => <div className="section-divider" />
-
 const GlassBackground = () => {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll()
@@ -30,6 +30,8 @@ const GlassBackground = () => {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -350])
   const y3 = useTransform(scrollYProgress, [0, 1], [0, -150])
   const y4 = useTransform(scrollYProgress, [0, 1], [0, -280])
+  const y5 = useTransform(scrollYProgress, [0, 1], [0, -420])
+  const y6 = useTransform(scrollYProgress, [0, 1], [0, -100])
 
   return (
     <div className="glass-bg" ref={ref} aria-hidden="true">
@@ -37,6 +39,8 @@ const GlassBackground = () => {
       <motion.div className="glass-orb glass-orb-2" style={{ y: y2 }} />
       <motion.div className="glass-orb glass-orb-3" style={{ y: y3 }} />
       <motion.div className="glass-orb glass-orb-4" style={{ y: y4 }} />
+      <motion.div className="glass-orb glass-orb-5" style={{ y: y5 }} />
+      <motion.div className="glass-orb glass-orb-bg" style={{ y: y6 }} />
     </div>
   )
 }
@@ -68,43 +72,44 @@ const App = () => {
       <ScrollProgress />
       <KeyboardNav />
       <GlassBackground />
+      <ParallaxElements />
       <div className="relative min-h-screen">
         <Nav />
         <main>
           <Hero />
-          <SectionDivider />
+          <SectionTransition variant="gradient-sweep" />
           <div className="section-darker">
             <About />
           </div>
-          <SectionDivider />
+          <SectionTransition variant="glow-pulse" />
           <div className="section-dark">
             <Experience />
           </div>
-          <SectionDivider />
+          <SectionTransition variant="beam" />
           <div className="section-darker">
             <Education />
           </div>
-          <SectionDivider />
+          <SectionTransition variant="geometric-scatter" />
           <div className="section-dark">
             <Skill />
           </div>
-          <SectionDivider />
+          <SectionTransition variant="gradient-sweep" />
           <div className="section-darker">
             <Portfolio />
           </div>
-          <SectionDivider />
+          <SectionTransition variant="glow-pulse" />
           <div className="section-dark">
             <Achievement />
           </div>
-          <SectionDivider />
+          <SectionTransition variant="beam" />
           <div className="section-darker">
             <Services />
           </div>
-          <SectionDivider />
+          <SectionTransition variant="geometric-scatter" />
           <div className="section-dark">
             <GitHub />
           </div>
-          <SectionDivider />
+          <SectionTransition variant="gradient-sweep" />
           <div className="section-darker">
             <Contact />
           </div>

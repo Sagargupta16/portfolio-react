@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { MapPin, ChevronDown, Building2, FolderGit2 } from 'lucide-react'
 import { getExperience, getPositionsOfResponsibility } from '@data/dataLoader'
-import { sectionReveal, staggerContainer, staggerItem, fadeInUp } from '@utils/animations'
+import { sectionRevealEnhanced, staggerContainer, staggerItem, slideInLeft, slideInRight, fadeInUp } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
@@ -259,7 +259,13 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
 
   if (isMobile) {
     return (
-      <motion.div layout="position" variants={staggerItem} custom={index} style={{ marginBottom: 16 }} transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}>
+      <motion.div
+        layout="position"
+        variants={staggerItem}
+        custom={index}
+        style={{ marginBottom: 16 }}
+        transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}
+      >
         <div
           className="glass-card"
           style={{
@@ -305,7 +311,7 @@ const TimelineCard = ({ item, index, accentColor = '#06b6d4', isMobile }) => {
     <motion.div
       layout="position"
       style={{ display: 'grid', gridTemplateColumns: '160px 40px 1fr', gap: 0 }}
-      variants={staggerItem}
+      variants={index % 2 === 0 ? slideInLeft : slideInRight}
       custom={index}
       transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}
     >
@@ -427,7 +433,7 @@ const Experience = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      variants={sectionReveal}
+      variants={sectionRevealEnhanced}
     >
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
         <SectionHeader title="Experience" subtitle="Where I've worked" />

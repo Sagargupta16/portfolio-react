@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Cloud, Code, Trophy, Brain, Palette, Settings } from 'lucide-react'
 import { getServices } from '@data/dataLoader'
-import { fadeInUp, staggerContainer } from '@utils/animations'
+import { flipInY, staggerContainer, sectionRevealEnhanced } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 import GlassCard from '@components/ui/GlassCard'
@@ -37,6 +37,7 @@ const Services = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
+      variants={sectionRevealEnhanced}
     >
       <SectionHeader title="Services" subtitle="What I offer" />
 
@@ -56,7 +57,7 @@ const Services = () => {
           const colors = ACCENT_COLORS[i % ACCENT_COLORS.length]
 
           return (
-            <GlassCard key={service.id} style={{ padding: 32 }} variants={fadeInUp}>
+            <GlassCard key={service.id} style={{ padding: 32 }} variants={flipInY}>
               <div
                 style={{
                   width: 56,

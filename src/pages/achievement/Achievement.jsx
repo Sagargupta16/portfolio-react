@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { ShieldCheck, Trophy, ExternalLink, BookOpen, ArrowUpRight } from 'lucide-react'
 import { getCertifications, getLearningBadges, getAchievements, getCodingPlatformStats } from '@data/dataLoader'
-import { fadeInUp, staggerContainer } from '@utils/animations'
+import { staggerContainer, clipRevealUp, fadeInUp, sectionRevealEnhanced } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
@@ -34,6 +34,7 @@ const Achievement = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
+      variants={sectionRevealEnhanced}
     >
       <SectionHeader title="Achievements" subtitle="Milestones & certifications" />
 
@@ -82,7 +83,7 @@ const Achievement = () => {
                     alignItems: 'center',
                     gap: 16
                   }}
-                  variants={fadeInUp}
+                  variants={clipRevealUp}
                 >
                   {cert.imageUrl ? (
                     <img
@@ -192,7 +193,7 @@ const Achievement = () => {
                     alignItems: 'center',
                     gap: 14
                   }}
-                  variants={fadeInUp}
+                  variants={clipRevealUp}
                 >
                   {badge.imageUrl ? (
                     <img

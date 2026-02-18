@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Briefcase, GraduationCap, Rocket, Trophy } from 'lucide-react'
 import { getAbout, getStatistics } from '@data/dataLoader'
-import { sectionReveal, staggerContainer, staggerItem, fadeInLeft, fadeInRight, fadeInUp } from '@utils/animations'
+import { sectionRevealEnhanced, staggerContainer, staggerItem, fadeInLeft, fadeInRight, rotateInUp } from '@utils/animations'
 import SectionHeader from '@components/ui/SectionHeader'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
 import DevAvatar from '@components/ui/DevAvatar'
@@ -34,7 +34,7 @@ const About = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      variants={sectionReveal}
+      variants={sectionRevealEnhanced}
     >
       <div style={{ maxWidth: 1152, margin: '0 auto' }}>
         <SectionHeader title="About Me" subtitle="Get to know me" />
@@ -159,7 +159,7 @@ const About = () => {
           {statEntries.map(([key, value]) => (
             <motion.div
               key={key}
-              variants={fadeInUp}
+              variants={rotateInUp}
               className="glass-card"
               style={{ padding: isMobile ? '18px 12px' : '24px 16px', textAlign: 'center' }}
             >

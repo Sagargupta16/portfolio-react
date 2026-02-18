@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser'
 import { Mail, Calendar, Send, ArrowUpRight } from 'lucide-react'
 import Toast from '@components/ui/Toast'
 import { getContactOptions, getEmailConfig } from '@data/dataLoader'
-import { fadeInUp, staggerContainer, staggerItem } from '@utils/animations'
+import { rotateInUp, staggerContainer, staggerItem, sectionRevealEnhanced } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
@@ -129,6 +129,7 @@ const Contact = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
+      variants={sectionRevealEnhanced}
     >
       <SectionHeader title="Get In Touch" subtitle="Let's work together" />
 
@@ -229,7 +230,7 @@ const Contact = () => {
         </motion.div>
 
         {/* Contact Form - Right Column */}
-        <motion.div variants={fadeInUp}>
+        <motion.div variants={rotateInUp}>
           <form
             ref={formRef}
             onSubmit={handleSubmit}

@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
@@ -31,7 +33,8 @@
     "react-github-calendar": "^5.0.5",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^10.0.2",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "three": "^0.183.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

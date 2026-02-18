@@ -38,7 +38,9 @@ export default defineConfig(({ mode }) => ({
         manualChunks: {
           vendor: ['react', 'react-dom'],
           icons: ['react-icons', 'lucide-react'],
-          animations: ['framer-motion']
+          animations: ['framer-motion'],
+          threejs: ['three', '@react-three/fiber', '@react-three/drei'],
+          particles: ['@tsparticles/react', '@tsparticles/slim']
         }
       }
     },

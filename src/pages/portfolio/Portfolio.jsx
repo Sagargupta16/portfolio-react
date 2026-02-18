@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, FolderGit2, Calendar, Users } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
 import { getPersonalProjects, getCollaborativeProjects } from '@data/dataLoader'
-import { sectionReveal, staggerContainer, fadeInUp } from '@utils/animations'
+import { sectionRevealEnhanced, staggerContainer, fadeInUp, scaleRotateIn } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
@@ -62,12 +62,13 @@ const ProjectCard = ({ data, index = 0 }) => {
       className="glass-card"
       style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
       layout
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, scale: 0.7, rotate: -4 }}
+      animate={{ opacity: 1, scale: 1, rotate: 0 }}
       exit={{ opacity: 0, y: -20, scale: 0.95 }}
       transition={{
-        duration: 0.6,
-        ease: [0.4, 0, 0.2, 1],
+        type: 'spring',
+        stiffness: 80,
+        damping: 16,
         delay: index * 0.1,
         layout: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
       }}
@@ -269,7 +270,7 @@ const Portfolio = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      variants={sectionReveal}
+      variants={sectionRevealEnhanced}
     >
       <SectionHeader title="Personal Projects" subtitle="Things I've built" />
 

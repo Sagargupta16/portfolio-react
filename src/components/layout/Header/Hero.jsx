@@ -1,13 +1,26 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
 import { ChevronDown } from 'lucide-react'
 import { getName, getRoles, getStatistics, getSocialProfiles } from '@data/dataLoader'
 import { staggerContainer, staggerItem } from '@utils/animations'
+import useReducedMotion from '@utils/useReducedMotion'
 import ICON_MAP from '@utils/iconMap'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
+import ErrorBoundary from '@components/common/ErrorBoundary'
 import Resume from '@assets/Resume.pdf'
+
+const HeroScene = lazy(() => import('@components/3d/HeroScene'))
+
+const hasWebGL = () => {
+  try {
+    const canvas = document.createElement('canvas')
+    return !!(canvas.getContext('webgl2') || canvas.getContext('webgl'))
+  } catch {
+    return false
+  }
+}
 
 const particlesOptions = {
   fullScreen: { enable: false },
@@ -52,6 +65,8 @@ const particlesOptions = {
 const Hero = () => {
   const [engineInit, setEngineInit] = useState(false)
   const [roleIndex, setRoleIndex] = useState(0)
+  const [webGLSupported] = useState(() => hasWebGL())
+  const reducedMotion = useReducedMotion()
 
   const name = useMemo(() => getName(), [])
   const roles = useMemo(() => getRoles(), [])
@@ -124,8 +139,16 @@ const Hero = () => {
         }}
       />
 
-      {/* Particles */}
-      {engineInit && <Particles className="absolute inset-0 z-0" options={particlesOptions} />}
+      {/* 3D Scene / Particles fallback */}
+      {webGLSupported && !reducedMotion ? (
+        <ErrorBoundary fallback={engineInit ? <Particles className="absolute inset-0 z-0" options={particlesOptions} /> : null}>
+          <Suspense fallback={engineInit ? <Particles className="absolute inset-0 z-0" options={particlesOptions} /> : null}>
+            <HeroScene />
+          </Suspense>
+        </ErrorBoundary>
+      ) : (
+        engineInit && <Particles className="absolute inset-0 z-0" options={particlesOptions} />
+      )}
 
       {/* Content */}
       <motion.div

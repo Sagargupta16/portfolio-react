@@ -18,16 +18,16 @@ A modern, dark-themed personal portfolio showcasing my professional journey as a
 
 ## Tech Stack
 
-| Category          | Technologies                         |
-| ----------------- | ------------------------------------ |
-| **Core**          | React 19, Vite 7, Tailwind CSS v4    |
-| **Animations**    | Framer Motion, tsParticles           |
-| **Smooth Scroll** | Lenis                                |
-| **Icons**         | Lucide React, React Icons            |
-| **Contact**       | EmailJS                              |
-| **GitHub**        | react-github-calendar                |
-| **Code Quality**  | ESLint, Prettier                     |
-| **Deployment**    | GitHub Actions, GitHub Pages         |
+| Category          | Technologies                      |
+| ----------------- | --------------------------------- |
+| **Core**          | React 19, Vite 7, Tailwind CSS v4 |
+| **Animations**    | Framer Motion, tsParticles        |
+| **Smooth Scroll** | Lenis                             |
+| **Icons**         | Lucide React, React Icons         |
+| **Contact**       | EmailJS                           |
+| **GitHub**        | react-github-calendar             |
+| **Code Quality**  | ESLint, Prettier                  |
+| **Deployment**    | GitHub Actions, GitHub Pages      |
 
 ---
 

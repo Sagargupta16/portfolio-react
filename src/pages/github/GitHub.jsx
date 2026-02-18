@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { GitHubCalendar } from 'react-github-calendar'
 import { ArrowRight } from 'lucide-react'
-import { fadeIn } from '@utils/animations'
+import { fadeIn, scaleIn, sectionRevealEnhanced } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
@@ -58,6 +58,7 @@ const GitHub = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
+      variants={sectionRevealEnhanced}
     >
       <SectionHeader title="GitHub Activity" subtitle="My open source contributions" />
 
@@ -65,7 +66,7 @@ const GitHub = () => {
         <motion.div
           className="glass-card p-6 md:p-10 overflow-x-auto"
           style={{ padding: isMobile ? '16px 12px' : '24px 40px', overflowX: 'auto' }}
-          variants={fadeIn}
+          variants={scaleIn}
         >
           {!calendarLoaded && <CalendarSkeleton />}
           <div style={calendarLoaded ? {} : { position: 'absolute', opacity: 0, pointerEvents: 'none' }}>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { motion } from 'framer-motion'
 import { MapPin, GraduationCap, Trophy, BookOpen } from 'lucide-react'
 import { getEducation } from '@data/dataLoader'
-import { sectionReveal, staggerContainer, staggerItem } from '@utils/animations'
+import { sectionRevealEnhanced, staggerContainer, staggerItem, slideInLeft, slideInRight } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
@@ -223,7 +223,7 @@ const EducationCard = ({ item, index, isMobile }) => {
   return (
     <motion.div
       style={{ display: 'grid', gridTemplateColumns: '160px 40px 1fr', gap: 0 }}
-      variants={staggerItem}
+      variants={index % 2 === 0 ? slideInLeft : slideInRight}
       custom={index}
     >
       {/* Left: Date + Location */}
@@ -341,7 +341,7 @@ const Education = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      variants={sectionReveal}
+      variants={sectionRevealEnhanced}
     >
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
         <SectionHeader title="Education" subtitle="My academic journey" />
