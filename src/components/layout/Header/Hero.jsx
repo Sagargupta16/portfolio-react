@@ -141,8 +141,12 @@ const Hero = () => {
 
       {/* 3D Scene / Particles fallback */}
       {webGLSupported && !reducedMotion ? (
-        <ErrorBoundary fallback={engineInit ? <Particles className="absolute inset-0 z-0" options={particlesOptions} /> : null}>
-          <Suspense fallback={engineInit ? <Particles className="absolute inset-0 z-0" options={particlesOptions} /> : null}>
+        <ErrorBoundary
+          fallback={engineInit ? <Particles className="absolute inset-0 z-0" options={particlesOptions} /> : null}
+        >
+          <Suspense
+            fallback={engineInit ? <Particles className="absolute inset-0 z-0" options={particlesOptions} /> : null}
+          >
             <HeroScene />
           </Suspense>
         </ErrorBoundary>

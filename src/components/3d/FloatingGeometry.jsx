@@ -51,12 +51,7 @@ const FloatingGeometry = ({
             speed={2}
           />
         ) : (
-          <meshStandardMaterial
-            color={color}
-            wireframe={wireframe}
-            transparent
-            opacity={opacity}
-          />
+          <meshStandardMaterial color={color} wireframe={wireframe} transparent opacity={opacity} />
         )}
       </mesh>
     </Float>

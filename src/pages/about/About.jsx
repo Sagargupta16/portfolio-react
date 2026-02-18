@@ -2,7 +2,14 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Briefcase, GraduationCap, Rocket, Trophy } from 'lucide-react'
 import { getAbout, getStatistics } from '@data/dataLoader'
-import { sectionRevealEnhanced, staggerContainer, staggerItem, fadeInLeft, fadeInRight, rotateInUp } from '@utils/animations'
+import {
+  sectionRevealEnhanced,
+  staggerContainer,
+  staggerItem,
+  fadeInLeft,
+  fadeInRight,
+  rotateInUp
+} from '@utils/animations'
 import SectionHeader from '@components/ui/SectionHeader'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
 import DevAvatar from '@components/ui/DevAvatar'

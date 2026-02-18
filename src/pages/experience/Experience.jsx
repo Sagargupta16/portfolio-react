@@ -3,7 +3,14 @@ import PropTypes from 'prop-types'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { MapPin, ChevronDown, Building2, FolderGit2 } from 'lucide-react'
 import { getExperience, getPositionsOfResponsibility } from '@data/dataLoader'
-import { sectionRevealEnhanced, staggerContainer, staggerItem, slideInLeft, slideInRight, fadeInUp } from '@utils/animations'
+import {
+  sectionRevealEnhanced,
+  staggerContainer,
+  staggerItem,
+  slideInLeft,
+  slideInRight,
+  fadeInUp
+} from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 

@@ -2,7 +2,13 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 
 import { getSkills } from '@data/dataLoader'
-import { sectionRevealEnhanced, staggerContainer, staggerItem, waveCascadeContainer, waveCascadeItem } from '@utils/animations'
+import {
+  sectionRevealEnhanced,
+  staggerContainer,
+  staggerItem,
+  waveCascadeContainer,
+  waveCascadeItem
+} from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
@@ -30,11 +36,7 @@ const SkillTagGroup = ({ items }) => (
     viewport={{ once: true, amount: 0.2 }}
   >
     {items.map(skill => (
-      <motion.span
-        key={skill}
-        className="skill-tag"
-        variants={waveCascadeItem}
-      >
+      <motion.span key={skill} className="skill-tag" variants={waveCascadeItem}>
         {skill}
       </motion.span>
     ))}

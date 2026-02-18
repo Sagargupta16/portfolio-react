@@ -167,5 +167,4 @@ export const reducedMotionFade = {
  * Returns the reduced-motion-safe variant.
  * Falls back to a simple fade when the user prefers reduced motion.
  */
-export const safeVariant = (variant, reducedMotion) =>
-  reducedMotion ? reducedMotionFade : variant
+export const safeVariant = (variant, reducedMotion) => (reducedMotion ? reducedMotionFade : variant)

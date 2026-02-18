@@ -89,12 +89,7 @@ const ParallaxElement = ({ element }) => {
 
   return (
     <motion.div style={{ ...position, y }}>
-      <ShapeRenderer
-        type={element.type}
-        size={element.size}
-        color={element.color}
-        rotation={element.rotation}
-      />
+      <ShapeRenderer type={element.type} size={element.size} color={element.color} rotation={element.rotation} />
     </motion.div>
   )
 }

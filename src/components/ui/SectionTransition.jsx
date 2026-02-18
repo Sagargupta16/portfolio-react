@@ -62,7 +62,15 @@ const VARIANTS = {
           }}
         />
         <motion.div
-          style={{ opacity, position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+          style={{
+            opacity,
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8
+          }}
         >
           {[...Array(5)].map((_, i) => (
             <motion.div
