@@ -13,14 +13,14 @@ const Preloader = () => {
           clearInterval(interval)
           return 100
         }
-        return prev + Math.random() * 15 + 5
+        return prev + Math.random() * 25 + 15
       })
-    }, 150)
+    }, 60)
 
     const timer = setTimeout(() => {
       setProgress(100)
-      setTimeout(() => setLoading(false), 300)
-    }, 1800)
+      setTimeout(() => setLoading(false), 200)
+    }, 800)
 
     return () => {
       clearTimeout(timer)

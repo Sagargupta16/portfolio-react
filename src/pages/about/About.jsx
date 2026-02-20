@@ -140,7 +140,7 @@ const About = () => {
                     >
                       <Icon style={{ width: 16, height: 16, color }} />
                     </div>
-                    <p style={{ color: '#a5a5c0', fontSize: isMobile ? 13 : 14, lineHeight: 1.6, margin: 0 }}>
+                    <p style={{ color: '#cbd5e1', fontSize: isMobile ? 13 : 14, lineHeight: 1.6, margin: 0 }}>
                       {cleanText}
                     </p>
                   </motion.div>
