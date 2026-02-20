@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import Lenis from 'lenis'
 import Nav from '@components/layout/Navigation/Nav'
 import Hero from '@components/layout/Header/Hero'
@@ -11,15 +11,33 @@ import KeyboardNav from '@components/ui/KeyboardNav'
 import SectionTransition from '@components/ui/SectionTransition'
 import ParallaxElements from '@components/ui/ParallaxElements'
 import GlassBackground from '@components/layout/GlassBackground'
-import About from '@pages/about/About'
-import Experience from '@pages/experience/Experience'
-import Skill from '@pages/skill/Skill'
-import Education from '@pages/education/Education'
-import Services from '@pages/services/Services'
-import Portfolio from '@pages/portfolio/Portfolio'
-import Achievement from '@pages/achievement/Achievement'
-import Contact from '@pages/contact/Contact'
-import GitHub from '@pages/github/GitHub'
+import SystemStatus from '@components/ui/SystemStatus'
+
+// Lazy Load "Below the fold" sections for massive performance gains
+const About = lazy(() => import('@pages/about/About'))
+const Experience = lazy(() => import('@pages/experience/Experience'))
+const Skill = lazy(() => import('@pages/skill/Skill'))
+const Education = lazy(() => import('@pages/education/Education'))
+const Services = lazy(() => import('@pages/services/Services'))
+const Portfolio = lazy(() => import('@pages/portfolio/Portfolio'))
+const Achievement = lazy(() => import('@pages/achievement/Achievement'))
+const Contact = lazy(() => import('@pages/contact/Contact'))
+const GitHub = lazy(() => import('@pages/github/GitHub'))
+
+const SectionLoader = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '30vh' }}>
+    <div
+      style={{
+        width: 32,
+        height: 32,
+        borderRadius: '50%',
+        border: '2px solid rgba(6, 182, 212, 0.2)',
+        borderTopColor: '#06b6d4',
+        animation: 'spin 1s linear infinite'
+      }}
+    />
+  </div>
+)
 
 const App = () => {
   useEffect(() => {
@@ -53,45 +71,48 @@ const App = () => {
         <Nav />
         <main>
           <Hero />
-          <SectionTransition variant="gradient-sweep" />
-          <div className="section-darker">
-            <About />
-          </div>
-          <SectionTransition variant="glow-pulse" />
-          <div className="section-dark">
-            <Experience />
-          </div>
-          <SectionTransition variant="beam" />
-          <div className="section-darker">
-            <Education />
-          </div>
-          <SectionTransition variant="geometric-scatter" />
-          <div className="section-dark">
-            <Skill />
-          </div>
-          <SectionTransition variant="gradient-sweep" />
-          <div className="section-darker">
-            <Portfolio />
-          </div>
-          <SectionTransition variant="glow-pulse" />
-          <div className="section-dark">
-            <Achievement />
-          </div>
-          <SectionTransition variant="beam" />
-          <div className="section-darker">
-            <Services />
-          </div>
-          <SectionTransition variant="geometric-scatter" />
-          <div className="section-dark">
-            <GitHub />
-          </div>
-          <SectionTransition variant="gradient-sweep" />
-          <div className="section-darker">
-            <Contact />
-          </div>
+          <Suspense fallback={<SectionLoader />}>
+            <SectionTransition variant="gradient-sweep" />
+            <div className="section-darker">
+              <About />
+            </div>
+            <SectionTransition variant="glow-pulse" />
+            <div className="section-dark">
+              <Experience />
+            </div>
+            <SectionTransition variant="beam" />
+            <div className="section-darker">
+              <Education />
+            </div>
+            <SectionTransition variant="geometric-scatter" />
+            <div className="section-dark">
+              <Skill />
+            </div>
+            <SectionTransition variant="gradient-sweep" />
+            <div className="section-darker" id="projects">
+              <Portfolio />
+            </div>
+            <SectionTransition variant="glow-pulse" />
+            <div className="section-dark" id="achievements">
+              <Achievement />
+            </div>
+            <SectionTransition variant="beam" />
+            <div className="section-darker" id="services">
+              <Services />
+            </div>
+            <SectionTransition variant="geometric-scatter" />
+            <div className="section-dark" id="github">
+              <GitHub />
+            </div>
+            <SectionTransition variant="gradient-sweep" />
+            <div className="section-darker" id="contact">
+              <Contact />
+            </div>
+          </Suspense>
         </main>
         <Footer />
         <BackToTop />
+        <SystemStatus />
       </div>
     </ErrorBoundary>
   )

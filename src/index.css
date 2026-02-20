@@ -610,3 +610,75 @@ img {
     transform: none;
   }
 }
+
+/* ===== Print Resume Mode ===== */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt;
+  }
+
+  .glass-bg,
+  nav,
+  footer,
+  #contact,
+  #projects,
+  #github,
+  #services,
+  #achievements,
+  .section-divider,
+  canvas,
+  .glass-orb,
+  button,
+  .btn-primary,
+  .btn-outline {
+    display: none !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    color: black !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .section-dark,
+  .section-darker {
+    background: none !important;
+    page-break-inside: avoid;
+    padding: 20px 0 !important;
+  }
+
+  .glass-card {
+    background: none !important;
+    border: 1px solid #ddd !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+    color: #111 !important;
+  }
+
+  .skill-tag,
+  .tag {
+    border: 1px solid #ccc !important;
+    color: #333 !important;
+    background: #f9f9f9 !important;
+  }
+
+  .gradient-text,
+  .gradient-text-vivid {
+    background: none !important;
+    -webkit-text-fill-color: black !important;
+    color: black !important;
+  }
+}

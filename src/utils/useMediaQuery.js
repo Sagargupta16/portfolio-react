@@ -4,7 +4,7 @@ const getServerSnapshot = () => false
 
 const useMediaQuery = (query = '(max-width: 768px)') => {
   const isClient = typeof window !== 'undefined'
-  
+
   const mql = useMemo(() => {
     return isClient ? window.matchMedia(query) : null
   }, [query, isClient])

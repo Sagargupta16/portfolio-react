@@ -19,7 +19,7 @@ const CalendarSkeleton = () => (
               width: 11,
               height: 11,
               borderRadius: 3,
-              opacity: 0.3 + Math.random() * 0.4,
+              opacity: 0.3 + ((row * 52 + col) % 7) * 0.06,
               animationDelay: `${(row * 52 + col) * 2}ms`
             }}
           />
@@ -40,7 +40,7 @@ const GitHub = () => {
   const [calendarLoaded, setCalendarLoaded] = useState(false)
 
   const handleTransformData = useCallback(contributions => {
-    setCalendarLoaded(true)
+    setTimeout(() => setCalendarLoaded(true), 0)
     return contributions
   }, [])
 
