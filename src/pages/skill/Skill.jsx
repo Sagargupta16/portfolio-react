@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import PropTypes from 'prop-types'
 import { motion } from 'framer-motion'
 
 import { getSkills } from '@data/dataLoader'
@@ -42,6 +43,10 @@ const SkillTagGroup = ({ items }) => (
     ))}
   </motion.div>
 )
+
+SkillTagGroup.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.string).isRequired
+}
 
 const Skill = () => {
   const isMobile = useMediaQuery('(max-width: 768px)')

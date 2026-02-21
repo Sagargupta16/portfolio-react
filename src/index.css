@@ -71,7 +71,7 @@ body {
 
 /* Selection */
 ::selection {
-  background-color: rgba(6, 182, 212, 0.3);
+  background-color: #065e72;
   color: #fff;
 }
 
@@ -412,7 +412,7 @@ img {
 
 /* ===== Gradient Buttons ===== */
 .btn-primary {
-  background: rgba(6, 182, 212, 0.15);
+  background: #06202d;
   color: #06b6d4;
   font-weight: 600;
   border: 1px solid rgba(6, 182, 212, 0.3);
@@ -428,7 +428,7 @@ img {
 }
 
 .btn-primary:hover {
-  background: rgba(6, 182, 212, 0.25);
+  background: #063241;
   border-color: rgba(6, 182, 212, 0.5);
   box-shadow:
     0 6px 30px rgba(6, 182, 212, 0.25),

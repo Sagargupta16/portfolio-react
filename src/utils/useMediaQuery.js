@@ -3,10 +3,10 @@ import { useCallback, useMemo, useSyncExternalStore } from 'react'
 const getServerSnapshot = () => false
 
 const useMediaQuery = (query = '(max-width: 768px)') => {
-  const isClient = typeof window !== 'undefined'
+  const isClient = globalThis.window != null
 
   const mql = useMemo(() => {
-    return isClient ? window.matchMedia(query) : null
+    return isClient ? globalThis.matchMedia(query) : null
   }, [query, isClient])
 
   const subscribe = useCallback(

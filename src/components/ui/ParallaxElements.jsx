@@ -1,20 +1,21 @@
+import PropTypes from 'prop-types'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import useReducedMotion from '@utils/useReducedMotion'
 import useMediaQuery from '@utils/useMediaQuery'
 
 const ELEMENTS = [
   // Triangles
-  { type: 'triangle', top: '12%', left: '8%', size: 14, color: 'rgba(6,182,212,0.12)', speed: -180, rotation: 15 },
-  { type: 'triangle', top: '65%', right: '6%', size: 18, color: 'rgba(168,85,247,0.10)', speed: -250, rotation: -30 },
+  { id: 'tri-tl', type: 'triangle', top: '12%', left: '8%', size: 14, color: 'rgba(6,182,212,0.12)', speed: -180, rotation: 15 },
+  { id: 'tri-br', type: 'triangle', top: '65%', right: '6%', size: 18, color: 'rgba(168,85,247,0.10)', speed: -250, rotation: -30 },
   // Circles
-  { type: 'circle', top: '28%', right: '12%', size: 8, color: 'rgba(6,182,212,0.15)', speed: -120 },
-  { type: 'circle', top: '78%', left: '15%', size: 6, color: 'rgba(236,72,153,0.12)', speed: -300 },
+  { id: 'cir-tr', type: 'circle', top: '28%', right: '12%', size: 8, color: 'rgba(6,182,212,0.15)', speed: -120 },
+  { id: 'cir-bl', type: 'circle', top: '78%', left: '15%', size: 6, color: 'rgba(236,72,153,0.12)', speed: -300 },
   // Rings
-  { type: 'ring', top: '45%', left: '5%', size: 20, color: 'rgba(168,85,247,0.08)', speed: -200 },
-  { type: 'ring', top: '88%', right: '10%', size: 16, color: 'rgba(6,182,212,0.08)', speed: -350 },
+  { id: 'ring-ml', type: 'ring', top: '45%', left: '5%', size: 20, color: 'rgba(168,85,247,0.08)', speed: -200 },
+  { id: 'ring-br', type: 'ring', top: '88%', right: '10%', size: 16, color: 'rgba(6,182,212,0.08)', speed: -350 },
   // Hexagons (diamond approximation)
-  { type: 'diamond', top: '35%', right: '4%', size: 10, color: 'rgba(34,197,94,0.10)', speed: -160 },
-  { type: 'diamond', top: '55%', left: '10%', size: 12, color: 'rgba(245,158,11,0.08)', speed: -280 }
+  { id: 'dia-mr', type: 'diamond', top: '35%', right: '4%', size: 10, color: 'rgba(34,197,94,0.10)', speed: -160 },
+  { id: 'dia-ml', type: 'diamond', top: '55%', left: '10%', size: 12, color: 'rgba(245,158,11,0.08)', speed: -280 }
 ]
 
 const ShapeRenderer = ({ type, size, color, rotation = 0 }) => {
@@ -76,6 +77,13 @@ const ShapeRenderer = ({ type, size, color, rotation = 0 }) => {
   return null
 }
 
+ShapeRenderer.propTypes = {
+  type: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
+  rotation: PropTypes.number
+}
+
 const ParallaxElement = ({ element }) => {
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], [0, element.speed])
@@ -92,6 +100,19 @@ const ParallaxElement = ({ element }) => {
       <ShapeRenderer type={element.type} size={element.size} color={element.color} rotation={element.rotation} />
     </motion.div>
   )
+}
+
+ParallaxElement.propTypes = {
+  element: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    size: PropTypes.number.isRequired,
+    color: PropTypes.string.isRequired,
+    speed: PropTypes.number.isRequired,
+    top: PropTypes.string,
+    left: PropTypes.string,
+    right: PropTypes.string,
+    rotation: PropTypes.number
+  }).isRequired
 }
 
 const ParallaxElements = () => {
@@ -111,8 +132,8 @@ const ParallaxElements = () => {
       }}
       aria-hidden="true"
     >
-      {ELEMENTS.map((el, i) => (
-        <ParallaxElement key={i} element={el} />
+      {ELEMENTS.map(el => (
+        <ParallaxElement key={el.id} element={el} />
       ))}
     </div>
   )

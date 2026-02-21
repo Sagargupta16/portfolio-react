@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { PerformanceMonitor } from '@react-three/drei'
 import * as THREE from 'three'
@@ -44,6 +45,11 @@ const ParticleField = ({ count = 300, reducedMotion = false }) => {
       />
     </points>
   )
+}
+
+ParticleField.propTypes = {
+  count: PropTypes.number,
+  reducedMotion: PropTypes.bool
 }
 
 const HeroScene = () => {

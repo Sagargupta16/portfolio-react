@@ -6,14 +6,18 @@ import { fadeIn, scaleIn, sectionRevealEnhanced } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
+const SKELETON_ROWS = Array.from({ length: 7 }, (_, i) => `row-${i}`)
+const SKELETON_COLS = Array.from({ length: 52 }, (_, i) => `col-${i}`)
+const SKELETON_MONTHS = Array.from({ length: 12 }, (_, i) => `month-${i}`)
+
 const CalendarSkeleton = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
     {/* Skeleton rows mimicking the calendar grid */}
-    {Array.from({ length: 7 }).map((_, row) => (
-      <div key={row} style={{ display: 'flex', gap: 4 }}>
-        {Array.from({ length: 52 }).map((_, col) => (
+    {SKELETON_ROWS.map((rowKey, row) => (
+      <div key={rowKey} style={{ display: 'flex', gap: 4 }}>
+        {SKELETON_COLS.map((colKey, col) => (
           <div
-            key={col}
+            key={colKey}
             className="skeleton"
             style={{
               width: 11,
@@ -28,8 +32,8 @@ const CalendarSkeleton = () => (
     ))}
     {/* Month labels skeleton */}
     <div style={{ display: 'flex', gap: 28, marginTop: 8 }}>
-      {Array.from({ length: 12 }).map((_, i) => (
-        <div key={i} className="skeleton" style={{ width: 24, height: 10, borderRadius: 3, opacity: 0.3 }} />
+      {SKELETON_MONTHS.map(key => (
+        <div key={key} className="skeleton" style={{ width: 24, height: 10, borderRadius: 3, opacity: 0.3 }} />
       ))}
     </div>
   </div>

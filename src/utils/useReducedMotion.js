@@ -5,15 +5,15 @@ const query = '(prefers-reduced-motion: reduce)'
 const getServerSnapshot = () => false
 
 const subscribe = callback => {
-  if (typeof window === 'undefined') return () => {}
-  const mql = window.matchMedia(query)
+  if (globalThis.window == null) return () => {}
+  const mql = globalThis.matchMedia(query)
   mql.addEventListener('change', callback)
   return () => mql.removeEventListener('change', callback)
 }
 
 const getSnapshot = () => {
-  if (typeof window === 'undefined') return false
-  return window.matchMedia(query).matches
+  if (globalThis.window == null) return false
+  return globalThis.matchMedia(query).matches
 }
 
 const useReducedMotion = () => {

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import useReducedMotion from '@utils/useReducedMotion'
 
+const GEOMETRIC_DOT_INDICES = [0, 1, 2, 3, 4]
+
 const GradientSweep = ({ progress }) => {
   const width = useTransform(progress, [0, 0.5, 1], ['0%', '100%', '100%'])
   const opacity = useTransform(progress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
@@ -17,6 +19,10 @@ const GradientSweep = ({ progress }) => {
       }}
     />
   )
+}
+
+GradientSweep.propTypes = {
+  progress: PropTypes.object.isRequired
 }
 
 const GlowPulse = ({ progress }) => {
@@ -49,6 +55,10 @@ const GlowPulse = ({ progress }) => {
   )
 }
 
+GlowPulse.propTypes = {
+  progress: PropTypes.object.isRequired
+}
+
 const GeometricScatter = ({ progress }) => {
   const opacity = useTransform(progress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
   const spread = useTransform(progress, [0, 0.5, 1], [0, 1, 0])
@@ -71,12 +81,16 @@ const GeometricScatter = ({ progress }) => {
           gap: 8
         }}
       >
-        {[...Array(5)].map((_, i) => (
+        {GEOMETRIC_DOT_INDICES.map(i => (
           <GeometricDot key={i} index={i} spread={spread} />
         ))}
       </motion.div>
     </>
   )
+}
+
+GeometricScatter.propTypes = {
+  progress: PropTypes.object.isRequired
 }
 
 const GeometricDot = ({ index, spread }) => {
@@ -94,6 +108,11 @@ const GeometricDot = ({ index, spread }) => {
       }}
     />
   )
+}
+
+GeometricDot.propTypes = {
+  index: PropTypes.number.isRequired,
+  spread: PropTypes.object.isRequired
 }
 
 const Beam = ({ progress }) => {
@@ -122,6 +141,10 @@ const Beam = ({ progress }) => {
       />
     </div>
   )
+}
+
+Beam.propTypes = {
+  progress: PropTypes.object.isRequired
 }
 
 const VARIANTS = {
