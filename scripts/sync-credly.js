@@ -81,7 +81,7 @@ function transformBadge(badge, id) {
 }
 
 async function fetchBadges() {
-  console.log(`Fetching badges from ${API_URL}`)
+  console.log('Fetching badges from Credly API…')
   const res = await fetch(API_URL)
   if (!res.ok) throw new Error(`Credly API returned ${res.status}: ${res.statusText}`)
   const json = await res.json()
