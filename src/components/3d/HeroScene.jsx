@@ -5,7 +5,6 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { PerformanceMonitor } from '@react-three/drei'
 import * as THREE from 'three'
 import FloatingGeometry from './FloatingGeometry'
-import useReducedMotion from '@utils/useReducedMotion'
 import useMediaQuery from '@utils/useMediaQuery'
 
 function createParticlePositions(count) {
@@ -18,12 +17,12 @@ function createParticlePositions(count) {
   return arr
 }
 
-const ParticleField = ({ count = 300, reducedMotion = false }) => {
+const ParticleField = ({ count = 300 }) => {
   const ref = useRef()
   const [positions] = useState(() => createParticlePositions(count))
 
   useFrame((_, delta) => {
-    if (ref.current && !reducedMotion) {
+    if (ref.current) {
       ref.current.rotation.y += delta * 0.02
       ref.current.rotation.x += delta * 0.01
     }
@@ -48,12 +47,10 @@ const ParticleField = ({ count = 300, reducedMotion = false }) => {
 }
 
 ParticleField.propTypes = {
-  count: PropTypes.number,
-  reducedMotion: PropTypes.bool
+  count: PropTypes.number
 }
 
 const HeroScene = () => {
-  const reducedMotion = useReducedMotion()
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const particleCount = isMobile ? 100 : 300
@@ -92,7 +89,7 @@ const HeroScene = () => {
         rotationSpeed={0.15}
         floatIntensity={0.5}
         opacity={0.3}
-        reducedMotion={reducedMotion}
+
       />
 
       {/* Left: glass-like icosahedron */}
@@ -107,7 +104,7 @@ const HeroScene = () => {
           floatIntensity={1.2}
           distortion={0.3}
           opacity={0.2}
-          reducedMotion={reducedMotion}
+  
         />
       )}
 
@@ -122,7 +119,7 @@ const HeroScene = () => {
           rotationSpeed={0.35}
           floatIntensity={0.8}
           opacity={0.25}
-          reducedMotion={reducedMotion}
+  
         />
       )}
 
@@ -138,7 +135,7 @@ const HeroScene = () => {
             rotationSpeed={0.5}
             floatIntensity={1.5}
             opacity={0.15}
-            reducedMotion={reducedMotion}
+    
           />
           <FloatingGeometry
             geometry="dodecahedron"
@@ -149,13 +146,13 @@ const HeroScene = () => {
             rotationSpeed={0.4}
             floatIntensity={1.8}
             opacity={0.12}
-            reducedMotion={reducedMotion}
+    
           />
         </>
       )}
 
       {/* 3D particle field */}
-      <ParticleField count={particleCount} reducedMotion={reducedMotion} />
+      <ParticleField count={particleCount} />
     </Canvas>
   )
 }

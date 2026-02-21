@@ -20,13 +20,12 @@ const FloatingGeometry = ({
   rotationSpeed = 0.3,
   floatIntensity = 1,
   distortion = 0,
-  opacity = 0.6,
-  reducedMotion = false
+  opacity = 0.6
 }) => {
   const meshRef = useRef()
 
   useFrame((_, delta) => {
-    if (meshRef.current && !reducedMotion) {
+    if (meshRef.current) {
       meshRef.current.rotation.x += delta * rotationSpeed * 0.5
       meshRef.current.rotation.y += delta * rotationSpeed
     }
@@ -34,9 +33,7 @@ const FloatingGeometry = ({
 
   const GeometryComponent = GEOMETRIES[geometry] || GEOMETRIES.torusKnot
 
-  const floatConfig = reducedMotion
-    ? { speed: 0, floatIntensity: 0, rotationIntensity: 0 }
-    : { speed: 1.5, floatIntensity, rotationIntensity: 0.2 }
+  const floatConfig = { speed: 1.5, floatIntensity, rotationIntensity: 0.2 }
 
   return (
     <Float {...floatConfig}>
@@ -68,8 +65,7 @@ FloatingGeometry.propTypes = {
   rotationSpeed: PropTypes.number,
   floatIntensity: PropTypes.number,
   distortion: PropTypes.number,
-  opacity: PropTypes.number,
-  reducedMotion: PropTypes.bool
+  opacity: PropTypes.number
 }
 
 export default FloatingGeometry

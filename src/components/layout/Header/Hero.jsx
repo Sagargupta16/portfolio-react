@@ -5,7 +5,6 @@ import { loadSlim } from '@tsparticles/slim'
 import { ChevronDown } from 'lucide-react'
 import { getName, getRoles, getStatistics, getSocialProfiles } from '@data/dataLoader'
 import { staggerContainer, staggerItem } from '@utils/animations'
-import useReducedMotion from '@utils/useReducedMotion'
 import ICON_MAP from '@utils/iconMap'
 import AnimatedCounter from '@components/ui/AnimatedCounter'
 import ErrorBoundary from '@components/common/ErrorBoundary'
@@ -66,7 +65,6 @@ const Hero = () => {
   const [engineInit, setEngineInit] = useState(false)
   const [roleIndex, setRoleIndex] = useState(0)
   const [webGLSupported] = useState(() => hasWebGL())
-  const reducedMotion = useReducedMotion()
 
   const name = useMemo(() => getName(), [])
   const roles = useMemo(() => getRoles(), [])
@@ -140,7 +138,7 @@ const Hero = () => {
       />
 
       {/* 3D Scene / Particles fallback */}
-      {webGLSupported && !reducedMotion ? (
+      {webGLSupported ? (
         <ErrorBoundary
           fallback={engineInit ? <Particles className="absolute inset-0 z-0" options={particlesOptions} /> : null}
         >
