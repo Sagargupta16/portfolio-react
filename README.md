@@ -6,7 +6,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-7-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 
-**Live:** [sagargupta.live/portfolio-react](https://sagargupta.live/portfolio-react/)
+**Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
 ---
 
