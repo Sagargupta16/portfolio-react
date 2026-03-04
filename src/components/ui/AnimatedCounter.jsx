@@ -13,11 +13,12 @@ const AnimatedCounter = ({ value, duration = 2 }) => {
 
   const { numericValue, suffix } = useMemo(() => {
     const str = String(value)
-    const match = /^(\d+)(.*)$/.exec(str)
-    if (match) {
+    let i = 0
+    while (i < str.length && str[i] >= '0' && str[i] <= '9') i++
+    if (i > 0) {
       return {
-        numericValue: Number.parseInt(match[1], 10),
-        suffix: match[2] || ''
+        numericValue: Number.parseInt(str.slice(0, i), 10),
+        suffix: str.slice(i)
       }
     }
     return { numericValue: 0, suffix: str }
