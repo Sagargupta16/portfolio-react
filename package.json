@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "homepage": "https://sagargupta.online/",
+  "homepage": "https://sagargupta.online/portfolio-react/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
