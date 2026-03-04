@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => ({
       jsxRuntime: 'automatic'
     })
   ],
-  base: mode === 'production' ? '/portfolio-react/' : '/',
+  base: '/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
