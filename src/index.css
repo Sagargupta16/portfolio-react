@@ -311,7 +311,13 @@ img {
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 40%, #0e0e24 60%, var(--color-bg-primary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-primary) 0%,
+    var(--color-bg-secondary) 40%,
+    #0e0e24 60%,
+    var(--color-bg-primary) 100%
+  );
 }
 
 .glass-orb {

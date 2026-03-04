@@ -64,8 +64,8 @@ function transformBadge(badge, id) {
     type,
     issuer: getIssuerName(badge),
     issueDate: formatDate(badge.issued_at_date || badge.issued_at),
-    credentialId: badge.id,
-    credentialUrl: `https://www.credly.com/badges/${badge.id}`
+    badgeId: badge.id,
+    badgeUrl: `https://www.credly.com/badges/${badge.id}`
   }
 
   const level = mapLevel(badge)

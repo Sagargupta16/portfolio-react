@@ -75,7 +75,7 @@ const Achievement = () => {
             <motion.div style={{ display: 'flex', flexDirection: 'column', gap: 8 }} variants={staggerContainer}>
               {certifications.map(cert => (
                 <motion.div
-                  key={cert.credentialId}
+                  key={cert.badgeId}
                   className="glass-card"
                   style={{
                     padding: '14px 20px',
@@ -123,9 +123,9 @@ const Achievement = () => {
                       {cert.level}
                     </span>
                   )}
-                  {cert.credentialUrl && (
+                  {cert.badgeUrl && (
                     <a
-                      href={cert.credentialUrl}
+                      href={cert.badgeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -138,7 +138,7 @@ const Achievement = () => {
                         height: 32,
                         borderRadius: 8
                       }}
-                      title="View Credential"
+                      title="View Badge"
                     >
                       <ExternalLink style={{ width: 16, height: 16 }} />
                     </a>
@@ -185,7 +185,7 @@ const Achievement = () => {
             <motion.div style={{ display: 'flex', flexDirection: 'column', gap: 6 }} variants={staggerContainer}>
               {learningBadges.map(badge => (
                 <motion.div
-                  key={badge.credentialId}
+                  key={badge.badgeId}
                   className="glass-card"
                   style={{
                     padding: '12px 20px',
@@ -228,9 +228,9 @@ const Achievement = () => {
                   <span style={{ fontSize: 14, fontWeight: 500, color: '#eeeef5', flex: 1, lineHeight: 1.4 }}>
                     {badge.name}
                   </span>
-                  {badge.credentialUrl && (
+                  {badge.badgeUrl && (
                     <a
-                      href={badge.credentialUrl}
+                      href={badge.badgeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -243,7 +243,7 @@ const Achievement = () => {
                         height: 28,
                         borderRadius: 6
                       }}
-                      title="View Credential"
+                      title="View Badge"
                     >
                       <ExternalLink style={{ width: 14, height: 14 }} />
                     </a>

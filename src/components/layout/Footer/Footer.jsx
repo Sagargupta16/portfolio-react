@@ -102,7 +102,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <motion.p style={{ color: '#6e6e90', fontSize: 14, textAlign: 'center' }} variants={staggerItem}>
-          &copy; 2025 Sagar Gupta. Built with React &amp; Tailwind CSS
+          &copy; 2026 Sagar Gupta. Built with React &amp; Tailwind CSS
         </motion.p>
       </motion.div>
     </footer>

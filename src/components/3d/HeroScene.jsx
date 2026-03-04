@@ -9,10 +9,11 @@ import useMediaQuery from '@utils/useMediaQuery'
 
 function createParticlePositions(count) {
   const arr = new Float32Array(count * 3)
-  for (let i = 0; i < count; i++) {
-    arr[i * 3] = (Math.random() - 0.5) * 20
-    arr[i * 3 + 1] = (Math.random() - 0.5) * 20
-    arr[i * 3 + 2] = (Math.random() - 0.5) * 15
+  const rand = new Uint32Array(count * 3)
+  globalThis.crypto.getRandomValues(rand)
+  for (let i = 0; i < count * 3; i++) {
+    const scale = i % 3 === 2 ? 15 : 20
+    arr[i] = (rand[i] / 0xffffffff - 0.5) * scale
   }
   return arr
 }
@@ -89,7 +90,6 @@ const HeroScene = () => {
         rotationSpeed={0.15}
         floatIntensity={0.5}
         opacity={0.3}
-
       />
 
       {/* Left: glass-like icosahedron */}
@@ -104,7 +104,6 @@ const HeroScene = () => {
           floatIntensity={1.2}
           distortion={0.3}
           opacity={0.2}
-  
         />
       )}
 
@@ -119,7 +118,6 @@ const HeroScene = () => {
           rotationSpeed={0.35}
           floatIntensity={0.8}
           opacity={0.25}
-  
         />
       )}
 
@@ -135,7 +133,6 @@ const HeroScene = () => {
             rotationSpeed={0.5}
             floatIntensity={1.5}
             opacity={0.15}
-    
           />
           <FloatingGeometry
             geometry="dodecahedron"
@@ -146,7 +143,6 @@ const HeroScene = () => {
             rotationSpeed={0.4}
             floatIntensity={1.8}
             opacity={0.12}
-    
           />
         </>
       )}

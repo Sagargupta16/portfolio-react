@@ -13,7 +13,9 @@ const Preloader = () => {
           clearInterval(interval)
           return 100
         }
-        return prev + Math.random() * 25 + 15
+        const buf = new Uint32Array(1)
+        globalThis.crypto.getRandomValues(buf)
+        return prev + (buf[0] / 0xffffffff) * 25 + 15
       })
     }, 60)
 
