@@ -38,7 +38,7 @@ const SkillTagGroup = ({ items }) => (
       variants={waveCascadeContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ amount: 0.1 }}
+      viewport={{ margin: "0px 0px -100px 0px" }}
    >
       {items.map((skill) => (
          <motion.span
@@ -87,7 +87,7 @@ const Skill = () => {
          style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
          initial="hidden"
          whileInView="visible"
-         viewport={{ amount: 0.1 }}
+         viewport={{ margin: "0px 0px -100px 0px" }}
          variants={sectionRevealEnhanced}
       >
          <div

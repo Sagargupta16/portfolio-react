@@ -16,7 +16,7 @@ const SectionHeader = ({ title, subtitle }) => {
          variants={fadeInUp}
          initial="hidden"
          whileInView="visible"
-         viewport={{ amount: 0.1 }}
+         viewport={{ margin: "0px 0px -100px 0px" }}
       >
          {subtitle && (
             <span

@@ -45,7 +45,7 @@ const About = () => {
          style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
          initial="hidden"
          whileInView="visible"
-         viewport={{ amount: 0.1 }}
+         viewport={{ margin: "0px 0px -100px 0px" }}
          variants={sectionRevealEnhanced}
       >
          <div style={{ maxWidth: 1152, margin: "0 auto" }}>
@@ -188,7 +188,7 @@ const About = () => {
                variants={staggerContainer}
                initial="hidden"
                whileInView="visible"
-               viewport={{ amount: 0.3 }}
+               viewport={{ margin: "0px 0px -100px 0px" }}
             >
                {statEntries.map(([key, value]) => (
                   <motion.div
