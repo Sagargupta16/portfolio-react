@@ -1,7 +1,22 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Server } from "lucide-react";
+import { Server, Eye } from "lucide-react";
+
+const COUNTER_API =
+   "https://api.counterapi.dev/v1/sagargupta-portfolio/visits/up";
 
 const SystemStatus = () => {
+   const [visitors, setVisitors] = useState(null);
+
+   useEffect(() => {
+      fetch(COUNTER_API)
+         .then((r) => (r.ok ? r.json() : null))
+         .then((d) => {
+            if (d?.count) setVisitors(d.count);
+         })
+         .catch(() => {});
+   }, []);
+
    return (
       <motion.div
          initial={{ opacity: 0, scale: 0.9 }}
@@ -47,7 +62,8 @@ const SystemStatus = () => {
                      borderRadius: "50%",
                      backgroundColor: "#22c55e",
                      opacity: 0.75,
-                     animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
+                     animation:
+                        "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
                   }}
                />
                <span
@@ -70,6 +86,27 @@ const SystemStatus = () => {
                }}
             >
                ALL SYSTEMS NOMINAL
+            </span>
+         </div>
+
+         <div
+            style={{
+               width: 1,
+               height: 12,
+               background: "rgba(255,255,255,0.08)",
+            }}
+         />
+         <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <Eye size={12} color="#06b6d4" />
+            <span
+               style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: 11,
+                  color: "#06b6d4",
+                  fontWeight: 600,
+               }}
+            >
+               {visitors ? visitors.toLocaleString() : "LIVE"}
             </span>
          </div>
       </motion.div>

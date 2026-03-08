@@ -55,6 +55,10 @@ const App = () => {
       });
       globalThis.__lenis = lenis;
 
+      // Force scroll to top on page load/reload
+      globalThis.history.scrollRestoration = "manual";
+      lenis.scrollTo(0, { immediate: true });
+
       const raf = (time) => {
          lenis.raf(time);
          requestAnimationFrame(raf);
