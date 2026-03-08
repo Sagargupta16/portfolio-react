@@ -156,16 +156,3 @@ export const flipInY = {
       transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
    },
 };
-
-// ===== Reduced Motion Fallback =====
-export const reducedMotionFade = {
-   hidden: { opacity: 0 },
-   visible: { opacity: 1, transition: { duration: 0.3 } },
-};
-
-/**
- * Returns the reduced-motion-safe variant.
- * Falls back to a simple fade when the user prefers reduced motion.
- */
-export const safeVariant = (variant, reducedMotion) =>
-   reducedMotion ? reducedMotionFade : variant;
