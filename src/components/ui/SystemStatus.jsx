@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Server, Eye } from "lucide-react";
+import useMediaQuery from "@utils/useMediaQuery";
 
 const COUNTER_API =
    "https://api.counterapi.dev/v1/sagargupta-portfolio/visits/up";
 
 const SystemStatus = () => {
+   const isMobile = useMediaQuery("(max-width: 768px)");
    const [visitors, setVisitors] = useState(null);
 
    useEffect(() => {
@@ -16,6 +18,8 @@ const SystemStatus = () => {
          })
          .catch(() => {});
    }, []);
+
+   if (isMobile) return null;
 
    return (
       <motion.div

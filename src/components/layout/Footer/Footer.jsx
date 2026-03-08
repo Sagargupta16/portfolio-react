@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { getSocialProfiles } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
+import useMediaQuery from "@utils/useMediaQuery";
 import ICON_MAP from "@utils/iconMap";
 
 const TECH_STACK = [
@@ -26,6 +27,7 @@ const KONAMI = [
 ];
 
 const Footer = () => {
+   const isMobile = useMediaQuery("(max-width: 768px)");
    const socialProfiles = useMemo(() => getSocialProfiles(), []);
    const [easterEgg, setEasterEgg] = useState(false);
    const [konamiIdx, setKonamiIdx] = useState(0);
@@ -210,16 +212,18 @@ const Footer = () => {
                >
                   &copy; {new Date().getFullYear()} Sagar Gupta
                </p>
-               <p
-                  style={{
-                     color: "#3a3a50",
-                     fontSize: 10,
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                     textAlign: "center",
-                  }}
-               >
-                  Press 0-9 to navigate sections &middot; j/k to scroll
-               </p>
+               {!isMobile && (
+                  <p
+                     style={{
+                        color: "#3a3a50",
+                        fontSize: 10,
+                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        textAlign: "center",
+                     }}
+                  >
+                     Press 0-9 to navigate sections &middot; j/k to scroll
+                  </p>
+               )}
             </motion.div>
 
             {/* Easter egg */}
