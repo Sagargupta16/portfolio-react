@@ -62,8 +62,7 @@ const SystemStatus = () => {
                      borderRadius: "50%",
                      backgroundColor: "#22c55e",
                      opacity: 0.75,
-                     animation:
-                        "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
+                     animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
                   }}
                />
                <span

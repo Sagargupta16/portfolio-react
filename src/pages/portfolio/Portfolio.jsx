@@ -26,8 +26,18 @@ import SectionHeader from "@components/ui/SectionHeader";
 const FILTERS = ["All", "Featured", "Collab", "Others"];
 
 const MONTHS = {
-   January: 0, February: 1, March: 2, April: 3, May: 4, June: 5,
-   July: 6, August: 7, September: 8, October: 9, November: 10, December: 11,
+   January: 0,
+   February: 1,
+   March: 2,
+   April: 3,
+   May: 4,
+   June: 5,
+   July: 6,
+   August: 7,
+   September: 8,
+   October: 9,
+   November: 10,
+   December: 11,
 };
 
 const parseDate = (dateStr) => {
@@ -894,8 +904,7 @@ const Portfolio = () => {
                                     : "flex-end",
                               paddingLeft: pl,
                               paddingRight: pr,
-                              marginTop:
-                                 idx === 0 || isMobile ? 0 : -60,
+                              marginTop: idx === 0 || isMobile ? 0 : -60,
                               position: "relative",
                               zIndex: filteredProjects.length - idx,
                            }}
@@ -934,18 +943,12 @@ const Portfolio = () => {
                                  style={{
                                     position: "absolute",
                                     top: 24,
-                                    left: isLeft
-                                       ? "auto"
-                                       : "calc(50% + 5px)",
-                                    right: isLeft
-                                       ? "calc(50% + 5px)"
-                                       : "auto",
+                                    left: isLeft ? "auto" : "calc(50% + 5px)",
+                                    right: isLeft ? "calc(50% + 5px)" : "auto",
                                     width: 15,
                                     height: 1,
                                     background: `linear-gradient(${isLeft ? "to left" : "to right"}, ${colors.accent}50, transparent)`,
-                                    transformOrigin: isLeft
-                                       ? "right"
-                                       : "left",
+                                    transformOrigin: isLeft ? "right" : "left",
                                     zIndex: 2,
                                  }}
                               />
@@ -953,10 +956,7 @@ const Portfolio = () => {
 
                            {/* Card */}
                            <div style={{ width: "100%", maxWidth: 480 }}>
-                              <ProjectCard
-                                 data={project}
-                                 index={idx}
-                              />
+                              <ProjectCard data={project} index={idx} />
                            </div>
                         </motion.div>
                      );

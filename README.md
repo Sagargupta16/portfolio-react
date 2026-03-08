@@ -19,36 +19,36 @@ A modern, dark-themed personal portfolio with 3D WebGL scene, glassmorphism effe
 
 ## Tech Stack
 
-| Category          | Technologies                                 |
-| ----------------- | -------------------------------------------- |
-| **Core**          | React 19, Vite 7, Tailwind CSS v4            |
+| Category          | Technologies                                  |
+| ----------------- | --------------------------------------------- |
+| **Core**          | React 19, Vite 7, Tailwind CSS v4             |
 | **3D Scene**      | Three.js, React Three Fiber, React Three Drei |
-| **Animations**    | Framer Motion, tsParticles                   |
-| **Fonts**         | Inter Variable, JetBrains Mono (self-hosted) |
-| **Smooth Scroll** | Lenis                                        |
-| **Icons**         | Lucide React, React Icons                    |
-| **Contact**       | EmailJS                                      |
-| **GitHub**        | react-github-calendar                        |
-| **Testing**       | Vitest, React Testing Library                |
-| **Code Quality**  | ESLint, Prettier                             |
-| **Deployment**    | GitHub Actions, GitHub Pages                 |
+| **Animations**    | Framer Motion, tsParticles                    |
+| **Fonts**         | Inter Variable, JetBrains Mono (self-hosted)  |
+| **Smooth Scroll** | Lenis                                         |
+| **Icons**         | Lucide React, React Icons                     |
+| **Contact**       | EmailJS                                       |
+| **GitHub**        | react-github-calendar                         |
+| **Testing**       | Vitest, React Testing Library                 |
+| **Code Quality**  | ESLint, Prettier                              |
+| **Deployment**    | GitHub Actions, GitHub Pages                  |
 
 ---
 
 ## Sections
 
-| Section            | Description                                                                  |
-| ------------------ | ---------------------------------------------------------------------------- |
-| **Hero**           | 3D wireframe scene with floating geometries, particle field, and role cycling |
-| **About**          | Bio, highlights, and animated stat counters                                  |
-| **Experience**     | Timeline with expandable project details and skill tags                      |
-| **Education**      | Academic timeline with animated CGPA counters                                |
-| **Skills**         | Categorized skill grid (Cloud, DevOps, ML, Frameworks, etc.)                 |
-| **Projects**       | Filterable cards (Featured / Collab / Others) with open source PRs banner    |
-| **Achievements**   | Certifications, learning badges, coding stats, and medal-ranked competitions |
-| **Services**       | Service offerings grid                                                       |
-| **GitHub**         | Contribution heatmap calendar                                                |
-| **Contact**        | Contact form (EmailJS) + direct contact options                              |
+| Section          | Description                                                                   |
+| ---------------- | ----------------------------------------------------------------------------- |
+| **Hero**         | 3D wireframe scene with floating geometries, particle field, and role cycling |
+| **About**        | Bio, highlights, and animated stat counters                                   |
+| **Experience**   | Timeline with expandable project details and skill tags                       |
+| **Education**    | Academic timeline with animated CGPA counters                                 |
+| **Skills**       | Categorized skill grid (Cloud, DevOps, ML, Frameworks, etc.)                  |
+| **Projects**     | Filterable cards (Featured / Collab / Others) with open source PRs banner     |
+| **Achievements** | Certifications, learning badges, coding stats, and medal-ranked competitions  |
+| **Services**     | Service offerings grid                                                        |
+| **GitHub**       | Contribution heatmap calendar                                                 |
+| **Contact**      | Contact form (EmailJS) + direct contact options                               |
 
 ---
 
