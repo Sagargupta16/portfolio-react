@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import {
    ShieldCheck,
    Trophy,
+   Medal,
    ExternalLink,
    BookOpen,
    ArrowUpRight,
@@ -24,6 +25,19 @@ import SectionHeader from "@components/ui/SectionHeader";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 
 const LEVEL_ORDER = { Foundational: 0, Associate: 1, Professional: 2 };
+
+const MEDAL_COLORS = {
+   "1st": "#fbbf24",
+   "2nd": "#94a3b8",
+   "3rd": "#d97706",
+};
+
+const getMedalColor = (title) => {
+   if (title.startsWith("1st")) return MEDAL_COLORS["1st"];
+   if (title.startsWith("2nd")) return MEDAL_COLORS["2nd"];
+   if (title.startsWith("3rd")) return MEDAL_COLORS["3rd"];
+   return "#6e6e90";
+};
 
 const Achievement = () => {
    const isMobile = useMediaQuery("(max-width: 768px)");
@@ -552,6 +566,13 @@ const Achievement = () => {
                            }}
                            variants={fadeInUp}
                         >
+                           <Medal
+                              size={20}
+                              style={{
+                                 color: getMedalColor(item.title),
+                                 flexShrink: 0,
+                              }}
+                           />
                            <h4
                               style={{
                                  fontSize: 15,
