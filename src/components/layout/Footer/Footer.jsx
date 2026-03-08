@@ -113,7 +113,8 @@ const Footer = () => {
                style={{ color: "#6e6e90", fontSize: 14, textAlign: "center" }}
                variants={staggerItem}
             >
-               &copy; 2026 Sagar Gupta. Built with React &amp; Tailwind CSS
+               &copy; {new Date().getFullYear()} Sagar Gupta. Built with React
+               &amp; Tailwind CSS
             </motion.p>
          </motion.div>
       </footer>

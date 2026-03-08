@@ -51,4 +51,9 @@ export default defineConfig(() => ({
    optimizeDeps: {
       include: ["react", "react-dom"],
    },
+   test: {
+      environment: "jsdom",
+      globals: true,
+      setupFiles: ["./src/__tests__/setup.js"],
+   },
 }));
