@@ -40,7 +40,7 @@ const Footer = () => {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{}}
          >
             {/* Logo */}
             <motion.span

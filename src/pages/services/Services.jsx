@@ -70,7 +70,7 @@ const Services = () => {
          style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, amount: 0.1 }}
+         viewport={{ amount: 0.1 }}
          variants={sectionRevealEnhanced}
       >
          <SectionHeader title="Services" subtitle="What I offer" />

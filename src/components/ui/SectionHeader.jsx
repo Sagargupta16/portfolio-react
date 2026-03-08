@@ -16,7 +16,7 @@ const SectionHeader = ({ title, subtitle }) => {
          variants={fadeInUp}
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, margin: "-50px" }}
+         viewport={{ amount: 0.1 }}
       >
          {subtitle && (
             <span
@@ -60,7 +60,7 @@ const SectionHeader = ({ title, subtitle }) => {
             variants={lineGrow}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{}}
          />
       </motion.div>
    );

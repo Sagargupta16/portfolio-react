@@ -19,6 +19,7 @@ import {
    sectionRevealEnhanced,
    staggerContainer,
    fadeInUp,
+   scaleRotateIn,
 } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";
 import SectionHeader from "@components/ui/SectionHeader";
@@ -169,13 +170,12 @@ const ProjectCard = ({ data, index = 0 }) => {
             flexDirection: "column",
          }}
          layout
-         initial={{ opacity: 0, scale: 0.7, rotate: -4 }}
-         animate={{ opacity: 1, scale: 1, rotate: 0 }}
+         variants={scaleRotateIn}
+         initial="hidden"
+         animate="visible"
          exit={{ opacity: 0, y: -20, scale: 0.95 }}
          transition={{
-            type: "spring",
-            stiffness: 80,
-            damping: 16,
+            ...scaleRotateIn.visible.transition,
             delay: Math.min(index * 0.1, 0.8),
             layout: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
          }}
@@ -427,7 +427,7 @@ const OpenSourceBanner = () => (
       style={{ marginTop: 64 }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ amount: 0.2 }}
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
    >
       <div
@@ -585,7 +585,7 @@ const Portfolio = () => {
          style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, amount: 0.1 }}
+         viewport={{ amount: 0.1 }}
          variants={sectionRevealEnhanced}
       >
          <SectionHeader title="Projects" subtitle="Things I've built" />

@@ -6,11 +6,10 @@ settings:
 
 overrides:
    "@isaacs/brace-expansion": ">=5.0.1"
-   minimatch: ">=10.2.1"
+   minimatch: ">=10.2.3"
    js-yaml: ">=4.1.1"
    ajv@<7: ~6.14.0
    rollup@>=4.0.0 <4.59.0: ">=4.59.0"
-   minimatch@>=10.0.0 <10.2.3: ">=10.2.3"
 
 importers:
    .:
@@ -3487,13 +3486,6 @@ packages:
          }
       engines: { node: ">=4" }
 
-   minimatch@10.2.2:
-      resolution:
-         {
-            integrity: sha512-+G4CpNBxa5MprY+04MbgOw1v7So6n5JY166pFi9KfYwT78fxScCeSNQSNzp6dpPSW2rONOps6Ocam1wFhCgoVw==,
-         }
-      engines: { node: 18 || 20 || >=22 }
-
    minimatch@10.2.4:
       resolution:
          {
@@ -5048,7 +5040,7 @@ snapshots:
       dependencies:
          "@eslint/object-schema": 2.1.7
          debug: 4.4.3
-         minimatch: 10.2.2
+         minimatch: 10.2.4
       transitivePeerDependencies:
          - supports-color
 
@@ -5069,7 +5061,7 @@ snapshots:
          ignore: 5.3.2
          import-fresh: 3.3.1
          js-yaml: 4.1.1
-         minimatch: 10.2.2
+         minimatch: 10.2.4
          strip-json-comments: 3.1.1
       transitivePeerDependencies:
          - supports-color
@@ -6145,7 +6137,7 @@ snapshots:
          hasown: 2.0.2
          jsx-ast-utils: 3.3.5
          language-tags: 1.0.9
-         minimatch: 10.2.2
+         minimatch: 10.2.4
          object.fromentries: 2.0.8
          safe-regex-test: 1.1.0
          string.prototype.includes: 2.0.1
@@ -6177,7 +6169,7 @@ snapshots:
          estraverse: 5.3.0
          hasown: 2.0.2
          jsx-ast-utils: 3.3.5
-         minimatch: 10.2.2
+         minimatch: 10.2.4
          object.entries: 1.1.9
          object.fromentries: 2.0.8
          object.values: 1.2.1
@@ -6229,7 +6221,7 @@ snapshots:
          is-glob: 4.0.3
          json-stable-stringify-without-jsonify: 1.0.1
          lodash.merge: 4.6.2
-         minimatch: 10.2.2
+         minimatch: 10.2.4
          natural-compare: 1.4.0
          optionator: 0.9.4
       optionalDependencies:
@@ -6827,10 +6819,6 @@ snapshots:
          picomatch: 2.3.1
 
    min-indent@1.0.1: {}
-
-   minimatch@10.2.2:
-      dependencies:
-         brace-expansion: 5.0.2
 
    minimatch@10.2.4:
       dependencies:

@@ -19,7 +19,6 @@ const CalendarSkeleton = () => (
          alignItems: "center",
       }}
    >
-      {/* Skeleton rows mimicking the calendar grid */}
       {SKELETON_ROWS.map((rowKey, row) => (
          <div key={rowKey} style={{ display: "flex", gap: 4 }}>
             {SKELETON_COLS.map((colKey, col) => (
@@ -37,7 +36,6 @@ const CalendarSkeleton = () => (
             ))}
          </div>
       ))}
-      {/* Month labels skeleton */}
       <div style={{ display: "flex", gap: 28, marginTop: 8 }}>
          {SKELETON_MONTHS.map((key) => (
             <div
@@ -72,7 +70,7 @@ const GitHub = () => {
          style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, amount: 0.2 }}
+         viewport={{ amount: 0.1 }}
          variants={sectionRevealEnhanced}
       >
          <SectionHeader
@@ -80,12 +78,9 @@ const GitHub = () => {
             subtitle="My open source contributions"
          />
 
-         <div
-            className="max-w-5xl mx-auto text-center"
-            style={{ maxWidth: 1024, margin: "0 auto", textAlign: "center" }}
-         >
+         <div style={{ maxWidth: 1024, margin: "0 auto", textAlign: "center" }}>
             <motion.div
-               className="glass-card p-6 md:p-10 overflow-x-auto"
+               className="glass-card"
                style={{
                   padding: isMobile ? "16px 12px" : "24px 40px",
                   overflowX: "auto",
@@ -116,7 +111,6 @@ const GitHub = () => {
                href="https://github.com/Sagargupta16"
                target="_blank"
                rel="noopener noreferrer"
-               className="inline-flex items-center gap-2 mt-8 text-accent-cyan hover:underline text-sm font-mono font-medium"
                style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -130,7 +124,7 @@ const GitHub = () => {
                variants={fadeIn}
             >
                View Full Profile
-               <ArrowRight className="w-4 h-4" />
+               <ArrowRight size={16} />
             </motion.a>
          </div>
       </motion.section>
