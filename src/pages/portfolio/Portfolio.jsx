@@ -1,16 +1,48 @@
 import { useState, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ExternalLink, FolderGit2, Calendar, Users } from 'lucide-react'
+import { ExternalLink, FolderGit2, Calendar, Users, Star, GitPullRequest } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
-import { getPersonalProjects, getCollaborativeProjects } from '@data/dataLoader'
+import { getFeaturedProjects, getCollaborativeProjects, getOtherProjects } from '@data/dataLoader'
 import { sectionRevealEnhanced, staggerContainer, fadeInUp } from '@utils/animations'
 import useMediaQuery from '@utils/useMediaQuery'
 import SectionHeader from '@components/ui/SectionHeader'
 
-const FILTERS = ['All', 'Personal', 'Team']
+const FILTERS = ['All', 'Featured', 'Collab', 'Others']
 
-const ProjectLink = ({ href, label, ariaLabel, icon: Icon }) => (
+const CATEGORY_COLORS = {
+  Featured: {
+    accent: '#06b6d4',
+    gradient: 'linear-gradient(to right, #06b6d4, #3b82f6)',
+    bgAlpha: 'rgba(6,182,212,',
+    borderAlpha: 'rgba(6,182,212,'
+  },
+  Collab: {
+    accent: '#a855f7',
+    gradient: 'linear-gradient(to right, #a855f7, #6366f1)',
+    bgAlpha: 'rgba(168,85,247,',
+    borderAlpha: 'rgba(168,85,247,'
+  },
+  Others: {
+    accent: '#f59e0b',
+    gradient: 'linear-gradient(to right, #f59e0b, #d97706)',
+    bgAlpha: 'rgba(245,158,11,',
+    borderAlpha: 'rgba(245,158,11,'
+  }
+}
+
+const OPEN_SOURCE_CONTRIBUTIONS = [
+  { repo: 'apache/airflow', title: 'Add template_fields support to SalesforceBulkOperator', url: 'https://github.com/apache/airflow/pull/62840' },
+  { repo: 'chroma-core/chroma', title: 'Fix: replace ValueError with InvalidArgumentError', url: 'https://github.com/chroma-core/chroma/pull/6538' },
+  { repo: 'stanfordnlp/dspy', title: 'Add docstrings to predict module public APIs', url: 'https://github.com/stanfordnlp/dspy/pull/9381' },
+  { repo: 'awslabs/mcp', title: 'Fix Kendra documentation menu structure', url: 'https://github.com/awslabs/mcp/pull/2557' },
+  { repo: 'freeCodeCamp', title: 'Fix Python custom exception example', url: 'https://github.com/freeCodeCamp/freeCodeCamp/pull/66171' },
+  { repo: 'TheAlgorithms/Python', title: 'Add confusion matrix with precision, recall, F1', url: 'https://github.com/TheAlgorithms/Python/pull/14318' },
+  { repo: 'exercism/python', title: 'Add approaches for armstrong-numbers exercise', url: 'https://github.com/exercism/python/pull/4106' },
+  { repo: 'forem/selfhost', title: 'Updated AWS Ansible, added elastic IP', url: 'https://github.com/forem/selfhost/pull/91' }
+]
+
+const ProjectLink = ({ href, label, ariaLabel, icon: Icon, accentColor = '#06b6d4' }) => (
   <a
     href={href}
     target="_blank"
@@ -31,8 +63,8 @@ const ProjectLink = ({ href, label, ariaLabel, icon: Icon }) => (
       transition: 'all 0.2s'
     }}
     onMouseEnter={e => {
-      e.currentTarget.style.color = '#06b6d4'
-      e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)'
+      e.currentTarget.style.color = accentColor
+      e.currentTarget.style.borderColor = `${accentColor}4D`
     }}
     onMouseLeave={e => {
       e.currentTarget.style.color = '#a5a5c0'
@@ -49,13 +81,16 @@ ProjectLink.propTypes = {
   href: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   ariaLabel: PropTypes.string.isRequired,
-  icon: PropTypes.elementType.isRequired
+  icon: PropTypes.elementType.isRequired,
+  accentColor: PropTypes.string
 }
 
 const ProjectCard = ({ data, index = 0 }) => {
   const hasGithub = data.github && data.github !== '' && data.github !== '#'
   const hasLive = data.live && data.live !== '' && data.live !== '#'
-  const isCollab = data.category === 'Team'
+  const colors = CATEGORY_COLORS[data.category] || CATEGORY_COLORS.Others
+  const isFeatured = data.category === 'Featured'
+  const isCollab = data.category === 'Collab'
 
   return (
     <motion.div
@@ -69,7 +104,7 @@ const ProjectCard = ({ data, index = 0 }) => {
         type: 'spring',
         stiffness: 80,
         damping: 16,
-        delay: index * 0.1,
+        delay: Math.min(index * 0.1, 0.8),
         layout: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
       }}
       whileHover={{
@@ -80,10 +115,8 @@ const ProjectCard = ({ data, index = 0 }) => {
       {/* Accent top bar */}
       <div
         style={{
-          height: 3,
-          background: isCollab
-            ? 'linear-gradient(to right, #a855f7, #6366f1)'
-            : 'linear-gradient(to right, #06b6d4, #3b82f6)',
+          height: isFeatured ? 4 : 3,
+          background: colors.gradient,
           borderRadius: '12px 12px 0 0'
         }}
       />
@@ -96,8 +129,8 @@ const ProjectCard = ({ data, index = 0 }) => {
               width: 36,
               height: 36,
               borderRadius: 10,
-              background: isCollab ? 'rgba(168,85,247,0.1)' : 'rgba(6,182,212,0.1)',
-              border: `1px solid ${isCollab ? 'rgba(168,85,247,0.2)' : 'rgba(6,182,212,0.2)'}`,
+              background: `${colors.bgAlpha}0.1)`,
+              border: `1px solid ${colors.borderAlpha}0.2)`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -105,7 +138,11 @@ const ProjectCard = ({ data, index = 0 }) => {
               marginTop: 2
             }}
           >
-            <FolderGit2 size={18} style={{ color: isCollab ? '#a855f7' : '#06b6d4' }} />
+            {isFeatured ? (
+              <Star size={18} style={{ color: colors.accent }} />
+            ) : (
+              <FolderGit2 size={18} style={{ color: colors.accent }} />
+            )}
           </div>
           <div style={{ minWidth: 0, flex: 1 }}>
             <h3 style={{ fontSize: 17, fontWeight: 700, color: '#eeeef5', lineHeight: 1.3 }}>{data.title}</h3>
@@ -123,14 +160,14 @@ const ProjectCard = ({ data, index = 0 }) => {
                 <Calendar size={10} style={{ flexShrink: 0 }} />
                 {data.date}
               </span>
-              {isCollab && data.team && (
+              {(isCollab || (isFeatured && data.team)) && data.team && (
                 <span
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 4,
                     fontSize: 11,
-                    color: '#a855f7',
+                    color: colors.accent,
                     fontFamily: 'JetBrains Mono, ui-monospace, monospace'
                   }}
                 >
@@ -141,6 +178,31 @@ const ProjectCard = ({ data, index = 0 }) => {
             </div>
           </div>
         </div>
+
+        {/* Featured badge */}
+        {isFeatured && (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: '3px 10px',
+              borderRadius: 6,
+              background: `${colors.bgAlpha}0.08)`,
+              border: `1px solid ${colors.borderAlpha}0.15)`,
+              fontSize: 10,
+              fontWeight: 700,
+              color: colors.accent,
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              marginBottom: 12,
+              alignSelf: 'flex-start'
+            }}
+          >
+            <Star size={10} />
+            Featured
+          </div>
+        )}
 
         {/* Achievement badge for collaborative */}
         {isCollab && data.achievement && (
@@ -177,9 +239,9 @@ const ProjectCard = ({ data, index = 0 }) => {
                 fontSize: 10,
                 padding: '3px 8px',
                 borderRadius: 5,
-                background: isCollab ? 'rgba(168,85,247,0.08)' : 'rgba(6,182,212,0.08)',
-                color: isCollab ? '#a855f7' : '#06b6d4',
-                border: `1px solid ${isCollab ? 'rgba(168,85,247,0.15)' : 'rgba(6,182,212,0.15)'}`
+                background: `${colors.bgAlpha}0.08)`,
+                color: colors.accent,
+                border: `1px solid ${colors.borderAlpha}0.15)`
               }}
             >
               {tool}
@@ -203,6 +265,7 @@ const ProjectCard = ({ data, index = 0 }) => {
                 label="Source"
                 ariaLabel={`View ${data.title} on GitHub`}
                 icon={FaGithub}
+                accentColor={colors.accent}
               />
             )}
             {hasLive && (
@@ -211,6 +274,7 @@ const ProjectCard = ({ data, index = 0 }) => {
                 label="Live Demo"
                 ariaLabel={`View ${data.title} live demo`}
                 icon={ExternalLink}
+                accentColor={colors.accent}
               />
             )}
           </div>
@@ -236,6 +300,102 @@ ProjectCard.propTypes = {
   index: PropTypes.number
 }
 
+const OpenSourceBanner = () => (
+  <motion.div
+    style={{ marginTop: 64 }}
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.2 }}
+    transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+  >
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        marginBottom: 24,
+        justifyContent: 'center'
+      }}
+    >
+      <GitPullRequest size={20} style={{ color: '#22c55e' }} />
+      <h3 style={{ fontSize: 20, fontWeight: 700, color: '#eeeef5' }}>Open Source Contributions</h3>
+    </div>
+
+    <div
+      className="glass-card"
+      style={{
+        padding: 24,
+        borderImage: 'linear-gradient(135deg, rgba(34,197,94,0.3), rgba(6,182,212,0.3), rgba(168,85,247,0.3)) 1',
+        borderWidth: 1,
+        borderStyle: 'solid'
+      }}
+    >
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: 12
+        }}
+      >
+        {OPEN_SOURCE_CONTRIBUTIONS.map((contrib) => (
+          <a
+            key={contrib.url}
+            href={contrib.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 10,
+              padding: '12px 14px',
+              borderRadius: 10,
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid rgba(255,255,255,0.04)',
+              textDecoration: 'none',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(34,197,94,0.06)'
+              e.currentTarget.style.borderColor = 'rgba(34,197,94,0.2)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.02)'
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'
+            }}
+          >
+            <GitPullRequest size={14} style={{ color: '#22c55e', flexShrink: 0, marginTop: 3 }} />
+            <div style={{ minWidth: 0 }}>
+              <span
+                style={{
+                  fontSize: 11,
+                  fontFamily: 'JetBrains Mono, ui-monospace, monospace',
+                  color: '#22c55e',
+                  fontWeight: 600
+                }}
+              >
+                {contrib.repo}
+              </span>
+              <p
+                style={{
+                  fontSize: 12,
+                  color: '#a5a5c0',
+                  lineHeight: 1.4,
+                  marginTop: 2,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {contrib.title}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+)
+
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('All')
 
@@ -250,17 +410,20 @@ const Portfolio = () => {
   }, [])
   const isMobile = useMediaQuery('(max-width: 768px)')
 
-  const personalProjects = useMemo(() => getPersonalProjects(), [])
+  const featuredProjects = useMemo(() => getFeaturedProjects(), [])
   const collaborativeProjects = useMemo(() => getCollaborativeProjects(), [])
+  const otherProjects = useMemo(() => getOtherProjects(), [])
 
   const filteredProjects = useMemo(() => {
-    const personal = personalProjects.map(p => ({ ...p, category: 'Personal' }))
-    const collab = collaborativeProjects.map(p => ({ ...p, category: 'Team' }))
+    const featured = featuredProjects.map(p => ({ ...p, category: 'Featured' }))
+    const collab = collaborativeProjects.map(p => ({ ...p, category: 'Collab' }))
+    const others = otherProjects.map(p => ({ ...p, category: 'Others' }))
 
-    if (activeFilter === 'Personal') return personal
-    if (activeFilter === 'Team') return collab
-    return [...personal, ...collab]
-  }, [activeFilter, personalProjects, collaborativeProjects])
+    if (activeFilter === 'Featured') return featured
+    if (activeFilter === 'Collab') return collab
+    if (activeFilter === 'Others') return others
+    return [...featured, ...collab, ...others]
+  }, [activeFilter, featuredProjects, collaborativeProjects, otherProjects])
 
   return (
     <motion.section
@@ -272,7 +435,7 @@ const Portfolio = () => {
       viewport={{ once: true, amount: 0.1 }}
       variants={sectionRevealEnhanced}
     >
-      <SectionHeader title="Personal Projects" subtitle="Things I've built" />
+      <SectionHeader title="Projects" subtitle="Things I've built" />
 
       <div className="max-w-6xl mx-auto" style={{ maxWidth: 1152, margin: '0 auto' }}>
         {/* Filter buttons */}
@@ -332,6 +495,9 @@ const Portfolio = () => {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* Open Source Contributions Banner */}
+        <OpenSourceBanner />
       </div>
     </motion.section>
   )

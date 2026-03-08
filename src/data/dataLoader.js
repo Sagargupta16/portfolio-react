@@ -19,8 +19,9 @@ export const getExperience = () => experienceData.professional_experience
 export const getPositionsOfResponsibility = () => experienceData.positions_of_responsibility
 export const getSkills = () => skillsData
 export const getServices = () => servicesData
-export const getPersonalProjects = () => projectsData.personal_projects
+export const getFeaturedProjects = () => projectsData.featured_projects
 export const getCollaborativeProjects = () => projectsData.collaborative_projects
+export const getOtherProjects = () => projectsData.other_projects
 export const getCertifications = () => achievementsData.certifications
 export const getLearningBadges = () => achievementsData.learning_badges || []
 export const getAchievements = () => achievementsData.achievements

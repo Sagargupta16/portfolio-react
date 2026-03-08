@@ -1,35 +1,5 @@
 {
-  "personal_projects": [
-    {
-      "id": 19,
-      "title": "Financial Dashboard",
-      "description": "A comprehensive financial dashboard built with React and TypeScript that provides powerful analytics, AI-style insights, and interactive visualizations for personal finance management.",
-      "date": "February 2026",
-      "tools_tech": ["TypeScript", "React", "Tailwind CSS", "Chart.js", "Vite"],
-      "features": [
-        "Drag-and-drop Excel upload",
-        "50/30/20 budget rule tracking",
-        "Interactive charts and treemaps",
-        "AI-style financial insights"
-      ],
-      "github": "https://github.com/Sagargupta16/Financial-Dashboard",
-      "live": "https://sagargupta.online/Financial-Dashboard/"
-    },
-    {
-      "id": 20,
-      "title": "Instagram Likes Leaderboard",
-      "description": "A browser tool that scans your Instagram posts and shows a ranked leaderboard of your biggest fans — followers and non-followers — sorted by how many posts they've liked.",
-      "date": "February 2026",
-      "tools_tech": ["TypeScript", "Preact", "Browser API", "Instagram API"],
-      "features": [
-        "Ranked leaderboard of top likers",
-        "Follower vs non-follower separation",
-        "No downloads or sign-ups required",
-        "Copy-paste browser console script"
-      ],
-      "github": "https://github.com/Sagargupta16/InstagramLikesLeaderboard",
-      "live": "https://sagargupta.online/InstagramLikesLeaderboard/"
-    },
+  "featured_projects": [
     {
       "id": 15,
       "title": "Ledger Sync",
@@ -44,21 +14,6 @@
       ],
       "github": "https://github.com/Sagargupta16/ledger-sync",
       "live": "https://sagargupta.online/ledger-sync/"
-    },
-    {
-      "id": 13,
-      "title": "Blue Green AWS Terraform",
-      "description": "A comprehensive Infrastructure as Code solution for implementing Blue-Green deployment on AWS using Terraform, providing a complete CI/CD pipeline with zero-downtime deployments.",
-      "date": "July 2025",
-      "tools_tech": ["Terraform", "AWS", "Docker", "ECS Fargate", "CodePipeline", "HCL"],
-      "features": [
-        "Zero-downtime Blue-Green deployments",
-        "Automated CI/CD with AWS CodePipeline",
-        "Containerized apps on ECS Fargate",
-        "KMS encryption and IAM security"
-      ],
-      "github": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform",
-      "live": ""
     },
     {
       "id": 2,
@@ -76,6 +31,144 @@
       "live": "https://leetcode-rating-predictor.onrender.com/"
     },
     {
+      "id": 13,
+      "title": "Blue Green AWS Terraform",
+      "description": "A comprehensive Infrastructure as Code solution for implementing Blue-Green deployment on AWS using Terraform, providing a complete CI/CD pipeline with zero-downtime deployments.",
+      "date": "July 2025",
+      "tools_tech": ["Terraform", "AWS", "Docker", "ECS Fargate", "CodePipeline", "HCL"],
+      "features": [
+        "Zero-downtime Blue-Green deployments",
+        "Automated CI/CD with AWS CodePipeline",
+        "Containerized apps on ECS Fargate",
+        "KMS encryption and IAM security"
+      ],
+      "github": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform",
+      "live": ""
+    },
+    {
+      "id": 20,
+      "title": "Instagram Likes Leaderboard",
+      "description": "A browser tool that scans your Instagram posts and shows a ranked leaderboard of your biggest fans — followers and non-followers — sorted by how many posts they've liked.",
+      "date": "February 2026",
+      "tools_tech": ["TypeScript", "Preact", "Browser API", "Instagram API"],
+      "features": [
+        "Ranked leaderboard of top likers",
+        "Follower vs non-follower separation",
+        "No downloads or sign-ups required",
+        "Copy-paste browser console script"
+      ],
+      "github": "https://github.com/Sagargupta16/InstagramLikesLeaderboard",
+      "live": "https://sagargupta.online/InstagramLikesLeaderboard/"
+    },
+    {
+      "id": 21,
+      "title": "Placemento",
+      "description": "A full-stack placement management portal for MCA NITW with OTP authentication, AG Grid data tables, and a monorepo architecture serving 100+ students and 50+ companies.",
+      "date": "January 2024",
+      "tools_tech": ["TypeScript", "React 19", "MongoDB", "Node.js", "AG Grid", "OTP Auth"],
+      "features": [
+        "OTP-based authentication system",
+        "AG Grid for advanced data tables",
+        "Company and student dashboards",
+        "Placement statistics and analytics"
+      ],
+      "github": "https://github.com/MCA-NITW/placemento",
+      "live": "",
+      "team": "MCA NITW Placement Team",
+      "organization": "MCA-NITW"
+    },
+    {
+      "id": 22,
+      "title": "SelfHub",
+      "description": "A Model Context Protocol (MCP) server that gives AI assistants access to personal context — journal entries, goals, preferences, and notes — stored in MongoDB for richer, personalized conversations.",
+      "date": "March 2025",
+      "tools_tech": ["TypeScript", "MCP", "MongoDB", "Mongoose", "Node.js"],
+      "features": [
+        "MCP-compliant server with stdio transport",
+        "9 tools for journals, goals, preferences, notes",
+        "MongoDB-backed persistent storage",
+        "Seed data for quick onboarding"
+      ],
+      "github": "https://github.com/Sagargupta16/SelfHub",
+      "live": ""
+    }
+  ],
+  "collaborative_projects": [
+    {
+      "id": 1,
+      "title": "Lingua Connect",
+      "description": "An interactive online platform built on the MERN stack, connecting language learners with personalized tutors for tailored online lessons.",
+      "date": "March 2024",
+      "tools_tech": ["MongoDB", "Express.js", "React", "Node.js", "Video Calls", "Payment Integration"],
+      "features": [
+        "Language tutor matching",
+        "One-to-one video calls",
+        "Flashcard storage",
+        "Subscription-based payments",
+        "User registration and search"
+      ],
+      "github": "https://github.com/Sagargupta16/TRINIT_BugBiters_Dev",
+      "live": "",
+      "team": "BugBiters",
+      "organization": "TriNIT",
+      "contributors": ["Sagargupta16", "Team Members"]
+    },
+    {
+      "id": 4,
+      "title": "LeetCode Among Us",
+      "description": "A competitive coding platform for MCA NITW students to practice LeetCode problems together and track progress.",
+      "date": "August 2023",
+      "tools_tech": ["JavaScript", "React", "Node.js", "MongoDB", "Competitive Programming"],
+      "features": [
+        "LeetCode problem tracking",
+        "Student leaderboards",
+        "Progress monitoring",
+        "Competitive programming",
+        "Community engagement"
+      ],
+      "github": "https://github.com/MCA-NITW/leetcode_among_us",
+      "live": "https://leetcode-among-us.onrender.com/",
+      "team": "MCA NITW Dev Team",
+      "organization": "MCA-NITW",
+      "contributors": ["Sagargupta16", "MCA NITW Team"]
+    },
+    {
+      "id": 23,
+      "title": "MCA NITW Website",
+      "description": "Official MCA Course Website for NIT Warangal, providing comprehensive information about the MCA program, faculty, and resources.",
+      "date": "February 2023",
+      "tools_tech": ["JavaScript", "React", "Express.js", "MongoDB", "Node.js", "CSS", "REST API"],
+      "features": [
+        "Course information portal",
+        "Faculty directory",
+        "Student resources",
+        "Responsive design",
+        "Content management"
+      ],
+      "github": "https://github.com/MCA-NITW/mca_nitw",
+      "live": "",
+      "team": "MCA NITW Dev Team",
+      "organization": "MCA-NITW",
+      "contributors": ["Sagargupta16", "MCA NITW Team"]
+    }
+  ],
+  "other_projects": [
+    {
+      "id": 19,
+      "title": "Financial Dashboard",
+      "description": "A comprehensive financial dashboard built with React and TypeScript that provides powerful analytics, AI-style insights, and interactive visualizations for personal finance management.",
+      "date": "February 2026",
+      "tools_tech": ["TypeScript", "React", "Tailwind CSS", "Chart.js", "Vite"],
+      "features": [
+        "Drag-and-drop Excel upload",
+        "50/30/20 budget rule tracking",
+        "Interactive charts and treemaps",
+        "AI-style financial insights"
+      ],
+      "github": "https://github.com/Sagargupta16/Financial-Dashboard",
+      "live": "https://sagargupta.online/Financial-Dashboard/"
+    },
+    {
       "id": 7,
       "title": "AWS DevOps Infrastructure",
       "description": "A full-stack FARM (FastAPI, React, MongoDB) application containerized with Docker and deployed on AWS, with a comprehensive CI/CD pipeline using GitHub Actions and Terraform.",
@@ -89,6 +182,21 @@
       ],
       "github": "https://github.com/Sagargupta16/DevOps-AWS-FARM",
       "live": ""
+    },
+    {
+      "id": 24,
+      "title": "AI Code Translator",
+      "description": "An AI-powered code translation tool that converts code between programming languages using large language models, with a CodeMirror editor and Tokyo Night theme.",
+      "date": "January 2025",
+      "tools_tech": ["Next.js", "React", "OpenAI API", "CodeMirror", "Tailwind CSS"],
+      "features": [
+        "AI-powered code translation between languages",
+        "CodeMirror editor with Tokyo Night theme",
+        "Real-time streaming responses",
+        "Support for multiple programming languages"
+      ],
+      "github": "https://github.com/Sagargupta16/ai-code-translator",
+      "live": "https://ai-code-translator-delta-six.vercel.app"
     },
     {
       "id": 14,
@@ -106,6 +214,21 @@
       "live": ""
     },
     {
+      "id": 25,
+      "title": "GroundZeroNN",
+      "description": "A from-scratch neural network library built with only NumPy — no frameworks. Implements forward/backward propagation, optimizers, and activations achieving 79.8% MNIST accuracy.",
+      "date": "February 2025",
+      "tools_tech": ["Python", "NumPy", "Deep Learning", "Matplotlib", "scikit-learn"],
+      "features": [
+        "Neural network built from scratch with NumPy",
+        "Forward and backward propagation",
+        "Multiple activation functions and optimizers",
+        "79.8% accuracy on MNIST dataset"
+      ],
+      "github": "https://github.com/Sagargupta16/GroundZeroNN",
+      "live": ""
+    },
+    {
       "id": 11,
       "title": "Brainstorm Verse",
       "description": "A modern idea-sharing platform where users can share thoughts, discover innovative ideas, and connect with like-minded creators through threaded discussions and community engagement.",
@@ -119,6 +242,21 @@
       ],
       "github": "https://github.com/Sagargupta16/brainstorm-verse",
       "live": ""
+    },
+    {
+      "id": 26,
+      "title": "Authentication System",
+      "description": "A full-stack authentication system with JWT tokens, bcrypt password hashing, and Joi validation, with a React frontend and Express backend.",
+      "date": "September 2023",
+      "tools_tech": ["Express.js", "React", "MongoDB", "JWT", "bcrypt", "Joi"],
+      "features": [
+        "JWT token-based authentication",
+        "bcrypt password hashing",
+        "Joi schema validation",
+        "Login/Register with error handling"
+      ],
+      "github": "https://github.com/Sagargupta16/Authentication-System",
+      "live": "https://authentication-system-wmta.onrender.com/"
     },
     {
       "id": 4,
@@ -224,84 +362,6 @@
       ],
       "github": "https://github.com/Sagargupta16/Music-Web-App",
       "live": "https://sagargupta.online/Music-Web-App/"
-    }
-  ],
-  "collaborative_projects": [
-    {
-      "id": 1,
-      "title": "Lingua Connect",
-      "description": "An interactive online platform built on the MERN stack, connecting language learners with personalized tutors for tailored online lessons.",
-      "date": "March 2024",
-      "tools_tech": ["MongoDB", "Express.js", "React", "Node.js", "Video Calls", "Payment Integration"],
-      "features": [
-        "Language tutor matching",
-        "One-to-one video calls",
-        "Flashcard storage",
-        "Subscription-based payments",
-        "User registration and search"
-      ],
-      "github": "https://github.com/Sagargupta16/TRINIT_BugBiters_Dev",
-      "live": "",
-      "team": "BugBiters",
-      "organization": "TriNIT",
-      "contributors": ["Sagargupta16", "Team Members"]
-    },
-    {
-      "id": 3,
-      "title": "Placemento",
-      "description": "A comprehensive placement portal for MCA NITW students, facilitating job placements and connecting students with potential employers.",
-      "date": "January 2024",
-      "tools_tech": ["JavaScript", "React", "MongoDB", "Node.js", "AgGrid"],
-      "features": [
-        "Job portal for students",
-        "Company registration",
-        "Application tracking",
-        "Student profiles",
-        "Placement statistics"
-      ],
-      "github": "https://github.com/MCA-NITW/placemento",
-      "live": "",
-      "team": "MCA NITW Placement Team",
-      "organization": "MCA-NITW",
-      "contributors": ["Sagargupta16", "MCA NITW Team"]
-    },
-    {
-      "id": 4,
-      "title": "LeetCode Among Us",
-      "description": "A competitive coding platform for MCA NITW students to practice LeetCode problems together and track progress.",
-      "date": "August 2023",
-      "tools_tech": ["JavaScript", "React", "Node.js", "MongoDB", "Competitive Programming"],
-      "features": [
-        "LeetCode problem tracking",
-        "Student leaderboards",
-        "Progress monitoring",
-        "Competitive programming",
-        "Community engagement"
-      ],
-      "github": "https://github.com/MCA-NITW/leetcode_among_us",
-      "live": "https://leetcode-among-us.onrender.com/",
-      "team": "MCA NITW Dev Team",
-      "organization": "MCA-NITW",
-      "contributors": ["Sagargupta16", "MCA NITW Team"]
-    },
-    {
-      "id": 2,
-      "title": "MCA NITW Website",
-      "description": "Official MCA Course Website for NIT Warangal, providing comprehensive information about the MCA program, faculty, and resources.",
-      "date": "February 2023",
-      "tools_tech": ["JavaScript", "React", "Express.js", "MongoDB", "Node.js", "CSS", "REST API"],
-      "features": [
-        "Course information portal",
-        "Faculty directory",
-        "Student resources",
-        "Responsive design",
-        "Content management"
-      ],
-      "github": "https://github.com/MCA-NITW/mca_nitw",
-      "live": "",
-      "team": "MCA NITW Dev Team",
-      "organization": "MCA-NITW",
-      "contributors": ["Sagargupta16", "MCA NITW Team"]
     }
   ]
 }
