@@ -81,6 +81,45 @@
          "live": "https://sagargupta.online/InstagramLikesLeaderboard/"
       },
       {
+         "id": 3,
+         "title": "Personal Portfolio",
+         "description": "A modern, dark-themed portfolio with 3D WebGL scene, glassmorphism effects, particle animations, and a data-driven architecture. Built with React 19, Vite 7, and Tailwind CSS v4.",
+         "date": "October 2022",
+         "tools_tech": [
+            "React 19",
+            "Vite",
+            "Tailwind CSS v4",
+            "Three.js",
+            "Framer Motion",
+            "EmailJS"
+         ],
+         "features": [
+            "Interactive 3D hero scene with Three.js",
+            "Glassmorphism design with animated orbs",
+            "Data-driven content via JSON files",
+            "GitHub activity calendar integration"
+         ],
+         "github": "https://github.com/Sagargupta16/portfolio-react",
+         "live": "https://sagargupta.online/portfolio-react/"
+      },
+      {
+         "id": 22,
+         "title": "SelfHub",
+         "description": "A Model Context Protocol (MCP) server that gives AI assistants access to personal context — journal entries, goals, preferences, and notes — stored in MongoDB for richer, personalized conversations.",
+         "date": "March 2025",
+         "tools_tech": ["TypeScript", "MCP", "MongoDB", "Mongoose", "Node.js"],
+         "features": [
+            "MCP-compliant server with stdio transport",
+            "9 tools for journals, goals, preferences, notes",
+            "MongoDB-backed persistent storage",
+            "Seed data for quick onboarding"
+         ],
+         "github": "https://github.com/Sagargupta16/SelfHub",
+         "live": ""
+      }
+   ],
+   "collaborative_projects": [
+      {
          "id": 21,
          "title": "Placemento",
          "description": "A full-stack placement management portal for MCA NITW with OTP authentication, AG Grid data tables, and a monorepo architecture serving 100+ students and 50+ companies.",
@@ -102,25 +141,9 @@
          "github": "https://github.com/MCA-NITW/placemento",
          "live": "",
          "team": "MCA NITW Placement Team",
-         "organization": "MCA-NITW"
+         "organization": "MCA-NITW",
+         "contributors": ["Sagargupta16", "MCA NITW Team"]
       },
-      {
-         "id": 22,
-         "title": "SelfHub",
-         "description": "A Model Context Protocol (MCP) server that gives AI assistants access to personal context — journal entries, goals, preferences, and notes — stored in MongoDB for richer, personalized conversations.",
-         "date": "March 2025",
-         "tools_tech": ["TypeScript", "MCP", "MongoDB", "Mongoose", "Node.js"],
-         "features": [
-            "MCP-compliant server with stdio transport",
-            "9 tools for journals, goals, preferences, notes",
-            "MongoDB-backed persistent storage",
-            "Seed data for quick onboarding"
-         ],
-         "github": "https://github.com/Sagargupta16/SelfHub",
-         "live": ""
-      }
-   ],
-   "collaborative_projects": [
       {
          "id": 1,
          "title": "Lingua Connect",
@@ -171,6 +194,24 @@
          "team": "MCA NITW Dev Team",
          "organization": "MCA-NITW",
          "contributors": ["Sagargupta16", "MCA NITW Team"]
+      },
+      {
+         "id": 27,
+         "title": "Noobathon",
+         "description": "A team hackathon project built during MCA 1st year at the CSEA Noobathon event, featuring a responsive web page created collaboratively in a team of 3.",
+         "date": "April 2022",
+         "tools_tech": ["HTML5", "CSS3", "Hackathon"],
+         "features": [
+            "Built in a team of 3",
+            "CSEA Noobathon hackathon entry",
+            "Responsive web design",
+            "First collaborative project"
+         ],
+         "github": "https://github.com/sayani13-glitch/noobathon_ON-11_1",
+         "live": "https://sayani13-glitch.github.io/noobathon_ON-11_1/",
+         "team": "Team SKS",
+         "organization": "CSEA NIT Warangal",
+         "contributors": ["Sagargupta16", "Team SKS"]
       },
       {
          "id": 23,
@@ -394,28 +435,6 @@
          ],
          "github": "https://github.com/Sagargupta16/tour-vibes",
          "live": ""
-      },
-      {
-         "id": 3,
-         "title": "Personal Portfolio",
-         "description": "A modern, dark-themed portfolio with 3D WebGL scene, glassmorphism effects, particle animations, and a data-driven architecture. Built with React 19, Vite 7, and Tailwind CSS v4.",
-         "date": "October 2022",
-         "tools_tech": [
-            "React 19",
-            "Vite",
-            "Tailwind CSS v4",
-            "Three.js",
-            "Framer Motion",
-            "EmailJS"
-         ],
-         "features": [
-            "Interactive 3D hero scene with Three.js",
-            "Glassmorphism design with animated orbs",
-            "Data-driven content via JSON files",
-            "GitHub activity calendar integration"
-         ],
-         "github": "https://github.com/Sagargupta16/portfolio-react",
-         "live": "https://sagargupta.online/portfolio-react/"
       },
       {
          "id": 12,

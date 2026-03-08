@@ -63,9 +63,24 @@ const OPEN_SOURCE_CONTRIBUTIONS = [
       url: "https://github.com/stanfordnlp/dspy/pull/9381",
    },
    {
+      repo: "PrefectHQ/prefect",
+      title: "Document that deployment steps are Python functions",
+      url: "https://github.com/PrefectHQ/prefect/pull/20956",
+   },
+   {
+      repo: "unslothai/unsloth",
+      title: "Improve docs on exporting models from Colab",
+      url: "https://github.com/unslothai/unsloth/pull/4152",
+   },
+   {
       repo: "awslabs/mcp",
       title: "Fix Kendra documentation menu structure",
       url: "https://github.com/awslabs/mcp/pull/2557",
+   },
+   {
+      repo: "publiclab/plots2",
+      title: "Fix: rename CommentTest to CommentSystemTest",
+      url: "https://github.com/publiclab/plots2/pull/11863",
    },
    {
       repo: "freeCodeCamp",
@@ -434,12 +449,28 @@ const OpenSourceBanner = () => (
          className="glass-card"
          style={{
             padding: 24,
-            borderImage:
-               "linear-gradient(135deg, rgba(34,197,94,0.3), rgba(6,182,212,0.3), rgba(168,85,247,0.3)) 1",
-            borderWidth: 1,
-            borderStyle: "solid",
+            border: "1px solid rgba(34,197,94,0.2)",
+            position: "relative",
+            overflow: "hidden",
          }}
       >
+         {/* Gradient border glow effect */}
+         <div
+            style={{
+               position: "absolute",
+               inset: 0,
+               borderRadius: "inherit",
+               padding: 1,
+               background:
+                  "linear-gradient(135deg, rgba(34,197,94,0.3), rgba(6,182,212,0.3), rgba(168,85,247,0.3))",
+               mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+               maskComposite: "exclude",
+               WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+               WebkitMaskComposite: "xor",
+               pointerEvents: "none",
+            }}
+         />
          <div
             style={{
                display: "grid",

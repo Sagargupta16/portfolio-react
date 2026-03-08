@@ -43,6 +43,8 @@
    --ch-bg-sec: 10 10 26;
    --ch-glass: 15 15 35;
    --ch-glass-h: 20 20 48;
+   --ch-bg-mid: 14 14 36;
+   --ch-cyan-light: 34 211 238;
 }
 
 /* ===== Base Reset ===== */
@@ -288,7 +290,7 @@ img {
 .gradient-text-vivid {
    background: linear-gradient(
       135deg,
-      #22d3ee,
+      rgb(var(--ch-cyan-light)),
       var(--color-accent-purple),
       var(--color-accent-pink)
    );
@@ -332,7 +334,7 @@ img {
       135deg,
       var(--color-bg-primary) 0%,
       var(--color-bg-secondary) 40%,
-      #0e0e24 60%,
+      rgb(var(--ch-bg-mid)) 60%,
       var(--color-bg-primary) 100%
    );
 }
@@ -432,7 +434,11 @@ img {
    -webkit-backdrop-filter: blur(20px);
    border: 1px solid rgb(var(--ch-white) / 0.06);
    border-radius: 16px;
-   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+   transition:
+      background 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
    box-shadow:
       0 4px 30px rgb(var(--ch-black) / 0.2),
       inset 0 1px 0 rgb(var(--ch-white) / 0.04);
@@ -481,7 +487,12 @@ img {
    border-radius: 12px;
    padding: 12px 32px;
    cursor: pointer;
-   transition: all 0.3s ease;
+   transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      color 0.3s ease,
+      transform 0.3s ease;
    backdrop-filter: blur(12px);
    -webkit-backdrop-filter: blur(12px);
    box-shadow:
@@ -508,7 +519,11 @@ img {
    border-radius: 12px;
    padding: 12px 32px;
    cursor: pointer;
-   transition: all 0.3s ease;
+   transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
    backdrop-filter: blur(12px);
    -webkit-backdrop-filter: blur(12px);
 }
@@ -529,7 +544,10 @@ img {
    font-size: 0.75rem;
    padding: 4px 10px;
    border-radius: 6px;
-   transition: all 0.25s ease;
+   transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
    backdrop-filter: blur(8px);
    -webkit-backdrop-filter: blur(8px);
 }
@@ -568,6 +586,17 @@ img {
    border-color: rgb(var(--ch-amber) / 0.35);
 }
 
+.tag-green {
+   background: rgb(var(--ch-green) / 0.1);
+   color: var(--color-accent-green);
+   border: 1px solid rgb(var(--ch-green) / 0.15);
+}
+
+.tag-green:hover {
+   background: rgb(var(--ch-green) / 0.2);
+   border-color: rgb(var(--ch-green) / 0.35);
+}
+
 /* ===== Skill Tag ===== */
 .skill-tag {
    display: inline-flex;
@@ -579,7 +608,12 @@ img {
    background: rgb(var(--ch-white) / 0.03);
    border: 1px solid rgb(var(--ch-white) / 0.06);
    color: var(--color-text-secondary);
-   transition: all 0.3s ease;
+   transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
    cursor: default;
    backdrop-filter: blur(8px);
    -webkit-backdrop-filter: blur(8px);
@@ -604,7 +638,10 @@ img {
    padding: 14px 18px;
    color: var(--color-text-primary);
    font-size: 0.9375rem;
-   transition: all 0.3s ease;
+   transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
    outline: none;
 }
 
