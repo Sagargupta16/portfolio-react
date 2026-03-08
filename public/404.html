@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Redirecting...</title>
+      <script>
+         // Single Page App redirect for GitHub Pages
+         // Converts the path to a query string so index.html can restore it
+         var base = "/portfolio-react/";
+         var path = location.pathname.slice(base.length);
+         if (path) {
+            location.replace(base + "?" + path);
+         } else {
+            location.replace(base);
+         }
+      </script>
+   </head>
+   <body></body>
+</html>

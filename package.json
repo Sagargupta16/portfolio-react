@@ -1,91 +1,95 @@
 {
-  "name": "portfolio-react",
-  "version": "1.0.0",
-  "type": "module",
-  "private": true,
-  "homepage": "https://sagargupta.online/portfolio-react/",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier . --write",
-    "format:check": "prettier . --check",
-    "type-check": "tsc --noEmit",
-    "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d build",
-    "clean": "rimraf build dist node_modules/.vite"
-  },
-  "dependencies": {
-    "@emailjs/browser": "^4.4.1",
-    "@fontsource-variable/inter": "^5.2.8",
-    "@fontsource-variable/jetbrains-mono": "^5.2.8",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.5.0",
-    "@tailwindcss/vite": "^4.1.18",
-    "@tsparticles/react": "^3.0.0",
-    "@tsparticles/slim": "^3.9.1",
-    "framer-motion": "^12.34.0",
-    "lenis": "^1.3.17",
-    "lucide-react": "^0.563.0",
-    "prop-types": "^15.8.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-github-calendar": "^5.0.5",
-    "react-icons": "^5.5.0",
-    "react-intersection-observer": "^10.0.2",
-    "tailwindcss": "^4.1.18",
-    "three": "^0.183.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@vitejs/plugin-react": "^5.1.4",
-    "eslint": "^9.39.1",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.0",
-    "gh-pages": "^6.3.0",
-    "prettier": "^3.8.1",
-    "rimraf": "^6.1.2",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
-  },
-  "engines": {
-    "node": ">=24.11.0",
-    "pnpm": ">=10.0.0"
-  },
-  "browserslist": {
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ],
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ]
-  },
-  "description": "A dynamic and interactive React portfolio showcasing professional experience as a DevOps & Cloud Engineer. Features modern JSON-based data architecture, responsive design, and seamless deployment with CI/CD pipelines.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Sagargupta16/portfolio-react.git"
-  },
-  "author": "Sagar Gupta <sg85207@gmail.com>",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/Sagargupta16/portfolio-react/issues"
-  },
-  "pnpm": {
-    "overrides": {
-      "@isaacs/brace-expansion": ">=5.0.1",
-      "minimatch": ">=10.2.1",
-      "js-yaml": ">=4.1.1",
-      "ajv@<7": "~6.14.0",
-      "rollup@>=4.0.0 <4.59.0": ">=4.59.0",
-      "minimatch@>=10.0.0 <10.2.3": ">=10.2.3"
-    }
-  }
+   "name": "portfolio-react",
+   "version": "1.0.0",
+   "type": "module",
+   "private": true,
+   "homepage": "https://sagargupta.online/portfolio-react/",
+   "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "preview": "vite preview",
+      "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+      "lint:fix": "eslint . --fix",
+      "format": "prettier . --write",
+      "format:check": "prettier . --check",
+      "test": "vitest run",
+      "type-check": "tsc --noEmit",
+      "predeploy": "pnpm run build",
+      "deploy": "gh-pages -d build",
+      "clean": "rimraf build dist node_modules/.vite"
+   },
+   "dependencies": {
+      "@emailjs/browser": "^4.4.1",
+      "@fontsource-variable/inter": "^5.2.8",
+      "@fontsource-variable/jetbrains-mono": "^5.2.8",
+      "@react-three/drei": "^10.7.7",
+      "@react-three/fiber": "^9.5.0",
+      "@tailwindcss/vite": "^4.1.18",
+      "@tsparticles/react": "^3.0.0",
+      "@tsparticles/slim": "^3.9.1",
+      "framer-motion": "^12.34.0",
+      "lenis": "^1.3.17",
+      "lucide-react": "^0.563.0",
+      "prop-types": "^15.8.1",
+      "react": "^19.2.4",
+      "react-dom": "^19.2.4",
+      "react-github-calendar": "^5.0.5",
+      "react-icons": "^5.5.0",
+      "react-intersection-observer": "^10.0.2",
+      "tailwindcss": "^4.1.18",
+      "three": "^0.183.0"
+   },
+   "devDependencies": {
+      "@eslint/js": "^9.39.1",
+      "@testing-library/jest-dom": "^6.9.1",
+      "@testing-library/react": "^16.3.2",
+      "@vitejs/plugin-react": "^5.1.4",
+      "eslint": "^9.39.1",
+      "eslint-plugin-jsx-a11y": "^6.10.2",
+      "eslint-plugin-react": "^7.37.5",
+      "eslint-plugin-react-hooks": "^7.0.1",
+      "eslint-plugin-react-refresh": "^0.5.0",
+      "gh-pages": "^6.3.0",
+      "jsdom": "^28.1.0",
+      "prettier": "^3.8.1",
+      "rimraf": "^6.1.2",
+      "typescript": "^5.9.3",
+      "vite": "^7.3.1",
+      "vitest": "^4.0.18"
+   },
+   "engines": {
+      "node": ">=24.11.0",
+      "pnpm": ">=10.0.0"
+   },
+   "browserslist": {
+      "development": [
+         "last 1 chrome version",
+         "last 1 firefox version",
+         "last 1 safari version"
+      ],
+      "production": [
+         ">0.2%",
+         "not dead",
+         "not op_mini all"
+      ]
+   },
+   "description": "A dynamic and interactive React portfolio showcasing professional experience as a DevOps & Cloud Engineer. Features modern JSON-based data architecture, responsive design, and seamless deployment with CI/CD pipelines.",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Sagargupta16/portfolio-react.git"
+   },
+   "author": "Sagar Gupta <sg85207@gmail.com>",
+   "license": "GPL-3.0",
+   "bugs": {
+      "url": "https://github.com/Sagargupta16/portfolio-react/issues"
+   },
+   "pnpm": {
+      "overrides": {
+         "@isaacs/brace-expansion": ">=5.0.1",
+         "minimatch": ">=10.2.3",
+         "js-yaml": ">=4.1.1",
+         "ajv@<7": "~6.14.0",
+         "rollup@>=4.0.0 <4.59.0": ">=4.59.0"
+      }
+   }
 }
