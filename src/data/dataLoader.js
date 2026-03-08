@@ -29,5 +29,9 @@ export const getLearningBadges = () => achievementsData.learning_badges || [];
 export const getAchievements = () => achievementsData.achievements;
 export const getCodingPlatformStats = () =>
    achievementsData.coding_platform_stats || {};
+export const getOpenSourceContributions = () =>
+   projectsData.open_source_contributions || [];
 export const getContactOptions = () => contactData.contact_options;
 export const getEmailConfig = () => contactData.email_config;
+export const getGitHubUsername = () => personalData.contact.github;
+export const getSiteConfig = () => personalData.site || {};

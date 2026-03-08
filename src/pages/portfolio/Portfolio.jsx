@@ -14,6 +14,7 @@ import {
    getFeaturedProjects,
    getCollaborativeProjects,
    getOtherProjects,
+   getOpenSourceContributions,
 } from "@data/dataLoader";
 import {
    sectionRevealEnhanced,
@@ -245,63 +246,7 @@ const CATEGORY_COLORS = {
    },
 };
 
-const OPEN_SOURCE_CONTRIBUTIONS = [
-   {
-      repo: "apache/airflow",
-      title: "Add template_fields support to SalesforceBulkOperator",
-      url: "https://github.com/apache/airflow/pull/62840",
-   },
-   {
-      repo: "chroma-core/chroma",
-      title: "Fix: replace ValueError with InvalidArgumentError",
-      url: "https://github.com/chroma-core/chroma/pull/6538",
-   },
-   {
-      repo: "stanfordnlp/dspy",
-      title: "Add docstrings to predict module public APIs",
-      url: "https://github.com/stanfordnlp/dspy/pull/9381",
-   },
-   {
-      repo: "PrefectHQ/prefect",
-      title: "Document that deployment steps are Python functions",
-      url: "https://github.com/PrefectHQ/prefect/pull/20956",
-   },
-   {
-      repo: "unslothai/unsloth",
-      title: "Improve docs on exporting models from Colab",
-      url: "https://github.com/unslothai/unsloth/pull/4152",
-   },
-   {
-      repo: "awslabs/mcp",
-      title: "Fix Kendra documentation menu structure",
-      url: "https://github.com/awslabs/mcp/pull/2557",
-   },
-   {
-      repo: "publiclab/plots2",
-      title: "Fix: rename CommentTest to CommentSystemTest",
-      url: "https://github.com/publiclab/plots2/pull/11863",
-   },
-   {
-      repo: "freeCodeCamp",
-      title: "Fix Python custom exception example",
-      url: "https://github.com/freeCodeCamp/freeCodeCamp/pull/66171",
-   },
-   {
-      repo: "TheAlgorithms/Python",
-      title: "Add confusion matrix with precision, recall, F1",
-      url: "https://github.com/TheAlgorithms/Python/pull/14318",
-   },
-   {
-      repo: "exercism/python",
-      title: "Add approaches for armstrong-numbers exercise",
-      url: "https://github.com/exercism/python/pull/4106",
-   },
-   {
-      repo: "forem/selfhost",
-      title: "Updated AWS Ansible, added elastic IP",
-      url: "https://github.com/forem/selfhost/pull/91",
-   },
-];
+const OPEN_SOURCE_CONTRIBUTIONS = getOpenSourceContributions();
 
 const ProjectLink = ({
    href,

@@ -1,17 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
-import { getSocialProfiles } from "@data/dataLoader";
+import { getName, getSocialProfiles, getSiteConfig } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";
 import ICON_MAP from "@utils/iconMap";
-
-const TECH_STACK = [
-   "React 19",
-   "Vite 7",
-   "Tailwind v4",
-   "Three.js",
-   "Framer Motion",
-];
 
 const KONAMI = [
    "ArrowUp",
@@ -28,7 +20,10 @@ const KONAMI = [
 
 const Footer = () => {
    const isMobile = useMediaQuery("(max-width: 768px)");
+   const name = useMemo(() => getName(), []);
    const socialProfiles = useMemo(() => getSocialProfiles(), []);
+   const siteConfig = useMemo(() => getSiteConfig(), []);
+   const techStack = siteConfig.tech_stack || [];
    const [easterEgg, setEasterEgg] = useState(false);
    const [konamiIdx, setKonamiIdx] = useState(0);
 
@@ -175,7 +170,7 @@ const Footer = () => {
                >
                   Built with
                </span>
-               {TECH_STACK.map((tech) => (
+               {techStack.map((tech) => (
                   <span
                      key={tech}
                      style={{
@@ -210,7 +205,7 @@ const Footer = () => {
                      textAlign: "center",
                   }}
                >
-                  &copy; {new Date().getFullYear()} Sagar Gupta
+                  &copy; {new Date().getFullYear()} {name}
                </p>
                {!isMobile && (
                   <p

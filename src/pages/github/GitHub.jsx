@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import { GitHubCalendar } from "react-github-calendar";
 import { ArrowRight } from "lucide-react";
+import { getGitHubUsername } from "@data/dataLoader";
 import { fadeIn, scaleIn, sectionRevealEnhanced } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";
 import SectionHeader from "@components/ui/SectionHeader";
@@ -50,6 +51,7 @@ const CalendarSkeleton = () => (
 
 const GitHub = () => {
    const isMobile = useMediaQuery("(max-width: 768px)");
+   const githubUsername = getGitHubUsername();
    const [calendarLoaded, setCalendarLoaded] = useState(false);
 
    const handleTransformData = useCallback((contributions) => {
@@ -100,7 +102,7 @@ const GitHub = () => {
                   }
                >
                   <GitHubCalendar
-                     username="Sagargupta16"
+                     username={githubUsername}
                      colorScheme="dark"
                      transformData={handleTransformData}
                   />
@@ -108,7 +110,7 @@ const GitHub = () => {
             </motion.div>
 
             <motion.a
-               href="https://github.com/Sagargupta16"
+               href={`https://github.com/${githubUsername}`}
                target="_blank"
                rel="noopener noreferrer"
                style={{

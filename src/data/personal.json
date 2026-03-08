@@ -63,5 +63,15 @@
          "link": "https://twitter.com/Sagargupta1610/",
          "icon": "SiX"
       }
-   ]
+   ],
+   "site": {
+      "counter_namespace": "sagargupta-portfolio",
+      "tech_stack": [
+         "React 19",
+         "Vite 7",
+         "Tailwind v4",
+         "Three.js",
+         "Framer Motion"
+      ]
+   }
 }

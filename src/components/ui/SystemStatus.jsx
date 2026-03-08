@@ -1,23 +1,23 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Server, Eye } from "lucide-react";
+import { getSiteConfig } from "@data/dataLoader";
 import useMediaQuery from "@utils/useMediaQuery";
-
-const COUNTER_API =
-   "https://api.counterapi.dev/v1/sagargupta-portfolio/visits/up";
 
 const SystemStatus = () => {
    const isMobile = useMediaQuery("(max-width: 768px)");
+   const { counter_namespace } = getSiteConfig();
    const [visitors, setVisitors] = useState(null);
 
    useEffect(() => {
-      fetch(COUNTER_API)
+      if (!counter_namespace) return;
+      fetch(`https://api.counterapi.dev/v1/${counter_namespace}/visits/up`)
          .then((r) => (r.ok ? r.json() : null))
          .then((d) => {
             if (d?.count) setVisitors(d.count);
          })
          .catch(() => {});
-   }, []);
+   }, [counter_namespace]);
 
    if (isMobile) return null;
 
