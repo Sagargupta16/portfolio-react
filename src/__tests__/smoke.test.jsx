@@ -22,6 +22,7 @@ vi.mock("lenis", () => ({
    default: class {
       raf() {}
       destroy() {}
+      scrollTo() {}
    },
 }));
 

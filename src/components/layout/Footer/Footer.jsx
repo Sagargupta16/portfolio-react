@@ -1,11 +1,56 @@
-import { useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { getSocialProfiles } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import ICON_MAP from "@utils/iconMap";
 
+const TECH_STACK = [
+   "React 19",
+   "Vite 7",
+   "Tailwind v4",
+   "Three.js",
+   "Framer Motion",
+];
+
+const KONAMI = [
+   "ArrowUp",
+   "ArrowUp",
+   "ArrowDown",
+   "ArrowDown",
+   "ArrowLeft",
+   "ArrowRight",
+   "ArrowLeft",
+   "ArrowRight",
+   "b",
+   "a",
+];
+
 const Footer = () => {
    const socialProfiles = useMemo(() => getSocialProfiles(), []);
+   const [easterEgg, setEasterEgg] = useState(false);
+   const [konamiIdx, setKonamiIdx] = useState(0);
+
+   const handleKey = useCallback(
+      (e) => {
+         if (e.key === KONAMI[konamiIdx]) {
+            const next = konamiIdx + 1;
+            if (next === KONAMI.length) {
+               setEasterEgg(true);
+               setKonamiIdx(0);
+            } else {
+               setKonamiIdx(next);
+            }
+         } else {
+            setKonamiIdx(0);
+         }
+      },
+      [konamiIdx],
+   );
+
+   useEffect(() => {
+      globalThis.addEventListener("keydown", handleKey);
+      return () => globalThis.removeEventListener("keydown", handleKey);
+   }, [handleKey]);
 
    return (
       <footer
@@ -32,7 +77,7 @@ const Footer = () => {
                display: "flex",
                flexDirection: "column",
                alignItems: "center",
-               gap: 24,
+               gap: 20,
                padding: "40px 24px",
                maxWidth: 1280,
                margin: "0 auto",
@@ -108,14 +153,95 @@ const Footer = () => {
                })}
             </motion.div>
 
-            {/* Copyright */}
-            <motion.p
-               style={{ color: "#6e6e90", fontSize: 14, textAlign: "center" }}
+            {/* Built with tech strip */}
+            <motion.div
+               style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+               }}
                variants={staggerItem}
             >
-               &copy; {new Date().getFullYear()} Sagar Gupta. Built with React
-               &amp; Tailwind CSS
-            </motion.p>
+               <span
+                  style={{
+                     fontSize: 11,
+                     color: "#4a4a6a",
+                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  }}
+               >
+                  Built with
+               </span>
+               {TECH_STACK.map((tech) => (
+                  <span
+                     key={tech}
+                     style={{
+                        fontSize: 10,
+                        color: "#6e6e90",
+                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        padding: "2px 8px",
+                        borderRadius: 4,
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.04)",
+                     }}
+                  >
+                     {tech}
+                  </span>
+               ))}
+            </motion.div>
+
+            {/* Copyright + keyboard hint */}
+            <motion.div
+               style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 6,
+               }}
+               variants={staggerItem}
+            >
+               <p
+                  style={{
+                     color: "#6e6e90",
+                     fontSize: 14,
+                     textAlign: "center",
+                  }}
+               >
+                  &copy; {new Date().getFullYear()} Sagar Gupta
+               </p>
+               <p
+                  style={{
+                     color: "#3a3a50",
+                     fontSize: 10,
+                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     textAlign: "center",
+                  }}
+               >
+                  Press 0-9 to navigate sections &middot; j/k to scroll
+               </p>
+            </motion.div>
+
+            {/* Easter egg */}
+            {easterEgg && (
+               <motion.div
+                  initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  style={{
+                     padding: "8px 16px",
+                     borderRadius: 8,
+                     background:
+                        "linear-gradient(135deg, rgba(6,182,212,0.15), rgba(168,85,247,0.15))",
+                     border: "1px solid rgba(6,182,212,0.3)",
+                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontSize: 12,
+                     color: "#06b6d4",
+                     textAlign: "center",
+                  }}
+               >
+                  You found the secret! Thanks for exploring.
+               </motion.div>
+            )}
          </motion.div>
       </footer>
    );
