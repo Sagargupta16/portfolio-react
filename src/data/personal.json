@@ -1,67 +1,67 @@
 {
-  "name": "Sagar Gupta",
-  "title": "Professional Services (Cloud Consultant) - DevOps/MLOps at AWS",
-  "location": "Shivpuri, MP, India",
-  "contact": {
-    "email": "sg85207@gmail.com",
-    "phone": "+91-8770532413",
-    "linkedin": "sagar-gupta-16-10",
-    "github": "Sagargupta16"
-  },
-  "roles": [
-    "Professional Services (Cloud Consultant) - DevOps/MLOps",
-    "AWS Cloud Solutions Specialist",
-    "DevOps Infrastructure Automation Expert",
-    "MLOps Engineer",
-    "Full-Stack Developer",
-    "Competitive Programmer",
-    "Problem Solver",
-    "Data Structures and Algorithms Enthusiast",
-    "Open Source Contributor",
-    "Tech Enthusiast"
-  ],
-  "about": {
-    "greeting": "👋 Hi, my name is Sagar Gupta.",
-    "current_role": "💼 Currently working as Professional Services (Cloud Consultant) - DevOps/MLOps at Amazon Web Services (AWS).",
-    "education": "🎓 I completed my Master of Computer Applications (MCA) from National Institute of Technology, Warangal with 8.38 CGPA.",
-    "specialization": "🚀 Specializing in DevOps Infrastructure Automation, MLOps Pipelines, Terraform, AWS Cloud Solutions, and CI/CD.",
-    "competitive_programming": "🏆 Competitive Programming: 2007 LeetCode rating (Knight), 2000+ problems solved across platforms, 140+ contests participated."
-  },
-  "statistics": {
-    "coding_questions": "2000+",
-    "leetcode_rating": "2007",
-    "projects": "25+",
-    "contests": "140+",
-    "industry_certifications": "6"
-  },
-  "languages": [
-    { "name": "English", "level": "Professional Working" },
-    { "name": "Hindi", "level": "Native" }
-  ],
-  "social_profiles": [
-    {
-      "id": 1,
-      "name": "LinkedIn",
-      "link": "https://www.linkedin.com/in/sagar-gupta-16-10/",
-      "icon": "BsLinkedin"
-    },
-    {
-      "id": 2,
-      "name": "Github",
-      "link": "https://github.com/Sagargupta16",
-      "icon": "FaGithub"
-    },
-    {
-      "id": 3,
-      "name": "Instagram",
-      "link": "https://www.instagram.com/sagar_sethh/",
-      "icon": "FiInstagram"
-    },
-    {
-      "id": 4,
-      "name": "Twitter",
-      "link": "https://twitter.com/Sagargupta1610/",
-      "icon": "SiX"
-    }
-  ]
+   "name": "Sagar Gupta",
+   "title": "Professional Services (Cloud Consultant) - DevOps/MLOps at AWS",
+   "location": "Shivpuri, MP, India",
+   "contact": {
+      "email": "sg85207@gmail.com",
+      "phone": "+91-8770532413",
+      "linkedin": "sagar-gupta-16-10",
+      "github": "Sagargupta16"
+   },
+   "roles": [
+      "Professional Services (Cloud Consultant) - DevOps/MLOps",
+      "AWS Cloud Solutions Specialist",
+      "DevOps Infrastructure Automation Expert",
+      "MLOps Engineer",
+      "Full-Stack Developer",
+      "Competitive Programmer",
+      "Problem Solver",
+      "Data Structures and Algorithms Enthusiast",
+      "Open Source Contributor",
+      "Tech Enthusiast"
+   ],
+   "about": {
+      "greeting": "👋 Hi, my name is Sagar Gupta.",
+      "current_role": "💼 Currently working as Professional Services (Cloud Consultant) - DevOps/MLOps at Amazon Web Services (AWS).",
+      "education": "🎓 I completed my Master of Computer Applications (MCA) from National Institute of Technology, Warangal with 8.38 CGPA.",
+      "specialization": "🚀 Specializing in DevOps Infrastructure Automation, MLOps Pipelines, Terraform, AWS Cloud Solutions, and CI/CD.",
+      "competitive_programming": "🏆 Competitive Programming: 2007 LeetCode rating (Knight), 2000+ problems solved across platforms, 140+ contests participated."
+   },
+   "statistics": {
+      "coding_questions": "2000+",
+      "leetcode_rating": "2007",
+      "projects": "25+",
+      "contests": "140+",
+      "industry_certifications": "6"
+   },
+   "languages": [
+      { "name": "English", "level": "Professional Working" },
+      { "name": "Hindi", "level": "Native" }
+   ],
+   "social_profiles": [
+      {
+         "id": 1,
+         "name": "LinkedIn",
+         "link": "https://www.linkedin.com/in/sagar-gupta-16-10/",
+         "icon": "BsLinkedin"
+      },
+      {
+         "id": 2,
+         "name": "Github",
+         "link": "https://github.com/Sagargupta16",
+         "icon": "FaGithub"
+      },
+      {
+         "id": 3,
+         "name": "Instagram",
+         "link": "https://www.instagram.com/sagar_sethh/",
+         "icon": "FiInstagram"
+      },
+      {
+         "id": 4,
+         "name": "Twitter",
+         "link": "https://twitter.com/Sagargupta1610/",
+         "icon": "SiX"
+      }
+   ]
 }

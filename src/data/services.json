@@ -1,44 +1,68 @@
 [
-  {
-    "id": 1,
-    "title": "Full-Stack Development",
-    "list": [
-      "Frontend Development",
-      "Backend Development",
-      "API Development",
-      "Responsive Web Design",
-      "Web App Development"
-    ]
-  },
-  {
-    "id": 2,
-    "title": "DevOps & MLOps",
-    "list": ["Cloud Infrastructure", "MLOps Pipelines", "Infrastructure as Code", "CI/CD Pipelines", "Containerization"]
-  },
-  {
-    "id": 3,
-    "title": "Competitive Programming",
-    "list": ["Data Structures", "Algorithms", "Problem Solving", "Dynamic Programming", "Code Debugging"]
-  },
-  {
-    "id": 4,
-    "title": "Data Science & ML",
-    "list": ["Data Analysis", "Data Visualization", "Machine Learning", "Deep Learning", "Natural Language Processing"]
-  },
-  {
-    "id": 5,
-    "title": "UI/UX Design",
-    "list": ["Web Design", "Mobile App Design", "Wireframing", "Prototyping", "User Research"]
-  },
-  {
-    "id": 6,
-    "title": "Cloud Architecture & Consulting",
-    "list": [
-      "Cloud Migration",
-      "Architecture Design",
-      "Security & Compliance",
-      "Technical Documentation",
-      "Performance Optimization"
-    ]
-  }
+   {
+      "id": 1,
+      "title": "Full-Stack Development",
+      "list": [
+         "Frontend Development",
+         "Backend Development",
+         "API Development",
+         "Responsive Web Design",
+         "Web App Development"
+      ]
+   },
+   {
+      "id": 2,
+      "title": "DevOps & MLOps",
+      "list": [
+         "Cloud Infrastructure",
+         "MLOps Pipelines",
+         "Infrastructure as Code",
+         "CI/CD Pipelines",
+         "Containerization"
+      ]
+   },
+   {
+      "id": 3,
+      "title": "Competitive Programming",
+      "list": [
+         "Data Structures",
+         "Algorithms",
+         "Problem Solving",
+         "Dynamic Programming",
+         "Code Debugging"
+      ]
+   },
+   {
+      "id": 4,
+      "title": "Data Science & ML",
+      "list": [
+         "Data Analysis",
+         "Data Visualization",
+         "Machine Learning",
+         "Deep Learning",
+         "Natural Language Processing"
+      ]
+   },
+   {
+      "id": 5,
+      "title": "UI/UX Design",
+      "list": [
+         "Web Design",
+         "Mobile App Design",
+         "Wireframing",
+         "Prototyping",
+         "User Research"
+      ]
+   },
+   {
+      "id": 6,
+      "title": "Cloud Architecture & Consulting",
+      "list": [
+         "Cloud Migration",
+         "Architecture Design",
+         "Security & Compliance",
+         "Technical Documentation",
+         "Performance Optimization"
+      ]
+   }
 ]

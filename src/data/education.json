@@ -1,61 +1,76 @@
 [
-  {
-    "id": 1,
-    "date": "September 2021 - July 2024",
-    "title": "Master of Computer Applications (MCA)",
-    "institution": "National Institute of Technology Warangal",
-    "institutionType": "Institute of National Importance",
-    "department": "Department of Computer Science & Engineering",
-    "location": "Warangal, Telangana, India",
-    "cgpa": "8.38",
-    "percentage": "83.8%",
-    "display_text": "National Institute of Technology Warangal -- Warangal, Telangana",
-    "achievements": [
-      "NIMCET AIR 208 (Sep 2021)",
-      "Class Representative, MCA Final Year (Aug 2023 - Jun 2024)",
-      "Additional Secretary, CSEA - NITW (Aug 2023 - Jun 2024)"
-    ],
-    "skills": ["DSA", "Cloud Computing", "AI/ML", "Deep Learning", "Web Development", "Game Development", "Algorithms"]
-  },
-  {
-    "id": 2,
-    "date": "May 2018 - August 2021",
-    "title": "Bachelor of Computer Applications (BCA)",
-    "institution": "Devi Ahilya Vishwavidyalaya (DAVV)",
-    "institutionType": "State University",
-    "department": "Department of Computer Science & Engineering",
-    "alsoKnownAs": "University of Indore",
-    "location": "Indore, Madhya Pradesh, India",
-    "cgpa": "7.34",
-    "percentage": "73.4%",
-    "display_text": "Devi Ahilya Vishwavidyalaya (DAVV) -- Indore, MP",
-    "skills": ["C++", "OOPs", "DBMS", "Data Structures", "Operating Systems", "Computer Networks"]
-  },
-  {
-    "id": 3,
-    "date": "April 2017 - April 2018",
-    "title": "Class XII (Senior Secondary)",
-    "institution": "Happy Days School",
-    "institutionType": "CBSE Affiliated School",
-    "board": "Central Board of Secondary Education (CBSE)",
-    "field": "PCM+PE (Physics, Chemistry, Mathematics, Physical Education)",
-    "location": "Shivpuri, Madhya Pradesh, India",
-    "cgpa": "8.59",
-    "percentage": "85.9%",
-    "display_text": "Happy Days School -- Shivpuri, MP",
-    "skills": ["Mathematics", "Physics", "Chemistry"]
-  },
-  {
-    "id": 4,
-    "date": "April 2015 - April 2016",
-    "title": "Class X (Secondary)",
-    "institution": "Kids Garden School",
-    "institutionType": "CBSE Affiliated School",
-    "board": "Central Board of Secondary Education (CBSE)",
-    "location": "Shivpuri, Madhya Pradesh, India",
-    "cgpa": "7.40",
-    "percentage": "74.0%",
-    "display_text": "Kids Garden School -- Shivpuri, MP",
-    "skills": []
-  }
+   {
+      "id": 1,
+      "date": "September 2021 - July 2024",
+      "title": "Master of Computer Applications (MCA)",
+      "institution": "National Institute of Technology Warangal",
+      "institutionType": "Institute of National Importance",
+      "department": "Department of Computer Science & Engineering",
+      "location": "Warangal, Telangana, India",
+      "cgpa": "8.38",
+      "percentage": "83.8%",
+      "display_text": "National Institute of Technology Warangal -- Warangal, Telangana",
+      "achievements": [
+         "NIMCET AIR 208 (Sep 2021)",
+         "Class Representative, MCA Final Year (Aug 2023 - Jun 2024)",
+         "Additional Secretary, CSEA - NITW (Aug 2023 - Jun 2024)"
+      ],
+      "skills": [
+         "DSA",
+         "Cloud Computing",
+         "AI/ML",
+         "Deep Learning",
+         "Web Development",
+         "Game Development",
+         "Algorithms"
+      ]
+   },
+   {
+      "id": 2,
+      "date": "May 2018 - August 2021",
+      "title": "Bachelor of Computer Applications (BCA)",
+      "institution": "Devi Ahilya Vishwavidyalaya (DAVV)",
+      "institutionType": "State University",
+      "department": "Department of Computer Science & Engineering",
+      "alsoKnownAs": "University of Indore",
+      "location": "Indore, Madhya Pradesh, India",
+      "cgpa": "7.34",
+      "percentage": "73.4%",
+      "display_text": "Devi Ahilya Vishwavidyalaya (DAVV) -- Indore, MP",
+      "skills": [
+         "C++",
+         "OOPs",
+         "DBMS",
+         "Data Structures",
+         "Operating Systems",
+         "Computer Networks"
+      ]
+   },
+   {
+      "id": 3,
+      "date": "April 2017 - April 2018",
+      "title": "Class XII (Senior Secondary)",
+      "institution": "Happy Days School",
+      "institutionType": "CBSE Affiliated School",
+      "board": "Central Board of Secondary Education (CBSE)",
+      "field": "PCM+PE (Physics, Chemistry, Mathematics, Physical Education)",
+      "location": "Shivpuri, Madhya Pradesh, India",
+      "cgpa": "8.59",
+      "percentage": "85.9%",
+      "display_text": "Happy Days School -- Shivpuri, MP",
+      "skills": ["Mathematics", "Physics", "Chemistry"]
+   },
+   {
+      "id": 4,
+      "date": "April 2015 - April 2016",
+      "title": "Class X (Secondary)",
+      "institution": "Kids Garden School",
+      "institutionType": "CBSE Affiliated School",
+      "board": "Central Board of Secondary Education (CBSE)",
+      "location": "Shivpuri, Madhya Pradesh, India",
+      "cgpa": "7.40",
+      "percentage": "74.0%",
+      "display_text": "Kids Garden School -- Shivpuri, MP",
+      "skills": []
+   }
 ]

@@ -1,50 +1,50 @@
 {
-  "contact_options": [
-    {
-      "id": 1,
-      "icon": "MdOutlineEmail",
-      "title": "Email Me",
-      "value": "sg85207@gmail.com",
-      "link": "mailto:sg85207@gmail.com",
-      "message": "Send a Mail"
-    },
-    {
-      "id": 2,
-      "icon": "BsLinkedin",
-      "title": "LinkedIn",
-      "value": "sagar-gupta-16-10",
-      "link": "https://www.linkedin.com/in/sagar-gupta-16-10/",
-      "message": "Connect"
-    },
-    {
-      "id": 3,
-      "icon": "FiInstagram",
-      "title": "Instagram",
-      "value": "@sagar_sethh",
-      "link": "https://www.instagram.com/sagar_sethh/",
-      "message": "Message Me"
-    },
-    {
-      "id": 4,
-      "icon": "FiCalendar",
-      "title": "Book a Call",
-      "value": "cal.com/sagar-gupta",
-      "link": "https://cal.com/sagar-gupta-4wssps",
-      "message": "Schedule"
-    },
-    {
-      "id": 5,
-      "icon": "FiGithub",
-      "title": "GitHub",
-      "value": "Sagargupta16",
-      "link": "https://github.com/Sagargupta16",
-      "message": "Follow"
-    }
-  ],
-  "email_config": {
-    "service_id": "service_lyt547p",
-    "template_id": "template_yz438w6",
-    "public_key": "PAcL61ygLI8WYG16R",
-    "validation_pattern": "/^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$/"
-  }
+   "contact_options": [
+      {
+         "id": 1,
+         "icon": "MdOutlineEmail",
+         "title": "Email Me",
+         "value": "sg85207@gmail.com",
+         "link": "mailto:sg85207@gmail.com",
+         "message": "Send a Mail"
+      },
+      {
+         "id": 2,
+         "icon": "BsLinkedin",
+         "title": "LinkedIn",
+         "value": "sagar-gupta-16-10",
+         "link": "https://www.linkedin.com/in/sagar-gupta-16-10/",
+         "message": "Connect"
+      },
+      {
+         "id": 3,
+         "icon": "FiInstagram",
+         "title": "Instagram",
+         "value": "@sagar_sethh",
+         "link": "https://www.instagram.com/sagar_sethh/",
+         "message": "Message Me"
+      },
+      {
+         "id": 4,
+         "icon": "FiCalendar",
+         "title": "Book a Call",
+         "value": "cal.com/sagar-gupta",
+         "link": "https://cal.com/sagar-gupta-4wssps",
+         "message": "Schedule"
+      },
+      {
+         "id": 5,
+         "icon": "FiGithub",
+         "title": "GitHub",
+         "value": "Sagargupta16",
+         "link": "https://github.com/Sagargupta16",
+         "message": "Follow"
+      }
+   ],
+   "email_config": {
+      "service_id": "service_lyt547p",
+      "template_id": "template_yz438w6",
+      "public_key": "PAcL61ygLI8WYG16R",
+      "validation_pattern": "/^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$/"
+   }
 }
