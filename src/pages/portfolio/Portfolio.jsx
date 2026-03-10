@@ -104,7 +104,7 @@ const ActivityTimeline = ({ featured, community, collab, others }) => {
       return all
          .map((p) => ({ ...p, ts: parseDate(p.date) }))
          .sort((a, b) => a.ts - b.ts);
-   }, [featured, collab, others]);
+   }, [featured, community, collab, others]);
 
    const years = useMemo(() => {
       const set = new Set(events.map((e) => e.ts.getFullYear()));
