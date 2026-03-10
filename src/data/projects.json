@@ -512,6 +512,112 @@
          "live": "https://sagargupta.online/Music-Web-App/"
       }
    ],
+   "community_projects": [
+      {
+         "id": 30,
+         "title": "MCP Toolkit",
+         "description": "Production-ready middleware for MCP servers with authentication, caching, rate limiting, CORS, and structured logging. Accepts community contributions.",
+         "date": "March 2025",
+         "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "Middleware"],
+         "features": [
+            "API key, OAuth, and JWT authentication",
+            "Response caching with TTL, LRU, and Redis",
+            "Token bucket and sliding window rate limiting",
+            "CORS origin validation middleware"
+         ],
+         "github": "https://github.com/Sagargupta16/mcp-toolkit",
+         "live": ""
+      },
+      {
+         "id": 36,
+         "title": "Claude Cost Optimizer",
+         "description": "Save 40-70% on Claude Code costs with proven strategies, real benchmarks, copy-paste configs, and model selection guides.",
+         "date": "March 2026",
+         "tools_tech": ["Claude Code", "Cost Optimization", "Benchmarks"],
+         "features": [
+            "Cost reduction strategies with benchmarks",
+            "Model selection decision framework",
+            "Copy-paste configuration templates",
+            "Real-world usage analytics"
+         ],
+         "github": "https://github.com/Sagargupta16/claude-cost-optimizer",
+         "live": ""
+      },
+      {
+         "id": 35,
+         "title": "Claude Code Recipes",
+         "description": "50+ copy-paste recipes for Claude Code covering commands, subagents, hooks, skills, and MCP server configurations.",
+         "date": "March 2026",
+         "tools_tech": ["Claude Code", "AI Agents", "MCP Protocol", "Automation"],
+         "features": [
+            "50+ ready-to-use recipes",
+            "Custom subagent configurations",
+            "Hook and skill templates",
+            "MCP server setup guides"
+         ],
+         "github": "https://github.com/Sagargupta16/claude-code-recipes",
+         "live": ""
+      },
+      {
+         "id": 31,
+         "title": "Awesome MCP Servers",
+         "description": "A curated list of MCP servers, tools, frameworks, and resources for the Model Context Protocol ecosystem.",
+         "date": "March 2025",
+         "tools_tech": ["MCP Protocol", "AI Agents", "Curated List"],
+         "features": [
+            "Categorized MCP server directory",
+            "Tools and framework listings",
+            "Community-maintained resource hub"
+         ],
+         "github": "https://github.com/Sagargupta16/awesome-mcp-servers",
+         "live": ""
+      },
+      {
+         "id": 32,
+         "title": "Deploy Guide",
+         "description": "Step-by-step deployment guides for every platform -- 25+ guides covering GitHub Pages, Vercel, Render, Railway, AWS, and more.",
+         "date": "March 2025",
+         "tools_tech": ["DevOps", "AWS", "Vercel", "Render", "GitHub Pages"],
+         "features": [
+            "25+ platform deployment guides",
+            "Copy-paste ready configurations",
+            "CI/CD pipeline templates",
+            "Custom domain setup walkthroughs"
+         ],
+         "github": "https://github.com/Sagargupta16/deploy-guide",
+         "live": ""
+      },
+      {
+         "id": 33,
+         "title": "Agent Recipes",
+         "description": "Copy-paste AI agent workflows for real-world developer tasks including code review, testing, security scanning, and deployment automation.",
+         "date": "March 2025",
+         "tools_tech": ["AI Agents", "Claude Code", "Cursor", "Automation"],
+         "features": [
+            "Code review agent workflows",
+            "Automated testing pipelines",
+            "Security scanning recipes",
+            "Deployment automation templates"
+         ],
+         "github": "https://github.com/Sagargupta16/agent-recipes",
+         "live": ""
+      },
+      {
+         "id": 34,
+         "title": "AI Git Hooks",
+         "description": "AI-powered git hooks that auto-review diffs, generate commit messages, run security scans, and enforce code quality on every commit.",
+         "date": "March 2025",
+         "tools_tech": ["Git Hooks", "AI", "Pre-commit", "Security"],
+         "features": [
+            "AI-powered diff review on commit",
+            "Auto-generated commit messages",
+            "Security vulnerability scanning",
+            "Code quality enforcement"
+         ],
+         "github": "https://github.com/Sagargupta16/ai-git-hooks",
+         "live": ""
+      }
+   ],
    "open_source_contributions": [
       {
          "repo": "PrefectHQ/prefect",

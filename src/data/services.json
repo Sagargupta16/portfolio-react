@@ -3,66 +3,66 @@
       "id": 1,
       "title": "Full-Stack Development",
       "list": [
-         "Frontend Development",
-         "Backend Development",
-         "API Development",
-         "Responsive Web Design",
-         "Web App Development"
+         "Frontend & Backend Engineering",
+         "API Design & Integration",
+         "Database Architecture",
+         "Responsive Web Applications",
+         "Real-time Features & WebSockets"
       ]
    },
    {
       "id": 2,
-      "title": "DevOps & MLOps",
+      "title": "Cloud & DevOps",
       "list": [
-         "Cloud Infrastructure",
-         "MLOps Pipelines",
+         "Cloud Infrastructure Design",
          "Infrastructure as Code",
-         "CI/CD Pipelines",
-         "Containerization"
+         "CI/CD Pipeline Automation",
+         "Containerization & Orchestration",
+         "Blue-Green & Zero-Downtime Deployments"
       ]
    },
    {
       "id": 3,
-      "title": "Competitive Programming",
+      "title": "AI/ML & MLOps",
       "list": [
-         "Data Structures",
-         "Algorithms",
-         "Problem Solving",
-         "Dynamic Programming",
-         "Code Debugging"
+         "End-to-End ML Pipelines",
+         "Model Training & Deployment",
+         "LLM Integration & RAG Systems",
+         "MLOps Automation & Monitoring",
+         "Data Analysis & Visualization"
       ]
    },
    {
       "id": 4,
-      "title": "Data Science & ML",
+      "title": "AI Agents & Tooling",
       "list": [
-         "Data Analysis",
-         "Data Visualization",
-         "Machine Learning",
-         "Deep Learning",
-         "Natural Language Processing"
+         "MCP Server Development",
+         "Agent Skills & Workflow Design",
+         "AI-Powered Developer Tools",
+         "Automation & Productivity Systems",
+         "Open Source Community Building"
       ]
    },
    {
       "id": 5,
-      "title": "UI/UX Design",
+      "title": "Cloud Consulting",
       "list": [
-         "Web Design",
-         "Mobile App Design",
-         "Wireframing",
-         "Prototyping",
-         "User Research"
+         "Cloud Migration Strategy",
+         "Architecture Design & Review",
+         "Security & Compliance Hardening",
+         "Cost Optimization",
+         "Performance Tuning"
       ]
    },
    {
       "id": 6,
-      "title": "Cloud Architecture & Consulting",
+      "title": "Competitive Programming",
       "list": [
-         "Cloud Migration",
-         "Architecture Design",
-         "Security & Compliance",
-         "Technical Documentation",
-         "Performance Optimization"
+         "Algorithm Design & Analysis",
+         "Dynamic Programming",
+         "2000+ Problems Solved",
+         "LeetCode Knight Rating",
+         "Contest Strategy & Mentoring"
       ]
    }
 ]

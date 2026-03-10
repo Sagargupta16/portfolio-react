@@ -1,128 +1,101 @@
 {
-   "programming_languages": [
-      "C++",
+   "languages": [
       "Python",
-      "Java",
       "JavaScript",
       "TypeScript",
+      "C++",
+      "Java",
       "SQL",
+      "HCL",
       "C#",
       "R",
-      "HTML5",
-      "CSS3",
-      "HCL"
+      "HTML/CSS"
    ],
-   "frameworks_and_libraries": [
+   "frontend": [
       "React",
       "Next.js",
+      "Vite",
+      "Tailwind CSS",
+      "Three.js",
+      "Framer Motion",
+      "Redux",
+      "Material-UI"
+   ],
+   "backend": [
+      "Node.js",
       "Express.js",
       "FastAPI",
       "REST API",
-      "Node.js",
-      "Material-UI",
-      "Redux",
-      "Framer Motion",
-      "Tailwind CSS",
-      "Bootstrap"
+      "MongoDB",
+      "PostgreSQL",
+      "MySQL",
+      "Redis",
+      "SQLite"
    ],
-   "cloud_platforms": [
-      "AWS",
-      "AWS EC2",
-      "AWS ECS",
-      "AWS ECR",
-      "AWS S3",
-      "AWS CloudWatch",
-      "AWS SageMaker",
-      "AWS CodePipeline",
-      "AWS EventBridge",
-      "AWS Lambda",
-      "AWS API Gateway",
-      "AWS SNS",
-      "AWS EBS",
-      "AWS Detective",
-      "AWS X-Ray",
-      "AWS RDS",
-      "AWS CloudFront",
-      "AWS CloudFormation",
-      "AWS DynamoDB",
-      "AWS CodeBuild",
-      "AWS CodeDeploy",
-      "AWS VPC",
-      "AWS ALB"
-   ],
-   "devops_tools": [
+   "cloud_devops": [
+      "AWS (EC2, ECS, S3, Lambda, RDS, CloudFront)",
+      "AWS (CodePipeline, CodeBuild, CodeDeploy)",
+      "AWS (VPC, ALB, SNS, EventBridge, CloudWatch)",
+      "AWS (CloudFormation, X-Ray, Detective)",
       "Terraform",
       "Docker",
       "Ansible",
       "GitHub Actions",
-      "Git",
-      "CI/CD Pipelines",
       "Jenkins",
-      "GitLab",
+      "CI/CD Pipelines",
       "Blue-Green Deployment",
-      "Auto-scaling",
-      "tftest",
       "Infrastructure as Code"
    ],
-   "databases": ["MongoDB", "MongoDB Atlas", "MySQL", "PostgreSQL", "Redis"],
-   "developer_tools": [
-      "SonarQube",
-      "Visual Studio Code",
-      "Jupyter Notebook",
-      "Postman",
-      "EmailJS",
-      "Figma",
-      "Android Studio",
-      "Eclipse"
-   ],
-   "machine_learning": [
+   "ai_ml": [
+      "AWS SageMaker",
+      "AWS Bedrock",
+      "Amazon Q",
       "TensorFlow",
       "PyTorch",
       "Scikit-learn",
-      "Pandas",
-      "NumPy",
-      "LSTM",
-      "Neural Networks",
-      "OpenCV",
-      "Matplotlib",
+      "Pandas / NumPy",
+      "LSTM / Neural Networks",
+      "OpenCV / Image Processing",
       "Deep Learning",
-      "Image Processing",
-      "MLOps"
+      "MLOps",
+      "LLM APIs",
+      "RAG Pipelines"
    ],
-   "game_dev_tools": ["Unity Engine", "Unity 2D", "C# (Unity)"],
-   "computer_science_fundamentals": [
+   "tools_platforms": [
+      "Claude Code",
+      "Cursor AI",
+      "GitHub Copilot",
+      "Git",
+      "VS Code",
+      "Jupyter Notebook",
+      "Postman",
+      "Figma",
+      "MCP Protocol",
+      "Agent Skills",
+      "SonarQube"
+   ],
+   "cs_fundamentals": [
       "Data Structures & Algorithms",
+      "Object-Oriented Programming",
       "Computer Networks",
-      "Software Engineering",
-      "Software Testing",
       "Operating Systems",
-      "Database Management Systems",
-      "Object-Oriented Programming"
+      "Software Engineering",
+      "Database Management Systems"
    ],
    "soft_skills": [
       "Leadership",
-      "Teamwork",
-      "Communication",
-      "Critical Thinking",
       "Problem Solving",
-      "Adaptability",
-      "Creativity",
-      "Time Management"
-   ],
-   "ai_coding_assistants": [
-      "GitHub Copilot",
-      "Amazon Q",
-      "ChatGPT",
-      "Claude",
-      "Gemini",
-      "Cursor AI"
+      "Communication",
+      "Teamwork",
+      "Critical Thinking",
+      "Adaptability"
    ],
    "areas_of_interest": [
       "Full-Stack Development",
-      "DevOps",
-      "MLOps",
-      "Cloud Computing",
-      "Data Science",
+      "AI/ML Engineering",
+      "DevOps & Cloud",
+      "Open Source",
+      "AI Agents & MCP",
       "Game Development"
    ]
 }

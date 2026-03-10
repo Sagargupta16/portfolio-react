@@ -16,6 +16,7 @@ import {
    getFeaturedProjects,
    getCollaborativeProjects,
    getOtherProjects,
+   getCommunityProjects,
    getOpenSourceContributions,
 } from "@data/dataLoader";
 import {
@@ -26,7 +27,7 @@ import {
 import useMediaQuery from "@utils/useMediaQuery";
 import SectionHeader from "@components/ui/SectionHeader";
 
-const FILTERS = ["All", "Featured", "Collab", "Others"];
+const FILTERS = ["All", "Featured", "Community", "Collab", "Others"];
 
 const MONTHS = {
    January: 0,
@@ -50,6 +51,7 @@ const parseDate = (dateStr) => {
 
 const CAT_COLOR = {
    Featured: "#06b6d4",
+   Community: "#22c55e",
    Collab: "#a855f7",
    Others: "#f59e0b",
 };
@@ -89,12 +91,13 @@ TimelineDot.propTypes = {
    index: PropTypes.number.isRequired,
 };
 
-const ActivityTimeline = ({ featured, collab, others }) => {
+const ActivityTimeline = ({ featured, community, collab, others }) => {
    const isMobile = useMediaQuery("(max-width: 768px)");
 
    const events = useMemo(() => {
       const all = [
          ...featured.map((p) => ({ ...p, cat: "Featured" })),
+         ...community.map((p) => ({ ...p, cat: "Community" })),
          ...collab.map((p) => ({ ...p, cat: "Collab" })),
          ...others.map((p) => ({ ...p, cat: "Others" })),
       ];
@@ -223,6 +226,7 @@ const ActivityTimeline = ({ featured, collab, others }) => {
 
 ActivityTimeline.propTypes = {
    featured: PropTypes.array.isRequired,
+   community: PropTypes.array.isRequired,
    collab: PropTypes.array.isRequired,
    others: PropTypes.array.isRequired,
 };
@@ -233,6 +237,12 @@ const CATEGORY_COLORS = {
       gradient: "linear-gradient(to right, #06b6d4, #3b82f6)",
       bgAlpha: "rgba(6,182,212,",
       borderAlpha: "rgba(6,182,212,",
+   },
+   Community: {
+      accent: "#22c55e",
+      gradient: "linear-gradient(to right, #22c55e, #16a34a)",
+      bgAlpha: "rgba(34,197,94,",
+      borderAlpha: "rgba(34,197,94,",
    },
    Collab: {
       accent: "#a855f7",
@@ -846,6 +856,7 @@ const Portfolio = () => {
    const isMobile = useMediaQuery("(max-width: 768px)");
 
    const featuredProjects = useMemo(() => getFeaturedProjects(), []);
+   const communityProjects = useMemo(() => getCommunityProjects(), []);
    const collaborativeProjects = useMemo(() => getCollaborativeProjects(), []);
    const otherProjects = useMemo(() => getOtherProjects(), []);
 
@@ -853,6 +864,10 @@ const Portfolio = () => {
       const featured = featuredProjects.map((p) => ({
          ...p,
          category: "Featured",
+      }));
+      const community = communityProjects.map((p) => ({
+         ...p,
+         category: "Community",
       }));
       const collab = collaborativeProjects.map((p) => ({
          ...p,
@@ -862,12 +877,13 @@ const Portfolio = () => {
 
       let list;
       if (activeFilter === "Featured") list = featured;
+      else if (activeFilter === "Community") list = community;
       else if (activeFilter === "Collab") list = collab;
       else if (activeFilter === "Others") list = others;
-      else list = [...featured, ...collab, ...others];
+      else list = [...featured, ...community, ...collab, ...others];
 
       return list.sort((a, b) => parseDate(b.date) - parseDate(a.date));
-   }, [activeFilter, featuredProjects, collaborativeProjects, otherProjects]);
+   }, [activeFilter, featuredProjects, communityProjects, collaborativeProjects, otherProjects]);
 
    return (
       <motion.section
