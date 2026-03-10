@@ -14,21 +14,18 @@ import useMediaQuery from "@utils/useMediaQuery";
 import SectionHeader from "@components/ui/SectionHeader";
 
 const CATEGORY_CONFIG = {
-   programming_languages: "Programming Languages",
-   frameworks_and_libraries: "Frameworks & Libraries",
-   cloud_platforms: "AWS & Cloud",
-   devops_tools: "DevOps & Infrastructure",
-   databases: "Databases",
-   machine_learning: "Machine Learning",
-   developer_tools: "Developer Tools",
-   computer_science_fundamentals: "CS Fundamentals",
-   ai_coding_assistants: "AI Coding Assistants",
+   languages: "Languages",
+   frontend: "Frontend",
+   backend: "Backend & Databases",
+   cloud_devops: "Cloud & DevOps",
+   ai_ml: "AI / Machine Learning",
+   tools_platforms: "Tools & Platforms",
 };
 
 const SECONDARY_CATEGORIES = [
+   "cs_fundamentals",
    "soft_skills",
    "areas_of_interest",
-   "game_dev_tools",
 ];
 
 const SkillTagGroup = ({ items }) => (
