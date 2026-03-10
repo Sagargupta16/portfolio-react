@@ -8,6 +8,8 @@ import {
    Users,
    Star,
    GitPullRequest,
+   GitMerge,
+   CircleDot,
 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import {
@@ -565,126 +567,271 @@ ProjectCard.propTypes = {
    index: PropTypes.number,
 };
 
-const OpenSourceBanner = () => (
-   <motion.div
-      style={{ marginTop: 64 }}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ margin: "0px 0px -100px 0px" }}
-      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-   >
-      <div
+const ContribCard = ({ contrib }) => {
+   const isMerged = contrib.status === "merged";
+   const statusColor = isMerged ? "#a855f7" : "#22c55e";
+   const StatusIcon = isMerged ? GitMerge : CircleDot;
+   const hoverBg = isMerged
+      ? "rgba(168,85,247,0.06)"
+      : "rgba(34,197,94,0.06)";
+   const hoverBorder = isMerged
+      ? "rgba(168,85,247,0.2)"
+      : "rgba(34,197,94,0.2)";
+
+   return (
+      <a
+         href={contrib.url}
+         target="_blank"
+         rel="noopener noreferrer"
          style={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-start",
             gap: 10,
-            marginBottom: 24,
-            justifyContent: "center",
+            padding: "12px 14px",
+            borderRadius: 10,
+            background: "rgba(255,255,255,0.02)",
+            border: `1px solid ${isMerged ? "rgba(168,85,247,0.1)" : "rgba(255,255,255,0.04)"}`,
+            textDecoration: "none",
+            transition: "all 0.2s",
+         }}
+         onMouseEnter={(e) => {
+            e.currentTarget.style.background = hoverBg;
+            e.currentTarget.style.borderColor = hoverBorder;
+         }}
+         onMouseLeave={(e) => {
+            e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+            e.currentTarget.style.borderColor = isMerged
+               ? "rgba(168,85,247,0.1)"
+               : "rgba(255,255,255,0.04)";
          }}
       >
-         <GitPullRequest size={20} style={{ color: "#22c55e" }} />
-         <h3 style={{ fontSize: 20, fontWeight: 700, color: "#eeeef5" }}>
-            Open Source Contributions
-         </h3>
-      </div>
-
-      <div
-         className="glass-card"
-         style={{
-            padding: 24,
-            border: "1px solid rgba(34,197,94,0.2)",
-            position: "relative",
-            overflow: "hidden",
-         }}
-      >
-         {/* Gradient border glow effect */}
-         <div
-            style={{
-               position: "absolute",
-               inset: 0,
-               borderRadius: "inherit",
-               padding: 1,
-               background:
-                  "linear-gradient(135deg, rgba(34,197,94,0.3), rgba(6,182,212,0.3), rgba(168,85,247,0.3))",
-               mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-               maskComposite: "exclude",
-               WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-               WebkitMaskComposite: "xor",
-               pointerEvents: "none",
-            }}
+         <StatusIcon
+            size={14}
+            style={{ color: statusColor, flexShrink: 0, marginTop: 3 }}
          />
-         <div
-            style={{
-               display: "grid",
-               gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-               gap: 12,
-            }}
-         >
-            {OPEN_SOURCE_CONTRIBUTIONS.map((contrib) => (
-               <a
-                  key={contrib.url}
-                  href={contrib.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+         <div style={{ minWidth: 0, flex: 1 }}>
+            <div
+               style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  justifyContent: "space-between",
+               }}
+            >
+               <span
                   style={{
-                     display: "flex",
-                     alignItems: "flex-start",
-                     gap: 10,
-                     padding: "12px 14px",
-                     borderRadius: 10,
-                     background: "rgba(255,255,255,0.02)",
-                     border: "1px solid rgba(255,255,255,0.04)",
-                     textDecoration: "none",
-                     transition: "all 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                     e.currentTarget.style.background = "rgba(34,197,94,0.06)";
-                     e.currentTarget.style.borderColor = "rgba(34,197,94,0.2)";
-                  }}
-                  onMouseLeave={(e) => {
-                     e.currentTarget.style.background =
-                        "rgba(255,255,255,0.02)";
-                     e.currentTarget.style.borderColor =
-                        "rgba(255,255,255,0.04)";
+                     fontSize: 11,
+                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     color: statusColor,
+                     fontWeight: 600,
                   }}
                >
-                  <GitPullRequest
-                     size={14}
-                     style={{ color: "#22c55e", flexShrink: 0, marginTop: 3 }}
-                  />
-                  <div style={{ minWidth: 0 }}>
+                  {contrib.repo}
+               </span>
+               <span
+                  style={{
+                     fontSize: 9,
+                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontWeight: 700,
+                     letterSpacing: "0.05em",
+                     textTransform: "uppercase",
+                     padding: "2px 6px",
+                     borderRadius: 4,
+                     background: isMerged
+                        ? "rgba(168,85,247,0.12)"
+                        : "rgba(34,197,94,0.1)",
+                     color: statusColor,
+                     border: `1px solid ${isMerged ? "rgba(168,85,247,0.25)" : "rgba(34,197,94,0.2)"}`,
+                     flexShrink: 0,
+                  }}
+               >
+                  {isMerged ? "Merged" : "Open"}
+               </span>
+            </div>
+            <p
+               style={{
+                  fontSize: 12,
+                  color: "#a5a5c0",
+                  lineHeight: 1.4,
+                  marginTop: 2,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+               }}
+            >
+               {contrib.title}
+            </p>
+         </div>
+      </a>
+   );
+};
+
+ContribCard.propTypes = {
+   contrib: PropTypes.shape({
+      repo: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      status: PropTypes.string,
+   }).isRequired,
+};
+
+const OpenSourceBanner = () => {
+   const merged = OPEN_SOURCE_CONTRIBUTIONS.filter(
+      (c) => c.status === "merged",
+   );
+   const open = OPEN_SOURCE_CONTRIBUTIONS.filter((c) => c.status !== "merged");
+
+   return (
+      <motion.div
+         style={{ marginTop: 64 }}
+         initial={{ opacity: 0, y: 30 }}
+         whileInView={{ opacity: 1, y: 0 }}
+         viewport={{ margin: "0px 0px -100px 0px" }}
+         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+      >
+         <div
+            style={{
+               display: "flex",
+               alignItems: "center",
+               gap: 10,
+               marginBottom: 24,
+               justifyContent: "center",
+            }}
+         >
+            <GitPullRequest size={20} style={{ color: "#22c55e" }} />
+            <h3 style={{ fontSize: 20, fontWeight: 700, color: "#eeeef5" }}>
+               Open Source Contributions
+            </h3>
+            <span
+               style={{
+                  fontSize: 12,
+                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  color: "#6e6e90",
+                  fontWeight: 500,
+               }}
+            >
+               ({OPEN_SOURCE_CONTRIBUTIONS.length})
+            </span>
+         </div>
+
+         <div
+            className="glass-card"
+            style={{
+               padding: 24,
+               border: "1px solid rgba(34,197,94,0.2)",
+               position: "relative",
+               overflow: "hidden",
+            }}
+         >
+            <div
+               style={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "inherit",
+                  padding: 1,
+                  background:
+                     "linear-gradient(135deg, rgba(168,85,247,0.3), rgba(34,197,94,0.3), rgba(6,182,212,0.3))",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                  WebkitMask:
+                     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  pointerEvents: "none",
+               }}
+            />
+
+            {merged.length > 0 && (
+               <>
+                  <div
+                     style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        marginBottom: 12,
+                     }}
+                  >
+                     <GitMerge size={14} style={{ color: "#a855f7" }} />
                      <span
                         style={{
-                           fontSize: 11,
+                           fontSize: 12,
+                           fontWeight: 700,
+                           color: "#a855f7",
                            fontFamily:
                               "JetBrains Mono, ui-monospace, monospace",
-                           color: "#22c55e",
-                           fontWeight: 600,
+                           letterSpacing: "0.03em",
                         }}
                      >
-                        {contrib.repo}
+                        Merged ({merged.length})
                      </span>
-                     <p
+                  </div>
+                  <div
+                     style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                           "repeat(auto-fill, minmax(280px, 1fr))",
+                        gap: 10,
+                        marginBottom: open.length > 0 ? 20 : 0,
+                     }}
+                  >
+                     {merged.map((contrib) => (
+                        <ContribCard key={contrib.url} contrib={contrib} />
+                     ))}
+                  </div>
+               </>
+            )}
+
+            {open.length > 0 && (
+               <>
+                  {merged.length > 0 && (
+                     <div
+                        style={{
+                           height: 1,
+                           background:
+                              "linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent)",
+                           marginBottom: 16,
+                        }}
+                     />
+                  )}
+                  <div
+                     style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        marginBottom: 12,
+                     }}
+                  >
+                     <CircleDot size={14} style={{ color: "#22c55e" }} />
+                     <span
                         style={{
                            fontSize: 12,
-                           color: "#a5a5c0",
-                           lineHeight: 1.4,
-                           marginTop: 2,
-                           overflow: "hidden",
-                           textOverflow: "ellipsis",
-                           whiteSpace: "nowrap",
+                           fontWeight: 700,
+                           color: "#22c55e",
+                           fontFamily:
+                              "JetBrains Mono, ui-monospace, monospace",
+                           letterSpacing: "0.03em",
                         }}
                      >
-                        {contrib.title}
-                     </p>
+                        Under Review ({open.length})
+                     </span>
                   </div>
-               </a>
-            ))}
+                  <div
+                     style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                           "repeat(auto-fill, minmax(280px, 1fr))",
+                        gap: 10,
+                     }}
+                  >
+                     {open.map((contrib) => (
+                        <ContribCard key={contrib.url} contrib={contrib} />
+                     ))}
+                  </div>
+               </>
+            )}
          </div>
-      </div>
-   </motion.div>
-);
+      </motion.div>
+   );
+};
 
 const Portfolio = () => {
    const [activeFilter, setActiveFilter] = useState("Featured");
