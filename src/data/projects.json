@@ -554,6 +554,24 @@
          "title": "Add Claude Code agent skills for Feast",
          "url": "https://github.com/feast-dev/feast/pull/6081",
          "status": "open"
+      },
+      {
+         "repo": "shanraisshan/claude-code-best-practice",
+         "title": "Add /audit command for best practices compliance check",
+         "url": "https://github.com/shanraisshan/claude-code-best-practice/pull/11",
+         "status": "open"
+      },
+      {
+         "repo": "webfuse-com/awesome-claude",
+         "title": "Add Claude Code cost optimization and recipes resources",
+         "url": "https://github.com/webfuse-com/awesome-claude/pull/84",
+         "status": "open"
+      },
+      {
+         "repo": "saturn-abhishek/awesome-github-profile-readme",
+         "title": "Add Credly Badge README Updater to Tools",
+         "url": "https://github.com/saturn-abhishek/awesome-github-profile-readme/pull/1655",
+         "status": "open"
       }
    ]
 }
