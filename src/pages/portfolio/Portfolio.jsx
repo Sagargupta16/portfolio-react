@@ -571,9 +571,7 @@ const ContribCard = ({ contrib }) => {
    const isMerged = contrib.status === "merged";
    const statusColor = isMerged ? "#a855f7" : "#22c55e";
    const StatusIcon = isMerged ? GitMerge : CircleDot;
-   const hoverBg = isMerged
-      ? "rgba(168,85,247,0.06)"
-      : "rgba(34,197,94,0.06)";
+   const hoverBg = isMerged ? "rgba(168,85,247,0.06)" : "rgba(34,197,94,0.06)";
    const hoverBorder = isMerged
       ? "rgba(168,85,247,0.2)"
       : "rgba(34,197,94,0.2)";
