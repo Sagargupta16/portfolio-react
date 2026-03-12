@@ -4,12 +4,12 @@
 
 ## Changes
 
-<!-- List the key changes -->
--
+## <!-- List the key changes -->
 
 ## Type
 
 <!-- Check one -->
+
 - [ ] feat: New feature
 - [ ] fix: Bug fix
 - [ ] refactor: Code restructuring
@@ -19,6 +19,7 @@
 ## Testing
 
 <!-- How was this tested? -->
+
 - [ ] `pnpm build` passes
 - [ ] `pnpm lint` passes (zero warnings)
 - [ ] `pnpm test` passes (4/4)
