@@ -7,7 +7,6 @@
 
 # production
 /build
-/dist
 
 # env files
 .env
@@ -28,7 +27,7 @@
 
 # AI tools
 .claude
+CLAUDE.md
 
 # Vite
 vite.config.js.timestamp-*
-vite.config.ts.timestamp-*

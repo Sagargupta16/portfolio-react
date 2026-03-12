@@ -1,0 +1,98 @@
+import { useRef, useState, useCallback, useEffect } from "react";
+import emailjs from "@emailjs/browser";
+import { getEmailConfig } from "@data/dataLoader";
+import type { FormData, Status } from "./contactConstants";
+
+const useContactForm = () => {
+   const formRef = useRef<HTMLFormElement>(null);
+   const emailConfig = getEmailConfig();
+
+   const [formData, setFormData] = useState<FormData>({
+      name: "",
+      email: "",
+      message: "",
+   });
+   const [status, setStatus] = useState<Status>({ type: "", message: "" });
+   const [isLoading, setIsLoading] = useState(false);
+   const [toastVisible, setToastVisible] = useState(false);
+
+   useEffect(() => {
+      if (status.type) {
+         setToastVisible(true);
+         const timer = setTimeout(() => {
+            setToastVisible(false);
+            setTimeout(() => setStatus({ type: "", message: "" }), 300);
+         }, 5000);
+         return () => clearTimeout(timer);
+      }
+   }, [status.type]);
+
+   const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+         const { name, value } = e.target;
+         setFormData((prev) => ({ ...prev, [name]: value }));
+         if (status.message) setStatus({ type: "", message: "" });
+      },
+      [status.message],
+   );
+
+   const handleSubmit = useCallback(
+      async (e: React.FormEvent<HTMLFormElement>) => {
+         e.preventDefault();
+
+         // Honeypot check -- if the hidden field has a value, it's a bot
+         const honeypot =
+            formRef.current?.querySelector<HTMLInputElement>(
+               '[name="website"]',
+            );
+         if (honeypot?.value) return;
+
+         setIsLoading(true);
+         setStatus({ type: "", message: "" });
+
+         try {
+            const result = await emailjs.sendForm(
+               emailConfig.service_id,
+               emailConfig.template_id,
+               formRef.current!,
+               emailConfig.public_key,
+            );
+
+            if (result.status === 200) {
+               setStatus({
+                  type: "success",
+                  message: "Message sent successfully!",
+               });
+               setFormData({ name: "", email: "", message: "" });
+               formRef.current!.reset();
+            }
+         } catch {
+            setStatus({
+               type: "error",
+               message: "Failed to send message. Please try again.",
+            });
+         } finally {
+            setIsLoading(false);
+         }
+      },
+      [emailConfig],
+   );
+
+   const dismissToast = useCallback(() => {
+      setToastVisible(false);
+      setTimeout(() => setStatus({ type: "", message: "" }), 300);
+   }, []);
+
+   return {
+      formRef,
+      formData,
+      status,
+      isLoading,
+      toastVisible,
+      handleChange,
+      handleSubmit,
+      dismissToast,
+   };
+};
+
+export default useContactForm;
