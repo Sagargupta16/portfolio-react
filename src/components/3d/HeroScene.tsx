@@ -54,10 +54,16 @@ const ParticleField = ({ count = 300 }: ParticleFieldProps) => {
    );
 };
 
-const HeroScene = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+interface HeroSceneProps {
+   visible?: boolean;
+}
 
-   const particleCount = isMobile ? 100 : 300;
+const HeroScene = ({ visible = true }: HeroSceneProps) => {
+   const isMobile = useMediaQuery("(max-width: 768px)");
+   const [degraded, setDegraded] = useState(false);
+
+   const desktopParticles = degraded ? 150 : 300;
+   const particleCount = isMobile ? 100 : desktopParticles;
    const dpr: [number, number] = isMobile ? [0.5, 1] : [1, 2];
 
    return (
@@ -70,6 +76,7 @@ const HeroScene = () => {
          }}
          camera={{ position: [0, 0, 8], fov: 50 }}
          dpr={dpr}
+         frameloop={visible ? "always" : "never"}
          gl={{
             antialias: !isMobile,
             alpha: true,
@@ -77,9 +84,8 @@ const HeroScene = () => {
          }}
       >
          <PerformanceMonitor
-            onDecline={() => {
-               // Auto-reduce quality if performance drops
-            }}
+            onDecline={() => setDegraded(true)}
+            onIncline={() => setDegraded(false)}
          />
 
          {/* Lighting matching glassmorphism theme */}
@@ -132,8 +138,8 @@ const HeroScene = () => {
             />
          )}
 
-         {/* Scattered small decorative dodecahedrons - desktop only */}
-         {!isMobile && (
+         {/* Scattered small decorative dodecahedrons - desktop only, hidden when degraded */}
+         {!isMobile && !degraded && (
             <>
                <FloatingGeometry
                   geometry="dodecahedron"

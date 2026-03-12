@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Server, Eye } from "lucide-react";
 import { getSiteConfig } from "@data/dataLoader";
 import useMediaQuery from "@utils/useMediaQuery";

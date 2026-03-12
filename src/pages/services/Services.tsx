@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Cloud, Code, Trophy, Brain, Palette, Settings } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getServices } from "@data/dataLoader";

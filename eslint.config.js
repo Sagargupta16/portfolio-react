@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import globals from "globals";
 import tseslint from "typescript-eslint";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -22,27 +23,7 @@ export default [
             },
          },
          globals: {
-            window: "readonly",
-            document: "readonly",
-            navigator: "readonly",
-            console: "readonly",
-            localStorage: "readonly",
-            setTimeout: "readonly",
-            clearTimeout: "readonly",
-            setInterval: "readonly",
-            clearInterval: "readonly",
-            fetch: "readonly",
-            FormData: "readonly",
-            URLSearchParams: "readonly",
-            URL: "readonly",
-            Event: "readonly",
-            CustomEvent: "readonly",
-            IntersectionObserver: "readonly",
-            requestAnimationFrame: "readonly",
-            cancelAnimationFrame: "readonly",
-            performance: "readonly",
-            module: "readonly",
-            globalThis: "readonly",
+            ...globals.browser,
             React: "readonly",
          },
       },

@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { useLenis } from "lenis/react";
+import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { MapPin, ChevronDown, Building2, FolderGit2 } from "lucide-react";
 import { getExperience, getPositionsOfResponsibility } from "@data/dataLoader";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
@@ -27,6 +28,7 @@ const TimelineCard = ({
    accentColor = "#06b6d4",
    isMobile,
 }: TimelineCardProps) => {
+   const lenis = useLenis();
    const [expanded, setExpanded] = useState(false);
 
    const hasProjects = "projects" in item && (item.projects?.length ?? 0) > 0;
@@ -220,13 +222,7 @@ const TimelineCard = ({
                               },
                            },
                         }}
-                        onAnimationComplete={() =>
-                           (globalThis as Record<string, unknown>).__lenis &&
-                           (
-                              (globalThis as Record<string, unknown>)
-                                 .__lenis as { resize: () => void }
-                           ).resize()
-                        }
+                        onAnimationComplete={() => lenis?.resize()}
                         style={{ overflow: "hidden", marginLeft: ml }}
                      >
                         <motion.div

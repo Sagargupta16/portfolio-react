@@ -4,13 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "node:url";
 
 export default defineConfig(() => ({
-   plugins: [
-      tailwindcss(),
-      react({
-         fastRefresh: true,
-         jsxRuntime: "automatic",
-      }),
-   ],
+   plugins: [tailwindcss(), react()],
    base: "/portfolio-react/",
    resolve: {
       alias: {
@@ -27,7 +21,6 @@ export default defineConfig(() => ({
    server: {
       port: 3000,
       open: true,
-      hmr: true,
    },
    build: {
       outDir: "build",
@@ -40,16 +33,13 @@ export default defineConfig(() => ({
             manualChunks: {
                vendor: ["react", "react-dom"],
                icons: ["react-icons", "lucide-react"],
-               animations: ["framer-motion"],
+               animations: ["motion"],
                threejs: ["three", "@react-three/fiber", "@react-three/drei"],
                particles: ["@tsparticles/react", "@tsparticles/slim"],
             },
          },
       },
       chunkSizeWarningLimit: 1000,
-   },
-   optimizeDeps: {
-      include: ["react", "react-dom"],
    },
    test: {
       environment: "jsdom",

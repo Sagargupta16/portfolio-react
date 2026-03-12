@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useMemo, type ReactNode } from "react";
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { motion, type HTMLMotionProps } from "motion/react";
 import useReducedMotion from "@utils/useReducedMotion";
 
 interface GlassCardOwnProps {
@@ -7,7 +7,6 @@ interface GlassCardOwnProps {
    tilt?: boolean;
    glow?: boolean;
    borderGlow?: boolean;
-   as?: string;
 }
 
 type GlassCardProps = GlassCardOwnProps &
@@ -20,21 +19,29 @@ const GlassCard = ({
    tilt = true,
    glow = true,
    borderGlow = true,
-   as = "div",
    ...props
 }: GlassCardProps) => {
    const ref = useRef<HTMLDivElement>(null);
+   const rafPending = useRef(false);
    const reducedMotion = useReducedMotion();
    const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
    const [isHovered, setIsHovered] = useState(false);
 
    const handleMouseMove = useCallback(
       (e: React.MouseEvent<HTMLElement>) => {
-         if (reducedMotion || !ref.current) return;
-         const rect = ref.current.getBoundingClientRect();
-         const x = (e.clientX - rect.left) / rect.width;
-         const y = (e.clientY - rect.top) / rect.height;
-         setMousePos({ x, y });
+         if (reducedMotion || !ref.current || rafPending.current) return;
+         const clientX = e.clientX;
+         const clientY = e.clientY;
+         rafPending.current = true;
+         requestAnimationFrame(() => {
+            if (ref.current) {
+               const rect = ref.current.getBoundingClientRect();
+               const x = (clientX - rect.left) / rect.width;
+               const y = (clientY - rect.top) / rect.height;
+               setMousePos({ x, y });
+            }
+            rafPending.current = false;
+         });
       },
       [reducedMotion],
    );
@@ -65,14 +72,8 @@ const GlassCard = ({
       };
    }, [glow, isHovered, reducedMotion, mousePos]);
 
-   const Component =
-      as === "div"
-         ? motion.div
-         : (motion as unknown as Record<string, typeof motion.div>)[as] ||
-           motion.div;
-
    return (
-      <Component
+      <motion.div
          ref={ref}
          className={`glass-card ${className}`}
          style={{
@@ -141,7 +142,7 @@ const GlassCard = ({
 
          {/* Content */}
          <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
-      </Component>
+      </motion.div>
    );
 };
 

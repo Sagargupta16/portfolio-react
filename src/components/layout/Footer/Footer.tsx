@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { getName, getSocialProfiles, getSiteConfig } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";

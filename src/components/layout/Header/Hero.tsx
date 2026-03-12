@@ -6,7 +6,7 @@ import {
    lazy,
    Suspense,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { ChevronDown } from "lucide-react";
@@ -18,11 +18,23 @@ import {
 } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import ICON_MAP from "@utils/iconMap";
+import { useInView } from "react-intersection-observer";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import Resume from "@assets/Resume.pdf";
 
 const HeroScene = lazy(() => import("@components/3d/HeroScene"));
+
+const ParticleFallback = ({
+   ready,
+   options,
+}: {
+   ready: boolean;
+   options: typeof particlesOptions;
+}) =>
+   ready ? (
+      <Particles className="absolute inset-0 z-0" options={options} />
+   ) : null;
 
 const hasWebGL = (): boolean => {
    try {
@@ -74,6 +86,7 @@ const particlesOptions = {
 };
 
 const Hero = () => {
+   const { ref: sectionRef, inView } = useInView({ threshold: 0 });
    const [engineInit, setEngineInit] = useState(false);
    const [roleIndex, setRoleIndex] = useState(0);
    const [webGLSupported] = useState(() => hasWebGL());
@@ -118,6 +131,7 @@ const Hero = () => {
 
    return (
       <section
+         ref={sectionRef}
          id="hero"
          className="relative min-h-screen overflow-hidden flex items-center justify-center"
       >
@@ -161,34 +175,25 @@ const Hero = () => {
          {webGLSupported ? (
             <ErrorBoundary
                fallback={
-                  engineInit ? (
-                     <Particles
-                        className="absolute inset-0 z-0"
-                        options={particlesOptions}
-                     />
-                  ) : null
+                  <ParticleFallback
+                     ready={engineInit}
+                     options={particlesOptions}
+                  />
                }
             >
                <Suspense
                   fallback={
-                     engineInit ? (
-                        <Particles
-                           className="absolute inset-0 z-0"
-                           options={particlesOptions}
-                        />
-                     ) : null
+                     <ParticleFallback
+                        ready={engineInit}
+                        options={particlesOptions}
+                     />
                   }
                >
-                  <HeroScene />
+                  <HeroScene visible={inView} />
                </Suspense>
             </ErrorBoundary>
          ) : (
-            engineInit && (
-               <Particles
-                  className="absolute inset-0 z-0"
-                  options={particlesOptions}
-               />
-            )
+            <ParticleFallback ready={engineInit} options={particlesOptions} />
          )}
 
          {/* Content */}
@@ -352,26 +357,14 @@ const Hero = () => {
                            color: "#a5a5c0",
                            transition: "all 0.3s",
                         }}
-                        whileHover={{ scale: 1.15, y: -3 }}
+                        whileHover={{
+                           scale: 1.15,
+                           y: -3,
+                           color: "#06b6d4",
+                           borderColor: "rgba(6, 182, 212, 0.3)",
+                           background: "rgba(6, 182, 212, 0.08)",
+                        }}
                         whileTap={{ scale: 0.9 }}
-                        onMouseEnter={(
-                           e: React.MouseEvent<HTMLAnchorElement>,
-                        ) => {
-                           e.currentTarget.style.color = "#06b6d4";
-                           e.currentTarget.style.borderColor =
-                              "rgba(6, 182, 212, 0.3)";
-                           e.currentTarget.style.background =
-                              "rgba(6, 182, 212, 0.08)";
-                        }}
-                        onMouseLeave={(
-                           e: React.MouseEvent<HTMLAnchorElement>,
-                        ) => {
-                           e.currentTarget.style.color = "#a5a5c0";
-                           e.currentTarget.style.borderColor =
-                              "rgba(255, 255, 255, 0.06)";
-                           e.currentTarget.style.background =
-                              "rgba(255, 255, 255, 0.03)";
-                        }}
                         aria-label={`Visit ${profile.name} profile`}
                      >
                         <IconComponent size={18} />

@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import type { ComponentType } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import emailjs from "@emailjs/browser";
 import { Mail, Calendar, Send, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";

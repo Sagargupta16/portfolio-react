@@ -4,7 +4,7 @@ import {
    useScroll,
    useTransform,
    type MotionValue,
-} from "framer-motion";
+} from "motion/react";
 import useReducedMotion from "@utils/useReducedMotion";
 
 const GEOMETRIC_DOT_INDICES = [0, 1, 2, 3, 4];

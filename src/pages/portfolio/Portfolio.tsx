@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from "react";
 import type { ComponentType } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
    ExternalLink,
    FolderGit2,

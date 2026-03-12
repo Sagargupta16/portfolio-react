@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense } from "react";
-import Lenis from "lenis";
+import { ReactLenis } from "lenis/react";
 import Nav from "@components/layout/Navigation/Nav";
 import Hero from "@components/layout/Header/Hero";
 import Footer from "@components/layout/Footer/Footer";
@@ -48,83 +48,73 @@ const SectionLoader = () => (
 
 const App = () => {
    useEffect(() => {
-      const lenis = new Lenis({
-         duration: 1.2,
-         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-      (globalThis as Record<string, unknown>).__lenis = lenis;
-
-      // Force scroll to top on page load/reload
       globalThis.history.scrollRestoration = "manual";
-      lenis.scrollTo(0, { immediate: true });
-
-      const raf = (time: number) => {
-         lenis.raf(time);
-         requestAnimationFrame(raf);
-      };
-      requestAnimationFrame(raf);
-
-      return () => {
-         lenis.destroy();
-         delete (globalThis as Record<string, unknown>).__lenis;
-      };
+      globalThis.scrollTo(0, 0);
    }, []);
 
    return (
-      <ErrorBoundary>
-         <Preloader />
-         <ScrollProgress />
-         <KeyboardNav />
-         <GlassBackground />
-         <ParallaxElements />
-         <div className="relative min-h-screen">
-            <Nav />
-            <main>
-               <Hero />
-               <Suspense fallback={<SectionLoader />}>
-                  <SectionTransition variant="gradient-sweep" />
-                  <div className="section-darker">
-                     <About />
-                  </div>
-                  <SectionTransition variant="glow-pulse" />
-                  <div className="section-dark">
-                     <Experience />
-                  </div>
-                  <SectionTransition variant="beam" />
-                  <div className="section-darker">
-                     <Education />
-                  </div>
-                  <SectionTransition variant="geometric-scatter" />
-                  <div className="section-dark">
-                     <Skill />
-                  </div>
-                  <SectionTransition variant="gradient-sweep" />
-                  <div className="section-darker" id="projects">
-                     <Portfolio />
-                  </div>
-                  <SectionTransition variant="glow-pulse" />
-                  <div className="section-dark" id="achievements">
-                     <Achievement />
-                  </div>
-                  <SectionTransition variant="beam" />
-                  <div className="section-darker" id="services">
-                     <Services />
-                  </div>
-                  <SectionTransition variant="geometric-scatter" />
-                  <div className="section-dark" id="github">
-                     <GitHub />
-                  </div>
-                  <SectionTransition variant="gradient-sweep" />
-                  <div className="section-darker" id="contact">
-                     <Contact />
-                  </div>
-               </Suspense>
-            </main>
-            <Footer />
-            <BackToTop />
-            <SystemStatus />
-         </div>
-      </ErrorBoundary>
+      <ReactLenis
+         root
+         options={{
+            duration: 1.2,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+         }}
+      >
+         <ErrorBoundary>
+            <Preloader />
+            <ScrollProgress />
+            <KeyboardNav />
+            <GlassBackground />
+            <ParallaxElements />
+            <div className="relative min-h-screen">
+               <Nav />
+               <main>
+                  <Hero />
+                  <Suspense fallback={<SectionLoader />}>
+                     <SectionTransition variant="gradient-sweep" />
+                     <div className="section-darker">
+                        <About />
+                     </div>
+                     <SectionTransition variant="glow-pulse" />
+                     <div className="section-dark">
+                        <Experience />
+                     </div>
+                     <SectionTransition variant="beam" />
+                     <div className="section-darker">
+                        <Education />
+                     </div>
+                     <SectionTransition variant="geometric-scatter" />
+                     <div className="section-dark">
+                        <Skill />
+                     </div>
+                     <SectionTransition variant="gradient-sweep" />
+                     <div className="section-darker" id="projects">
+                        <Portfolio />
+                     </div>
+                     <SectionTransition variant="glow-pulse" />
+                     <div className="section-dark" id="achievements">
+                        <Achievement />
+                     </div>
+                     <SectionTransition variant="beam" />
+                     <div className="section-darker" id="services">
+                        <Services />
+                     </div>
+                     <SectionTransition variant="geometric-scatter" />
+                     <div className="section-dark" id="github">
+                        <GitHub />
+                     </div>
+                     <SectionTransition variant="gradient-sweep" />
+                     <div className="section-darker" id="contact">
+                        <Contact />
+                     </div>
+                  </Suspense>
+               </main>
+               <Footer />
+               <BackToTop />
+               <SystemStatus />
+            </div>
+         </ErrorBoundary>
+      </ReactLenis>
    );
 };
 

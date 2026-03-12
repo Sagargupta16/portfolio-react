@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { GitHubCalendar } from "react-github-calendar";
 import type { Activity } from "react-github-calendar";
 import { ArrowRight } from "lucide-react";

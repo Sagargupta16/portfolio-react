@@ -20,3 +20,12 @@ Object.defineProperty(globalThis, "IntersectionObserver", {
       disconnect() {}
    },
 });
+
+Object.defineProperty(globalThis, "ResizeObserver", {
+   writable: true,
+   value: class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+   },
+});

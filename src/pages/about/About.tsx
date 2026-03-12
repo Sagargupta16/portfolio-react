@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Briefcase, GraduationCap, Rocket, Trophy } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getAbout, getStatistics } from "@data/dataLoader";

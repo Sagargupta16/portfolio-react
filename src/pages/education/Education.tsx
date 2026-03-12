@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { MapPin, GraduationCap, Trophy, BookOpen } from "lucide-react";
 import { getEducation } from "@data/dataLoader";
 import type { Education as EducationType } from "@/types";

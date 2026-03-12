@@ -1,4 +1,9 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+   motion,
+   useScroll,
+   useTransform,
+   type MotionValue,
+} from "motion/react";
 import useReducedMotion from "@utils/useReducedMotion";
 import useMediaQuery from "@utils/useMediaQuery";
 
@@ -23,6 +28,7 @@ interface ShapeRendererProps {
 
 interface ParallaxElementProps {
    element: ParallaxElementShape;
+   scrollYProgress: MotionValue<number>;
 }
 
 const ELEMENTS: ParallaxElementShape[] = [
@@ -170,8 +176,10 @@ const ShapeRenderer = ({
    return null;
 };
 
-const ParallaxElement = ({ element }: ParallaxElementProps) => {
-   const { scrollYProgress } = useScroll();
+const ParallaxElement = ({
+   element,
+   scrollYProgress,
+}: ParallaxElementProps) => {
    const y = useTransform(scrollYProgress, [0, 1], [0, element.speed]);
 
    const position: React.CSSProperties = {
@@ -196,6 +204,7 @@ const ParallaxElement = ({ element }: ParallaxElementProps) => {
 const ParallaxElements = () => {
    const reducedMotion = useReducedMotion();
    const isMobile = useMediaQuery("(max-width: 768px)");
+   const { scrollYProgress } = useScroll();
 
    if (reducedMotion || isMobile) return null;
 
@@ -211,7 +220,11 @@ const ParallaxElements = () => {
          aria-hidden="true"
       >
          {ELEMENTS.map((el) => (
-            <ParallaxElement key={el.id} element={el} />
+            <ParallaxElement
+               key={el.id}
+               element={el}
+               scrollYProgress={scrollYProgress}
+            />
          ))}
       </div>
    );

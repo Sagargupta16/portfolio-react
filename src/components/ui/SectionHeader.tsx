@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { fadeInUp, lineGrow } from "@utils/animations";
 
 interface Props {

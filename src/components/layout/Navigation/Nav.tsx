@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import useMediaQuery from "@utils/useMediaQuery";
 
@@ -26,45 +26,46 @@ const Nav = () => {
    const [sectionProgress, setSectionProgress] = useState(0);
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
    const [scrolled, setScrolled] = useState(false);
-   const progressRef = useRef(0);
+   const activeSectionRef = useRef("hero");
 
-   const handleScroll = useCallback(() => {
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 50);
-
-      const windowHeight = window.innerHeight;
-      let current = "hero";
-
-      for (const section of NAV_SECTIONS) {
-         const el = document.getElementById(section.id);
-         if (el) {
-            const rect = el.getBoundingClientRect();
-            const sectionTop = rect.top + scrollY;
-            const sectionBottom = sectionTop + el.offsetHeight;
-            const viewMiddle = scrollY + windowHeight * 0.35;
-
-            if (viewMiddle >= sectionTop && viewMiddle < sectionBottom) {
-               current = section.id;
-               // Calculate progress within the active section (0 to 1)
-               const rawProgress =
-                  (viewMiddle - sectionTop) / (sectionBottom - sectionTop);
-               progressRef.current = Math.max(0, Math.min(1, rawProgress));
-            }
-         }
-      }
-
-      setActiveSection(current);
-      setSectionProgress(progressRef.current);
+   // Lightweight scroll listener for nav background only
+   useEffect(() => {
+      const onScroll = () => setScrolled(window.scrollY > 50);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return () => window.removeEventListener("scroll", onScroll);
    }, []);
 
+   // IntersectionObserver-based scroll-spy (replaces per-scroll DOM queries)
    useEffect(() => {
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      const rafId = requestAnimationFrame(() => handleScroll());
-      return () => {
-         cancelAnimationFrame(rafId);
-         window.removeEventListener("scroll", handleScroll);
-      };
-   }, [handleScroll]);
+      const observer = new IntersectionObserver(
+         (entries) => {
+            for (const entry of entries) {
+               if (entry.isIntersecting) {
+                  const id = entry.target.id;
+                  activeSectionRef.current = id;
+                  setActiveSection(id);
+                  const rect = entry.boundingClientRect;
+                  const viewMiddle = window.innerHeight * 0.35;
+                  const progress = (viewMiddle - rect.top) / rect.height;
+                  setSectionProgress(Math.max(0, Math.min(1, progress)));
+               }
+            }
+         },
+         {
+            threshold: [0, 0.25, 0.5, 0.75, 1],
+            rootMargin: "-35% 0px -60% 0px",
+         },
+      );
+
+      const heroEl = document.getElementById("hero");
+      if (heroEl) observer.observe(heroEl);
+      for (const section of NAV_SECTIONS) {
+         const el = document.getElementById(section.id);
+         if (el) observer.observe(el);
+      }
+
+      return () => observer.disconnect();
+   }, []);
 
    const scrollToSection = useCallback((id: string) => {
       const el = document.querySelector(`#${id}`);
