@@ -16,7 +16,7 @@
       "type-check": "tsc --noEmit",
       "predeploy": "pnpm run build",
       "deploy": "gh-pages -d build",
-      "clean": "rimraf build dist node_modules/.vite"
+      "clean": "rimraf build node_modules/.vite"
    },
    "dependencies": {
       "@emailjs/browser": "^4.4.1",
@@ -40,7 +40,6 @@
    },
    "devDependencies": {
       "@eslint/js": "^9.39.1",
-      "@testing-library/jest-dom": "^6.9.1",
       "@testing-library/react": "^16.3.2",
       "@types/react-dom": "^19.2.3",
       "@vitejs/plugin-react": "^5.1.4",
@@ -61,18 +60,6 @@
    "engines": {
       "node": ">=24.11.0",
       "pnpm": ">=10.0.0"
-   },
-   "browserslist": {
-      "development": [
-         "last 1 chrome version",
-         "last 1 firefox version",
-         "last 1 safari version"
-      ],
-      "production": [
-         ">0.2%",
-         "not dead",
-         "not op_mini all"
-      ]
    },
    "description": "A dynamic and interactive React portfolio showcasing professional experience as a DevOps & Cloud Engineer. Features modern JSON-based data architecture, responsive design, and seamless deployment with CI/CD pipelines.",
    "repository": {
