@@ -24,8 +24,7 @@ export const getFeaturedProjects = () => projectsData.featured_projects;
 export const getCollaborativeProjects = () =>
    projectsData.collaborative_projects;
 export const getOtherProjects = () => projectsData.other_projects;
-export const getCommunityProjects = () =>
-   projectsData.community_projects || [];
+export const getCommunityProjects = () => projectsData.community_projects || [];
 export const getCertifications = () => achievementsData.certifications;
 export const getLearningBadges = () => achievementsData.learning_badges || [];
 export const getAchievements = () => achievementsData.achievements;

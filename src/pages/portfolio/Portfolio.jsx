@@ -883,7 +883,13 @@ const Portfolio = () => {
       else list = [...featured, ...community, ...collab, ...others];
 
       return list.sort((a, b) => parseDate(b.date) - parseDate(a.date));
-   }, [activeFilter, featuredProjects, communityProjects, collaborativeProjects, otherProjects]);
+   }, [
+      activeFilter,
+      featuredProjects,
+      communityProjects,
+      collaborativeProjects,
+      otherProjects,
+   ]);
 
    return (
       <motion.section

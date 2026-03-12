@@ -548,7 +548,12 @@
          "title": "Claude Code Recipes",
          "description": "50+ copy-paste recipes for Claude Code covering commands, subagents, hooks, skills, and MCP server configurations.",
          "date": "March 2026",
-         "tools_tech": ["Claude Code", "AI Agents", "MCP Protocol", "Automation"],
+         "tools_tech": [
+            "Claude Code",
+            "AI Agents",
+            "MCP Protocol",
+            "Automation"
+         ],
          "features": [
             "50+ ready-to-use recipes",
             "Custom subagent configurations",

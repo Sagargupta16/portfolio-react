@@ -28,6 +28,7 @@
 
 # AI tools
 .claude
+CLAUDE.md
 
 # Vite
 vite.config.js.timestamp-*
