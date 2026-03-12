@@ -24,9 +24,15 @@ vi.mock("@tsparticles/react", () => ({
 
 vi.mock("lenis", () => ({
    default: class {
-      raf() {}
-      destroy() {}
-      scrollTo() {}
+      raf() {
+         // no-op: test stub
+      }
+      destroy() {
+         // no-op: test stub
+      }
+      scrollTo() {
+         // no-op: test stub
+      }
    },
 }));
 

@@ -1,14 +1,9 @@
 import type { ComponentType } from "react";
 import { Mail, Calendar } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import {
-   LinkedinIcon,
-   InstagramIcon,
-   GitHubIcon,
-   type IconStyleProps,
-} from "./ContactIcons";
-
-export type { IconStyleProps };
+import { LinkedinIcon, InstagramIcon, GitHubIcon } from "./ContactIcons";
+import type { IconStyleProps } from "./ContactIcons";
+export type { IconStyleProps } from "./ContactIcons";
 
 export interface ContactColors {
    accent: string;

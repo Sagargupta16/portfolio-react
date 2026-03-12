@@ -15,17 +15,29 @@ Object.defineProperty(globalThis, "matchMedia", {
 Object.defineProperty(globalThis, "IntersectionObserver", {
    writable: true,
    value: class {
-      observe() {}
-      unobserve() {}
-      disconnect() {}
+      observe() {
+         // no-op: jsdom stub
+      }
+      unobserve() {
+         // no-op: jsdom stub
+      }
+      disconnect() {
+         // no-op: jsdom stub
+      }
    },
 });
 
 Object.defineProperty(globalThis, "ResizeObserver", {
    writable: true,
    value: class {
-      observe() {}
-      unobserve() {}
-      disconnect() {}
+      observe() {
+         // no-op: jsdom stub
+      }
+      unobserve() {
+         // no-op: jsdom stub
+      }
+      disconnect() {
+         // no-op: jsdom stub
+      }
    },
 });
