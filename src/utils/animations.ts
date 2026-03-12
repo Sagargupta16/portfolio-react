@@ -130,10 +130,10 @@ export const waveCascadeItem: Variants = {
 
 // ===== Clip-Path Reveal (for certifications) =====
 export const clipRevealUp: Variants = {
-   hidden: { opacity: 0, clipPath: "inset(100% 0 0 0)" },
+   hidden: { opacity: 0, clipPath: "inset(100% 0% 0% 0%)" },
    visible: {
       opacity: 1,
-      clipPath: "inset(0 0 0 0)",
+      clipPath: "inset(0% 0% 0% 0%)",
       transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
    },
 };
