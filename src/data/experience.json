@@ -63,6 +63,23 @@
                   "Terraform",
                   "Python"
                ]
+            },
+            {
+               "name": "Lead DevOps Consultant - RWS (Ongoing)",
+               "description": {
+                  "1": "Leading complete cloud migration from scratch, implementing AWS Organizations OU structure, SCPs, tag policies, and Terraform-based infrastructure deployment with GitHub Actions CI/CD.",
+                  "2": "Proposing architectural solutions and recommendations on cost optimization, high availability, and disaster recovery to customer stakeholders."
+               },
+               "skills": [
+                  "AWS",
+                  "AWS Organizations",
+                  "SCPs",
+                  "Tag Policies",
+                  "Terraform",
+                  "GitHub Actions",
+                  "Cloud Migration",
+                  "Solution Architecture"
+               ]
             }
          ]
       },

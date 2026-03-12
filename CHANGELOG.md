@@ -2,6 +2,46 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.6.0] - 2026-03-12
+
+### Added
+
+- Aurora gradient background (`AuroraBlobs.tsx`) -- fluid morphing SVG blobs replacing static CSS orbs
+- Shooting stars background (`ShootingStars.tsx`) -- animated light streaks across viewport
+- Scroll-driven gradient text (`ScrollRevealText.tsx`) -- section subtitles fill with cyan-to-purple gradient on scroll
+- Character reveal animation (`CharacterReveal.tsx`) -- spring physics char-by-char entrance on About greeting
+- Bento grid layout for Services section with rotation entrance and hover glow
+- `scrollMarginTop: 64` on all sections for correct nav scroll alignment
+
+### Changed
+
+- Replaced `GlassBackground` (CSS orbs) with `AuroraBlobs` (SVG gradient blobs) globally
+- Services grid changed from uniform to asymmetric bento layout (cards 3 and 6 span full width)
+
+## [3.5.0] - 2026-03-12
+
+### Added
+
+- 3D browser mockup component for GitHub section (`BrowserMockup.tsx`)
+- Auto-typing terminal card component (`TerminalCard.tsx`)
+- Staggered activity feed component (`ActivityFeed.tsx`)
+- SVG workflow node diagram (`NodeDiagram.tsx`)
+- GitHub section redesign with calendar in 3D mockup + 2x2 feature grid
+- Wave cascade animations on secondary skills (consistent with primary skills)
+- Stagger animations on open source contribution cards
+- Scroll-triggered entrance animation on project cards
+
+### Changed
+
+- GitHub section components replay animations on scroll in/out (changed `once: false`)
+- TerminalCard resets and replays when scrolled out and back in
+
+### Fixed
+
+- Secondary skills missing animation (now uses same `waveCascadeContainer`/`waveCascadeItem` as primary)
+- Project cards showing immediately instead of animating on scroll (`animate` -> `whileInView`)
+- Nav scroll alignment -- sections were partially hidden behind fixed 64px nav bar
+
 ## [3.4.0] - 2026-03-12
 
 ### Added

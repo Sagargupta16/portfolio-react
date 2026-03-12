@@ -10,7 +10,8 @@ import Preloader from "@components/ui/Preloader";
 import KeyboardNav from "@components/ui/KeyboardNav";
 import SectionTransition from "@components/ui/SectionTransition";
 import ParallaxElements from "@components/ui/ParallaxElements";
-import GlassBackground from "@components/layout/GlassBackground";
+import AuroraBlobs from "@components/ui/AuroraBlobs";
+import ShootingStars from "@components/ui/ShootingStars";
 import SystemStatus from "@components/ui/SystemStatus";
 
 // Lazy Load "Below the fold" sections for massive performance gains
@@ -64,7 +65,8 @@ const App = () => {
             <Preloader />
             <ScrollProgress />
             <KeyboardNav />
-            <GlassBackground />
+            <AuroraBlobs />
+            <ShootingStars />
             <ParallaxElements />
             <div className="relative min-h-screen">
                <Nav />

@@ -1,20 +1,44 @@
 import { Code } from "lucide-react";
+import type { Variants } from "motion/react";
 import type { Service } from "@/types";
-import { flipInY } from "@utils/animations";
 import GlassCard from "@components/ui/GlassCard";
 import { iconMap, ACCENT_COLORS } from "./servicesConstants";
 
 interface ServiceCardProps {
    service: Service;
    index: number;
+   wide?: boolean;
 }
 
-const ServiceCard = ({ service, index }: ServiceCardProps) => {
+const bentoEntry: Variants = {
+   hidden: { opacity: 0, y: 30, rotate: -2 },
+   visible: {
+      opacity: 1,
+      y: 0,
+      rotate: 0,
+      transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+   },
+};
+
+const ServiceCard = ({ service, index, wide = false }: ServiceCardProps) => {
    const IconComponent = iconMap[service.title] || Code;
    const colors = ACCENT_COLORS[index % ACCENT_COLORS.length];
 
    return (
-      <GlassCard key={service.id} style={{ padding: 32 }} variants={flipInY}>
+      <GlassCard
+         key={service.id}
+         style={{
+            padding: 32,
+            gridColumn: wide ? "span 2" : undefined,
+         }}
+         variants={bentoEntry}
+         whileHover={{
+            y: -8,
+            rotate: 0,
+            boxShadow: `0 12px 40px ${colors.borderHover}`,
+            transition: { duration: 0.3 },
+         }}
+      >
          <div
             style={{
                width: 56,

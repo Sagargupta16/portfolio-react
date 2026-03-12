@@ -13,21 +13,26 @@ const Services = () => {
    return (
       <PageSection id="services" title="Services" subtitle="What I offer">
          <motion.div
-            className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             style={{
                maxWidth: 1152,
                margin: "0 auto",
                display: "grid",
                gap: 24,
-               gridTemplateColumns: isMobile
-                  ? "1fr"
-                  : "repeat(auto-fill, minmax(320px, 1fr))",
+               gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
             }}
             variants={staggerContainer}
          >
-            {services.map((service, i) => (
-               <ServiceCard key={service.id} service={service} index={i} />
-            ))}
+            {services.map((service, i) => {
+               const isWide = !isMobile && (i === 2 || i === 5);
+               return (
+                  <ServiceCard
+                     key={service.id}
+                     service={service}
+                     index={i}
+                     wide={isWide}
+                  />
+               );
+            })}
          </motion.div>
       </PageSection>
    );

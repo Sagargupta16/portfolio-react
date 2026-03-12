@@ -1,5 +1,10 @@
 import { motion } from "motion/react";
-import { staggerContainer, staggerItem } from "@utils/animations";
+import {
+   staggerContainer,
+   staggerItem,
+   waveCascadeContainer,
+   waveCascadeItem,
+} from "@utils/animations";
 
 interface CategoryEntry {
    key: string;
@@ -66,20 +71,27 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
                   />
                   {label}
                </h4>
-               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+               <motion.div
+                  style={{ display: "flex", flexWrap: "wrap", gap: 8 }}
+                  variants={waveCascadeContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ margin: "0px 0px -100px 0px" }}
+               >
                   {items.map((skill) => (
-                     <span
+                     <motion.span
                         key={skill}
                         className="skill-tag"
                         style={{
                            fontSize: 12,
                            padding: "5px 14px",
                         }}
+                        variants={waveCascadeItem}
                      >
                         {skill}
-                     </span>
+                     </motion.span>
                   ))}
-               </div>
+               </motion.div>
             </motion.div>
          ))}
       </motion.div>
