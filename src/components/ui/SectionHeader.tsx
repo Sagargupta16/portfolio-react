@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { fadeInUp, lineGrow } from "@utils/animations";
 import { MONO_FONT } from "@/constants/theme";
+import ScrollRevealText from "@components/ui/ScrollRevealText";
 
 interface Props {
    title: string;
@@ -41,7 +42,7 @@ const SectionHeader = ({ title, subtitle }: Props) => {
                }}
             >
                <span style={{ color: "#06b6d4" }}>{">"}</span>
-               {subtitle}
+               <ScrollRevealText text={subtitle} />
             </span>
          )}
          <h2

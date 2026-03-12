@@ -33,7 +33,8 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
          layout
          variants={scaleRotateIn}
          initial="hidden"
-         animate="visible"
+         whileInView="visible"
+         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
          exit={{ opacity: 0, y: -20, scale: 0.95 }}
          transition={{
             ...(typeof scaleRotateIn.visible === "object" &&

@@ -1,6 +1,8 @@
 import type { ComponentType } from "react";
+import { motion } from "motion/react";
 import type { OpenSourceContribution } from "@/types";
 import { MONO_FONT } from "@/constants/theme";
+import { staggerContainer, staggerItem } from "@utils/animations";
 import ContribCard from "./ContribCard";
 
 interface ContribSectionProps {
@@ -40,17 +42,23 @@ const ContribSection = ({
             {label} ({count})
          </span>
       </div>
-      <div
+      <motion.div
          style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
             gap: 10,
          }}
+         variants={staggerContainer}
+         initial="hidden"
+         whileInView="visible"
+         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
       >
          {items.map((contrib) => (
-            <ContribCard key={contrib.url} contrib={contrib} />
+            <motion.div key={contrib.url} variants={staggerItem}>
+               <ContribCard contrib={contrib} />
+            </motion.div>
          ))}
-      </div>
+      </motion.div>
    </>
 );
 

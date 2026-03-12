@@ -25,7 +25,10 @@ const PageSection = ({
       <motion.section
          id={id}
          className="py-24 px-6"
-         style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
+         style={{
+            padding: isMobile ? "64px 16px" : "96px 24px",
+            scrollMarginTop: 64,
+         }}
          initial="hidden"
          whileInView="visible"
          viewport={{ margin: "0px 0px -100px 0px" }}

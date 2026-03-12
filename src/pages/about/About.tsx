@@ -6,6 +6,7 @@ import { MONO_FONT } from "@/constants/theme";
 import DevAvatar from "@components/ui/DevAvatar";
 import useMediaQuery from "@utils/useMediaQuery";
 import PageSection from "@components/layout/PageSection";
+import CharacterReveal from "@components/ui/CharacterReveal";
 import HighlightCard from "./HighlightCard";
 import StatCounter from "./StatCounter";
 
@@ -79,7 +80,9 @@ const About = () => {
                   </p>
 
                   {/* Greeting */}
-                  <h3
+                  <CharacterReveal
+                     text={aboutInfo.greeting.replace(/^[^\s]+\s/, "")}
+                     as="h3"
                      style={{
                         fontSize: isMobile ? 22 : 28,
                         fontWeight: 700,
@@ -87,9 +90,7 @@ const About = () => {
                         marginBottom: 16,
                         lineHeight: 1.3,
                      }}
-                  >
-                     {aboutInfo.greeting.replace(/^[^\s]+\s/, "")}
-                  </h3>
+                  />
 
                   {/* Highlights */}
                   <div

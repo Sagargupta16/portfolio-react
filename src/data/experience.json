@@ -7,7 +7,7 @@
          "position": "Full-time",
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
-         "summary": "As a Professional Services Consultant, I help enterprise customers architect, migrate, and build scalable solutions on AWS with infrastructure automation and MLOps best practices.",
+         "summary": "Helping enterprise customers architect, migrate, and build scalable solutions on AWS with infrastructure automation and MLOps.",
          "projects": [
             {
                "name": "DevOps Infrastructure Automation - State Street",
@@ -32,8 +32,8 @@
             {
                "name": "DevSecOps Infrastructure Automation - DTCC",
                "description": {
-                  "1": "Refactored and created Terraform infrastructure modules to modernize legacy systems for cloud-native transformation in financial services.",
-                  "2": "Integrated Amazon Q AI capabilities to accelerate code analysis, documentation, and migration assessments across the engagement."
+                  "1": "Refactored and built 10+ Terraform modules to modernize legacy infrastructure for cloud-native transformation in financial services.",
+                  "2": "Leveraged Amazon Q AI to accelerate code analysis and migration assessments, reducing documentation turnaround by 50%."
                },
                "skills": [
                   "AWS",
@@ -47,9 +47,9 @@
             {
                "name": "Medical Image Classification MLOps Pipeline - ProServe MLOps SME",
                "description": {
-                  "1": "Architected an end-to-end MLOps pipeline on AWS SageMaker, automating data processing, multi-model training, and ensemble model creation.",
-                  "2": "Implemented production-ready SageMaker endpoints with blue-green deployment, auto-scaling, and real-time monitoring for drift detection, providing zero-downtime model updates and automatic rollback capabilities.",
-                  "3": "Utilized Terraform for infrastructure provisioning and built CI/CD pipelines using AWS CodePipeline and CodeBuild to deploy the entire system, including a CloudFront front-end and a scalable API Gateway + Lambda inference API."
+                  "1": "Architected end-to-end MLOps pipeline on SageMaker, automating data processing, multi-model training, and ensemble model creation for medical image classification.",
+                  "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection - enabling zero-downtime model updates with automatic rollback.",
+                  "3": "Provisioned entire infrastructure with Terraform and built CI/CD via CodePipeline and CodeBuild, deploying CloudFront frontend and API Gateway + Lambda inference API."
                },
                "skills": [
                   "AWS",
@@ -62,6 +62,23 @@
                   "CloudFront",
                   "Terraform",
                   "Python"
+               ]
+            },
+            {
+               "name": "Lead DevOps Consultant - RWS (Ongoing)",
+               "description": {
+                  "1": "Leading greenfield cloud migration - designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
+                  "2": "Delivering architectural recommendations on cost optimization, HA, and DR to customer stakeholders, defining migration roadmap for 50+ application workloads."
+               },
+               "skills": [
+                  "AWS",
+                  "AWS Organizations",
+                  "SCPs",
+                  "Tag Policies",
+                  "Terraform",
+                  "GitHub Actions",
+                  "Cloud Migration",
+                  "Solution Architecture"
                ]
             }
          ]
@@ -76,7 +93,7 @@
          "summary": "Underwent extensive hands-on DevOps and Cloud training, delivered multiple proof-of-concepts, and contributed to a production ECS migration project using Terraform and CI/CD pipelines.",
          "project": "ECS Application Deployment with Terraform",
          "description": {
-            "1": "Led migration of on-premises web application to AWS ECS, implementing high-availability architecture and CI/CD pipeline using AWS CodePipeline, reducing maintenance overhead.",
+            "1": "Migrated on-premises web application to AWS ECS, implementing high-availability architecture and CI/CD pipeline using AWS CodePipeline, reducing maintenance overhead.",
             "2": "Architected infrastructure as code using Terraform, managing AWS resources including VPC, ALB, and ECS clusters while implementing blue-green deployment strategy for zero-downtime updates.",
             "3": "Automated Docker image building and deployment process through integration of AWS CodeBuild, CodeDeploy, and Amazon ECR, streamlining application delivery workflow.",
             "4": "Established comprehensive monitoring solution using AWS X-Ray and CloudWatch for distributed tracing and full observability of application performance."
@@ -105,10 +122,10 @@
          "position": "Internship",
          "company": "Ikarus-3D",
          "location": "Mohali, India",
-         "summary": "Gained hands-on exposure to containerization, CI/CD practices, and code quality tooling while contributing to production deployment workflows on AWS.",
+         "summary": "Containerized and deployed production applications on AWS, building CI/CD pipelines and establishing code quality infrastructure.",
          "project": "Web Application Containerization and Deployment",
          "description": {
-            "1": "Led containerization of application with Docker and orchestrated deployment to AWS using ECR and ECS services.",
+            "1": "Containerized application with Docker and deployed to AWS using ECR and ECS services.",
             "2": "Implemented comprehensive CI/CD pipeline using GitHub Actions, automating linting, testing, building, and deployment processes.",
             "3": "Standardized codebase with multi-language linting (pylint, flake8, Black, ESLint, Stylelint) and unit testing (Pytest, Jest).",
             "4": "Deployed SonarQube on AWS EC2 with RDS integration for continuous code quality analysis.",
