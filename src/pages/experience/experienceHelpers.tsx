@@ -1,3 +1,5 @@
+import TechTag from "@components/ui/TechTag";
+
 interface BulletListProps {
    items: string[];
    gap?: number;
@@ -62,20 +64,7 @@ export const SkillTags = ({
 }: SkillTagsProps) => (
    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, ...extraStyle }}>
       {skills.map((skill) => (
-         <span
-            key={skill}
-            style={{
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
-               fontSize: 11,
-               padding: "3px 10px",
-               borderRadius: 6,
-               background: `${accentColor}10`,
-               color: accentColor,
-               border: `1px solid ${accentColor}20`,
-            }}
-         >
-            {skill}
-         </span>
+         <TechTag key={skill} label={skill} accent={accentColor} />
       ))}
    </div>
 );

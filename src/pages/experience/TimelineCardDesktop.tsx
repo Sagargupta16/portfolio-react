@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { slideInLeft, slideInRight } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import TimelineCardContent from "./TimelineCardContent";
 
 interface TimelineCardDesktopProps {
@@ -32,7 +33,7 @@ const TimelineCardDesktop = ({
       <div style={{ paddingTop: 4, textAlign: "right", paddingRight: 20 }}>
          <span
             style={{
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
                fontSize: 13,
                fontWeight: 600,
                color: accentColor,
@@ -43,7 +44,7 @@ const TimelineCardDesktop = ({
          <span
             style={{
                display: "block",
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
                fontSize: 11,
                color: "#6e6e90",
                marginTop: 2,

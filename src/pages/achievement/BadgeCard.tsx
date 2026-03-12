@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { BookOpen, ExternalLink } from "lucide-react";
 import type { LearningBadge } from "@/types";
 import { clipRevealUp } from "@utils/animations";
+import { PURPLE, TEXT_PRIMARY } from "@/constants/theme";
 
 interface BadgeCardProps {
    badge: LearningBadge;
@@ -45,14 +46,14 @@ const BadgeCard = ({ badge }: BadgeCardProps) => (
                flexShrink: 0,
             }}
          >
-            <BookOpen style={{ width: 14, height: 14, color: "#a855f7" }} />
+            <BookOpen style={{ width: 14, height: 14, color: PURPLE }} />
          </div>
       )}
       <span
          style={{
             fontSize: 14,
             fontWeight: 500,
-            color: "#eeeef5",
+            color: TEXT_PRIMARY,
             flex: 1,
             lineHeight: 1.4,
          }}
@@ -65,7 +66,7 @@ const BadgeCard = ({ badge }: BadgeCardProps) => (
             target="_blank"
             rel="noopener noreferrer"
             style={{
-               color: "#a855f7",
+               color: PURPLE,
                flexShrink: 0,
                display: "flex",
                alignItems: "center",

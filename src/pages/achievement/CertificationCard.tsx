@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ShieldCheck, ExternalLink } from "lucide-react";
 import type { Certification } from "@/types";
 import { clipRevealUp } from "@utils/animations";
+import { CYAN, TEXT_PRIMARY } from "@/constants/theme";
 
 interface CertificationCardProps {
    cert: Certification;
@@ -45,14 +46,14 @@ const CertificationCard = ({ cert }: CertificationCardProps) => (
                flexShrink: 0,
             }}
          >
-            <ShieldCheck style={{ width: 20, height: 20, color: "#06b6d4" }} />
+            <ShieldCheck style={{ width: 20, height: 20, color: CYAN }} />
          </div>
       )}
       <span
          style={{
             fontSize: 15,
             fontWeight: 600,
-            color: "#eeeef5",
+            color: TEXT_PRIMARY,
             flex: 1,
             lineHeight: 1.4,
          }}
@@ -70,7 +71,7 @@ const CertificationCard = ({ cert }: CertificationCardProps) => (
             target="_blank"
             rel="noopener noreferrer"
             style={{
-               color: "#06b6d4",
+               color: CYAN,
                flexShrink: 0,
                display: "flex",
                alignItems: "center",

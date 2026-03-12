@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Menu, X } from "lucide-react";
+import { MONO_FONT, CYAN, TEXT_SECONDARY } from "@/constants/theme";
 import DesktopNav from "./DesktopNav";
 
 interface NavSection {
@@ -73,9 +74,9 @@ const NavBar = ({
                style={{
                   fontSize: 20,
                   fontWeight: 700,
-                  color: "#06b6d4",
+                  color: CYAN,
                   letterSpacing: "0.05em",
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                   cursor: "pointer",
                   background: "none",
                   border: "none",
@@ -106,17 +107,17 @@ const NavBar = ({
                      alignItems: "center",
                      justifyContent: "center",
                      borderRadius: 8,
-                     color: "#a5a5c0",
+                     color: TEXT_SECONDARY,
                      cursor: "pointer",
                      background: "none",
                      border: "none",
                      transition: "color 0.2s",
                   }}
                   onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-                     e.currentTarget.style.color = "#06b6d4";
+                     e.currentTarget.style.color = CYAN;
                   }}
                   onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-                     e.currentTarget.style.color = "#a5a5c0";
+                     e.currentTarget.style.color = TEXT_SECONDARY;
                   }}
                   aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                >

@@ -2,10 +2,14 @@ import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { scaleRotateIn } from "@utils/animations";
-import { CATEGORY_COLORS } from "./portfolioConstants";
-import type { ProjectWithCategory } from "./portfolioConstants";
+import { MONO_FONT } from "@/constants/theme";
+import {
+   CATEGORY_COLORS,
+   type ProjectWithCategory,
+} from "./portfolioConstants";
 import ProjectLink from "./ProjectLink";
 import ProjectCardHeader from "./ProjectCardHeader";
+
 interface ProjectCardProps {
    data: ProjectWithCategory;
    index?: number;
@@ -98,7 +102,7 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
                   <span
                      key={`${data.id}-tool-${tool}`}
                      style={{
-                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        fontFamily: MONO_FONT,
                         fontSize: 10,
                         padding: "3px 8px",
                         borderRadius: 5,

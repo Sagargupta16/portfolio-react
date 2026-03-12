@@ -2,13 +2,8 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getSkills } from "@data/dataLoader";
 import type { SkillsData } from "@/types";
-import {
-   sectionRevealEnhanced,
-   staggerContainer,
-   staggerItem,
-} from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
-import SectionHeader from "@components/ui/SectionHeader";
+import { staggerContainer, staggerItem } from "@utils/animations";
+import PageSection from "@components/layout/PageSection";
 import SkillTagGroup from "./SkillTagGroup";
 import SecondarySkills from "./SecondarySkills";
 
@@ -28,7 +23,6 @@ const SECONDARY_CATEGORIES: string[] = [
 ];
 
 const Skill = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
    const skills: SkillsData = getSkills();
 
    const primaryCategories = useMemo(
@@ -56,24 +50,15 @@ const Skill = () => {
    );
 
    return (
-      <motion.section
+      <PageSection
          id="skills"
-         className="py-24 px-6"
-         style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
-         initial="hidden"
-         whileInView="visible"
-         viewport={{ margin: "0px 0px -100px 0px" }}
-         variants={sectionRevealEnhanced}
+         title="Skills & Technologies"
+         subtitle="What I work with"
       >
          <div
             className="max-w-6xl mx-auto"
             style={{ maxWidth: 1152, margin: "0 auto" }}
          >
-            <SectionHeader
-               title="Skills & Technologies"
-               subtitle="What I work with"
-            />
-
             <motion.div
                className="space-y-12"
                style={{ display: "flex", flexDirection: "column", gap: 48 }}
@@ -112,7 +97,7 @@ const Skill = () => {
 
             <SecondarySkills categories={secondaryCategories} />
          </div>
-      </motion.section>
+      </PageSection>
    );
 };
 

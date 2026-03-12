@@ -1,5 +1,12 @@
 import { motion } from "motion/react";
 import { GitPullRequest, GitMerge, CircleDot } from "lucide-react";
+import {
+   MONO_FONT,
+   GREEN,
+   PURPLE,
+   TEXT_PRIMARY,
+   TEXT_MUTED,
+} from "@/constants/theme";
 import { OPEN_SOURCE_CONTRIBUTIONS } from "./portfolioConstants";
 import ContribSection from "./ContribSection";
 
@@ -26,15 +33,15 @@ const OpenSourceBanner = () => {
                justifyContent: "center",
             }}
          >
-            <GitPullRequest size={20} style={{ color: "#22c55e" }} />
-            <h3 style={{ fontSize: 20, fontWeight: 700, color: "#eeeef5" }}>
+            <GitPullRequest size={20} style={{ color: GREEN }} />
+            <h3 style={{ fontSize: 20, fontWeight: 700, color: TEXT_PRIMARY }}>
                Open Source Contributions
             </h3>
             <span
                style={{
                   fontSize: 12,
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                  color: "#6e6e90",
+                  fontFamily: MONO_FONT,
+                  color: TEXT_MUTED,
                   fontWeight: 500,
                }}
             >
@@ -74,7 +81,7 @@ const OpenSourceBanner = () => {
                      icon={GitMerge}
                      label="Merged"
                      count={merged.length}
-                     color="#a855f7"
+                     color={PURPLE}
                      items={merged}
                   />
                </div>
@@ -96,7 +103,7 @@ const OpenSourceBanner = () => {
                      icon={CircleDot}
                      label="Under Review"
                      count={open.length}
-                     color="#22c55e"
+                     color={GREEN}
                      items={open}
                   />
                </>

@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import type { OpenSourceContribution } from "@/types";
+import { MONO_FONT } from "@/constants/theme";
 import ContribCard from "./ContribCard";
 
 interface ContribSectionProps {
@@ -32,7 +33,7 @@ const ContribSection = ({
                fontSize: 12,
                fontWeight: 700,
                color,
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
                letterSpacing: "0.03em",
             }}
          >

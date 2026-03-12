@@ -1,4 +1,5 @@
 import { Calendar, Users, Star, FolderGit2 } from "lucide-react";
+import { MONO_FONT, TEXT_PRIMARY, TEXT_MUTED, AMBER } from "@/constants/theme";
 import type { CategoryColors, ProjectWithCategory } from "./portfolioConstants";
 
 interface ProjectCardHeaderProps {
@@ -49,7 +50,7 @@ const ProjectCardHeader = ({
                style={{
                   fontSize: 17,
                   fontWeight: 700,
-                  color: "#eeeef5",
+                  color: TEXT_PRIMARY,
                   lineHeight: 1.3,
                }}
             >
@@ -70,8 +71,8 @@ const ProjectCardHeader = ({
                      alignItems: "center",
                      gap: 4,
                      fontSize: 11,
-                     color: "#6e6e90",
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     color: TEXT_MUTED,
+                     fontFamily: MONO_FONT,
                   }}
                >
                   <Calendar size={10} style={{ flexShrink: 0 }} />
@@ -85,7 +86,7 @@ const ProjectCardHeader = ({
                         gap: 4,
                         fontSize: 11,
                         color: colors.accent,
-                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        fontFamily: MONO_FONT,
                      }}
                   >
                      <Users size={10} style={{ flexShrink: 0 }} />
@@ -134,7 +135,7 @@ const ProjectCardHeader = ({
                border: "1px solid rgba(245,158,11,0.15)",
                fontSize: 11,
                fontWeight: 600,
-               color: "#f59e0b",
+               color: AMBER,
                marginBottom: 12,
                alignSelf: "flex-start",
             }}

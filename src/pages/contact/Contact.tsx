@@ -1,13 +1,9 @@
 import { motion } from "motion/react";
 import Toast from "@components/ui/Toast";
 import { getContactOptions } from "@data/dataLoader";
-import {
-   rotateInUp,
-   staggerContainer,
-   sectionRevealEnhanced,
-} from "@utils/animations";
+import { rotateInUp, staggerContainer } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";
-import SectionHeader from "@components/ui/SectionHeader";
+import PageSection from "@components/layout/PageSection";
 import ContactCard from "./ContactCard";
 import ContactForm from "./ContactForm";
 import useContactForm from "./useContactForm";
@@ -28,16 +24,11 @@ const Contact = () => {
    } = useContactForm();
 
    return (
-      <motion.section
+      <PageSection
          id="contact"
-         style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
-         initial="hidden"
-         whileInView="visible"
-         viewport={{ margin: "0px 0px -100px 0px" }}
-         variants={sectionRevealEnhanced}
+         title="Get In Touch"
+         subtitle="Let's work together"
       >
-         <SectionHeader title="Get In Touch" subtitle="Let's work together" />
-
          <motion.div
             style={{
                maxWidth: 896,
@@ -81,7 +72,7 @@ const Contact = () => {
                />
             </motion.div>
          </motion.div>
-      </motion.section>
+      </PageSection>
    );
 };
 

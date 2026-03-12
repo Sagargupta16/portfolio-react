@@ -1,3 +1,5 @@
+import { CYAN, TEXT_PRIMARY } from "@/constants/theme";
+
 interface NavSection {
    id: string;
    label: string;
@@ -38,7 +40,7 @@ const DesktopNav = ({
                      cursor: "pointer",
                      border: "none",
                      transition: "all 0.2s ease",
-                     color: isActive ? "#06b6d4" : "rgba(165, 165, 192, 0.9)",
+                     color: isActive ? CYAN : "rgba(165, 165, 192, 0.9)",
                      backgroundColor: isActive
                         ? "rgba(6, 182, 212, 0.1)"
                         : "transparent",
@@ -50,7 +52,7 @@ const DesktopNav = ({
                   }}
                   onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
                      if (!isActive) {
-                        e.currentTarget.style.color = "#eeeef5";
+                        e.currentTarget.style.color = TEXT_PRIMARY;
                         e.currentTarget.style.backgroundColor =
                            "rgba(255, 255, 255, 0.05)";
                      }
@@ -71,7 +73,7 @@ const DesktopNav = ({
                            width: 5,
                            height: 5,
                            borderRadius: "50%",
-                           background: "#06b6d4",
+                           background: CYAN,
                            boxShadow: `0 0 ${6 + sectionProgress * 8}px rgba(6, 182, 212, ${0.3 + sectionProgress * 0.5})`,
                            transition: "box-shadow 0.15s ease",
                            flexShrink: 0,

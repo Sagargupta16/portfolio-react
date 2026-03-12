@@ -1,5 +1,6 @@
 import { GitMerge, CircleDot } from "lucide-react";
 import type { OpenSourceContribution } from "@/types";
+import { MONO_FONT } from "@/constants/theme";
 
 interface ContribCardProps {
    contrib: OpenSourceContribution;
@@ -57,7 +58,7 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
                <span
                   style={{
                      fontSize: 11,
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontFamily: MONO_FONT,
                      color: statusColor,
                      fontWeight: 600,
                   }}
@@ -67,7 +68,7 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
                <span
                   style={{
                      fontSize: 9,
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontFamily: MONO_FONT,
                      fontWeight: 700,
                      letterSpacing: "0.05em",
                      textTransform: "uppercase",

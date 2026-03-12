@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { fadeInUp, lineGrow } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 
 interface Props {
    title: string;
@@ -28,7 +29,7 @@ const SectionHeader = ({ title, subtitle }: Props) => {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                   fontSize: 14,
                   color: "#6e6e90",
                   backgroundColor: "rgba(255, 255, 255, 0.03)",

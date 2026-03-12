@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
+import { CYAN, TEXT_SECONDARY } from "@/constants/theme";
 
 interface NavSection {
    id: string;
@@ -85,7 +86,7 @@ const MobileMenu = ({
                            border: "none",
                            transition: "all 0.2s",
                            color:
-                              activeSection === "hero" ? "#06b6d4" : "#a5a5c0",
+                              activeSection === "hero" ? CYAN : TEXT_SECONDARY,
                            backgroundColor:
                               activeSection === "hero"
                                  ? "rgba(6, 182, 212, 0.08)"
@@ -109,7 +110,7 @@ const MobileMenu = ({
                                  cursor: "pointer",
                                  border: "none",
                                  transition: "all 0.2s",
-                                 color: isActive ? "#06b6d4" : "#a5a5c0",
+                                 color: isActive ? CYAN : TEXT_SECONDARY,
                                  backgroundColor: isActive
                                     ? "rgba(6, 182, 212, 0.08)"
                                     : "transparent",

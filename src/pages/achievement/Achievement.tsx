@@ -1,14 +1,12 @@
 import { useMemo } from "react";
-import { motion } from "motion/react";
 import {
    getCertifications,
    getLearningBadges,
    getAchievements,
    getCodingPlatformStats,
 } from "@data/dataLoader";
-import { sectionRevealEnhanced } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";
-import SectionHeader from "@components/ui/SectionHeader";
+import PageSection from "@components/layout/PageSection";
 import { LEVEL_ORDER } from "./achievementConstants";
 import CertificationsSection from "./CertificationsSection";
 import BadgesSection from "./BadgesSection";
@@ -36,20 +34,11 @@ const Achievement = () => {
    );
 
    return (
-      <motion.section
+      <PageSection
          id="achievements"
-         className="py-24 px-6"
-         style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
-         initial="hidden"
-         whileInView="visible"
-         viewport={{ margin: "0px 0px -100px 0px" }}
-         variants={sectionRevealEnhanced}
+         title="Achievements"
+         subtitle="Milestones & certifications"
       >
-         <SectionHeader
-            title="Achievements"
-            subtitle="Milestones & certifications"
-         />
-
          <div
             style={{
                maxWidth: 1152,
@@ -70,7 +59,7 @@ const Achievement = () => {
                isMobile={isMobile}
             />
          </div>
-      </motion.section>
+      </PageSection>
    );
 };
 

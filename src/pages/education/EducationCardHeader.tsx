@@ -1,5 +1,6 @@
 import { GraduationCap } from "lucide-react";
 import type { Education } from "@/types";
+import { MONO_FONT } from "@/constants/theme";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 
 interface EducationCardHeaderProps {
@@ -66,7 +67,7 @@ const CgpaBadge = ({
                color: "#22c55e",
                fontWeight: 700,
                fontSize: 16,
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
             }}
          >
             <AnimatedCounter value={item.cgpa} />
@@ -76,7 +77,7 @@ const CgpaBadge = ({
                style={{
                   fontSize: 11,
                   color: "#6e6e90",
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                }}
             >
                {item.percentage}

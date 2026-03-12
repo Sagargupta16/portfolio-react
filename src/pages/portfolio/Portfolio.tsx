@@ -6,9 +6,10 @@ import {
    getOtherProjects,
    getCommunityProjects,
 } from "@data/dataLoader";
-import { sectionRevealEnhanced, fadeInUp } from "@utils/animations";
+import { fadeInUp } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";
-import SectionHeader from "@components/ui/SectionHeader";
+import { MONO_FONT } from "@/constants/theme";
+import PageSection from "@components/layout/PageSection";
 import { FILTERS, parseDate } from "./portfolioConstants";
 import type { ProjectWithCategory } from "./portfolioConstants";
 import ProjectTimeline from "./ProjectTimeline";
@@ -67,17 +68,7 @@ const Portfolio = () => {
    ]);
 
    return (
-      <motion.section
-         id="projects"
-         className="py-24 px-6"
-         style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
-         initial="hidden"
-         whileInView="visible"
-         viewport={{ margin: "0px 0px -100px 0px" }}
-         variants={sectionRevealEnhanced}
-      >
-         <SectionHeader title="Projects" subtitle="Things I've built" />
-
+      <PageSection id="projects" title="Projects" subtitle="Things I've built">
          <div
             className="max-w-6xl mx-auto"
             style={{ maxWidth: 1152, margin: "0 auto" }}
@@ -105,8 +96,7 @@ const Portfolio = () => {
                                 padding: "10px 20px",
                                 borderRadius: 12,
                                 fontSize: 14,
-                                fontFamily:
-                                   "JetBrains Mono, ui-monospace, monospace",
+                                fontFamily: MONO_FONT,
                                 fontWeight: 500,
                                 cursor: "pointer",
                                 border: "1px solid rgba(255, 255, 255, 0.06)",
@@ -136,7 +126,7 @@ const Portfolio = () => {
             {/* Open Source Contributions Banner */}
             <OpenSourceBanner />
          </div>
-      </motion.section>
+      </PageSection>
    );
 };
 

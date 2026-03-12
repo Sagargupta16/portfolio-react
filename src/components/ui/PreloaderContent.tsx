@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { MONO_FONT } from "@/constants/theme";
 
 interface PreloaderContentProps {
    displayProgress: number;
@@ -43,7 +44,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
             style={{
                fontSize: 52,
                fontWeight: 700,
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
                color: "#06b6d4",
                letterSpacing: "0.05em",
                textShadow:
@@ -84,7 +85,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
             style={{
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
                fontSize: 12,
                color: "#6e6e90",
                position: "relative",

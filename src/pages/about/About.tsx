@@ -1,15 +1,11 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getAbout, getStatistics } from "@data/dataLoader";
-import {
-   sectionRevealEnhanced,
-   staggerContainer,
-   fadeInLeft,
-   fadeInRight,
-} from "@utils/animations";
-import SectionHeader from "@components/ui/SectionHeader";
+import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import DevAvatar from "@components/ui/DevAvatar";
 import useMediaQuery from "@utils/useMediaQuery";
+import PageSection from "@components/layout/PageSection";
 import HighlightCard from "./HighlightCard";
 import StatCounter from "./StatCounter";
 
@@ -31,17 +27,8 @@ const About = () => {
    const statEntries = useMemo(() => Object.entries(statistics), [statistics]);
 
    return (
-      <motion.section
-         id="about"
-         style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
-         initial="hidden"
-         whileInView="visible"
-         viewport={{ margin: "0px 0px -100px 0px" }}
-         variants={sectionRevealEnhanced}
-      >
+      <PageSection id="about" title="About Me" subtitle="Get to know me">
          <div style={{ maxWidth: 1152, margin: "0 auto" }}>
-            <SectionHeader title="About Me" subtitle="Get to know me" />
-
             <motion.div
                style={{
                   display: "grid",
@@ -68,7 +55,7 @@ const About = () => {
                   {/* Status line */}
                   <p
                      style={{
-                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        fontFamily: MONO_FONT,
                         color: "#22c55e",
                         fontSize: isMobile ? 12 : 13,
                         marginBottom: 20,
@@ -127,7 +114,7 @@ const About = () => {
             {/* Stats Row - Full Width */}
             <StatCounter statEntries={statEntries} isMobile={isMobile} />
          </div>
-      </motion.section>
+      </PageSection>
    );
 };
 

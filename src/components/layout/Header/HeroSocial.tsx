@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getSocialProfiles } from "@data/dataLoader";
 import { staggerItem } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import ICON_MAP from "@utils/iconMap";
 
 const HeroSocial = () => {
@@ -30,7 +31,7 @@ const HeroSocial = () => {
                <span>Currently building with</span>
                <span
                   style={{
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontFamily: MONO_FONT,
                      fontWeight: 600,
                      color: "#06b6d4",
                      fontSize: 12,

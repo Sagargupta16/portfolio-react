@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { fadeInUp } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import { formatStatLabel, isNumericStat } from "./achievementConstants";
 
@@ -53,8 +54,7 @@ const CodingPlatformCard = ({ platform, stats }: CodingPlatformCardProps) => (
                            color: "#06b6d4",
                            fontSize: "1.875rem",
                            fontWeight: 700,
-                           fontFamily:
-                              "JetBrains Mono, ui-monospace, monospace",
+                           fontFamily: MONO_FONT,
                            display: "block",
                         }}
                      >

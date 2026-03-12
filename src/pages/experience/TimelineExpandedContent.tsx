@@ -2,12 +2,7 @@ import { motion } from "motion/react";
 import { FolderGit2 } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { BulletList, SkillTags } from "./experienceHelpers";
-
-const FADE = {
-   initial: { opacity: 0, y: 10 },
-   animate: { opacity: 1, y: 0 },
-   exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
-};
+import { FADE_ENTRY } from "./experienceConstants";
 
 interface TimelineExpandedContentProps {
    item: ProfessionalExperience | PositionOfResponsibility;
@@ -39,7 +34,7 @@ const TimelineExpandedContent = ({
                return (
                   <motion.div
                      key={project.name}
-                     {...FADE}
+                     {...FADE_ENTRY}
                      transition={{
                         duration: 0.4,
                         ease: [0.4, 0, 0.2, 1],
@@ -91,7 +86,7 @@ const TimelineExpandedContent = ({
          {/* Single project name */}
          {!hasProjects && itemProject && (
             <motion.p
-               {...FADE}
+               {...FADE_ENTRY}
                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                style={{
                   color: "#6e6e90",
@@ -113,7 +108,7 @@ const TimelineExpandedContent = ({
          {/* Single project descriptions */}
          {!hasProjects && descriptionItems.length > 0 && (
             <motion.div
-               {...FADE}
+               {...FADE_ENTRY}
                transition={{
                   duration: 0.4,
                   ease: [0.4, 0, 0.2, 1],
@@ -132,7 +127,7 @@ const TimelineExpandedContent = ({
          {/* Single project skills */}
          {!hasProjects && (item.skills?.length ?? 0) > 0 && (
             <motion.div
-               {...FADE}
+               {...FADE_ENTRY}
                transition={{
                   duration: 0.4,
                   ease: [0.4, 0, 0.2, 1],

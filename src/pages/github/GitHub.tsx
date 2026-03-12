@@ -4,9 +4,10 @@ import { GitHubCalendar } from "react-github-calendar";
 import type { Activity } from "react-github-calendar";
 import { ArrowRight } from "lucide-react";
 import { getGitHubUsername } from "@data/dataLoader";
-import { fadeIn, scaleIn, sectionRevealEnhanced } from "@utils/animations";
+import { fadeIn, scaleIn } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";
-import SectionHeader from "@components/ui/SectionHeader";
+import { MONO_FONT } from "@/constants/theme";
+import PageSection from "@components/layout/PageSection";
 
 const SKELETON_ROWS: string[] = Array.from({ length: 7 }, (_, i) => `row-${i}`);
 const SKELETON_COLS: string[] = Array.from(
@@ -76,20 +77,11 @@ const GitHub = () => {
    }, []);
 
    return (
-      <motion.section
+      <PageSection
          id="github"
-         className="py-24 px-6"
-         style={{ padding: isMobile ? "64px 16px" : "96px 24px" }}
-         initial="hidden"
-         whileInView="visible"
-         viewport={{ margin: "0px 0px -100px 0px" }}
-         variants={sectionRevealEnhanced}
+         title="GitHub Activity"
+         subtitle="My open source contributions"
       >
-         <SectionHeader
-            title="GitHub Activity"
-            subtitle="My open source contributions"
-         />
-
          <div style={{ maxWidth: 1024, margin: "0 auto", textAlign: "center" }}>
             <motion.div
                className="glass-card"
@@ -130,7 +122,7 @@ const GitHub = () => {
                   marginTop: 32,
                   color: "#06b6d4",
                   fontSize: 14,
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                   fontWeight: 500,
                }}
                variants={fadeIn}
@@ -139,7 +131,7 @@ const GitHub = () => {
                <ArrowRight size={16} />
             </motion.a>
          </div>
-      </motion.section>
+      </PageSection>
    );
 };
 

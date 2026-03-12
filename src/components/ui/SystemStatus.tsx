@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Server, Eye } from "lucide-react";
 import { getSiteConfig } from "@data/dataLoader";
+import { MONO_FONT } from "@/constants/theme";
 import useMediaQuery from "@utils/useMediaQuery";
 
 const SystemStatus = () => {
@@ -82,7 +83,7 @@ const SystemStatus = () => {
             </div>
             <span
                style={{
-                  fontFamily: "JetBrains Mono, monospace",
+                  fontFamily: MONO_FONT,
                   fontSize: 11,
                   color: "#a5a5c0",
                   fontWeight: 500,
@@ -103,7 +104,7 @@ const SystemStatus = () => {
             <Eye size={12} color="#06b6d4" />
             <span
                style={{
-                  fontFamily: "JetBrains Mono, monospace",
+                  fontFamily: MONO_FONT,
                   fontSize: 11,
                   color: "#06b6d4",
                   fontWeight: 600,

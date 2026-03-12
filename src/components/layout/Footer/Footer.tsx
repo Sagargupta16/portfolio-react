@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "motion/react";
 import { staggerContainer } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import FooterContent from "./FooterContent";
 
 const KONAMI: string[] = [
@@ -90,7 +91,7 @@ const Footer = () => {
                      background:
                         "linear-gradient(135deg, rgba(6,182,212,0.15), rgba(168,85,247,0.15))",
                      border: "1px solid rgba(6,182,212,0.3)",
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontFamily: MONO_FONT,
                      fontSize: 12,
                      color: "#06b6d4",
                      textAlign: "center",

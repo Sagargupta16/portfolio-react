@@ -1,5 +1,6 @@
 import { Trophy } from "lucide-react";
 import type { Education } from "@/types";
+import { MONO_FONT } from "@/constants/theme";
 
 interface EducationCardExtrasProps {
    item: Education;
@@ -85,7 +86,7 @@ const EducationCardExtras = ({
                <span
                   key={skill}
                   style={{
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontFamily: MONO_FONT,
                      fontSize: 11,
                      padding: "3px 10px",
                      borderRadius: 6,

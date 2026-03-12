@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { Education } from "@/types";
 import { staggerItem, slideInLeft, slideInRight } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import EducationCardContent from "./EducationCardContent";
 import TimelineTrack from "./TimelineTrack";
 
@@ -37,7 +38,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                >
                   <span
                      style={{
-                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        fontFamily: MONO_FONT,
                         fontSize: 13,
                         fontWeight: 600,
                         color: "#a855f7",
@@ -48,8 +49,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                   {item.date.includes(" - ") && (
                      <span
                         style={{
-                           fontFamily:
-                              "JetBrains Mono, ui-monospace, monospace",
+                           fontFamily: MONO_FONT,
                            fontSize: 11,
                            color: "#6e6e90",
                         }}
@@ -93,7 +93,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
          <div style={{ paddingTop: 4, textAlign: "right", paddingRight: 20 }}>
             <span
                style={{
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                   fontSize: 13,
                   fontWeight: 600,
                   color: "#a855f7",
@@ -104,7 +104,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
             <span
                style={{
                   display: "block",
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                   fontSize: 11,
                   color: "#6e6e90",
                   marginTop: 2,

@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { getName, getRoles } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import HeroStats from "./HeroStats";
 import HeroSocial from "./HeroSocial";
 import Resume from "@assets/Resume.pdf";
@@ -38,7 +39,7 @@ const HeroContent = () => {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                   fontSize: 14,
                   color: "#22c55e",
                   background: "rgba(34, 197, 94, 0.06)",

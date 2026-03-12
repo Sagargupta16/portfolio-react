@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { staggerItem } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import TimelineCardContent from "./TimelineCardContent";
 
 interface TimelineCardMobileProps {
@@ -44,7 +45,7 @@ const TimelineCardMobile = ({
          >
             <span
                style={{
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                   fontSize: 12,
                   fontWeight: 600,
                   color: accentColor,

@@ -2,6 +2,29 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.4.0] - 2026-03-12
+
+### Added
+
+- `src/constants/theme.ts` -- centralized color, font, and layout constants (CYAN, PURPLE, TEXT_PRIMARY, MONO_FONT, MAX_WIDTH, etc.)
+- `src/components/layout/PageSection.tsx` -- reusable page section wrapper replacing repeated boilerplate across all 9 pages
+- `src/components/ui/TechTag.tsx` -- reusable skill/tech tag component with consistent monospace styling
+
+### Changed
+
+- All 9 page components refactored to use `<PageSection>` wrapper (removes ~105 lines of duplicated section setup)
+- Replaced 38 hardcoded `"JetBrains Mono, ui-monospace, monospace"` strings with `MONO_FONT` constant
+- Replaced hardcoded color values across 15+ components with theme constants
+- `experienceHelpers.tsx` SkillTags now uses `TechTag` internally
+
+## [3.3.0] - 2026-03-12
+
+### Changed
+
+- Split all 16 components exceeding 150 lines into focused sub-components (33 files became 99 files)
+- Enforced max 150 lines per component file with UI separated from logic
+- Added convention to CLAUDE.md: "Never create a component longer than 150 lines"
+
 ## [3.2.0] - 2026-03-12
 
 ### Added

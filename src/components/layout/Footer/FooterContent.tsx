@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getName, getSiteConfig } from "@data/dataLoader";
 import { staggerItem } from "@utils/animations";
+import { MONO_FONT } from "@/constants/theme";
 import useMediaQuery from "@utils/useMediaQuery";
 import FooterSocial from "./FooterSocial";
 
@@ -17,7 +18,7 @@ const FooterContent = () => {
          <motion.span
             className="glow-cyan-text"
             style={{
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
                fontSize: 24,
                fontWeight: 700,
                color: "#06b6d4",
@@ -45,7 +46,7 @@ const FooterContent = () => {
                style={{
                   fontSize: 11,
                   color: "#4a4a6a",
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontFamily: MONO_FONT,
                }}
             >
                Built with
@@ -56,7 +57,7 @@ const FooterContent = () => {
                   style={{
                      fontSize: 10,
                      color: "#6e6e90",
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontFamily: MONO_FONT,
                      padding: "2px 8px",
                      borderRadius: 4,
                      background: "rgba(255,255,255,0.03)",
@@ -92,7 +93,7 @@ const FooterContent = () => {
                   style={{
                      color: "#3a3a50",
                      fontSize: 10,
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                     fontFamily: MONO_FONT,
                      textAlign: "center",
                   }}
                >

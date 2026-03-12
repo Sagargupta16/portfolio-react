@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { MONO_FONT } from "@/constants/theme";
 
 const AvatarMonogram = () => {
    return (
@@ -21,7 +22,7 @@ const AvatarMonogram = () => {
             style={{
                fontSize: 56,
                fontWeight: 800,
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
                background: "linear-gradient(135deg, #06b6d4, #a855f7)",
                WebkitBackgroundClip: "text",
                WebkitTextFillColor: "transparent",
@@ -35,7 +36,7 @@ const AvatarMonogram = () => {
          </motion.span>
          <motion.span
             style={{
-               fontFamily: "JetBrains Mono, ui-monospace, monospace",
+               fontFamily: MONO_FONT,
                fontSize: 11,
                color: "#22c55e",
                letterSpacing: "0.1em",
