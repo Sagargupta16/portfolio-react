@@ -1,9 +1,7 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "motion/react";
-import { getName, getSocialProfiles, getSiteConfig } from "@data/dataLoader";
-import { staggerContainer, staggerItem } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
-import ICON_MAP from "@utils/iconMap";
+import { staggerContainer } from "@utils/animations";
+import FooterContent from "./FooterContent";
 
 const KONAMI: string[] = [
    "ArrowUp",
@@ -19,11 +17,6 @@ const KONAMI: string[] = [
 ];
 
 const Footer = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
-   const name = useMemo(() => getName(), []);
-   const socialProfiles = useMemo(() => getSocialProfiles(), []);
-   const siteConfig = useMemo(() => getSiteConfig(), []);
-   const techStack = siteConfig.tech_stack || [];
    const [easterEgg, setEasterEgg] = useState(false);
    const [konamiIdx, setKonamiIdx] = useState(0);
 
@@ -84,146 +77,7 @@ const Footer = () => {
             whileInView="visible"
             viewport={{}}
          >
-            {/* Logo */}
-            <motion.span
-               className="glow-cyan-text"
-               style={{
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                  fontSize: 24,
-                  fontWeight: 700,
-                  color: "#06b6d4",
-               }}
-               variants={staggerItem}
-            >
-               SG
-            </motion.span>
-
-            {/* Social links */}
-            <motion.div
-               style={{ display: "flex", alignItems: "center", gap: 12 }}
-               variants={staggerItem}
-            >
-               {socialProfiles.map((profile) => {
-                  const IconComponent = ICON_MAP[profile.icon];
-                  if (!IconComponent) return null;
-                  return (
-                     <motion.a
-                        key={profile.id}
-                        href={profile.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                           width: 36,
-                           height: 36,
-                           borderRadius: 8,
-                           border: "1px solid rgba(255, 255, 255, 0.06)",
-                           background: "rgba(255, 255, 255, 0.03)",
-                           backdropFilter: "blur(12px)",
-                           WebkitBackdropFilter: "blur(12px)",
-                           display: "flex",
-                           alignItems: "center",
-                           justifyContent: "center",
-                           color: "#a5a5c0",
-                           transition: "all 0.3s",
-                        }}
-                        onMouseEnter={(
-                           e: React.MouseEvent<HTMLAnchorElement>,
-                        ) => {
-                           e.currentTarget.style.color = "#06b6d4";
-                           e.currentTarget.style.borderColor =
-                              "rgba(6, 182, 212, 0.3)";
-                           e.currentTarget.style.background =
-                              "rgba(6, 182, 212, 0.08)";
-                        }}
-                        onMouseLeave={(
-                           e: React.MouseEvent<HTMLAnchorElement>,
-                        ) => {
-                           e.currentTarget.style.color = "#a5a5c0";
-                           e.currentTarget.style.borderColor =
-                              "rgba(255, 255, 255, 0.06)";
-                           e.currentTarget.style.background =
-                              "rgba(255, 255, 255, 0.03)";
-                        }}
-                        whileHover={{ scale: 1.15, y: -2 }}
-                        whileTap={{ scale: 0.9 }}
-                        aria-label={`Visit ${profile.name} profile`}
-                     >
-                        <IconComponent size={16} />
-                     </motion.a>
-                  );
-               })}
-            </motion.div>
-
-            {/* Built with tech strip */}
-            <motion.div
-               style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-               }}
-               variants={staggerItem}
-            >
-               <span
-                  style={{
-                     fontSize: 11,
-                     color: "#4a4a6a",
-                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                  }}
-               >
-                  Built with
-               </span>
-               {techStack.map((tech) => (
-                  <span
-                     key={tech}
-                     style={{
-                        fontSize: 10,
-                        color: "#6e6e90",
-                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                        padding: "2px 8px",
-                        borderRadius: 4,
-                        background: "rgba(255,255,255,0.03)",
-                        border: "1px solid rgba(255,255,255,0.04)",
-                     }}
-                  >
-                     {tech}
-                  </span>
-               ))}
-            </motion.div>
-
-            {/* Copyright + keyboard hint */}
-            <motion.div
-               style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 6,
-               }}
-               variants={staggerItem}
-            >
-               <p
-                  style={{
-                     color: "#6e6e90",
-                     fontSize: 14,
-                     textAlign: "center",
-                  }}
-               >
-                  &copy; {new Date().getFullYear()} {name}
-               </p>
-               {!isMobile && (
-                  <p
-                     style={{
-                        color: "#3a3a50",
-                        fontSize: 10,
-                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                        textAlign: "center",
-                     }}
-                  >
-                     Press 0-9 to navigate sections &middot; j/k to scroll
-                  </p>
-               )}
-            </motion.div>
+            <FooterContent />
 
             {/* Easter egg */}
             {easterEgg && (

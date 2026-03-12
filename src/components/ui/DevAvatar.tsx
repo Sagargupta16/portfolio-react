@@ -1,41 +1,6 @@
 import { motion } from "motion/react";
-import {
-   Code2,
-   Cloud,
-   Terminal,
-   Braces,
-   Database,
-   GitBranch,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-
-interface OrbitItem {
-   Icon: LucideIcon;
-   color: string;
-   delay: number;
-   angle: number;
-}
-
-const orbitItems: OrbitItem[] = [
-   { Icon: Cloud, color: "#06b6d4", delay: 0, angle: 0 },
-   { Icon: Terminal, color: "#22c55e", delay: 0.5, angle: 60 },
-   { Icon: Braces, color: "#a855f7", delay: 1, angle: 120 },
-   { Icon: Database, color: "#f59e0b", delay: 1.5, angle: 180 },
-   { Icon: GitBranch, color: "#06b6d4", delay: 2, angle: 240 },
-   { Icon: Code2, color: "#a855f7", delay: 2.5, angle: 300 },
-];
-
-const floatVariant = (delay: number) => ({
-   animate: {
-      y: [-8, 8, -8],
-      transition: {
-         duration: 4,
-         repeat: Infinity,
-         ease: "easeInOut" as const,
-         delay,
-      },
-   },
-});
+import { orbitItems, floatVariant } from "./devAvatarData";
+import AvatarMonogram from "./AvatarMonogram";
 
 const DevAvatar = () => {
    const size = 320;
@@ -91,57 +56,7 @@ const DevAvatar = () => {
          </motion.div>
 
          {/* Inner circle with monogram */}
-         <div
-            style={{
-               position: "absolute",
-               inset: 34,
-               borderRadius: "50%",
-               background:
-                  "radial-gradient(circle at 30% 30%, rgba(18,18,42,0.9), rgba(10,10,20,0.85))",
-               backdropFilter: "blur(12px)",
-               display: "flex",
-               alignItems: "center",
-               justifyContent: "center",
-               flexDirection: "column",
-               gap: 4,
-            }}
-         >
-            <motion.span
-               style={{
-                  fontSize: 56,
-                  fontWeight: 800,
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                  background: "linear-gradient(135deg, #06b6d4, #a855f7)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  lineHeight: 1,
-               }}
-               initial={{ opacity: 0, scale: 0.5 }}
-               animate={{ opacity: 1, scale: 1 }}
-               transition={{ duration: 0.6, delay: 0.3 }}
-            >
-               SG
-            </motion.span>
-            <motion.span
-               style={{
-                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                  fontSize: 11,
-                  color: "#22c55e",
-                  letterSpacing: "0.1em",
-               }}
-               initial={{ opacity: 0 }}
-               animate={{ opacity: [0.4, 1, 0.4] }}
-               transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.8,
-               }}
-            >
-               {"> dev"}
-               <span style={{ color: "#06b6d4" }}>_</span>
-            </motion.span>
-         </div>
+         <AvatarMonogram />
 
          {/* Dashed orbit ring */}
          <svg

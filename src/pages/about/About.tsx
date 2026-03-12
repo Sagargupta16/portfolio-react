@@ -1,27 +1,17 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { Briefcase, GraduationCap, Rocket, Trophy } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { getAbout, getStatistics } from "@data/dataLoader";
 import {
    sectionRevealEnhanced,
    staggerContainer,
-   staggerItem,
    fadeInLeft,
    fadeInRight,
-   rotateInUp,
 } from "@utils/animations";
 import SectionHeader from "@components/ui/SectionHeader";
-import AnimatedCounter from "@components/ui/AnimatedCounter";
 import DevAvatar from "@components/ui/DevAvatar";
 import useMediaQuery from "@utils/useMediaQuery";
-
-const HIGHLIGHT_ICONS: { Icon: LucideIcon; color: string }[] = [
-   { Icon: Briefcase, color: "#06b6d4" },
-   { Icon: GraduationCap, color: "#a855f7" },
-   { Icon: Rocket, color: "#22c55e" },
-   { Icon: Trophy, color: "#f59e0b" },
-];
+import HighlightCard from "./HighlightCard";
+import StatCounter from "./StatCounter";
 
 const About = () => {
    const aboutInfo = getAbout();
@@ -122,101 +112,20 @@ const About = () => {
                         gap: 12,
                      }}
                   >
-                     {highlights.map((text, i) => {
-                        const { Icon, color } = HIGHLIGHT_ICONS[i];
-                        const cleanText = text.replace(/^[^\s]+\s/, "");
-                        return (
-                           <motion.div
-                              key={text}
-                              variants={staggerItem}
-                              style={{
-                                 display: "flex",
-                                 gap: isMobile ? 10 : 14,
-                                 alignItems: "flex-start",
-                                 padding: isMobile ? "12px 14px" : "14px 16px",
-                                 borderRadius: 12,
-                                 background: "rgba(255, 255, 255, 0.03)",
-                                 backdropFilter: "blur(12px)",
-                                 WebkitBackdropFilter: "blur(12px)",
-                                 border: "1px solid rgba(255, 255, 255, 0.06)",
-                              }}
-                           >
-                              <div
-                                 style={{
-                                    width: 32,
-                                    height: 32,
-                                    borderRadius: 8,
-                                    background: `${color}12`,
-                                    border: `1px solid ${color}20`,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexShrink: 0,
-                                    marginTop: 1,
-                                 }}
-                              >
-                                 <Icon
-                                    style={{ width: 16, height: 16, color }}
-                                 />
-                              </div>
-                              <p
-                                 style={{
-                                    color: "#cbd5e1",
-                                    fontSize: isMobile ? 13 : 14,
-                                    lineHeight: 1.6,
-                                    margin: 0,
-                                 }}
-                              >
-                                 {cleanText}
-                              </p>
-                           </motion.div>
-                        );
-                     })}
+                     {highlights.map((text, i) => (
+                        <HighlightCard
+                           key={text}
+                           text={text}
+                           index={i}
+                           isMobile={isMobile}
+                        />
+                     ))}
                   </div>
                </motion.div>
             </motion.div>
 
             {/* Stats Row - Full Width */}
-            <motion.div
-               style={{
-                  display: "grid",
-                  gridTemplateColumns: isMobile
-                     ? "repeat(2, 1fr)"
-                     : `repeat(${statEntries.length}, 1fr)`,
-                  gap: isMobile ? 12 : 16,
-                  marginTop: isMobile ? 40 : 56,
-               }}
-               variants={staggerContainer}
-               initial="hidden"
-               whileInView="visible"
-               viewport={{ margin: "0px 0px -100px 0px" }}
-            >
-               {statEntries.map(([key, value]) => (
-                  <motion.div
-                     key={key}
-                     variants={rotateInUp}
-                     className="glass-card"
-                     style={{
-                        padding: isMobile ? "18px 12px" : "24px 16px",
-                        textAlign: "center",
-                     }}
-                  >
-                     <AnimatedCounter value={value} />
-                     <p
-                        style={{
-                           color: "#6e6e90",
-                           fontSize: isMobile ? 10 : 11,
-                           textTransform: "uppercase",
-                           letterSpacing: "0.06em",
-                           fontWeight: 600,
-                           marginTop: 8,
-                        }}
-                     >
-                        {key.replaceAll("_", " ")}
-                     </p>
-                  </motion.div>
-               ))}
-            </motion.div>
+            <StatCounter statEntries={statEntries} isMobile={isMobile} />
          </div>
       </motion.section>
    );
