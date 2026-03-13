@@ -23,9 +23,7 @@ const AnimatedTimelineTrack = () => {
          {/* Timeline dot */}
          <motion.div
             initial={reducedMotion ? false : { scale: 0 }}
-            animate={
-               reducedMotion || isInView ? { scale: 1 } : { scale: 0 }
-            }
+            animate={reducedMotion || isInView ? { scale: 1 } : { scale: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{
                width: 16,
@@ -53,9 +51,7 @@ const AnimatedTimelineTrack = () => {
          {/* Timeline line */}
          <motion.div
             initial={reducedMotion ? false : { scaleY: 0 }}
-            animate={
-               reducedMotion || isInView ? { scaleY: 1 } : { scaleY: 0 }
-            }
+            animate={reducedMotion || isInView ? { scaleY: 1 } : { scaleY: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             style={{
                width: 2,

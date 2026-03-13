@@ -3,15 +3,24 @@ import { ArrowUpRight, Trophy, Code, Star } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import { getCodingPlatformStats } from "@data/dataLoader";
 import { staggerContainer, fadeInUp } from "@utils/animations";
-import { MONO_FONT, PURPLE, AMBER, TEXT_PRIMARY, TEXT_MUTED } from "@/constants/theme";
+import {
+   MONO_FONT,
+   PURPLE,
+   AMBER,
+   TEXT_PRIMARY,
+   TEXT_MUTED,
+} from "@/constants/theme";
 
-const PLATFORM_CONFIG: Record<string, {
-   label: string;
-   color: string;
-   icon: typeof Trophy;
-   highlight: (stats: Record<string, unknown>) => string;
-   subtitle: (stats: Record<string, unknown>) => string;
-}> = {
+const PLATFORM_CONFIG: Record<
+   string,
+   {
+      label: string;
+      color: string;
+      icon: typeof Trophy;
+      highlight: (stats: Record<string, unknown>) => string;
+      subtitle: (stats: Record<string, unknown>) => string;
+   }
+> = {
    leetcode: {
       label: "LeetCode",
       color: AMBER,
@@ -90,25 +99,41 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                style={cardStyle}
             >
                <FaGithub size={20} style={{ color: TEXT_PRIMARY }} />
-               <span style={{
-                  fontSize: 12, fontWeight: 600, color: TEXT_PRIMARY,
-                  textTransform: "uppercase", letterSpacing: "0.04em",
-               }}>
+               <span
+                  style={{
+                     fontSize: 12,
+                     fontWeight: 600,
+                     color: TEXT_PRIMARY,
+                     textTransform: "uppercase",
+                     letterSpacing: "0.04em",
+                  }}
+               >
                   GitHub
                </span>
-               <span style={{
-                  fontSize: 22, fontWeight: 700, fontFamily: MONO_FONT,
-                  color: TEXT_PRIMARY, lineHeight: 1,
-               }}>
+               <span
+                  style={{
+                     fontSize: 22,
+                     fontWeight: 700,
+                     fontFamily: MONO_FONT,
+                     color: TEXT_PRIMARY,
+                     lineHeight: 1,
+                  }}
+               >
                   {githubUsername}
                </span>
                <span style={{ fontSize: 11, color: TEXT_MUTED }}>
                   Open Source Contributions
                </span>
-               <span style={{
-                  display: "inline-flex", alignItems: "center", gap: 4,
-                  fontSize: 11, color: TEXT_PRIMARY, marginTop: 4,
-               }}>
+               <span
+                  style={{
+                     display: "inline-flex",
+                     alignItems: "center",
+                     gap: 4,
+                     fontSize: 11,
+                     color: TEXT_PRIMARY,
+                     marginTop: 4,
+                  }}
+               >
                   View Profile <ArrowUpRight size={12} />
                </span>
             </motion.a>
@@ -131,25 +156,41 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                      style={cardStyle}
                   >
                      <config.icon size={20} style={{ color: config.color }} />
-                     <span style={{
-                        fontSize: 12, fontWeight: 600, color: config.color,
-                        textTransform: "uppercase", letterSpacing: "0.04em",
-                     }}>
+                     <span
+                        style={{
+                           fontSize: 12,
+                           fontWeight: 600,
+                           color: config.color,
+                           textTransform: "uppercase",
+                           letterSpacing: "0.04em",
+                        }}
+                     >
                         {config.label}
                      </span>
-                     <span style={{
-                        fontSize: 22, fontWeight: 700, fontFamily: MONO_FONT,
-                        color: TEXT_PRIMARY, lineHeight: 1,
-                     }}>
+                     <span
+                        style={{
+                           fontSize: 22,
+                           fontWeight: 700,
+                           fontFamily: MONO_FONT,
+                           color: TEXT_PRIMARY,
+                           lineHeight: 1,
+                        }}
+                     >
                         {config.highlight(s)}
                      </span>
                      <span style={{ fontSize: 11, color: TEXT_MUTED }}>
                         {config.subtitle(s)}
                      </span>
-                     <span style={{
-                        display: "inline-flex", alignItems: "center", gap: 4,
-                        fontSize: 11, color: config.color, marginTop: 4,
-                     }}>
+                     <span
+                        style={{
+                           display: "inline-flex",
+                           alignItems: "center",
+                           gap: 4,
+                           fontSize: 11,
+                           color: config.color,
+                           marginTop: 4,
+                        }}
+                     >
                         View <ArrowUpRight size={12} />
                      </span>
                   </motion.a>

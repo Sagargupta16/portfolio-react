@@ -17,19 +17,22 @@ const ModalContent = ({ experience }: ModalContentProps) => {
    const contributions = experience.internal_contributions ?? [];
    const achievements = experience.internal_achievements ?? [];
 
-   const allSkills = projects.length > 0
-      ? [...new Set(projects.flatMap((p) => p.skills))].slice(0, 15)
-      : [];
+   const allSkills =
+      projects.length > 0
+         ? [...new Set(projects.flatMap((p) => p.skills))].slice(0, 15)
+         : [];
 
    // Sequential delay calculation
    const projectEndDelay = 0.2 + projects.length * 0.12 + 0.15;
    const contribDelay = projectEndDelay;
-   const achieveDelay = contributions.length > 0
-      ? contribDelay + 0.12
-      : contribDelay;
-   const skillsDelay = achievements.length > 0
-      ? achieveDelay + 0.12
-      : (contributions.length > 0 ? contribDelay + 0.12 : projectEndDelay);
+   const achieveDelay =
+      contributions.length > 0 ? contribDelay + 0.12 : contribDelay;
+   const skillsDelay =
+      achievements.length > 0
+         ? achieveDelay + 0.12
+         : contributions.length > 0
+           ? contribDelay + 0.12
+           : projectEndDelay;
 
    return (
       <div style={{ padding: "20px 24px 28px" }}>

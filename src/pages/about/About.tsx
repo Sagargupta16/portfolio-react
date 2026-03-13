@@ -21,10 +21,7 @@ const About = () => {
       [aboutInfo],
    );
 
-   const statEntries = useMemo(
-      () => Object.entries(statistics),
-      [statistics],
-   );
+   const statEntries = useMemo(() => Object.entries(statistics), [statistics]);
 
    return (
       <PageSection id="about" title="About Me" subtitle="Get to know me">

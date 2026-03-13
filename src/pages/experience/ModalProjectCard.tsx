@@ -1,7 +1,13 @@
 import { motion } from "motion/react";
 import { FolderGit2 } from "lucide-react";
 import TechTag from "@components/ui/TechTag";
-import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_MUTED, CYAN, MONO_FONT } from "@/constants/theme";
+import {
+   TEXT_PRIMARY,
+   TEXT_SECONDARY,
+   TEXT_MUTED,
+   CYAN,
+   MONO_FONT,
+} from "@/constants/theme";
 import type { ExperienceProject } from "@/types";
 
 interface ModalProjectCardProps {

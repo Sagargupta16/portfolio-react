@@ -100,10 +100,7 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
                         damping: 15,
                      }}
                   >
-                     <CheckCircle
-                        size={48}
-                        style={{ color: CYAN }}
-                     />
+                     <CheckCircle size={48} style={{ color: CYAN }} />
                   </motion.div>
                   <h4
                      style={{

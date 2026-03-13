@@ -143,12 +143,7 @@ const AboutBento = ({
 
          {/* Highlight cards - 2 per row */}
          {highlights.map((text, i) => (
-            <HighlightCard
-               key={text}
-               text={text}
-               index={i}
-               isMobile={false}
-            />
+            <HighlightCard key={text} text={text} index={i} isMobile={false} />
          ))}
 
          {/* Stats - full width */}

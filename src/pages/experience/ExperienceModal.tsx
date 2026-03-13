@@ -79,10 +79,7 @@ const ExperienceModal = ({ experience, onClose }: Props) => {
                         "0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(6,182,212,0.04)",
                   }}
                >
-                  <ModalHeader
-                     experience={experience}
-                     onClose={onClose}
-                  />
+                  <ModalHeader experience={experience} onClose={onClose} />
                   <ModalContent experience={experience} />
                </motion.div>
             </motion.div>

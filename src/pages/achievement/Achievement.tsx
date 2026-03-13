@@ -4,15 +4,13 @@ import {
    getLearningBadges,
    getAchievements,
 } from "@data/dataLoader";
-import useMediaQuery from "@utils/useMediaQuery";
 import PageSection from "@components/layout/PageSection";
 import { LEVEL_ORDER } from "./achievementConstants";
-import CertificationsSection from "./CertificationsSection";
+import CertBadgeShowcase from "./CertBadgeShowcase";
 import BadgesSection from "./BadgesSection";
 import CompetitionsSection from "./CompetitionsSection";
 
 const Achievement = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
    const rawCertifications = useMemo(() => getCertifications(), []);
    const learningBadges = useMemo(() => getLearningBadges(), []);
    const achievements = useMemo(() => getAchievements(), []);
@@ -41,12 +39,9 @@ const Achievement = () => {
                gap: 56,
             }}
          >
-            <CertificationsSection certifications={certifications} />
+            <CertBadgeShowcase certifications={certifications} />
             <BadgesSection badges={learningBadges} />
-            <CompetitionsSection
-               achievements={achievements}
-               isMobile={isMobile}
-            />
+            <CompetitionsSection achievements={achievements} />
          </div>
       </PageSection>
    );

@@ -60,11 +60,11 @@ const ModalContributions = ({
          >
             {items.map((c) => {
                const Icon = isAchievements
-                  ? (CONTRIB_ICON[c.type] || GraduationCap)
-                  : (CONTRIB_ICON[c.type] || GraduationCap);
+                  ? CONTRIB_ICON[c.type] || GraduationCap
+                  : CONTRIB_ICON[c.type] || GraduationCap;
                const color = isAchievements
                   ? AMBER
-                  : (CONTRIB_TYPE_COLOR[c.type] || AMBER);
+                  : CONTRIB_TYPE_COLOR[c.type] || AMBER;
                const bgBase = isAchievements
                   ? `rgba(245,158,11,0.03)`
                   : "rgba(255,255,255,0.02)";

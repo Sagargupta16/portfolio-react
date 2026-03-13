@@ -34,7 +34,9 @@ const ServiceIconRing = ({
                height: 44,
                borderRadius: "50%",
                border: `1px solid ${color}${isHovered ? "30" : "15"}`,
-               animation: reducedMotion ? "none" : "ring-pulse 3s ease-in-out infinite",
+               animation: reducedMotion
+                  ? "none"
+                  : "ring-pulse 3s ease-in-out infinite",
                transition: "border-color 0.3s ease",
             }}
          />
@@ -46,7 +48,9 @@ const ServiceIconRing = ({
                height: 60,
                borderRadius: "50%",
                border: `1px solid ${color}${isHovered ? "18" : "08"}`,
-               animation: reducedMotion ? "none" : "ring-pulse 3s ease-in-out infinite 1.5s",
+               animation: reducedMotion
+                  ? "none"
+                  : "ring-pulse 3s ease-in-out infinite 1.5s",
                transition: "border-color 0.3s ease",
             }}
          />

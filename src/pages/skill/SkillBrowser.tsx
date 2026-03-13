@@ -30,9 +30,7 @@ const SkillBrowser = ({ categories }: SkillBrowserProps) => {
    // Reduced motion: show all categories stacked (original layout)
    if (reducedMotion) {
       return (
-         <div
-            style={{ display: "flex", flexDirection: "column", gap: 32 }}
-         >
+         <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
             {categories.map(({ key, label, items }) => (
                <div key={key}>
                   <h3
@@ -56,11 +54,7 @@ const SkillBrowser = ({ categories }: SkillBrowserProps) => {
       <motion.div
          ref={ref}
          initial={{ opacity: 0, y: 30 }}
-         animate={
-            isInView
-               ? { opacity: 1, y: 0 }
-               : { opacity: 0, y: 30 }
-         }
+         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
          style={{
             ...GLASS_PANEL_STYLE,
@@ -71,9 +65,7 @@ const SkillBrowser = ({ categories }: SkillBrowserProps) => {
          <motion.div
             initial={{ scaleX: 0, opacity: 0 }}
             animate={
-               isInView
-                  ? { scaleX: 1, opacity: 1 }
-                  : { scaleX: 0, opacity: 0 }
+               isInView ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }
             }
             transition={{
                duration: 1.2,
