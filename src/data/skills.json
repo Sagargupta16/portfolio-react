@@ -37,6 +37,7 @@
       "AWS (CodePipeline, CodeBuild, CodeDeploy)",
       "AWS (VPC, ALB, SNS, EventBridge, CloudWatch)",
       "AWS (CloudFormation, X-Ray, Detective)",
+      "AWS (Organizations, SCPs, GuardDuty, Security Hub)",
       "Terraform",
       "Docker",
       "Ansible",
@@ -71,7 +72,7 @@
       "Postman",
       "Figma",
       "MCP Protocol",
-      "Agent Skills",
+      "AI Agent Frameworks",
       "SonarQube"
    ],
    "cs_fundamentals": [

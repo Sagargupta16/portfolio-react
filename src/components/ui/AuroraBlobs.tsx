@@ -8,8 +8,8 @@ const BLOBS = [
       rx: 300,
       ry: 220,
       opacity: 0.08,
-      cx: [15, 55, 80, 30, 15],
-      cy: [20, 60, 25, 75, 20],
+      x: [15, 55, 80, 30, 15],
+      y: [20, 60, 25, 75, 20],
       duration: 22,
    },
    {
@@ -17,8 +17,8 @@ const BLOBS = [
       rx: 260,
       ry: 300,
       opacity: 0.07,
-      cx: [75, 30, 60, 85, 75],
-      cy: [70, 30, 80, 40, 70],
+      x: [75, 30, 60, 85, 75],
+      y: [70, 30, 80, 40, 70],
       duration: 18,
    },
    {
@@ -26,8 +26,8 @@ const BLOBS = [
       rx: 280,
       ry: 240,
       opacity: 0.06,
-      cx: [50, 80, 20, 65, 50],
-      cy: [15, 55, 70, 35, 15],
+      x: [50, 80, 20, 65, 50],
+      y: [15, 55, 70, 35, 15],
       duration: 25,
    },
    {
@@ -35,8 +35,8 @@ const BLOBS = [
       rx: 240,
       ry: 280,
       opacity: 0.09,
-      cx: [25, 70, 45, 10, 25],
-      cy: [80, 20, 50, 40, 80],
+      x: [25, 70, 45, 10, 25],
+      y: [80, 20, 50, 40, 80],
       duration: 20,
    },
 ] as const;
@@ -55,42 +55,38 @@ const AuroraBlobs = () => {
             overflow: "hidden",
          }}
       >
-         <svg
-            width="100%"
-            height="100%"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            style={{ width: "100%", height: "100%", display: "block" }}
-         >
-            <g style={{ filter: "blur(18px)" }}>
-               {BLOBS.map((blob, i) => (
-                  <motion.ellipse
-                     key={i}
-                     rx={blob.rx / 10}
-                     ry={blob.ry / 10}
-                     fill={blob.color}
-                     opacity={blob.opacity}
-                     animate={
-                        reducedMotion
-                           ? { cx: blob.cx[0], cy: blob.cy[0] }
-                           : {
-                                cx: blob.cx.map(String),
-                                cy: blob.cy.map(String),
-                             }
-                     }
-                     transition={
-                        reducedMotion
-                           ? undefined
-                           : {
-                                duration: blob.duration,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                             }
-                     }
-                  />
-               ))}
-            </g>
-         </svg>
+         {BLOBS.map((blob) => (
+            <motion.div
+               key={blob.color}
+               animate={
+                  reducedMotion
+                     ? { left: `${blob.x[0]}%`, top: `${blob.y[0]}%` }
+                     : {
+                          left: blob.x.map((v) => `${v}%`),
+                          top: blob.y.map((v) => `${v}%`),
+                       }
+               }
+               transition={
+                  reducedMotion
+                     ? undefined
+                     : {
+                          duration: blob.duration,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                       }
+               }
+               style={{
+                  position: "absolute",
+                  width: blob.rx,
+                  height: blob.ry,
+                  borderRadius: "50%",
+                  background: blob.color,
+                  opacity: blob.opacity,
+                  filter: "blur(80px)",
+                  transform: "translate(-50%, -50%)",
+               }}
+            />
+         ))}
       </div>
    );
 };

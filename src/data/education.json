@@ -11,6 +11,7 @@
       "percentage": "83.8%",
       "display_text": "National Institute of Technology Warangal -- Warangal, Telangana",
       "achievements": [
+         "Passed with First Division with Distinction",
          "NIMCET AIR 208 (Sep 2021)",
          "Class Representative, MCA Final Year (Aug 2023 - Jun 2024)",
          "Additional Secretary, CSEA - NITW (Aug 2023 - Jun 2024)"
@@ -34,8 +35,8 @@
       "department": "Department of Computer Science & Engineering",
       "alsoKnownAs": "University of Indore",
       "location": "Indore, Madhya Pradesh, India",
-      "cgpa": "7.34",
-      "percentage": "73.4%",
+      "cgpa": "",
+      "percentage": "",
       "display_text": "Devi Ahilya Vishwavidyalaya (DAVV) -- Indore, MP",
       "skills": [
          "C++",
@@ -55,8 +56,8 @@
       "board": "Central Board of Secondary Education (CBSE)",
       "field": "PCM+PE (Physics, Chemistry, Mathematics, Physical Education)",
       "location": "Shivpuri, Madhya Pradesh, India",
-      "cgpa": "8.59",
-      "percentage": "85.9%",
+      "cgpa": "",
+      "percentage": "",
       "display_text": "Happy Days School -- Shivpuri, MP",
       "skills": ["Mathematics", "Physics", "Chemistry"]
    },
@@ -68,8 +69,8 @@
       "institutionType": "CBSE Affiliated School",
       "board": "Central Board of Secondary Education (CBSE)",
       "location": "Shivpuri, Madhya Pradesh, India",
-      "cgpa": "7.40",
-      "percentage": "74.0%",
+      "cgpa": "",
+      "percentage": "",
       "display_text": "Kids Garden School -- Shivpuri, MP",
       "skills": []
    }

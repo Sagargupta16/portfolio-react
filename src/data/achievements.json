@@ -201,67 +201,87 @@
    "achievements": [
       {
          "id": 1,
-         "title": "1st Place — Coding Cauldron Online, Version '23",
+         "title": "1st Place - Coding Cauldron Online, Version '23",
          "organizer": "NIT Trichy",
          "date": "March 2023",
          "type": "Competition"
       },
       {
          "id": 2,
-         "title": "1st Place — QFiesta, IGNOSI '22",
+         "title": "1st Place - QFiesta, IGNOSI '22",
          "organizer": "NIT Warangal",
          "date": "December 2022",
          "type": "Competition"
       },
       {
          "id": 3,
-         "title": "2nd Place — Manage the Damage, Version '23",
+         "title": "2nd Place - Manage the Damage, Version '23",
          "organizer": "NIT Trichy",
          "date": "March 2023",
          "type": "Competition"
       },
       {
          "id": 4,
-         "title": "2nd Place — Trial By Code, IGNOSI '22",
+         "title": "2nd Place - Trial By Code, IGNOSI '22",
          "organizer": "NIT Warangal",
          "date": "December 2022",
          "type": "Competition"
       },
       {
          "id": 5,
-         "title": "Rank 1289 — Google Kick Start '22, Round E",
+         "title": "Rank 1289 - Google Kick Start '22, Round E",
          "organizer": "Google",
          "date": "August 2022",
          "type": "Competition"
       },
       {
          "id": 6,
-         "title": "Rank 1699 — Google Kick Start '22, Round B",
+         "title": "Rank 1699 - Google Kick Start '22, Round B",
          "organizer": "Google",
          "date": "April 2022",
          "type": "Competition"
       },
       {
          "id": 7,
-         "title": "3rd Place — Logic Head, INFOTREK '22",
+         "title": "3rd Place - Logic Head, INFOTREK '22",
          "organizer": "NIT Trichy",
          "date": "June 2022",
          "type": "Competition"
       },
       {
          "id": 8,
-         "title": "3rd Place — MOTHRA, Version '21",
+         "title": "3rd Place - MOTHRA, Version '21",
          "organizer": "NIT Trichy",
          "date": "October 2021",
          "type": "Competition"
       },
       {
          "id": 9,
-         "title": "4th Place — TriNIT Hackathon",
+         "title": "4th Place - TriNIT Hackathon",
          "organizer": "NIT Warangal",
          "date": "October 2023",
          "type": "Hackathon"
       }
    ],
-   "coding_platform_stats": {}
+   "coding_platform_stats": {
+      "leetcode": {
+         "username": "Sagargupta1610",
+         "problems_solved": "1200+",
+         "contests": "100+",
+         "best_rating": "2007",
+         "badge": "Knight",
+         "url": "https://leetcode.com/Sagargupta1610/"
+      },
+      "geeksforgeeks": {
+         "username": "sagargupta10",
+         "problems_solved": "400+",
+         "url": "https://www.geeksforgeeks.org/user/sagargupta10/"
+      },
+      "hackerrank": {
+         "username": "Sagargupta1610",
+         "problem_solving": "6-Star",
+         "cpp": "5-Star",
+         "url": "https://www.hackerrank.com/Sagargupta1610"
+      }
+   }
 }

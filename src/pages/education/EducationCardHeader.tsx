@@ -72,17 +72,6 @@ const CgpaBadge = ({
          >
             <AnimatedCounter value={item.cgpa} />
          </span>
-         {item.percentage && (
-            <span
-               style={{
-                  fontSize: 11,
-                  color: "#6e6e90",
-                  fontFamily: MONO_FONT,
-               }}
-            >
-               {item.percentage}
-            </span>
-         )}
       </div>
    );
 };
