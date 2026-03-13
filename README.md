@@ -42,13 +42,13 @@ A modern, dark-themed personal portfolio with 3D WebGL hero scene, glassmorphism
 | ---------------- | ------------------------------------------------------------------------------- |
 | **Hero**         | 3D wireframe scene, particle field, role cycling, adaptive performance monitor  |
 | **About**        | Character reveal animation, highlights, animated stat counters                  |
-| **Experience**   | Interactive timeline with expandable details                                    |
-| **Education**    | Academic timeline with animated CGPA counters                                   |
+| **Experience**   | Clickable timeline cards with modal (projects, internal contributions, achievements, skills) |
+| **Education**    | Academic timeline with CGPA counters and achievement highlights                 |
 | **Skills**       | Wave cascade tags, scroll-reveal text, categorized grid                         |
 | **Projects**     | Filterable cards (Featured/Community/Collab/Others) + open source PR banner     |
-| **Achievements** | Certifications (auto-synced from Credly), badges, coding stats, competitions    |
+| **Achievements** | Certifications (auto-synced from Credly), badges, competitions                  |
 | **Services**     | Bento grid layout with rotation entrance                                        |
-| **GitHub**       | 3D browser mockup, contribution calendar, terminal, activity feed, node diagram |
+| **GitHub**       | 3D browser mockup, contribution calendar, coding profile cards                  |
 | **Contact**      | Contact form with animated gradient border on focus                             |
 
 ---
