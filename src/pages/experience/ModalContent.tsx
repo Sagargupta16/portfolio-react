@@ -27,12 +27,9 @@ const ModalContent = ({ experience }: ModalContentProps) => {
    const contribDelay = projectEndDelay;
    const achieveDelay =
       contributions.length > 0 ? contribDelay + 0.12 : contribDelay;
-   const skillsDelay =
-      achievements.length > 0
-         ? achieveDelay + 0.12
-         : contributions.length > 0
-           ? contribDelay + 0.12
-           : projectEndDelay;
+   let skillsDelay = projectEndDelay;
+   if (contributions.length > 0) skillsDelay = contribDelay + 0.12;
+   if (achievements.length > 0) skillsDelay = achieveDelay + 0.12;
 
    return (
       <div style={{ padding: "20px 24px 28px" }}>

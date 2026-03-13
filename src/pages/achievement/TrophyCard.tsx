@@ -27,22 +27,23 @@ const ORDINAL_SUFFIX: Record<string, string> = {
    "3": "rd",
 };
 
+const RANK_RE = /^(Rank \d+)\s*-\s*(.*)/;
+const PLACE_RE = /^(\d+)\w+ Place\s*-\s*(.*)/;
+
 const parsePlacement = (
    title: string,
 ): { rank: string; event: string; color: string } => {
-   const rankMatch = title.match(/^(Rank \d+)/);
+   const rankMatch = RANK_RE.exec(title);
    if (rankMatch) {
-      const event = title.replace(/^Rank \d+\s*-\s*/, "");
-      return { rank: rankMatch[1], event, color: CYAN };
+      return { rank: rankMatch[1], event: rankMatch[2], color: CYAN };
    }
 
-   const placeMatch = title.match(/^(\d+)\w+ Place/);
+   const placeMatch = PLACE_RE.exec(title);
    if (placeMatch) {
       const n = placeMatch[1];
       const ordinal = `${n}${ORDINAL_SUFFIX[n] ?? "th"}`;
-      const event = title.replace(/^\d+\w+ Place\s*-\s*/, "");
       const color = PLACEMENT_COLORS[ordinal] ?? TEXT_MUTED;
-      return { rank: ordinal, event, color };
+      return { rank: ordinal, event: placeMatch[2], color };
    }
 
    return { rank: "", event: title, color: TEXT_MUTED };

@@ -59,9 +59,7 @@ const ModalContributions = ({
             }}
          >
             {items.map((c) => {
-               const Icon = isAchievements
-                  ? CONTRIB_ICON[c.type] || GraduationCap
-                  : CONTRIB_ICON[c.type] || GraduationCap;
+               const Icon = CONTRIB_ICON[c.type] || GraduationCap;
                const color = isAchievements
                   ? AMBER
                   : CONTRIB_TYPE_COLOR[c.type] || AMBER;

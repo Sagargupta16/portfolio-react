@@ -10,6 +10,7 @@ import {
    TEXT_PRIMARY,
    TEXT_MUTED,
 } from "@/constants/theme";
+import useMediaQuery from "@utils/useMediaQuery";
 
 const PLATFORM_CONFIG: Record<
    string,
@@ -49,6 +50,7 @@ interface CodingProfilesProps {
 }
 
 const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
+   const isMobile = useMediaQuery("(max-width: 768px)");
    const stats = getCodingPlatformStats();
    const entries = Object.entries(stats).filter(
       ([key]) => key in PLATFORM_CONFIG,
@@ -84,7 +86,9 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
             variants={staggerContainer}
             style={{
                display: "grid",
-               gridTemplateColumns: `repeat(${entries.length + 1}, 1fr)`,
+               gridTemplateColumns: isMobile
+                  ? "repeat(2, 1fr)"
+                  : `repeat(${entries.length + 1}, 1fr)`,
                gap: 12,
             }}
          >
