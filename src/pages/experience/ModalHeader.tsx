@@ -11,9 +11,10 @@ import type { ProfessionalExperience } from "@/types";
 interface ModalHeaderProps {
    experience: ProfessionalExperience;
    onClose: () => void;
+   isMobile: boolean;
 }
 
-const ModalHeader = ({ experience, onClose }: ModalHeaderProps) => (
+const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
    <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -22,7 +23,7 @@ const ModalHeader = ({ experience, onClose }: ModalHeaderProps) => (
          position: "sticky",
          top: 0,
          zIndex: 10,
-         padding: "20px 24px 16px",
+         padding: isMobile ? "16px 16px 12px" : "20px 24px 16px",
          background: "rgba(12,12,28,0.9)",
          backdropFilter: "blur(20px)",
          WebkitBackdropFilter: "blur(20px)",
@@ -34,17 +35,24 @@ const ModalHeader = ({ experience, onClose }: ModalHeaderProps) => (
          style={{
             display: "flex",
             alignItems: "center",
-            gap: 10,
+            gap: 8,
             marginBottom: 4,
          }}
       >
-         <Building2 size={18} style={{ color: CYAN }} />
+         <Building2
+            size={isMobile ? 16 : 18}
+            style={{ color: CYAN, flexShrink: 0 }}
+         />
          <h3
             style={{
-               fontSize: 18,
+               fontSize: isMobile ? 15 : 18,
                fontWeight: 700,
                color: TEXT_PRIMARY,
                flex: 1,
+               minWidth: 0,
+               overflow: "hidden",
+               textOverflow: "ellipsis",
+               whiteSpace: "nowrap",
             }}
          >
             {experience.company}
@@ -63,6 +71,7 @@ const ModalHeader = ({ experience, onClose }: ModalHeaderProps) => (
                alignItems: "center",
                justifyContent: "center",
                transition: "background 0.2s",
+               flexShrink: 0,
             }}
          >
             <X size={16} />
@@ -70,9 +79,12 @@ const ModalHeader = ({ experience, onClose }: ModalHeaderProps) => (
       </div>
       <p
          style={{
-            fontSize: 13,
+            fontSize: isMobile ? 11 : 13,
             color: CYAN,
             fontFamily: MONO_FONT,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
          }}
       >
          {experience.title} | {experience.date}

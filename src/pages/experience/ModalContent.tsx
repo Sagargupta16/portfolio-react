@@ -8,11 +8,12 @@ import ModalContributions from "./ModalContributions";
 
 interface ModalContentProps {
    experience: ProfessionalExperience;
+   isMobile: boolean;
 }
 
 const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
 
-const ModalContent = ({ experience }: ModalContentProps) => {
+const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
    const projects = experience.projects ?? [];
    const contributions = experience.internal_contributions ?? [];
    const achievements = experience.internal_achievements ?? [];
@@ -32,7 +33,7 @@ const ModalContent = ({ experience }: ModalContentProps) => {
    if (achievements.length > 0) skillsDelay = achieveDelay + 0.12;
 
    return (
-      <div style={{ padding: "20px 24px 28px" }}>
+      <div style={{ padding: isMobile ? "16px 14px 24px" : "20px 24px 28px" }}>
          {/* Projects */}
          {projects.map((proj, i) => (
             <ModalProjectCard key={proj.name} project={proj} index={i} />
