@@ -17,22 +17,14 @@ const Services = () => {
                maxWidth: 1152,
                margin: "0 auto",
                display: "grid",
-               gap: 24,
+               gap: 20,
                gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
             }}
             variants={staggerContainer}
          >
-            {services.map((service, i) => {
-               const isWide = !isMobile && (i === 2 || i === 5);
-               return (
-                  <ServiceCard
-                     key={service.id}
-                     service={service}
-                     index={i}
-                     wide={isWide}
-                  />
-               );
-            })}
+            {services.map((service, i) => (
+               <ServiceCard key={service.id} service={service} index={i} />
+            ))}
          </motion.div>
       </PageSection>
    );

@@ -1,13 +1,13 @@
-import { Cloud, Code, Trophy, Brain, Palette, Settings } from "lucide-react";
+import { Cloud, Code, Trophy, Brain, Bot, Shield } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export const iconMap: Record<string, LucideIcon> = {
    "Full-Stack Development": Code,
-   "DevOps & MLOps": Cloud,
+   "Cloud & DevOps": Cloud,
+   "AI/ML & MLOps": Brain,
+   "AI Agents & Tooling": Bot,
+   "Cloud Consulting": Shield,
    "Competitive Programming": Trophy,
-   "Data Science & ML": Brain,
-   "UI/UX Design": Palette,
-   "Technical Consulting": Settings,
 };
 
 export interface AccentColor {

@@ -4,15 +4,22 @@ import { getStatistics } from "@data/dataLoader";
 import { staggerItem } from "@utils/animations";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 
+const LABELS: Record<string, string> = {
+   coding_questions: "Problems Solved",
+   leetcode_rating: "LeetCode Rating",
+   projects: "Projects",
+   contests: "Contests",
+   industry_certifications: "Certifications",
+   open_source_prs: "Open Source PRs",
+};
+
 const HeroStats = () => {
    const statistics = useMemo(() => getStatistics(), []);
 
    const statsArray = useMemo(() => {
       return Object.entries(statistics).map(([key, value]) => ({
          key,
-         label: key
-            .replaceAll("_", " ")
-            .replaceAll(/\b\w/g, (c) => c.toUpperCase()),
+         label: LABELS[key] ?? key.replaceAll("_", " "),
          value,
       }));
    }, [statistics]);

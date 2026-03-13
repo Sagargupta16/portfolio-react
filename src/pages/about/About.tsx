@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getAbout, getStatistics } from "@data/dataLoader";
 import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
-import { MONO_FONT } from "@/constants/theme";
+import { GREEN, MONO_FONT } from "@/constants/theme";
 import DevAvatar from "@components/ui/DevAvatar";
 import useMediaQuery from "@utils/useMediaQuery";
 import PageSection from "@components/layout/PageSection";
@@ -39,7 +39,7 @@ const About = () => {
                }}
                variants={staggerContainer}
             >
-               {/* Left Column - Animated Avatar */}
+               {/* Left - Avatar */}
                <motion.div
                   variants={fadeInLeft}
                   style={{ display: "flex", justifyContent: "center" }}
@@ -51,33 +51,42 @@ const About = () => {
                   </div>
                </motion.div>
 
-               {/* Right Column - Bio + Highlights */}
+               {/* Right - Bio */}
                <motion.div variants={fadeInRight}>
-                  {/* Status line */}
-                  <p
+                  {/* Status pill */}
+                  <div
                      style={{
-                        fontFamily: MONO_FONT,
-                        color: "#22c55e",
-                        fontSize: isMobile ? 12 : 13,
-                        marginBottom: 20,
-                        display: "flex",
+                        display: "inline-flex",
                         alignItems: "center",
                         gap: 8,
+                        padding: "6px 14px",
+                        borderRadius: 20,
+                        background: `${GREEN}08`,
+                        border: `1px solid ${GREEN}20`,
+                        marginBottom: 20,
                      }}
                   >
                      <span
                         className="animate-glow-pulse"
                         style={{
-                           width: 8,
-                           height: 8,
+                           width: 7,
+                           height: 7,
                            borderRadius: "50%",
-                           backgroundColor: "#22c55e",
-                           display: "inline-block",
+                           backgroundColor: GREEN,
                            flexShrink: 0,
                         }}
                      />
-                     <span>currently building cloud infrastructure at AWS</span>
-                  </p>
+                     <span
+                        style={{
+                           fontFamily: MONO_FONT,
+                           color: GREEN,
+                           fontSize: isMobile ? 11 : 12,
+                           fontWeight: 500,
+                        }}
+                     >
+                        currently building cloud infrastructure at AWS
+                     </span>
+                  </div>
 
                   {/* Greeting */}
                   <CharacterReveal
@@ -112,7 +121,7 @@ const About = () => {
                </motion.div>
             </motion.div>
 
-            {/* Stats Row - Full Width */}
+            {/* Stats Row */}
             <StatCounter statEntries={statEntries} isMobile={isMobile} />
          </div>
       </PageSection>

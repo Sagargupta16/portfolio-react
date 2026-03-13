@@ -15,6 +15,7 @@ const useContactForm = () => {
    const [status, setStatus] = useState<Status>({ type: "", message: "" });
    const [isLoading, setIsLoading] = useState(false);
    const [toastVisible, setToastVisible] = useState(false);
+   const [showConfirmation, setShowConfirmation] = useState(false);
 
    useEffect(() => {
       if (status.type) {
@@ -59,10 +60,7 @@ const useContactForm = () => {
             );
 
             if (result.status === 200) {
-               setStatus({
-                  type: "success",
-                  message: "Message sent successfully!",
-               });
+               setShowConfirmation(true);
                setFormData({ name: "", email: "", message: "" });
                formRef.current!.reset();
             }
@@ -83,15 +81,21 @@ const useContactForm = () => {
       setTimeout(() => setStatus({ type: "", message: "" }), 300);
    }, []);
 
+   const resetConfirmation = useCallback(() => {
+      setShowConfirmation(false);
+   }, []);
+
    return {
       formRef,
       formData,
       status,
       isLoading,
       toastVisible,
+      showConfirmation,
       handleChange,
       handleSubmit,
       dismissToast,
+      resetConfirmation,
    };
 };
 

@@ -1,20 +1,17 @@
 import { motion } from "motion/react";
-import { BookOpen } from "lucide-react";
-import type { LearningBadge } from "@/types";
+import { ShieldCheck } from "lucide-react";
 import { fadeInUp } from "@utils/animations";
+import type { Certification } from "@/types";
 import useMediaQuery from "@utils/useMediaQuery";
 import CertBadge from "./CertBadge";
 
-interface BadgesSectionProps {
-   badges: LearningBadge[];
+interface CertBadgeShowcaseProps {
+   certifications: Certification[];
 }
 
-const BadgesSection = ({ badges }: BadgesSectionProps) => {
+const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
    const isMobile = useMediaQuery("(max-width: 768px)");
-
-   if (badges.length === 0) return null;
-
-   const badgeSize = isMobile ? 72 : 88;
+   const badgeSize = isMobile ? 90 : 120;
 
    return (
       <div>
@@ -28,7 +25,7 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                alignItems: "center",
                justifyContent: "center",
                gap: 10,
-               marginBottom: 28,
+               marginBottom: 32,
             }}
          >
             <div
@@ -36,13 +33,15 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                   width: 32,
                   height: 32,
                   borderRadius: 8,
-                  background: "rgba(168,85,247,0.1)",
+                  background: "rgba(6,182,212,0.1)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                }}
             >
-               <BookOpen style={{ width: 18, height: 18, color: "#a855f7" }} />
+               <ShieldCheck
+                  style={{ width: 18, height: 18, color: "#06b6d4" }}
+               />
             </div>
             <h3
                style={{
@@ -51,7 +50,7 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                   color: "#eeeef5",
                }}
             >
-               Learning & Training
+               Industry Certifications
             </h3>
             <span
                style={{
@@ -63,7 +62,7 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                   background: "rgba(255,255,255,0.04)",
                }}
             >
-               {badges.length}
+               {certifications.length}
             </span>
          </motion.div>
 
@@ -72,19 +71,20 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                display: "flex",
                flexWrap: "wrap",
                justifyContent: "center",
-               gap: isMobile ? 12 : 24,
-               paddingBottom: 12,
+               gap: isMobile ? 20 : 36,
+               paddingBottom: 16,
             }}
          >
-            {badges.map((badge, i) => (
+            {certifications.map((cert, i) => (
                <CertBadge
-                  key={badge.badgeId}
-                  name={badge.name}
-                  imageUrl={badge.imageUrl}
-                  badgeUrl={badge.badgeUrl}
+                  key={cert.badgeId}
+                  name={cert.name}
+                  imageUrl={cert.imageUrl}
+                  badgeUrl={cert.badgeUrl}
+                  level={cert.level}
                   size={badgeSize}
-                  floatDelay={i * 0.4}
-                  entranceDelay={i * 0.06}
+                  floatDelay={i * 0.5}
+                  entranceDelay={i * 0.1}
                />
             ))}
          </div>
@@ -92,4 +92,4 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
    );
 };
 
-export default BadgesSection;
+export default CertBadgeShowcase;

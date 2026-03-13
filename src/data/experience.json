@@ -174,7 +174,8 @@
                ]
             }
          ],
-         "internal_contributions": [
+         "internal_contributions": [],
+         "internal_achievements": [
             {
                "title": "TechU Graduate",
                "type": "program",
@@ -217,7 +218,8 @@
                ]
             }
          ],
-         "internal_contributions": []
+         "internal_contributions": [],
+         "internal_achievements": []
       }
    ],
    "positions_of_responsibility": [

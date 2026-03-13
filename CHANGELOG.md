@@ -2,6 +2,75 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.9.0] - 2026-03-13
+
+### Added
+
+- Animated service illustrations: 6 unique micro-animations per service card (Full-Stack request flow, DevOps deploy terminal, AI/ML neural network, AI Agents chat, architecture diagram, sort visualization)
+- Floating certification badge showcase with hover glow and level-based accent colors
+- Trophy wall grid for competitions: 2-column layout with medal colors and placement numbers
+- Expandable education achievements with height animation (skills always visible)
+- Animated timeline track: dot scales in + line grows on scroll
+- Experience modal stagger: header, projects, contributions, achievements, skills cascade sequentially
+- Chat-style send confirmation in contact form (typing dots -> checkmark)
+- Themed 404 page with glassmorphism, gradient text, aurora blobs, SPA redirect
+- Status pill badge in About section (green glass pill)
+- Tech stack glass pills in hero (AWS, React, GenAI as individual badges)
+- Proper stat labels: "Problems Solved", "LeetCode Rating", "Open Source PRs"
+
+### Changed
+
+- Services: 2-column grid with animated illustrations + horizontal card layout
+- Services icon map: fixed stale keys to match current service titles
+- Achievement section: floating cert badges + trophy grid replace old list rows
+- Experience modal: refactored from 498 to 90 lines (4 sub-components)
+- "Framer Motion" -> "Motion" in skills.json and projects.json
+
+### Removed
+
+- 13 dead code files (AboutBento, SkillBrowser, ServiceIconRing, CertificationsSection, etc.)
+- `useReducedMotion` checks from new components (animations always render)
+
+## [3.8.0] - 2026-03-13
+
+### Added
+
+- Experience modal with sticky header, project cards, internal contributions (color-coded by type), internal achievements (amber), and aggregated key skills
+- Clickable timeline cards in Experience section (replaces "Show more" expand)
+- `internal_achievements` field on experience data (TechU Graduate, TFC Ambassador, MLOps SME, Speaker Cert, etc.)
+- `CodingProfiles` component in GitHub section (GitHub, LeetCode, GFG, HackerRank cards in a row)
+- Coding platform stats populated in achievements.json (LeetCode 1200+/2007 Knight, GFG 400+, HackerRank 6-Star)
+- AWS Organizations, SCPs, GuardDuty, Security Hub added to cloud_devops skills
+- "First Division with Distinction" achievement added to NIT Warangal education
+- Resume PDF auto-generator script (`scripts/generate-resume.py`)
+
+### Changed
+
+- Experience data restructured: all 3 entries now use consistent `projects[]`, `internal_contributions[]`, `internal_achievements[]` format
+- AWS full-time: 4 projects (State Street, DTCC, MLOps SME internal, RWS ongoing) with real dates and updated bullet points
+- Internship wording: "Led" -> "Migrated"/"Containerized", summary rewritten for Ikarus-3D
+- Coding profiles moved from Achievements section to GitHub section
+- Location updated to Hyderabad, Twitter link updated to x.com, GitHub capitalization fixed
+- Roles trimmed from 10 to 6 (removed filler like "Problem Solver", "Tech Enthusiast")
+- CGPA hidden from BCA, Class XII, Class X (only MCA 8.38 visible)
+- LeetCode contests corrected to 100+ (LeetCode only), 140+ (combined across platforms)
+- AuroraBlobs fixed: SVG ellipses replaced with CSS divs + blur (Motion can't animate SVG cx/cy)
+
+### Removed
+
+- Terminal, Activity Feed, Node Diagram, Stats Card from GitHub section (components kept in ui/ for future use)
+- CodingPlatformsSection from Achievements page (moved to GitHub)
+- Percentage display from education cards
+
+## [3.7.0] - 2026-03-12
+
+### Fixed
+
+- SonarCloud security hotspots: replaced 8x `Math.random()` with `cryptoRandom()` using `crypto.getRandomValues()`
+- SonarCloud code duplication: extracted `GLASS_PANEL_STYLE`, `CHROME_BAR_STYLE`, `PANEL_*` constants, `useRevealInView` hook
+- Empty stub methods in test mocks: added no-op comments
+- `export...from` pattern for IconStyleProps re-export
+
 ## [3.6.0] - 2026-03-12
 
 ### Added
