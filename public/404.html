@@ -2,18 +2,210 @@
 <html lang="en">
    <head>
       <meta charset="UTF-8" />
-      <title>Redirecting...</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>404 | Sagar Gupta</title>
+      <link rel="icon" href="/portfolio-react/favicon.ico" />
+      <style>
+         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap");
+
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+         }
+
+         body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #060610;
+            color: #eeeef5;
+            font-family: "Inter", system-ui, sans-serif;
+            overflow: hidden;
+         }
+
+         .container {
+            text-align: center;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 2;
+         }
+
+         .code {
+            font-family: "JetBrains Mono", monospace;
+            font-size: clamp(80px, 20vw, 160px);
+            font-weight: 800;
+            background: linear-gradient(135deg, #06b6d4, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 16px;
+            animation: float 4s ease-in-out infinite;
+         }
+
+         .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #eeeef5;
+            margin-bottom: 12px;
+         }
+
+         .subtitle {
+            font-size: 15px;
+            color: #6e6e90;
+            margin-bottom: 36px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+         }
+
+         .mono {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 13px;
+            color: #06b6d4;
+            margin-bottom: 32px;
+            opacity: 0.8;
+         }
+
+         .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #eeeef5;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            transition: all 0.3s ease;
+            cursor: pointer;
+         }
+
+         .btn:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 24px rgba(6, 182, 212, 0.15);
+            transform: translateY(-2px);
+         }
+
+         /* Background blobs */
+         .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+         }
+
+         .blob-1 {
+            width: 300px;
+            height: 220px;
+            background: #06b6d4;
+            opacity: 0.06;
+            top: 20%;
+            left: 15%;
+            animation: drift1 20s ease-in-out infinite;
+         }
+
+         .blob-2 {
+            width: 260px;
+            height: 300px;
+            background: #a855f7;
+            opacity: 0.05;
+            top: 60%;
+            right: 15%;
+            animation: drift2 18s ease-in-out infinite;
+         }
+
+         /* Glass card */
+         .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 48px 40px;
+            max-width: 480px;
+            margin: 0 auto;
+         }
+
+         @keyframes float {
+            0%,
+            100% {
+               transform: translateY(0);
+            }
+            50% {
+               transform: translateY(-10px);
+            }
+         }
+
+         @keyframes drift1 {
+            0%,
+            100% {
+               transform: translate(0, 0);
+            }
+            50% {
+               transform: translate(40px, -30px);
+            }
+         }
+
+         @keyframes drift2 {
+            0%,
+            100% {
+               transform: translate(0, 0);
+            }
+            50% {
+               transform: translate(-30px, 20px);
+            }
+         }
+      </style>
+   </head>
+   <body>
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+
+      <div class="container">
+         <div class="glass">
+            <div class="code">404</div>
+            <h1 class="title">Page not found</h1>
+            <p class="mono">$ curl -I /this-page → HTTP 404</p>
+            <p class="subtitle">
+               The page you're looking for doesn't exist or has been moved.
+               Let's get you back on track.
+            </p>
+            <a href="/portfolio-react/" class="btn">
+               <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+               >
+                  <path d="m12 19-7-7 7-7" />
+                  <path d="M19 12H5" />
+               </svg>
+               Back to Portfolio
+            </a>
+         </div>
+      </div>
+
       <script>
-         // Single Page App redirect for GitHub Pages
-         // Converts the path to a query string so index.html can restore it
+         // If this looks like a SPA route attempt, redirect to main page
          var base = "/portfolio-react/";
          var path = location.pathname.slice(base.length);
-         if (path) {
-            location.replace(base + "?" + path);
-         } else {
-            location.replace(base);
+         var isSPARoute = path && !path.includes(".");
+         if (isSPARoute && !location.search.includes("stay=1")) {
+            // Only show 404 page if ?stay=1, otherwise redirect for SPA
+            location.replace(base + "#" + path);
          }
       </script>
-   </head>
-   <body></body>
+   </body>
 </html>

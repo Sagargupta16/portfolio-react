@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle } from "lucide-react";
 import { CYAN, TEXT_PRIMARY, TEXT_MUTED } from "@/constants/theme";
-import useReducedMotion from "@utils/useReducedMotion";
 
 interface SendConfirmationProps {
    onReset: () => void;
@@ -10,16 +9,12 @@ interface SendConfirmationProps {
 }
 
 const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
-   const reducedMotion = useReducedMotion();
-   const [stage, setStage] = useState<"typing" | "sent">(
-      reducedMotion ? "sent" : "typing",
-   );
+   const [stage, setStage] = useState<"typing" | "sent">("typing");
 
    useEffect(() => {
-      if (reducedMotion) return;
       const typingTimer = setTimeout(() => setStage("sent"), 1500);
       return () => clearTimeout(typingTimer);
-   }, [reducedMotion]);
+   }, []);
 
    useEffect(() => {
       const resetTimer = setTimeout(onReset, 4000);

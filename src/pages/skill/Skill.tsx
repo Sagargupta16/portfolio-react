@@ -1,8 +1,11 @@
 import { useMemo } from "react";
+import { motion } from "motion/react";
 import { getSkills } from "@data/dataLoader";
 import type { SkillsData } from "@/types";
+import { staggerContainer, staggerItem } from "@utils/animations";
+import { CYAN } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
-import SkillBrowser from "./SkillBrowser";
+import SkillTagGroup from "./SkillTagGroup";
 import SecondarySkills from "./SecondarySkills";
 
 const CATEGORY_CONFIG: Record<string, string> = {
@@ -54,7 +57,38 @@ const Skill = () => {
          subtitle="What I work with"
       >
          <div style={{ maxWidth: 1152, margin: "0 auto" }}>
-            <SkillBrowser categories={primaryCategories} />
+            <motion.div
+               style={{ display: "flex", flexDirection: "column", gap: 48 }}
+               variants={staggerContainer}
+            >
+               {primaryCategories.map(({ key, label, items }) => (
+                  <motion.div key={key} variants={staggerItem}>
+                     <h3
+                        style={{
+                           fontSize: 18,
+                           fontWeight: 600,
+                           color: "#eeeef5",
+                           marginBottom: 16,
+                           display: "flex",
+                           alignItems: "center",
+                           gap: 12,
+                        }}
+                     >
+                        <div
+                           style={{
+                              height: 24,
+                              width: 4,
+                              borderRadius: 9999,
+                              background: `linear-gradient(to bottom, ${CYAN}, ${CYAN}4d)`,
+                           }}
+                        />
+                        {label}
+                     </h3>
+                     <SkillTagGroup items={items} />
+                  </motion.div>
+               ))}
+            </motion.div>
+
             <SecondarySkills categories={secondaryCategories} />
          </div>
       </PageSection>

@@ -1,10 +1,8 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { GLASS_PANEL_STYLE } from "@/constants/theme";
-import useReducedMotion from "@utils/useReducedMotion";
 import SkillBrowserTabs from "./SkillBrowserTabs";
 import SkillBrowserGrid from "./SkillBrowserGrid";
-import SkillTagGroup from "./SkillTagGroup";
 
 interface Category {
    key: string;
@@ -18,7 +16,6 @@ interface SkillBrowserProps {
 
 const SkillBrowser = ({ categories }: SkillBrowserProps) => {
    const [activeKey, setActiveKey] = useState(categories[0]?.key ?? "");
-   const reducedMotion = useReducedMotion();
    const ref = useRef<HTMLDivElement>(null);
    const isInView = useInView(ref, {
       once: false,
@@ -26,29 +23,6 @@ const SkillBrowser = ({ categories }: SkillBrowserProps) => {
    });
 
    const activeCategory = categories.find((c) => c.key === activeKey);
-
-   // Reduced motion: show all categories stacked (original layout)
-   if (reducedMotion) {
-      return (
-         <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-            {categories.map(({ key, label, items }) => (
-               <div key={key}>
-                  <h3
-                     style={{
-                        fontSize: 18,
-                        fontWeight: 600,
-                        color: "#eeeef5",
-                        marginBottom: 16,
-                     }}
-                  >
-                     {label}
-                  </h3>
-                  <SkillTagGroup items={items} />
-               </div>
-            ))}
-         </div>
-      );
-   }
 
    return (
       <motion.div

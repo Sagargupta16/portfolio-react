@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import useReducedMotion from "@utils/useReducedMotion";
 
 const AnimatedTimelineTrack = () => {
    const ref = useRef<HTMLDivElement>(null);
@@ -8,7 +7,6 @@ const AnimatedTimelineTrack = () => {
       once: false,
       margin: "0px 0px -50px 0px",
    });
-   const reducedMotion = useReducedMotion();
 
    return (
       <div
@@ -20,10 +18,9 @@ const AnimatedTimelineTrack = () => {
             position: "relative",
          }}
       >
-         {/* Timeline dot */}
          <motion.div
-            initial={reducedMotion ? false : { scale: 0 }}
-            animate={reducedMotion || isInView ? { scale: 1 } : { scale: 0 }}
+            initial={{ scale: 0 }}
+            animate={isInView ? { scale: 1 } : { scale: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{
                width: 16,
@@ -48,10 +45,9 @@ const AnimatedTimelineTrack = () => {
             />
          </motion.div>
 
-         {/* Timeline line */}
          <motion.div
-            initial={reducedMotion ? false : { scaleY: 0 }}
-            animate={reducedMotion || isInView ? { scaleY: 1 } : { scaleY: 0 }}
+            initial={{ scaleY: 0 }}
+            animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             style={{
                width: 2,

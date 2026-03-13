@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { CYAN, PURPLE, TEXT_PRIMARY, MONO_FONT } from "@/constants/theme";
-import useReducedMotion from "@utils/useReducedMotion";
 
 interface CertBadgeProps {
    name: string;
@@ -28,7 +27,6 @@ const CertBadge = ({
    entranceDelay,
 }: CertBadgeProps) => {
    const [isHovered, setIsHovered] = useState(false);
-   const reducedMotion = useReducedMotion();
    const accent = LEVEL_COLOR[level] ?? CYAN;
 
    return (
@@ -59,9 +57,9 @@ const CertBadge = ({
       >
          {/* Badge image with float animation */}
          <motion.div
-            animate={reducedMotion || isHovered ? { y: 0 } : { y: [0, -8, 0] }}
+            animate={isHovered ? { y: 0 } : { y: [0, -8, 0] }}
             transition={
-               reducedMotion || isHovered
+               isHovered
                   ? { duration: 0.3 }
                   : {
                        duration: 3,
