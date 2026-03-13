@@ -9,14 +9,14 @@ interface TimelineCardDesktopProps {
    item: ProfessionalExperience | PositionOfResponsibility;
    index: number;
    accentColor: string;
-   onAnimationComplete: () => void;
+   onClick?: () => void;
 }
 
 const TimelineCardDesktop = ({
    item,
    index,
    accentColor,
-   onAnimationComplete,
+   onClick,
 }: TimelineCardDesktopProps) => (
    <motion.div
       layout="position"
@@ -121,7 +121,7 @@ const TimelineCardDesktop = ({
             item={item}
             accentColor={accentColor}
             isMobile={false}
-            onAnimationComplete={onAnimationComplete}
+            onClick={onClick}
          />
       </div>
    </motion.div>

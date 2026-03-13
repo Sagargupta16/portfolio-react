@@ -1,15 +1,19 @@
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { motion, LayoutGroup } from "motion/react";
 import { getExperience, getPositionsOfResponsibility } from "@data/dataLoader";
 import { staggerContainer, fadeInUp } from "@utils/animations";
 import useMediaQuery from "@utils/useMediaQuery";
 import PageSection from "@components/layout/PageSection";
+import type { ProfessionalExperience } from "@/types";
 import TimelineCard from "./TimelineCard";
+import ExperienceModal from "./ExperienceModal";
 
 const Experience = () => {
    const experienceArray = getExperience();
    const positionsArray = getPositionsOfResponsibility();
    const isMobile = useMediaQuery("(max-width: 768px)");
+   const [selectedExp, setSelectedExp] =
+      useState<ProfessionalExperience | null>(null);
 
    const hasPositions = useMemo(
       () => positionsArray?.length > 0,
@@ -23,7 +27,6 @@ const Experience = () => {
          subtitle="Where I've worked"
          maxWidth={960}
       >
-         {/* Professional Experience */}
          <LayoutGroup>
             <motion.div variants={staggerContainer}>
                {experienceArray.map((item, index) => (
@@ -33,12 +36,12 @@ const Experience = () => {
                      index={index}
                      accentColor="#06b6d4"
                      isMobile={isMobile}
+                     onClick={() => setSelectedExp(item)}
                   />
                ))}
             </motion.div>
          </LayoutGroup>
 
-         {/* Positions of Responsibility */}
          {hasPositions && (
             <>
                <motion.h3
@@ -81,6 +84,11 @@ const Experience = () => {
                </LayoutGroup>
             </>
          )}
+
+         <ExperienceModal
+            experience={selectedExp}
+            onClose={() => setSelectedExp(null)}
+         />
       </PageSection>
    );
 };
