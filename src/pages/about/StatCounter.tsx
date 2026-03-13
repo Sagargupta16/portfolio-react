@@ -2,6 +2,15 @@ import { motion } from "motion/react";
 import { staggerContainer, rotateInUp } from "@utils/animations";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 
+const STAT_LABELS: Record<string, string> = {
+   coding_questions: "Problems Solved",
+   leetcode_rating: "LeetCode Rating",
+   projects: "Projects",
+   contests: "Contests",
+   industry_certifications: "Certifications",
+   open_source_prs: "Open Source PRs",
+};
+
 interface StatCounterProps {
    statEntries: [string, string][];
    isMobile: boolean;
@@ -43,7 +52,7 @@ const StatCounter = ({ statEntries, isMobile }: StatCounterProps) => (
                   marginTop: 8,
                }}
             >
-               {key.replaceAll("_", " ")}
+               {STAT_LABELS[key] ?? key.replaceAll("_", " ")}
             </p>
          </motion.div>
       ))}

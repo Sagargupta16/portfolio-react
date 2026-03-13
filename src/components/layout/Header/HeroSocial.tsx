@@ -29,16 +29,23 @@ const HeroSocial = () => {
             >
                <span style={{ fontSize: 14 }}>&#128640;</span>
                <span>Currently building with</span>
-               <span
-                  style={{
-                     fontFamily: MONO_FONT,
-                     fontWeight: 600,
-                     color: "#06b6d4",
-                     fontSize: 12,
-                  }}
-               >
-                  AWS &middot; React &middot; GenAI
-               </span>
+               {["AWS", "React", "GenAI"].map((tech) => (
+                  <span
+                     key={tech}
+                     style={{
+                        fontFamily: MONO_FONT,
+                        fontWeight: 600,
+                        fontSize: 11,
+                        color: "#06b6d4",
+                        padding: "2px 10px",
+                        borderRadius: 6,
+                        background: "rgba(6, 182, 212, 0.08)",
+                        border: "1px solid rgba(6, 182, 212, 0.2)",
+                     }}
+                  >
+                     {tech}
+                  </span>
+               ))}
             </div>
          </motion.div>
 
