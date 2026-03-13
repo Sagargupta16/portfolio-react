@@ -1,6 +1,11 @@
-import { useRef } from "react";
-import { motion, useInView } from "motion/react";
-import { MONO_FONT, TEXT_MUTED } from "@/constants/theme";
+import { motion } from "motion/react";
+import { MONO_FONT, TEXT_MUTED, GLASS_PANEL_STYLE } from "@/constants/theme";
+import {
+   PANEL_INITIAL,
+   PANEL_VISIBLE,
+   PANEL_TRANSITION,
+} from "@utils/animations";
+import useRevealInView from "@utils/useRevealInView";
 
 interface DiagramNode {
    label: string;
@@ -31,25 +36,16 @@ const NodeDiagram = ({
    width = 320,
    height = 200,
 }: NodeDiagramProps) => {
-   const ref = useRef<HTMLDivElement>(null);
-   const isInView = useInView(ref, {
-      once: false,
-      margin: "0px 0px -60px 0px",
-   });
+   const { ref, isInView } = useRevealInView();
 
    return (
       <motion.div
          ref={ref}
-         initial={{ opacity: 0, y: 30 }}
-         animate={isInView ? { opacity: 1, y: 0 } : {}}
-         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+         initial={PANEL_INITIAL}
+         animate={isInView ? PANEL_VISIBLE : {}}
+         transition={PANEL_TRANSITION}
          style={{
-            borderRadius: 12,
-            overflow: "hidden",
-            border: "1px solid rgb(var(--ch-white) / 0.06)",
-            background: "rgb(var(--ch-glass) / 0.5)",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
+            ...GLASS_PANEL_STYLE,
             display: "flex",
             flexDirection: "column",
          }}

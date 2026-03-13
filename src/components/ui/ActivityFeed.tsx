@@ -1,7 +1,19 @@
-import { useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { motion } from "motion/react";
 import { GitCommit, ExternalLink } from "lucide-react";
-import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY, CYAN } from "@/constants/theme";
+import {
+   MONO_FONT,
+   TEXT_MUTED,
+   TEXT_SECONDARY,
+   CYAN,
+   GLASS_PANEL_STYLE,
+   CHROME_BAR_STYLE,
+} from "@/constants/theme";
+import {
+   PANEL_INITIAL,
+   PANEL_VISIBLE,
+   PANEL_TRANSITION,
+} from "@utils/animations";
+import useRevealInView from "@utils/useRevealInView";
 
 interface FeedItem {
    message: string;
@@ -20,33 +32,21 @@ const ActivityFeed = ({
    items,
    title = "Recent Activity",
 }: ActivityFeedProps) => {
-   const ref = useRef<HTMLDivElement>(null);
-   const isInView = useInView(ref, {
-      once: false,
-      margin: "0px 0px -60px 0px",
-   });
+   const { ref, isInView } = useRevealInView();
 
    return (
       <motion.div
          ref={ref}
-         initial={{ opacity: 0, y: 30 }}
-         animate={isInView ? { opacity: 1, y: 0 } : {}}
-         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-         style={{
-            borderRadius: 12,
-            overflow: "hidden",
-            border: "1px solid rgb(var(--ch-white) / 0.06)",
-            background: "rgb(var(--ch-glass) / 0.5)",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-         }}
+         initial={PANEL_INITIAL}
+         animate={isInView ? PANEL_VISIBLE : {}}
+         transition={PANEL_TRANSITION}
+         style={GLASS_PANEL_STYLE}
       >
          {/* Header */}
          <div
             style={{
+               ...CHROME_BAR_STYLE,
                padding: "10px 16px",
-               borderBottom: "1px solid rgb(var(--ch-white) / 0.06)",
-               background: "rgb(var(--ch-bg-sec) / 0.8)",
                fontFamily: MONO_FONT,
                fontSize: 11,
                color: TEXT_MUTED,

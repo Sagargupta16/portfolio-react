@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
 import useReducedMotion from "@utils/useReducedMotion";
+import { cryptoRandom } from "@utils/random";
 
 interface Streak {
    id: number;
@@ -19,14 +20,14 @@ const STREAK_COUNT = 10;
 const generateStreaks = (): Streak[] =>
    Array.from({ length: STREAK_COUNT }, (_, i) => ({
       id: i,
-      startX: -10 + Math.random() * 60,
-      startY: Math.random() * 70,
-      angle: -(30 + Math.random() * 30),
-      width: 100 + Math.random() * 120,
-      speed: 1.2 + Math.random() * 1.8,
-      delay: Math.random() * 10,
-      opacity: 0.15 + Math.random() * 0.15,
-      repeatDelay: 6 + Math.random() * 8,
+      startX: -10 + cryptoRandom() * 60,
+      startY: cryptoRandom() * 70,
+      angle: -(30 + cryptoRandom() * 30),
+      width: 100 + cryptoRandom() * 120,
+      speed: 1.2 + cryptoRandom() * 1.8,
+      delay: cryptoRandom() * 10,
+      opacity: 0.15 + cryptoRandom() * 0.15,
+      repeatDelay: 6 + cryptoRandom() * 8,
    }));
 
 const ShootingStars = () => {

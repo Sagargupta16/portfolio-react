@@ -1,7 +1,21 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { useState, useEffect, useCallback } from "react";
+import { motion } from "motion/react";
 import { RotateCcw } from "lucide-react";
-import { MONO_FONT, TEXT_MUTED, CYAN, GREEN } from "@/constants/theme";
+import {
+   MONO_FONT,
+   TEXT_MUTED,
+   CYAN,
+   GREEN,
+   GLASS_PANEL_STYLE,
+   CHROME_BAR_STYLE,
+} from "@/constants/theme";
+import {
+   PANEL_INITIAL,
+   PANEL_VISIBLE,
+   PANEL_TRANSITION,
+} from "@utils/animations";
+import { cryptoRandom } from "@utils/random";
+import useRevealInView from "@utils/useRevealInView";
 
 interface TerminalLine {
    text: string;
@@ -22,11 +36,7 @@ const TerminalCard = ({
    lines,
    typingSpeed = 35,
 }: TerminalCardProps) => {
-   const ref = useRef<HTMLDivElement>(null);
-   const isInView = useInView(ref, {
-      once: false,
-      margin: "0px 0px -60px 0px",
-   });
+   const { ref, isInView } = useRevealInView();
    const [visibleLines, setVisibleLines] = useState<number>(0);
    const [typedChars, setTypedChars] = useState<number>(0);
    const [isTyping, setIsTyping] = useState(false);
@@ -60,7 +70,7 @@ const TerminalCard = ({
          if (typedChars < line.text.length) {
             const timeout = setTimeout(
                () => setTypedChars((c) => c + 1),
-               typingSpeed + Math.random() * 20,
+               typingSpeed + cryptoRandom() * 20,
             );
             return () => clearTimeout(timeout);
          }
@@ -101,26 +111,16 @@ const TerminalCard = ({
    return (
       <motion.div
          ref={ref}
-         initial={{ opacity: 0, y: 30 }}
-         animate={isInView ? { opacity: 1, y: 0 } : {}}
-         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-         style={{
-            borderRadius: 12,
-            overflow: "hidden",
-            border: "1px solid rgb(var(--ch-white) / 0.06)",
-            background: "rgb(var(--ch-glass) / 0.5)",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-         }}
+         initial={PANEL_INITIAL}
+         animate={isInView ? PANEL_VISIBLE : {}}
+         transition={PANEL_TRANSITION}
+         style={GLASS_PANEL_STYLE}
       >
          {/* Chrome bar */}
          <div
             style={{
+               ...CHROME_BAR_STYLE,
                height: 36,
-               background: "rgb(var(--ch-bg-sec) / 0.8)",
-               borderBottom: "1px solid rgb(var(--ch-white) / 0.06)",
-               display: "flex",
-               alignItems: "center",
                padding: "0 12px",
                justifyContent: "space-between",
             }}

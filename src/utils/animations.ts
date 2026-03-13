@@ -158,3 +158,11 @@ export const flipInY: Variants = {
       transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
    },
 };
+
+// ===== Panel Enter (shared by glass panel cards) =====
+export const PANEL_INITIAL = { opacity: 0, y: 30 } as const;
+export const PANEL_VISIBLE = { opacity: 1, y: 0 } as const;
+export const PANEL_TRANSITION = {
+   duration: 0.6,
+   ease: [0.16, 1, 0.3, 1],
+} as const;
