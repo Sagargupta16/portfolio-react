@@ -2,6 +2,35 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.9.0] - 2026-03-13
+
+### Added
+
+- Animated service illustrations: 6 unique micro-animations per service card (Full-Stack request flow, DevOps deploy terminal, AI/ML neural network, AI Agents chat, architecture diagram, sort visualization)
+- Floating certification badge showcase with hover glow and level-based accent colors
+- Trophy wall grid for competitions: 2-column layout with medal colors and placement numbers
+- Expandable education achievements with height animation (skills always visible)
+- Animated timeline track: dot scales in + line grows on scroll
+- Experience modal stagger: header, projects, contributions, achievements, skills cascade sequentially
+- Chat-style send confirmation in contact form (typing dots -> checkmark)
+- Themed 404 page with glassmorphism, gradient text, aurora blobs, SPA redirect
+- Status pill badge in About section (green glass pill)
+- Tech stack glass pills in hero (AWS, React, GenAI as individual badges)
+- Proper stat labels: "Problems Solved", "LeetCode Rating", "Open Source PRs"
+
+### Changed
+
+- Services: 2-column grid with animated illustrations + horizontal card layout
+- Services icon map: fixed stale keys to match current service titles
+- Achievement section: floating cert badges + trophy grid replace old list rows
+- Experience modal: refactored from 498 to 90 lines (4 sub-components)
+- "Framer Motion" -> "Motion" in skills.json and projects.json
+
+### Removed
+
+- 13 dead code files (AboutBento, SkillBrowser, ServiceIconRing, CertificationsSection, etc.)
+- `useReducedMotion` checks from new components (animations always render)
+
 ## [3.8.0] - 2026-03-13
 
 ### Added
