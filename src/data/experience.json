@@ -7,33 +7,38 @@
          "position": "Full-time",
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
-         "summary": "Helping enterprise customers architect, migrate, and build scalable solutions on AWS with infrastructure automation and MLOps.",
+         "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
          "projects": [
             {
                "name": "DevOps Infrastructure Automation - State Street",
+               "date": "Oct 2024 - Aug 2025",
                "description": {
-                  "1": "Developed and maintained reusable Terraform modules for core AWS services (EventBridge, CloudWatch, SNS, EBS, Detective), reducing infrastructure deployment time by up to 80% across 38+ enabled services.",
-                  "2": "Implemented comprehensive unit testing framework using tftest to validate Terraform modules, achieving high deployment confidence and infrastructure reliability.",
-                  "3": "Designed and delivered technical specifications enforcing enterprise security hardening guidelines with 1000+ preventative controls, reducing compliance audit overhead.",
-                  "4": "Achieved 10/10 CSAT score through close stakeholder collaboration, translating business requirements into scalable infrastructure solutions."
+                  "1": "Developed Terraform modules for ~10 AWS services with comprehensive testing frameworks (tftest, PyTest), delivering a production-ready solution that enabled 38+ AWS services for application teams.",
+                  "2": "Architected security solutions implementing 1000+ preventative controls aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
+                  "3": "Delivered POCs showcasing use-cases of various AWS services through Terraform, and implemented evidence and federated architecture patterns.",
+                  "4": "Collaborated across Landing Zone, Compliance, Security, and Migrations workstreams, facilitating knowledge transfer sessions. Received 3 Pulse ratings of 5/5 and 10/10 CSAT score."
                },
                "skills": [
                   "AWS",
+                  "Terraform",
+                  "tftest",
+                  "PyTest",
                   "EventBridge",
                   "CloudWatch",
                   "SNS",
                   "EBS",
                   "Detective",
-                  "Terraform",
-                  "tftest",
+                  "CCMv4.0",
                   "Security Hardening"
                ]
             },
             {
                "name": "DevSecOps Infrastructure Automation - DTCC",
+               "date": "Aug 2025 - Dec 2025",
                "description": {
-                  "1": "Refactored and built 10+ Terraform modules to modernize legacy infrastructure for cloud-native transformation in financial services.",
-                  "2": "Leveraged Amazon Q AI to accelerate code analysis and migration assessments, reducing documentation turnaround by 50%."
+                  "1": "Refactored and created critical Terraform infrastructure code to enhance security and scalability, solving complex legacy modernization challenges in financial services.",
+                  "2": "Leveraged Amazon Q AI capabilities to accelerate development workflows, code analysis, and migration assessments, transforming infrastructure patterns to align with cloud-native principles.",
+                  "3": "Partnered with DTCC engineering teams on secure infrastructure practices and knowledge transfer."
                },
                "skills": [
                   "AWS",
@@ -45,10 +50,11 @@
                ]
             },
             {
-               "name": "Medical Image Classification MLOps Pipeline - ProServe MLOps SME",
+               "name": "Medical Image Classification MLOps Pipeline (Internal - SME Program)",
+               "date": "Jun 2025 - Aug 2025",
                "description": {
                   "1": "Architected end-to-end MLOps pipeline on SageMaker, automating data processing, multi-model training, and ensemble model creation for medical image classification.",
-                  "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection - enabling zero-downtime model updates with automatic rollback.",
+                  "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection -- enabling zero-downtime model updates with automatic rollback.",
                   "3": "Provisioned entire infrastructure with Terraform and built CI/CD via CodePipeline and CodeBuild, deploying CloudFront frontend and API Gateway + Lambda inference API."
                },
                "skills": [
@@ -66,8 +72,9 @@
             },
             {
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
+               "date": "Feb 2026 - Present",
                "description": {
-                  "1": "Leading greenfield cloud migration - designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
+                  "1": "Leading greenfield cloud migration -- designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
                   "2": "Delivering architectural recommendations on cost optimization, HA, and DR to customer stakeholders, defining migration roadmap for 50+ application workloads."
                },
                "skills": [
@@ -81,6 +88,55 @@
                   "Solution Architecture"
                ]
             }
+         ],
+         "internal_contributions": [
+            {
+               "title": "Tech Talk: Automating Unit Testing for Terraform using Terraform Test and PyTest frameworks",
+               "type": "talk",
+               "year": "2025"
+            },
+            {
+               "title": "Tech Talk: GitOps Configuration Safety with Health Checks and Pipeline Gating",
+               "type": "talk",
+               "year": "2026"
+            },
+            {
+               "title": "APG Pattern: Secure PR Previews and Approval-Gated Releases for Amplify Gen 2 with GitHub (Published)",
+               "type": "publication",
+               "year": "2025"
+            },
+            {
+               "title": "2 APG Patterns Peer Reviewed",
+               "type": "publication",
+               "year": "2025"
+            }
+         ],
+         "internal_achievements": [
+            {
+               "title": "ProServe MLOps SME Program Graduate",
+               "type": "program",
+               "year": "2025"
+            },
+            {
+               "title": "4x TFC Ambassador: AI/ML, NGDE, CloudOps DevOps Agent, Agentic AI",
+               "type": "program",
+               "year": "2025-2026"
+            },
+            {
+               "title": "Associate Speaker Certification",
+               "type": "program",
+               "year": "2026"
+            },
+            {
+               "title": "AWS T&C Subject Matter Expert (SME) Program Contributor",
+               "type": "program",
+               "year": "2025"
+            },
+            {
+               "title": "ML Hackathon 2025 - 26th/238 teams",
+               "type": "program",
+               "year": "2025"
+            }
          ]
       },
       {
@@ -91,28 +147,39 @@
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
          "summary": "Underwent extensive hands-on DevOps and Cloud training, delivered multiple proof-of-concepts, and contributed to a production ECS migration project using Terraform and CI/CD pipelines.",
-         "project": "ECS Application Deployment with Terraform",
-         "description": {
-            "1": "Migrated on-premises web application to AWS ECS, implementing high-availability architecture and CI/CD pipeline using AWS CodePipeline, reducing maintenance overhead.",
-            "2": "Architected infrastructure as code using Terraform, managing AWS resources including VPC, ALB, and ECS clusters while implementing blue-green deployment strategy for zero-downtime updates.",
-            "3": "Automated Docker image building and deployment process through integration of AWS CodeBuild, CodeDeploy, and Amazon ECR, streamlining application delivery workflow.",
-            "4": "Established comprehensive monitoring solution using AWS X-Ray and CloudWatch for distributed tracing and full observability of application performance."
-         },
-         "skills": [
-            "AWS",
-            "ECS",
-            "CodePipeline",
-            "ECR",
-            "X-Ray",
-            "CloudWatch",
-            "Terraform",
-            "Docker",
-            "Git",
-            "CodeBuild",
-            "CodeDeploy",
-            "VPC",
-            "ALB",
-            "Blue-Green Deployment"
+         "projects": [
+            {
+               "name": "ECS Application Deployment with Terraform",
+               "date": "Mar 2024 - Jul 2024",
+               "description": {
+                  "1": "Migrated on-premises web application to AWS ECS, implementing high-availability architecture and CI/CD pipeline using AWS CodePipeline, reducing maintenance overhead.",
+                  "2": "Architected infrastructure as code using Terraform, managing AWS resources including VPC, ALB, and ECS clusters while implementing blue-green deployment strategy for zero-downtime updates.",
+                  "3": "Automated Docker image building and deployment process through integration of AWS CodeBuild, CodeDeploy, and Amazon ECR, streamlining application delivery workflow.",
+                  "4": "Established comprehensive monitoring solution using AWS X-Ray and CloudWatch for distributed tracing and full observability of application performance."
+               },
+               "skills": [
+                  "AWS",
+                  "ECS",
+                  "CodePipeline",
+                  "ECR",
+                  "X-Ray",
+                  "CloudWatch",
+                  "Terraform",
+                  "Docker",
+                  "CodeBuild",
+                  "CodeDeploy",
+                  "VPC",
+                  "ALB",
+                  "Blue-Green Deployment"
+               ]
+            }
+         ],
+         "internal_contributions": [
+            {
+               "title": "TechU Graduate",
+               "type": "program",
+               "year": "2024"
+            }
          ]
       },
       {
@@ -123,28 +190,34 @@
          "company": "Ikarus-3D",
          "location": "Mohali, India",
          "summary": "Containerized and deployed production applications on AWS, building CI/CD pipelines and establishing code quality infrastructure.",
-         "project": "Web Application Containerization and Deployment",
-         "description": {
-            "1": "Containerized application with Docker and deployed to AWS using ECR and ECS services.",
-            "2": "Implemented comprehensive CI/CD pipeline using GitHub Actions, automating linting, testing, building, and deployment processes.",
-            "3": "Standardized codebase with multi-language linting (pylint, flake8, Black, ESLint, Stylelint) and unit testing (Pytest, Jest).",
-            "4": "Deployed SonarQube on AWS EC2 with RDS integration for continuous code quality analysis.",
-            "5": "Provisioned Forem platform using Ansible for streamlined infrastructure automation."
-         },
-         "skills": [
-            "AWS",
-            "EC2",
-            "ECR",
-            "ECS",
-            "RDS",
-            "Docker",
-            "GitHub Actions",
-            "SonarQube",
-            "Ansible",
-            "Python",
-            "JavaScript",
-            "CI/CD"
-         ]
+         "projects": [
+            {
+               "name": "Web Application Containerization and Deployment",
+               "date": "May 2023 - Jul 2023",
+               "description": {
+                  "1": "Containerized application with Docker and deployed to AWS using ECR and ECS services.",
+                  "2": "Implemented comprehensive CI/CD pipeline using GitHub Actions, automating linting, testing, building, and deployment processes.",
+                  "3": "Standardized codebase with multi-language linting (pylint, flake8, Black, ESLint, Stylelint) and unit testing (Pytest, Jest).",
+                  "4": "Deployed SonarQube on AWS EC2 with RDS integration for continuous code quality analysis.",
+                  "5": "Provisioned Forem platform using Ansible for streamlined infrastructure automation."
+               },
+               "skills": [
+                  "AWS",
+                  "EC2",
+                  "ECR",
+                  "ECS",
+                  "RDS",
+                  "Docker",
+                  "GitHub Actions",
+                  "SonarQube",
+                  "Ansible",
+                  "Python",
+                  "JavaScript",
+                  "CI/CD"
+               ]
+            }
+         ],
+         "internal_contributions": []
       }
    ],
    "positions_of_responsibility": [

@@ -1,4 +1,3 @@
-import { useLenis } from "lenis/react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import TimelineCardMobile from "./TimelineCardMobile";
 import TimelineCardDesktop from "./TimelineCardDesktop";
@@ -8,6 +7,7 @@ interface TimelineCardProps {
    index: number;
    accentColor?: string;
    isMobile: boolean;
+   onClick?: () => void;
 }
 
 const TimelineCard = ({
@@ -15,17 +15,15 @@ const TimelineCard = ({
    index,
    accentColor = "#06b6d4",
    isMobile,
+   onClick,
 }: TimelineCardProps) => {
-   const lenis = useLenis();
-   const handleAnimationComplete = () => lenis?.resize();
-
    if (isMobile) {
       return (
          <TimelineCardMobile
             item={item}
             index={index}
             accentColor={accentColor}
-            onAnimationComplete={handleAnimationComplete}
+            onClick={onClick}
          />
       );
    }
@@ -35,7 +33,7 @@ const TimelineCard = ({
          item={item}
          index={index}
          accentColor={accentColor}
-         onAnimationComplete={handleAnimationComplete}
+         onClick={onClick}
       />
    );
 };

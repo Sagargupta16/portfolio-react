@@ -88,8 +88,15 @@ export interface Education {
 // ===== Experience =====
 export interface ExperienceProject {
    name: string;
+   date?: string;
    description: Record<string, string>;
    skills: string[];
+}
+
+export interface InternalContribution {
+   title: string;
+   type: "talk" | "publication" | "program";
+   year?: string;
 }
 
 export interface ProfessionalExperience {
@@ -104,6 +111,8 @@ export interface ProfessionalExperience {
    project?: string;
    description?: Record<string, string>;
    skills: string[];
+   internal_contributions?: InternalContribution[];
+   internal_achievements?: InternalContribution[];
 }
 
 export interface PositionOfResponsibility {

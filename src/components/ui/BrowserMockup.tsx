@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
-import { MONO_FONT, TEXT_MUTED } from "@/constants/theme";
+import { MONO_FONT, TEXT_MUTED, CHROME_BAR_STYLE } from "@/constants/theme";
 
 interface BrowserMockupProps {
    children: ReactNode;
@@ -95,11 +95,8 @@ const BrowserMockup = ({
             {/* Browser chrome bar */}
             <div
                style={{
+                  ...CHROME_BAR_STYLE,
                   height: 40,
-                  background: "rgb(var(--ch-bg-sec) / 0.8)",
-                  borderBottom: "1px solid rgb(var(--ch-white) / 0.06)",
-                  display: "flex",
-                  alignItems: "center",
                   padding: "0 14px",
                   gap: 6,
                   overflow: "hidden",
