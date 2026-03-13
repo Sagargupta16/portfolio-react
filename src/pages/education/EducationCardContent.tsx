@@ -1,7 +1,7 @@
 import { BookOpen } from "lucide-react";
 import type { Education } from "@/types";
 import EducationCardHeader from "./EducationCardHeader";
-import EducationCardExtras from "./EducationCardExtras";
+import ExpandableExtras from "./ExpandableExtras";
 
 interface EducationCardContentProps {
    item: Education;
@@ -48,7 +48,7 @@ const EducationCardContent = ({
             </div>
          )}
 
-         <EducationCardExtras item={item} marginLeft={ml} />
+         <ExpandableExtras item={item} marginLeft={ml} />
       </>
    );
 };

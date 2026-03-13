@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Code } from "lucide-react";
 import type { Variants } from "motion/react";
 import type { Service } from "@/types";
 import GlassCard from "@components/ui/GlassCard";
 import { iconMap, ACCENT_COLORS } from "./servicesConstants";
+import ServiceIconRing from "./ServiceIconRing";
 
 interface ServiceCardProps {
    service: Service;
@@ -21,6 +23,7 @@ const bentoEntry: Variants = {
 };
 
 const ServiceCard = ({ service, index, wide = false }: ServiceCardProps) => {
+   const [isHovered, setIsHovered] = useState(false);
    const IconComponent = iconMap[service.title] || Code;
    const colors = ACCENT_COLORS[index % ACCENT_COLORS.length];
 
@@ -30,6 +33,8 @@ const ServiceCard = ({ service, index, wide = false }: ServiceCardProps) => {
          style={{
             padding: 32,
             gridColumn: wide ? "span 2" : undefined,
+            position: "relative",
+            overflow: "hidden",
          }}
          variants={bentoEntry}
          whileHover={{
@@ -38,23 +43,42 @@ const ServiceCard = ({ service, index, wide = false }: ServiceCardProps) => {
             boxShadow: `0 12px 40px ${colors.borderHover}`,
             transition: { duration: 0.3 },
          }}
+         onHoverStart={() => setIsHovered(true)}
+         onHoverEnd={() => setIsHovered(false)}
       >
+         {/* Accent gradient blob */}
          <div
             style={{
-               width: 56,
-               height: 56,
-               borderRadius: 12,
-               display: "flex",
-               alignItems: "center",
-               justifyContent: "center",
-               marginBottom: 20,
-               backgroundColor: colors.iconBg,
+               position: "absolute",
+               top: -20,
+               right: -20,
+               width: 120,
+               height: 120,
+               borderRadius: "50%",
+               background: `radial-gradient(circle, ${colors.iconBg}, transparent 70%)`,
+               pointerEvents: "none",
+               opacity: isHovered ? 0.6 : 0.3,
+               transition: "opacity 0.3s ease",
             }}
-         >
-            <IconComponent
-               style={{ width: 28, height: 28, color: colors.icon }}
-            />
-         </div>
+         />
+
+         <ServiceIconRing color={colors.icon} isHovered={isHovered}>
+            <div
+               style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 12,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: colors.iconBg,
+               }}
+            >
+               <IconComponent
+                  style={{ width: 28, height: 28, color: colors.icon }}
+               />
+            </div>
+         </ServiceIconRing>
 
          <h3
             style={{

@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import Toast from "@components/ui/Toast";
 import { getContactOptions } from "@data/dataLoader";
 import { rotateInUp, staggerContainer } from "@utils/animations";
@@ -6,6 +6,7 @@ import useMediaQuery from "@utils/useMediaQuery";
 import PageSection from "@components/layout/PageSection";
 import ContactCard from "./ContactCard";
 import ContactForm from "./ContactForm";
+import SendConfirmation from "./SendConfirmation";
 import useContactForm from "./useContactForm";
 
 const Contact = () => {
@@ -18,9 +19,11 @@ const Contact = () => {
       status,
       isLoading,
       toastVisible,
+      showConfirmation,
       handleChange,
       handleSubmit,
       dismissToast,
+      resetConfirmation,
    } = useContactForm();
 
    return (
@@ -55,14 +58,39 @@ const Contact = () => {
 
             {/* Contact Form - Right Column */}
             <motion.div variants={rotateInUp}>
-               <ContactForm
-                  formRef={formRef}
-                  formData={formData}
-                  isLoading={isLoading}
-                  isMobile={isMobile}
-                  onChange={handleChange}
-                  onSubmit={handleSubmit}
-               />
+               <AnimatePresence mode="wait">
+                  {showConfirmation ? (
+                     <motion.div
+                        key="confirm"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                     >
+                        <SendConfirmation
+                           onReset={resetConfirmation}
+                           senderName={formData.name}
+                        />
+                     </motion.div>
+                  ) : (
+                     <motion.div
+                        key="form"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                     >
+                        <ContactForm
+                           formRef={formRef}
+                           formData={formData}
+                           isLoading={isLoading}
+                           isMobile={isMobile}
+                           onChange={handleChange}
+                           onSubmit={handleSubmit}
+                        />
+                     </motion.div>
+                  )}
+               </AnimatePresence>
 
                <Toast
                   message={status.message || ""}

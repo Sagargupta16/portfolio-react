@@ -195,6 +195,18 @@ img {
    }
 }
 
+@keyframes ring-pulse {
+   0%,
+   100% {
+      transform: scale(1);
+      opacity: 0.3;
+   }
+   50% {
+      transform: scale(1.15);
+      opacity: 0.6;
+   }
+}
+
 @keyframes orb-drift-1 {
    0%,
    100% {

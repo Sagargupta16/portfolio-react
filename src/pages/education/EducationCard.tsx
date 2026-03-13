@@ -4,7 +4,7 @@ import type { Education } from "@/types";
 import { staggerItem, slideInLeft, slideInRight } from "@utils/animations";
 import { MONO_FONT } from "@/constants/theme";
 import EducationCardContent from "./EducationCardContent";
-import TimelineTrack from "./TimelineTrack";
+import AnimatedTimelineTrack from "./AnimatedTimelineTrack";
 
 interface EducationCardProps {
    item: Education;
@@ -131,7 +131,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
          </div>
 
          {/* Center: Timeline track */}
-         <TimelineTrack />
+         <AnimatedTimelineTrack />
 
          {/* Right: Content card */}
          <div
