@@ -51,14 +51,14 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
                      border: "1px solid rgba(6,182,212,0.15)",
                   }}
                >
-                  {[0, 1, 2].map((i) => (
+                  {[0, 1, 2].map((dot) => (
                      <motion.div
-                        key={i}
+                        key={`dot-${dot}`}
                         animate={{ y: [0, -8, 0] }}
                         transition={{
                            duration: 0.6,
                            repeat: Infinity,
-                           delay: i * 0.15,
+                           delay: dot * 0.15,
                            ease: "easeInOut",
                         }}
                         style={{

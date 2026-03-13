@@ -1,16 +1,16 @@
 import { motion } from "motion/react";
+import { CYAN, PURPLE, GREEN, AMBER, PINK } from "@/constants/theme";
 
 interface SortAnimProps {
    color: string;
 }
 
-// Heights for 5 bars
 const BARS = [
-   { h: 50, color: "#06b6d4" },
-   { h: 20, color: "#a855f7" },
-   { h: 40, color: "#22c55e" },
-   { h: 10, color: "#f59e0b" },
-   { h: 30, color: "#ec4899" },
+   { h: 50, color: CYAN },
+   { h: 20, color: PURPLE },
+   { h: 40, color: GREEN },
+   { h: 10, color: AMBER },
+   { h: 30, color: PINK },
 ];
 
 const BAR_W = 8;

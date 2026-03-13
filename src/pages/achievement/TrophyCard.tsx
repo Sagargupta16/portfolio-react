@@ -3,6 +3,7 @@ import { Trophy } from "lucide-react";
 import type { Achievement } from "@/types";
 import {
    MONO_FONT,
+   CYAN,
    TEXT_PRIMARY,
    TEXT_SECONDARY,
    TEXT_MUTED,
@@ -17,7 +18,13 @@ const PLACEMENT_COLORS: Record<string, string> = {
    "1st": "#fbbf24",
    "2nd": "#94a3b8",
    "3rd": "#d97706",
-   "4th": "#6e6e90",
+   "4th": TEXT_MUTED,
+};
+
+const ORDINAL_SUFFIX: Record<string, string> = {
+   "1": "st",
+   "2": "nd",
+   "3": "rd",
 };
 
 const parsePlacement = (
@@ -26,18 +33,19 @@ const parsePlacement = (
    const rankMatch = title.match(/^(Rank \d+)/);
    if (rankMatch) {
       const event = title.replace(/^Rank \d+\s*-\s*/, "");
-      return { rank: rankMatch[1], event, color: "#06b6d4" };
+      return { rank: rankMatch[1], event, color: CYAN };
    }
 
    const placeMatch = title.match(/^(\d+)\w+ Place/);
    if (placeMatch) {
-      const ordinal = `${placeMatch[1]}${placeMatch[1] === "1" ? "st" : placeMatch[1] === "2" ? "nd" : placeMatch[1] === "3" ? "rd" : "th"}`;
+      const n = placeMatch[1];
+      const ordinal = `${n}${ORDINAL_SUFFIX[n] ?? "th"}`;
       const event = title.replace(/^\d+\w+ Place\s*-\s*/, "");
-      const color = PLACEMENT_COLORS[ordinal] ?? "#6e6e90";
+      const color = PLACEMENT_COLORS[ordinal] ?? TEXT_MUTED;
       return { rank: ordinal, event, color };
    }
 
-   return { rank: "", event: title, color: "#6e6e90" };
+   return { rank: "", event: title, color: TEXT_MUTED };
 };
 
 const EXPO_EASE = [0.16, 1, 0.3, 1] as const;

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, PURPLE, GREEN } from "@/constants/theme";
 
 interface StackAnimProps {
    color: string;
@@ -79,7 +79,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
                fontSize: 6,
                fontFamily: MONO_FONT,
                fontWeight: 700,
-               color: "#a855f7",
+               color: PURPLE,
             }}
          >
             {"{ API }"}
@@ -107,7 +107,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
                fontSize: 6,
                fontFamily: MONO_FONT,
                fontWeight: 700,
-               color: "#22c55e",
+               color: GREEN,
             }}
          >
             DB
@@ -149,7 +149,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
             width: 4,
             height: 4,
             borderRadius: "50%",
-            background: "#a855f7",
+            background: PURPLE,
             boxShadow: "0 0 6px #a855f780",
          }}
       />
@@ -169,7 +169,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
             width: 4,
             height: 4,
             borderRadius: "50%",
-            background: "#22c55e",
+            background: GREEN,
             boxShadow: "0 0 6px #22c55e80",
          }}
       />
@@ -187,7 +187,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
             top: 4,
             left: 28,
             fontSize: 8,
-            color: "#22c55e",
+            color: GREEN,
             fontWeight: 800,
             fontFamily: MONO_FONT,
          }}

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, AMBER, PURPLE, GREEN } from "@/constants/theme";
 
 interface PipelineAnimProps {
    color: string;
@@ -9,9 +9,9 @@ const LOOP = 5;
 
 const LINES = [
    { text: "$ git push", delay: 0, color: "rgba(255,255,255,0.5)" },
-   { text: "  building...", delay: 0.8, color: "#f59e0b" },
-   { text: "  testing...", delay: 1.8, color: "#a855f7" },
-   { text: "  deployed", delay: 2.8, color: "#22c55e" },
+   { text: "  building...", delay: 0.8, color: AMBER },
+   { text: "  testing...", delay: 1.8, color: PURPLE },
+   { text: "  deployed", delay: 2.8, color: GREEN },
 ];
 
 const PipelineAnim = ({ color }: PipelineAnimProps) => (
@@ -39,9 +39,9 @@ const PipelineAnim = ({ color }: PipelineAnimProps) => (
             paddingLeft: 5,
          }}
       >
-         {[0, 1, 2].map((d) => (
+         {[0, 1, 2].map((dot) => (
             <div
-               key={d}
+               key={`dot-${dot}`}
                style={{
                   width: 3,
                   height: 3,
@@ -100,9 +100,7 @@ const PipelineAnim = ({ color }: PipelineAnimProps) => (
                }}
             >
                {line.text.includes("deployed") && (
-                  <span style={{ fontSize: 7, color: "#22c55e" }}>
-                     &#x2713;
-                  </span>
+                  <span style={{ fontSize: 7, color: GREEN }}>&#x2713;</span>
                )}
                <span
                   style={{
