@@ -580,7 +580,7 @@
       {
          "id": 32,
          "title": "Deploy Guide",
-         "description": "Step-by-step deployment guides for every platform -- 25+ guides covering GitHub Pages, Vercel, Render, Railway, AWS, and more.",
+         "description": "Step-by-step deployment guides for every platform - 25+ guides covering GitHub Pages, Vercel, Render, Railway, AWS, and more.",
          "date": "March 2025",
          "tools_tech": ["DevOps", "AWS", "Vercel", "Render", "GitHub Pages"],
          "features": [

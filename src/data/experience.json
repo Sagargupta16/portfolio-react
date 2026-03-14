@@ -10,7 +10,7 @@
          "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
          "projects": [
             {
-               "name": "DevOps Infrastructure Automation - State Street",
+               "name": "DevOps Consultant - State Street",
                "date": "Oct 2024 - Aug 2025",
                "description": {
                   "1": "Developed Terraform modules for ~10 AWS services with comprehensive testing frameworks (tftest, PyTest), delivering a production-ready solution that enabled 38+ AWS services for application teams.",
@@ -33,7 +33,7 @@
                ]
             },
             {
-               "name": "DevSecOps Infrastructure Automation - DTCC",
+               "name": "DevOps Consultant - DTCC",
                "date": "Aug 2025 - Dec 2025",
                "description": {
                   "1": "Refactored and created critical Terraform infrastructure code to enhance security and scalability, solving complex legacy modernization challenges in financial services.",
@@ -54,7 +54,7 @@
                "date": "Jun 2025 - Aug 2025",
                "description": {
                   "1": "Architected end-to-end MLOps pipeline on SageMaker, automating data processing, multi-model training, and ensemble model creation for medical image classification.",
-                  "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection -- enabling zero-downtime model updates with automatic rollback.",
+                  "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection - enabling zero-downtime model updates with automatic rollback.",
                   "3": "Provisioned entire infrastructure with Terraform and built CI/CD via CodePipeline and CodeBuild, deploying CloudFront frontend and API Gateway + Lambda inference API."
                },
                "skills": [
@@ -74,7 +74,7 @@
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
                "date": "Feb 2026 - Present",
                "description": {
-                  "1": "Leading greenfield cloud migration -- designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
+                  "1": "Leading greenfield cloud migration - designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
                   "2": "Delivering architectural recommendations on cost optimization, HA, and DR to customer stakeholders, defining migration roadmap for 50+ application workloads."
                },
                "skills": [

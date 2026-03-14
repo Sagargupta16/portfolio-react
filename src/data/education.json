@@ -9,7 +9,7 @@
       "location": "Warangal, Telangana, India",
       "cgpa": "8.38",
       "percentage": "83.8%",
-      "display_text": "National Institute of Technology Warangal -- Warangal, Telangana",
+      "display_text": "National Institute of Technology Warangal - Warangal, Telangana",
       "achievements": [
          "Passed with First Division with Distinction",
          "NIMCET AIR 208 (Sep 2021)",
@@ -37,7 +37,7 @@
       "location": "Indore, Madhya Pradesh, India",
       "cgpa": "",
       "percentage": "",
-      "display_text": "Devi Ahilya Vishwavidyalaya (DAVV) -- Indore, MP",
+      "display_text": "Devi Ahilya Vishwavidyalaya (DAVV) - Indore, MP",
       "skills": [
          "C++",
          "OOPs",
@@ -58,7 +58,7 @@
       "location": "Shivpuri, Madhya Pradesh, India",
       "cgpa": "",
       "percentage": "",
-      "display_text": "Happy Days School -- Shivpuri, MP",
+      "display_text": "Happy Days School - Shivpuri, MP",
       "skills": ["Mathematics", "Physics", "Chemistry"]
    },
    {
@@ -71,7 +71,7 @@
       "location": "Shivpuri, Madhya Pradesh, India",
       "cgpa": "",
       "percentage": "",
-      "display_text": "Kids Garden School -- Shivpuri, MP",
+      "display_text": "Kids Garden School - Shivpuri, MP",
       "skills": []
    }
 ]
