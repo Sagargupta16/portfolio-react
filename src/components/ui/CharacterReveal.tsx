@@ -1,6 +1,5 @@
-import { useRef, type CSSProperties } from "react";
+import { useRef, useMemo, type CSSProperties } from "react";
 import { motion, useInView } from "motion/react";
-import useReducedMotion from "@utils/useReducedMotion";
 
 type TagName = "h1" | "h2" | "h3" | "h4" | "p" | "span";
 
@@ -21,15 +20,6 @@ const motionTags = {
    span: motion.span,
 } as const;
 
-const staticTags = {
-   h1: "h1",
-   h2: "h2",
-   h3: "h3",
-   h4: "h4",
-   p: "p",
-   span: "span",
-} as const;
-
 const CharacterReveal = ({
    text,
    as = "span",
@@ -38,17 +28,18 @@ const CharacterReveal = ({
    stagger = 0.025,
 }: CharacterRevealProps) => {
    const ref = useRef<HTMLElement>(null);
-   const isInView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
-   const reducedMotion = useReducedMotion();
+   const isInView = useInView(ref, {
+      once: true,
+      margin: "0px 0px -80px 0px",
+   });
 
-   if (reducedMotion) {
-      const StaticTag = staticTags[as];
-      return (
-         <StaticTag ref={ref as never} className={className} style={style}>
-            {text}
-         </StaticTag>
-      );
-   }
+   const chars = useMemo(() => {
+      const counts: Record<string, number> = {};
+      return text.split("").map((char) => {
+         counts[char] = (counts[char] ?? 0) + 1;
+         return { char, id: `${char}-${counts[char]}` };
+      });
+   }, [text]);
 
    const MotionTag = motionTags[as];
 
@@ -59,21 +50,23 @@ const CharacterReveal = ({
          style={{ display: "inline-block", ...style }}
          aria-label={text}
       >
-         {text.split("").map((char, i) => {
+         {chars.map(({ char, id }, i) => {
             if (char === " ") {
                return (
-                  <span key={i} style={{ display: "inline-block" }}>
+                  <span key={id} style={{ display: "inline-block" }}>
                      &nbsp;
                   </span>
                );
             }
             return (
                <motion.span
-                  key={i}
+                  key={id}
                   style={{ display: "inline-block" }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={
-                     isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                     isInView
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: 20 }
                   }
                   transition={{
                      type: "spring",

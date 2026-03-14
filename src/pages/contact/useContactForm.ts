@@ -5,6 +5,7 @@ import type { FormData, Status } from "./contactConstants";
 
 const useContactForm = () => {
    const formRef = useRef<HTMLFormElement>(null);
+   const clearTimerRef = useRef<ReturnType<typeof setTimeout>>();
    const emailConfig = getEmailConfig();
 
    const [formData, setFormData] = useState<FormData>({
@@ -20,11 +21,17 @@ const useContactForm = () => {
    useEffect(() => {
       if (status.type) {
          setToastVisible(true);
-         const timer = setTimeout(() => {
+         const hideTimer = setTimeout(() => {
             setToastVisible(false);
-            setTimeout(() => setStatus({ type: "", message: "" }), 300);
+            clearTimerRef.current = setTimeout(
+               () => setStatus({ type: "", message: "" }),
+               300,
+            );
          }, 5000);
-         return () => clearTimeout(timer);
+         return () => {
+            clearTimeout(hideTimer);
+            clearTimeout(clearTimerRef.current);
+         };
       }
    }, [status.type]);
 
@@ -41,12 +48,12 @@ const useContactForm = () => {
       async (e: React.FormEvent<HTMLFormElement>) => {
          e.preventDefault();
 
-         // Honeypot check -- if the hidden field has a value, it's a bot
          const honeypot =
             formRef.current?.querySelector<HTMLInputElement>(
                '[name="website"]',
             );
          if (honeypot?.value) return;
+         if (!formRef.current) return;
 
          setIsLoading(true);
          setStatus({ type: "", message: "" });
@@ -55,14 +62,14 @@ const useContactForm = () => {
             const result = await emailjs.sendForm(
                emailConfig.service_id,
                emailConfig.template_id,
-               formRef.current!,
+               formRef.current,
                emailConfig.public_key,
             );
 
             if (result.status === 200) {
                setShowConfirmation(true);
                setFormData({ name: "", email: "", message: "" });
-               formRef.current!.reset();
+               formRef.current.reset();
             }
          } catch {
             setStatus({
@@ -78,7 +85,10 @@ const useContactForm = () => {
 
    const dismissToast = useCallback(() => {
       setToastVisible(false);
-      setTimeout(() => setStatus({ type: "", message: "" }), 300);
+      clearTimerRef.current = setTimeout(
+         () => setStatus({ type: "", message: "" }),
+         300,
+      );
    }, []);
 
    const resetConfirmation = useCallback(() => {

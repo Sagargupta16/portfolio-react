@@ -39,7 +39,7 @@ const TimelineCardDesktop = ({
                color: accentColor,
             }}
          >
-            {item.date.split(" - ")[0]}
+            {item.date.split(" - ").at(0)}
          </span>
          <span
             style={{
@@ -50,7 +50,7 @@ const TimelineCardDesktop = ({
                marginTop: 2,
             }}
          >
-            {item.date.includes(" - ") ? item.date.split(" - ")[1] : ""}
+            {item.date.split(" - ").at(1) ?? ""}
          </span>
          {item.location && (
             <p

@@ -8,6 +8,7 @@ import ScrollProgress from "@components/ui/ScrollProgress";
 import BackToTop from "@components/ui/BackToTop";
 import Preloader from "@components/ui/Preloader";
 import KeyboardNav from "@components/ui/KeyboardNav";
+import { CYAN } from "@/constants/theme";
 import SectionTransition from "@components/ui/SectionTransition";
 import ParallaxElements from "@components/ui/ParallaxElements";
 import AuroraBlobs from "@components/ui/AuroraBlobs";
@@ -40,7 +41,7 @@ const SectionLoader = () => (
             height: 32,
             borderRadius: "50%",
             border: "2px solid rgba(6, 182, 212, 0.2)",
-            borderTopColor: "#06b6d4",
+            borderTopColor: CYAN,
             animation: "spin 1s linear infinite",
          }}
       />
