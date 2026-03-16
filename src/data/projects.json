@@ -70,7 +70,12 @@
          "title": "Instagram Likes Leaderboard",
          "description": "A browser tool that scans your Instagram posts and shows a ranked leaderboard of your biggest fans — followers and non-followers — sorted by how many posts they've liked.",
          "date": "February 2026",
-         "tools_tech": ["TypeScript", "Preact", "Browser API", "Instagram API"],
+         "tools_tech": [
+            "TypeScript",
+            "Preact",
+            "Browser API",
+            "Instagram API"
+         ],
          "features": [
             "Ranked leaderboard of top likers",
             "Follower vs non-follower separation",
@@ -107,7 +112,13 @@
          "title": "SelfHub",
          "description": "A Model Context Protocol (MCP) server that gives AI assistants access to personal context — journal entries, goals, preferences, and notes — stored in MongoDB for richer, personalized conversations.",
          "date": "March 2025",
-         "tools_tech": ["TypeScript", "MCP", "MongoDB", "Mongoose", "Node.js"],
+         "tools_tech": [
+            "TypeScript",
+            "MCP",
+            "MongoDB",
+            "Mongoose",
+            "Node.js"
+         ],
          "features": [
             "MCP-compliant server with stdio transport",
             "9 tools for journals, goals, preferences, notes",
@@ -142,7 +153,10 @@
          "live": "",
          "team": "MCA NITW Placement Team",
          "organization": "MCA-NITW",
-         "contributors": ["Sagargupta16", "MCA NITW Team"]
+         "contributors": [
+            "Sagargupta16",
+            "MCA NITW Team"
+         ]
       },
       {
          "id": 1,
@@ -168,7 +182,10 @@
          "live": "",
          "team": "BugBiters",
          "organization": "TriNIT",
-         "contributors": ["Sagargupta16", "Team Members"]
+         "contributors": [
+            "Sagargupta16",
+            "Team Members"
+         ]
       },
       {
          "id": 4,
@@ -193,14 +210,21 @@
          "live": "https://leetcode-among-us.onrender.com/",
          "team": "MCA NITW Dev Team",
          "organization": "MCA-NITW",
-         "contributors": ["Sagargupta16", "MCA NITW Team"]
+         "contributors": [
+            "Sagargupta16",
+            "MCA NITW Team"
+         ]
       },
       {
          "id": 27,
          "title": "Noobathon",
          "description": "A team hackathon project built during MCA 1st year at the CSEA Noobathon event, featuring a responsive web page created collaboratively in a team of 3.",
          "date": "April 2022",
-         "tools_tech": ["HTML5", "CSS3", "Hackathon"],
+         "tools_tech": [
+            "HTML5",
+            "CSS3",
+            "Hackathon"
+         ],
          "features": [
             "Built in a team of 3",
             "CSEA Noobathon hackathon entry",
@@ -211,7 +235,10 @@
          "live": "https://sayani13-glitch.github.io/noobathon_ON-11_1/",
          "team": "Team SKS",
          "organization": "CSEA NIT Warangal",
-         "contributors": ["Sagargupta16", "Team SKS"]
+         "contributors": [
+            "Sagargupta16",
+            "Team SKS"
+         ]
       },
       {
          "id": 23,
@@ -238,7 +265,10 @@
          "live": "",
          "team": "MCA NITW Dev Team",
          "organization": "MCA-NITW",
-         "contributors": ["Sagargupta16", "MCA NITW Team"]
+         "contributors": [
+            "Sagargupta16",
+            "MCA NITW Team"
+         ]
       }
    ],
    "other_projects": [
@@ -441,7 +471,12 @@
          "title": "PacMan Game Unity",
          "description": "A classic Pac-Man game recreated using Unity Engine with C# scripting for an authentic gaming experience.",
          "date": "June 2022",
-         "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
+         "tools_tech": [
+            "Unity",
+            "C#",
+            "Game Development",
+            "Unity2D"
+         ],
          "features": [
             "Classic Pac-Man gameplay",
             "Unity2D graphics",
@@ -456,7 +491,12 @@
          "title": "Minesweeper Game Unity",
          "description": "A classic Minesweeper game recreated using Unity Engine with C# scripting, featuring grid-based gameplay and mine detection mechanics.",
          "date": "June 2022",
-         "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
+         "tools_tech": [
+            "Unity",
+            "C#",
+            "Game Development",
+            "Unity2D"
+         ],
          "features": [
             "Classic Minesweeper gameplay",
             "Grid-based mine detection",
@@ -471,7 +511,12 @@
          "title": "Snake Game Unity",
          "description": "A classic Snake game built using Unity Engine with C# scripting, featuring smooth movement mechanics and score tracking.",
          "date": "June 2022",
-         "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
+         "tools_tech": [
+            "Unity",
+            "C#",
+            "Game Development",
+            "Unity2D"
+         ],
          "features": [
             "Classic Snake gameplay",
             "Smooth movement mechanics",
@@ -486,7 +531,12 @@
          "title": "Flappy Bird Game Unity",
          "description": "A Flappy Bird clone built using Unity Engine with C# scripting, featuring physics-based gameplay and obstacle generation.",
          "date": "June 2022",
-         "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
+         "tools_tech": [
+            "Unity",
+            "C#",
+            "Game Development",
+            "Unity2D"
+         ],
          "features": [
             "Flappy Bird gameplay",
             "Physics-based mechanics",
@@ -501,7 +551,11 @@
          "title": "Music Web Player",
          "description": "A modern music player with glassmorphism UI, built with vanilla HTML, CSS, and JavaScript. Features shuffle/repeat modes, rotating album art, and a seekable progress bar.",
          "date": "May 2022",
-         "tools_tech": ["HTML5", "CSS3", "JavaScript"],
+         "tools_tech": [
+            "HTML5",
+            "CSS3",
+            "JavaScript"
+         ],
          "features": [
             "Glassmorphism UI design",
             "Shuffle and repeat playback modes",
@@ -518,7 +572,12 @@
          "title": "MCP Toolkit",
          "description": "Production-ready middleware for MCP servers with authentication, caching, rate limiting, CORS, and structured logging. Accepts community contributions.",
          "date": "March 2025",
-         "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "Middleware"],
+         "tools_tech": [
+            "TypeScript",
+            "MCP Protocol",
+            "Node.js",
+            "Middleware"
+         ],
          "features": [
             "API key, OAuth, and JWT authentication",
             "Response caching with TTL, LRU, and Redis",
@@ -533,7 +592,11 @@
          "title": "Claude Cost Optimizer",
          "description": "Save 40-70% on Claude Code costs with proven strategies, real benchmarks, copy-paste configs, and model selection guides.",
          "date": "March 2026",
-         "tools_tech": ["Claude Code", "Cost Optimization", "Benchmarks"],
+         "tools_tech": [
+            "Claude Code",
+            "Cost Optimization",
+            "Benchmarks"
+         ],
          "features": [
             "Cost reduction strategies with benchmarks",
             "Model selection decision framework",
@@ -568,7 +631,11 @@
          "title": "Awesome MCP Servers",
          "description": "A curated list of MCP servers, tools, frameworks, and resources for the Model Context Protocol ecosystem.",
          "date": "March 2025",
-         "tools_tech": ["MCP Protocol", "AI Agents", "Curated List"],
+         "tools_tech": [
+            "MCP Protocol",
+            "AI Agents",
+            "Curated List"
+         ],
          "features": [
             "Categorized MCP server directory",
             "Tools and framework listings",
@@ -582,7 +649,13 @@
          "title": "Deploy Guide",
          "description": "Step-by-step deployment guides for every platform - 25+ guides covering GitHub Pages, Vercel, Render, Railway, AWS, and more.",
          "date": "March 2025",
-         "tools_tech": ["DevOps", "AWS", "Vercel", "Render", "GitHub Pages"],
+         "tools_tech": [
+            "DevOps",
+            "AWS",
+            "Vercel",
+            "Render",
+            "GitHub Pages"
+         ],
          "features": [
             "25+ platform deployment guides",
             "Copy-paste ready configurations",
@@ -597,7 +670,12 @@
          "title": "Agent Recipes",
          "description": "Copy-paste AI agent workflows for real-world developer tasks including code review, testing, security scanning, and deployment automation.",
          "date": "March 2025",
-         "tools_tech": ["AI Agents", "Claude Code", "Cursor", "Automation"],
+         "tools_tech": [
+            "AI Agents",
+            "Claude Code",
+            "Cursor",
+            "Automation"
+         ],
          "features": [
             "Code review agent workflows",
             "Automated testing pipelines",
@@ -612,7 +690,12 @@
          "title": "AI Git Hooks",
          "description": "AI-powered git hooks that auto-review diffs, generate commit messages, run security scans, and enforce code quality on every commit.",
          "date": "March 2025",
-         "tools_tech": ["Git Hooks", "AI", "Pre-commit", "Security"],
+         "tools_tech": [
+            "Git Hooks",
+            "AI",
+            "Pre-commit",
+            "Security"
+         ],
          "features": [
             "AI-powered diff review on commit",
             "Auto-generated commit messages",
@@ -624,6 +707,12 @@
       }
    ],
    "open_source_contributions": [
+      {
+         "repo": "feast-dev/feast",
+         "title": "Add Claude Code agent skills for Feast",
+         "url": "https://github.com/feast-dev/feast/pull/6081",
+         "status": "merged"
+      },
       {
          "repo": "PrefectHQ/prefect",
          "title": "Document that deployment steps are Python functions",
@@ -655,33 +744,21 @@
          "status": "open"
       },
       {
-         "repo": "unslothai/unsloth",
-         "title": "Improve docs on exporting models from Colab",
-         "url": "https://github.com/unslothai/unsloth/pull/4184",
+         "repo": "hashicorp/terraform-provider-aws",
+         "title": "Fix IoT cloudwatch_metric substitution template validation",
+         "url": "https://github.com/hashicorp/terraform-provider-aws/pull/46867",
          "status": "open"
       },
       {
-         "repo": "feast-dev/feast",
-         "title": "Add Claude Code agent skills for Feast",
-         "url": "https://github.com/feast-dev/feast/pull/6081",
+         "repo": "mm65x/tokemon",
+         "title": "Fix cross-provider pricing normalization in cost engine",
+         "url": "https://github.com/mm65x/tokemon/pull/13",
          "status": "open"
       },
       {
-         "repo": "shanraisshan/claude-code-best-practice",
-         "title": "Add /audit command for best practices compliance check",
-         "url": "https://github.com/shanraisshan/claude-code-best-practice/pull/11",
-         "status": "open"
-      },
-      {
-         "repo": "webfuse-com/awesome-claude",
-         "title": "Add Claude Code cost optimization and recipes resources",
-         "url": "https://github.com/webfuse-com/awesome-claude/pull/84",
-         "status": "open"
-      },
-      {
-         "repo": "saturn-abhishek/awesome-github-profile-readme",
-         "title": "Add Credly Badge README Updater to Tools",
-         "url": "https://github.com/saturn-abhishek/awesome-github-profile-readme/pull/1655",
+         "repo": "aws-samples/aws-iot-twinmaker-samples",
+         "title": "Migrate llm.py from langchain.llms.bedrock to langchain_aws",
+         "url": "https://github.com/aws-samples/aws-iot-twinmaker-samples/pull/166",
          "status": "open"
       }
    ]
