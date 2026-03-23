@@ -729,7 +729,7 @@
          "repo": "apache/airflow",
          "title": "Add template_fields support to SalesforceBulkOperator",
          "url": "https://github.com/apache/airflow/pull/63109",
-         "status": "open"
+         "status": "merged"
       },
       {
          "repo": "chroma-core/chroma",
