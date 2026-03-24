@@ -754,12 +754,6 @@
          "title": "Fix cross-provider pricing normalization in cost engine",
          "url": "https://github.com/mm65x/tokemon/pull/13",
          "status": "open"
-      },
-      {
-         "repo": "aws-samples/aws-iot-twinmaker-samples",
-         "title": "Migrate llm.py from langchain.llms.bedrock to langchain_aws",
-         "url": "https://github.com/aws-samples/aws-iot-twinmaker-samples/pull/166",
-         "status": "open"
       }
    ]
 }
