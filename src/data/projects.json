@@ -754,6 +754,13 @@
          "title": "Fix cross-provider pricing normalization in cost engine",
          "url": "https://github.com/mm65x/tokemon/pull/13",
          "status": "open"
+      },
+      {
+         "repo": "forem/selfhost",
+         "title": "Fix AWS Ansible deploy + Elastic IP allocation",
+         "url": "https://github.com/forem/selfhost/pull/91",
+         "status": "closed",
+         "note": "Community confirmed working. Maintainers left Forem before review."
       }
    ]
 }
