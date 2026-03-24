@@ -1,4 +1,4 @@
-import { GitMerge, CircleDot } from "lucide-react";
+import { GitMerge, CircleDot, GitPullRequestClosed } from "lucide-react";
 import type { OpenSourceContribution } from "@/types";
 import { MONO_FONT } from "@/constants/theme";
 
@@ -6,14 +6,17 @@ interface ContribCardProps {
    contrib: OpenSourceContribution;
 }
 
+const STATUS_CONFIG = {
+   merged: { color: "#a855f7", Icon: GitMerge, label: "Merged" },
+   open: { color: "#22c55e", Icon: CircleDot, label: "Open" },
+   closed: { color: "#f97316", Icon: GitPullRequestClosed, label: "Closed" },
+} as const;
+
 const ContribCard = ({ contrib }: ContribCardProps) => {
-   const isMerged = contrib.status === "merged";
-   const statusColor = isMerged ? "#a855f7" : "#22c55e";
-   const StatusIcon = isMerged ? GitMerge : CircleDot;
-   const hoverBg = isMerged ? "rgba(168,85,247,0.06)" : "rgba(34,197,94,0.06)";
-   const hoverBorder = isMerged
-      ? "rgba(168,85,247,0.2)"
-      : "rgba(34,197,94,0.2)";
+   const config = STATUS_CONFIG[contrib.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.open;
+   const { color: statusColor, Icon: StatusIcon, label: statusLabel } = config;
+   const hoverBg = `${statusColor}0F`;
+   const hoverBorder = `${statusColor}33`;
 
    return (
       <a
@@ -27,7 +30,7 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
             padding: "12px 14px",
             borderRadius: 10,
             background: "rgba(255,255,255,0.02)",
-            border: `1px solid ${isMerged ? "rgba(168,85,247,0.1)" : "rgba(255,255,255,0.04)"}`,
+            border: `1px solid ${statusColor}1A`,
             textDecoration: "none",
             transition: "all 0.2s",
          }}
@@ -37,9 +40,7 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
          }}
          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
             e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-            e.currentTarget.style.borderColor = isMerged
-               ? "rgba(168,85,247,0.1)"
-               : "rgba(255,255,255,0.04)";
+            e.currentTarget.style.borderColor = `${statusColor}1A`;
          }}
       >
          <StatusIcon
@@ -74,15 +75,13 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
                      textTransform: "uppercase",
                      padding: "2px 6px",
                      borderRadius: 4,
-                     background: isMerged
-                        ? "rgba(168,85,247,0.12)"
-                        : "rgba(34,197,94,0.1)",
+                     background: `${statusColor}1F`,
                      color: statusColor,
-                     border: `1px solid ${isMerged ? "rgba(168,85,247,0.25)" : "rgba(34,197,94,0.2)"}`,
+                     border: `1px solid ${statusColor}40`,
                      flexShrink: 0,
                   }}
                >
-                  {isMerged ? "Merged" : "Open"}
+                  {statusLabel}
                </span>
             </div>
             <p

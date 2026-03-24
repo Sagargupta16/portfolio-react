@@ -183,6 +183,7 @@ export interface OpenSourceContribution {
    title: string;
    url: string;
    status: string;
+   note?: string;
 }
 
 export interface ProjectsData {

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { GitPullRequest, GitMerge, CircleDot } from "lucide-react";
+import { GitPullRequest, GitMerge, CircleDot, GitPullRequestClosed } from "lucide-react";
 import {
    MONO_FONT,
    GREEN,
@@ -14,7 +14,10 @@ const OpenSourceBanner = () => {
    const merged = OPEN_SOURCE_CONTRIBUTIONS.filter(
       (c) => c.status === "merged",
    );
-   const open = OPEN_SOURCE_CONTRIBUTIONS.filter((c) => c.status !== "merged");
+   const open = OPEN_SOURCE_CONTRIBUTIONS.filter((c) => c.status === "open");
+   const closed = OPEN_SOURCE_CONTRIBUTIONS.filter(
+      (c) => c.status === "closed",
+   );
 
    return (
       <motion.div
@@ -105,6 +108,27 @@ const OpenSourceBanner = () => {
                      count={open.length}
                      color={GREEN}
                      items={open}
+                  />
+               </>
+            )}
+
+            {closed.length > 0 && (
+               <>
+                  <div
+                     style={{
+                        height: 1,
+                        background:
+                           "linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent)",
+                        marginBottom: 16,
+                        marginTop: 4,
+                     }}
+                  />
+                  <ContribSection
+                     icon={GitPullRequestClosed}
+                     label="Community Impact"
+                     count={closed.length}
+                     color="#f97316"
+                     items={closed}
                   />
                </>
             )}
