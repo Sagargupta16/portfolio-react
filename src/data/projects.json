@@ -68,7 +68,7 @@
       {
          "id": 20,
          "title": "Instagram Likes Leaderboard",
-         "description": "A browser tool that scans your Instagram posts and shows a ranked leaderboard of your biggest fans — followers and non-followers — sorted by how many posts they've liked.",
+         "description": "A browser tool that scans your Instagram posts and shows a ranked leaderboard of your biggest fans - followers and non-followers - sorted by how many posts they've liked.",
          "date": "February 2026",
          "tools_tech": [
             "TypeScript",
@@ -110,7 +110,7 @@
       {
          "id": 22,
          "title": "SelfHub",
-         "description": "A Model Context Protocol (MCP) server that gives AI assistants access to personal context — journal entries, goals, preferences, and notes — stored in MongoDB for richer, personalized conversations.",
+         "description": "A Model Context Protocol (MCP) server that gives AI assistants access to personal context - journal entries, goals, preferences, and notes - stored in MongoDB for richer, personalized conversations.",
          "date": "March 2025",
          "tools_tech": [
             "TypeScript",
@@ -360,7 +360,7 @@
       {
          "id": 25,
          "title": "GroundZeroNN",
-         "description": "A from-scratch neural network library built with only NumPy — no frameworks. Implements forward/backward propagation, optimizers, and activations achieving 79.8% MNIST accuracy.",
+         "description": "A from-scratch neural network library built with only NumPy - no frameworks. Implements forward/backward propagation, optimizers, and activations achieving 79.8% MNIST accuracy.",
          "date": "February 2025",
          "tools_tech": [
             "Python",
