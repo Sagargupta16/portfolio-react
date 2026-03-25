@@ -774,6 +774,12 @@
          "status": "open"
       },
       {
+         "repo": "aws-ia/terraform-aws-bedrock",
+         "title": "Fix name_prefix, tag propagation, external roles, add MCP example",
+         "url": "https://github.com/aws-ia/terraform-aws-bedrock/pull/172",
+         "status": "open"
+      },
+      {
          "repo": "forem/selfhost",
          "title": "Fix AWS Ansible deploy + Elastic IP allocation",
          "url": "https://github.com/forem/selfhost/pull/91",
