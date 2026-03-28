@@ -5,7 +5,8 @@ import { staggerContainer, staggerItem } from "@utils/animations";
 import { MONO_FONT } from "@/constants/theme";
 import HeroStats from "./HeroStats";
 import HeroSocial from "./HeroSocial";
-import Resume from "@assets/Resume.pdf";
+const RESUME_URL =
+   "https://github.com/Sagargupta16/latex-resume/releases/download/latest/resume.pdf";
 
 const HeroContent = () => {
    const [roleIndex, setRoleIndex] = useState(0);
@@ -101,7 +102,7 @@ const HeroContent = () => {
                View Projects
             </motion.button>
             <motion.a
-               href={Resume}
+               href={RESUME_URL}
                download
                className="btn-outline text-sm"
                whileHover={{ scale: 1.04 }}
