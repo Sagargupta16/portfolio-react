@@ -13,10 +13,10 @@
                "name": "DevOps Consultant - State Street",
                "date": "Oct 2024 - Aug 2025",
                "description": {
-                  "1": "Developed Terraform modules for ~10 AWS services with comprehensive testing frameworks (tftest, PyTest), delivering a production-ready solution that enabled 38+ AWS services for application teams.",
-                  "2": "Architected security solutions implementing 1000+ preventative controls aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
+                  "1": "Built Terraform module library covering 38+ AWS services with automated testing (tftest, PyTest), adopted across State Street's cloud platform by application teams.",
+                  "2": "Architected 1000+ preventative security controls aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
                   "3": "Delivered POCs showcasing use-cases of various AWS services through Terraform, and implemented evidence and federated architecture patterns.",
-                  "4": "Collaborated across Landing Zone, Compliance, Security, and Migrations workstreams, facilitating knowledge transfer sessions. Received 3 Pulse ratings of 5/5 and 10/10 CSAT score."
+                  "4": "Collaborated across Landing Zone, Compliance, Security, and Migrations workstreams. Achieved 10/10 CSAT score and 3 consecutive 5/5 Pulse ratings from customer."
                },
                "skills": [
                   "AWS",
@@ -74,8 +74,9 @@
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
                "date": "Feb 2026 - Present",
                "description": {
-                  "1": "Leading greenfield cloud migration - designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
-                  "2": "Delivering architectural recommendations on cost optimization, HA, and DR to customer stakeholders, defining migration roadmap for 50+ application workloads."
+                  "1": "Leading greenfield AWS migration as the sole DevOps consultant - designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
+                  "2": "Driving architecture decisions and defining migration roadmap for 50+ application workloads. Delivering recommendations on cost optimization, HA, and DR to customer stakeholders.",
+                  "3": "Leveraging Kiro for AI-driven requirement analysis, architecture documentation, and implementation specs - significantly accelerating delivery velocity."
                },
                "skills": [
                   "AWS",
@@ -85,7 +86,8 @@
                   "Terraform",
                   "GitHub Actions",
                   "Cloud Migration",
-                  "Solution Architecture"
+                  "Solution Architecture",
+                  "Kiro"
                ]
             }
          ],

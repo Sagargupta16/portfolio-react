@@ -18,10 +18,10 @@
    ],
    "about": {
       "greeting": "👋 Hi, my name is Sagar Gupta.",
-      "current_role": "💼 Currently working as Professional Services (Cloud Consultant) - DevOps/MLOps at Amazon Web Services (AWS).",
-      "education": "🎓 I completed my Master of Computer Applications (MCA) from National Institute of Technology, Warangal with 8.38 CGPA.",
-      "specialization": "🚀 Specializing in DevOps Infrastructure Automation, MLOps Pipelines, Terraform, AWS Cloud Solutions, and CI/CD.",
-      "competitive_programming": "🏆 Competitive Programming: 2007 best LeetCode rating (Knight), 2000+ problems solved across platforms, 140+ contests participated."
+      "current_role": "💼 Cloud & DevOps/MLOps Engineer at AWS Professional Services, leading DevOps engagements for leading financial institutions like State Street and DTCC. Currently leading a greenfield AWS migration for 50+ application workloads.",
+      "specialization": "🚀 Built production MLOps pipelines on SageMaker, published architecture patterns on AWS Prescriptive Guidance, and contributed to major open source projects including Apache Airflow, Terraform Provider AWS, and Feast.",
+      "education": "🎓 Completed MCA from National Institute of Technology, Warangal (CGPA: 8.38, NIMCET AIR 208). 6x certified across AWS and Terraform.",
+      "competitive_programming": "🏆 LeetCode Knight (2007 peak rating), 2000+ problems solved across platforms, 140+ contests. Google Kick Start '22 Top 5%."
    },
    "statistics": {
       "coding_questions": "2000+",
@@ -29,7 +29,7 @@
       "projects": "25+",
       "contests": "140+",
       "industry_certifications": "6",
-      "open_source_prs": "10+"
+      "open_source_prs": "13+"
    },
    "languages": [
       { "name": "English", "level": "Professional Working" },

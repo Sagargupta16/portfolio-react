@@ -64,6 +64,7 @@
    ],
    "tools_platforms": [
       "Claude Code",
+      "Kiro",
       "Cursor AI",
       "GitHub Copilot",
       "Git",
