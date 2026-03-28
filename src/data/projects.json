@@ -1,6 +1,28 @@
 {
    "featured_projects": [
       {
+         "id": 37,
+         "title": "GitScope",
+         "description": "A Chrome extension that adds a contribution insights dashboard to any GitHub profile - streaks, language breakdown, PR stats, activity heatmap, and more. Published on Chrome Web Store.",
+         "date": "March 2026",
+         "tools_tech": [
+            "JavaScript",
+            "Chrome Extension",
+            "Manifest V3",
+            "GitHub GraphQL API",
+            "Cloudflare Workers",
+            "esbuild"
+         ],
+         "features": [
+            "Stats grid with streaks, stars, PRs, and contributions",
+            "Color-coded language breakdown and top repositories",
+            "20-week activity heatmap and contribution donut chart",
+            "OAuth via Cloudflare Worker with server-side secrets"
+         ],
+         "github": "https://github.com/Sagargupta16/GitScope",
+         "live": "https://chromewebstore.google.com/detail/gitscope/fndaanihifimmlnmkjdmjbbkbdajolff"
+      },
+      {
          "id": 15,
          "title": "Ledger Sync",
          "description": "A self-hosted personal finance application that syncs transaction data from Excel files and provides comprehensive analytics with smart duplicate detection, spending analysis, and investment tracking.",
