@@ -1,34 +1,33 @@
-## Description
+## Summary
 
-<!-- What does this PR do? -->
+<!-- What does this PR do? 1-3 sentences. -->
 
 ## Changes
 
-## <!-- List the key changes -->
+<!-- List the key changes -->
+
+-
 
 ## Type
 
-<!-- Check one -->
-
 - [ ] feat: New feature
 - [ ] fix: Bug fix
+- [ ] content: Data update (`data/*.json`)
 - [ ] refactor: Code restructuring
 - [ ] chore: Maintenance / dependency update
 - [ ] docs: Documentation only
 
 ## Testing
 
-<!-- How was this tested? -->
-
-- [ ] `pnpm build` passes
 - [ ] `pnpm lint` passes (zero warnings)
-- [ ] `pnpm test` passes (4/4)
+- [ ] `pnpm build` succeeds
+- [ ] `pnpm test` passes
 - [ ] `pnpm type-check` passes
 - [ ] Visually verified in browser
 
 ## Checklist
 
-- [ ] No component exceeds 150 lines
+- [ ] No hardcoded content in components (data belongs in `data/*.json`)
 - [ ] Theme constants used (no hardcoded colors/fonts)
 - [ ] Reduced motion respected where applicable
 - [ ] Mobile responsive

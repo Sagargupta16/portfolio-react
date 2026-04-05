@@ -14,7 +14,7 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_PATH = resolve(__dirname, "../src/data/achievements.json");
+const DATA_PATH = resolve(__dirname, "../data/achievements.json");
 const CREDLY_USERNAME = process.env.CREDLY_USERNAME || "sagar-gupta.f8eb96cc";
 const API_URL = `https://www.credly.com/users/${CREDLY_USERNAME}/badges.json`;
 

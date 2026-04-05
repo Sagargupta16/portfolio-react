@@ -92,47 +92,57 @@ pnpm build
 ## Project Structure
 
 ```
+data/                                  # JSON content files (edit these to customize)
+├── personal.json
+├── experience.json
+├── education.json
+├── skills.json
+├── projects.json
+├── achievements.json
+├── services.json
+└── contact.json
 src/
-├── __tests__/                      # Vitest smoke tests + setup
+├── __tests__/                         # Vitest smoke tests + setup
 ├── components/
-│   ├── 3d/                         # Three.js hero scene + geometries
-│   ├── common/                     # ErrorBoundary
+│   ├── 3d/                            # Three.js hero scene + geometries
+│   ├── common/                        # ErrorBoundary
 │   ├── layout/
-│   │   ├── Header/                 # Hero (split into sub-components)
-│   │   ├── Navigation/             # Nav + DesktopNav + MobileMenu
-│   │   ├── Footer/                 # Footer + sub-components
-│   │   └── PageSection.tsx         # Reusable section wrapper
+│   │   ├── Header/                    # Hero (split into sub-components)
+│   │   ├── Navigation/                # Nav + DesktopNav + MobileMenu
+│   │   ├── Footer/                    # Footer + sub-components
+│   │   └── PageSection.tsx            # Reusable section wrapper
 │   └── ui/
-│       ├── AuroraBlobs.tsx         # Fluid aurora gradient background
-│       ├── ShootingStars.tsx       # Animated light streaks
-│       ├── BrowserMockup.tsx       # 3D tilted browser window
-│       ├── TerminalCard.tsx        # Auto-typing terminal
-│       ├── CharacterReveal.tsx     # Spring char-by-char animation
-│       ├── ScrollRevealText.tsx    # Scroll-driven gradient text
-│       ├── GlassCard.tsx           # Hover tilt + cursor glow card
-│       ├── TechTag.tsx             # Reusable skill/tech tag
+│       ├── AuroraBlobs.tsx            # Fluid aurora gradient background
+│       ├── ShootingStars.tsx          # Animated light streaks
+│       ├── BrowserMockup.tsx          # 3D tilted browser window
+│       ├── TerminalCard.tsx           # Auto-typing terminal
+│       ├── CharacterReveal.tsx        # Spring char-by-char animation
+│       ├── ScrollRevealText.tsx       # Scroll-driven gradient text
+│       ├── GlassCard.tsx              # Hover tilt + cursor glow card
+│       ├── TechTag.tsx                # Reusable skill/tech tag
 │       └── ...
 ├── constants/
-│   └── theme.ts                    # Centralized colors, fonts, spacing
-├── hooks/                          # Custom interaction hooks
-├── pages/                          # 9 page sections (each split into sub-files)
-├── data/                           # JSON data + typed dataLoader.ts
+│   └── theme.ts                       # Centralized colors, fonts, spacing
+├── data/
+│   └── dataLoader.ts                  # Typed getter functions for JSON data
+├── hooks/                             # Custom interaction hooks
+├── pages/                             # 9 page sections (each split into sub-files)
 ├── types/
-│   └── index.ts                    # All data interfaces (19 types)
+│   └── index.ts                       # All data interfaces (19 types)
 ├── utils/
-│   ├── animations.ts               # 16 Motion variant presets
-│   ├── useMediaQuery.ts            # Responsive breakpoint hook
-│   └── useReducedMotion.ts         # Accessibility motion hook
-├── App.tsx                         # Root layout with ReactLenis
-├── index.tsx                       # Entry point
-└── index.css                       # Tailwind theme + glassmorphism + keyframes
+│   ├── animations.ts                  # 16 Motion variant presets
+│   ├── useMediaQuery.ts               # Responsive breakpoint hook
+│   └── useReducedMotion.ts            # Accessibility motion hook
+├── App.tsx                            # Root layout with ReactLenis
+├── index.tsx                          # Entry point
+└── index.css                          # Tailwind theme + glassmorphism + keyframes
 ```
 
 ---
 
 ## Data-Driven Content
 
-All portfolio content lives in JSON files under `src/data/`:
+All portfolio content lives in JSON files under `data/` at the project root:
 
 | File                | Content                                                          |
 | ------------------- | ---------------------------------------------------------------- |

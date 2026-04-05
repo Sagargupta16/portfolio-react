@@ -16,14 +16,14 @@ import type {
    SocialProfile,
 } from "@/types";
 
-import personalData from "./personal.json";
-import educationData from "./education.json";
-import experienceData from "./experience.json";
-import skillsData from "./skills.json";
-import servicesData from "./services.json";
-import projectsData from "./projects.json";
-import achievementsData from "./achievements.json";
-import contactData from "./contact.json";
+import personalData from "../../data/personal.json";
+import educationData from "../../data/education.json";
+import experienceData from "../../data/experience.json";
+import skillsData from "../../data/skills.json";
+import servicesData from "../../data/services.json";
+import projectsData from "../../data/projects.json";
+import achievementsData from "../../data/achievements.json";
+import contactData from "../../data/contact.json";
 
 // Consolidated data access
 // Individual data getters

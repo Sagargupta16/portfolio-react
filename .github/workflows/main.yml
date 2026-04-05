@@ -43,7 +43,7 @@ jobs:
          - name: Validate JSON data files
            run: |
               echo "Validating JSON data files..."
-              find src/data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
+              find data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
 
          - name: Build with Vite
            run: pnpm build
