@@ -610,23 +610,47 @@
          "live": ""
       },
       {
-         "id": 36,
-         "title": "Claude Cost Optimizer",
-         "description": "Save 40-70% on Claude Code costs with proven strategies, real benchmarks, copy-paste configs, and model selection guides.",
+         "id": 38,
+         "title": "Claude Skills",
+         "description": "Custom Claude Code plugin marketplace with 17 reusable plugins covering full-stack development, testing, API design, databases, CI/CD, Docker, security, performance, and more.",
          "date": "March 2026",
          "tools_tech": [
             "Claude Code",
-            "Cost Optimization",
-            "Benchmarks"
+            "Plugin Marketplace",
+            "Markdown",
+            "JSON",
+            "GitHub Actions"
          ],
          "features": [
-            "Cost reduction strategies with benchmarks",
-            "Model selection decision framework",
-            "Copy-paste configuration templates",
-            "Real-world usage analytics"
+            "17 production-ready plugins with 24 slash commands",
+            "Auto-activating skills for git safety, security, and PR workflows",
+            "Stack-specific plugins for FARM, testing, API design, and databases",
+            "CI validation pipeline and tiered installation guide"
+         ],
+         "github": "https://github.com/Sagargupta16/claude-skills",
+         "live": ""
+      },
+      {
+         "id": 36,
+         "title": "Claude Cost Optimizer",
+         "description": "Installable Claude Code plugin with cost-mode skill that saves 30-60% on costs through concise responses, model routing, budget hooks, and efficient workflow patterns.",
+         "date": "March 2026",
+         "tools_tech": [
+            "Claude Code",
+            "Plugin Marketplace",
+            "React",
+            "Vite",
+            "TypeScript",
+            "Python"
+         ],
+         "features": [
+            "Installable cost-mode skill with 3 intensity levels (lite/standard/strict)",
+            "Web-based cost calculator, badge checker, and repo analyzer",
+            "7 CLI tools including token estimator and budget hooks",
+            "11 deep-dive guides and stack-specific CLAUDE.md templates"
          ],
          "github": "https://github.com/Sagargupta16/claude-cost-optimizer",
-         "live": ""
+         "live": "https://sagargupta.online/claude-cost-optimizer/"
       },
       {
          "id": 35,
