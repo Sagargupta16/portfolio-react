@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.10.0] - 2026-04-08
+
+### Added
+
+- 4 new projects: Code Arena (collaborative), Instagram Autopilot, StockSage AI (removed), Credly Badge README Action
+- le-git-graph #109 open source contribution (infinite scroll + performance improvements)
+- TypeScript added to GitScope tools_tech (landing page rewrite)
+
+### Changed
+
+- Code Arena categorized as collaborative project (with Pranshu)
+- Credly Badge README Action added to community projects
+
+### Removed
+
+- terraform-aws-step-functions #79 from open source contributions (closed Apr 1)
+
 ## [3.9.0] - 2026-03-13
 
 ### Added

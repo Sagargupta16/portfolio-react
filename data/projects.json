@@ -7,6 +7,7 @@
          "date": "March 2026",
          "tools_tech": [
             "JavaScript",
+            "TypeScript",
             "Chrome Extension",
             "Manifest V3",
             "GitHub GraphQL API",
@@ -290,6 +291,34 @@
          "contributors": [
             "Sagargupta16",
             "MCA NITW Team"
+         ]
+      },
+      {
+         "id": 39,
+         "title": "Code Arena",
+         "description": "A real-time competitive coding platform where 2-5 friends race to solve LeetCode problems with built-in C++ and Python code execution via sandboxed Piston containers.",
+         "date": "April 2026",
+         "tools_tech": [
+            "React 19",
+            "TypeScript",
+            "FastAPI",
+            "WebSocket",
+            "MongoDB",
+            "Monaco Editor",
+            "Piston"
+         ],
+         "features": [
+            "Real-time multiplayer coding races with 2-5 players",
+            "Built-in C++ and Python execution via sandboxed containers",
+            "Private rooms with GitHub OAuth authentication",
+            "Server-authoritative scoring based on speed and test cases"
+         ],
+         "github": "https://github.com/Sagargupta16/code-arena",
+         "live": "",
+         "team": "Sagar & Pranshu",
+         "contributors": [
+            "Sagargupta16",
+            "Pranshu"
          ]
       }
    ],
@@ -586,6 +615,27 @@
          ],
          "github": "https://github.com/Sagargupta16/Music-Web-App",
          "live": "https://sagargupta.online/Music-Web-App/"
+      },
+      {
+         "id": 40,
+         "title": "Instagram Autopilot",
+         "description": "Fully automated Instagram and X/Twitter content creation and posting using AWS Bedrock AI for content generation, Pillow for branded template images, and Composio SDK for social media integration.",
+         "date": "March 2026",
+         "tools_tech": [
+            "Python",
+            "AWS Bedrock",
+            "Composio SDK",
+            "Pillow",
+            "GitHub Actions"
+         ],
+         "features": [
+            "AI-powered content generation via AWS Bedrock Claude",
+            "Automated daily Instagram and X/Twitter posting",
+            "Branded template image generation with Pillow",
+            "Configurable content strategy per day of week"
+         ],
+         "github": "https://github.com/Sagargupta16/instagram-autopilot",
+         "live": ""
       }
    ],
    "community_projects": [
@@ -750,6 +800,26 @@
          ],
          "github": "https://github.com/Sagargupta16/ai-git-hooks",
          "live": ""
+      },
+      {
+         "id": 42,
+         "title": "Credly Badge README Action",
+         "description": "A GitHub Action that automatically fetches Credly certifications and badges and syncs them to your GitHub profile README with categorized sections and dark/light theme support.",
+         "date": "March 2026",
+         "tools_tech": [
+            "Node.js",
+            "GitHub Actions",
+            "Credly API",
+            "Markdown"
+         ],
+         "features": [
+            "Auto-sync Credly badges to GitHub README weekly",
+            "Categorized sections for certifications, partner, and learning badges",
+            "Non-destructive updates using HTML comment markers",
+            "Dark/light theme support via Credly CDN"
+         ],
+         "github": "https://github.com/Sagargupta16/credly-badge-readme-action",
+         "live": ""
       }
    ],
    "open_source_contributions": [
@@ -790,12 +860,6 @@
          "status": "open"
       },
       {
-         "repo": "terraform-aws-modules/terraform-aws-step-functions",
-         "title": "Add missing CloudWatch Logs IAM permissions",
-         "url": "https://github.com/terraform-aws-modules/terraform-aws-step-functions/pull/79",
-         "status": "open"
-      },
-      {
          "repo": "chroma-core/chroma",
          "title": "Fix: replace ValueError with InvalidArgumentError in core API",
          "url": "https://github.com/chroma-core/chroma/pull/6590",
@@ -823,6 +887,12 @@
          "repo": "aws-ia/terraform-aws-bedrock",
          "title": "Fix name_prefix, tag propagation, external roles, add MCP example",
          "url": "https://github.com/aws-ia/terraform-aws-bedrock/pull/172",
+         "status": "open"
+      },
+      {
+         "repo": "NirmalScaria/le-git-graph",
+         "title": "Infinite scroll, configurable commit count, and performance improvements",
+         "url": "https://github.com/NirmalScaria/le-git-graph/pull/109",
          "status": "open"
       },
       {
