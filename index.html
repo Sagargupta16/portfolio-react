@@ -58,6 +58,55 @@
          content="https://sagargupta.online/portfolio-react/og-image.png"
       />
 
+      <!-- JSON-LD Structured Data -->
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://sagargupta.online/#person",
+            "name": "Sagar Gupta",
+            "url": "https://sagargupta.online",
+            "image": "https://avatars.githubusercontent.com/u/92421383",
+            "jobTitle": "Cloud Consultant - DevOps/MLOps",
+            "description": "DevOps/MLOps Consultant at AWS Professional Services. 6x AWS Certified. Building cloud infrastructure, CI/CD pipelines, and ML engineering solutions for enterprise clients.",
+            "worksFor": {
+              "@type": "Organization",
+              "name": "Amazon Web Services",
+              "url": "https://aws.amazon.com"
+            },
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "National Institute of Technology, Warangal",
+              "url": "https://www.nitw.ac.in"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Hyderabad",
+              "addressCountry": "IN"
+            },
+            "sameAs": [
+              "https://github.com/Sagargupta16",
+              "https://www.linkedin.com/in/sagar-gupta-16-10/",
+              "https://www.instagram.com/sagar_sethh/",
+              "https://x.com/Sagargupta1610",
+              "https://leetcode.com/u/Sagargupta16"
+            ],
+            "knowsAbout": ["AWS", "DevOps", "MLOps", "Terraform", "Python", "React", "CI/CD", "Cloud Infrastructure", "Docker", "Kubernetes", "SageMaker", "FastAPI"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://sagargupta.online/portfolio-react/#website",
+            "url": "https://sagargupta.online/portfolio-react/",
+            "name": "Sagar Gupta Portfolio",
+            "description": "Portfolio of Sagar Gupta - DevOps & Cloud Consultant at AWS. Cloud infrastructure, CI/CD automation, ML engineering, and 25+ projects.",
+            "author": { "@id": "https://sagargupta.online/#person" }
+          }
+        ]
+      }
+      </script>
+
       <!-- Favicons -->
       <link
          rel="apple-touch-icon"
