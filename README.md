@@ -1,5 +1,10 @@
 # Sagar Gupta - Portfolio
 
+![GitHub stars](https://img.shields.io/github/stars/Sagargupta16/portfolio-react?style=flat-square)
+![GitHub forks](https://img.shields.io/github/forks/Sagargupta16/portfolio-react?style=flat-square)
+![License](https://img.shields.io/github/license/Sagargupta16/portfolio-react?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/Sagargupta16/portfolio-react?style=flat-square)
+
 [![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml)
 
 ![React Version](https://img.shields.io/badge/react-19-blue)
@@ -181,6 +186,17 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 4. Production build
 5. Security audit
 6. Deploy to GitHub Pages (only on push to `main`)
+
+---
+
+## More Projects
+
+| Project | Description |
+|---------|-------------|
+| [claude-cost-optimizer](https://github.com/Sagargupta16/claude-cost-optimizer) | Save 30-60% on Claude Code costs - proven strategies and benchmarks |
+| [Financial Dashboard](https://github.com/Sagargupta16/Financial-Dashboard) | Modern React financial dashboard with analytics and data visualization |
+| [InstagramLikesLeaderboard](https://github.com/Sagargupta16/InstagramLikesLeaderboard) | Browser tool showing who likes your Instagram posts the most |
+| [LeetCode Rating Predictor](https://github.com/Sagargupta16/LeetCode_Rating_Predictor) | Full-stack ML-powered LeetCode contest rating predictor |
 
 ---
 
