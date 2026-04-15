@@ -2,6 +2,7 @@ import type {
    Achievement,
    Certification,
    CodingPlatformStats,
+   CommunityDiscussion,
    ContactOption,
    Education,
    EmailConfig,
@@ -59,6 +60,8 @@ export const getCodingPlatformStats = (): CodingPlatformStats =>
    (achievementsData.coding_platform_stats || {}) as CodingPlatformStats;
 export const getOpenSourceContributions = (): OpenSourceContribution[] =>
    (projectsData.open_source_contributions || []) as OpenSourceContribution[];
+export const getCommunityDiscussions = (): CommunityDiscussion[] =>
+   (projectsData.community_discussions || []) as CommunityDiscussion[];
 export const getContactOptions = (): ContactOption[] =>
    contactData.contact_options as ContactOption[];
 export const getEmailConfig = (): EmailConfig =>

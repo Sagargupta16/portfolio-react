@@ -186,12 +186,20 @@ export interface OpenSourceContribution {
    note?: string;
 }
 
+export interface CommunityDiscussion {
+   repo: string;
+   title: string;
+   url: string;
+   status: string;
+}
+
 export interface ProjectsData {
    featured_projects: Project[];
    collaborative_projects: Project[];
    other_projects: Project[];
    community_projects: Project[];
    open_source_contributions: OpenSourceContribution[];
+   community_discussions: CommunityDiscussion[];
 }
 
 // ===== Skills =====
