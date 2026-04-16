@@ -1,5 +1,5 @@
-import { getOpenSourceContributions } from "@data/dataLoader";
-import type { Project, OpenSourceContribution } from "@/types";
+import { getOpenSourceContributions, getCommunityDiscussions } from "@data/dataLoader";
+import type { Project, OpenSourceContribution, CommunityDiscussion } from "@/types";
 
 export const FILTERS = [
    "All",
@@ -70,3 +70,6 @@ export interface ProjectWithCategory extends Project {
 
 export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] =
    getOpenSourceContributions();
+
+export const COMMUNITY_DISCUSSIONS: CommunityDiscussion[] =
+   getCommunityDiscussions();

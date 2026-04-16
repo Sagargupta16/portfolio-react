@@ -1,14 +1,17 @@
 import { motion } from "motion/react";
-import { GitPullRequest, GitMerge, CircleDot, GitPullRequestClosed } from "lucide-react";
+import { GitPullRequest, GitMerge, CircleDot, GitPullRequestClosed, BadgeCheck } from "lucide-react";
 import {
    MONO_FONT,
+   CYAN,
    GREEN,
    PURPLE,
    TEXT_PRIMARY,
    TEXT_MUTED,
 } from "@/constants/theme";
-import { OPEN_SOURCE_CONTRIBUTIONS } from "./portfolioConstants";
+import { staggerContainer, staggerItem } from "@utils/animations";
+import { OPEN_SOURCE_CONTRIBUTIONS, COMMUNITY_DISCUSSIONS } from "./portfolioConstants";
 import ContribSection from "./ContribSection";
+import DiscussionCard from "./DiscussionCard";
 
 const OpenSourceBanner = () => {
    const merged = OPEN_SOURCE_CONTRIBUTIONS.filter(
@@ -48,7 +51,7 @@ const OpenSourceBanner = () => {
                   fontWeight: 500,
                }}
             >
-               ({OPEN_SOURCE_CONTRIBUTIONS.length})
+               ({OPEN_SOURCE_CONTRIBUTIONS.length + COMMUNITY_DISCUSSIONS.length})
             </span>
          </div>
 
@@ -130,6 +133,58 @@ const OpenSourceBanner = () => {
                      color="#f97316"
                      items={closed}
                   />
+               </>
+            )}
+
+            {COMMUNITY_DISCUSSIONS.length > 0 && (
+               <>
+                  <div
+                     style={{
+                        height: 1,
+                        background:
+                           "linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent)",
+                        marginBottom: 16,
+                        marginTop: 4,
+                     }}
+                  />
+                  <div
+                     style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        marginBottom: 12,
+                     }}
+                  >
+                     <BadgeCheck size={14} style={{ color: CYAN }} />
+                     <span
+                        style={{
+                           fontSize: 12,
+                           fontWeight: 700,
+                           color: CYAN,
+                           fontFamily: MONO_FONT,
+                           letterSpacing: "0.03em",
+                        }}
+                     >
+                        Accepted Answers ({COMMUNITY_DISCUSSIONS.length})
+                     </span>
+                  </div>
+                  <motion.div
+                     style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                        gap: 10,
+                     }}
+                     variants={staggerContainer}
+                     initial="hidden"
+                     whileInView="visible"
+                     viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+                  >
+                     {COMMUNITY_DISCUSSIONS.map((d) => (
+                        <motion.div key={d.url} variants={staggerItem}>
+                           <DiscussionCard discussion={d} />
+                        </motion.div>
+                     ))}
+                  </motion.div>
                </>
             )}
          </div>
