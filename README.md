@@ -156,7 +156,7 @@ All portfolio content lives in JSON files under `data/` at the project root:
 | `experience.json`   | Professional experience + positions of responsibility            |
 | `skills.json`       | Categorized skills (6 primary + 3 secondary categories)          |
 | `services.json`     | Service offerings                                                |
-| `projects.json`     | Featured, collaborative, community, other, and open source PRs   |
+| `projects.json`     | Featured, collaborative, community, other projects, open source PRs, and community discussions |
 | `achievements.json` | Certifications, badges, competitions, coding stats (auto-synced) |
 | `contact.json`      | Contact options + EmailJS config                                 |
 

@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.11.0] - 2026-04-16
+
+### Added
+
+- Community discussions section in Open Source banner with accepted/helpful status split
+- `DiscussionCard` component with status-driven color theming (cyan for accepted, purple for helpful)
+- `CommunityDiscussion` type and `getCommunityDiscussions()` getter in dataLoader
+- 21 community discussion entries in projects.json across 16 repos (3 accepted, 18 helpful)
+
+### Changed
+
+- Open Source banner total count now includes community discussions
+- OpenSourceBanner split into 4 sub-sections: Merged, Under Review, Community Impact, Discussions
+
 ## [3.10.0] - 2026-04-08
 
 ### Added

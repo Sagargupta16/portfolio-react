@@ -171,7 +171,7 @@ const OpenSourceBanner = () => {
                            letterSpacing: "0.03em",
                         }}
                      >
-                        Accepted Answers ({acceptedDiscussions.length})
+                        Accepted Discussion Answers ({acceptedDiscussions.length})
                      </span>
                   </div>
                   <motion.div
