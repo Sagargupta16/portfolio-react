@@ -1,4 +1,4 @@
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, MessageCircle } from "lucide-react";
 import type { CommunityDiscussion } from "@/types";
 import { MONO_FONT } from "@/constants/theme";
 
@@ -6,11 +6,18 @@ interface DiscussionCardProps {
    discussion: CommunityDiscussion;
 }
 
-const ACCEPTED_COLOR = "#06b6d4";
+const STATUS_CONFIG = {
+   accepted: { color: "#06b6d4", Icon: BadgeCheck, label: "Accepted" },
+   helpful: { color: "#a855f7", Icon: MessageCircle, label: "Helpful" },
+} as const;
 
 const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
-   const hoverBg = `${ACCEPTED_COLOR}0F`;
-   const hoverBorder = `${ACCEPTED_COLOR}33`;
+   const config =
+      STATUS_CONFIG[discussion.status as keyof typeof STATUS_CONFIG] ??
+      STATUS_CONFIG.helpful;
+   const { color, Icon, label } = config;
+   const hoverBg = `${color}0F`;
+   const hoverBorder = `${color}33`;
 
    return (
       <a
@@ -24,7 +31,7 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
             padding: "12px 14px",
             borderRadius: 10,
             background: "rgba(255,255,255,0.02)",
-            border: `1px solid ${ACCEPTED_COLOR}1A`,
+            border: `1px solid ${color}1A`,
             textDecoration: "none",
             transition: "all 0.2s",
          }}
@@ -34,12 +41,12 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
          }}
          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
             e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-            e.currentTarget.style.borderColor = `${ACCEPTED_COLOR}1A`;
+            e.currentTarget.style.borderColor = `${color}1A`;
          }}
       >
-         <BadgeCheck
+         <Icon
             size={14}
-            style={{ color: ACCEPTED_COLOR, flexShrink: 0, marginTop: 3 }}
+            style={{ color, flexShrink: 0, marginTop: 3 }}
          />
          <div style={{ minWidth: 0, flex: 1 }}>
             <div
@@ -54,7 +61,7 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
                   style={{
                      fontSize: 11,
                      fontFamily: MONO_FONT,
-                     color: ACCEPTED_COLOR,
+                     color,
                      fontWeight: 600,
                   }}
                >
@@ -69,13 +76,13 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
                      textTransform: "uppercase",
                      padding: "2px 6px",
                      borderRadius: 4,
-                     background: `${ACCEPTED_COLOR}1F`,
-                     color: ACCEPTED_COLOR,
-                     border: `1px solid ${ACCEPTED_COLOR}40`,
+                     background: `${color}1F`,
+                     color,
+                     border: `1px solid ${color}40`,
                      flexShrink: 0,
                   }}
                >
-                  Accepted
+                  {label}
                </span>
             </div>
             <p

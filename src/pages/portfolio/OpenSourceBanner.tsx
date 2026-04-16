@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { GitPullRequest, GitMerge, CircleDot, GitPullRequestClosed, BadgeCheck } from "lucide-react";
+import { GitPullRequest, GitMerge, CircleDot, GitPullRequestClosed, BadgeCheck, MessageCircle } from "lucide-react";
 import {
    MONO_FONT,
    CYAN,
@@ -20,6 +20,12 @@ const OpenSourceBanner = () => {
    const open = OPEN_SOURCE_CONTRIBUTIONS.filter((c) => c.status === "open");
    const closed = OPEN_SOURCE_CONTRIBUTIONS.filter(
       (c) => c.status === "closed",
+   );
+   const acceptedDiscussions = COMMUNITY_DISCUSSIONS.filter(
+      (d) => d.status === "accepted",
+   );
+   const helpfulDiscussions = COMMUNITY_DISCUSSIONS.filter(
+      (d) => d.status === "helpful",
    );
 
    return (
@@ -136,7 +142,7 @@ const OpenSourceBanner = () => {
                </>
             )}
 
-            {COMMUNITY_DISCUSSIONS.length > 0 && (
+            {acceptedDiscussions.length > 0 && (
                <>
                   <div
                      style={{
@@ -165,7 +171,7 @@ const OpenSourceBanner = () => {
                            letterSpacing: "0.03em",
                         }}
                      >
-                        Accepted Answers ({COMMUNITY_DISCUSSIONS.length})
+                        Accepted Answers ({acceptedDiscussions.length})
                      </span>
                   </div>
                   <motion.div
@@ -179,7 +185,59 @@ const OpenSourceBanner = () => {
                      whileInView="visible"
                      viewport={{ once: true, margin: "0px 0px -60px 0px" }}
                   >
-                     {COMMUNITY_DISCUSSIONS.map((d) => (
+                     {acceptedDiscussions.map((d) => (
+                        <motion.div key={d.url} variants={staggerItem}>
+                           <DiscussionCard discussion={d} />
+                        </motion.div>
+                     ))}
+                  </motion.div>
+               </>
+            )}
+
+            {helpfulDiscussions.length > 0 && (
+               <>
+                  <div
+                     style={{
+                        height: 1,
+                        background:
+                           "linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent)",
+                        marginBottom: 16,
+                        marginTop: 4,
+                     }}
+                  />
+                  <div
+                     style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        marginBottom: 12,
+                     }}
+                  >
+                     <MessageCircle size={14} style={{ color: PURPLE }} />
+                     <span
+                        style={{
+                           fontSize: 12,
+                           fontWeight: 700,
+                           color: PURPLE,
+                           fontFamily: MONO_FONT,
+                           letterSpacing: "0.03em",
+                        }}
+                     >
+                        Discussion Contributions ({helpfulDiscussions.length})
+                     </span>
+                  </div>
+                  <motion.div
+                     style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                        gap: 10,
+                     }}
+                     variants={staggerContainer}
+                     initial="hidden"
+                     whileInView="visible"
+                     viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+                  >
+                     {helpfulDiscussions.map((d) => (
                         <motion.div key={d.url} variants={staggerItem}>
                            <DiscussionCard discussion={d} />
                         </motion.div>
