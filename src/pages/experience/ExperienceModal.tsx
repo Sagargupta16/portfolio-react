@@ -1,7 +1,9 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { ProfessionalExperience } from "@/types";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
+import useFocusTrap from "@hooks/useFocusTrap";
+import { EASING } from "@/constants/theme";
 import ModalHeader from "./ModalHeader";
 import ModalContent from "./ModalContent";
 
@@ -11,8 +13,8 @@ interface Props {
 }
 
 const ExperienceModal = ({ experience, onClose }: Props) => {
-   const scrollRef = useRef<HTMLDivElement>(null);
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
+   const dialogRef = useFocusTrap<HTMLDivElement>(experience !== null);
 
    const onEsc = useCallback(
       (e: KeyboardEvent) => {
@@ -55,7 +57,7 @@ const ExperienceModal = ({ experience, onClose }: Props) => {
                }}
             >
                <motion.div
-                  ref={scrollRef}
+                  ref={dialogRef}
                   initial={{
                      opacity: 0,
                      y: isMobile ? 100 : 50,
@@ -69,12 +71,14 @@ const ExperienceModal = ({ experience, onClose }: Props) => {
                   }}
                   transition={{
                      duration: 0.35,
-                     ease: [0.16, 1, 0.3, 1],
+                     ease: EASING.cinematic,
                   }}
                   onClick={(e) => e.stopPropagation()}
                   onWheel={(e) => e.stopPropagation()}
                   role="dialog"
                   aria-modal="true"
+                  aria-labelledby="experience-modal-title"
+                  tabIndex={-1}
                   style={{
                      position: "relative",
                      width: "100%",

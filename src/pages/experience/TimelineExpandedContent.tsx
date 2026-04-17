@@ -135,7 +135,7 @@ const TimelineExpandedContent = ({
                }}
             >
                <SkillTags
-                  skills={item.skills}
+                  skills={item.skills ?? []}
                   accentColor={accentColor}
                   extraStyle={{ marginTop: 16 }}
                />

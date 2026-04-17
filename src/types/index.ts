@@ -35,7 +35,18 @@ export interface Achievement {
    type: string;
 }
 
-export type CodingPlatformStats = Record<string, unknown>;
+export interface CodingPlatformStat {
+   username: string;
+   url: string;
+   problems_solved?: string;
+   contests?: string;
+   best_rating?: string;
+   badge?: string;
+   problem_solving?: string;
+   cpp?: string;
+}
+
+export type CodingPlatformStats = Record<string, CodingPlatformStat>;
 
 export interface AchievementsData {
    certifications: Certification[];
@@ -110,7 +121,8 @@ export interface ProfessionalExperience {
    projects?: ExperienceProject[];
    project?: string;
    description?: Record<string, string>;
-   skills: string[];
+   /** Aggregated from child projects when absent at this level. */
+   skills?: string[];
    internal_contributions?: InternalContribution[];
    internal_achievements?: InternalContribution[];
 }

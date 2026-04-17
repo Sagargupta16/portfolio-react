@@ -5,7 +5,7 @@ import type { FormData, Status } from "./contactConstants";
 
 const useContactForm = () => {
    const formRef = useRef<HTMLFormElement>(null);
-   const clearTimerRef = useRef<ReturnType<typeof setTimeout>>();
+   const clearTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
    const emailConfig = getEmailConfig();
 
    const [formData, setFormData] = useState<FormData>({
@@ -55,6 +55,17 @@ const useContactForm = () => {
          if (honeypot?.value) return;
          if (!formRef.current) return;
 
+         if (emailConfig.validation_pattern) {
+            const pattern = new RegExp(emailConfig.validation_pattern);
+            if (!pattern.test(formData.email)) {
+               setStatus({
+                  type: "error",
+                  message: "Please enter a valid email address.",
+               });
+               return;
+            }
+         }
+
          setIsLoading(true);
          setStatus({ type: "", message: "" });
 
@@ -80,7 +91,7 @@ const useContactForm = () => {
             setIsLoading(false);
          }
       },
-      [emailConfig],
+      [emailConfig, formData.email],
    );
 
    const dismissToast = useCallback(() => {

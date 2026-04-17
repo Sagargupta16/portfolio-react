@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { slideInLeft, slideInRight } from "@utils/animations";
+import { splitDateRange } from "@utils/dateRange";
 import { MONO_FONT } from "@/constants/theme";
 import TimelineCardContent from "./TimelineCardContent";
 
@@ -39,7 +40,7 @@ const TimelineCardDesktop = ({
                color: accentColor,
             }}
          >
-            {item.date.split(" - ").at(0)}
+            {splitDateRange(item.date).start}
          </span>
          <span
             style={{

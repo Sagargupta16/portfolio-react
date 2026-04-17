@@ -44,6 +44,7 @@ const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
             style={{ color: CYAN, flexShrink: 0 }}
          />
          <h3
+            id="experience-modal-title"
             style={{
                fontSize: isMobile ? 15 : 18,
                fontWeight: 700,
@@ -59,7 +60,7 @@ const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
          </h3>
          <button
             onClick={onClose}
-            aria-label="Close"
+            aria-label="Close experience details"
             style={{
                padding: 8,
                background: "rgba(255,255,255,0.06)",

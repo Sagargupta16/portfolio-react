@@ -42,8 +42,15 @@ const ContactForm = ({
       }}
    >
       {/* Honeypot -- hidden from humans, bots fill it */}
-      <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true">
-         <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      <div style={{ display: "none" }} aria-hidden="true">
+         <label htmlFor="website-hp">Website</label>
+         <input
+            id="website-hp"
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+         />
       </div>
 
       <div>
@@ -112,6 +119,8 @@ const ContactForm = ({
       >
          {isLoading ? (
             <div
+               role="status"
+               aria-label="Sending message"
                style={{
                   width: 20,
                   height: 20,

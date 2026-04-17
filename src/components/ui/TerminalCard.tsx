@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import { motion } from "motion/react";
 import { RotateCcw } from "lucide-react";
 import {
@@ -15,7 +15,7 @@ import {
    PANEL_TRANSITION,
 } from "@utils/animations";
 import { cryptoRandom } from "@utils/random";
-import useRevealInView from "@utils/useRevealInView";
+import useRevealInView from "@hooks/useRevealInView";
 
 interface TerminalLine {
    text: string;
@@ -30,6 +30,58 @@ interface TerminalCardProps {
    typingSpeed?: number;
 }
 
+type Phase = "idle" | "typing" | "done";
+
+interface State {
+   phase: Phase;
+   visibleLines: number;
+   typedChars: number;
+   runKey: number;
+}
+
+type Action =
+   | { type: "start" }
+   | { type: "reset" }
+   | { type: "typeChar" }
+   | { type: "advanceLine" }
+   | { type: "rerun" };
+
+const INITIAL_STATE: State = {
+   phase: "idle",
+   visibleLines: 0,
+   typedChars: 0,
+   runKey: 0,
+};
+
+const reducer = (state: State, action: Action): State => {
+   switch (action.type) {
+      case "start":
+         return { ...state, phase: "typing" };
+      case "reset":
+         return { ...INITIAL_STATE, runKey: state.runKey };
+      case "typeChar":
+         return { ...state, typedChars: state.typedChars + 1 };
+      case "advanceLine":
+         return { ...state, visibleLines: state.visibleLines + 1, typedChars: 0 };
+      case "rerun":
+         return {
+            phase: "typing",
+            visibleLines: 0,
+            typedChars: 0,
+            runKey: state.runKey + 1,
+         };
+      default:
+         return state;
+   }
+};
+
+const LINE_COLORS: Record<TerminalLine["type"], string> = {
+   success: GREEN,
+   accent: CYAN,
+   command: "rgb(var(--ch-white) / 0.7)",
+   output: "rgb(var(--ch-white) / 0.7)",
+};
+
 const TerminalCard = ({
    title = "Terminal",
    prompt = "~",
@@ -37,76 +89,47 @@ const TerminalCard = ({
    typingSpeed = 35,
 }: TerminalCardProps) => {
    const { ref, isInView } = useRevealInView();
-   const [visibleLines, setVisibleLines] = useState<number>(0);
-   const [typedChars, setTypedChars] = useState<number>(0);
-   const [isTyping, setIsTyping] = useState(false);
-   const [runKey, setRunKey] = useState(0);
+   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+   const { phase, visibleLines, typedChars, runKey } = state;
 
    const currentLine = lines[visibleLines] as TerminalLine | undefined;
    const isCurrentCommand = currentLine?.type === "command";
+   const isComplete = visibleLines >= lines.length;
 
    // Reset when scrolled out, start when scrolled in
    useEffect(() => {
-      if (isInView && visibleLines === 0 && !isTyping) {
-         const raf = requestAnimationFrame(() => setIsTyping(true));
+      if (isInView && phase === "idle") {
+         const raf = requestAnimationFrame(() => dispatch({ type: "start" }));
          return () => cancelAnimationFrame(raf);
       }
-      if (!isInView && visibleLines > 0) {
-         const reset = requestAnimationFrame(() => {
-            setVisibleLines(0);
-            setTypedChars(0);
-            setIsTyping(false);
-         });
-         return () => cancelAnimationFrame(reset);
+      if (!isInView && phase !== "idle") {
+         const raf = requestAnimationFrame(() => dispatch({ type: "reset" }));
+         return () => cancelAnimationFrame(raf);
       }
-   }, [isInView, visibleLines, isTyping]);
+   }, [isInView, phase]);
 
-   // Type command characters one by one
+   // Progress through lines
    useEffect(() => {
-      if (!isTyping || visibleLines >= lines.length) return;
+      if (phase !== "typing" || isComplete) return;
 
       const line = lines[visibleLines];
       if (line.type === "command") {
          if (typedChars < line.text.length) {
             const timeout = setTimeout(
-               () => setTypedChars((c) => c + 1),
+               () => dispatch({ type: "typeChar" }),
                typingSpeed + cryptoRandom() * 20,
             );
             return () => clearTimeout(timeout);
          }
-         // Command fully typed, pause then move to next
-         const timeout = setTimeout(() => {
-            setVisibleLines((v) => v + 1);
-            setTypedChars(0);
-         }, 300);
+         const timeout = setTimeout(() => dispatch({ type: "advanceLine" }), 300);
          return () => clearTimeout(timeout);
       }
-      // Output lines appear instantly after a short delay
       const delay = line.delay ?? 80;
-      const timeout = setTimeout(() => {
-         setVisibleLines((v) => v + 1);
-         setTypedChars(0);
-      }, delay);
+      const timeout = setTimeout(() => dispatch({ type: "advanceLine" }), delay);
       return () => clearTimeout(timeout);
-   }, [isTyping, visibleLines, typedChars, lines, typingSpeed]);
+   }, [phase, visibleLines, typedChars, lines, typingSpeed, isComplete]);
 
-   const handleRerun = useCallback(() => {
-      setVisibleLines(0);
-      setTypedChars(0);
-      setIsTyping(true);
-      setRunKey((k) => k + 1);
-   }, []);
-
-   const getLineColor = (type: TerminalLine["type"]) => {
-      switch (type) {
-         case "success":
-            return GREEN;
-         case "accent":
-            return CYAN;
-         default:
-            return "rgb(var(--ch-white) / 0.7)";
-      }
-   };
+   const handleRerun = useCallback(() => dispatch({ type: "rerun" }), []);
 
    return (
       <motion.div
@@ -151,7 +174,7 @@ const TerminalCard = ({
             </div>
             <button
                onClick={handleRerun}
-               aria-label="Re-run"
+               aria-label="Re-run terminal"
                style={{
                   background: "rgb(var(--ch-white) / 0.05)",
                   border: "1px solid rgb(var(--ch-white) / 0.08)",
@@ -196,7 +219,7 @@ const TerminalCard = ({
             {lines.slice(0, visibleLines).map((line, i) => (
                <div
                   key={`${runKey}-${i}`}
-                  style={{ color: getLineColor(line.type) }}
+                  style={{ color: LINE_COLORS[line.type] }}
                >
                   {line.type === "command" && (
                      <span style={{ color: TEXT_MUTED }}>{prompt} % </span>
@@ -209,7 +232,7 @@ const TerminalCard = ({
             ))}
 
             {/* Currently typing line */}
-            {isCurrentCommand && visibleLines < lines.length && (
+            {isCurrentCommand && !isComplete && (
                <div style={{ color: "rgb(var(--ch-white) / 0.7)" }}>
                   <span style={{ color: TEXT_MUTED }}>{prompt} % </span>
                   {currentLine.text.substring(0, typedChars)}
@@ -218,7 +241,7 @@ const TerminalCard = ({
             )}
 
             {/* Idle cursor */}
-            {visibleLines >= lines.length && (
+            {isComplete && (
                <div>
                   <span style={{ color: TEXT_MUTED }}>{prompt} % </span>
                   <span className="typewriter-cursor" />

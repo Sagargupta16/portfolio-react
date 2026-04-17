@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { Education } from "@/types";
 import { staggerItem, slideInLeft, slideInRight } from "@utils/animations";
+import { splitDateRange } from "@utils/dateRange";
 import { MONO_FONT } from "@/constants/theme";
 import EducationCardContent from "./EducationCardContent";
 import AnimatedTimelineTrack from "./AnimatedTimelineTrack";
@@ -44,9 +45,9 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                         color: "#a855f7",
                      }}
                   >
-                     {item.date.split(" - ")[0]}
+                     {splitDateRange(item.date).start}
                   </span>
-                  {item.date.includes(" - ") && (
+                  {splitDateRange(item.date).end && (
                      <span
                         style={{
                            fontFamily: MONO_FONT,
@@ -54,7 +55,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                            color: "#6e6e90",
                         }}
                      >
-                        — {item.date.split(" - ")[1]}
+                        — {splitDateRange(item.date).end}
                      </span>
                   )}
                   {item.location && (

@@ -27,7 +27,7 @@ const CertBadge = ({
    entranceDelay,
 }: CertBadgeProps) => {
    const [isHovered, setIsHovered] = useState(false);
-   const accent = LEVEL_COLOR[level] ?? CYAN;
+   const accent = (level && LEVEL_COLOR[level]) ?? CYAN;
 
    return (
       <motion.a
