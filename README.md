@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/github/license/Sagargupta16/portfolio-react?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/Sagargupta16/portfolio-react?style=flat-square)
 
-[![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/main.yml)
+[![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/ci-cd.yml)
 
 ![React Version](https://img.shields.io/badge/react-19-blue)
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178c6)
