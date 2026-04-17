@@ -945,12 +945,6 @@
          "status": "open"
       },
       {
-         "repo": "terraform-aws-modules/terraform-aws-eventbridge",
-         "title": "Fix: support partner event bus for logging and operations",
-         "url": "https://github.com/terraform-aws-modules/terraform-aws-eventbridge/pull/196",
-         "status": "open"
-      },
-      {
          "repo": "aws/aws-cdk",
          "title": "Scope batch SubmitJob IAM to specific resources",
          "url": "https://github.com/aws/aws-cdk/pull/37601",
