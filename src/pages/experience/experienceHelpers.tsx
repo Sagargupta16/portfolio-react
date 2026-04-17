@@ -32,7 +32,7 @@ export const BulletList = ({
                lineHeight: 1.7,
                display: "flex",
                alignItems: "flex-start",
-               gap: 10,
+               gap: 8,
             }}
          >
             <span
@@ -62,7 +62,7 @@ export const SkillTags = ({
    accentColor,
    extraStyle,
 }: SkillTagsProps) => (
-   <div style={{ display: "flex", flexWrap: "wrap", gap: 6, ...extraStyle }}>
+   <div style={{ display: "flex", flexWrap: "wrap", gap: 4, ...extraStyle }}>
       {skills.map((skill) => (
          <TechTag key={skill} label={skill} accent={accentColor} />
       ))}

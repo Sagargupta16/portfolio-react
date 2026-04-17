@@ -16,7 +16,7 @@ const SectionHeader = ({ title, subtitle }: Props) => {
             flexDirection: "column",
             alignItems: "center",
             gap: 16,
-            marginBottom: 64,
+            marginBottom: 48,
             textAlign: "center",
          }}
          variants={fadeInUp}
@@ -38,7 +38,7 @@ const SectionHeader = ({ title, subtitle }: Props) => {
                   WebkitBackdropFilter: "blur(12px)",
                   border: "1px solid rgba(255, 255, 255, 0.06)",
                   borderRadius: 9999,
-                  padding: "6px 16px",
+                  padding: "4px 16px",
                }}
             >
                <span style={{ color: "#06b6d4" }}>{">"}</span>

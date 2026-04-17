@@ -62,7 +62,7 @@ const ShootingStars = () => {
                      top: `${s.startY}%`,
                      width: s.width,
                      height: 1.5,
-                     borderRadius: 2,
+                     borderRadius: 4,
                      background:
                         "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.8) 60%, transparent 100%)",
                      boxShadow: "0 0 6px 1px rgba(6, 182, 212, 0.3)",

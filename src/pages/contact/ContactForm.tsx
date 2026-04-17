@@ -38,7 +38,7 @@ const ContactForm = ({
          padding: isMobile ? "20px 18px" : "32px 28px",
          display: "flex",
          flexDirection: "column",
-         gap: 18,
+         gap: 16,
       }}
    >
       {/* Honeypot -- hidden from humans, bots fill it */}

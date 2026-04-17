@@ -19,14 +19,14 @@ const ProjectTimeline = ({ projects, isMobile }: ProjectTimelineProps) => (
       <motion.div
          initial={{ scaleY: 0 }}
          animate={{ scaleY: 1 }}
-         transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+         transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
          style={{
             position: "absolute",
             left: isMobile ? 6 : "50%",
             top: 0,
             bottom: 0,
             width: 2,
-            borderRadius: 1,
+            borderRadius: 4,
             transformOrigin: "top",
             background:
                "linear-gradient(to bottom, rgba(6,182,212,0.3), rgba(168,85,247,0.2) 50%, rgba(245,158,11,0.15) 80%, transparent)",

@@ -1,15 +1,15 @@
 import { GitMerge, CircleDot, GitPullRequestClosed } from "lucide-react";
 import type { OpenSourceContribution } from "@/types";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, PURPLE, GREEN, ORANGE } from "@/constants/theme";
 
 interface ContribCardProps {
    contrib: OpenSourceContribution;
 }
 
 const STATUS_CONFIG = {
-   merged: { color: "#a855f7", Icon: GitMerge, label: "Merged" },
-   open: { color: "#22c55e", Icon: CircleDot, label: "Open" },
-   closed: { color: "#f97316", Icon: GitPullRequestClosed, label: "Closed" },
+   merged: { color: PURPLE, Icon: GitMerge, label: "Merged" },
+   open: { color: GREEN, Icon: CircleDot, label: "Open" },
+   closed: { color: ORANGE, Icon: GitPullRequestClosed, label: "Closed" },
 } as const;
 
 const ContribCard = ({ contrib }: ContribCardProps) => {
@@ -26,8 +26,8 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
          style={{
             display: "flex",
             alignItems: "flex-start",
-            gap: 10,
-            padding: "12px 14px",
+            gap: 8,
+            padding: "12px 12px",
             borderRadius: 10,
             background: "rgba(255,255,255,0.02)",
             border: `1px solid ${statusColor}1A`,
@@ -73,7 +73,7 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
                      fontWeight: 700,
                      letterSpacing: "0.05em",
                      textTransform: "uppercase",
-                     padding: "2px 6px",
+                     padding: "2px 4px",
                      borderRadius: 4,
                      background: `${statusColor}1F`,
                      color: statusColor,
@@ -88,7 +88,7 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
                style={{
                   fontSize: 12,
                   color: "#a5a5c0",
-                  lineHeight: 1.4,
+                  lineHeight: 1.5,
                   marginTop: 2,
                   overflow: "hidden",
                   textOverflow: "ellipsis",

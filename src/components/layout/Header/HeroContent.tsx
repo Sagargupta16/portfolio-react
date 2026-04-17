@@ -48,7 +48,7 @@ const HeroContent = () => {
                   WebkitBackdropFilter: "blur(12px)",
                   border: "1px solid rgba(34, 197, 94, 0.12)",
                   borderRadius: 9999,
-                  padding: "6px 16px",
+                  padding: "4px 16px",
                }}
             >
                <span className="w-2 h-2 rounded-full bg-accent-green animate-glow-pulse" />
@@ -78,7 +78,7 @@ const HeroContent = () => {
                   initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, y: -24, filter: "blur(8px)" }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  transition={{ duration: 0.7, ease: "easeInOut" }}
                >
                   {roles[roleIndex]}
                </motion.p>

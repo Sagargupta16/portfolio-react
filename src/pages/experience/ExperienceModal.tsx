@@ -40,7 +40,7 @@ const ExperienceModal = ({ experience, onClose }: Props) => {
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                exit={{ opacity: 0 }}
-               transition={{ duration: 0.2 }}
+               transition={{ duration: 0.25 }}
                onClick={onClose}
                style={{
                   position: "fixed",
@@ -70,7 +70,7 @@ const ExperienceModal = ({ experience, onClose }: Props) => {
                      scale: 0.97,
                   }}
                   transition={{
-                     duration: 0.35,
+                     duration: 0.4,
                      ease: EASING.cinematic,
                   }}
                   onClick={(e) => e.stopPropagation()}

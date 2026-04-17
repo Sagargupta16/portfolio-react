@@ -75,7 +75,7 @@ const FooterContent = () => {
                display: "flex",
                flexDirection: "column",
                alignItems: "center",
-               gap: 6,
+               gap: 4,
             }}
             variants={staggerItem}
          >

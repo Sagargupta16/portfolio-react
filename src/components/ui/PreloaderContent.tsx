@@ -10,7 +10,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
       <motion.div
          initial={{ opacity: 1 }}
          exit={{ opacity: 0 }}
-         transition={{ duration: 0.3 }}
+         transition={{ duration: 0.4 }}
          style={{
             position: "fixed",
             inset: 0,
@@ -19,7 +19,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "column",
-            gap: 28,
+            gap: 24,
             pointerEvents: "none",
          }}
       >
@@ -40,9 +40,9 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
          <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
             style={{
-               fontSize: 52,
+               fontSize: 48,
                fontWeight: 700,
                fontFamily: MONO_FONT,
                color: "#06b6d4",
@@ -62,7 +62,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
                width: 160,
                height: 2,
                background: "rgba(255, 255, 255, 0.04)",
-               borderRadius: 2,
+               borderRadius: 4,
                overflow: "hidden",
                position: "relative",
                zIndex: 1,
@@ -72,11 +72,11 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
                style={{
                   height: "100%",
                   background: "linear-gradient(90deg, #06b6d4, #a855f7)",
-                  borderRadius: 2,
+                  borderRadius: 4,
                }}
                initial={{ width: "0%" }}
                animate={{ width: `${displayProgress}%` }}
-               transition={{ duration: 0.15, ease: "easeOut" }}
+               transition={{ duration: 0.25, ease: "easeOut" }}
             />
          </div>
 

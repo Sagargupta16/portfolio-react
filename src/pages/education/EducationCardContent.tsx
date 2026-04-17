@@ -20,15 +20,15 @@ const EducationCardContent = ({
 
          {/* Board / Field / Department */}
          {(item.board || item.field || item.department) && (
-            <div style={{ marginLeft: ml, marginTop: 6 }}>
+            <div style={{ marginLeft: ml, marginTop: 4 }}>
                {item.department && (
                   <p
                      style={{
                         color: "#6e6e90",
-                        fontSize: 13,
+                        fontSize: 12,
                         display: "flex",
                         alignItems: "center",
-                        gap: 6,
+                        gap: 4,
                      }}
                   >
                      <BookOpen size={12} style={{ flexShrink: 0 }} />
@@ -36,12 +36,12 @@ const EducationCardContent = ({
                   </p>
                )}
                {item.board && (
-                  <p style={{ color: "#6e6e90", fontSize: 13, marginTop: 3 }}>
+                  <p style={{ color: "#6e6e90", fontSize: 12, marginTop: 3 }}>
                      {item.board}
                   </p>
                )}
                {item.field && (
-                  <p style={{ color: "#6e6e90", fontSize: 13, marginTop: 3 }}>
+                  <p style={{ color: "#6e6e90", fontSize: 12, marginTop: 3 }}>
                      {item.field}
                   </p>
                )}

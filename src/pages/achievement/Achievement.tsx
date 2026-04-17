@@ -36,7 +36,7 @@ const Achievement = () => {
                margin: "0 auto",
                display: "flex",
                flexDirection: "column",
-               gap: 56,
+               gap: 48,
             }}
          >
             <CertBadgeShowcase certifications={certifications} />

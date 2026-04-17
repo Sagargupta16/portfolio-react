@@ -22,9 +22,9 @@ const ProjectLink = ({
       style={{
          display: "inline-flex",
          alignItems: "center",
-         gap: 6,
-         padding: "6px 14px",
-         borderRadius: 8,
+         gap: 4,
+         padding: "4px 12px",
+         borderRadius: 10,
          fontSize: 12,
          fontWeight: 500,
          color: "#a5a5c0",

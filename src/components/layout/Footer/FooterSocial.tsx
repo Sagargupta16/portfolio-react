@@ -24,7 +24,7 @@ const FooterSocial = () => {
                   style={{
                      width: 36,
                      height: 36,
-                     borderRadius: 8,
+                     borderRadius: 10,
                      border: "1px solid rgba(255, 255, 255, 0.06)",
                      background: "rgba(255, 255, 255, 0.03)",
                      backdropFilter: "blur(12px)",

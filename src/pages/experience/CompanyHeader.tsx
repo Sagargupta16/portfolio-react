@@ -20,15 +20,15 @@ const CompanyHeader = ({
          style={{
             display: "flex",
             alignItems: "center",
-            gap: 10,
-            marginBottom: 6,
+            gap: 8,
+            marginBottom: 4,
          }}
       >
          <div
             style={{
                width: 28,
                height: 28,
-               borderRadius: 8,
+               borderRadius: 10,
                background: `${accentColor}12`,
                border: `1px solid ${accentColor}20`,
                display: "flex",
@@ -44,7 +44,7 @@ const CompanyHeader = ({
                fontSize: isMobile ? 16 : 18,
                fontWeight: 700,
                color: "#eeeef5",
-               lineHeight: 1.3,
+               lineHeight: 1.2,
             }}
          >
             {item.company}
@@ -66,7 +66,7 @@ const CompanyHeader = ({
             <span
                className="tag tag-purple"
                style={{
-                  marginLeft: 10,
+                  marginLeft: 8,
                   verticalAlign: "middle",
                   fontSize: 11,
                   padding: "2px 8px",
@@ -82,8 +82,8 @@ const CompanyHeader = ({
          <p
             style={{
                color: "#a5a5c0",
-               fontSize: 13,
-               lineHeight: 1.6,
+               fontSize: 12,
+               lineHeight: 1.7,
                marginTop: 8,
                marginLeft,
             }}

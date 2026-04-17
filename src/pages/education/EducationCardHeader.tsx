@@ -10,12 +10,12 @@ interface EducationCardHeaderProps {
 }
 
 const InstitutionRow = ({ institution }: { institution: string }) => (
-   <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
+   <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
       <div
          style={{
             width: 28,
             height: 28,
-            borderRadius: 8,
+            borderRadius: 10,
             background: "rgba(168,85,247,0.1)",
             border: "1px solid rgba(168,85,247,0.15)",
             display: "flex",
@@ -28,10 +28,10 @@ const InstitutionRow = ({ institution }: { institution: string }) => (
       </div>
       <h3
          style={{
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: 700,
             color: "#eeeef5",
-            lineHeight: 1.3,
+            lineHeight: 1.2,
          }}
       >
          {institution}
@@ -53,7 +53,7 @@ const CgpaBadge = ({
             display: "flex",
             alignItems: "center",
             gap: 8,
-            padding: "6px 14px",
+            padding: "4px 12px",
             borderRadius: 10,
             background: "rgba(34,197,94,0.06)",
             border: "1px solid rgba(34,197,94,0.12)",
@@ -83,9 +83,9 @@ const EducationCardHeader = ({
 }: EducationCardHeaderProps) => {
    if (isMobile) {
       return (
-         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <InstitutionRow institution={item.institution} />
-            <p style={{ color: "#06b6d4", fontWeight: 600, fontSize: 15 }}>
+            <p style={{ color: "#06b6d4", fontWeight: 600, fontSize: 14 }}>
                {item.title}
             </p>
             <CgpaBadge item={item} isMobile={isMobile} />
@@ -108,7 +108,7 @@ const EducationCardHeader = ({
                style={{
                   color: "#06b6d4",
                   fontWeight: 600,
-                  fontSize: 15,
+                  fontSize: 14,
                   marginTop: 4,
                   marginLeft,
                }}

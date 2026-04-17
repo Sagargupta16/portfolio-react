@@ -6,13 +6,13 @@ interface AgentChatAnimProps {
 }
 
 const BUBBLE: React.CSSProperties = {
-   padding: "4px 10px",
-   borderRadius: 8,
+   padding: "4px 8px",
+   borderRadius: 10,
    fontSize: 9,
    fontFamily: MONO_FONT,
    fontWeight: 600,
    maxWidth: 56,
-   lineHeight: 1.3,
+   lineHeight: 1.2,
 };
 
 const AgentChatAnim = ({ color }: AgentChatAnimProps) => (
@@ -23,7 +23,7 @@ const AgentChatAnim = ({ color }: AgentChatAnimProps) => (
          display: "flex",
          flexDirection: "column",
          justifyContent: "center",
-         gap: 5,
+         gap: 4,
          padding: "0 4px",
       }}
    >

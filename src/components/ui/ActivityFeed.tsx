@@ -46,7 +46,7 @@ const ActivityFeed = ({
          <div
             style={{
                ...CHROME_BAR_STYLE,
-               padding: "10px 16px",
+               padding: "8px 16px",
                fontFamily: MONO_FONT,
                fontSize: 11,
                color: TEXT_MUTED,
@@ -86,10 +86,10 @@ const ActivityFeed = ({
                >
                   <div
                      style={{
-                        fontSize: 13,
+                        fontSize: 12,
                         color: TEXT_SECONDARY,
-                        lineHeight: 1.4,
-                        marginBottom: 6,
+                        lineHeight: 1.5,
+                        marginBottom: 4,
                      }}
                   >
                      {item.message}
@@ -108,7 +108,7 @@ const ActivityFeed = ({
                      <span
                         style={{
                            background: "rgb(var(--ch-cyan) / 0.1)",
-                           padding: "1px 6px",
+                           padding: "1px 4px",
                            borderRadius: 4,
                            color: CYAN,
                         }}

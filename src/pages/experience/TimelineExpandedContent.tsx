@@ -25,7 +25,7 @@ const TimelineExpandedContent = ({
          initial={{ y: -8 }}
          animate={{ y: 0 }}
          exit={{ y: -8 }}
-         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+         transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       >
          {/* Multi-project: project names + descriptions + skills */}
          {hasProjects &&
@@ -52,11 +52,11 @@ const TimelineExpandedContent = ({
                      <p
                         style={{
                            color: "#6e6e90",
-                           fontSize: 13,
-                           marginBottom: 10,
+                           fontSize: 12,
+                           marginBottom: 8,
                            display: "flex",
                            alignItems: "center",
-                           gap: 6,
+                           gap: 4,
                         }}
                      >
                         <FolderGit2
@@ -90,12 +90,12 @@ const TimelineExpandedContent = ({
                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                style={{
                   color: "#6e6e90",
-                  fontSize: 13,
+                  fontSize: 12,
                   marginTop: 16,
-                  marginBottom: 10,
+                  marginBottom: 8,
                   display: "flex",
                   alignItems: "center",
-                  gap: 6,
+                  gap: 4,
                }}
             >
                <FolderGit2

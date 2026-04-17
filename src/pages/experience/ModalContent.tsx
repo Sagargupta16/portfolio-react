@@ -78,7 +78,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
                      fontWeight: 600,
                      textTransform: "uppercase",
                      letterSpacing: "0.06em",
-                     marginBottom: 10,
+                     marginBottom: 8,
                   }}
                >
                   Key Skills
@@ -90,7 +90,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
                   style={{
                      display: "flex",
                      flexWrap: "wrap",
-                     gap: 6,
+                     gap: 4,
                   }}
                >
                   {allSkills.map((s) => (

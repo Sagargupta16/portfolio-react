@@ -48,7 +48,7 @@ const BrowserMockup = ({
             }}
             style={{
                transformOrigin: "50% 2%",
-               borderRadius: 14,
+               borderRadius: 12,
                overflow: "hidden",
                border: "1px solid rgb(var(--ch-white) / 0.08)",
                background: "rgb(var(--ch-glass) / 0.5)",
@@ -75,7 +75,7 @@ const BrowserMockup = ({
                      : { scaleX: 0, opacity: 0 }
                }
                transition={{
-                  duration: 1.2,
+                  duration: 1,
                   delay: 0.4,
                   ease: [0.16, 1, 0.3, 1],
                }}
@@ -98,7 +98,7 @@ const BrowserMockup = ({
                   ...CHROME_BAR_STYLE,
                   height: 40,
                   padding: "0 14px",
-                  gap: 6,
+                  gap: 4,
                   overflow: "hidden",
                   position: "relative",
                }}
@@ -107,7 +107,7 @@ const BrowserMockup = ({
                <div
                   style={{
                      display: "flex",
-                     gap: 6,
+                     gap: 4,
                      marginRight: 8,
                      flexShrink: 0,
                   }}
@@ -122,7 +122,7 @@ const BrowserMockup = ({
                               ? { scale: 1, opacity: 1 }
                               : { scale: 0, opacity: 0 }
                         }
-                        transition={{ delay: 0.6 + i * 0.08, duration: 0.3 }}
+                        transition={{ delay: 0.6 + i * 0.08, duration: 0.4 }}
                      />
                   ))}
                </div>
@@ -177,12 +177,12 @@ const BrowserMockup = ({
                         style={{
                            width: 8,
                            height: 8,
-                           borderRadius: 2,
+                           borderRadius: 4,
                            background: `rgb(var(--ch-cyan) / ${opacity})`,
                         }}
                         initial={{ scale: 0 }}
                         animate={isInView ? { scale: 1 } : { scale: 0 }}
-                        transition={{ delay: 1 + i * 0.1, duration: 0.3 }}
+                        transition={{ delay: 1 + i * 0.1, duration: 0.4 }}
                      />
                   ))}
                </div>
@@ -195,7 +195,7 @@ const BrowserMockup = ({
                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                transition={{
                   delay: 0.5,
-                  duration: 0.8,
+                  duration: 1,
                   ease: [0.16, 1, 0.3, 1],
                }}
             >

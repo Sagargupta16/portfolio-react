@@ -11,7 +11,7 @@ const TechTag = ({ label, accent = "#06b6d4", size = 11 }: TechTagProps) => (
       style={{
          fontFamily: MONO_FONT,
          fontSize: size,
-         padding: "3px 10px",
+         padding: "3px 8px",
          borderRadius: 6,
          background: `${accent}10`,
          color: accent,

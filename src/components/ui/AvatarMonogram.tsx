@@ -20,7 +20,7 @@ const AvatarMonogram = () => {
       >
          <motion.span
             style={{
-               fontSize: 56,
+               fontSize: 48,
                fontWeight: 800,
                fontFamily: MONO_FONT,
                background: "linear-gradient(135deg, #06b6d4, #a855f7)",
@@ -30,7 +30,7 @@ const AvatarMonogram = () => {
             }}
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
          >
             SG
          </motion.span>

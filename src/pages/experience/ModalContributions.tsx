@@ -76,7 +76,7 @@ const ModalContributions = ({
                      style={{
                         display: "flex",
                         alignItems: "center",
-                        gap: 10,
+                        gap: 8,
                         padding: "8px 12px",
                         borderRadius: 10,
                         background: bgBase,
@@ -87,7 +87,7 @@ const ModalContributions = ({
                         style={{
                            width: 28,
                            height: 28,
-                           borderRadius: 8,
+                           borderRadius: 10,
                            background: `${color}12`,
                            display: "flex",
                            alignItems: "center",
@@ -99,7 +99,7 @@ const ModalContributions = ({
                      </div>
                      <span
                         style={{
-                           fontSize: 13,
+                           fontSize: 12,
                            color: TEXT_SECONDARY,
                            flex: 1,
                         }}

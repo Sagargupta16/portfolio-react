@@ -37,7 +37,7 @@ const App = () => {
       <ReactLenis
          root
          options={{
-            duration: 1.2,
+            duration: 1,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
          }}
       >

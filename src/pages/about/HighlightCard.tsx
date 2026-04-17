@@ -39,7 +39,7 @@ const HighlightCard = ({ text, index, isMobile }: HighlightCardProps) => {
             style={{
                width: 32,
                height: 32,
-               borderRadius: 8,
+               borderRadius: 10,
                background: `${color}12`,
                border: `1px solid ${color}20`,
                display: "flex",
@@ -55,7 +55,7 @@ const HighlightCard = ({ text, index, isMobile }: HighlightCardProps) => {
             style={{
                color: "#cbd5e1",
                fontSize: isMobile ? 13 : 14,
-               lineHeight: 1.6,
+               lineHeight: 1.7,
                margin: 0,
             }}
          >

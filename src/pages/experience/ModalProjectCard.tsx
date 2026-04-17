@@ -28,8 +28,8 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
       }}
       style={{
          marginBottom: 20,
-         padding: "16px 18px",
-         borderRadius: 14,
+         padding: "16px 16px",
+         borderRadius: 12,
          background: "rgba(255,255,255,0.02)",
          border: "1px solid rgba(255,255,255,0.05)",
       }}
@@ -39,7 +39,7 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
             display: "flex",
             alignItems: "center",
             gap: 8,
-            marginBottom: 10,
+            marginBottom: 8,
          }}
       >
          <FolderGit2 size={14} style={{ color: CYAN, flexShrink: 0 }} />
@@ -72,8 +72,8 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
          style={{
             display: "flex",
             flexDirection: "column",
-            gap: 6,
-            marginBottom: 10,
+            gap: 4,
+            marginBottom: 8,
          }}
       >
          {Object.entries(project.description)
@@ -83,7 +83,7 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
                   key={text}
                   style={{
                      color: TEXT_SECONDARY,
-                     fontSize: 13,
+                     fontSize: 12,
                      lineHeight: 1.7,
                      display: "flex",
                      alignItems: "flex-start",

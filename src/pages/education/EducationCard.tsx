@@ -24,7 +24,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
             <div
                className="glass-card"
                style={{
-                  padding: "20px 18px",
+                  padding: "20px 16px",
                   borderLeft: "3px solid #a855f7",
                }}
             >
@@ -33,14 +33,14 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                   style={{
                      display: "flex",
                      alignItems: "center",
-                     gap: 10,
+                     gap: 8,
                      marginBottom: 12,
                   }}
                >
                   <span
                      style={{
                         fontFamily: MONO_FONT,
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: 600,
                         color: "#a855f7",
                      }}
@@ -95,7 +95,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
             <span
                style={{
                   fontFamily: MONO_FONT,
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: 600,
                   color: "#a855f7",
                }}
@@ -137,7 +137,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
          {/* Right: Content card */}
          <div
             className="glass-card"
-            style={{ padding: "24px 28px", marginBottom: 20 }}
+            style={{ padding: "24px 24px", marginBottom: 20 }}
          >
             <EducationCardContent item={item} isMobile={isMobile} />
          </div>

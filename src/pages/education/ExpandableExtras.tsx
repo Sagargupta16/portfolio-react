@@ -27,8 +27,8 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                style={{
                   display: "flex",
                   flexWrap: "wrap",
-                  gap: 6,
-                  marginTop: 14,
+                  gap: 4,
+                  marginTop: 12,
                   marginLeft,
                }}
             >
@@ -38,7 +38,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                      style={{
                         fontFamily: MONO_FONT,
                         fontSize: 11,
-                        padding: "3px 10px",
+                        padding: "3px 8px",
                         borderRadius: 6,
                         background: "rgba(168,85,247,0.08)",
                         color: "#a855f7",
@@ -60,8 +60,8 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                      display: "flex",
                      alignItems: "center",
                      gap: 8,
-                     padding: "7px 12px",
-                     borderRadius: 8,
+                     padding: "8px 12px",
+                     borderRadius: 10,
                      background: "rgba(245,158,11,0.05)",
                      border: "1px solid rgba(245,158,11,0.12)",
                      cursor: "pointer",
@@ -78,7 +78,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                   </span>
                   <motion.div
                      animate={{ rotate: isExpanded ? 180 : 0 }}
-                     transition={{ duration: 0.2 }}
+                     transition={{ duration: 0.25 }}
                   >
                      <ChevronDown size={14} />
                   </motion.div>
@@ -90,15 +90,15 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: EXPO_EASE }}
+                        transition={{ duration: 0.4, ease: EXPO_EASE }}
                         style={{ overflow: "hidden" }}
                      >
                         <ul
                            style={{
                               display: "flex",
                               flexDirection: "column",
-                              gap: 6,
-                              marginTop: 10,
+                              gap: 4,
+                              marginTop: 8,
                            }}
                         >
                            {item.achievements!.map((achievement) => (
@@ -107,7 +107,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                                  style={{
                                     display: "flex",
                                     alignItems: "flex-start",
-                                    gap: 10,
+                                    gap: 8,
                                  }}
                               >
                                  <span
@@ -116,15 +116,15 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                                        height: 6,
                                        borderRadius: "50%",
                                        backgroundColor: "rgba(245,158,11,0.5)",
-                                       marginTop: 7,
+                                       marginTop: 8,
                                        flexShrink: 0,
                                     }}
                                  />
                                  <span
                                     style={{
                                        color: "#a5a5c0",
-                                       fontSize: 13,
-                                       lineHeight: 1.6,
+                                       fontSize: 12,
+                                       lineHeight: 1.7,
                                     }}
                                  >
                                     {achievement}

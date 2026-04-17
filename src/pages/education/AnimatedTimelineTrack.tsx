@@ -28,7 +28,7 @@ const AnimatedTimelineTrack = () => {
                borderRadius: "50%",
                border: "2px solid #a855f7",
                backgroundColor: "rgba(6, 6, 16, 0.6)",
-               marginTop: 6,
+               marginTop: 4,
                position: "relative",
                zIndex: 2,
                flexShrink: 0,
@@ -48,13 +48,13 @@ const AnimatedTimelineTrack = () => {
          <motion.div
             initial={{ scaleY: 0 }}
             animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             style={{
                width: 2,
                flex: 1,
                background:
                   "linear-gradient(to bottom, rgba(168,85,247,0.4), rgba(168,85,247,0.1))",
-               borderRadius: 1,
+               borderRadius: 4,
                transformOrigin: "top",
             }}
          />

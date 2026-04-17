@@ -38,7 +38,7 @@ const CalendarSkeleton = () => (
                   style={{
                      width: 11,
                      height: 11,
-                     borderRadius: 3,
+                     borderRadius: 4,
                      opacity: 0.3 + ((row * WEEKS_IN_YEAR + col) % DAYS_IN_WEEK) * 0.06,
                      animationDelay: `${(row * WEEKS_IN_YEAR + col) * 2}ms`,
                   }}
@@ -46,12 +46,12 @@ const CalendarSkeleton = () => (
             ))}
          </div>
       ))}
-      <div style={{ display: "flex", gap: 28, marginTop: 8 }}>
+      <div style={{ display: "flex", gap: 24, marginTop: 8 }}>
          {SKELETON_MONTHS.map((key) => (
             <div
                key={key}
                className="skeleton"
-               style={{ width: 24, height: 10, borderRadius: 3, opacity: 0.3 }}
+               style={{ width: 24, height: 10, borderRadius: 4, opacity: 0.3 }}
             />
          ))}
       </div>

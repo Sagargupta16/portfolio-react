@@ -43,7 +43,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
                   repeat: Infinity,
                   times: [0, 0.2, 0.8, 1],
                }}
-               style={{ height: 2, borderRadius: 1, background: "#06b6d440" }}
+               style={{ height: 2, borderRadius: 4, background: "#06b6d440" }}
             />
             <motion.div
                animate={{ width: ["0%", "55%", "55%", "0%"] }}
@@ -53,7 +53,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
                   repeat: Infinity,
                   times: [0, 0.2, 0.8, 1],
                }}
-               style={{ height: 2, borderRadius: 1, background: "#06b6d425" }}
+               style={{ height: 2, borderRadius: 4, background: "#06b6d425" }}
             />
          </div>
       </div>
@@ -118,7 +118,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
       <motion.div
          animate={{ left: [18, 28], top: [18, 32] }}
          transition={{
-            duration: 0.6,
+            duration: 0.7,
             delay: 0.3,
             repeat: Infinity,
             repeatDelay: 2.9,
@@ -138,7 +138,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
       <motion.div
          animate={{ left: [38, 50], top: [42, 56] }}
          transition={{
-            duration: 0.6,
+            duration: 0.7,
             delay: 1.1,
             repeat: Infinity,
             repeatDelay: 2.9,

@@ -41,12 +41,12 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.4 }}
                   style={{
                      display: "flex",
                      gap: 8,
-                     padding: "16px 28px",
-                     borderRadius: 20,
+                     padding: "16px 24px",
+                     borderRadius: 16,
                      background: "rgba(6,182,212,0.06)",
                      border: "1px solid rgba(6,182,212,0.15)",
                   }}
@@ -56,7 +56,7 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
                         key={`dot-${dot}`}
                         animate={{ y: [0, -8, 0] }}
                         transition={{
-                           duration: 0.6,
+                           duration: 0.7,
                            repeat: Infinity,
                            delay: dot * 0.15,
                            ease: "easeInOut",

@@ -2,7 +2,28 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
-## [3.12.0] - 2026-04-17
+## [3.13.0] - 2026-04-17
+
+### Added
+
+- Full design-token system in `theme.ts`: `SPACE` (4px grid), `TEXT_SIZE` (7-step typographic scale), `LEADING` (4 line-heights), `RADIUS` (5 sizes), `DURATION` (4 tiers)
+- `INDIGO`, `ORANGE`, `RED`, `MEDAL_GOLD`, `MEDAL_SILVER`, `MEDAL_BRONZE` semantic color tokens
+- Fixed `4/3` aspect ratio on CodingProfiles cards -- prevents card shape-shifting across viewports
+
+### Changed
+
+- Typography: 14 distinct font sizes collapsed to 7-step scale (13 -> 12, 15 -> 14, 17 -> 16, 18 -> 20, 22 -> 24, 52/56 -> 48)
+- Spacing: padding/gap/margin values snap to 4px grid (`SPACE` scale) across 54 files
+- Line heights: 6 values reduced to 4 semantic ones (1 / 1.2 / 1.5 / 1.7)
+- Border radii: 11 values collapsed to 6 (sm / md / lg / xl / pill + 4px skeleton)
+- Animation durations: 11 values collapsed to 4 tiers (quick 0.25 / default 0.4 / slow 0.7 / 1s ambient)
+- Medal colors (gold / silver / bronze) extracted to shared tokens, referenced in TrophyCard + achievementConstants
+- OSS ContribCard color map now uses theme tokens (PURPLE / GREEN / ORANGE)
+- Experience section sub-header size aligned with other section sub-headers (24 -> 20)
+
+### Fixed
+
+- PINK hex typo: `#ec4884` -> `#ec4899`
 
 ### Added
 

@@ -24,7 +24,7 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
                display: "flex",
                alignItems: "center",
                justifyContent: "center",
-               gap: 10,
+               gap: 8,
                marginBottom: 32,
             }}
          >
@@ -32,7 +32,7 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
                style={{
                   width: 32,
                   height: 32,
-                  borderRadius: 8,
+                  borderRadius: 10,
                   background: "rgba(6,182,212,0.1)",
                   display: "flex",
                   alignItems: "center",

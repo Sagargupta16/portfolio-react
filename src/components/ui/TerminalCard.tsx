@@ -149,7 +149,7 @@ const TerminalCard = ({
             }}
          >
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-               <div style={{ display: "flex", gap: 5 }}>
+               <div style={{ display: "flex", gap: 4 }}>
                   {[0, 1, 2].map((i) => (
                      <div
                         key={i}
@@ -179,7 +179,7 @@ const TerminalCard = ({
                   background: "rgb(var(--ch-white) / 0.05)",
                   border: "1px solid rgb(var(--ch-white) / 0.08)",
                   borderRadius: 6,
-                  padding: "4px 10px",
+                  padding: "4px 8px",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
@@ -209,10 +209,10 @@ const TerminalCard = ({
          <div
             key={runKey}
             style={{
-               padding: "14px 16px",
+               padding: "12px 16px",
                fontFamily: MONO_FONT,
-               fontSize: 13,
-               lineHeight: 1.8,
+               fontSize: 12,
+               lineHeight: 1.7,
                minHeight: 120,
             }}
          >

@@ -16,14 +16,14 @@ const HeroSocial = () => {
                style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: 10,
+                  gap: 8,
                   padding: "8px 16px",
                   borderRadius: 12,
                   background: "rgba(255, 255, 255, 0.03)",
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
                   border: "1px solid rgba(255, 255, 255, 0.06)",
-                  fontSize: 13,
+                  fontSize: 12,
                   color: "#a5a5c0",
                }}
             >
@@ -37,7 +37,7 @@ const HeroSocial = () => {
                         fontWeight: 600,
                         fontSize: 11,
                         color: "#06b6d4",
-                        padding: "2px 10px",
+                        padding: "2px 8px",
                         borderRadius: 6,
                         background: "rgba(6, 182, 212, 0.08)",
                         border: "1px solid rgba(6, 182, 212, 0.2)",

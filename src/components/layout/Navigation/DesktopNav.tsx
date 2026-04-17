@@ -33,10 +33,10 @@ const DesktopNav = ({
                   key={section.id}
                   onClick={() => onNavigate(section.id)}
                   style={{
-                     padding: "6px 12px",
-                     fontSize: 13,
+                     padding: "4px 12px",
+                     fontSize: 12,
                      fontWeight: 500,
-                     borderRadius: 8,
+                     borderRadius: 10,
                      cursor: "pointer",
                      border: "none",
                      transition: "all 0.2s ease",
@@ -47,7 +47,7 @@ const DesktopNav = ({
                      backdropFilter: isActive ? "blur(8px)" : "none",
                      display: "flex",
                      alignItems: "center",
-                     gap: 6,
+                     gap: 4,
                      position: "relative",
                   }}
                   onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {

@@ -47,7 +47,7 @@ const Experience = () => {
                <motion.h3
                   variants={fadeInUp}
                   style={{
-                     fontSize: 22,
+                     fontSize: 20,
                      fontWeight: 700,
                      color: "#eeeef5",
                      marginTop: 48,

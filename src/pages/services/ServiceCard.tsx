@@ -18,7 +18,7 @@ const bentoEntry: Variants = {
       opacity: 1,
       y: 0,
       rotate: 0,
-      transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
    },
 };
 
@@ -35,7 +35,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
          whileHover={{
             y: -6,
             boxShadow: `0 12px 40px ${colors.borderHover}`,
-            transition: { duration: 0.3 },
+            transition: { duration: 0.4 },
          }}
          onHoverStart={() => setIsHovered(true)}
          onHoverEnd={() => setIsHovered(false)}
@@ -78,13 +78,13 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             </div>
 
             {/* Right: Content */}
-            <div style={{ flex: 1, padding: "18px 20px" }}>
+            <div style={{ flex: 1, padding: "16px 20px" }}>
                <h3
                   style={{
-                     fontSize: 15,
+                     fontSize: 14,
                      fontWeight: 700,
                      color: "#eeeef5",
-                     marginBottom: 10,
+                     marginBottom: 8,
                      display: "flex",
                      alignItems: "center",
                      gap: 8,
@@ -105,7 +105,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                   style={{
                      display: "flex",
                      flexDirection: "column",
-                     gap: 6,
+                     gap: 4,
                   }}
                >
                   {service.list.map((item) => (
@@ -116,7 +116,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                            alignItems: "flex-start",
                            gap: 8,
                            color: "#a5a5c0",
-                           fontSize: 13,
+                           fontSize: 12,
                            lineHeight: 1.5,
                         }}
                      >
@@ -125,7 +125,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                               width: 4,
                               height: 4,
                               borderRadius: "50%",
-                              marginTop: 7,
+                              marginTop: 8,
                               flexShrink: 0,
                               backgroundColor: colors.dot,
                            }}

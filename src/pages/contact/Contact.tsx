@@ -44,7 +44,7 @@ const Contact = () => {
          >
             {/* Contact Options - Left Column */}
             <motion.div
-               style={{ display: "flex", flexDirection: "column", gap: 14 }}
+               style={{ display: "flex", flexDirection: "column", gap: 12 }}
                variants={staggerContainer}
             >
                {contactOptions.map((option) => (
@@ -65,7 +65,7 @@ const Contact = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.4 }}
                      >
                         <SendConfirmation
                            onReset={resetConfirmation}
@@ -78,7 +78,7 @@ const Contact = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
+                        transition={{ duration: 0.25 }}
                      >
                         <ContactForm
                            formRef={formRef}

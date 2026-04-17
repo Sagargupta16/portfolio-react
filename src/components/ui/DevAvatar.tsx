@@ -107,7 +107,7 @@ const DevAvatar = () => {
                   variants={floatVariant(delay)}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{}}
-                  transition={{ duration: 0.5, delay: delay * 0.3 }}
+                  transition={{ duration: 0.7, delay: delay * 0.3 }}
                >
                   <Icon style={{ width: 16, height: 16, color }} />
                </motion.div>

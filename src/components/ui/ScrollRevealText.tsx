@@ -33,7 +33,7 @@ const Word = ({
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            marginRight: 6,
+            marginRight: 4,
          }}
       >
          {word}

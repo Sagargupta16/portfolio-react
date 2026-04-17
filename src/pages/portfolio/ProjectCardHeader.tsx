@@ -48,10 +48,10 @@ const ProjectCardHeader = ({
          <div style={{ minWidth: 0, flex: 1 }}>
             <h3
                style={{
-                  fontSize: 17,
+                  fontSize: 16,
                   fontWeight: 700,
                   color: TEXT_PRIMARY,
-                  lineHeight: 1.3,
+                  lineHeight: 1.2,
                }}
             >
                {data.title}
@@ -61,7 +61,7 @@ const ProjectCardHeader = ({
                   display: "flex",
                   alignItems: "center",
                   gap: 8,
-                  marginTop: 6,
+                  marginTop: 4,
                   flexWrap: "wrap",
                }}
             >
@@ -104,7 +104,7 @@ const ProjectCardHeader = ({
                display: "inline-flex",
                alignItems: "center",
                gap: 4,
-               padding: "3px 10px",
+               padding: "3px 8px",
                borderRadius: 6,
                background: `${colors.bgAlpha}0.08)`,
                border: `1px solid ${colors.borderAlpha}0.15)`,
@@ -128,8 +128,8 @@ const ProjectCardHeader = ({
             style={{
                display: "inline-flex",
                alignItems: "center",
-               gap: 6,
-               padding: "4px 10px",
+               gap: 4,
+               padding: "4px 8px",
                borderRadius: 6,
                background: "rgba(245,158,11,0.08)",
                border: "1px solid rgba(245,158,11,0.15)",

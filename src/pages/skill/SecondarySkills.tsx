@@ -22,7 +22,7 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
    return (
       <motion.div
          style={{
-            marginTop: 56,
+            marginTop: 48,
             display: "flex",
             flexDirection: "column",
             gap: 32,
@@ -57,7 +57,7 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
                      marginBottom: 12,
                      display: "flex",
                      alignItems: "center",
-                     gap: 10,
+                     gap: 8,
                   }}
                >
                   <div
@@ -84,7 +84,7 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
                         className="skill-tag"
                         style={{
                            fontSize: 12,
-                           padding: "5px 14px",
+                           padding: "4px 12px",
                         }}
                         variants={waveCascadeItem}
                      >

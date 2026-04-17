@@ -59,8 +59,8 @@ const About = () => {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 8,
-                        padding: "6px 14px",
-                        borderRadius: 20,
+                        padding: "4px 12px",
+                        borderRadius: 16,
                         background: `${GREEN}08`,
                         border: `1px solid ${GREEN}20`,
                         marginBottom: 20,
@@ -97,7 +97,7 @@ const About = () => {
                         fontWeight: 700,
                         color: "#eeeef5",
                         marginBottom: 16,
-                        lineHeight: 1.3,
+                        lineHeight: 1.2,
                      }}
                   />
 

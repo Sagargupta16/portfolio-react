@@ -25,15 +25,15 @@ const CompetitionsSection = ({ achievements }: CompetitionsSectionProps) => {
                display: "flex",
                alignItems: "center",
                justifyContent: "center",
-               gap: 10,
-               marginBottom: 28,
+               gap: 8,
+               marginBottom: 24,
             }}
          >
             <div
                style={{
                   width: 32,
                   height: 32,
-                  borderRadius: 8,
+                  borderRadius: 10,
                   background: "rgba(245,158,11,0.1)",
                   display: "flex",
                   alignItems: "center",

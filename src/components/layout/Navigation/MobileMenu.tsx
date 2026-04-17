@@ -29,7 +29,7 @@ const MobileMenu = ({
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                exit={{ opacity: 0 }}
-               transition={{ duration: 0.2 }}
+               transition={{ duration: 0.25 }}
             >
                {/* Backdrop */}
                <motion.div
@@ -79,7 +79,7 @@ const MobileMenu = ({
                         style={{
                            textAlign: "left",
                            padding: "12px 16px",
-                           borderRadius: 8,
+                           borderRadius: 10,
                            fontSize: 14,
                            fontWeight: 500,
                            cursor: "pointer",
@@ -104,7 +104,7 @@ const MobileMenu = ({
                               style={{
                                  textAlign: "left",
                                  padding: "12px 16px",
-                                 borderRadius: 8,
+                                 borderRadius: 10,
                                  fontSize: 14,
                                  fontWeight: 500,
                                  cursor: "pointer",

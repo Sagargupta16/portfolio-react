@@ -93,7 +93,7 @@ const Portfolio = () => {
                         activeFilter === filter
                            ? {}
                            : {
-                                padding: "10px 20px",
+                                padding: "8px 20px",
                                 borderRadius: 12,
                                 fontSize: 14,
                                 fontFamily: MONO_FONT,
@@ -108,7 +108,7 @@ const Portfolio = () => {
                      initial={{ opacity: 0, y: 15 }}
                      animate={{ opacity: 1, y: 0 }}
                      transition={{
-                        duration: 0.5,
+                        duration: 0.7,
                         ease: [0.4, 0, 0.2, 1],
                         delay: 0.1 + idx * 0.08,
                      }}

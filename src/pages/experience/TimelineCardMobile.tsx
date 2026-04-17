@@ -28,7 +28,7 @@ const TimelineCardMobile = ({
       <div
          className="glass-card"
          style={{
-            padding: "20px 18px",
+            padding: "20px 16px",
             borderLeft: `3px solid ${accentColor}`,
             borderRadius: "0 12px 12px 0",
          }}

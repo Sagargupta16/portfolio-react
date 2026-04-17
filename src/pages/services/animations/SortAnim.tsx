@@ -55,7 +55,7 @@ const SortAnim = ({ color }: SortAnimProps) => (
                   top: BASE_Y - bar.h,
                   width: BAR_W,
                   height: bar.h,
-                  borderRadius: 3,
+                  borderRadius: 4,
                   background: `${bar.color}35`,
                   borderTop: `2px solid ${bar.color}`,
                }}

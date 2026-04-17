@@ -40,7 +40,7 @@ const CertBadge = ({
          viewport={{ once: false, margin: "0px 0px -60px 0px" }}
          transition={{
             delay: entranceDelay,
-            duration: 0.6,
+            duration: 0.7,
             ease: [0.16, 1, 0.3, 1],
          }}
          onHoverStart={() => setIsHovered(true)}
@@ -49,7 +49,7 @@ const CertBadge = ({
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 10,
+            gap: 8,
             cursor: "pointer",
             textDecoration: "none",
             position: "relative",
@@ -60,7 +60,7 @@ const CertBadge = ({
             animate={isHovered ? { y: 0 } : { y: [0, -8, 0] }}
             transition={
                isHovered
-                  ? { duration: 0.3 }
+                  ? { duration: 0.4 }
                   : {
                        duration: 3,
                        repeat: Infinity,
@@ -117,7 +117,7 @@ const CertBadge = ({
                   color: isHovered ? TEXT_PRIMARY : "rgba(255,255,255,0.4)",
                   textAlign: "center",
                   maxWidth: size + 20,
-                  lineHeight: 1.3,
+                  lineHeight: 1.2,
                   transition: "color 0.3s ease",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,

@@ -23,7 +23,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
             padding: isMobile ? "16px 14px" : "18px 20px",
             display: "flex",
             alignItems: "center",
-            gap: 14,
+            gap: 12,
             borderLeft: `3px solid ${colors.accent}`,
             borderRadius: "0 16px 16px 0",
             textDecoration: "none",

@@ -87,7 +87,7 @@ const Footer = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   style={{
                      padding: "8px 16px",
-                     borderRadius: 8,
+                     borderRadius: 10,
                      background:
                         "linear-gradient(135deg, rgba(6,182,212,0.15), rgba(168,85,247,0.15))",
                      border: "1px solid rgba(6,182,212,0.3)",

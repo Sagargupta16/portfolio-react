@@ -46,7 +46,7 @@ const ContribSection = ({
          style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: 10,
+            gap: 8,
          }}
          variants={staggerContainer}
          initial="hidden"

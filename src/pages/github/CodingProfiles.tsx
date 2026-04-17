@@ -66,7 +66,10 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
       display: "flex",
       flexDirection: "column" as const,
       alignItems: "center",
+      justifyContent: "center",
       gap: 8,
+      // Fixed aspect ratio keeps cards visually consistent across viewports
+      aspectRatio: "4 / 3",
    };
 
    return (
@@ -74,7 +77,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
          <motion.h3
             variants={fadeInUp}
             style={{
-               fontSize: 18,
+               fontSize: 20,
                fontWeight: 700,
                color: TEXT_PRIMARY,
                marginBottom: 20,
@@ -118,7 +121,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                </span>
                <span
                   style={{
-                     fontSize: 22,
+                     fontSize: 24,
                      fontWeight: 700,
                      fontFamily: MONO_FONT,
                      color: TEXT_PRIMARY,
@@ -174,7 +177,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                      </span>
                      <span
                         style={{
-                           fontSize: 22,
+                           fontSize: 24,
                            fontWeight: 700,
                            fontFamily: MONO_FONT,
                            color: TEXT_PRIMARY,

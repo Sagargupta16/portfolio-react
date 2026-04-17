@@ -30,17 +30,17 @@ const OpenSourceBanner = () => {
 
    return (
       <motion.div
-         style={{ marginTop: 64 }}
+         style={{ marginTop: 48 }}
          initial={{ opacity: 0, y: 30 }}
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ margin: "0px 0px -100px 0px" }}
-         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+         transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
       >
          <div
             style={{
                display: "flex",
                alignItems: "center",
-               gap: 10,
+               gap: 8,
                marginBottom: 24,
                justifyContent: "center",
             }}
@@ -178,7 +178,7 @@ const OpenSourceBanner = () => {
                      style={{
                         display: "grid",
                         gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-                        gap: 10,
+                        gap: 8,
                      }}
                      variants={staggerContainer}
                      initial="hidden"
@@ -230,7 +230,7 @@ const OpenSourceBanner = () => {
                      style={{
                         display: "grid",
                         gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-                        gap: 10,
+                        gap: 8,
                      }}
                      variants={staggerContainer}
                      initial="hidden"

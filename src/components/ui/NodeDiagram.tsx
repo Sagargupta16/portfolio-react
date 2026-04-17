@@ -58,7 +58,7 @@ const NodeDiagram = ({
                display: "flex",
                alignItems: "center",
                justifyContent: "center",
-               padding: "28px 20px",
+               padding: "24px 20px",
                minHeight: height,
             }}
          >
@@ -90,7 +90,7 @@ const NodeDiagram = ({
                         }
                         transition={{
                            delay: 0.4 + i * 0.15,
-                           duration: 0.8,
+                           duration: 1,
                            ease: [0.16, 1, 0.3, 1],
                         }}
                      />
@@ -109,7 +109,7 @@ const NodeDiagram = ({
                      }
                      transition={{
                         delay: 0.2 + i * 0.12,
-                        duration: 0.5,
+                        duration: 0.7,
                         type: "spring",
                         stiffness: 120,
                         damping: 14,

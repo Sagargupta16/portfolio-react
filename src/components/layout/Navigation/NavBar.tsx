@@ -52,7 +52,7 @@ const NavBar = ({
          }}
          initial={{ y: -80, opacity: 0 }}
          animate={{ y: 0, opacity: 1 }}
-         transition={{ duration: 0.6, ease: "easeOut" }}
+         transition={{ duration: 0.7, ease: "easeOut" }}
       >
          <div
             style={{
@@ -106,7 +106,7 @@ const NavBar = ({
                      display: "flex",
                      alignItems: "center",
                      justifyContent: "center",
-                     borderRadius: 8,
+                     borderRadius: 10,
                      color: TEXT_SECONDARY,
                      cursor: "pointer",
                      background: "none",

@@ -7,6 +7,9 @@ import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
    TEXT_MUTED,
+   MEDAL_GOLD,
+   MEDAL_SILVER,
+   MEDAL_BRONZE,
 } from "@/constants/theme";
 
 interface TrophyCardProps {
@@ -15,9 +18,9 @@ interface TrophyCardProps {
 }
 
 const PLACEMENT_COLORS: Record<string, string> = {
-   "1st": "#fbbf24",
-   "2nd": "#94a3b8",
-   "3rd": "#d97706",
+   "1st": MEDAL_GOLD,
+   "2nd": MEDAL_SILVER,
+   "3rd": MEDAL_BRONZE,
    "4th": TEXT_MUTED,
 };
 
@@ -65,16 +68,16 @@ const TrophyCard = ({ item, index }: TrophyCardProps) => {
          viewport={{ once: false, margin: "0px 0px -40px 0px" }}
          transition={{
             delay: index * 0.08,
-            duration: 0.5,
+            duration: 0.7,
             ease: EXPO_EASE,
          }}
          whileHover={{
             y: -4,
             boxShadow: `0 8px 30px ${color}25`,
-            transition: { duration: 0.2 },
+            transition: { duration: 0.25 },
          }}
          style={{
-            padding: "20px 22px",
+            padding: "20px 20px",
             display: "flex",
             alignItems: "center",
             gap: 16,
@@ -116,7 +119,7 @@ const TrophyCard = ({ item, index }: TrophyCardProps) => {
                   fontSize: 14,
                   fontWeight: 600,
                   color: TEXT_PRIMARY,
-                  lineHeight: 1.4,
+                  lineHeight: 1.5,
                   marginBottom: 4,
                }}
             >

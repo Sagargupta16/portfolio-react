@@ -19,7 +19,7 @@ const CodingPlatformCard = ({ platform, stats }: CodingPlatformCardProps) => (
       <h4
          className="gradient-text"
          style={{
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: 700,
             marginBottom: 20,
             textTransform: "capitalize",
@@ -31,7 +31,7 @@ const CodingPlatformCard = ({ platform, stats }: CodingPlatformCardProps) => (
          style={{
             display: "flex",
             flexDirection: "column",
-            gap: 14,
+            gap: 12,
          }}
       >
          {((stats.displayStats as string[]) || Object.keys(stats))
@@ -85,10 +85,10 @@ const CodingPlatformCard = ({ platform, stats }: CodingPlatformCardProps) => (
             style={{
                display: "inline-flex",
                alignItems: "center",
-               gap: 6,
-               marginTop: 18,
+               gap: 4,
+               marginTop: 16,
                padding: "8px 16px",
-               borderRadius: 8,
+               borderRadius: 10,
                fontSize: 12,
                fontWeight: 600,
                color: "#06b6d4",

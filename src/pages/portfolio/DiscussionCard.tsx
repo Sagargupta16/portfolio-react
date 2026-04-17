@@ -27,8 +27,8 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
          style={{
             display: "flex",
             alignItems: "flex-start",
-            gap: 10,
-            padding: "12px 14px",
+            gap: 8,
+            padding: "12px 12px",
             borderRadius: 10,
             background: "rgba(255,255,255,0.02)",
             border: `1px solid ${color}1A`,
@@ -74,7 +74,7 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
                      fontWeight: 700,
                      letterSpacing: "0.05em",
                      textTransform: "uppercase",
-                     padding: "2px 6px",
+                     padding: "2px 4px",
                      borderRadius: 4,
                      background: `${color}1F`,
                      color,
@@ -89,7 +89,7 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
                style={{
                   fontSize: 12,
                   color: "#a5a5c0",
-                  lineHeight: 1.4,
+                  lineHeight: 1.5,
                   marginTop: 2,
                   overflow: "hidden",
                   textOverflow: "ellipsis",

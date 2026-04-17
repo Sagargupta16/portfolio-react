@@ -52,7 +52,7 @@ const PipelineAnim = ({ color }: PipelineAnimProps) => (
          ))}
          <span
             style={{
-               marginLeft: 6,
+               marginLeft: 4,
                fontSize: 5,
                fontFamily: MONO_FONT,
                fontWeight: 600,
@@ -67,7 +67,7 @@ const PipelineAnim = ({ color }: PipelineAnimProps) => (
       <div
          style={{
             flex: 1,
-            padding: "6px 6px",
+            padding: "4px 4px",
             display: "flex",
             flexDirection: "column",
             gap: 3,
@@ -123,7 +123,7 @@ const PipelineAnim = ({ color }: PipelineAnimProps) => (
                width: 5,
                height: 8,
                background: `${color}60`,
-               borderRadius: 1,
+               borderRadius: 4,
                marginTop: 2,
             }}
          />

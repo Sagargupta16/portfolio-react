@@ -32,11 +32,11 @@ const DETAILS_STYLE: React.CSSProperties = {
 
 const BUTTON_STYLE: React.CSSProperties = {
    marginTop: "16px",
-   padding: "10px 20px",
+   padding: "8px 20px",
    background: CYAN,
    color: "#0a0a1a",
    border: "none",
-   borderRadius: 8,
+   borderRadius: 10,
    cursor: "pointer",
    fontWeight: 600,
 };

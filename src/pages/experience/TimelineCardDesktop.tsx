@@ -35,7 +35,7 @@ const TimelineCardDesktop = ({
          <span
             style={{
                fontFamily: MONO_FONT,
-               fontSize: 13,
+               fontSize: 12,
                fontWeight: 600,
                color: accentColor,
             }}
@@ -87,7 +87,7 @@ const TimelineCardDesktop = ({
                borderRadius: "50%",
                border: `2px solid ${accentColor}`,
                backgroundColor: "rgba(6, 6, 16, 0.6)",
-               marginTop: 6,
+               marginTop: 4,
                position: "relative",
                zIndex: 2,
                flexShrink: 0,
@@ -108,7 +108,7 @@ const TimelineCardDesktop = ({
                width: 2,
                flex: 1,
                background: `linear-gradient(to bottom, ${accentColor}40, ${accentColor}10)`,
-               borderRadius: 1,
+               borderRadius: 4,
             }}
          />
       </div>
@@ -116,7 +116,7 @@ const TimelineCardDesktop = ({
       {/* Right: Content card */}
       <div
          className="glass-card"
-         style={{ padding: "24px 28px", marginBottom: 20 }}
+         style={{ padding: "24px 24px", marginBottom: 20 }}
       >
          <TimelineCardContent
             item={item}

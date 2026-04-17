@@ -65,7 +65,7 @@ const Skill = () => {
                   <motion.div key={key} variants={staggerItem}>
                      <h3
                         style={{
-                           fontSize: 18,
+                           fontSize: 20,
                            fontWeight: 600,
                            color: "#eeeef5",
                            marginBottom: 16,

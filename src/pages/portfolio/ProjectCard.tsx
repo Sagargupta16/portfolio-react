@@ -46,11 +46,11 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
                  ).transition
                : {}),
             delay: Math.min(index * 0.1, 0.8),
-            layout: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
+            layout: { duration: 0.7, ease: [0.4, 0, 0.2, 1] },
          }}
          whileHover={{
             y: -6,
-            transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
+            transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
          }}
       >
          {/* Accent top bar */}
@@ -81,7 +81,7 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
             <p
                style={{
                   color: "#a5a5c0",
-                  fontSize: 13,
+                  fontSize: 12,
                   lineHeight: 1.7,
                   marginBottom: 16,
                   flex: 1,
@@ -95,7 +95,7 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
                style={{
                   display: "flex",
                   flexWrap: "wrap",
-                  gap: 6,
+                  gap: 4,
                   marginBottom: 16,
                }}
             >
@@ -106,7 +106,7 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
                         fontFamily: MONO_FONT,
                         fontSize: 10,
                         padding: "3px 8px",
-                        borderRadius: 5,
+                        borderRadius: 6,
                         background: `${colors.bgAlpha}0.08)`,
                         color: colors.accent,
                         border: `1px solid ${colors.borderAlpha}0.15)`,

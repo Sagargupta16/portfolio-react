@@ -26,7 +26,7 @@ const SystemStatus = () => {
       <motion.div
          initial={{ opacity: 0, scale: 0.9 }}
          animate={{ opacity: 1, scale: 1 }}
-         transition={{ duration: 0.5, delay: 2.5 }}
+         transition={{ duration: 0.7, delay: 2.5 }}
          style={{
             position: "fixed",
             bottom: 24,
@@ -49,7 +49,7 @@ const SystemStatus = () => {
       >
          <Server size={14} color="#22c55e" />
 
-         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
             <div
                style={{
                   position: "relative",
@@ -100,7 +100,7 @@ const SystemStatus = () => {
                background: "rgba(255,255,255,0.08)",
             }}
          />
-         <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
             <Eye size={12} color="#06b6d4" />
             <span
                style={{
