@@ -884,12 +884,6 @@
          "status": "open"
       },
       {
-         "repo": "aws-ia/terraform-aws-bedrock",
-         "title": "Fix name_prefix, tag propagation, external roles, add MCP example",
-         "url": "https://github.com/aws-ia/terraform-aws-bedrock/pull/172",
-         "status": "open"
-      },
-      {
          "repo": "NirmalScaria/le-git-graph",
          "title": "Infinite scroll, configurable commit count, and performance improvements",
          "url": "https://github.com/NirmalScaria/le-git-graph/pull/109",
@@ -901,18 +895,6 @@
          "url": "https://github.com/forem/selfhost/pull/91",
          "status": "closed",
          "note": "Community confirmed working. Maintainers left Forem before review."
-      },
-      {
-         "repo": "anthropics/skills",
-         "title": "Fix: correct path in package_skill.py docstring and usage",
-         "url": "https://github.com/anthropics/skills/pull/939",
-         "status": "open"
-      },
-      {
-         "repo": "anthropics/skills",
-         "title": "Fix: resolve filename collisions across language subdirs",
-         "url": "https://github.com/anthropics/skills/pull/940",
-         "status": "open"
       },
       {
          "repo": "anthropics/skills",
