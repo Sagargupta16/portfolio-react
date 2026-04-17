@@ -4,14 +4,14 @@ import { Canvas } from "@react-three/fiber";
 import { PerformanceMonitor } from "@react-three/drei";
 import FloatingGeometry from "./FloatingGeometry";
 import ParticleField from "./ParticleField";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 
 interface HeroSceneProps {
    visible?: boolean;
 }
 
 const HeroScene = ({ visible = true }: HeroSceneProps) => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const [degraded, setDegraded] = useState(false);
 
    const desktopParticles = degraded ? 150 : 300;

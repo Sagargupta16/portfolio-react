@@ -1,32 +1,41 @@
 import type { Variants } from "motion/react";
+import { DURATION, EASING, SPRING } from "@/constants/theme";
 
 // ===== Transition Presets =====
 const transitions = {
-   default: { duration: 0.6, ease: "easeOut" as const },
-   spring: { type: "spring" as const, stiffness: 100, damping: 15 },
-   quick: { duration: 0.3, ease: "easeInOut" as const },
+   default: { duration: DURATION.default, ease: "easeOut" as const },
+   spring: SPRING.default,
+   quick: { duration: DURATION.quick, ease: "easeInOut" as const },
 };
 
-// ===== Fade Animations =====
-export const fadeInUp: Variants = {
-   hidden: { opacity: 0, y: 60 },
-   visible: { opacity: 1, y: 0, transition: transitions.default },
+// ===== Directional Fade (parameterized) =====
+type Direction = "up" | "down" | "left" | "right" | "none";
+
+const OFFSET = 60;
+const directionOffset: Record<Direction, { x?: number; y?: number }> = {
+   up: { y: OFFSET },
+   down: { y: -OFFSET },
+   left: { x: -OFFSET },
+   right: { x: OFFSET },
+   none: {},
 };
 
-export const fadeInLeft: Variants = {
-   hidden: { opacity: 0, x: -60 },
-   visible: { opacity: 1, x: 0, transition: transitions.default },
-};
+/** Parameterized fade variant. Use `createFade("up")` instead of stamping new variants. */
+export const createFade = (direction: Direction = "up"): Variants => ({
+   hidden: { opacity: 0, ...directionOffset[direction] },
+   visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: transitions.default,
+   },
+});
 
-export const fadeInRight: Variants = {
-   hidden: { opacity: 0, x: 60 },
-   visible: { opacity: 1, x: 0, transition: transitions.default },
-};
-
-export const fadeIn: Variants = {
-   hidden: { opacity: 0 },
-   visible: { opacity: 1, transition: transitions.default },
-};
+// Pre-built fades for common cases (backwards-compat with existing usages).
+export const fadeInUp: Variants = createFade("up");
+export const fadeInLeft: Variants = createFade("left");
+export const fadeInRight: Variants = createFade("right");
+export const fadeIn: Variants = createFade("none");
 
 // ===== Scale Animations =====
 export const scaleIn: Variants = {
@@ -53,7 +62,7 @@ export const staggerItem: Variants = {
 // ===== Line / Border =====
 export const lineGrow: Variants = {
    hidden: { scaleX: 0, originX: 0 },
-   visible: { scaleX: 1, transition: { duration: 0.8, ease: "easeOut" } },
+   visible: { scaleX: 1, transition: { duration: DURATION.slow, ease: "easeOut" } },
 };
 
 // ===== Section Reveal (for IntersectionObserver) =====
@@ -62,7 +71,7 @@ export const sectionReveal: Variants = {
    visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: DURATION.default, ease: "easeOut" },
    },
 };
 
@@ -73,7 +82,7 @@ export const sectionRevealEnhanced: Variants = {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.7, ease: EASING.smooth },
    },
 };
 
@@ -84,7 +93,7 @@ export const rotateInUp: Variants = {
       opacity: 1,
       y: 0,
       rotateX: 0,
-      transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.7, ease: EASING.smooth },
    },
 };
 
@@ -95,7 +104,7 @@ export const slideInLeft: Variants = {
       opacity: 1,
       x: 0,
       skewY: 0,
-      transition: { duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.65, ease: EASING.smooth },
    },
 };
 
@@ -105,7 +114,7 @@ export const slideInRight: Variants = {
       opacity: 1,
       x: 0,
       skewY: 0,
-      transition: { duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.65, ease: EASING.smooth },
    },
 };
 
@@ -124,7 +133,7 @@ export const waveCascadeItem: Variants = {
       y: 0,
       scale: 1,
       filter: "blur(0px)",
-      transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+      transition: { duration: 0.4, ease: EASING.brisk },
    },
 };
 
@@ -134,7 +143,7 @@ export const clipRevealUp: Variants = {
    visible: {
       opacity: 1,
       clipPath: "inset(0% 0% 0% 0%)",
-      transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: DURATION.default, ease: EASING.smooth },
    },
 };
 
@@ -145,7 +154,7 @@ export const scaleRotateIn: Variants = {
       opacity: 1,
       scale: 1,
       rotate: 0,
-      transition: { type: "spring", stiffness: 80, damping: 16 },
+      transition: SPRING.gentle,
    },
 };
 
@@ -155,7 +164,7 @@ export const flipInY: Variants = {
    visible: {
       opacity: 1,
       rotateY: 0,
-      transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.7, ease: EASING.smooth },
    },
 };
 
@@ -173,7 +182,7 @@ export const bentoCellItem: Variants = {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+      transition: { duration: 0.5, ease: EASING.cinematic },
    },
 };
 
@@ -181,6 +190,17 @@ export const bentoCellItem: Variants = {
 export const PANEL_INITIAL = { opacity: 0, y: 30 } as const;
 export const PANEL_VISIBLE = { opacity: 1, y: 0 } as const;
 export const PANEL_TRANSITION = {
-   duration: 0.6,
-   ease: [0.16, 1, 0.3, 1],
+   duration: DURATION.default,
+   ease: EASING.cinematic,
 } as const;
+
+// ===== Reduced-motion helpers =====
+/** Collapses a variant to an instant opacity fade -- honor prefers-reduced-motion. */
+export const REDUCED_MOTION_VARIANT: Variants = {
+   hidden: { opacity: 0 },
+   visible: { opacity: 1, transition: { duration: 0 } },
+};
+
+/** Pick between full animation and reduced-motion fallback. */
+export const motionSafe = (variant: Variants, reducedMotion: boolean): Variants =>
+   reducedMotion ? REDUCED_MOTION_VARIANT : variant;

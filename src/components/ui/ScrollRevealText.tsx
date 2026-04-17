@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import useReducedMotion from "@utils/useReducedMotion";
+import useReducedMotion from "@hooks/useReducedMotion";
 import { CYAN, PURPLE } from "@/constants/theme";
 
 interface ScrollRevealTextProps {

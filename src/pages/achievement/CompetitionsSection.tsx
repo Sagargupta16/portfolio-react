@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { Trophy } from "lucide-react";
 import type { Achievement } from "@/types";
 import { fadeInUp } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import TrophyCard from "./TrophyCard";
 
 interface CompetitionsSectionProps {
@@ -10,7 +10,7 @@ interface CompetitionsSectionProps {
 }
 
 const CompetitionsSection = ({ achievements }: CompetitionsSectionProps) => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
 
    if (achievements.length === 0) return null;
 

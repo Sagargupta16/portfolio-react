@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight, Trophy, Code, Star } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import { getCodingPlatformStats } from "@data/dataLoader";
+import type { CodingPlatformStat } from "@/types";
 import { staggerContainer, fadeInUp } from "@utils/animations";
 import {
    MONO_FONT,
@@ -10,7 +11,7 @@ import {
    TEXT_PRIMARY,
    TEXT_MUTED,
 } from "@/constants/theme";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 
 const PLATFORM_CONFIG: Record<
    string,
@@ -18,30 +19,31 @@ const PLATFORM_CONFIG: Record<
       label: string;
       color: string;
       icon: typeof Trophy;
-      highlight: (stats: Record<string, unknown>) => string;
-      subtitle: (stats: Record<string, unknown>) => string;
+      highlight: (stats: CodingPlatformStat) => string;
+      subtitle: (stats: CodingPlatformStat) => string;
    }
 > = {
    leetcode: {
       label: "LeetCode",
       color: AMBER,
       icon: Trophy,
-      highlight: (s) => `${s.best_rating} ${s.badge}`,
-      subtitle: (s) => `${s.problems_solved} solved | ${s.contests} contests`,
+      highlight: (s) => `${s.best_rating ?? ""} ${s.badge ?? ""}`.trim(),
+      subtitle: (s) =>
+         `${s.problems_solved ?? "?"} solved | ${s.contests ?? "?"} contests`,
    },
    geeksforgeeks: {
       label: "GeeksforGeeks",
       color: "#2f8d46",
       icon: Code,
-      highlight: (s) => `${s.problems_solved}`,
+      highlight: (s) => s.problems_solved ?? "",
       subtitle: () => "Problems Solved",
    },
    hackerrank: {
       label: "HackerRank",
       color: PURPLE,
       icon: Star,
-      highlight: (s) => `${s.problem_solving}`,
-      subtitle: (s) => `Problem Solving | ${s.cpp} C++`,
+      highlight: (s) => s.problem_solving ?? "",
+      subtitle: (s) => `Problem Solving | ${s.cpp ?? "?"} C++`,
    },
 };
 
@@ -50,7 +52,7 @@ interface CodingProfilesProps {
 }
 
 const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const stats = getCodingPlatformStats();
    const entries = Object.entries(stats).filter(
       ([key]) => key in PLATFORM_CONFIG,
@@ -143,15 +145,14 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
             </motion.a>
 
             {/* Coding platform cards */}
-            {entries.map(([key, data]) => {
+            {entries.map(([key, s]) => {
                const config = PLATFORM_CONFIG[key];
-               const s = data as Record<string, unknown>;
-               const url = s.url as string | undefined;
+               if (!config) return null;
 
                return (
                   <motion.a
                      key={key}
-                     href={url}
+                     href={s.url}
                      target="_blank"
                      rel="noopener noreferrer"
                      className="glass-card"

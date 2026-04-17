@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import useReducedMotion from "@utils/useReducedMotion";
+import useReducedMotion from "@hooks/useReducedMotion";
 import { CYAN, PURPLE, PINK, AMBER } from "@/constants/theme";
 
 const BLOBS = [

@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getEducation } from "@data/dataLoader";
 import { staggerContainer } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import EducationCard from "./EducationCard";
 
 const Education = () => {
    const education = useMemo(() => getEducation(), []);
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
 
    return (
       <PageSection

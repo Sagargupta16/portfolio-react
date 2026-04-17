@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getServices } from "@data/dataLoader";
 import { staggerContainer } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import ServiceCard from "./ServiceCard";
 
 const Services = () => {
    const services = useMemo(() => getServices(), []);
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
 
    return (
       <PageSection id="services" title="Services" subtitle="What I offer">

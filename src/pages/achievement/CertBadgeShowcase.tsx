@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { ShieldCheck } from "lucide-react";
 import { fadeInUp } from "@utils/animations";
 import type { Certification } from "@/types";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import CertBadge from "./CertBadge";
 
 interface CertBadgeShowcaseProps {
@@ -10,7 +10,7 @@ interface CertBadgeShowcaseProps {
 }
 
 const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const badgeSize = isMobile ? 90 : 120;
 
    return (

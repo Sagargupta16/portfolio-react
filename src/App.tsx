@@ -8,12 +8,13 @@ import ScrollProgress from "@components/ui/ScrollProgress";
 import BackToTop from "@components/ui/BackToTop";
 import Preloader from "@components/ui/Preloader";
 import KeyboardNav from "@components/ui/KeyboardNav";
-import { CYAN } from "@/constants/theme";
+import SectionLoader from "@components/ui/SectionLoader";
 import SectionTransition from "@components/ui/SectionTransition";
 import ParallaxElements from "@components/ui/ParallaxElements";
 import AuroraBlobs from "@components/ui/AuroraBlobs";
 import ShootingStars from "@components/ui/ShootingStars";
 import SystemStatus from "@components/ui/SystemStatus";
+import { BreakpointProvider } from "@hooks/BreakpointProvider";
 
 // Lazy Load "Below the fold" sections for massive performance gains
 const About = lazy(() => import("@pages/about/About"));
@@ -25,28 +26,6 @@ const Portfolio = lazy(() => import("@pages/portfolio/Portfolio"));
 const Achievement = lazy(() => import("@pages/achievement/Achievement"));
 const Contact = lazy(() => import("@pages/contact/Contact"));
 const GitHub = lazy(() => import("@pages/github/GitHub"));
-
-const SectionLoader = () => (
-   <div
-      style={{
-         display: "flex",
-         justifyContent: "center",
-         alignItems: "center",
-         minHeight: "30vh",
-      }}
-   >
-      <div
-         style={{
-            width: 32,
-            height: 32,
-            borderRadius: "50%",
-            border: "2px solid rgba(6, 182, 212, 0.2)",
-            borderTopColor: CYAN,
-            animation: "spin 1s linear infinite",
-         }}
-      />
-   </div>
-);
 
 const App = () => {
    useEffect(() => {
@@ -62,6 +41,7 @@ const App = () => {
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
          }}
       >
+         <BreakpointProvider>
          <ErrorBoundary>
             <Preloader />
             <ScrollProgress />
@@ -117,6 +97,7 @@ const App = () => {
                <SystemStatus />
             </div>
          </ErrorBoundary>
+         </BreakpointProvider>
       </ReactLenis>
    );
 };

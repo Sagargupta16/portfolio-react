@@ -4,8 +4,8 @@ import {
    useTransform,
    type MotionValue,
 } from "motion/react";
-import useReducedMotion from "@utils/useReducedMotion";
-import useMediaQuery from "@utils/useMediaQuery";
+import useReducedMotion from "@hooks/useReducedMotion";
+import useBreakpoint from "@hooks/useBreakpoint";
 import ShapeRenderer from "./ShapeRenderer";
 import { ELEMENTS, type ParallaxElementShape } from "./parallaxData";
 
@@ -41,7 +41,7 @@ const ParallaxElement = ({
 
 const ParallaxElements = () => {
    const reducedMotion = useReducedMotion();
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const { scrollYProgress } = useScroll();
 
    if (reducedMotion || isMobile) return null;

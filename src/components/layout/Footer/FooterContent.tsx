@@ -3,11 +3,11 @@ import { motion } from "motion/react";
 import { getName, getSiteConfig } from "@data/dataLoader";
 import { staggerItem } from "@utils/animations";
 import { MONO_FONT } from "@/constants/theme";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import FooterSocial from "./FooterSocial";
 
 const FooterContent = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const name = useMemo(() => getName(), []);
    const siteConfig = useMemo(() => getSiteConfig(), []);
    const techStack = siteConfig.tech_stack || [];

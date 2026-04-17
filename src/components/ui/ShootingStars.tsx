@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import useReducedMotion from "@utils/useReducedMotion";
+import useReducedMotion from "@hooks/useReducedMotion";
 import { cryptoRandom } from "@utils/random";
 
 interface Streak {

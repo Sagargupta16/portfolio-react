@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import Toast from "@components/ui/Toast";
 import { getContactOptions } from "@data/dataLoader";
 import { rotateInUp, staggerContainer } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import ContactCard from "./ContactCard";
 import ContactForm from "./ContactForm";
@@ -10,7 +10,7 @@ import SendConfirmation from "./SendConfirmation";
 import useContactForm from "./useContactForm";
 
 const Contact = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const contactOptions = getContactOptions();
 
    const {

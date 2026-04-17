@@ -7,6 +7,7 @@
          "@pages/*": ["src/pages/*"],
          "@assets/*": ["src/assets/*"],
          "@utils/*": ["src/utils/*"],
+         "@hooks/*": ["src/hooks/*"],
          "@data/*": ["src/data/*"]
       },
       "target": "ES2024",

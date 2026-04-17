@@ -13,7 +13,7 @@ import {
    PANEL_VISIBLE,
    PANEL_TRANSITION,
 } from "@utils/animations";
-import useRevealInView from "@utils/useRevealInView";
+import useRevealInView from "@hooks/useRevealInView";
 
 interface FeedItem {
    message: string;

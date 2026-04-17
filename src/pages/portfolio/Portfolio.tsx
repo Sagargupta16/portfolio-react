@@ -7,7 +7,7 @@ import {
    getCommunityProjects,
 } from "@data/dataLoader";
 import { fadeInUp } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import { MONO_FONT } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import { FILTERS, parseDate } from "./portfolioConstants";
@@ -27,7 +27,7 @@ const Portfolio = () => {
          setActiveFilter(filter);
       }
    }, []);
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
 
    const featuredProjects = useMemo(() => getFeaturedProjects(), []);
    const communityProjects = useMemo(() => getCommunityProjects(), []);

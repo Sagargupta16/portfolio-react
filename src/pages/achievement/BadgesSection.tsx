@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { BookOpen } from "lucide-react";
 import type { LearningBadge } from "@/types";
 import { fadeInUp } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import CertBadge from "./CertBadge";
 
 interface BadgesSectionProps {
@@ -10,7 +10,7 @@ interface BadgesSectionProps {
 }
 
 const BadgesSection = ({ badges }: BadgesSectionProps) => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
 
    if (badges.length === 0) return null;
 

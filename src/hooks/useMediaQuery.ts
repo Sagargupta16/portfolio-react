@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
+import { MEDIA_QUERIES } from "@/constants/theme";
 
 const getServerSnapshot = (): boolean => false;
 
-const useMediaQuery = (query = "(max-width: 768px)"): boolean => {
+const useMediaQuery = (query: string = MEDIA_QUERIES.mobile): boolean => {
    const isClient = globalThis.window != null;
 
    const mql = useMemo(() => {

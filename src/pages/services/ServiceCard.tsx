@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Code } from "lucide-react";
 import type { Variants } from "motion/react";
 import type { Service } from "@/types";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import GlassCard from "@components/ui/GlassCard";
 import { iconMap, ACCENT_COLORS } from "./servicesConstants";
 import ServiceAnimation from "./ServiceAnimation";
@@ -24,7 +24,7 @@ const bentoEntry: Variants = {
 
 const ServiceCard = ({ service, index }: ServiceCardProps) => {
    const [isHovered, setIsHovered] = useState(false);
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const colors = ACCENT_COLORS[index % ACCENT_COLORS.length];
    const IconComponent = iconMap[service.title] || Code;
 

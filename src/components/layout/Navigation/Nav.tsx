@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import useMediaQuery from "@utils/useMediaQuery";
+import useMediaQuery from "@hooks/useMediaQuery";
 import NavBar from "./NavBar";
 import MobileMenu from "./MobileMenu";
 

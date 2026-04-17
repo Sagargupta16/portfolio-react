@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { motion, LayoutGroup } from "motion/react";
 import { getExperience, getPositionsOfResponsibility } from "@data/dataLoader";
 import { staggerContainer, fadeInUp } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import type { ProfessionalExperience } from "@/types";
 import TimelineCard from "./TimelineCard";
@@ -11,7 +11,7 @@ import ExperienceModal from "./ExperienceModal";
 const Experience = () => {
    const experienceArray = getExperience();
    const positionsArray = getPositionsOfResponsibility();
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const [selectedExp, setSelectedExp] =
       useState<ProfessionalExperience | null>(null);
 

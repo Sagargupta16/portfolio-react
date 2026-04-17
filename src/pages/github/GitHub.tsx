@@ -1,16 +1,22 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import type { Activity } from "react-github-calendar";
 import { getGitHubUsername } from "@data/dataLoader";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import CodingProfiles from "./CodingProfiles";
 import PageSection from "@components/layout/PageSection";
 import BrowserMockup from "@components/ui/BrowserMockup";
 
+// -- Constants --
+const DAYS_IN_WEEK = 7;
+const WEEKS_IN_YEAR = 52;
+const MONTHS_IN_YEAR = 12;
+const CALENDAR_TIMEOUT_MS = 10_000;
+
 // -- Skeleton --
-const SKELETON_ROWS = Array.from({ length: 7 }, (_, i) => `row-${i}`);
-const SKELETON_COLS = Array.from({ length: 52 }, (_, i) => `col-${i}`);
-const SKELETON_MONTHS = Array.from({ length: 12 }, (_, i) => `month-${i}`);
+const SKELETON_ROWS = Array.from({ length: DAYS_IN_WEEK }, (_, i) => `row-${i}`);
+const SKELETON_COLS = Array.from({ length: WEEKS_IN_YEAR }, (_, i) => `col-${i}`);
+const SKELETON_MONTHS = Array.from({ length: MONTHS_IN_YEAR }, (_, i) => `month-${i}`);
 
 const CalendarSkeleton = () => (
    <div
@@ -20,6 +26,8 @@ const CalendarSkeleton = () => (
          gap: 12,
          alignItems: "center",
       }}
+      aria-busy="true"
+      aria-label="Loading GitHub contribution calendar"
    >
       {SKELETON_ROWS.map((rowKey, row) => (
          <div key={rowKey} style={{ display: "flex", gap: 4 }}>
@@ -31,8 +39,8 @@ const CalendarSkeleton = () => (
                      width: 11,
                      height: 11,
                      borderRadius: 3,
-                     opacity: 0.3 + ((row * 52 + col) % 7) * 0.06,
-                     animationDelay: `${(row * 52 + col) * 2}ms`,
+                     opacity: 0.3 + ((row * WEEKS_IN_YEAR + col) % DAYS_IN_WEEK) * 0.06,
+                     animationDelay: `${(row * WEEKS_IN_YEAR + col) * 2}ms`,
                   }}
                />
             ))}
@@ -56,36 +64,55 @@ const stampColumnIndices = (container: HTMLElement) => {
       ".react-activity-calendar rect[rx]",
    );
    rects.forEach((rect, i) => {
-      rect.style.setProperty("--col", String(Math.floor(i / 7)));
+      rect.style.setProperty("--col", String(Math.floor(i / DAYS_IN_WEEK)));
    });
+};
+
+// -- Calendar state machine --
+type CalendarState = "loading" | "loaded" | "timed-out";
+type CalendarAction = { type: "loaded" } | { type: "timeout" };
+
+const calendarReducer = (
+   state: CalendarState,
+   action: CalendarAction,
+): CalendarState => {
+   // Once loaded, stay loaded -- ignore later timeout events.
+   if (state === "loaded") return state;
+   if (action.type === "loaded") return "loaded";
+   if (action.type === "timeout") return "timed-out";
+   return state;
 };
 
 // -- Main component --
 const GitHub = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const githubUsername = getGitHubUsername();
-   const [calendarLoaded, setCalendarLoaded] = useState(false);
+   const [calendarState, dispatch] = useReducer(calendarReducer, "loading");
    const calendarRef = useRef<HTMLDivElement>(null);
+   const isRevealed = calendarState !== "loading";
 
    const handleTransformData = useCallback(
       (contributions: Activity[]): Activity[] => {
-         setTimeout(() => setCalendarLoaded(true), 0);
+         // defer to next tick so the calendar commits before the reveal animation
+         setTimeout(() => dispatch({ type: "loaded" }), 0);
          return contributions;
       },
       [],
    );
 
    useEffect(() => {
-      if (calendarLoaded && calendarRef.current) {
-         const raf = requestAnimationFrame(() => {
-            if (calendarRef.current) stampColumnIndices(calendarRef.current);
-         });
-         return () => cancelAnimationFrame(raf);
-      }
-   }, [calendarLoaded]);
+      if (!isRevealed || !calendarRef.current) return;
+      const raf = requestAnimationFrame(() => {
+         if (calendarRef.current) stampColumnIndices(calendarRef.current);
+      });
+      return () => cancelAnimationFrame(raf);
+   }, [isRevealed]);
 
    useEffect(() => {
-      const timeout = setTimeout(() => setCalendarLoaded(true), 10000);
+      const timeout = setTimeout(
+         () => dispatch({ type: "timeout" }),
+         CALENDAR_TIMEOUT_MS,
+      );
       return () => clearTimeout(timeout);
    }, []);
 
@@ -104,13 +131,13 @@ const GitHub = () => {
                >
                   <div
                      ref={calendarRef}
-                     className={calendarLoaded ? "calendar-reveal" : ""}
+                     className={isRevealed ? "calendar-reveal" : ""}
                      style={{ overflowX: "auto" }}
                   >
-                     {!calendarLoaded && <CalendarSkeleton />}
+                     {!isRevealed && <CalendarSkeleton />}
                      <div
                         style={
-                           calendarLoaded
+                           isRevealed
                               ? {}
                               : {
                                    position: "absolute",

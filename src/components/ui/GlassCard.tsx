@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useMemo, type ReactNode } from "react";
 import { motion, type HTMLMotionProps } from "motion/react";
-import useReducedMotion from "@utils/useReducedMotion";
+import useReducedMotion from "@hooks/useReducedMotion";
 
 interface GlassCardOwnProps {
    children: ReactNode;

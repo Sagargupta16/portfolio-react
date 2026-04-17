@@ -4,7 +4,7 @@ import { getAbout, getStatistics } from "@data/dataLoader";
 import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
 import { GREEN, MONO_FONT } from "@/constants/theme";
 import DevAvatar from "@components/ui/DevAvatar";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import CharacterReveal from "@components/ui/CharacterReveal";
 import HighlightCard from "./HighlightCard";
@@ -13,7 +13,7 @@ import StatCounter from "./StatCounter";
 const About = () => {
    const aboutInfo = getAbout();
    const statistics = getStatistics();
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
 
    const highlights = useMemo(
       () => [

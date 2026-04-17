@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useScroll } from "motion/react";
-import useReducedMotion from "@utils/useReducedMotion";
+import useReducedMotion from "@hooks/useReducedMotion";
 import {
    GradientSweep,
    GlowPulse,

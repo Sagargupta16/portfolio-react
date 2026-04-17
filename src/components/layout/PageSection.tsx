@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { sectionRevealEnhanced } from "@utils/animations";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 import SectionHeader from "@components/ui/SectionHeader";
 
 interface PageSectionProps {
@@ -19,7 +19,7 @@ const PageSection = ({
    children,
    maxWidth,
 }: PageSectionProps) => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
 
    return (
       <motion.section

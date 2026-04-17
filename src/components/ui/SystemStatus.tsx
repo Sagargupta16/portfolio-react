@@ -3,10 +3,10 @@ import { motion } from "motion/react";
 import { Server, Eye } from "lucide-react";
 import { getSiteConfig } from "@data/dataLoader";
 import { MONO_FONT } from "@/constants/theme";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
 
 const SystemStatus = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
+   const { isMobile } = useBreakpoint();
    const { counter_namespace } = getSiteConfig();
    const [visitors, setVisitors] = useState<number | null>(null);
 
