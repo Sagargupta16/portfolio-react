@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -28,6 +28,18 @@ const ParticleField = ({ count = 300 }: ParticleFieldProps) => {
          ref.current.rotation.x += delta * 0.01;
       }
    });
+
+   // Dispose GPU resources on unmount to prevent leaks over long sessions.
+   useEffect(() => {
+      const node = ref.current;
+      return () => {
+         if (!node) return;
+         node.geometry.dispose();
+         const { material } = node;
+         if (Array.isArray(material)) material.forEach((m) => m.dispose());
+         else material.dispose();
+      };
+   }, []);
 
    return (
       <points ref={ref}>

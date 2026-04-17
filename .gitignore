@@ -16,9 +16,7 @@
 .env.production.local
 
 # editor directories and files
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
+.vscode/
 .idea
 *.sw?
 

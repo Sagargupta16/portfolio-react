@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import React, { type ReactNode, type ErrorInfo } from "react";
+import { CYAN, TEXT_PRIMARY, TEXT_SECONDARY } from "@/constants/theme";
 
 interface ErrorBoundaryProps {
    children: ReactNode;
@@ -12,6 +13,34 @@ interface ErrorBoundaryState {
    errorInfo: ErrorInfo | null;
 }
 
+const CONTAINER_STYLE: React.CSSProperties = {
+   padding: "24px",
+   textAlign: "center",
+   background: "rgba(15, 15, 30, 0.85)",
+   border: "1px solid rgba(255, 255, 255, 0.08)",
+   borderRadius: 12,
+   margin: "20px",
+   color: TEXT_PRIMARY,
+};
+
+const DETAILS_STYLE: React.CSSProperties = {
+   whiteSpace: "pre-wrap",
+   textAlign: "left",
+   marginTop: "20px",
+   color: TEXT_SECONDARY,
+};
+
+const BUTTON_STYLE: React.CSSProperties = {
+   marginTop: "16px",
+   padding: "10px 20px",
+   background: CYAN,
+   color: "#0a0a1a",
+   border: "none",
+   borderRadius: 8,
+   cursor: "pointer",
+   fontWeight: 600,
+};
+
 class ErrorBoundary extends React.Component<
    ErrorBoundaryProps,
    ErrorBoundaryState
@@ -22,55 +51,33 @@ class ErrorBoundary extends React.Component<
    }
 
    static getDerivedStateFromError(_error: Error): Partial<ErrorBoundaryState> {
-      // Update state so the next render will show the fallback UI
       return { hasError: true };
    }
 
    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-      // Log error details
-      this.setState({
-         error,
-         errorInfo,
-      });
-
-      // You can also log the error to an error reporting service here
-
+      this.setState({ error, errorInfo });
       if (import.meta.env.DEV) {
          console.error("Error caught by boundary:", error, errorInfo);
       }
    }
 
+   handleReload = () => globalThis.location.reload();
+
    render() {
       if (this.state.hasError) {
-         // Custom fallback UI
          if (this.props.fallback) {
             return this.props.fallback;
          }
 
          return (
-            <div
-               style={{
-                  padding: "20px",
-                  textAlign: "center",
-                  backgroundColor: "#f8f9fa",
-                  border: "1px solid #dee2e6",
-                  borderRadius: "8px",
-                  margin: "20px",
-               }}
-            >
-               <h2>Oops! Something went wrong</h2>
+            <div style={CONTAINER_STYLE} role="alert">
+               <h2>Something went wrong</h2>
                <p>
-                  We're sorry for the inconvenience. Please try refreshing the
-                  page.
+                  Sorry for the inconvenience. Try refreshing the page to
+                  continue.
                </p>
                {import.meta.env.DEV && (
-                  <details
-                     style={{
-                        whiteSpace: "pre-wrap",
-                        textAlign: "left",
-                        marginTop: "20px",
-                     }}
-                  >
+                  <details style={DETAILS_STYLE}>
                      <summary>Error Details (Development Only)</summary>
                      {this.state.error?.toString()}
                      <br />
@@ -78,17 +85,9 @@ class ErrorBoundary extends React.Component<
                   </details>
                )}
                <button
-                  onClick={() => globalThis.location.reload()}
+                  onClick={this.handleReload}
                   aria-label="Refresh the page"
-                  style={{
-                     marginTop: "15px",
-                     padding: "10px 20px",
-                     backgroundColor: "#007bff",
-                     color: "white",
-                     border: "none",
-                     borderRadius: "4px",
-                     cursor: "pointer",
-                  }}
+                  style={BUTTON_STYLE}
                >
                   Refresh Page
                </button>

@@ -7,28 +7,25 @@ const Preloader = () => {
    const [progress, setProgress] = useState<number>(0);
 
    useEffect(() => {
-      // Simulate loading progress
-      const interval = setInterval(() => {
-         setProgress((prev) => {
-            if (prev >= 100) {
-               clearInterval(interval);
-               return 100;
-            }
-            const buf = new Uint32Array(1);
-            globalThis.crypto.getRandomValues(buf);
-            return prev + (buf[0] / 0xffffffff) * 25 + 15;
-         });
-      }, 60);
+      // Deterministic ease-out progress: predictable, no layout jitter.
+      const DURATION_MS = 800;
+      const start = performance.now();
+      let raf = 0;
 
-      const timer = setTimeout(() => {
-         setProgress(100);
-         setTimeout(() => setLoading(false), 200);
-      }, 800);
-
-      return () => {
-         clearTimeout(timer);
-         clearInterval(interval);
+      const step = (now: number) => {
+         const t = Math.min(1, (now - start) / DURATION_MS);
+         // ease-out quadratic -- fast start, smooth finish
+         const eased = 1 - (1 - t) * (1 - t);
+         setProgress(eased * 100);
+         if (t < 1) {
+            raf = requestAnimationFrame(step);
+         } else {
+            setTimeout(() => setLoading(false), 200);
+         }
       };
+
+      raf = requestAnimationFrame(step);
+      return () => cancelAnimationFrame(raf);
    }, []);
 
    const displayProgress = Math.min(Math.round(progress), 100);

@@ -1,14 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronUp } from "lucide-react";
-import useMediaQuery from "@utils/useMediaQuery";
+import useBreakpoint from "@hooks/useBreakpoint";
+import { CYAN } from "@/constants/theme";
+
+const SCROLL_THRESHOLD_PX = 500;
 
 const BackToTop = () => {
-   const isMobile = useMediaQuery("(max-width: 768px)");
-   const [visible, setVisible] = useState<boolean>(false);
+   const { isMobile } = useBreakpoint();
+   const [visible, setVisible] = useState(false);
 
    const handleScroll = useCallback(() => {
-      setVisible(window.scrollY > 500);
+      setVisible(window.scrollY > SCROLL_THRESHOLD_PX);
    }, []);
 
    useEffect(() => {
@@ -33,6 +36,12 @@ const BackToTop = () => {
                initial={{ opacity: 0, scale: 0.8, y: 20 }}
                animate={{ opacity: 1, scale: 1, y: 0 }}
                exit={{ opacity: 0, scale: 0.8, y: 20 }}
+               whileHover={{
+                  y: -2,
+                  borderColor: "rgba(6,182,212,0.3)",
+                  boxShadow:
+                     "0 0 25px rgba(6,182,212,0.15), 0 4px 20px rgba(0,0,0,0.3)",
+               }}
                transition={{ duration: 0.25 }}
                style={{
                   position: "fixed",
@@ -46,25 +55,12 @@ const BackToTop = () => {
                   background: "rgba(15,15,35,0.5)",
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
-                  color: "#06b6d4",
+                  color: CYAN,
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  transition: "all 0.2s ease",
                   boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
-               }}
-               onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(6,182,212,0.3)";
-                  e.currentTarget.style.boxShadow =
-                     "0 0 25px rgba(6,182,212,0.15), 0 4px 20px rgba(0,0,0,0.3)";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-               }}
-               onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                  e.currentTarget.style.boxShadow =
-                     "0 4px 20px rgba(0,0,0,0.3)";
-                  e.currentTarget.style.transform = "translateY(0)";
                }}
                aria-label="Back to top"
             >

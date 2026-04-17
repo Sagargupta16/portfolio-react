@@ -45,8 +45,9 @@ function formatDate(dateStr) {
 function getIssuerName(badge) {
    const entities =
       badge.issuer?.entities || badge.badge_template?.issuer?.entities || [];
-   const primary = entities.find((e) => e.primary) || entities[0];
-   return primary?.entity?.name || "Unknown";
+   if (!Array.isArray(entities) || entities.length === 0) return "Unknown";
+   const primary = entities.find((e) => e.primary) ?? entities[0];
+   return primary?.entity?.name ?? "Unknown";
 }
 
 function getBadgeType(badge) {
@@ -87,14 +88,39 @@ function transformBadge(badge, id) {
    return entry;
 }
 
+const MAX_RETRIES = 3;
+const INITIAL_BACKOFF_MS = 1000;
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 async function fetchBadges() {
    console.log("Fetching badges from Credly API…");
-   const res = await fetch(API_URL);
-   if (!res.ok)
-      throw new Error(`Credly API returned ${res.status}: ${res.statusText}`);
-   const json = await res.json();
-   // API returns { data: [...] } or plain array
-   return json.data || json;
+   let lastError;
+   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      try {
+         const res = await fetch(API_URL);
+         if (res.ok) {
+            const json = await res.json();
+            const badges = json.data || json;
+            if (!Array.isArray(badges)) {
+               throw new TypeError(
+                  "Credly response did not contain a badge array (shape changed?)",
+               );
+            }
+            return badges;
+         }
+         const retriable = res.status >= 500 || res.status === 429;
+         const msg = `Credly API returned ${res.status}: ${res.statusText}`;
+         if (!retriable || attempt === MAX_RETRIES) throw new Error(msg);
+         console.warn(`  attempt ${attempt} failed (${msg}), retrying…`);
+      } catch (err) {
+         lastError = err;
+         if (attempt === MAX_RETRIES) throw err;
+         console.warn(`  attempt ${attempt} error: ${err.message}, retrying…`);
+      }
+      await sleep(INITIAL_BACKOFF_MS * 2 ** (attempt - 1));
+   }
+   throw lastError;
 }
 
 async function main() {
