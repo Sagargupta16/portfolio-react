@@ -2,6 +2,51 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.12.0] - 2026-04-17
+
+### Added
+
+- `src/hooks/` directory for reusable React hooks (useMediaQuery, useReducedMotion, useRevealInView, useBreakpoint, useFocusTrap)
+- `@hooks` path alias in tsconfig.json and vite.config.js
+- `BreakpointProvider` + `useBreakpoint()` hook to eliminate `isMobile` prop drilling across 19 components
+- `SectionLoader` extracted as standalone component
+- `useFocusTrap` hook for WCAG-compliant modal focus containment (Tab/Shift-Tab loop + focus restoration)
+- `splitDateRange` utility for safe date-range parsing
+- Design tokens in `theme.ts`: `BREAKPOINTS`, `MEDIA_QUERIES`, `EASING`, `DURATION`, `SPRING`, `BLUE`
+- `createFade(direction)` parameterized fade variant in animations.ts
+- `REDUCED_MOTION_VARIANT` + `motionSafe()` helpers for prefers-reduced-motion support
+- `CodingPlatformStat` interface for typed coding-platform data
+- Retry with exponential backoff in `sync-credly.js` (3 attempts, handles 5xx/429)
+- Credly API shape validation before writing data
+- `.prettierrc.json` with explicit formatting config
+- `role="status"` + `aria-live` on Toast for screen readers
+- `aria-busy` + semantic loading state on GitHub calendar skeleton
+
+### Changed
+
+- `ExperienceModal` now traps focus and exposes `aria-labelledby` pointing to ModalHeader title
+- `TerminalCard` state machine refactored from 4 useState + useRef to single useReducer
+- `GitHub` calendar state machine replaced two-timer race with useReducer (loading/loaded/timed-out)
+- `ContactForm` honeypot uses `display: none` + semantic label (replaces left: -9999px)
+- `ContactForm` validates email format via `validation_pattern` regex before submit
+- `BackToTop` hover uses Framer Motion `whileHover` instead of imperative style mutation
+- `Preloader` progress is deterministic ease-out (removes crypto-random jitter)
+- `ErrorBoundary` fallback UI uses portfolio dark theme palette
+- `ParticleField` disposes geometry + material on unmount
+- `index.tsx` root lookup uses explicit null guard instead of non-null assertion
+- Vite `sourcemap: "hidden"` for production debugging without public exposure
+- `ProfessionalExperience.skills` typed as optional (aggregated from child projects)
+- `CodingPlatformStats` typed as `Record<string, CodingPlatformStat>` (was `Record<string, unknown>`)
+- Workflow renamed `main.yml` → `ci-cd.yml` for clarity
+
+### Fixed
+
+- Unsafe `split(" - ")[0]/[1]` access in TimelineCardDesktop and EducationCard (silent failure if data malformed)
+- `LEVEL_COLOR[level]` undefined-index error when cert level absent on CertBadge
+- `useRef<ReturnType<typeof setTimeout>>()` missing-argument type error
+- `useRevealInView` margin type mismatch with motion's MarginType
+- TypeScript `as` cast failure in dataLoader from `skills: string[]` being required
+
 ## [3.11.0] - 2026-04-16
 
 ### Added
