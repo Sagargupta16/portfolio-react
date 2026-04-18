@@ -30,3 +30,11 @@ CLAUDE.md
 
 # Vite
 vite.config.js.timestamp-*
+
+# Added for consistency
+.env.*.local
+*.log
+Thumbs.db
+node_modules/
+dist/
+.next/
