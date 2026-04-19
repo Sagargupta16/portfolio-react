@@ -1,19 +1,17 @@
 # dependencies
-/node_modules
+node_modules/
 .pnpm-debug.log*
 
 # testing
 /coverage
 
-# production
+# production (Vite outputs to /build, see vite.config.js)
 /build
 
 # env files
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
 
 # editor directories and files
 .vscode/
@@ -22,6 +20,10 @@
 
 # OS files
 .DS_Store
+Thumbs.db
+
+# logs
+*.log
 
 # AI tools
 .claude
@@ -30,11 +32,3 @@ CLAUDE.md
 
 # Vite
 vite.config.js.timestamp-*
-
-# Added for consistency
-.env.*.local
-*.log
-Thumbs.db
-node_modules/
-dist/
-.next/
