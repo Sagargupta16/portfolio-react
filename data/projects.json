@@ -919,12 +919,6 @@
          "title": "Fix: apply timeout to FileDefinitionBody and StringDefinitionBody",
          "url": "https://github.com/aws/aws-cdk/pull/37602",
          "status": "open"
-      },
-      {
-         "repo": "rohitg00/awesome-claude-code-toolkit",
-         "title": "Update claude-cost-optimizer: now an installable skill",
-         "url": "https://github.com/rohitg00/awesome-claude-code-toolkit/pull/218",
-         "status": "merged"
       }
    ],
    "community_discussions": [
@@ -945,12 +939,6 @@
          "title": "Best practices for handling persistent 202 responses from the contributor stats API",
          "url": "https://github.com/orgs/community/discussions/190711",
          "status": "accepted"
-      },
-      {
-         "repo": "community/community",
-         "title": "Self-updating profile README - no third-party services, GraphQL only",
-         "url": "https://github.com/orgs/community/discussions/190069",
-         "status": "helpful"
       },
       {
          "repo": "community/community",
@@ -983,24 +971,6 @@
          "status": "helpful"
       },
       {
-         "repo": "apache/airflow",
-         "title": "Navbar disappears when loading React Plugin (Airflow 3.1.x)",
-         "url": "https://github.com/apache/airflow/discussions/64149",
-         "status": "helpful"
-      },
-      {
-         "repo": "fastapi/fastapi",
-         "title": "Usage of ContextVars in FastAPI",
-         "url": "https://github.com/fastapi/fastapi/discussions/15059",
-         "status": "helpful"
-      },
-      {
-         "repo": "pydantic/pydantic",
-         "title": "Proposal: Use distinct error type for EmailStr validation",
-         "url": "https://github.com/pydantic/pydantic/discussions/12803",
-         "status": "helpful"
-      },
-      {
          "repo": "langfuse/langfuse",
          "title": "HTTPS failing between Langfuse and LiteLLM across ECS clusters",
          "url": "https://github.com/orgs/langfuse/discussions/12145",
@@ -1013,33 +983,9 @@
          "status": "helpful"
       },
       {
-         "repo": "shadcn-ui/ui",
-         "title": "Is there any way to use the bases components already?",
-         "url": "https://github.com/shadcn-ui/ui/discussions/9590",
-         "status": "helpful"
-      },
-      {
-         "repo": "vitejs/vite",
-         "title": "How come it can't generate sourcemaps for CSS?",
-         "url": "https://github.com/vitejs/vite/discussions/21695",
-         "status": "helpful"
-      },
-      {
          "repo": "vercel/next.js",
          "title": "Implement GitHub OAuth login with Next.js and FastAPI",
          "url": "https://github.com/vercel/next.js/discussions/89637",
-         "status": "helpful"
-      },
-      {
-         "repo": "supabase/supabase",
-         "title": "Organization Misdelete",
-         "url": "https://github.com/orgs/supabase/discussions/43359",
-         "status": "helpful"
-      },
-      {
-         "repo": "nuxt/nuxt",
-         "title": "When in dev the server doesnt rebuild after changing files",
-         "url": "https://github.com/nuxt/nuxt/discussions/34351",
          "status": "helpful"
       },
       {
