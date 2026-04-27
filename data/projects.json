@@ -860,27 +860,9 @@
          "status": "open"
       },
       {
-         "repo": "chroma-core/chroma",
-         "title": "Fix: replace ValueError with InvalidArgumentError in core API",
-         "url": "https://github.com/chroma-core/chroma/pull/6590",
-         "status": "open"
-      },
-      {
-         "repo": "stanfordnlp/dspy",
-         "title": "Add docstrings to predict module public APIs",
-         "url": "https://github.com/stanfordnlp/dspy/pull/9405",
-         "status": "open"
-      },
-      {
          "repo": "hashicorp/terraform-provider-aws",
          "title": "Fix IoT cloudwatch_metric substitution template validation",
          "url": "https://github.com/hashicorp/terraform-provider-aws/pull/46867",
-         "status": "open"
-      },
-      {
-         "repo": "mm65x/tokemon",
-         "title": "Fix cross-provider pricing normalization in cost engine",
-         "url": "https://github.com/mm65x/tokemon/pull/13",
          "status": "open"
       },
       {
