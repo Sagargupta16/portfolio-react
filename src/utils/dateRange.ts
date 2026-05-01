@@ -11,3 +11,12 @@ export const splitDateRange = (
    const end = parts.length > 1 ? parts[parts.length - 1] : undefined;
    return { start, end };
 };
+
+/**
+ * True when a date range ends in "Present" (case-insensitive, trimmed).
+ * Used by timeline cards to surface a live "active" indicator on current roles.
+ */
+export const isPresent = (range: string): boolean => {
+   const { end } = splitDateRange(range);
+   return end?.trim().toLowerCase() === "present";
+};
