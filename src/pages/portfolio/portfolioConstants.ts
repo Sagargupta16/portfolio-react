@@ -63,6 +63,14 @@ export const CATEGORY_COLORS: Record<string, CategoryColors> = {
    },
 };
 
+/** Resolve a category string to its palette, falling back to "Others". */
+export const getCategoryColors = (category: string): CategoryColors =>
+   CATEGORY_COLORS[category] ?? CATEGORY_COLORS.Others;
+
+/** True for real project URLs -- excludes empty strings and the "#" placeholder used in JSON data. */
+export const isValidUrl = (url: string | undefined): url is string =>
+   !!url && url !== "#";
+
 export interface ProjectWithCategory extends Project {
    category: string;
    achievement?: string;

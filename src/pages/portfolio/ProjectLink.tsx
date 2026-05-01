@@ -19,6 +19,7 @@ const ProjectLink = ({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
       style={{
          display: "inline-flex",
          alignItems: "center",
