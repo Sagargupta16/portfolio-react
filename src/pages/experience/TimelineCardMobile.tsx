@@ -5,6 +5,7 @@ import { staggerItem } from "@utils/animations";
 import { splitDateRange, isPresent } from "@utils/dateRange";
 import { MONO_FONT, GREEN } from "@/constants/theme";
 import TimelineCardContent from "./TimelineCardContent";
+import PresentIndicator from "./PresentIndicator";
 
 interface TimelineCardMobileProps {
    item: ProfessionalExperience | PositionOfResponsibility;
@@ -71,19 +72,7 @@ const TimelineCardMobile = ({
                            }}
                            aria-label="Currently active role"
                         >
-                           <span
-                              className="animate-glow-pulse"
-                              aria-hidden="true"
-                              style={{
-                                 width: 6,
-                                 height: 6,
-                                 borderRadius: "50%",
-                                 backgroundColor: GREEN,
-                                 boxShadow: `0 0 6px ${GREEN}99`,
-                                 flexShrink: 0,
-                              }}
-                           />
-                           <span>Present</span>
+                           <PresentIndicator />
                         </span>
                      </>
                   ) : (

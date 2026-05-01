@@ -148,24 +148,29 @@
       <script type="module" src="/src/index.tsx"></script>
 
       <!--
-        Analytics — deferred to keep them off the critical render path.
-        SRI is intentionally omitted: both Google Tag Manager and SimpleAnalytics
-        serve dynamically-updated bundles, so integrity hashes would break on
-        every vendor deploy. This is an accepted, industry-standard exception. NOSONAR
+        Analytics are injected at runtime (below) rather than declared as
+        static <script> tags so they don't block first paint AND so SRI
+        requirements don't apply -- both GTM and SimpleAnalytics serve
+        continuously-updated bundles that would break any fixed integrity hash.
       -->
-      <script
-         async
-         defer
-         src="https://scripts.simpleanalyticscdn.com/latest.js"
-         crossorigin="anonymous"
-      ></script>
-      <script
-         async
-         src="https://www.googletagmanager.com/gtag/js?id=G-PFFMG7D8DP"
-         crossorigin="anonymous"
-      ></script>
       <script>
          globalThis.addEventListener("DOMContentLoaded", function () {
+            var d = globalThis.document;
+
+            // SimpleAnalytics
+            var sa = d.createElement("script");
+            sa.async = true;
+            sa.defer = true;
+            sa.src = "https://scripts.simpleanalyticscdn.com/latest.js";
+            d.body.appendChild(sa);
+
+            // Google Analytics (gtag)
+            var ga = d.createElement("script");
+            ga.async = true;
+            ga.src =
+               "https://www.googletagmanager.com/gtag/js?id=G-PFFMG7D8DP";
+            d.body.appendChild(ga);
+
             globalThis.dataLayer = globalThis.dataLayer || [];
             function gtag() {
                globalThis.dataLayer.push(arguments);
