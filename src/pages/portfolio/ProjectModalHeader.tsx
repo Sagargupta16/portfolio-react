@@ -1,11 +1,6 @@
-import { motion } from "motion/react";
-import { X, Calendar, Users, Star, FolderGit2 } from "lucide-react";
-import {
-   TEXT_PRIMARY,
-   TEXT_SECONDARY,
-   TEXT_MUTED,
-   MONO_FONT,
-} from "@/constants/theme";
+import { Calendar, Users, Star, FolderGit2 } from "lucide-react";
+import ModalHeaderShell from "@components/ui/ModalHeaderShell";
+import { TEXT_PRIMARY, TEXT_MUTED, MONO_FONT } from "@/constants/theme";
 import type { CategoryColors, ProjectWithCategory } from "./portfolioConstants";
 
 interface ProjectModalHeaderProps {
@@ -14,8 +9,6 @@ interface ProjectModalHeaderProps {
    isMobile: boolean;
    onClose: () => void;
 }
-
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
 
 const ProjectModalHeader = ({
    project,
@@ -27,20 +20,10 @@ const ProjectModalHeader = ({
    const IconComponent = isFeatured ? Star : FolderGit2;
 
    return (
-      <motion.div
-         initial={{ opacity: 0, y: -20 }}
-         animate={{ opacity: 1, y: 0 }}
-         transition={{ delay: 0.1, duration: 0.4, ease: EXPO_EASE }}
-         style={{
-            position: "sticky",
-            top: 0,
-            zIndex: 10,
-            padding: isMobile ? "16px 16px 12px" : "20px 24px 16px",
-            background: "rgba(12,12,28,0.9)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
-         }}
+      <ModalHeaderShell
+         isMobile={isMobile}
+         onClose={onClose}
+         closeLabel="Close project details"
       >
          <div
             style={{
@@ -69,24 +52,6 @@ const ProjectModalHeader = ({
             >
                {project.title}
             </h3>
-            <button
-               onClick={onClose}
-               aria-label="Close project details"
-               style={{
-                  padding: 8,
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: 10,
-                  cursor: "pointer",
-                  color: TEXT_SECONDARY,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-               }}
-            >
-               <X size={16} />
-            </button>
          </div>
 
          <div
@@ -141,7 +106,7 @@ const ProjectModalHeader = ({
                {project.category}
             </span>
          </div>
-      </motion.div>
+      </ModalHeaderShell>
    );
 };
 
