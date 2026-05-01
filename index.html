@@ -1,14 +1,6 @@
 <!doctype html>
 <html lang="en">
    <head>
-      <!-- Google Analytics -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PFFMG7D8DP"></script>
-      <script>
-         window.dataLayer = window.dataLayer || [];
-         function gtag(){dataLayer.push(arguments);}
-         gtag('js', new Date());
-         gtag('config', 'G-PFFMG7D8DP');
-      </script>
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -136,13 +128,9 @@
       <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       <link rel="manifest" href="/favicon_io/site.webmanifest" />
 
-      <!-- Analytics -->
+      <!-- Preconnect hints for analytics origins (scripts load at end of <body>) -->
       <link rel="preconnect" href="https://scripts.simpleanalyticscdn.com" />
-      <script
-         async
-         defer
-         src="https://scripts.simpleanalyticscdn.com/latest.js"
-      ></script>
+      <link rel="preconnect" href="https://www.googletagmanager.com" />
 
       <title>Sagar Gupta | DevOps & Cloud Consultant at AWS</title>
    </head>
@@ -158,5 +146,26 @@
       </noscript>
       <div id="root"></div>
       <script type="module" src="/src/index.tsx"></script>
+
+      <!-- Analytics — deferred to keep them off the critical render path -->
+      <script
+         async
+         defer
+         src="https://scripts.simpleanalyticscdn.com/latest.js"
+      ></script>
+      <script
+         async
+         src="https://www.googletagmanager.com/gtag/js?id=G-PFFMG7D8DP"
+      ></script>
+      <script>
+         window.addEventListener("DOMContentLoaded", function () {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+               window.dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", "G-PFFMG7D8DP");
+         });
+      </script>
    </body>
 </html>
