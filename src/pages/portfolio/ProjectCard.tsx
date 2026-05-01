@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
-import { ExternalLink } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import { ExternalLink, Github } from "lucide-react";
 import { scaleRotateIn } from "@utils/animations";
 import { MONO_FONT } from "@/constants/theme";
 import {
@@ -132,7 +131,7 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
                         href={data.github}
                         label="Source"
                         ariaLabel={`View ${data.title} on GitHub`}
-                        icon={FaGithub}
+                        icon={Github}
                         accentColor={colors.accent}
                      />
                   )}
