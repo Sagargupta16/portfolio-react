@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa6";
 import { scaleRotateIn } from "@utils/animations";
 import { MONO_FONT } from "@/constants/theme";
 import {

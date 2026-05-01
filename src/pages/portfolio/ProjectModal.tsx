@@ -4,13 +4,13 @@ import { motion, AnimatePresence } from "motion/react";
 import {
    X,
    ExternalLink,
-   Github,
    Calendar,
    Users,
    Star,
    FolderGit2,
    Sparkles,
 } from "lucide-react";
+import { FaGithub } from "react-icons/fa6";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useFocusTrap from "@hooks/useFocusTrap";
 import TechTag from "@components/ui/TechTag";
@@ -61,12 +61,9 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
    const features = project?.features ?? [];
    const contributors = project?.contributors ?? [];
    const hasGithub =
-      project &&
-      project.github &&
-      project.github !== "" &&
-      project.github !== "#";
+      project?.github && project.github !== "" && project.github !== "#";
    const hasLive =
-      project && project.live && project.live !== "" && project.live !== "#";
+      project?.live && project.live !== "" && project.live !== "#";
 
    return createPortal(
       <AnimatePresence>
@@ -82,9 +79,9 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   inset: 0,
                   zIndex: 1000,
                   display: "flex",
-                  alignItems: "center",
+                  alignItems: isMobile ? "flex-end" : "center",
                   justifyContent: "center",
-                  padding: isMobile ? 16 : 20,
+                  padding: isMobile ? 0 : 20,
                   background: "rgba(0,0,0,0.3)",
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
@@ -93,9 +90,17 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
             >
                <motion.div
                   ref={dialogRef}
-                  initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                  initial={{
+                     opacity: 0,
+                     y: isMobile ? 100 : 50,
+                     scale: 0.95,
+                  }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 30, scale: 0.97 }}
+                  exit={{
+                     opacity: 0,
+                     y: isMobile ? 100 : 30,
+                     scale: 0.97,
+                  }}
                   transition={{ duration: 0.4, ease: EASING.cinematic }}
                   onClick={(e) => e.stopPropagation()}
                   onWheel={(e) => e.stopPropagation()}
@@ -107,9 +112,9 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                      position: "relative",
                      width: "100%",
                      maxWidth: isMobile ? "100%" : 720,
-                     maxHeight: isMobile ? "88vh" : "85vh",
+                     maxHeight: isMobile ? "92vh" : "85vh",
                      overflowY: "auto",
-                     borderRadius: 20,
+                     borderRadius: isMobile ? "20px 20px 0 0" : 20,
                      border: "1px solid rgba(255,255,255,0.1)",
                      background:
                         "linear-gradient(180deg, rgba(15,15,30,0.98) 0%, rgba(8,8,20,0.99) 100%)",
@@ -122,7 +127,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                      style={{
                         height: isFeatured ? 4 : 3,
                         background: colors.gradient,
-                        borderRadius: isMobile ? "20px 20px 0 0" : "20px 20px 0 0",
+                        borderRadius: "20px 20px 0 0",
                      }}
                   />
 
@@ -486,7 +491,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                  }}
                                  aria-label={`View ${project.title} on GitHub`}
                               >
-                                 <Github size={14} />
+                                 <FaGithub size={14} />
                                  View Source
                               </a>
                            )}
