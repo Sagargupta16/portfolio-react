@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
-import { ArrowUpRight, Trophy, Code, Star, Github } from "lucide-react";
+import { ArrowUpRight, Trophy, Code, Star } from "lucide-react";
+import { FaGithub } from "react-icons/fa6";
 import { getCodingPlatformStats } from "@data/dataLoader";
 import type { CodingPlatformStat } from "@/types";
 import { staggerContainer, fadeInUp } from "@utils/animations";
@@ -106,7 +107,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                whileHover={{ y: -4, borderColor: "rgba(165,165,192,0.3)" }}
                style={cardStyle}
             >
-               <Github size={20} style={{ color: TEXT_PRIMARY }} />
+               <FaGithub size={20} style={{ color: TEXT_PRIMARY }} />
                <span
                   style={{
                      fontSize: 12,

@@ -33,7 +33,7 @@ export default defineConfig(() => ({
          output: {
             manualChunks: {
                vendor: ["react", "react-dom"],
-               icons: ["lucide-react"],
+               icons: ["react-icons", "lucide-react"],
                animations: ["motion"],
                threejs: ["three", "@react-three/fiber", "@react-three/drei"],
                particles: ["@tsparticles/react", "@tsparticles/slim"],

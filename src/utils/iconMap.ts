@@ -1,13 +1,12 @@
-import { Linkedin, Github, Instagram, Twitter } from "lucide-react";
+import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
+import { SiX } from "react-icons/si";
 import type { IconMap } from "@/types";
 
-// Keys are the icon identifiers stored in personal.json/contact.json so that
-// the JSON data doesn't need to change when we swap icon libraries.
 const ICON_MAP: IconMap = {
-   BsLinkedin: Linkedin,
-   FaGithub: Github,
-   FiInstagram: Instagram,
-   SiX: Twitter,
+   BsLinkedin: FaLinkedin,
+   FaGithub: FaGithub,
+   FiInstagram: FaInstagram,
+   SiX: SiX,
 };
 
 export default ICON_MAP;
