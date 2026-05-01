@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { CATEGORY_COLORS } from "./portfolioConstants";
+import { getCategoryColors } from "./portfolioConstants";
 import type { ProjectWithCategory } from "./portfolioConstants";
 import ProjectCard from "./ProjectCard";
 
@@ -41,8 +41,7 @@ const ProjectTimeline = ({
       <AnimatePresence mode="popLayout">
          {projects.map((project, idx) => {
             const isLeft = !isMobile && idx % 2 === 0;
-            const colors =
-               CATEGORY_COLORS[project.category] || CATEGORY_COLORS.Others;
+            const colors = getCategoryColors(project.category);
 
             let pl: number | string = 24;
             if (!isMobile) pl = isLeft ? 0 : "calc(50% + 20px)";

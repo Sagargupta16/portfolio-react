@@ -4,7 +4,8 @@ import { FaGithub } from "react-icons/fa6";
 import { scaleRotateIn } from "@utils/animations";
 import { MONO_FONT } from "@/constants/theme";
 import {
-   CATEGORY_COLORS,
+   getCategoryColors,
+   isValidUrl,
    type ProjectWithCategory,
 } from "./portfolioConstants";
 import ProjectLink from "./ProjectLink";
@@ -17,9 +18,9 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
-   const hasGithub = data.github && data.github !== "" && data.github !== "#";
-   const hasLive = data.live && data.live !== "" && data.live !== "#";
-   const colors = CATEGORY_COLORS[data.category] || CATEGORY_COLORS.Others;
+   const hasGithub = isValidUrl(data.github);
+   const hasLive = isValidUrl(data.live);
+   const colors = getCategoryColors(data.category);
    const isFeatured = data.category === "Featured";
    const isCollab = data.category === "Collab";
 
