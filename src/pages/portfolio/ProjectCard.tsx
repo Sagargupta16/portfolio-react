@@ -12,14 +12,29 @@ import ProjectCardHeader from "./ProjectCardHeader";
 interface ProjectCardProps {
    data: ProjectWithCategory;
    index?: number;
+   onOpen?: () => void;
 }
 
-const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
+const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
    const hasGithub = data.github && data.github !== "" && data.github !== "#";
    const hasLive = data.live && data.live !== "" && data.live !== "#";
    const colors = CATEGORY_COLORS[data.category] || CATEGORY_COLORS.Others;
    const isFeatured = data.category === "Featured";
    const isCollab = data.category === "Collab";
+
+   const hasDetail =
+      (data.features?.length ?? 0) > 0 ||
+      (data.contributors?.length ?? 0) > 0 ||
+      Boolean(data.description);
+   const clickable = hasDetail && Boolean(onOpen);
+
+   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (!clickable) return;
+      if (e.key === "Enter" || e.key === " ") {
+         e.preventDefault();
+         onOpen?.();
+      }
+   };
 
    return (
       <motion.div
@@ -28,6 +43,7 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
+            cursor: clickable ? "pointer" : "default",
          }}
          layout
          variants={scaleRotateIn}
@@ -51,6 +67,13 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
             y: -6,
             transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
          }}
+         onClick={clickable ? onOpen : undefined}
+         onKeyDown={clickable ? handleKey : undefined}
+         role={clickable ? "button" : undefined}
+         tabIndex={clickable ? 0 : undefined}
+         aria-label={
+            clickable ? `View details for ${data.title}` : undefined
+         }
       >
          {/* Accent top bar */}
          <div
@@ -115,6 +138,23 @@ const ProjectCard = ({ data, index = 0 }: ProjectCardProps) => {
                   </span>
                ))}
             </div>
+
+            {/* Click-for-details hint (subtle, shown only when there's real detail to see) */}
+            {clickable && (
+               <p
+                  style={{
+                     fontFamily: MONO_FONT,
+                     fontSize: 10,
+                     color: colors.accent,
+                     opacity: 0.7,
+                     marginBottom: 12,
+                     letterSpacing: "0.02em",
+                  }}
+                  aria-hidden="true"
+               >
+                  Click for details
+               </p>
+            )}
 
             {/* Links */}
             {(hasGithub || hasLive) && (

@@ -14,9 +14,12 @@ import { FILTERS, parseDate } from "./portfolioConstants";
 import type { ProjectWithCategory } from "./portfolioConstants";
 import ProjectTimeline from "./ProjectTimeline";
 import OpenSourceBanner from "./OpenSourceBanner";
+import ProjectModal from "./ProjectModal";
 
 const Portfolio = () => {
    const [activeFilter, setActiveFilter] = useState<string>("Featured");
+   const [selectedProject, setSelectedProject] =
+      useState<ProjectWithCategory | null>(null);
 
    const handleFilterChange = useCallback((filter: string) => {
       if (document.startViewTransition) {
@@ -93,6 +96,11 @@ const Portfolio = () => {
       collaborativeProjects,
       otherProjects,
    ]);
+
+   const handleOpenProject = useCallback(
+      (project: ProjectWithCategory) => setSelectedProject(project),
+      [],
+   );
 
    return (
       <PageSection id="projects" title="Projects" subtitle="Things I've built">
@@ -176,11 +184,20 @@ const Portfolio = () => {
             </motion.div>
 
             {/* Vertical timeline */}
-            <ProjectTimeline projects={filteredProjects} isMobile={isMobile} />
+            <ProjectTimeline
+               projects={filteredProjects}
+               isMobile={isMobile}
+               onOpenProject={handleOpenProject}
+            />
 
             {/* Open Source Contributions Banner */}
             <OpenSourceBanner />
          </div>
+
+         <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+         />
       </PageSection>
    );
 };

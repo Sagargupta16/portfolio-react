@@ -6,9 +6,14 @@ import ProjectCard from "./ProjectCard";
 interface ProjectTimelineProps {
    projects: ProjectWithCategory[];
    isMobile: boolean;
+   onOpenProject: (project: ProjectWithCategory) => void;
 }
 
-const ProjectTimeline = ({ projects, isMobile }: ProjectTimelineProps) => (
+const ProjectTimeline = ({
+   projects,
+   isMobile,
+   onOpenProject,
+}: ProjectTimelineProps) => (
    <div
       style={{
          position: "relative",
@@ -118,7 +123,11 @@ const ProjectTimeline = ({ projects, isMobile }: ProjectTimelineProps) => (
 
                   {/* Card */}
                   <div style={{ width: "100%", maxWidth: 480 }}>
-                     <ProjectCard data={project} index={idx} />
+                     <ProjectCard
+                        data={project}
+                        index={idx}
+                        onOpen={() => onOpenProject(project)}
+                     />
                   </div>
                </motion.div>
             );
