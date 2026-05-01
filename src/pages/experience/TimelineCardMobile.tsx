@@ -83,7 +83,7 @@ const TimelineCardMobile = ({
                                  flexShrink: 0,
                               }}
                            />
-                           Present
+                           <span>Present</span>
                         </span>
                      </>
                   ) : (

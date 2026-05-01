@@ -75,7 +75,7 @@ const TimelineCardDesktop = ({
                         flexShrink: 0,
                      }}
                   />
-                  Present
+                  <span>Present</span>
                </span>
             ) : (
                <span

@@ -1,3 +1,4 @@
+import type { ComponentType, ReactNode } from "react";
 import { motion } from "motion/react";
 import { ExternalLink, Sparkles } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
@@ -22,6 +23,22 @@ interface ProjectModalBodyProps {
 
 const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
 
+/** Shared fade-in-up transition used by every section in the modal body. */
+const fadeInUpProps = (delay: number) => ({
+   initial: { opacity: 0, y: 10 },
+   animate: { opacity: 1, y: 0 },
+   transition: { delay, duration: 0.4, ease: EXPO_EASE },
+});
+
+const sectionLabelStyle: React.CSSProperties = {
+   fontSize: 11,
+   color: TEXT_MUTED,
+   fontWeight: 600,
+   textTransform: "uppercase",
+   letterSpacing: "0.06em",
+   marginBottom: 8,
+};
+
 const linkButtonStyle = (accent: string): React.CSSProperties => ({
    display: "inline-flex",
    alignItems: "center",
@@ -37,14 +54,45 @@ const linkButtonStyle = (accent: string): React.CSSProperties => ({
    textDecoration: "none",
 });
 
-const sectionLabelStyle: React.CSSProperties = {
-   fontSize: 11,
-   color: TEXT_MUTED,
-   fontWeight: 600,
-   textTransform: "uppercase",
-   letterSpacing: "0.06em",
-   marginBottom: 8,
-};
+interface ModalLinkProps {
+   href: string;
+   ariaLabel: string;
+   icon: ComponentType<{ size?: number }>;
+   label: string;
+   accent: string;
+}
+
+const ModalLink = ({
+   href,
+   ariaLabel,
+   icon: Icon,
+   label,
+   accent,
+}: ModalLinkProps) => (
+   <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={linkButtonStyle(accent)}
+      aria-label={ariaLabel}
+   >
+      <Icon size={14} />
+      {label}
+   </a>
+);
+
+interface SectionProps {
+   delay: number;
+   label?: ReactNode;
+   children: ReactNode;
+}
+
+const Section = ({ delay, label, children }: SectionProps) => (
+   <motion.div {...fadeInUpProps(delay)}>
+      {label && <p style={sectionLabelStyle}>{label}</p>}
+      {children}
+   </motion.div>
+);
 
 const ProjectModalBody = ({
    project,
@@ -67,9 +115,7 @@ const ProjectModalBody = ({
       >
          {/* Description */}
          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.18, duration: 0.4, ease: EXPO_EASE }}
+            {...fadeInUpProps(0.18)}
             style={{
                color: TEXT_SECONDARY,
                fontSize: isMobile ? 13 : 14,
@@ -81,12 +127,7 @@ const ProjectModalBody = ({
 
          {/* Tech stack */}
          {project.tools_tech.length > 0 && (
-            <motion.div
-               initial={{ opacity: 0, y: 10 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ delay: 0.24, duration: 0.4, ease: EXPO_EASE }}
-            >
-               <p style={sectionLabelStyle}>Tech Stack</p>
+            <Section delay={0.24} label="Tech Stack">
                <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {project.tools_tech.map((t) => (
                      <TechTag
@@ -97,28 +138,26 @@ const ProjectModalBody = ({
                      />
                   ))}
                </div>
-            </motion.div>
+            </Section>
          )}
 
          {/* Features */}
          {features.length > 0 && (
-            <motion.div
-               initial={{ opacity: 0, y: 10 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ delay: 0.3, duration: 0.4, ease: EXPO_EASE }}
+            <Section
+               delay={0.3}
+               label={
+                  <span
+                     style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                     }}
+                  >
+                     <Sparkles size={12} style={{ color: colors.accent }} />
+                     Key Features
+                  </span>
+               }
             >
-               <p
-                  style={{
-                     ...sectionLabelStyle,
-                     display: "inline-flex",
-                     alignItems: "center",
-                     gap: 6,
-                     marginBottom: 10,
-                  }}
-               >
-                  <Sparkles size={12} style={{ color: colors.accent }} />
-                  Key Features
-               </p>
                <ul
                   style={{
                      display: "flex",
@@ -154,17 +193,12 @@ const ProjectModalBody = ({
                      </li>
                   ))}
                </ul>
-            </motion.div>
+            </Section>
          )}
 
          {/* Contributors (collab projects) */}
          {contributors.length > 0 && (
-            <motion.div
-               initial={{ opacity: 0, y: 10 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ delay: 0.36, duration: 0.4, ease: EXPO_EASE }}
-            >
-               <p style={sectionLabelStyle}>Contributors</p>
+            <Section delay={0.36} label="Contributors">
                <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {contributors.map((c) => (
                      <span
@@ -183,15 +217,13 @@ const ProjectModalBody = ({
                      </span>
                   ))}
                </div>
-            </motion.div>
+            </Section>
          )}
 
          {/* Links */}
          {(hasGithub || hasLive) && (
             <motion.div
-               initial={{ opacity: 0, y: 10 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ delay: 0.42, duration: 0.4, ease: EXPO_EASE }}
+               {...fadeInUpProps(0.42)}
                style={{
                   display: "flex",
                   gap: 8,
@@ -202,28 +234,22 @@ const ProjectModalBody = ({
                }}
             >
                {hasGithub && (
-                  <a
+                  <ModalLink
                      href={project.github}
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     style={linkButtonStyle(colors.accent)}
-                     aria-label={`View ${project.title} on GitHub`}
-                  >
-                     <FaGithub size={14} />
-                     View Source
-                  </a>
+                     ariaLabel={`View ${project.title} on GitHub`}
+                     icon={FaGithub}
+                     label="View Source"
+                     accent={colors.accent}
+                  />
                )}
                {hasLive && (
-                  <a
+                  <ModalLink
                      href={project.live}
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     style={linkButtonStyle(colors.accent)}
-                     aria-label={`View ${project.title} live demo`}
-                  >
-                     <ExternalLink size={14} />
-                     Live Demo
-                  </a>
+                     ariaLabel={`View ${project.title} live demo`}
+                     icon={ExternalLink}
+                     label="Live Demo"
+                     accent={colors.accent}
+                  />
                )}
             </motion.div>
          )}

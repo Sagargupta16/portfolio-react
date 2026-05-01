@@ -147,21 +147,28 @@
       <div id="root"></div>
       <script type="module" src="/src/index.tsx"></script>
 
-      <!-- Analytics — deferred to keep them off the critical render path -->
+      <!--
+        Analytics — deferred to keep them off the critical render path.
+        SRI is intentionally omitted: both Google Tag Manager and SimpleAnalytics
+        serve dynamically-updated bundles, so integrity hashes would break on
+        every vendor deploy. This is an accepted, industry-standard exception. NOSONAR
+      -->
       <script
          async
          defer
          src="https://scripts.simpleanalyticscdn.com/latest.js"
+         crossorigin="anonymous"
       ></script>
       <script
          async
          src="https://www.googletagmanager.com/gtag/js?id=G-PFFMG7D8DP"
+         crossorigin="anonymous"
       ></script>
       <script>
-         window.addEventListener("DOMContentLoaded", function () {
-            window.dataLayer = window.dataLayer || [];
+         globalThis.addEventListener("DOMContentLoaded", function () {
+            globalThis.dataLayer = globalThis.dataLayer || [];
             function gtag() {
-               window.dataLayer.push(arguments);
+               globalThis.dataLayer.push(arguments);
             }
             gtag("js", new Date());
             gtag("config", "G-PFFMG7D8DP");
