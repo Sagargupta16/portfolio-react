@@ -2,6 +2,30 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.14.0] - 2026-05-03
+
+### Changed
+
+- **Experience**: AWS engagements renamed from anonymized labels ("UK-based Firm", "US Financial Services Firm") to actual client names -- **RWS**, **DTCC**, **State Street**
+- **Experience**: AWS projects reordered newest-first (RWS Feb 2026 -> DTCC -> MLOps SME -> State Street)
+- **RWS engagement**: expanded to 5 bullets covering governance + infra security controls (SCPs, tag compliance, Config rules, Security Hub) and multi-account networking (Transit Gateway hub-and-spoke, centralized VPC, Direct Connect/VPN, DNS, egress inspection); skills list grew from 9 to 16 items
+
+### Updated
+
+- **Ledger Sync**: refreshed to v2.9.0 -- AI chatbot with 15 read-only tool calls (App mode + BYOK), Demo Mode at `/demo`, FIRE calculator (Lean/Barista/Standard/Fat), India FY tax estimator, Financial Health Score
+- **Instagram Autopilot**: rewritten for Nova Canvas + Nova Reel + Composio v3 + Cloudinary pipeline (dropped Pillow templating)
+- **GitScope**: 9-stat grid, coding personality, leaderboard across follows, OAuth traffic dashboard
+- **InstagramLikesLeaderboard**: 3 analysis modes (Likes Leaderboard, Stats Dashboard, Follower Analysis)
+- **LeetCode Rating Predictor**: corrected training dataset size (244K -> 121K contest records)
+- **Financial Dashboard**: reframed as v0.5.0 prototype that evolved into Ledger Sync
+- **SelfHub**: reframed as cross-AI personal memory hub, not MongoDB-specific
+- **Claude Skills**: updated to v4.2.0 counts (25 plugins, 29 agents, 9 hooks, ~28 commands)
+- **Tour Vibes, Contact Manager, Brainstorm Verse, Authentication System, MCA NITW, LeetCode Among Us, Placemento**: tech stacks and feature lists refreshed from current READMEs
+
+### Added
+
+- **Bedrock Multi-Model MCP** (community_projects) -- MCP server for AWS Bedrock covering Llama 4, Nova, Claude, Mistral, Cohere, DeepSeek, SD 3.5, and Nova Reel
+
 ## [3.13.0] - 2026-04-17
 
 ### Added
