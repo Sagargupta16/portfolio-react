@@ -10,30 +10,36 @@
          "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
          "projects": [
             {
-               "name": "DevOps Consultant - US-based Major Financial Services Firm",
-               "date": "Oct 2024 - Aug 2025",
+               "name": "Lead DevOps Consultant - RWS (Ongoing)",
+               "date": "Feb 2026 - Present",
                "description": {
-                  "1": "Built Terraform module library covering 38+ AWS services with automated testing (tftest, PyTest), adopted across the client's cloud platform by application teams.",
-                  "2": "Architected 1000+ preventative security controls aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
-                  "3": "Delivered POCs showcasing use-cases of various AWS services through Terraform, and implemented evidence and federated architecture patterns.",
-                  "4": "Collaborated across Landing Zone, Compliance, Security, and Migrations workstreams. Achieved 10/10 CSAT score and 3 consecutive 5/5 Pulse ratings from customer."
+                  "1": "Leading greenfield AWS migration as the sole DevOps consultant - designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
+                  "2": "Implemented governance and infrastructure security controls - preventative SCPs, tag compliance guardrails, Config rules, and Security Hub standards across the org - enforcing least-privilege access and regulatory alignment from day one.",
+                  "3": "Architecting the multi-account networking foundation - Transit Gateway hub-and-spoke, centralized VPC design, hybrid connectivity (VPN/Direct Connect), DNS resolution, and egress control via centralized inspection.",
+                  "4": "Driving architecture decisions and defining migration roadmap for 50+ application workloads. Delivering recommendations on cost optimization, HA, and DR to customer stakeholders.",
+                  "5": "Leveraging Kiro for AI-driven requirement analysis, architecture documentation, and implementation specs - significantly accelerating delivery velocity."
                },
                "skills": [
                   "AWS",
+                  "AWS Organizations",
+                  "SCPs",
+                  "Tag Policies",
+                  "Security Hub",
+                  "Config Rules",
+                  "Transit Gateway",
+                  "VPC",
+                  "Direct Connect",
+                  "VPN",
+                  "Route 53",
                   "Terraform",
-                  "tftest",
-                  "PyTest",
-                  "EventBridge",
-                  "CloudWatch",
-                  "SNS",
-                  "EBS",
-                  "Detective",
-                  "CCMv4.0",
-                  "Security Hardening"
+                  "GitHub Actions",
+                  "Cloud Migration",
+                  "Solution Architecture",
+                  "Kiro"
                ]
             },
             {
-               "name": "DevOps Consultant - US-based Leading Financial Services Firm",
+               "name": "DevOps Consultant - DTCC",
                "date": "Aug 2025 - Dec 2025",
                "description": {
                   "1": "Refactored and created critical Terraform infrastructure code to enhance security and scalability, solving complex legacy modernization challenges in financial services.",
@@ -71,23 +77,26 @@
                ]
             },
             {
-               "name": "Lead DevOps Consultant - UK-based Global Technology Services Firm (Ongoing)",
-               "date": "Feb 2026 - Present",
+               "name": "DevOps Consultant - State Street",
+               "date": "Oct 2024 - Aug 2025",
                "description": {
-                  "1": "Leading greenfield AWS migration as the sole DevOps consultant - designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
-                  "2": "Driving architecture decisions and defining migration roadmap for 50+ application workloads. Delivering recommendations on cost optimization, HA, and DR to customer stakeholders.",
-                  "3": "Leveraging Kiro for AI-driven requirement analysis, architecture documentation, and implementation specs - significantly accelerating delivery velocity."
+                  "1": "Built Terraform module library covering 38+ AWS services with automated testing (tftest, PyTest), adopted across the client's cloud platform by application teams.",
+                  "2": "Architected 1000+ preventative security controls aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
+                  "3": "Delivered POCs showcasing use-cases of various AWS services through Terraform, and implemented evidence and federated architecture patterns.",
+                  "4": "Collaborated across Landing Zone, Compliance, Security, and Migrations workstreams. Achieved 10/10 CSAT score and 3 consecutive 5/5 Pulse ratings from customer."
                },
                "skills": [
                   "AWS",
-                  "AWS Organizations",
-                  "SCPs",
-                  "Tag Policies",
                   "Terraform",
-                  "GitHub Actions",
-                  "Cloud Migration",
-                  "Solution Architecture",
-                  "Kiro"
+                  "tftest",
+                  "PyTest",
+                  "EventBridge",
+                  "CloudWatch",
+                  "SNS",
+                  "EBS",
+                  "Detective",
+                  "CCMv4.0",
+                  "Security Hardening"
                ]
             }
          ],
