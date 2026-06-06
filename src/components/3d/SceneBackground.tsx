@@ -30,26 +30,31 @@ const InteractiveRig = ({
    children: React.ReactNode;
 }) => {
    const group = useRef<THREE.Group>(null);
+   // Smoothed pointer offset, lerped each frame so steering eases in/out.
+   const steer = useRef({ x: 0, y: 0 });
 
    // Read camera via the frame state (not a captured useThree value) so the
    // React Compiler immutability rule allows the per-frame mutation.
    useFrame((state, delta) => {
       const p = pointer.current;
       const k = Math.min(1, delta * 2); // frame-rate-independent lerp factor
+      const t = state.clock.elapsedTime;
+
+      // Ease the pointer offset toward the live pointer.
+      steer.current.x += (p.x - steer.current.x) * k;
+      steer.current.y += (p.y - steer.current.y) * k;
 
       if (group.current) {
-         const targetY = p.x * 0.35;
-         const targetX = -p.y * 0.25;
-         group.current.rotation.y +=
-            (targetY - group.current.rotation.y) * k;
-         group.current.rotation.x +=
-            (targetX - group.current.rotation.x) * k;
+         // Continuous ambient orbit (always running) + pointer steer on top.
+         group.current.rotation.y = t * 0.12 + steer.current.x * 0.4;
+         group.current.rotation.x =
+            Math.sin(t * 0.15) * 0.12 - steer.current.y * 0.28;
       }
 
       // Subtle camera parallax -- the scene appears to shift behind the glass.
       const { camera } = state;
-      camera.position.x += (p.x * 1.2 - camera.position.x) * k;
-      camera.position.y += (-p.y * 0.8 - camera.position.y) * k;
+      camera.position.x += (steer.current.x * 1.2 - camera.position.x) * k;
+      camera.position.y += (-steer.current.y * 0.8 - camera.position.y) * k;
       camera.lookAt(0, 0, 0);
    });
 
