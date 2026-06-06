@@ -1,37 +1,9 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import { useCallback } from "react";
 import { motion } from "motion/react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
 import { ChevronDown } from "lucide-react";
-import { useInView } from "react-intersection-observer";
-import ErrorBoundary from "@components/common/ErrorBoundary";
 import HeroContent from "./HeroContent";
-import { particlesOptions, hasWebGL } from "./heroConstants";
-
-const HeroScene = lazy(() => import("@components/3d/HeroScene"));
-
-const ParticleFallback = ({
-   ready,
-   options,
-}: {
-   ready: boolean;
-   options: typeof particlesOptions;
-}) =>
-   ready ? (
-      <Particles className="absolute inset-0 z-0" options={options} />
-   ) : null;
 
 const Hero = () => {
-   const { ref: sectionRef, inView } = useInView({ threshold: 0 });
-   const [engineInit, setEngineInit] = useState(false);
-   const [webGLSupported] = useState(() => hasWebGL());
-
-   useEffect(() => {
-      initParticlesEngine(async (engine) => {
-         await loadSlim(engine);
-      }).then(() => setEngineInit(true));
-   }, []);
-
    const scrollToAbout = useCallback(() => {
       const el = document.querySelector("#about");
       if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -39,7 +11,6 @@ const Hero = () => {
 
    return (
       <section
-         ref={sectionRef}
          id="hero"
          className="relative min-h-screen overflow-hidden flex items-center justify-center"
       >
@@ -79,32 +50,7 @@ const Hero = () => {
             }}
          />
 
-         {/* 3D Scene / Particles fallback */}
-         {webGLSupported ? (
-            <ErrorBoundary
-               fallback={
-                  <ParticleFallback
-                     ready={engineInit}
-                     options={particlesOptions}
-                  />
-               }
-            >
-               <Suspense
-                  fallback={
-                     <ParticleFallback
-                        ready={engineInit}
-                        options={particlesOptions}
-                     />
-                  }
-               >
-                  <HeroScene visible={inView} />
-               </Suspense>
-            </ErrorBoundary>
-         ) : (
-            <ParticleFallback ready={engineInit} options={particlesOptions} />
-         )}
-
-         {/* Content */}
+         {/* Content (3D background is now global -- see App.tsx SceneBackground) */}
          <HeroContent />
 
          {/* Scroll indicator */}
