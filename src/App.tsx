@@ -13,6 +13,7 @@ import SectionTransition from "@components/ui/SectionTransition";
 import ParallaxElements from "@components/ui/ParallaxElements";
 import AuroraBlobs from "@components/ui/AuroraBlobs";
 import ShootingStars from "@components/ui/ShootingStars";
+import InteractiveConstellation from "@components/ui/InteractiveConstellation";
 import SystemStatus from "@components/ui/SystemStatus";
 import { BreakpointProvider } from "@hooks/BreakpointProvider";
 
@@ -48,6 +49,7 @@ const App = () => {
             <KeyboardNav />
             <AuroraBlobs />
             <ShootingStars />
+            <InteractiveConstellation />
             <ParallaxElements />
             <div className="relative min-h-screen">
                <Nav />
