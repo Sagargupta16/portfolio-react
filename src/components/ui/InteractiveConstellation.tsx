@@ -5,9 +5,16 @@ import { cryptoRandom } from "@utils/random";
 import { CYAN, PURPLE } from "@/constants/theme";
 
 // Cursor-reactive constellation: drifting particles wired together by lines
-// when they get close, with mouse repulsion. Mounted once at the app root so
-// it spans every section (sections sit at higher z-index with transparent /
-// translucent backgrounds, letting this show through).
+// when they get close, with pointer repulsion + cursor-connection lines.
+// Mounted once at the app root so it spans every section (sections sit at
+// higher z-index with transparent / translucent backgrounds, letting this
+// show through).
+//
+// Compatibility:
+// - prefers-reduced-motion -> renders a single static frame instead of
+//   animating, so the background still appears (no blank void).
+// - touch devices -> tracks touchmove alongside mousemove, so dragging a
+//   finger draws the same connection lines.
 
 interface Particle {
    x: number;
@@ -20,13 +27,14 @@ interface Particle {
 }
 
 const LINK_DISTANCE = 150; // px within which two particles get a line
-const MOUSE_RADIUS = 200; // px interaction field around the cursor
-const REPULSION = 0.05; // how hard particles flee the cursor
+const POINTER_RADIUS = 200; // px interaction field around the cursor/touch
+const REPULSION = 0.05; // how hard particles flee the pointer
 const AREA_PER_PARTICLE = 12000; // larger -> fewer particles
 const MAX_PARTICLES_DESKTOP = 130;
 const MAX_PARTICLES_MOBILE = 50;
 const LINE_OPACITY = 0.28; // peak opacity of particle-to-particle links
-const CURSOR_LINE_OPACITY = 0.4; // peak opacity of cursor-to-particle links
+const CURSOR_LINE_OPACITY = 0.4; // peak opacity of pointer-to-particle links
+const OFFSCREEN = -9999; // parked pointer position (no interaction)
 
 // "#06b6d4" -> "6, 182, 212" for use inside rgba().
 const hexToRgb = (hex: string): string => {
@@ -40,7 +48,6 @@ const InteractiveConstellation = () => {
    const canvasRef = useRef<HTMLCanvasElement>(null);
 
    useEffect(() => {
-      if (reducedMotion) return;
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
@@ -55,7 +62,7 @@ const InteractiveConstellation = () => {
       let width = 0;
       let height = 0;
       let rafId = 0;
-      const mouse = { x: -9999, y: -9999 };
+      const pointer = { x: OFFSCREEN, y: OFFSCREEN };
 
       const spawn = (): Particle => ({
          x: cryptoRandom() * width,
@@ -84,34 +91,38 @@ const InteractiveConstellation = () => {
          particles = Array.from({ length: target }, spawn);
       };
 
-      const step = () => {
+      // Render one frame. When `animate` is true, advance physics and draw
+      // pointer-connection lines; otherwise paint a static snapshot.
+      const draw = (animate: boolean) => {
          ctx.clearRect(0, 0, width, height);
 
          for (const p of particles) {
-            // Drift + edge wrap for an infinite field.
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0) p.x = width;
-            else if (p.x > width) p.x = 0;
-            if (p.y < 0) p.y = height;
-            else if (p.y > height) p.y = 0;
+            if (animate) {
+               // Drift + edge wrap for an infinite field.
+               p.x += p.vx;
+               p.y += p.vy;
+               if (p.x < 0) p.x = width;
+               else if (p.x > width) p.x = 0;
+               if (p.y < 0) p.y = height;
+               else if (p.y > height) p.y = 0;
 
-            // Mouse repulsion.
-            const dx = p.x - mouse.x;
-            const dy = p.y - mouse.y;
-            const dist = Math.hypot(dx, dy);
-            if (dist < MOUSE_RADIUS && dist > 0) {
-               const force = ((MOUSE_RADIUS - dist) / MOUSE_RADIUS) * REPULSION;
-               p.x += (dx / dist) * force * MOUSE_RADIUS;
-               p.y += (dy / dist) * force * MOUSE_RADIUS;
+               // Pointer repulsion + connection line -- the interactive tell.
+               const dx = p.x - pointer.x;
+               const dy = p.y - pointer.y;
+               const dist = Math.hypot(dx, dy);
+               if (dist < POINTER_RADIUS && dist > 0) {
+                  const force =
+                     ((POINTER_RADIUS - dist) / POINTER_RADIUS) * REPULSION;
+                  p.x += (dx / dist) * force * POINTER_RADIUS;
+                  p.y += (dy / dist) * force * POINTER_RADIUS;
 
-               // Line from cursor to nearby particles -- the interactive tell.
-               ctx.beginPath();
-               ctx.moveTo(mouse.x, mouse.y);
-               ctx.lineTo(p.x, p.y);
-               ctx.strokeStyle = `rgba(${p.color}, ${(1 - dist / MOUSE_RADIUS) * CURSOR_LINE_OPACITY})`;
-               ctx.lineWidth = 1;
-               ctx.stroke();
+                  ctx.beginPath();
+                  ctx.moveTo(pointer.x, pointer.y);
+                  ctx.lineTo(p.x, p.y);
+                  ctx.strokeStyle = `rgba(${p.color}, ${(1 - dist / POINTER_RADIUS) * CURSOR_LINE_OPACITY})`;
+                  ctx.lineWidth = 1;
+                  ctx.stroke();
+               }
             }
 
             ctx.beginPath();
@@ -138,18 +149,36 @@ const InteractiveConstellation = () => {
                }
             }
          }
+      };
 
+      // --- Reduced motion: one static frame, redrawn on resize. No loop. ---
+      if (reducedMotion) {
+         const onResizeStatic = () => {
+            resize();
+            draw(false);
+         };
+         resize();
+         draw(false);
+         globalThis.addEventListener("resize", onResizeStatic);
+         return () => globalThis.removeEventListener("resize", onResizeStatic);
+      }
+
+      // --- Full interactive loop. ---
+      const step = () => {
+         draw(true);
          rafId = globalThis.requestAnimationFrame(step);
       };
 
-      const onMouseMove = (e: MouseEvent) => {
-         mouse.x = e.clientX;
-         mouse.y = e.clientY;
+      const setPointer = (x: number, y: number) => {
+         pointer.x = x;
+         pointer.y = y;
       };
-      const onMouseLeave = () => {
-         mouse.x = -9999;
-         mouse.y = -9999;
+      const onMouseMove = (e: MouseEvent) => setPointer(e.clientX, e.clientY);
+      const onTouchMove = (e: TouchEvent) => {
+         const t = e.touches[0];
+         if (t) setPointer(t.clientX, t.clientY);
       };
+      const parkPointer = () => setPointer(OFFSCREEN, OFFSCREEN);
       // Pause the loop when the tab is hidden to save battery.
       const onVisibility = () => {
          if (document.hidden) {
@@ -163,19 +192,21 @@ const InteractiveConstellation = () => {
       rafId = globalThis.requestAnimationFrame(step);
       globalThis.addEventListener("resize", resize);
       globalThis.addEventListener("mousemove", onMouseMove);
-      globalThis.addEventListener("mouseout", onMouseLeave);
+      globalThis.addEventListener("mouseout", parkPointer);
+      globalThis.addEventListener("touchmove", onTouchMove, { passive: true });
+      globalThis.addEventListener("touchend", parkPointer);
       document.addEventListener("visibilitychange", onVisibility);
 
       return () => {
          globalThis.cancelAnimationFrame(rafId);
          globalThis.removeEventListener("resize", resize);
          globalThis.removeEventListener("mousemove", onMouseMove);
-         globalThis.removeEventListener("mouseout", onMouseLeave);
+         globalThis.removeEventListener("mouseout", parkPointer);
+         globalThis.removeEventListener("touchmove", onTouchMove);
+         globalThis.removeEventListener("touchend", parkPointer);
          document.removeEventListener("visibilitychange", onVisibility);
       };
    }, [reducedMotion, isMobile]);
-
-   if (reducedMotion) return null;
 
    return (
       <canvas
