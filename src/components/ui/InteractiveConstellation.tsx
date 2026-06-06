@@ -19,12 +19,14 @@ interface Particle {
    color: string; // "r, g, b"
 }
 
-const LINK_DISTANCE = 130; // px within which two particles get a line
-const MOUSE_RADIUS = 160; // px repulsion field around the cursor
-const REPULSION = 0.03; // how hard particles flee the cursor
-const AREA_PER_PARTICLE = 16000; // larger -> fewer particles
-const MAX_PARTICLES_DESKTOP = 110;
-const MAX_PARTICLES_MOBILE = 45;
+const LINK_DISTANCE = 150; // px within which two particles get a line
+const MOUSE_RADIUS = 200; // px interaction field around the cursor
+const REPULSION = 0.05; // how hard particles flee the cursor
+const AREA_PER_PARTICLE = 12000; // larger -> fewer particles
+const MAX_PARTICLES_DESKTOP = 130;
+const MAX_PARTICLES_MOBILE = 50;
+const LINE_OPACITY = 0.28; // peak opacity of particle-to-particle links
+const CURSOR_LINE_OPACITY = 0.4; // peak opacity of cursor-to-particle links
 
 // "#06b6d4" -> "6, 182, 212" for use inside rgba().
 const hexToRgb = (hex: string): string => {
@@ -60,8 +62,8 @@ const InteractiveConstellation = () => {
          y: cryptoRandom() * height,
          vx: (cryptoRandom() - 0.5) * 0.4,
          vy: (cryptoRandom() - 0.5) * 0.4,
-         size: 1 + cryptoRandom() * 1.5,
-         opacity: 0.3 + cryptoRandom() * 0.4,
+         size: 1.2 + cryptoRandom() * 1.8,
+         opacity: 0.45 + cryptoRandom() * 0.45,
          color: colors[cryptoRandom() > 0.5 ? 1 : 0],
       });
 
@@ -102,6 +104,14 @@ const InteractiveConstellation = () => {
                const force = ((MOUSE_RADIUS - dist) / MOUSE_RADIUS) * REPULSION;
                p.x += (dx / dist) * force * MOUSE_RADIUS;
                p.y += (dy / dist) * force * MOUSE_RADIUS;
+
+               // Line from cursor to nearby particles -- the interactive tell.
+               ctx.beginPath();
+               ctx.moveTo(mouse.x, mouse.y);
+               ctx.lineTo(p.x, p.y);
+               ctx.strokeStyle = `rgba(${p.color}, ${(1 - dist / MOUSE_RADIUS) * CURSOR_LINE_OPACITY})`;
+               ctx.lineWidth = 1;
+               ctx.stroke();
             }
 
             ctx.beginPath();
@@ -122,7 +132,7 @@ const InteractiveConstellation = () => {
                   ctx.beginPath();
                   ctx.moveTo(a.x, a.y);
                   ctx.lineTo(b.x, b.y);
-                  ctx.strokeStyle = `rgba(${a.color}, ${(1 - dist / LINK_DISTANCE) * 0.15})`;
+                  ctx.strokeStyle = `rgba(${a.color}, ${(1 - dist / LINK_DISTANCE) * LINE_OPACITY})`;
                   ctx.lineWidth = 1;
                   ctx.stroke();
                }
