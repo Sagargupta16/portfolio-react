@@ -1,9 +1,9 @@
 # Sagar Gupta - Portfolio
 
-![GitHub stars](https://img.shields.io/github/stars/Sagargupta16/portfolio-react?style=flat-square)
-![GitHub forks](https://img.shields.io/github/forks/Sagargupta16/portfolio-react?style=flat-square)
-![License](https://img.shields.io/github/license/Sagargupta16/portfolio-react?style=flat-square)
-![Last Commit](https://img.shields.io/github/last-commit/Sagargupta16/portfolio-react?style=flat-square)
+![GitHub stars](https://img.shields.io/github/stars/Sagargupta16/portfolio-react?style=flat-square&cacheSeconds=86400)
+![GitHub forks](https://img.shields.io/github/forks/Sagargupta16/portfolio-react?style=flat-square&cacheSeconds=86400)
+![License](https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/Sagargupta16/portfolio-react?style=flat-square&cacheSeconds=86400)
 
 [![CI/CD Pipeline](https://github.com/Sagargupta16/portfolio-react/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Sagargupta16/portfolio-react/actions/workflows/ci-cd.yml)
 
@@ -135,9 +135,7 @@ src/
 ├── types/
 │   └── index.ts                       # All data interfaces (19 types)
 ├── utils/
-│   ├── animations.ts                  # 16 Motion variant presets
-│   ├── useMediaQuery.ts               # Responsive breakpoint hook
-│   └── useReducedMotion.ts            # Accessibility motion hook
+│   └── animations.ts                  # 16 Motion variant presets
 ├── App.tsx                            # Root layout with ReactLenis
 ├── index.tsx                          # Entry point
 └── index.css                          # Tailwind theme + glassmorphism + keyframes
