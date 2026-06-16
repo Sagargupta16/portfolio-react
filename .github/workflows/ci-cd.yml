@@ -28,10 +28,6 @@ jobs:
       steps:
          - name: Checkout code
            uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-           with:
-              # On workflow_run the event SHA predates the sync bot's commit, so
-              # check out the branch HEAD to pick up the freshly-synced data.
-              ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.ref }}
 
          - name: Setup pnpm
            uses: pnpm/action-setup@c5ba7f7862a0f64c1b1a05fbac13e0b8e86ba08c # v4
