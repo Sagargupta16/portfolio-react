@@ -17,11 +17,6 @@ vi.mock("@react-three/drei", () => ({
    PerformanceMonitor: () => null,
 }));
 
-vi.mock("@tsparticles/react", () => ({
-   default: () => <div data-testid="particles" />,
-   initParticlesEngine: () => Promise.resolve(),
-}));
-
 vi.mock("lenis", () => ({
    default: class {
       raf() {

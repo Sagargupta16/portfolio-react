@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.16.0] - 2026-06-28
+
+### Changed
+
+- **Build toolchain**: Vite 7 -> 8 (Rolldown bundler -- production build time ~6s -> ~0.8s), TypeScript 5.9 -> 6.0, `@vitejs/plugin-react` 5 -> 6. `manualChunks` migrated to function form; `baseUrl` dropped (paths now `./`-prefixed); ambient declarations added for `@fontsource-variable` side-effect imports
+- **Runtime deps to latest**: React 19.2.7, motion 12.42, three 0.185, tailwindcss 4.3, lenis 1.3.25, `@react-three/fiber` 9.6, react-icons 5.6, lucide-react 0.x -> 1.21
+- **Dev tooling**: vitest 4.1.9, prettier 3.9, typescript-eslint 8.62, jsdom 28 -> 29, and the `eslint-plugin-react-hooks` 7.1 `set-state-in-effect` rule (drove the contact-hook refactor)
+
+### Removed
+
+- Unused `@tsparticles/react` + `@tsparticles/slim` dependencies (never imported), the dead `particles` manualChunks entry, and the orphaned test mock
+
+### Security
+
+- Resolved 12 of 13 dependency advisories (4 high + moderates -> 0 high, 1 moderate): `undici` override raised to `>=7.28.0 <8` (newest version jsdom 29 supports). Remaining moderate is a dev-only transitive with no compatible patch
+- ESLint held at 9: `eslint-plugin-react` does not yet support ESLint 10
+
 ## [3.15.0] - 2026-06-28
 
 ### Added

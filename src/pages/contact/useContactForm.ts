@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 import emailjs from "@emailjs/browser";
 import { getEmailConfig } from "@data/dataLoader";
 import type { FormData, Status } from "./contactConstants";
@@ -21,12 +21,14 @@ const useContactForm = () => {
    // still greet them -- formData is cleared in the same batch as showConfirmation.
    const [sentName, setSentName] = useState("");
 
-   useEffect(() => {
-      // Success is shown via the SendConfirmation screen, not a toast, so the
-      // only toast path is errors. Errors carry recovery instructions, so they
-      // stay until the user dismisses or edits a field (no auto-dismiss timer).
-      if (status.type === "error") setToastVisible(true);
-   }, [status.type]);
+   // Success is shown via the SendConfirmation screen, not a toast, so the only
+   // toast path is errors. The toast is raised in the handlers alongside the
+   // error status (not via an effect mirroring status.type) and stays until the
+   // user dismisses it or edits a field -- no auto-dismiss timer.
+   const showError = useCallback((message: string) => {
+      setStatus({ type: "error", message });
+      setToastVisible(true);
+   }, []);
 
    const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -51,10 +53,7 @@ const useContactForm = () => {
          if (emailConfig.validation_pattern) {
             const pattern = new RegExp(emailConfig.validation_pattern);
             if (!pattern.test(formData.email)) {
-               setStatus({
-                  type: "error",
-                  message: "Please enter a valid email address.",
-               });
+               showError("Please enter a valid email address.");
                return;
             }
          }
@@ -78,21 +77,15 @@ const useContactForm = () => {
             } else {
                // EmailJS resolved with a non-200 status -- surface it instead of
                // silently doing nothing.
-               setStatus({
-                  type: "error",
-                  message: "Failed to send message. Please try again.",
-               });
+               showError("Failed to send message. Please try again.");
             }
          } catch {
-            setStatus({
-               type: "error",
-               message: "Failed to send message. Please try again.",
-            });
+            showError("Failed to send message. Please try again.");
          } finally {
             setIsLoading(false);
          }
       },
-      [emailConfig, formData.email, formData.name],
+      [emailConfig, formData.email, formData.name, showError],
    );
 
    const dismissToast = useCallback(() => {
