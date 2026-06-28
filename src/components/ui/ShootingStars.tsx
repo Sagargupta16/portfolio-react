@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
 import useReducedMotion from "@hooks/useReducedMotion";
+import useBreakpoint from "@hooks/useBreakpoint";
 import { cryptoRandom } from "@utils/random";
 
 interface Streak {
@@ -16,9 +17,10 @@ interface Streak {
 }
 
 const STREAK_COUNT = 10;
+const STREAK_COUNT_MOBILE = 5;
 
-const generateStreaks = (): Streak[] =>
-   Array.from({ length: STREAK_COUNT }, (_, i) => ({
+const generateStreaks = (count: number): Streak[] =>
+   Array.from({ length: count }, (_, i) => ({
       id: i,
       startX: -10 + cryptoRandom() * 60,
       startY: cryptoRandom() * 70,
@@ -32,7 +34,12 @@ const generateStreaks = (): Streak[] =>
 
 const ShootingStars = () => {
    const reducedMotion = useReducedMotion();
-   const streaks = useMemo(() => generateStreaks(), []);
+   const { isMobile } = useBreakpoint();
+   // Fewer animating streaks on phones to ease GPU load; motion stays visible.
+   const streaks = useMemo(
+      () => generateStreaks(isMobile ? STREAK_COUNT_MOBILE : STREAK_COUNT),
+      [isMobile],
+   );
 
    if (reducedMotion) return null;
 

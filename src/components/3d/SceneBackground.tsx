@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { PerformanceMonitor } from "@react-three/drei";
+import { useLenis } from "lenis/react";
 import * as THREE from "three";
 import FloatingGeometry from "./FloatingGeometry";
 import ParticleField from "./ParticleField";
@@ -65,7 +66,23 @@ const SceneBackground = () => {
    const { isMobile } = useBreakpoint();
    const reducedMotion = useReducedMotion();
    const [degraded, setDegraded] = useState(false);
+   const [scrolling, setScrolling] = useState(false);
    const pointer = useRef<Pointer>({ x: 0, y: 0 });
+   const scrollIdle = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+   // Pause the render loop while the user is actively scrolling, resume ~160ms
+   // after they stop. The 3D scene contributes nothing during a fast fling (it's
+   // behind blurred glass and moving past) but competes for GPU/main thread with
+   // the scroll -- freeing it is a direct fast-scroll smoothness win. Motion stays
+   // fully visible at rest, which is when the parallax actually reads.
+   useLenis(({ velocity }) => {
+      if (Math.abs(velocity) < 0.05) return;
+      if (!scrolling) setScrolling(true);
+      clearTimeout(scrollIdle.current);
+      scrollIdle.current = setTimeout(() => setScrolling(false), 160);
+   });
+
+   useEffect(() => () => clearTimeout(scrollIdle.current), []);
 
    useEffect(() => {
       const setFromXY = (clientX: number, clientY: number) => {
@@ -101,8 +118,10 @@ const SceneBackground = () => {
          }}
          camera={{ position: [0, 0, 8], fov: 50 }}
          dpr={dpr}
-         // Reduced motion -> render once and freeze (static 3D snapshot).
-         frameloop={reducedMotion ? "demand" : "always"}
+         // Reduced motion -> render once and freeze. While actively scrolling ->
+         // pause the loop ("demand") to free the GPU/main thread for the scroll;
+         // resume "always" at rest.
+         frameloop={reducedMotion || scrolling ? "demand" : "always"}
          gl={{
             antialias: !isMobile,
             alpha: true,
