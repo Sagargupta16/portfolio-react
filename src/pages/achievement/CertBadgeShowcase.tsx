@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ShieldCheck } from "lucide-react";
 import { fadeInUp } from "@utils/animations";
 import type { Certification } from "@/types";
+import { CYAN, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import CertBadge from "./CertBadge";
 
@@ -40,14 +41,14 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
                }}
             >
                <ShieldCheck
-                  style={{ width: 18, height: 18, color: "#06b6d4" }}
+                  style={{ width: 18, height: 18, color: CYAN }}
                />
             </div>
             <h3
                style={{
                   fontSize: 20,
                   fontWeight: 700,
-                  color: "#eeeef5",
+                  color: TEXT_PRIMARY,
                }}
             >
                Industry Certifications
@@ -56,7 +57,7 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
                style={{
                   fontSize: 12,
                   fontWeight: 600,
-                  color: "#6e6e90",
+                  color: TEXT_MUTED,
                   padding: "2px 8px",
                   borderRadius: 6,
                   background: "rgba(255,255,255,0.04)",

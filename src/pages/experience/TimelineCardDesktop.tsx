@@ -3,7 +3,7 @@ import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { slideInLeft, slideInRight } from "@utils/animations";
 import { splitDateRange, isPresent } from "@utils/dateRange";
-import { MONO_FONT, GREEN } from "@/constants/theme";
+import { MONO_FONT, GREEN, TEXT_MUTED } from "@/constants/theme";
 import TimelineCardContent from "./TimelineCardContent";
 import PresentIndicator from "./PresentIndicator";
 
@@ -72,7 +72,7 @@ const TimelineCardDesktop = ({
                      display: "block",
                      fontFamily: MONO_FONT,
                      fontSize: 11,
-                     color: "#6e6e90",
+                     color: TEXT_MUTED,
                      marginTop: 2,
                   }}
                >
@@ -82,7 +82,7 @@ const TimelineCardDesktop = ({
             {item.location && (
                <p
                   style={{
-                     color: "#6e6e90",
+                     color: TEXT_MUTED,
                      fontSize: 12,
                      display: "flex",
                      alignItems: "center",

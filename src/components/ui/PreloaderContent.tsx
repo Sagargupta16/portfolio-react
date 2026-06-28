@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, CYAN, PURPLE, TEXT_MUTED } from "@/constants/theme";
 
 interface PreloaderContentProps {
    displayProgress: number;
@@ -45,7 +45,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
                fontSize: 48,
                fontWeight: 700,
                fontFamily: MONO_FONT,
-               color: "#06b6d4",
+               color: CYAN,
                letterSpacing: "0.05em",
                textShadow:
                   "0 0 30px rgba(6,182,212,0.5), 0 0 60px rgba(6,182,212,0.25)",
@@ -71,7 +71,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
             <motion.div
                style={{
                   height: "100%",
-                  background: "linear-gradient(90deg, #06b6d4, #a855f7)",
+                  background: `linear-gradient(90deg, ${CYAN}, ${PURPLE})`,
                   borderRadius: 4,
                }}
                initial={{ width: "0%" }}
@@ -87,7 +87,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
             style={{
                fontFamily: MONO_FONT,
                fontSize: 12,
-               color: "#6e6e90",
+               color: TEXT_MUTED,
                position: "relative",
                zIndex: 1,
             }}

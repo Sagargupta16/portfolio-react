@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { BookOpen } from "lucide-react";
 import type { LearningBadge } from "@/types";
 import { fadeInUp } from "@utils/animations";
+import { PURPLE, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import CertBadge from "./CertBadge";
 
@@ -42,13 +43,13 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                   justifyContent: "center",
                }}
             >
-               <BookOpen style={{ width: 18, height: 18, color: "#a855f7" }} />
+               <BookOpen style={{ width: 18, height: 18, color: PURPLE }} />
             </div>
             <h3
                style={{
                   fontSize: 20,
                   fontWeight: 700,
-                  color: "#eeeef5",
+                  color: TEXT_PRIMARY,
                }}
             >
                Learning & Training
@@ -57,7 +58,7 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                style={{
                   fontSize: 12,
                   fontWeight: 600,
-                  color: "#6e6e90",
+                  color: TEXT_MUTED,
                   padding: "2px 8px",
                   borderRadius: 6,
                   background: "rgba(255,255,255,0.04)",

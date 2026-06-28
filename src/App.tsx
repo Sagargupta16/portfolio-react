@@ -17,6 +17,7 @@ import InteractiveConstellation from "@components/ui/InteractiveConstellation";
 import SystemStatus from "@components/ui/SystemStatus";
 import { hasWebGL } from "@components/layout/Header/heroConstants";
 import { BreakpointProvider } from "@hooks/BreakpointProvider";
+import useBreakpoint from "@hooks/useBreakpoint";
 
 // Global interactive 3D background, lazy-loaded so Three.js stays out of the
 // initial bundle. Falls back to the 2D constellation when WebGL is unavailable.
@@ -35,6 +36,7 @@ const GitHub = lazy(() => import("@pages/github/GitHub"));
 
 const App = () => {
    const [webGLSupported] = useState(() => hasWebGL());
+   const { isMobile } = useBreakpoint();
 
    useEffect(() => {
       globalThis.history.scrollRestoration = "manual";
@@ -45,8 +47,13 @@ const App = () => {
       <ReactLenis
          root
          options={{
-            duration: 1,
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            // lerp-based smoothing (not a fixed duration) so a fast flick
+            // resolves quickly instead of being forced through a full 1s curve --
+            // keeps scrolling smooth but responsive when the user scrolls hard.
+            lerp: 0.1,
+            wheelMultiplier: 1.1,
+            touchMultiplier: 1.5,
+            syncTouch: false,
          }}
       >
          <BreakpointProvider>
@@ -56,7 +63,7 @@ const App = () => {
             <KeyboardNav />
             <AuroraBlobs />
             <ShootingStars />
-            {webGLSupported ? (
+            {webGLSupported && !isMobile ? (
                <ErrorBoundary fallback={<InteractiveConstellation />}>
                   <Suspense fallback={null}>
                      <SceneBackground />
@@ -67,8 +74,11 @@ const App = () => {
             )}
             <ParallaxElements />
             <div className="relative min-h-screen">
+               <a href="#main-content" className="skip-link">
+                  Skip to content
+               </a>
                <Nav />
-               <main>
+               <main id="main-content" tabIndex={-1}>
                   <Hero />
                   <Suspense fallback={<SectionLoader />}>
                      <SectionTransition variant="gradient-sweep" />

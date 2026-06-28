@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getSocialProfiles } from "@data/dataLoader";
 import { staggerItem } from "@utils/animations";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, TEXT_SECONDARY, CYAN } from "@/constants/theme";
 import ICON_MAP from "@utils/iconMap";
 
 const HeroSocial = () => {
@@ -24,7 +24,7 @@ const HeroSocial = () => {
                   WebkitBackdropFilter: "blur(12px)",
                   border: "1px solid rgba(255, 255, 255, 0.06)",
                   fontSize: 12,
-                  color: "#a5a5c0",
+                  color: TEXT_SECONDARY,
                }}
             >
                <span style={{ fontSize: 14 }}>&#128640;</span>
@@ -36,7 +36,7 @@ const HeroSocial = () => {
                         fontFamily: MONO_FONT,
                         fontWeight: 600,
                         fontSize: 11,
-                        color: "#06b6d4",
+                        color: CYAN,
                         padding: "2px 8px",
                         borderRadius: 6,
                         background: "rgba(6, 182, 212, 0.08)",
@@ -74,13 +74,13 @@ const HeroSocial = () => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: "#a5a5c0",
+                        color: TEXT_SECONDARY,
                         transition: "all 0.3s",
                      }}
                      whileHover={{
                         scale: 1.15,
                         y: -3,
-                        color: "#06b6d4",
+                        color: CYAN,
                         borderColor: "rgba(6, 182, 212, 0.3)",
                         background: "rgba(6, 182, 212, 0.08)",
                      }}

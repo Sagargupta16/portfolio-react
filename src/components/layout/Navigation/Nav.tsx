@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import useMediaQuery from "@hooks/useMediaQuery";
+import { useLenis } from "lenis/react";
+import useBreakpoint from "@hooks/useBreakpoint";
 import NavBar from "./NavBar";
 import MobileMenu from "./MobileMenu";
 
@@ -21,7 +22,7 @@ const NAV_SECTIONS: NavSection[] = [
 ];
 
 const Nav = () => {
-   const isMobile = useMediaQuery("(max-width: 1023px)");
+   const { isTablet: isMobile } = useBreakpoint();
    const [activeSection, setActiveSection] = useState("hero");
    const [sectionProgress, setSectionProgress] = useState(0);
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -67,13 +68,23 @@ const Nav = () => {
       return () => observer.disconnect();
    }, []);
 
-   const scrollToSection = useCallback((id: string) => {
-      const el = document.querySelector(`#${id}`);
-      if (el) {
-         el.scrollIntoView({ behavior: "smooth" });
-      }
-      setMobileMenuOpen(false);
-   }, []);
+   const lenis = useLenis();
+   const scrollToSection = useCallback(
+      (id: string) => {
+         const el = document.getElementById(id);
+         if (el) {
+            // Route through Lenis so smooth scrolling matches the rest of the
+            // page (CSS scroll-behavior is auto now, so native smooth is off).
+            if (lenis) lenis.scrollTo(el, { offset: -64 });
+            else el.scrollIntoView();
+         }
+         setMobileMenuOpen(false);
+      },
+      [lenis],
+   );
+
+   const toggleMenu = useCallback(() => setMobileMenuOpen((o) => !o), []);
+   const closeMenu = useCallback(() => setMobileMenuOpen(false), []);
 
    return (
       <>
@@ -85,7 +96,7 @@ const Nav = () => {
             sectionProgress={sectionProgress}
             mobileMenuOpen={mobileMenuOpen}
             onNavigate={scrollToSection}
-            onToggleMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onToggleMenu={toggleMenu}
          />
 
          {/* Mobile overlay menu */}
@@ -94,7 +105,7 @@ const Nav = () => {
             sections={NAV_SECTIONS}
             activeSection={activeSection}
             onNavigate={scrollToSection}
-            onClose={() => setMobileMenuOpen(false)}
+            onClose={closeMenu}
          />
       </>
    );

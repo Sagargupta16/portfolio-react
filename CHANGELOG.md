@@ -2,6 +2,35 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.15.0] - 2026-06-28
+
+### Added
+
+- **Accessibility**: skip-to-content link, `main` landmark, nav `aria-label`/`aria-current`/`aria-expanded`/`aria-controls`, contact-form inline error with `aria-invalid` + `role="alert"`, screen-reader announcement on send success
+- **MobileMenu** is now a real dialog -- focus trap, Escape to close, body scroll-lock, focus return to the trigger (reuses `useFocusTrap`)
+- **GitHub calendar**: explicit timeout fallback with a link to the live profile when the contribution data is slow
+- `MAX_WIDTH_WIDE` / `MAX_WIDTH_FORM` layout tokens; `--ch-red` channel; `credlyThumb` render-time image-resize helper
+
+### Changed
+
+- **Performance (scroll)**: replaced the full-width `.section-darker` backdrop-blur bands with gradient overlays (the dominant fast-scroll repaint), animated AuroraBlobs via `transform` instead of `left/top`, paused the 3D frameloop during active scroll, gated the 3D scene to desktop, stopped transitioning the nav blur radius, reduced glass blur 12->10px
+- **Performance (load)**: Credly badges now request `/size/220x220` thumbnails (~43KB->25KB each across 20 badges, sharper on retina)
+- **Scroll feel**: Lenis tuned to lerp-based smoothing for responsive fast scrolling; all in-page scroll actions routed through Lenis; `overscroll-behavior` added
+- **Design system**: routed raw hex/rgba/easing literals through `theme.ts` tokens and `--ch-*` channels across the component tree; wired `MAX_WIDTH*`/type tokens into sections; bumped `TEXT_MUTED` for WCAG AA contrast; removed the cursor-following conic-gradient card border for a calmer, cheaper hover
+- **Motion**: `once: true` on entrance reveals (no replay on scroll-up), press feedback on key controls, `tabular-nums` on counters
+
+### Fixed
+
+- **AnimatedCounter**: cancel rAF on unmount, render decimal values correctly (e.g. CGPA), drop redundant one-shot ref
+- **ParticleField**: regenerate positions when `count` changes to avoid buffer-length desync
+- **InteractiveConstellation**: cancel rAF before restart so a `visibilitychange` cannot stack render loops
+- **Contact form**: preserve sender name for the success screen, surface non-200 send responses instead of failing silently
+- `parseDate` guards unknown months/years; stable React keys for repeated list strings
+
+### Removed
+
+- Dead `BLUE` color token
+
 ## [3.14.0] - 2026-05-03
 
 ### Changed

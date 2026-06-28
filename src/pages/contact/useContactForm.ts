@@ -17,22 +17,15 @@ const useContactForm = () => {
    const [isLoading, setIsLoading] = useState(false);
    const [toastVisible, setToastVisible] = useState(false);
    const [showConfirmation, setShowConfirmation] = useState(false);
+   // Preserve the sender's name across the form reset so the success screen can
+   // still greet them -- formData is cleared in the same batch as showConfirmation.
+   const [sentName, setSentName] = useState("");
 
    useEffect(() => {
-      if (status.type) {
-         setToastVisible(true);
-         const hideTimer = setTimeout(() => {
-            setToastVisible(false);
-            clearTimerRef.current = setTimeout(
-               () => setStatus({ type: "", message: "" }),
-               300,
-            );
-         }, 5000);
-         return () => {
-            clearTimeout(hideTimer);
-            clearTimeout(clearTimerRef.current);
-         };
-      }
+      // Success is shown via the SendConfirmation screen, not a toast, so the
+      // only toast path is errors. Errors carry recovery instructions, so they
+      // stay until the user dismisses or edits a field (no auto-dismiss timer).
+      if (status.type === "error") setToastVisible(true);
    }, [status.type]);
 
    const handleChange = useCallback(
@@ -78,9 +71,17 @@ const useContactForm = () => {
             );
 
             if (result.status === 200) {
+               setSentName(formData.name);
                setShowConfirmation(true);
                setFormData({ name: "", email: "", message: "" });
                formRef.current.reset();
+            } else {
+               // EmailJS resolved with a non-200 status -- surface it instead of
+               // silently doing nothing.
+               setStatus({
+                  type: "error",
+                  message: "Failed to send message. Please try again.",
+               });
             }
          } catch {
             setStatus({
@@ -91,7 +92,7 @@ const useContactForm = () => {
             setIsLoading(false);
          }
       },
-      [emailConfig, formData.email],
+      [emailConfig, formData.email, formData.name],
    );
 
    const dismissToast = useCallback(() => {
@@ -113,6 +114,7 @@ const useContactForm = () => {
       isLoading,
       toastVisible,
       showConfirmation,
+      sentName,
       handleChange,
       handleSubmit,
       dismissToast,

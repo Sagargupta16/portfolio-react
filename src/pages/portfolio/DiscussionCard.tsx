@@ -1,14 +1,14 @@
 import { BadgeCheck, MessageCircle } from "lucide-react";
 import type { CommunityDiscussion } from "@/types";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, CYAN, PURPLE, TEXT_SECONDARY } from "@/constants/theme";
 
 interface DiscussionCardProps {
    discussion: CommunityDiscussion;
 }
 
 const STATUS_CONFIG = {
-   accepted: { color: "#06b6d4", Icon: BadgeCheck, label: "Accepted" },
-   helpful: { color: "#a855f7", Icon: MessageCircle, label: "Helpful" },
+   accepted: { color: CYAN, Icon: BadgeCheck, label: "Accepted" },
+   helpful: { color: PURPLE, Icon: MessageCircle, label: "Helpful" },
 } as const;
 
 const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
@@ -88,7 +88,7 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
             <p
                style={{
                   fontSize: 12,
-                  color: "#a5a5c0",
+                  color: TEXT_SECONDARY,
                   lineHeight: 1.5,
                   marginTop: 2,
                   overflow: "hidden",

@@ -1,3 +1,5 @@
+import { memo } from "react";
+import { motion } from "motion/react";
 import { CYAN, TEXT_PRIMARY } from "@/constants/theme";
 
 interface NavSection {
@@ -29,9 +31,10 @@ const DesktopNav = ({
          {sections.map((section) => {
             const isActive = activeSection === section.id;
             return (
-               <button
+               <motion.button
                   key={section.id}
                   onClick={() => onNavigate(section.id)}
+                  whileTap={{ scale: 0.94 }}
                   style={{
                      padding: "4px 12px",
                      fontSize: 12,
@@ -39,7 +42,8 @@ const DesktopNav = ({
                      borderRadius: 10,
                      cursor: "pointer",
                      border: "none",
-                     transition: "all 0.2s ease",
+                     transition:
+                        "color 0.2s ease, background-color 0.2s ease",
                      color: isActive ? CYAN : "rgba(165, 165, 192, 0.9)",
                      backgroundColor: isActive
                         ? "rgba(6, 182, 212, 0.1)"
@@ -50,6 +54,7 @@ const DesktopNav = ({
                      gap: 4,
                      position: "relative",
                   }}
+                  aria-current={isActive ? "true" : undefined}
                   onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
                      if (!isActive) {
                         e.currentTarget.style.color = TEXT_PRIMARY;
@@ -81,11 +86,11 @@ const DesktopNav = ({
                      />
                   )}
                   {section.label}
-               </button>
+               </motion.button>
             );
          })}
       </div>
    );
 };
 
-export default DesktopNav;
+export default memo(DesktopNav);

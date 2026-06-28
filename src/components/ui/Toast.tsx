@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle, XCircle, X } from "lucide-react";
+import { GREEN, RED, TEXT_PRIMARY, TEXT_MUTED } from "@/constants/theme";
 
 interface ToastProps {
    message: string;
@@ -11,15 +12,15 @@ interface ToastProps {
 
 const TOAST_COLORS = {
    success: {
-      accent: "#22c55e",
-      bg: "rgba(34, 197, 94, 0.08)",
-      border: "rgba(34, 197, 94, 0.15)",
+      accent: GREEN,
+      bg: "rgb(var(--ch-green) / 0.08)",
+      border: "rgb(var(--ch-green) / 0.15)",
       icon: CheckCircle,
    },
    error: {
-      accent: "#ef4444",
-      bg: "rgba(239, 68, 68, 0.08)",
-      border: "rgba(239, 68, 68, 0.15)",
+      accent: RED,
+      bg: "rgb(var(--ch-red) / 0.08)",
+      border: "rgb(var(--ch-red) / 0.15)",
       icon: XCircle,
    },
 };
@@ -48,7 +49,7 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                   gap: 12,
                   padding: "12px 20px",
                   borderRadius: 12,
-                  background: "rgba(15, 15, 35, 0.7)",
+                  background: "rgb(var(--ch-glass) / 0.7)",
                   backdropFilter: "blur(24px)",
                   WebkitBackdropFilter: "blur(24px)",
                   border: `1px solid ${config.border}`,
@@ -69,7 +70,7 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                   style={{
                      fontSize: 14,
                      fontWeight: 500,
-                     color: "#eeeef5",
+                     color: TEXT_PRIMARY,
                      flex: 1,
                   }}
                >
@@ -84,7 +85,7 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                         borderRadius: 6,
                         border: "none",
                         background: "rgba(255,255,255,0.05)",
-                        color: "#6e6e90",
+                        color: TEXT_MUTED,
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
@@ -93,10 +94,10 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                         flexShrink: 0,
                      }}
                      onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.currentTarget.style.color = "#eeeef5";
+                        e.currentTarget.style.color = TEXT_PRIMARY;
                      }}
                      onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.currentTarget.style.color = "#6e6e90";
+                        e.currentTarget.style.color = TEXT_MUTED;
                      }}
                      aria-label="Dismiss"
                   >

@@ -37,7 +37,7 @@ const ProjectModalHeader = ({
                size={isMobile ? 16 : 18}
                style={{ color: colors.accent, flexShrink: 0 }}
             />
-            <h3
+            <h2
                id="project-modal-title"
                style={{
                   fontSize: isMobile ? 15 : 18,
@@ -51,7 +51,7 @@ const ProjectModalHeader = ({
                }}
             >
                {project.title}
-            </h3>
+            </h2>
          </div>
 
          <div

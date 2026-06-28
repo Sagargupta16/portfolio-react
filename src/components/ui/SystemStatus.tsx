@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Server, Eye } from "lucide-react";
 import { getSiteConfig } from "@data/dataLoader";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, TEXT_SECONDARY, CYAN, GREEN } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 
 const SystemStatus = () => {
@@ -47,7 +47,7 @@ const SystemStatus = () => {
          }}
          whileHover={{ y: -2, borderColor: "rgba(34, 197, 94, 0.3)" }}
       >
-         <Server size={14} color="#22c55e" />
+         <Server size={14} color={GREEN} />
 
          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
             <div
@@ -65,7 +65,7 @@ const SystemStatus = () => {
                      height: "100%",
                      width: "100%",
                      borderRadius: "50%",
-                     backgroundColor: "#22c55e",
+                     backgroundColor: GREEN,
                      opacity: 0.75,
                      animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
                   }}
@@ -77,7 +77,7 @@ const SystemStatus = () => {
                      borderRadius: "50%",
                      height: 8,
                      width: 8,
-                     backgroundColor: "#22c55e",
+                     backgroundColor: GREEN,
                   }}
                />
             </div>
@@ -85,7 +85,7 @@ const SystemStatus = () => {
                style={{
                   fontFamily: MONO_FONT,
                   fontSize: 11,
-                  color: "#a5a5c0",
+                  color: TEXT_SECONDARY,
                   fontWeight: 500,
                }}
             >
@@ -101,12 +101,12 @@ const SystemStatus = () => {
             }}
          />
          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <Eye size={12} color="#06b6d4" />
+            <Eye size={12} color={CYAN} />
             <span
                style={{
                   fontFamily: MONO_FONT,
                   fontSize: 11,
-                  color: "#06b6d4",
+                  color: CYAN,
                   fontWeight: 600,
                }}
             >

@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import type { ContactOption } from "@/types";
 import { staggerItem } from "@utils/animations";
+import { TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
 import { getContactMeta } from "./contactConstants";
 
 interface ContactCardProps {
@@ -20,7 +21,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
          variants={staggerItem}
          className="glass-card"
          style={{
-            padding: isMobile ? "16px 14px" : "18px 20px",
+            padding: isMobile ? "16px 16px" : "16px 20px",
             display: "flex",
             alignItems: "center",
             gap: 12,
@@ -55,7 +56,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
          <div style={{ minWidth: 0, flex: 1 }}>
             <p
                style={{
-                  color: "#6e6e90",
+                  color: TEXT_MUTED,
                   fontSize: 11,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
@@ -66,7 +67,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
             </p>
             <p
                style={{
-                  color: "#eeeef5",
+                  color: TEXT_PRIMARY,
                   fontSize: isMobile ? 13 : 14,
                   fontWeight: 500,
                   marginTop: 2,

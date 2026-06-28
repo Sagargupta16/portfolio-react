@@ -7,12 +7,11 @@ interface SkillTagGroupProps {
 
 const SkillTagGroup = ({ items }: SkillTagGroupProps) => (
    <motion.div
-      className="flex flex-wrap gap-2.5"
       style={{ display: "flex", flexWrap: "wrap", gap: 8 }}
       variants={waveCascadeContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ margin: "0px 0px -100px 0px" }}
+      viewport={{ once: true, margin: "0px 0px -100px 0px" }}
    >
       {items.map((skill) => (
          <motion.span

@@ -5,6 +5,7 @@ import {
    TEXT_MUTED,
    AMBER,
    MONO_FONT,
+   EASING,
 } from "@/constants/theme";
 import type { InternalContribution } from "@/types";
 import { CONTRIB_ICON, CONTRIB_TYPE_COLOR } from "./experienceConstants";
@@ -15,8 +16,6 @@ interface ModalContributionsProps {
    baseDelay: number;
    variant: "contributions" | "achievements";
 }
-
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
 
 const ModalContributions = ({
    title,
@@ -32,7 +31,7 @@ const ModalContributions = ({
       <motion.div
          initial={{ opacity: 0, y: 15 }}
          animate={{ opacity: 1, y: 0 }}
-         transition={{ delay: baseDelay, duration: 0.4, ease: EXPO_EASE }}
+         transition={{ delay: baseDelay, duration: 0.4, ease: EASING.cinematic }}
          style={{
             marginTop: 8,
             paddingTop: 16,

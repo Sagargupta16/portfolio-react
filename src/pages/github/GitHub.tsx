@@ -3,6 +3,7 @@ import { GitHubCalendar } from "react-github-calendar";
 import type { Activity } from "react-github-calendar";
 import { getGitHubUsername } from "@data/dataLoader";
 import useBreakpoint from "@hooks/useBreakpoint";
+import { TEXT_MUTED, CYAN, MAX_WIDTH_WIDE } from "@/constants/theme";
 import CodingProfiles from "./CodingProfiles";
 import PageSection from "@components/layout/PageSection";
 import BrowserMockup from "@components/ui/BrowserMockup";
@@ -58,6 +59,35 @@ const CalendarSkeleton = () => (
    </div>
 );
 
+// -- Timeout fallback --
+const CalendarTimeout = ({ username }: { username: string }) => (
+   <div
+      role="status"
+      style={{
+         display: "flex",
+         flexDirection: "column",
+         alignItems: "center",
+         gap: 12,
+         padding: "32px 16px",
+         textAlign: "center",
+      }}
+   >
+      <p style={{ fontSize: 14, color: TEXT_MUTED, maxWidth: 360 }}>
+         GitHub is taking a while to respond. You can view the contributions
+         directly on GitHub.
+      </p>
+      <a
+         href={`https://github.com/${username}`}
+         target="_blank"
+         rel="noopener noreferrer"
+         className="btn-outline"
+         style={{ fontSize: 14, color: CYAN }}
+      >
+         Open GitHub profile
+      </a>
+   </div>
+);
+
 /** Stamp --col CSS variable on calendar rects for wave animation */
 const stampColumnIndices = (container: HTMLElement) => {
    const rects = container.querySelectorAll<SVGRectElement>(
@@ -89,6 +119,8 @@ const GitHub = () => {
    const githubUsername = getGitHubUsername();
    const [calendarState, dispatch] = useReducer(calendarReducer, "loading");
    const calendarRef = useRef<HTMLDivElement>(null);
+   const isLoaded = calendarState === "loaded";
+   const isTimedOut = calendarState === "timed-out";
    const isRevealed = calendarState !== "loading";
 
    const handleTransformData = useCallback(
@@ -101,12 +133,12 @@ const GitHub = () => {
    );
 
    useEffect(() => {
-      if (!isRevealed || !calendarRef.current) return;
+      if (!isLoaded || !calendarRef.current) return;
       const raf = requestAnimationFrame(() => {
          if (calendarRef.current) stampColumnIndices(calendarRef.current);
       });
       return () => cancelAnimationFrame(raf);
-   }, [isRevealed]);
+   }, [isLoaded]);
 
    useEffect(() => {
       const timeout = setTimeout(
@@ -122,7 +154,7 @@ const GitHub = () => {
          title="GitHub Activity"
          subtitle="My open source contributions"
       >
-         <div style={{ maxWidth: 1024, margin: "0 auto" }}>
+         <div style={{ maxWidth: MAX_WIDTH_WIDE, margin: "0 auto" }}>
             {/* 3D Browser Mockup */}
             <div style={{ textAlign: "center" }}>
                <BrowserMockup
@@ -131,13 +163,16 @@ const GitHub = () => {
                >
                   <div
                      ref={calendarRef}
-                     className={isRevealed ? "calendar-reveal" : ""}
+                     className={isLoaded ? "calendar-reveal" : ""}
                      style={{ overflowX: "auto" }}
                   >
                      {!isRevealed && <CalendarSkeleton />}
+                     {isTimedOut && (
+                        <CalendarTimeout username={githubUsername} />
+                     )}
                      <div
                         style={
-                           isRevealed
+                           isLoaded
                               ? {}
                               : {
                                    position: "absolute",

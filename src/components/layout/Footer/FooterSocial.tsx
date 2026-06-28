@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getSocialProfiles } from "@data/dataLoader";
 import { staggerItem } from "@utils/animations";
+import { TEXT_SECONDARY, CYAN } from "@/constants/theme";
 import ICON_MAP from "@utils/iconMap";
 
 const FooterSocial = () => {
@@ -32,18 +33,18 @@ const FooterSocial = () => {
                      display: "flex",
                      alignItems: "center",
                      justifyContent: "center",
-                     color: "#a5a5c0",
+                     color: TEXT_SECONDARY,
                      transition: "all 0.3s",
                   }}
                   onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                     e.currentTarget.style.color = "#06b6d4";
+                     e.currentTarget.style.color = CYAN;
                      e.currentTarget.style.borderColor =
                         "rgba(6, 182, 212, 0.3)";
                      e.currentTarget.style.background =
                         "rgba(6, 182, 212, 0.08)";
                   }}
                   onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                     e.currentTarget.style.color = "#a5a5c0";
+                     e.currentTarget.style.color = TEXT_SECONDARY;
                      e.currentTarget.style.borderColor =
                         "rgba(255, 255, 255, 0.06)";
                      e.currentTarget.style.background =

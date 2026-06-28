@@ -1,5 +1,7 @@
+import { memo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CYAN, TEXT_SECONDARY } from "@/constants/theme";
+import { CYAN, TEXT_SECONDARY, GLASS_BORDER } from "@/constants/theme";
+import useFocusTrap from "@hooks/useFocusTrap";
 
 interface NavSection {
    id: string;
@@ -14,6 +16,22 @@ interface MobileMenuProps {
    onClose: () => void;
 }
 
+const rowStyle = (isActive: boolean): React.CSSProperties => ({
+   textAlign: "left",
+   padding: "12px 16px",
+   minHeight: 44,
+   display: "flex",
+   alignItems: "center",
+   borderRadius: 10,
+   fontSize: 14,
+   fontWeight: 500,
+   cursor: "pointer",
+   border: "none",
+   transition: "color 0.2s ease, background-color 0.2s ease",
+   color: isActive ? CYAN : TEXT_SECONDARY,
+   backgroundColor: isActive ? "rgb(var(--ch-cyan) / 0.08)" : "transparent",
+});
+
 const MobileMenu = ({
    open,
    sections,
@@ -21,6 +39,28 @@ const MobileMenu = ({
    onNavigate,
    onClose,
 }: MobileMenuProps) => {
+   const panelRef = useFocusTrap<HTMLDivElement>(open);
+
+   const onEsc = useCallback(
+      (e: KeyboardEvent) => {
+         if (e.key === "Escape") onClose();
+      },
+      [onClose],
+   );
+
+   // While open: lock body scroll and allow Escape to dismiss -- mirrors the
+   // project/experience modal behavior so the overlay can't be tabbed/scrolled
+   // behind on touch. useFocusTrap restores focus to the hamburger on close.
+   useEffect(() => {
+      if (!open) return;
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", onEsc);
+      return () => {
+         document.body.style.overflow = "";
+         document.removeEventListener("keydown", onEsc);
+      };
+   }, [open, onEsc]);
+
    return (
       <AnimatePresence>
          {open && (
@@ -45,16 +85,22 @@ const MobileMenu = ({
 
                {/* Slide-in panel */}
                <motion.div
+                  ref={panelRef}
+                  id="mobile-menu"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Navigation menu"
+                  tabIndex={-1}
                   style={{
                      position: "absolute",
                      top: 64,
                      right: 0,
                      bottom: 0,
-                     width: 288,
+                     width: "min(288px, 85vw)",
                      backgroundColor: "rgba(12, 12, 30, 0.7)",
                      backdropFilter: "blur(24px)",
                      WebkitBackdropFilter: "blur(24px)",
-                     borderLeft: "1px solid rgba(255, 255, 255, 0.06)",
+                     borderLeft: `1px solid ${GLASS_BORDER}`,
                      boxShadow: "-10px 0 40px rgba(0, 0, 0, 0.3)",
                   }}
                   initial={{ x: "100%" }}
@@ -76,22 +122,10 @@ const MobileMenu = ({
                   >
                      <button
                         onClick={() => onNavigate("hero")}
-                        style={{
-                           textAlign: "left",
-                           padding: "12px 16px",
-                           borderRadius: 10,
-                           fontSize: 14,
-                           fontWeight: 500,
-                           cursor: "pointer",
-                           border: "none",
-                           transition: "all 0.2s",
-                           color:
-                              activeSection === "hero" ? CYAN : TEXT_SECONDARY,
-                           backgroundColor:
-                              activeSection === "hero"
-                                 ? "rgba(6, 182, 212, 0.08)"
-                                 : "transparent",
-                        }}
+                        style={rowStyle(activeSection === "hero")}
+                        aria-current={
+                           activeSection === "hero" ? "true" : undefined
+                        }
                      >
                         Home
                      </button>
@@ -101,23 +135,11 @@ const MobileMenu = ({
                            <motion.button
                               key={section.id}
                               onClick={() => onNavigate(section.id)}
-                              style={{
-                                 textAlign: "left",
-                                 padding: "12px 16px",
-                                 borderRadius: 10,
-                                 fontSize: 14,
-                                 fontWeight: 500,
-                                 cursor: "pointer",
-                                 border: "none",
-                                 transition: "all 0.2s",
-                                 color: isActive ? CYAN : TEXT_SECONDARY,
-                                 backgroundColor: isActive
-                                    ? "rgba(6, 182, 212, 0.08)"
-                                    : "transparent",
-                              }}
+                              style={rowStyle(isActive)}
                               initial={{ opacity: 0, x: 20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: index * 0.03 }}
+                              aria-current={isActive ? "true" : undefined}
                               aria-label={`Navigate to ${section.label}`}
                            >
                               {section.label}
@@ -132,4 +154,4 @@ const MobileMenu = ({
    );
 };
 
-export default MobileMenu;
+export default memo(MobileMenu);

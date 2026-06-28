@@ -1,5 +1,10 @@
 import { motion } from "motion/react";
-import { MONO_FONT, TEXT_MUTED, GLASS_PANEL_STYLE } from "@/constants/theme";
+import {
+   MONO_FONT,
+   TEXT_MUTED,
+   GLASS_PANEL_STYLE,
+   EASING,
+} from "@/constants/theme";
 import {
    PANEL_INITIAL,
    PANEL_VISIBLE,
@@ -91,7 +96,7 @@ const NodeDiagram = ({
                         transition={{
                            delay: 0.4 + i * 0.15,
                            duration: 1,
-                           ease: [0.16, 1, 0.3, 1],
+                           ease: EASING.cinematic,
                         }}
                      />
                   );

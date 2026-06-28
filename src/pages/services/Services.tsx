@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getServices } from "@data/dataLoader";
 import { staggerContainer } from "@utils/animations";
+import { MAX_WIDTH } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import ServiceCard from "./ServiceCard";
@@ -14,7 +15,7 @@ const Services = () => {
       <PageSection id="services" title="Services" subtitle="What I offer">
          <motion.div
             style={{
-               maxWidth: 1152,
+               maxWidth: MAX_WIDTH,
                margin: "0 auto",
                display: "grid",
                gap: 20,

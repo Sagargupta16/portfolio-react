@@ -8,7 +8,6 @@ export const PURPLE = "#a855f7";
 export const GREEN = "#22c55e";
 export const AMBER = "#f59e0b";
 export const PINK = "#ec4899";
-export const BLUE = "#007bff";
 export const INDIGO = "#6366f1";
 export const ORANGE = "#f97316";
 export const RED = "#ef4444";
@@ -20,7 +19,9 @@ export const MEDAL_BRONZE = "#d97706";
 
 export const TEXT_PRIMARY = "#eeeef5";
 export const TEXT_SECONDARY = "#a5a5c0";
-export const TEXT_MUTED = "#6e6e90";
+// Lightened from #6e6e90 to clear WCAG 1.4.3 (4.5:1) for small informational
+// text on the dark glass backgrounds. Still reads as low-emphasis vs SECONDARY.
+export const TEXT_MUTED = "#8888a8";
 
 export const GLASS_BORDER = "rgba(255, 255, 255, 0.06)";
 export const GLASS_BG = "rgba(255, 255, 255, 0.03)";
@@ -31,6 +32,8 @@ export const MONO_FONT = "JetBrains Mono, ui-monospace, monospace";
 // ===== Layout =====
 export const MAX_WIDTH = 1152;
 export const MAX_WIDTH_NARROW = 960;
+export const MAX_WIDTH_WIDE = 1024; // GitHub calendar section
+export const MAX_WIDTH_FORM = 896; // Contact form + cards
 
 // ===== Responsive Breakpoints =====
 // Align with Tailwind defaults -- single source of truth for media queries.

@@ -8,6 +8,7 @@ import {
    TEXT_SECONDARY,
    TEXT_MUTED,
    MONO_FONT,
+   EASING,
 } from "@/constants/theme";
 import {
    isValidUrl,
@@ -21,13 +22,11 @@ interface ProjectModalBodyProps {
    isMobile: boolean;
 }
 
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
-
 /** Shared fade-in-up transition used by every section in the modal body. */
 const fadeInUpProps = (delay: number) => ({
    initial: { opacity: 0, y: 10 },
    animate: { opacity: 1, y: 0 },
-   transition: { delay, duration: 0.4, ease: EXPO_EASE },
+   transition: { delay, duration: 0.4, ease: EASING.cinematic },
 });
 
 const sectionLabelStyle: React.CSSProperties = {

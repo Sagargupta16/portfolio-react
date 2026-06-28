@@ -7,6 +7,7 @@ import {
    CYAN,
    GLASS_PANEL_STYLE,
    CHROME_BAR_STYLE,
+   EASING,
 } from "@/constants/theme";
 import {
    PANEL_INITIAL,
@@ -70,7 +71,7 @@ const ActivityFeed = ({
                   transition={{
                      delay: 0.3 + i * 0.08,
                      duration: 0.4,
-                     ease: [0.16, 1, 0.3, 1],
+                     ease: EASING.cinematic,
                   }}
                   style={{
                      display: "block",

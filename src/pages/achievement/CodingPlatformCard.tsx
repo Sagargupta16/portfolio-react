@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { fadeInUp } from "@utils/animations";
-import { MONO_FONT } from "@/constants/theme";
+import { CYAN, MONO_FONT, TEXT_MUTED } from "@/constants/theme";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import { formatStatLabel, isNumericStat } from "./achievementConstants";
 
@@ -51,7 +51,7 @@ const CodingPlatformCard = ({ platform, stats }: CodingPlatformCardProps) => (
                      <span
                         className="glow-cyan-text"
                         style={{
-                           color: "#06b6d4",
+                           color: CYAN,
                            fontSize: "1.875rem",
                            fontWeight: 700,
                            fontFamily: MONO_FONT,
@@ -63,7 +63,7 @@ const CodingPlatformCard = ({ platform, stats }: CodingPlatformCardProps) => (
                   )}
                   <span
                      style={{
-                        color: "#6e6e90",
+                        color: TEXT_MUTED,
                         fontSize: 12,
                         textTransform: "uppercase",
                         letterSpacing: "0.05em",
@@ -91,7 +91,7 @@ const CodingPlatformCard = ({ platform, stats }: CodingPlatformCardProps) => (
                borderRadius: 10,
                fontSize: 12,
                fontWeight: 600,
-               color: "#06b6d4",
+               color: CYAN,
                border: "1px solid rgba(6,182,212,0.25)",
                background: "rgba(6,182,212,0.06)",
                textDecoration: "none",

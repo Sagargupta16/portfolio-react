@@ -27,7 +27,7 @@ const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
             size={isMobile ? 16 : 18}
             style={{ color: CYAN, flexShrink: 0 }}
          />
-         <h3
+         <h2
             id="experience-modal-title"
             style={{
                fontSize: isMobile ? 15 : 18,
@@ -41,7 +41,7 @@ const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
             }}
          >
             {experience.company}
-         </h3>
+         </h2>
       </div>
       <p
          style={{

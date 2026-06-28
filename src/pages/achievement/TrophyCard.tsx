@@ -4,6 +4,7 @@ import type { Achievement } from "@/types";
 import {
    MONO_FONT,
    CYAN,
+   EASING,
    TEXT_PRIMARY,
    TEXT_SECONDARY,
    TEXT_MUTED,
@@ -55,8 +56,6 @@ const parsePlacement = (
    return { rank: "", event: title, color: TEXT_MUTED };
 };
 
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
-
 const TrophyCard = ({ item, index }: TrophyCardProps) => {
    const { rank, event, color } = parsePlacement(item.title);
 
@@ -69,7 +68,7 @@ const TrophyCard = ({ item, index }: TrophyCardProps) => {
          transition={{
             delay: index * 0.08,
             duration: 0.7,
-            ease: EXPO_EASE,
+            ease: EASING.cinematic,
          }}
          whileHover={{
             y: -4,

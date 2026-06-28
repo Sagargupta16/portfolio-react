@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
+import { PURPLE } from "@/constants/theme";
 
 const AnimatedTimelineTrack = () => {
    const ref = useRef<HTMLDivElement>(null);
@@ -26,7 +27,7 @@ const AnimatedTimelineTrack = () => {
                width: 16,
                height: 16,
                borderRadius: "50%",
-               border: "2px solid #a855f7",
+               border: `2px solid ${PURPLE}`,
                backgroundColor: "rgba(6, 6, 16, 0.6)",
                marginTop: 4,
                position: "relative",
@@ -40,7 +41,7 @@ const AnimatedTimelineTrack = () => {
                   position: "absolute",
                   inset: 3,
                   borderRadius: "50%",
-                  backgroundColor: "#a855f7",
+                  backgroundColor: PURPLE,
                }}
             />
          </motion.div>

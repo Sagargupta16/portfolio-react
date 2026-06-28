@@ -83,7 +83,7 @@ const ModalShell = ({
                      background:
                         "linear-gradient(180deg, rgba(15,15,30,0.98) 0%, rgba(8,8,20,0.99) 100%)",
                      boxShadow:
-                        "0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(6,182,212,0.04)",
+                        "0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgb(var(--ch-cyan) / 0.04)",
                   }}
                >
                   {children}

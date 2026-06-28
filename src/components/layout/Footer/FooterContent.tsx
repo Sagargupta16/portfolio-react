@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getName, getSiteConfig } from "@data/dataLoader";
 import { staggerItem } from "@utils/animations";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, CYAN, TEXT_MUTED } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import FooterSocial from "./FooterSocial";
 
@@ -21,7 +21,7 @@ const FooterContent = () => {
                fontFamily: MONO_FONT,
                fontSize: 24,
                fontWeight: 700,
-               color: "#06b6d4",
+               color: CYAN,
             }}
             variants={staggerItem}
          >
@@ -56,7 +56,7 @@ const FooterContent = () => {
                   key={tech}
                   style={{
                      fontSize: 10,
-                     color: "#6e6e90",
+                     color: TEXT_MUTED,
                      fontFamily: MONO_FONT,
                      padding: "2px 8px",
                      borderRadius: 4,
@@ -81,7 +81,7 @@ const FooterContent = () => {
          >
             <p
                style={{
-                  color: "#6e6e90",
+                  color: TEXT_MUTED,
                   fontSize: 14,
                   textAlign: "center",
                }}

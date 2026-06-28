@@ -3,7 +3,7 @@ import { MapPin } from "lucide-react";
 import type { Education } from "@/types";
 import { staggerItem, slideInLeft, slideInRight } from "@utils/animations";
 import { splitDateRange } from "@utils/dateRange";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, PURPLE, TEXT_MUTED } from "@/constants/theme";
 import EducationCardContent from "./EducationCardContent";
 import AnimatedTimelineTrack from "./AnimatedTimelineTrack";
 
@@ -25,7 +25,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                className="glass-card"
                style={{
                   padding: "20px 16px",
-                  borderLeft: "3px solid #a855f7",
+                  borderLeft: `3px solid ${PURPLE}`,
                }}
             >
                {/* Date + Location at top */}
@@ -42,7 +42,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                         fontFamily: MONO_FONT,
                         fontSize: 12,
                         fontWeight: 600,
-                        color: "#a855f7",
+                        color: PURPLE,
                      }}
                   >
                      {splitDateRange(item.date).start}
@@ -52,7 +52,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                         style={{
                            fontFamily: MONO_FONT,
                            fontSize: 11,
-                           color: "#6e6e90",
+                           color: TEXT_MUTED,
                         }}
                      >
                         — {splitDateRange(item.date).end}
@@ -61,7 +61,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                   {item.location && (
                      <span
                         style={{
-                           color: "#6e6e90",
+                           color: TEXT_MUTED,
                            fontSize: 12,
                            display: "flex",
                            alignItems: "center",
@@ -97,7 +97,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                   fontFamily: MONO_FONT,
                   fontSize: 12,
                   fontWeight: 600,
-                  color: "#a855f7",
+                  color: PURPLE,
                }}
             >
                {item.date.split(" - ")[0]}
@@ -107,7 +107,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                   display: "block",
                   fontFamily: MONO_FONT,
                   fontSize: 11,
-                  color: "#6e6e90",
+                  color: TEXT_MUTED,
                   marginTop: 2,
                }}
             >
@@ -116,7 +116,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
             {item.location && (
                <p
                   style={{
-                     color: "#6e6e90",
+                     color: TEXT_MUTED,
                      fontSize: 12,
                      display: "flex",
                      alignItems: "center",

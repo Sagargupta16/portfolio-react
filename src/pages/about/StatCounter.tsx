@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { staggerContainer, rotateInUp } from "@utils/animations";
+import { TEXT_MUTED } from "@/constants/theme";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 
 const STAT_LABELS: Record<string, string> = {
@@ -22,14 +23,14 @@ const StatCounter = ({ statEntries, isMobile }: StatCounterProps) => (
          display: "grid",
          gridTemplateColumns: isMobile
             ? "repeat(2, 1fr)"
-            : `repeat(${statEntries.length}, 1fr)`,
+            : "repeat(auto-fit, minmax(140px, 1fr))",
          gap: isMobile ? 12 : 16,
-         marginTop: isMobile ? 40 : 56,
+         marginTop: isMobile ? 40 : 48,
       }}
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ margin: "0px 0px -100px 0px" }}
+      viewport={{ once: true, margin: "0px 0px -100px 0px" }}
    >
       {statEntries.map(([key, value]) => (
          <motion.div
@@ -44,7 +45,7 @@ const StatCounter = ({ statEntries, isMobile }: StatCounterProps) => (
             <AnimatedCounter value={value} />
             <p
                style={{
-                  color: "#6e6e90",
+                  color: TEXT_MUTED,
                   fontSize: isMobile ? 10 : 11,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",

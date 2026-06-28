@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import TechTag from "@components/ui/TechTag";
-import { TEXT_MUTED, CYAN } from "@/constants/theme";
+import { TEXT_MUTED, CYAN, EASING } from "@/constants/theme";
 import { waveCascadeContainer, waveCascadeItem } from "@utils/animations";
 import type { ProfessionalExperience } from "@/types";
 import ModalProjectCard from "./ModalProjectCard";
@@ -10,8 +10,6 @@ interface ModalContentProps {
    experience: ProfessionalExperience;
    isMobile: boolean;
 }
-
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
 
 const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
    const projects = experience.projects ?? [];
@@ -63,7 +61,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
                transition={{
                   delay: skillsDelay,
                   duration: 0.4,
-                  ease: EXPO_EASE,
+                  ease: EASING.cinematic,
                }}
                style={{
                   marginTop: 20,

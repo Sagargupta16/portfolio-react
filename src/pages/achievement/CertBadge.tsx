@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { CYAN, PURPLE, TEXT_PRIMARY, MONO_FONT } from "@/constants/theme";
+import { CYAN, EASING, PURPLE, TEXT_PRIMARY, MONO_FONT } from "@/constants/theme";
+import { credlyThumb } from "@utils/credlyThumb";
 
 interface CertBadgeProps {
    name: string;
@@ -41,7 +42,7 @@ const CertBadge = ({
          transition={{
             delay: entranceDelay,
             duration: 0.7,
-            ease: [0.16, 1, 0.3, 1],
+            ease: EASING.cinematic,
          }}
          onHoverStart={() => setIsHovered(true)}
          onHoverEnd={() => setIsHovered(false)}
@@ -83,9 +84,11 @@ const CertBadge = ({
                }}
             />
             <img
-               src={imageUrl}
+               src={credlyThumb(imageUrl)}
                alt={name}
                loading="lazy"
+               width={size}
+               height={size}
                style={{
                   width: size,
                   height: size,

@@ -31,7 +31,7 @@ const PageSection = ({
          }}
          initial="hidden"
          whileInView="visible"
-         viewport={{ margin: "0px 0px -100px 0px" }}
+         viewport={{ once: true, margin: "0px 0px -100px 0px" }}
          variants={sectionRevealEnhanced}
       >
          {maxWidth ? (

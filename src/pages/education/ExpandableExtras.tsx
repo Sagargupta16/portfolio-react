@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Trophy, ChevronDown } from "lucide-react";
-import { AMBER, MONO_FONT, TEXT_MUTED } from "@/constants/theme";
+import {
+   AMBER,
+   EASING,
+   MONO_FONT,
+   PURPLE,
+   TEXT_MUTED,
+   TEXT_SECONDARY,
+} from "@/constants/theme";
 import type { Education } from "@/types";
 
 interface ExpandableExtrasProps {
    item: Education;
    marginLeft: number;
 }
-
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
 
 const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
    const [isExpanded, setIsExpanded] = useState(false);
@@ -41,7 +46,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                         padding: "3px 8px",
                         borderRadius: 6,
                         background: "rgba(168,85,247,0.08)",
-                        color: "#a855f7",
+                        color: PURPLE,
                         border: "1px solid rgba(168,85,247,0.15)",
                      }}
                   >
@@ -90,7 +95,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.4, ease: EXPO_EASE }}
+                        transition={{ duration: 0.4, ease: EASING.cinematic }}
                         style={{ overflow: "hidden" }}
                      >
                         <ul
@@ -122,7 +127,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                                  />
                                  <span
                                     style={{
-                                       color: "#a5a5c0",
+                                       color: TEXT_SECONDARY,
                                        fontSize: 12,
                                        lineHeight: 1.7,
                                     }}

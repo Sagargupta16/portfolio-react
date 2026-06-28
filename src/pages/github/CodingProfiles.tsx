@@ -93,7 +93,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                display: "grid",
                gridTemplateColumns: isMobile
                   ? "repeat(2, 1fr)"
-                  : `repeat(${entries.length + 1}, 1fr)`,
+                  : "repeat(auto-fit, minmax(160px, 1fr))",
                gap: 12,
             }}
          >

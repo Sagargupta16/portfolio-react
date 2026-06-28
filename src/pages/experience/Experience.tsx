@@ -4,6 +4,7 @@ import { getExperience, getPositionsOfResponsibility } from "@data/dataLoader";
 import { staggerContainer, fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
+import { CYAN, PURPLE, TEXT_PRIMARY, MAX_WIDTH_NARROW } from "@/constants/theme";
 import type { ProfessionalExperience } from "@/types";
 import TimelineCard from "./TimelineCard";
 import ExperienceModal from "./ExperienceModal";
@@ -25,7 +26,7 @@ const Experience = () => {
          id="experience"
          title="Experience"
          subtitle="Where I've worked"
-         maxWidth={960}
+         maxWidth={MAX_WIDTH_NARROW}
       >
          <LayoutGroup>
             <motion.div variants={staggerContainer}>
@@ -34,7 +35,7 @@ const Experience = () => {
                      key={item.id}
                      item={item}
                      index={index}
-                     accentColor="#06b6d4"
+                     accentColor={CYAN}
                      isMobile={isMobile}
                      onClick={() => setSelectedExp(item)}
                   />
@@ -49,7 +50,7 @@ const Experience = () => {
                   style={{
                      fontSize: 20,
                      fontWeight: 700,
-                     color: "#eeeef5",
+                     color: TEXT_PRIMARY,
                      marginTop: 48,
                      marginBottom: 32,
                      display: "flex",
@@ -62,8 +63,7 @@ const Experience = () => {
                         height: 28,
                         width: 4,
                         borderRadius: 9999,
-                        background:
-                           "linear-gradient(to bottom, #a855f7, rgba(168,85,247,0.3))",
+                        background: `linear-gradient(to bottom, ${PURPLE}, rgba(168,85,247,0.3))`,
                      }}
                   />
                   Positions of Responsibility
@@ -76,7 +76,7 @@ const Experience = () => {
                            key={item.id}
                            item={item}
                            index={index}
-                           accentColor="#a855f7"
+                           accentColor={PURPLE}
                            isMobile={isMobile}
                         />
                      ))}

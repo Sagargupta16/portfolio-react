@@ -1,6 +1,13 @@
 import { motion } from "motion/react";
 import { fadeInUp, lineGrow } from "@utils/animations";
-import { MONO_FONT } from "@/constants/theme";
+import {
+   MONO_FONT,
+   CYAN,
+   PURPLE,
+   TEXT_MUTED,
+   GLASS_BG,
+   GLASS_BORDER,
+} from "@/constants/theme";
 import ScrollRevealText from "@components/ui/ScrollRevealText";
 
 interface Props {
@@ -22,7 +29,7 @@ const SectionHeader = ({ title, subtitle }: Props) => {
          variants={fadeInUp}
          initial="hidden"
          whileInView="visible"
-         viewport={{ margin: "0px 0px -100px 0px" }}
+         viewport={{ once: true, margin: "0px 0px -100px 0px" }}
       >
          {subtitle && (
             <span
@@ -32,16 +39,16 @@ const SectionHeader = ({ title, subtitle }: Props) => {
                   gap: 8,
                   fontFamily: MONO_FONT,
                   fontSize: 14,
-                  color: "#6e6e90",
-                  backgroundColor: "rgba(255, 255, 255, 0.03)",
+                  color: TEXT_MUTED,
+                  backgroundColor: GLASS_BG,
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
-                  border: "1px solid rgba(255, 255, 255, 0.06)",
+                  border: `1px solid ${GLASS_BORDER}`,
                   borderRadius: 9999,
                   padding: "4px 16px",
                }}
             >
-               <span style={{ color: "#06b6d4" }}>{">"}</span>
+               <span style={{ color: CYAN }}>{">"}</span>
                <ScrollRevealText text={subtitle} />
             </span>
          )}
@@ -61,12 +68,12 @@ const SectionHeader = ({ title, subtitle }: Props) => {
                width: 80,
                borderRadius: 9999,
                marginTop: 4,
-               background: "linear-gradient(to right, #06b6d4, #a855f7)",
+               background: `linear-gradient(to right, ${CYAN}, ${PURPLE})`,
             }}
             variants={lineGrow}
             initial="hidden"
             whileInView="visible"
-            viewport={{}}
+            viewport={{ once: true }}
          />
       </motion.div>
    );

@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { Trophy } from "lucide-react";
 import type { Achievement } from "@/types";
 import { fadeInUp } from "@utils/animations";
+import { AMBER, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import TrophyCard from "./TrophyCard";
 
@@ -40,13 +41,13 @@ const CompetitionsSection = ({ achievements }: CompetitionsSectionProps) => {
                   justifyContent: "center",
                }}
             >
-               <Trophy style={{ width: 18, height: 18, color: "#f59e0b" }} />
+               <Trophy style={{ width: 18, height: 18, color: AMBER }} />
             </div>
             <h3
                style={{
                   fontSize: 20,
                   fontWeight: 700,
-                  color: "#eeeef5",
+                  color: TEXT_PRIMARY,
                }}
             >
                Competitions & Awards
@@ -55,7 +56,7 @@ const CompetitionsSection = ({ achievements }: CompetitionsSectionProps) => {
                style={{
                   fontSize: 12,
                   fontWeight: 600,
-                  color: "#6e6e90",
+                  color: TEXT_MUTED,
                   padding: "2px 8px",
                   borderRadius: 6,
                   background: "rgba(255,255,255,0.04)",
