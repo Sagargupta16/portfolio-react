@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { X } from "lucide-react";
-import { TEXT_SECONDARY } from "@/constants/theme";
+import { TEXT_SECONDARY, GLASS_BORDER, EASING } from "@/constants/theme";
 
 interface ModalHeaderShellProps {
    isMobile: boolean;
@@ -9,8 +9,6 @@ interface ModalHeaderShellProps {
    closeLabel: string;
    children: ReactNode;
 }
-
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
  * Shared sticky header frame used by ExperienceModal and ProjectModal.
@@ -27,7 +25,7 @@ const ModalHeaderShell = ({
    <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1, duration: 0.4, ease: EXPO_EASE }}
+      transition={{ delay: 0.1, duration: 0.4, ease: EASING.cinematic }}
       style={{
          position: "sticky",
          top: 0,
@@ -36,7 +34,7 @@ const ModalHeaderShell = ({
          background: "rgba(12,12,28,0.9)",
          backdropFilter: "blur(20px)",
          WebkitBackdropFilter: "blur(20px)",
-         borderBottom: "1px solid rgba(255,255,255,0.06)",
+         borderBottom: `1px solid ${GLASS_BORDER}`,
       }}
    >
       <div style={{ position: "relative" }}>

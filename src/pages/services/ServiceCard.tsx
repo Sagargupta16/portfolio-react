@@ -3,6 +3,7 @@ import { Code } from "lucide-react";
 import type { Variants } from "motion/react";
 import type { Service } from "@/types";
 import useBreakpoint from "@hooks/useBreakpoint";
+import { TEXT_PRIMARY, TEXT_SECONDARY } from "@/constants/theme";
 import GlassCard from "@components/ui/GlassCard";
 import { iconMap, ACCENT_COLORS } from "./servicesConstants";
 import ServiceAnimation from "./ServiceAnimation";
@@ -83,7 +84,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                   style={{
                      fontSize: 14,
                      fontWeight: 700,
-                     color: "#eeeef5",
+                     color: TEXT_PRIMARY,
                      marginBottom: 8,
                      display: "flex",
                      alignItems: "center",
@@ -115,7 +116,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                            display: "flex",
                            alignItems: "flex-start",
                            gap: 8,
-                           color: "#a5a5c0",
+                           color: TEXT_SECONDARY,
                            fontSize: 12,
                            lineHeight: 1.5,
                         }}

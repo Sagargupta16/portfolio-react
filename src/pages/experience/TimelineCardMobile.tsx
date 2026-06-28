@@ -3,7 +3,7 @@ import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { staggerItem } from "@utils/animations";
 import { splitDateRange, isPresent } from "@utils/dateRange";
-import { MONO_FONT, GREEN } from "@/constants/theme";
+import { MONO_FONT, GREEN, TEXT_MUTED } from "@/constants/theme";
 import TimelineCardContent from "./TimelineCardContent";
 import PresentIndicator from "./PresentIndicator";
 
@@ -85,7 +85,7 @@ const TimelineCardMobile = ({
                {item.location && (
                   <span
                      style={{
-                        color: "#6e6e90",
+                        color: TEXT_MUTED,
                         fontSize: 11,
                         display: "flex",
                         alignItems: "center",

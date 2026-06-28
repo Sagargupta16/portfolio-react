@@ -1,6 +1,6 @@
 import { GraduationCap } from "lucide-react";
 import type { Education } from "@/types";
-import { MONO_FONT } from "@/constants/theme";
+import { CYAN, GREEN, MONO_FONT, PURPLE, TEXT_PRIMARY } from "@/constants/theme";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 
 interface EducationCardHeaderProps {
@@ -24,13 +24,13 @@ const InstitutionRow = ({ institution }: { institution: string }) => (
             flexShrink: 0,
          }}
       >
-         <GraduationCap style={{ width: 14, height: 14, color: "#a855f7" }} />
+         <GraduationCap style={{ width: 14, height: 14, color: PURPLE }} />
       </div>
       <h3
          style={{
             fontSize: 20,
             fontWeight: 700,
-            color: "#eeeef5",
+            color: TEXT_PRIMARY,
             lineHeight: 1.2,
          }}
       >
@@ -64,7 +64,7 @@ const CgpaBadge = ({
       >
          <span
             style={{
-               color: "#22c55e",
+               color: GREEN,
                fontWeight: 700,
                fontSize: 16,
                fontFamily: MONO_FONT,
@@ -85,7 +85,7 @@ const EducationCardHeader = ({
       return (
          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <InstitutionRow institution={item.institution} />
-            <p style={{ color: "#06b6d4", fontWeight: 600, fontSize: 14 }}>
+            <p style={{ color: CYAN, fontWeight: 600, fontSize: 14 }}>
                {item.title}
             </p>
             <CgpaBadge item={item} isMobile={isMobile} />
@@ -106,7 +106,7 @@ const EducationCardHeader = ({
             <InstitutionRow institution={item.institution} />
             <p
                style={{
-                  color: "#06b6d4",
+                  color: CYAN,
                   fontWeight: 600,
                   fontSize: 14,
                   marginTop: 4,

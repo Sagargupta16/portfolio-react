@@ -1,5 +1,6 @@
 import { BookOpen } from "lucide-react";
 import type { Education } from "@/types";
+import { TEXT_MUTED } from "@/constants/theme";
 import EducationCardHeader from "./EducationCardHeader";
 import ExpandableExtras from "./ExpandableExtras";
 
@@ -24,7 +25,7 @@ const EducationCardContent = ({
                {item.department && (
                   <p
                      style={{
-                        color: "#6e6e90",
+                        color: TEXT_MUTED,
                         fontSize: 12,
                         display: "flex",
                         alignItems: "center",
@@ -36,12 +37,12 @@ const EducationCardContent = ({
                   </p>
                )}
                {item.board && (
-                  <p style={{ color: "#6e6e90", fontSize: 12, marginTop: 3 }}>
+                  <p style={{ color: TEXT_MUTED, fontSize: 12, marginTop: 3 }}>
                      {item.board}
                   </p>
                )}
                {item.field && (
-                  <p style={{ color: "#6e6e90", fontSize: 12, marginTop: 3 }}>
+                  <p style={{ color: TEXT_MUTED, fontSize: 12, marginTop: 3 }}>
                      {item.field}
                   </p>
                )}

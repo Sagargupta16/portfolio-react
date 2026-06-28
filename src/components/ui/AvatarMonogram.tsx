@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, CYAN, PURPLE, GREEN } from "@/constants/theme";
 
 const AvatarMonogram = () => {
    return (
@@ -23,7 +23,7 @@ const AvatarMonogram = () => {
                fontSize: 48,
                fontWeight: 800,
                fontFamily: MONO_FONT,
-               background: "linear-gradient(135deg, #06b6d4, #a855f7)",
+               background: `linear-gradient(135deg, ${CYAN}, ${PURPLE})`,
                WebkitBackgroundClip: "text",
                WebkitTextFillColor: "transparent",
                lineHeight: 1,
@@ -38,7 +38,7 @@ const AvatarMonogram = () => {
             style={{
                fontFamily: MONO_FONT,
                fontSize: 11,
-               color: "#22c55e",
+               color: GREEN,
                letterSpacing: "0.1em",
             }}
             initial={{ opacity: 0 }}
@@ -51,7 +51,7 @@ const AvatarMonogram = () => {
             }}
          >
             {"> dev"}
-            <span style={{ color: "#06b6d4" }}>_</span>
+            <span style={{ color: CYAN }}>_</span>
          </motion.span>
       </div>
    );

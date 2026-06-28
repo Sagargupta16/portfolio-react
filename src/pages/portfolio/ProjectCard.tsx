@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import { scaleRotateIn } from "@utils/animations";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import {
    getCategoryColors,
    isValidUrl,
@@ -104,7 +104,7 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
             {/* Description */}
             <p
                style={{
-                  color: "#a5a5c0",
+                  color: TEXT_SECONDARY,
                   fontSize: 12,
                   lineHeight: 1.7,
                   marginBottom: 16,

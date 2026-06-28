@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { staggerContainer, fadeInUp } from "@utils/animations";
+import { TEXT_PRIMARY } from "@/constants/theme";
 import CodingPlatformCard from "./CodingPlatformCard";
 
 interface CodingPlatformsSectionProps {
@@ -19,7 +20,7 @@ const CodingPlatformsSection = ({
             style={{
                fontSize: 20,
                fontWeight: 700,
-               color: "#eeeef5",
+               color: TEXT_PRIMARY,
                marginBottom: 24,
                textAlign: "center",
             }}

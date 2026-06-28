@@ -7,6 +7,7 @@ import {
    TEXT_MUTED,
    CYAN,
    MONO_FONT,
+   EASING,
 } from "@/constants/theme";
 import type { ExperienceProject } from "@/types";
 
@@ -15,8 +16,6 @@ interface ModalProjectCardProps {
    index: number;
 }
 
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
-
 const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
    <motion.div
       initial={{ opacity: 0, y: 25, scale: 0.98 }}
@@ -24,7 +23,7 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
       transition={{
          delay: 0.2 + index * 0.12,
          duration: 0.4,
-         ease: EXPO_EASE,
+         ease: EASING.cinematic,
       }}
       style={{
          marginBottom: 20,

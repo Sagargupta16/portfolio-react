@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { FolderGit2 } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
+import { TEXT_MUTED } from "@/constants/theme";
 import { BulletList, SkillTags } from "./experienceHelpers";
 import { FADE_ENTRY } from "./experienceConstants";
 
@@ -51,7 +52,7 @@ const TimelineExpandedContent = ({
                   >
                      <p
                         style={{
-                           color: "#6e6e90",
+                           color: TEXT_MUTED,
                            fontSize: 12,
                            marginBottom: 8,
                            display: "flex",
@@ -61,7 +62,7 @@ const TimelineExpandedContent = ({
                      >
                         <FolderGit2
                            size={12}
-                           style={{ flexShrink: 0, color: "#6e6e90" }}
+                           style={{ flexShrink: 0, color: TEXT_MUTED }}
                         />
                         {project.name}
                      </p>
@@ -89,7 +90,7 @@ const TimelineExpandedContent = ({
                {...FADE_ENTRY}
                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                style={{
-                  color: "#6e6e90",
+                  color: TEXT_MUTED,
                   fontSize: 12,
                   marginTop: 16,
                   marginBottom: 8,
@@ -100,7 +101,7 @@ const TimelineExpandedContent = ({
             >
                <FolderGit2
                   size={12}
-                  style={{ flexShrink: 0, color: "#6e6e90" }}
+                  style={{ flexShrink: 0, color: TEXT_MUTED }}
                />
                {itemProject}
             </motion.p>

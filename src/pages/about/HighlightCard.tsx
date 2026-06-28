@@ -2,12 +2,13 @@ import { motion } from "motion/react";
 import { Briefcase, GraduationCap, Rocket, Trophy } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { staggerItem } from "@utils/animations";
+import { CYAN, PURPLE, GREEN, AMBER, TEXT_SECONDARY } from "@/constants/theme";
 
 const HIGHLIGHT_ICONS: { Icon: LucideIcon; color: string }[] = [
-   { Icon: Briefcase, color: "#06b6d4" },
-   { Icon: GraduationCap, color: "#a855f7" },
-   { Icon: Rocket, color: "#22c55e" },
-   { Icon: Trophy, color: "#f59e0b" },
+   { Icon: Briefcase, color: CYAN },
+   { Icon: GraduationCap, color: PURPLE },
+   { Icon: Rocket, color: GREEN },
+   { Icon: Trophy, color: AMBER },
 ];
 
 interface HighlightCardProps {
@@ -53,7 +54,7 @@ const HighlightCard = ({ text, index, isMobile }: HighlightCardProps) => {
          </div>
          <p
             style={{
-               color: "#cbd5e1",
+               color: TEXT_SECONDARY,
                fontSize: isMobile ? 13 : 14,
                lineHeight: 1.7,
                margin: 0,

@@ -1,4 +1,5 @@
 import { Building2 } from "lucide-react";
+import { TEXT_PRIMARY, TEXT_SECONDARY, PURPLE } from "@/constants/theme";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 
 interface CompanyHeaderProps {
@@ -43,7 +44,7 @@ const CompanyHeader = ({
             style={{
                fontSize: isMobile ? 16 : 18,
                fontWeight: 700,
-               color: "#eeeef5",
+               color: TEXT_PRIMARY,
                lineHeight: 1.2,
             }}
          >
@@ -54,7 +55,7 @@ const CompanyHeader = ({
       {/* Title + Position */}
       <p
          style={{
-            color: "#a855f7",
+            color: PURPLE,
             fontWeight: 600,
             fontSize: isMobile ? 14 : 15,
             marginTop: 4,
@@ -81,7 +82,7 @@ const CompanyHeader = ({
       {item.summary && (
          <p
             style={{
-               color: "#a5a5c0",
+               color: TEXT_SECONDARY,
                fontSize: 12,
                lineHeight: 1.7,
                marginTop: 8,

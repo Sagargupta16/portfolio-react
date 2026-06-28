@@ -1,7 +1,12 @@
 import type { ReactNode } from "react";
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
-import { MONO_FONT, TEXT_MUTED, CHROME_BAR_STYLE } from "@/constants/theme";
+import {
+   MONO_FONT,
+   TEXT_MUTED,
+   CHROME_BAR_STYLE,
+   EASING,
+} from "@/constants/theme";
 
 interface BrowserMockupProps {
    children: ReactNode;
@@ -44,7 +49,7 @@ const BrowserMockup = ({
             }
             transition={{
                duration: 1,
-               ease: [0.16, 1, 0.3, 1],
+               ease: EASING.cinematic,
             }}
             style={{
                transformOrigin: "50% 2%",
@@ -77,7 +82,7 @@ const BrowserMockup = ({
                transition={{
                   duration: 1,
                   delay: 0.4,
-                  ease: [0.16, 1, 0.3, 1],
+                  ease: EASING.cinematic,
                }}
                style={{
                   position: "absolute",
@@ -196,7 +201,7 @@ const BrowserMockup = ({
                transition={{
                   delay: 0.5,
                   duration: 1,
-                  ease: [0.16, 1, 0.3, 1],
+                  ease: EASING.cinematic,
                }}
             >
                {children}

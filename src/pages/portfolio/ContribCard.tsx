@@ -1,6 +1,12 @@
 import { GitMerge, CircleDot, GitPullRequestClosed } from "lucide-react";
 import type { OpenSourceContribution } from "@/types";
-import { MONO_FONT, PURPLE, GREEN, ORANGE } from "@/constants/theme";
+import {
+   MONO_FONT,
+   PURPLE,
+   GREEN,
+   ORANGE,
+   TEXT_SECONDARY,
+} from "@/constants/theme";
 
 interface ContribCardProps {
    contrib: OpenSourceContribution;
@@ -87,7 +93,7 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
             <p
                style={{
                   fontSize: 12,
-                  color: "#a5a5c0",
+                  color: TEXT_SECONDARY,
                   lineHeight: 1.5,
                   marginTop: 2,
                   overflow: "hidden",
