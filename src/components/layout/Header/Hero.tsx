@@ -1,13 +1,17 @@
 import { useCallback } from "react";
 import { motion } from "motion/react";
+import { useLenis } from "lenis/react";
 import { ChevronDown } from "lucide-react";
 import HeroContent from "./HeroContent";
 
 const Hero = () => {
+   const lenis = useLenis();
    const scrollToAbout = useCallback(() => {
-      const el = document.querySelector("#about");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-   }, []);
+      const el = document.getElementById("about");
+      if (!el) return;
+      if (lenis) lenis.scrollTo(el, { offset: -64 });
+      else el.scrollIntoView();
+   }, [lenis]);
 
    return (
       <section

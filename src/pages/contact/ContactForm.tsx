@@ -1,11 +1,14 @@
+import { motion } from "motion/react";
 import { Send } from "lucide-react";
-import type { FormData } from "./contactConstants";
+import { TEXT_SECONDARY, RED } from "@/constants/theme";
+import type { FormData, Status } from "./contactConstants";
 
 interface ContactFormProps {
    formRef: React.RefObject<HTMLFormElement | null>;
    formData: FormData;
    isLoading: boolean;
    isMobile: boolean;
+   status: Status;
    onChange: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
    ) => void;
@@ -16,7 +19,7 @@ const labelStyle: React.CSSProperties = {
    display: "block",
    fontSize: 12,
    fontWeight: 600,
-   color: "#a5a5c0",
+   color: TEXT_SECONDARY,
    textTransform: "uppercase",
    letterSpacing: "0.05em",
    marginBottom: 8,
@@ -27,9 +30,14 @@ const ContactForm = ({
    formData,
    isLoading,
    isMobile,
+   status,
    onChange,
    onSubmit,
-}: ContactFormProps) => (
+}: ContactFormProps) => {
+   // The only programmatic validation today is the email-pattern check, so an
+   // error status maps to the email field. Surface it inline + to AT.
+   const emailError = status.type === "error" ? status.message : "";
+   return (
    <form
       ref={formRef}
       onSubmit={onSubmit}
@@ -81,8 +89,23 @@ const ContactForm = ({
             value={formData.email}
             onChange={onChange}
             required
-            className="form-input"
+            className={`form-input${emailError ? " form-input--error" : ""}`}
+            aria-invalid={emailError ? true : undefined}
+            aria-describedby={emailError ? "contact-email-error" : undefined}
          />
+         {emailError && (
+            <p
+               id="contact-email-error"
+               role="alert"
+               style={{
+                  margin: "6px 2px 0",
+                  fontSize: 12,
+                  color: RED,
+               }}
+            >
+               {emailError}
+            </p>
+         )}
       </div>
 
       <div>
@@ -98,15 +121,18 @@ const ContactForm = ({
             onChange={onChange}
             required
             className="form-input"
-            style={{ resize: "none" }}
+            style={{ resize: "vertical" }}
          />
       </div>
 
-      <button
+      <motion.button
          type="submit"
          disabled={isLoading}
          className="btn-primary"
          aria-label={isLoading ? "Sending message..." : "Send message"}
+         aria-busy={isLoading}
+         whileHover={isLoading ? undefined : { scale: 1.02 }}
+         whileTap={isLoading ? undefined : { scale: 0.97 }}
          style={{
             width: "100%",
             display: "flex",
@@ -119,8 +145,7 @@ const ContactForm = ({
       >
          {isLoading ? (
             <div
-               role="status"
-               aria-label="Sending message"
+               aria-hidden="true"
                style={{
                   width: 20,
                   height: 20,
@@ -136,8 +161,9 @@ const ContactForm = ({
                Send Message
             </>
          )}
-      </button>
+      </motion.button>
    </form>
-);
+   );
+};
 
 export default ContactForm;

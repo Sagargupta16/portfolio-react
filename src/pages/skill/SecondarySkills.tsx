@@ -5,6 +5,7 @@ import {
    waveCascadeContainer,
    waveCascadeItem,
 } from "@utils/animations";
+import { TEXT_PRIMARY, TEXT_SECONDARY, PURPLE } from "@/constants/theme";
 
 interface CategoryEntry {
    key: string;
@@ -41,7 +42,7 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
             style={{
                fontSize: 20,
                fontWeight: 600,
-               color: "#eeeef5",
+               color: TEXT_PRIMARY,
                textAlign: "center",
             }}
          >
@@ -53,7 +54,7 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
                   style={{
                      fontSize: 16,
                      fontWeight: 500,
-                     color: "#a5a5c0",
+                     color: TEXT_SECONDARY,
                      marginBottom: 12,
                      display: "flex",
                      alignItems: "center",
@@ -65,8 +66,7 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
                         height: 20,
                         width: 3,
                         borderRadius: 9999,
-                        background:
-                           "linear-gradient(to bottom, #a855f7, rgba(168,85,247,0.3))",
+                        background: `linear-gradient(to bottom, ${PURPLE}, rgb(var(--ch-purple) / 0.3))`,
                      }}
                   />
                   {label}
@@ -76,7 +76,7 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
                   variants={waveCascadeContainer}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ margin: "0px 0px -100px 0px" }}
+                  viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                >
                   {items.map((skill) => (
                      <motion.span

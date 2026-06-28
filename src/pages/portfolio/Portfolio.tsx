@@ -8,7 +8,7 @@ import {
 } from "@data/dataLoader";
 import { fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
-import { MONO_FONT } from "@/constants/theme";
+import { MONO_FONT, TEXT_SECONDARY, MAX_WIDTH } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import { FILTERS, parseDate } from "./portfolioConstants";
 import type { ProjectWithCategory } from "./portfolioConstants";
@@ -104,10 +104,7 @@ const Portfolio = () => {
 
    return (
       <PageSection id="projects" title="Projects" subtitle="Things I've built">
-         <div
-            className="max-w-6xl mx-auto"
-            style={{ maxWidth: 1152, margin: "0 auto" }}
-         >
+         <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
             {/* Filter buttons */}
             <motion.div
                style={{
@@ -139,7 +136,7 @@ const Portfolio = () => {
                                    cursor: "pointer",
                                    border:
                                       "1px solid rgba(255, 255, 255, 0.06)",
-                                   color: "#a5a5c0",
+                                   color: TEXT_SECONDARY,
                                    background: "rgba(255, 255, 255, 0.03)",
                                    backdropFilter: "blur(8px)",
                                    display: "inline-flex",

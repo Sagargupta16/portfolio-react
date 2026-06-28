@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getEducation } from "@data/dataLoader";
 import { staggerContainer } from "@utils/animations";
+import { MAX_WIDTH_NARROW } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import EducationCard from "./EducationCard";
@@ -15,7 +16,7 @@ const Education = () => {
          id="education"
          title="Education"
          subtitle="My academic journey"
-         maxWidth={960}
+         maxWidth={MAX_WIDTH_NARROW}
       >
          <motion.div variants={staggerContainer}>
             {education.map((item, index) => (

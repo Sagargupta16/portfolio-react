@@ -5,6 +5,7 @@ import {
    getAchievements,
 } from "@data/dataLoader";
 import PageSection from "@components/layout/PageSection";
+import { MAX_WIDTH } from "@/constants/theme";
 import { LEVEL_ORDER } from "./achievementConstants";
 import CertBadgeShowcase from "./CertBadgeShowcase";
 import BadgesSection from "./BadgesSection";
@@ -32,7 +33,7 @@ const Achievement = () => {
       >
          <div
             style={{
-               maxWidth: 1152,
+               maxWidth: MAX_WIDTH,
                margin: "0 auto",
                display: "flex",
                flexDirection: "column",

@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { CYAN, TEXT_SECONDARY } from "@/constants/theme";
 
 interface ProjectLinkProps {
    href: string;
@@ -13,7 +14,7 @@ const ProjectLink = ({
    label,
    ariaLabel,
    icon: Icon,
-   accentColor = "#06b6d4",
+   accentColor = CYAN,
 }: ProjectLinkProps) => (
    <a
       href={href}
@@ -28,19 +29,19 @@ const ProjectLink = ({
          borderRadius: 10,
          fontSize: 12,
          fontWeight: 500,
-         color: "#a5a5c0",
+         color: TEXT_SECONDARY,
          border: "1px solid rgba(255, 255, 255, 0.06)",
          background: "rgba(255, 255, 255, 0.03)",
          backdropFilter: "blur(8px)",
          textDecoration: "none",
-         transition: "all 0.2s",
+         transition: "color 0.2s ease, border-color 0.2s ease",
       }}
       onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
          e.currentTarget.style.color = accentColor;
          e.currentTarget.style.borderColor = `${accentColor}4D`;
       }}
       onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-         e.currentTarget.style.color = "#a5a5c0";
+         e.currentTarget.style.color = TEXT_SECONDARY;
          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
       }}
       aria-label={ariaLabel}

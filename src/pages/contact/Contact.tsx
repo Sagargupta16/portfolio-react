@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import Toast from "@components/ui/Toast";
 import { getContactOptions } from "@data/dataLoader";
 import { rotateInUp, staggerContainer } from "@utils/animations";
+import { MAX_WIDTH_FORM } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import ContactCard from "./ContactCard";
@@ -20,6 +21,7 @@ const Contact = () => {
       isLoading,
       toastVisible,
       showConfirmation,
+      sentName,
       handleChange,
       handleSubmit,
       dismissToast,
@@ -34,7 +36,7 @@ const Contact = () => {
       >
          <motion.div
             style={{
-               maxWidth: 896,
+               maxWidth: MAX_WIDTH_FORM,
                margin: "0 auto",
                display: "grid",
                gap: isMobile ? 24 : 32,
@@ -69,7 +71,7 @@ const Contact = () => {
                      >
                         <SendConfirmation
                            onReset={resetConfirmation}
-                           senderName={formData.name}
+                           senderName={sentName}
                         />
                      </motion.div>
                   ) : (
@@ -85,6 +87,7 @@ const Contact = () => {
                            formData={formData}
                            isLoading={isLoading}
                            isMobile={isMobile}
+                           status={status}
                            onChange={handleChange}
                            onSubmit={handleSubmit}
                         />

@@ -66,7 +66,7 @@ const GlassCard = ({
          opacity: 1,
          background: `radial-gradient(
         350px circle at ${mousePos.x * 100}% ${mousePos.y * 100}%,
-        rgba(6, 182, 212, 0.08),
+        rgb(var(--ch-cyan) / 0.08),
         transparent 60%
       )`,
       };
@@ -87,7 +87,7 @@ const GlassCard = ({
             ...(!borderGlow || !isHovered
                ? {}
                : {
-                    borderColor: "rgba(6, 182, 212, 0.2)",
+                    borderColor: "rgb(var(--ch-cyan) / 0.2)",
                  }),
             ...style,
          }}
@@ -96,7 +96,10 @@ const GlassCard = ({
          onMouseLeave={handleMouseLeave}
          {...props}
       >
-         {/* Cursor-following glow overlay */}
+         {/* Cursor-following glow overlay -- one subtle radial highlight. The
+             previous per-mousemove conic-gradient border (mask-composite) was the
+             heaviest paint on hover and read as busy; a refined card uses a quiet
+             glow + a clean border-color shift (set on the wrapper) instead. */}
          {glow && (
             <div
                aria-hidden="true"
@@ -108,34 +111,6 @@ const GlassCard = ({
                   transition: "opacity 0.3s ease",
                   zIndex: 0,
                   ...glowStyle,
-               }}
-            />
-         )}
-
-         {/* Animated gradient border highlight on hover */}
-         {borderGlow && isHovered && !reducedMotion && (
-            <div
-               aria-hidden="true"
-               style={{
-                  position: "absolute",
-                  inset: -1,
-                  borderRadius: "inherit",
-                  pointerEvents: "none",
-                  zIndex: 0,
-                  background: `conic-gradient(
-              from ${Math.atan2(mousePos.y - 0.5, mousePos.x - 0.5) * (180 / Math.PI)}deg at ${mousePos.x * 100}% ${mousePos.y * 100}%,
-              rgba(6, 182, 212, 0.3),
-              transparent 40%,
-              rgba(168, 85, 247, 0.2),
-              transparent 70%,
-              rgba(6, 182, 212, 0.3)
-            )`,
-                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  maskComposite: "exclude",
-                  WebkitMask:
-                     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  padding: 1,
                }}
             />
          )}

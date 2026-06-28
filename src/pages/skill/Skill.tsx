@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { getSkills } from "@data/dataLoader";
 import type { SkillsData } from "@/types";
 import { staggerContainer, staggerItem } from "@utils/animations";
-import { CYAN } from "@/constants/theme";
+import { CYAN, TEXT_PRIMARY, MAX_WIDTH } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import SkillTagGroup from "./SkillTagGroup";
 import SecondarySkills from "./SecondarySkills";
@@ -56,7 +56,7 @@ const Skill = () => {
          title="Skills & Technologies"
          subtitle="What I work with"
       >
-         <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+         <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
             <motion.div
                style={{ display: "flex", flexDirection: "column", gap: 48 }}
                variants={staggerContainer}
@@ -67,7 +67,7 @@ const Skill = () => {
                         style={{
                            fontSize: 20,
                            fontWeight: 600,
-                           color: "#eeeef5",
+                           color: TEXT_PRIMARY,
                            marginBottom: 16,
                            display: "flex",
                            alignItems: "center",

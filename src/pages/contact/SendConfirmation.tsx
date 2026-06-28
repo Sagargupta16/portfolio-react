@@ -24,6 +24,8 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
    return (
       <div
          className="glass-card"
+         role="status"
+         aria-live="polite"
          style={{
             padding: "48px 32px",
             display: "flex",
@@ -47,8 +49,8 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
                      gap: 8,
                      padding: "16px 24px",
                      borderRadius: 16,
-                     background: "rgba(6,182,212,0.06)",
-                     border: "1px solid rgba(6,182,212,0.15)",
+                     background: "rgb(var(--ch-cyan) / 0.06)",
+                     border: "1px solid rgb(var(--ch-cyan) / 0.15)",
                   }}
                >
                   {[0, 1, 2].map((dot) => (

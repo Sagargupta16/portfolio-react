@@ -17,7 +17,8 @@
 
    --color-text-primary: #eeeef5;
    --color-text-secondary: #a5a5c0;
-   --color-text-muted: #6e6e90;
+   /* Lightened from #6e6e90 for WCAG 1.4.3 (4.5:1) on dark glass surfaces. */
+   --color-text-muted: #8888a8;
 
    --color-accent-cyan: #06b6d4;
    --color-accent-purple: #a855f7;
@@ -36,6 +37,7 @@
    --ch-pink: 236 72 153;
    --ch-amber: 245 158 11;
    --ch-green: 34 197 94;
+   --ch-red: 239 68 68;
    --ch-indigo: 99 102 241;
    --ch-white: 255 255 255;
    --ch-black: 0 0 0;
@@ -57,9 +59,14 @@
 }
 
 html {
-   scroll-behavior: smooth;
+   /* Lenis owns smooth scrolling; CSS smooth here would double-drive programmatic
+      scrolls (scrollIntoView) and fight it. Keep auto. */
+   scroll-behavior: auto;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
+   /* Always reserve the scrollbar gutter so opening a modal (which locks body
+      scroll) doesn't shift the page wider. */
+   scrollbar-gutter: stable;
 }
 
 body {
@@ -68,6 +75,9 @@ body {
    color: var(--color-text-primary);
    line-height: 1.7;
    overflow-x: hidden;
+   /* Stop iOS rubber-band / Android scroll-chaining from fighting Lenis at the
+      page extremes. */
+   overscroll-behavior-y: none;
 }
 
 /* Scrollbar */
@@ -98,6 +108,27 @@ body {
 :focus-visible {
    outline: 2px solid rgb(var(--ch-cyan) / 0.5);
    outline-offset: 2px;
+}
+
+/* Skip to content -- visible only when focused (WCAG 2.4.1 Bypass Blocks) */
+.skip-link {
+   position: fixed;
+   top: 8px;
+   left: 8px;
+   z-index: 1000;
+   padding: 10px 18px;
+   border-radius: 10px;
+   background: var(--color-bg-card);
+   color: var(--color-text-primary);
+   border: 1px solid rgb(var(--ch-cyan) / 0.4);
+   font-size: 0.875rem;
+   font-weight: 600;
+   transform: translateY(-150%);
+   transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+   transform: translateY(0);
 }
 
 /* Links */
@@ -289,6 +320,10 @@ img {
 
 /* ===== Gradient Text ===== */
 .gradient-text {
+   /* Solid fallback first -- if background-clip:text fails to paint (forced
+      colors, some print-to-PDF paths) the text stays readable instead of going
+      invisible. The transparent fill only applies where clip works. */
+   color: var(--color-accent-cyan);
    background: linear-gradient(
       135deg,
       var(--color-accent-cyan),
@@ -300,6 +335,7 @@ img {
 }
 
 .gradient-text-vivid {
+   color: rgb(var(--ch-cyan-light));
    background: linear-gradient(
       135deg,
       rgb(var(--ch-cyan-light)),
@@ -442,8 +478,8 @@ img {
 /* ===== Glass Card ===== */
 .glass-card {
    background: rgb(var(--ch-glass) / 0.5);
-   backdrop-filter: blur(20px);
-   -webkit-backdrop-filter: blur(20px);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
    border: 1px solid rgb(var(--ch-white) / 0.06);
    border-radius: 16px;
    transition:
@@ -484,10 +520,17 @@ img {
    background-color: transparent;
 }
 
+/* Darker band: a semi-opaque gradient instead of backdrop-filter. These are
+   full-width bands taller than the viewport; a backdrop blur here re-samples the
+   animated aurora/3D backdrop every scroll frame (the dominant fast-scroll jank
+   source). The gradient bakes into the layer and composites for free -- the faint
+   aurora still shows through, only the per-frame blur-of-a-moving-backdrop is gone. */
 .section-darker {
-   background: rgb(var(--ch-bg-sec) / 0.25);
-   backdrop-filter: blur(8px);
-   -webkit-backdrop-filter: blur(8px);
+   background: linear-gradient(
+      180deg,
+      rgb(var(--ch-bg-sec) / 0.38),
+      rgb(var(--ch-bg-sec) / 0.2)
+   );
 }
 
 /* ===== Gradient Buttons ===== */
@@ -560,8 +603,6 @@ img {
       background 0.25s ease,
       border-color 0.25s ease,
       box-shadow 0.25s ease;
-   backdrop-filter: blur(8px);
-   -webkit-backdrop-filter: blur(8px);
 }
 
 .tag-cyan {
@@ -627,8 +668,6 @@ img {
       box-shadow 0.3s ease,
       transform 0.3s ease;
    cursor: default;
-   backdrop-filter: blur(8px);
-   -webkit-backdrop-filter: blur(8px);
 }
 
 .skill-tag:hover {
@@ -637,6 +676,11 @@ img {
    background: rgb(var(--ch-cyan) / 0.08);
    box-shadow: 0 0 20px rgb(var(--ch-cyan) / 0.08);
    transform: translateY(-1px);
+}
+
+/* Tap feedback -- the only motion most touch users see on these chips. */
+.skill-tag:active {
+   transform: scale(0.96);
 }
 
 /* ===== Form Input ===== */
@@ -667,6 +711,17 @@ img {
    box-shadow:
       0 0 0 3px rgb(var(--ch-cyan) / 0.08),
       0 0 25px rgb(var(--ch-cyan) / 0.06);
+}
+
+.form-input--error {
+   border-color: rgb(var(--ch-red) / 0.5);
+}
+
+.form-input--error:focus {
+   border-color: rgb(var(--ch-red) / 0.6);
+   box-shadow:
+      0 0 0 3px rgb(var(--ch-red) / 0.08),
+      0 0 25px rgb(var(--ch-red) / 0.06);
 }
 
 /* ===== Skeleton Loading ===== */
@@ -760,7 +815,8 @@ img {
       transform: none;
    }
 
-   .skill-tag:hover {
+   .skill-tag:hover,
+   .skill-tag:active {
       transform: none;
    }
 

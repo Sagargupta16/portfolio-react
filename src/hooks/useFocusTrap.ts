@@ -44,6 +44,14 @@ const useFocusTrap = <T extends HTMLElement>(
          const first = nodes[0];
          const last = nodes[nodes.length - 1];
          const active = document.activeElement as HTMLElement | null;
+         // If focus has escaped the container (e.g. landed on the backdrop or
+         // body), pull it back in rather than letting Tab walk into the page
+         // behind the modal.
+         if (!container.contains(active)) {
+            (e.shiftKey ? last : first)?.focus();
+            e.preventDefault();
+            return;
+         }
          if (e.shiftKey && active === first) {
             last?.focus();
             e.preventDefault();

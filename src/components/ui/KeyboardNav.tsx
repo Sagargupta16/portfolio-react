@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from "react";
+import { useLenis } from "lenis/react";
 
 const SECTIONS = [
    "hero",
@@ -14,6 +15,7 @@ const SECTIONS = [
 ];
 
 const KeyboardNav = () => {
+   const lenis = useLenis();
    const getCurrentSectionIndex = useCallback((): number => {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
@@ -30,20 +32,34 @@ const KeyboardNav = () => {
       return 0;
    }, []);
 
-   const scrollToSection = useCallback((id: string) => {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-   }, []);
+   const scrollToSection = useCallback(
+      (id: string) => {
+         const el = document.getElementById(id);
+         if (!el) return;
+         if (lenis) lenis.scrollTo(el, { offset: -64 });
+         else el.scrollIntoView();
+      },
+      [lenis],
+   );
 
    const handleKeyDown = useCallback(
       (e: KeyboardEvent) => {
-         // Ignore when typing in input fields
-         const tag = (e.target as HTMLElement).tagName;
+         // Don't hijack key combos (Ctrl/Cmd/Alt) -- those belong to the browser/OS.
+         if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+         // Ignore when typing in a field OR when focus is on any interactive
+         // control (button/link/etc) -- bare-key shortcuts must not fire while a
+         // control is focused (WCAG 2.1.4 Character Key Shortcuts).
+         const target = e.target as HTMLElement;
+         const tag = target.tagName;
          if (
             tag === "INPUT" ||
             tag === "TEXTAREA" ||
             tag === "SELECT" ||
-            (e.target as HTMLElement).isContentEditable
+            tag === "BUTTON" ||
+            tag === "A" ||
+            target.isContentEditable ||
+            target.closest("[role], button, a[href]")
          )
             return;
 

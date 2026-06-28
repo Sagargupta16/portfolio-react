@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getAbout, getStatistics } from "@data/dataLoader";
 import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
-import { GREEN, MONO_FONT } from "@/constants/theme";
+import { GREEN, MONO_FONT, TEXT_PRIMARY, MAX_WIDTH } from "@/constants/theme";
 import DevAvatar from "@components/ui/DevAvatar";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
@@ -29,7 +29,7 @@ const About = () => {
 
    return (
       <PageSection id="about" title="About Me" subtitle="Get to know me">
-         <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+         <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
             <motion.div
                style={{
                   display: "grid",
@@ -95,7 +95,7 @@ const About = () => {
                      style={{
                         fontSize: isMobile ? 22 : 28,
                         fontWeight: 700,
-                        color: "#eeeef5",
+                        color: TEXT_PRIMARY,
                         marginBottom: 16,
                         lineHeight: 1.2,
                      }}
