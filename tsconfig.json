@@ -1,14 +1,13 @@
 {
    "compilerOptions": {
-      "baseUrl": ".",
       "paths": {
-         "@/*": ["src/*"],
-         "@components/*": ["src/components/*"],
-         "@pages/*": ["src/pages/*"],
-         "@assets/*": ["src/assets/*"],
-         "@utils/*": ["src/utils/*"],
-         "@hooks/*": ["src/hooks/*"],
-         "@data/*": ["src/data/*"]
+         "@/*": ["./src/*"],
+         "@components/*": ["./src/components/*"],
+         "@pages/*": ["./src/pages/*"],
+         "@assets/*": ["./src/assets/*"],
+         "@utils/*": ["./src/utils/*"],
+         "@hooks/*": ["./src/hooks/*"],
+         "@data/*": ["./src/data/*"]
       },
       "target": "ES2024",
       "lib": ["ES2024", "DOM", "DOM.Iterable"],
