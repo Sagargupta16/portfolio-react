@@ -6,7 +6,15 @@
 const CREDLY_HOST = "images.credly.com";
 
 export const credlyThumb = (url: string, px = 220): string => {
-   if (!url.includes(CREDLY_HOST)) return url;
+   let host: string;
+   try {
+      // Parse and check the exact host -- a substring test would match hostile
+      // URLs like https://images.credly.com.evil.com/ or https://e.com/?images.credly.com.
+      host = new URL(url).hostname;
+   } catch {
+      return url;
+   }
+   if (host !== CREDLY_HOST) return url;
    // Already sized? leave it.
    if (url.includes("/size/")) return url;
    // Insert /size/NxN right before the /images/ segment.
