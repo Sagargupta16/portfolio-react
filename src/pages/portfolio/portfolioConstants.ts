@@ -26,7 +26,9 @@ export const MONTHS: Record<string, number> = {
 
 export const parseDate = (dateStr: string): Date => {
    const [month, year] = dateStr.split(" ");
-   return new Date(Number(year), MONTHS[month] || 0);
+   const y = Number(year);
+   // ?? (not ||) so a valid "January" (index 0) isn't treated as missing.
+   return new Date(Number.isFinite(y) ? y : 0, MONTHS[month] ?? 0);
 };
 
 export interface CategoryColors {

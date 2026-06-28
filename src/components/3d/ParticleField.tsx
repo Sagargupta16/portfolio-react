@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -20,7 +20,10 @@ interface ParticleFieldProps {
 
 const ParticleField = ({ count = 300 }: ParticleFieldProps) => {
    const ref = useRef<THREE.Points>(null);
-   const [positions] = useState(() => createParticlePositions(count));
+   // Regenerate when count changes (degraded mode / breakpoint cross). A one-shot
+   // useState would keep the old-length array while the bufferAttribute count
+   // changed, reading past/short the buffer and collapsing particles.
+   const positions = useMemo(() => createParticlePositions(count), [count]);
 
    useFrame((_, delta) => {
       if (ref.current) {
@@ -47,7 +50,7 @@ const ParticleField = ({ count = 300 }: ParticleFieldProps) => {
             <bufferAttribute
                attach="attributes-position"
                args={[positions, 3]}
-               count={count}
+               count={positions.length / 3}
             />
          </bufferGeometry>
          <pointsMaterial

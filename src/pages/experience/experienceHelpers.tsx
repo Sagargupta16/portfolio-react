@@ -1,4 +1,5 @@
 import TechTag from "@components/ui/TechTag";
+import { TEXT_SECONDARY } from "@/constants/theme";
 
 interface BulletListProps {
    items: string[];
@@ -23,11 +24,11 @@ export const BulletList = ({
          ...extraStyle,
       }}
    >
-      {items.map((desc) => (
+      {items.map((desc, i) => (
          <li
-            key={desc}
+            key={`${desc}-${i}`}
             style={{
-               color: "#a5a5c0",
+               color: TEXT_SECONDARY,
                fontSize,
                lineHeight: 1.7,
                display: "flex",
@@ -63,8 +64,8 @@ export const SkillTags = ({
    extraStyle,
 }: SkillTagsProps) => (
    <div style={{ display: "flex", flexWrap: "wrap", gap: 4, ...extraStyle }}>
-      {skills.map((skill) => (
-         <TechTag key={skill} label={skill} accent={accentColor} />
+      {skills.map((skill, i) => (
+         <TechTag key={`${skill}-${i}`} label={skill} accent={accentColor} />
       ))}
    </div>
 );

@@ -181,9 +181,10 @@ const InteractiveConstellation = () => {
       const parkPointer = () => setPointer(OFFSCREEN, OFFSCREEN);
       // Pause the loop when the tab is hidden to save battery.
       const onVisibility = () => {
-         if (document.hidden) {
-            globalThis.cancelAnimationFrame(rafId);
-         } else {
+         // Always cancel first -- a spurious "visible" event while the loop is
+         // already running would otherwise stack a second rAF loop.
+         globalThis.cancelAnimationFrame(rafId);
+         if (!document.hidden) {
             rafId = globalThis.requestAnimationFrame(step);
          }
       };

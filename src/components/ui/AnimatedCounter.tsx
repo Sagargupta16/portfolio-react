@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
 interface Props {
@@ -8,56 +8,55 @@ interface Props {
 
 const AnimatedCounter = ({ value, duration = 2 }: Props) => {
    const [count, setCount] = useState<number>(0);
-   const hasAnimated = useRef<boolean>(false);
 
    const { ref, inView } = useInView({
       threshold: 0.5,
       triggerOnce: true,
    });
 
-   const { numericValue, suffix } = useMemo(() => {
+   // Parse a leading number (incl. one decimal point, e.g. "9.5") + trailing
+   // suffix (e.g. "+", "k"). decimals drives toFixed so values like a CGPA of
+   // 9.5 animate and land correctly instead of being truncated to an integer.
+   const { numericValue, decimals, suffix } = useMemo(() => {
       const str = String(value);
-      let i = 0;
-      while (i < str.length && str[i] >= "0" && str[i] <= "9") i++;
-      if (i > 0) {
+      const match = /^(\d+(?:\.\d+)?)(.*)$/s.exec(str);
+      if (match) {
+         const num = match[1];
+         const dot = num.indexOf(".");
          return {
-            numericValue: Number.parseInt(str.slice(0, i), 10),
-            suffix: str.slice(i),
+            numericValue: Number.parseFloat(num),
+            decimals: dot === -1 ? 0 : num.length - dot - 1,
+            suffix: match[2],
          };
       }
-      return { numericValue: 0, suffix: str };
+      return { numericValue: 0, decimals: 0, suffix: str };
    }, [value]);
 
    useEffect(() => {
-      if (!inView || hasAnimated.current) return;
-      hasAnimated.current = true;
+      if (!inView) return;
 
+      let rafId = 0;
       const startTime = performance.now();
       const durationMs = duration * 1000;
 
       const animate = (currentTime: number) => {
          const elapsed = currentTime - startTime;
          const progress = Math.min(elapsed / durationMs, 1);
-
          const eased = 1 - Math.pow(1 - progress, 3);
-         const current = Math.round(eased * numericValue);
-
-         setCount(current);
-
-         if (progress < 1) {
-            requestAnimationFrame(animate);
-         }
+         setCount(eased * numericValue);
+         if (progress < 1) rafId = requestAnimationFrame(animate);
       };
 
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
+      return () => cancelAnimationFrame(rafId);
    }, [inView, numericValue, duration]);
 
    return (
       <span
          ref={ref}
-         className="font-mono text-3xl font-bold text-accent-cyan glow-cyan-text"
+         className="font-mono text-3xl font-bold text-accent-cyan glow-cyan-text tabular-nums"
       >
-         {count}
+         {count.toFixed(decimals)}
          {suffix && <span className="text-accent-cyan/70">{suffix}</span>}
       </span>
    );
