@@ -36,7 +36,6 @@ export default defineConfig(() => ({
                icons: ["react-icons", "lucide-react"],
                animations: ["motion"],
                threejs: ["three", "@react-three/fiber", "@react-three/drei"],
-               particles: ["@tsparticles/react", "@tsparticles/slim"],
             },
          },
       },
