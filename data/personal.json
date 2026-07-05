@@ -1,6 +1,6 @@
 {
    "name": "Sagar Gupta",
-   "title": "Professional Services (Cloud Consultant) - DevOps/MLOps at AWS",
+   "title": "Cloud Consultant -- Professional Services (DevOps/MLOps) at AWS",
    "location": "Hyderabad, India",
    "contact": {
       "email": "sg85207@gmail.com",
@@ -21,15 +21,15 @@
       "current_role": "💼 Cloud & DevOps/MLOps Engineer at AWS Professional Services, delivering DevOps engagements for leading financial institutions like State Street and DTCC. Leading a greenfield AWS migration for 50+ application workloads at RWS.",
       "specialization": "🚀 Built production MLOps pipelines on SageMaker, published architecture patterns on AWS Prescriptive Guidance, and contributed to major open source projects including Apache Airflow, Terraform Provider AWS, and Feast.",
       "education": "🎓 Completed MCA from National Institute of Technology, Warangal (CGPA: 8.38, NIMCET AIR 208). 6x certified across AWS and Terraform.",
-      "competitive_programming": "🏆 LeetCode Knight (2007 peak rating), 2000+ problems solved across platforms, 140+ contests. Google Kick Start '22 Top 5%."
+      "competitive_programming": "🏆 LeetCode Knight (2007 peak rating), 1600+ problems across LeetCode and GeeksforGeeks, 100+ contests. Google Kick Start '22 Top 5%."
    },
    "statistics": {
-      "coding_questions": "2000+",
+      "coding_questions": "1600+",
       "leetcode_rating": "2007",
       "projects": "25+",
-      "contests": "140+",
+      "contests": "100+",
       "industry_certifications": "6",
-      "open_source_prs": "13+"
+      "open_source_prs": "6 merged + 1 open"
    },
    "languages": [
       { "name": "English", "level": "Professional Working" },

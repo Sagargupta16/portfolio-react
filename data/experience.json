@@ -3,7 +3,7 @@
       {
          "id": 1,
          "date": "August 2024 - Present",
-         "title": "Professional Services (Cloud Consultant) - DevOps/MLOps",
+         "title": "Cloud Consultant - Professional Services (DevOps/MLOps)",
          "position": "Full-time",
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
@@ -13,11 +13,11 @@
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
                "date": "Feb 2026 - Present",
                "description": {
-                  "1": "Leading greenfield AWS migration as the sole DevOps consultant - designing AWS Organizations OU structure, SCPs, tag policies, and deploying Terraform infrastructure with GitHub Actions CI/CD across multi-account environments.",
-                  "2": "Implemented governance and infrastructure security controls - preventative SCPs, tag compliance guardrails, Config rules, and Security Hub standards across the org - enforcing least-privilege access and regulatory alignment from day one.",
+                  "1": "Leading greenfield AWS migration as the sole DevOps consultant - onboarding 50+ application workloads into 135+ AWS accounts, designing AWS Organizations OU structure, SCPs, tag policies, and Terraform + GitHub Actions CI/CD, cutting infrastructure setup time ~90% (3+ days per account to under 4 hours) versus manual provisioning.",
+                  "2": "Implemented governance and infrastructure security controls - preventative SCPs, tag compliance guardrails, Config rules, and Security Hub standards across the org - enforcing least-privilege access and CCMv4-aligned regulatory posture from day one.",
                   "3": "Architecting the multi-account networking foundation - Transit Gateway hub-and-spoke, centralized VPC design, hybrid connectivity (VPN/Direct Connect), DNS resolution, and egress control via centralized inspection.",
-                  "4": "Driving architecture decisions and defining migration roadmap for 50+ application workloads. Delivering recommendations on cost optimization, HA, and DR to customer stakeholders.",
-                  "5": "Leveraging Kiro for AI-driven requirement analysis, architecture documentation, and implementation specs - significantly accelerating delivery velocity."
+                  "4": "Driving architecture decisions and defining migration roadmap for 50+ application workloads into 135+ AWS accounts. Delivering recommendations on cost optimization, HA, and DR to customer stakeholders.",
+                  "5": "Used Kiro for AI-driven requirement analysis, architecture documentation, and implementation specs."
                },
                "skills": [
                   "AWS",
@@ -43,7 +43,7 @@
                "date": "Aug 2025 - Dec 2025",
                "description": {
                   "1": "Refactored and created critical Terraform infrastructure code to enhance security and scalability, solving complex legacy modernization challenges in financial services.",
-                  "2": "Leveraged Amazon Q AI capabilities to accelerate development workflows, code analysis, and migration assessments, transforming infrastructure patterns to align with cloud-native principles.",
+                  "2": "Used Amazon Q to accelerate code analysis and migration assessments, transforming infrastructure patterns to align with cloud-native principles.",
                   "3": "Partnered with client engineering teams on secure infrastructure practices and knowledge transfer."
                },
                "skills": [
@@ -81,7 +81,7 @@
                "date": "Oct 2024 - Aug 2025",
                "description": {
                   "1": "Built Terraform module library covering 38+ AWS services with automated testing (tftest, PyTest), adopted across the client's cloud platform by application teams.",
-                  "2": "Architected 1000+ preventative security controls aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
+                  "2": "Architected 1000+ preventative security controls (AWS Config rules and Security Hub standards) aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
                   "3": "Delivered POCs showcasing use-cases of various AWS services through Terraform, and implemented evidence and federated architecture patterns.",
                   "4": "Collaborated across Landing Zone, Compliance, Security, and Migrations workstreams. Achieved 10/10 CSAT score and 3 consecutive 5/5 Pulse ratings from customer."
                },
@@ -129,7 +129,7 @@
                "year": "2025"
             },
             {
-               "title": "4x TFC Ambassador: AI/ML, NGDE, CloudOps DevOps Agent, Agentic AI",
+               "title": "5x TFC Ambassador: AI/ML, NGDE (Graduated), CloudOps (AWS DevOps Agent), Agentic AI, Serverless",
                "type": "program",
                "year": "2025-2026"
             },

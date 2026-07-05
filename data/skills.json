@@ -7,6 +7,8 @@
       "Java",
       "SQL",
       "HCL",
+      "Bash",
+      "Go",
       "C#",
       "R",
       "HTML/CSS"
@@ -19,7 +21,7 @@
       "Three.js",
       "Motion",
       "Redux",
-      "Material-UI"
+      "MUI"
    ],
    "backend": [
       "Node.js",

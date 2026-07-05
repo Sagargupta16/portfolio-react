@@ -26,8 +26,8 @@
       {
          "id": 15,
          "title": "Ledger Sync",
-         "description": "A self-hosted personal finance dashboard (v2.9.0) with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
-         "date": "January 2026",
+         "description": "A self-hosted personal finance dashboard (v2.19.0) with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, 50/30/20 budgeting, bill calendar, GST analysis, subscription tracking, year-in-review, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
+         "date": "July 2026",
          "tools_tech": [
             "TypeScript",
             "React 19",
@@ -40,7 +40,7 @@
          ],
          "features": [
             "AI finance chatbot with 15 tool calls (App mode or BYOK), multi-provider LLM support",
-            "Demo mode at /demo with ~500 sample transactions, all 23 pages render",
+            "50/30/20 Budget Rule page, bill calendar, GST analysis, subscription tracker, year-in-review",
             "FIRE calculator (Lean/Barista/Standard/Fat), Coast FIRE, retirement corpus, India FY tax estimator",
             "Financial Health Score, Sankey cash flow, anomaly detection, recurring transaction detection"
          ],
@@ -50,7 +50,7 @@
       {
          "id": 2,
          "title": "LeetCode Rating Predictor",
-         "description": "Full-stack LeetCode contest rating predictor using a Dense neural network trained on 121K+ contest records, featuring a FastAPI backend with LeetCode GraphQL integration and a React glassmorphism frontend.",
+         "description": "Full-stack LeetCode contest rating predictor using a Dense neural network trained on 244K+ contest records, featuring a FastAPI backend with LeetCode GraphQL integration and a React glassmorphism frontend.",
          "date": "December 2023",
          "tools_tech": [
             "Python",
@@ -61,7 +61,7 @@
             "GraphQL"
          ],
          "features": [
-            "Dense neural network trained on 121K+ contest records",
+            "Dense neural network trained on 244K+ contest records",
             "Automated data pipeline via LeetCode GraphQL API",
             "Glassmorphism React frontend with live contest selection",
             "34 backend tests + 11 frontend tests, Docker + Render deploy"
@@ -159,7 +159,7 @@
       {
          "id": 39,
          "title": "Code Arena",
-         "description": "A real-time competitive coding platform where 2-5 friends race to solve LeetCode problems with built-in C++ and Python execution via sandboxed Piston containers. Features Blind Race and Live Status Board modes with a server-authoritative WebSocket timer and LeetCode-style Monaco editor.",
+         "description": "A real-time competitive coding platform where 2-5 friends race to solve LeetCode problems with built-in C++ and Python execution via sandboxed Piston containers. Features Blind Race and Live Status Board modes with a server-authoritative WebSocket timer and LeetCode-style Monaco editor. Live demo is UI-only (backend offline).",
          "date": "April 2026",
          "tools_tech": [
             "React 19",
@@ -178,7 +178,7 @@
             "Server-authoritative WebSocket timer, Monaco editor with language toggle and test cases"
          ],
          "github": "https://github.com/Sagargupta16/code-arena",
-         "live": "",
+         "live": "https://sagargupta.online/code-arena/",
          "team": "Sagar & Pranshu",
          "contributors": [
             "Sagargupta16",
@@ -328,22 +328,21 @@
       {
          "id": 40,
          "title": "Instagram Autopilot",
-         "description": "Fully automated Instagram content creation and posting powered by AWS Bedrock AI and Composio v3. Daily cron generates topics, captions, premium 1024x1024 AI images via Nova Canvas (neon/cinematic styling), and optional 6-second Reels via Nova Reel - then auto-publishes via GitHub Actions.",
-         "date": "March 2026",
+         "description": "Fully automated Instagram content creation and posting powered by AWS Bedrock AI and Composio v3, publishing live daily. Cron generates topics, captions, and premium AI image carousels via Stability Image Ultra, with dedup history, content-filter resilience (skips filtered slides, publishes if 2+ remain), and Instagram location tags via Meta Places - all through GitHub Actions.",
+         "date": "July 2026",
          "tools_tech": [
             "Python",
             "AWS Bedrock",
-            "Nova Canvas",
-            "Nova Reel",
+            "Stability Image Ultra",
+            "Claude Opus",
             "Composio v3 API",
-            "Cloudinary",
             "GitHub Actions"
          ],
          "features": [
-            "Daily 9 AM IST cron - topic + caption + image prompt via Bedrock Claude",
-            "Premium 1024x1024 AI images via Nova Canvas (cfgScale 9.0, aggressive negative prompts)",
-            "6-second Reels via Bedrock Nova Reel (async S3 output) for reel-format pillars",
-            "Day-of-week content pillars (Cognitive Biases, Relationship Psychology, Habits) configurable via config.json"
+            "Daily cron publishes live - topic + caption + image prompts via Bedrock Claude",
+            "Premium AI image carousels via Stability Image Ultra with negative prompts",
+            "Content-filter resilience: skips filtered slides, publishes when 2+ survive",
+            "Dedup history committed back to repo, wide-niche content pillars via config.json"
          ],
          "github": "https://github.com/Sagargupta16/instagram-autopilot",
          "live": ""
@@ -351,7 +350,7 @@
       {
          "id": 19,
          "title": "Financial Dashboard",
-         "description": "The original Excel-upload financial dashboard (v0.5.0) that evolved into Ledger Sync. Built with React + TypeScript, featuring Chart.js visualizations, 50/30/20 budgeting, tax planning, and lifestyle analytics. Now superseded - see Ledger Sync for the production-ready successor.",
+         "description": "The original Excel-upload financial dashboard that evolved into Ledger Sync. Built with React + TypeScript, featuring Chart.js visualizations, 50/30/20 budgeting, tax planning, and lifestyle analytics. Now superseded - see Ledger Sync for the production-ready successor.",
          "date": "February 2026",
          "tools_tech": [
             "TypeScript",
@@ -436,26 +435,6 @@
          "live": ""
       },
       {
-         "id": 25,
-         "title": "GroundZeroNN",
-         "description": "A neural network library built from scratch in Python - no TensorFlow, no PyTorch - with working backpropagation and 79.8% MNIST accuracy in under 3 minutes. Implements forward/backward propagation, ReLU/Sigmoid/Softmax activations, He/Xavier initializers, and SGD optimizer - pure NumPy.",
-         "date": "February 2025",
-         "tools_tech": [
-            "Python",
-            "NumPy",
-            "Deep Learning",
-            "Matplotlib"
-         ],
-         "features": [
-            "79.8% MNIST test accuracy in 2.7 min (parallel batch) - zero ML frameworks",
-            "Forward + backward propagation, weight updates, gradient descent",
-            "ReLU / Sigmoid / Softmax activations, He Normal / Xavier initializers",
-            "Softmax + Cross-Entropy for multi-class classification, MSE for regression"
-         ],
-         "github": "https://github.com/Sagargupta16/GroundZeroNN",
-         "live": ""
-      },
-      {
          "id": 11,
          "title": "Brainstorm Verse",
          "description": "A modern idea-sharing platform built with Next.js 14 App Router where creativity meets collaboration. Threaded comments, personalized user profiles, secure Clerk authentication, and file uploads via UploadThing.",
@@ -499,7 +478,7 @@
             "CORS-enabled, server-side Joi schema validation, React Router frontend"
          ],
          "github": "https://github.com/Sagargupta16/Authentication-System",
-         "live": "https://authentication-system-wmta.onrender.com/"
+         "live": ""
       },
       {
          "id": 4,
@@ -521,7 +500,7 @@
             "Zero-refresh SPA navigation with React Router 7"
          ],
          "github": "https://github.com/Sagargupta16/Contact-Manager-Mern",
-         "live": "https://contact-manager-mern-cg19.onrender.com/"
+         "live": "https://sagargupta.online/Contact-Manager-Mern/"
       },
       {
          "id": 5,
@@ -652,8 +631,8 @@
       {
          "id": 38,
          "title": "Claude Skills",
-         "description": "Custom Claude Code plugin marketplace (v4.2.0) with 25 reusable plugins, 29 agents, 9 hooks, and ~28 slash commands covering full-stack development, testing, API design, databases, CI/CD, Docker, security, performance, logging, refactoring, documentation, git workflows, open source contributions, and more. Installable via /plugin marketplace.",
-         "date": "March 2026",
+         "description": "Custom Claude Code plugin marketplace (v5.1.0) with 16 curated plugins covering dev workflow, testing, CI/CD, Docker, refactoring, git workflows, open source contributions, Python clean code, animation, and more. Installable via /plugin marketplace.",
+         "date": "June 2026",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -662,9 +641,9 @@
             "GitHub Actions"
          ],
          "features": [
-            "25 plugins with 25 skills, 29 agents, 9 hooks, ~28 slash commands",
-            "Stack-specific plugins (farm-stack, testing, api-design, database, ci-cd, docker-deploy)",
-            "Workflow and meta plugins (methodology, context-management, session-management, planning, verification)",
+            "16 curated plugins spanning agents, hooks, skills, and slash commands",
+            "Stack-specific plugins (farm-stack, ci-cd, docker-deploy, deps-audit, repo-polish)",
+            "clean-code (Python Clean Code catalog) and motion (animation audit/add/fix) plugins",
             "CI validation pipeline and tiered installation guide"
          ],
          "github": "https://github.com/Sagargupta16/claude-skills",
@@ -695,7 +674,7 @@
       {
          "id": 43,
          "title": "Bedrock Multi-Model MCP",
-         "description": "MCP server for AWS Bedrock - text, image, and video generation across Llama 4, Mistral, Nova, Cohere, DeepSeek, Stable Diffusion 3.5, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
+         "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stable Diffusion 3.5, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
          "date": "April 2026",
          "tools_tech": [
             "TypeScript",
@@ -737,7 +716,7 @@
       {
          "id": 35,
          "title": "Claude Code Recipes",
-         "description": "50+ copy-paste recipes for Claude Code covering 12 commands, 9 subagents, 5 hooks, and MCP configs. Every recipe works out of the box - just drop into your .claude/ folder and use immediately.",
+         "description": "47 copy-paste recipes for Claude Code covering 12 commands, 9 subagents, 5 hooks, and MCP configs. Every recipe works out of the box - just drop into your .claude/ folder and use immediately.",
          "date": "March 2026",
          "tools_tech": [
             "Claude Code",
@@ -926,33 +905,27 @@
          "status": "open"
       },
       {
-         "repo": "modelcontextprotocol/python-sdk",
-         "title": "Add subject field to AccessToken for auth",
-         "url": "https://github.com/modelcontextprotocol/python-sdk/pull/2446",
-         "status": "open"
-      },
-      {
          "repo": "awslabs/agent-plugins",
          "title": "Fix: check file extension before defusedxml dependency",
          "url": "https://github.com/awslabs/agent-plugins/pull/132",
-         "status": "open"
+         "status": "merged"
       },
       {
          "repo": "awslabs/agent-plugins",
-         "title": "Fix: shorten MCP server names for Bedrock 64-char limit",
-         "url": "https://github.com/awslabs/agent-plugins/pull/133",
+         "title": "Quote CLAUDE_PLUGIN_ROOT in hook commands to support paths with spaces",
+         "url": "https://github.com/awslabs/agent-plugins/pull/212",
          "status": "open"
       },
       {
-         "repo": "aws/aws-cdk",
-         "title": "Scope batch SubmitJob IAM to specific resources",
-         "url": "https://github.com/aws/aws-cdk/pull/37601",
+         "repo": "modelcontextprotocol/servers",
+         "title": "Normalize git_log schema across filtered and unfiltered branches",
+         "url": "https://github.com/modelcontextprotocol/servers/pull/4470",
          "status": "open"
       },
       {
-         "repo": "aws/aws-cdk",
-         "title": "Fix: apply timeout to FileDefinitionBody and StringDefinitionBody",
-         "url": "https://github.com/aws/aws-cdk/pull/37602",
+         "repo": "awslabs/mcp",
+         "title": "Accept skill-type results in search_documentation",
+         "url": "https://github.com/awslabs/mcp/pull/4076",
          "status": "open"
       }
    ],

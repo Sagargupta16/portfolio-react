@@ -2,7 +2,7 @@
   "certifications": [
     {
       "id": 1,
-      "name": "AWS Certified Developer – Associate",
+      "name": "AWS Certified Developer - Associate",
       "type": "Industry Certification",
       "issuer": "Amazon Web Services Training and Certification",
       "issueDate": "2026-01-31",
@@ -26,7 +26,7 @@
     },
     {
       "id": 3,
-      "name": "AWS Certified Machine Learning Engineer – Associate",
+      "name": "AWS Certified Machine Learning Engineer - Associate",
       "type": "Industry Certification",
       "issuer": "Amazon Web Services Training and Certification",
       "issueDate": "2025-06-28",
@@ -50,7 +50,7 @@
     },
     {
       "id": 5,
-      "name": "AWS Certified Solutions Architect – Associate",
+      "name": "AWS Certified Solutions Architect - Associate",
       "type": "Industry Certification",
       "issuer": "Amazon Web Services Training and Certification",
       "issueDate": "2024-07-07",
@@ -69,7 +69,7 @@
       "badgeId": "bf8ffb47-284c-4c45-adb8-3df4f807e404",
       "badgeUrl": "https://www.credly.com/badges/bf8ffb47-284c-4c45-adb8-3df4f807e404",
       "level": "Foundational",
-      "expiryDate": "2029-01-31",
+      "expiryDate": "2027-05-02",
       "imageUrl": "https://images.credly.com/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png"
     }
   ],
@@ -260,14 +260,14 @@
       "id": 5,
       "title": "Rank 1289 - Google Kick Start '22, Round E",
       "organizer": "Google",
-      "date": "August 2022",
+      "date": "September 2022",
       "type": "Competition"
     },
     {
       "id": 6,
       "title": "Rank 1699 - Google Kick Start '22, Round B",
       "organizer": "Google",
-      "date": "April 2022",
+      "date": "May 2022",
       "type": "Competition"
     },
     {
