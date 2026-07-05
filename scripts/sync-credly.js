@@ -63,7 +63,8 @@ function getBadgeType(badge) {
 }
 
 function transformBadge(badge, id) {
-   const name = badge.badge_template?.name || "";
+   // Credly badge names carry en/em dashes; house style forbids them
+   const name = (badge.badge_template?.name || "").replace(/[–—]/g, "-");
    const type = getBadgeType(badge);
    const entry = {
       id,

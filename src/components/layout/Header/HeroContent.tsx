@@ -7,7 +7,7 @@ import { MONO_FONT, GREEN } from "@/constants/theme";
 import HeroStats from "./HeroStats";
 import HeroSocial from "./HeroSocial";
 const RESUME_URL =
-   "https://github.com/Sagargupta16/latex-resume/releases/download/latest/resume.pdf";
+   "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
 
 const HeroContent = () => {
    const [roleIndex, setRoleIndex] = useState(0);
