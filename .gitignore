@@ -32,3 +32,6 @@ CLAUDE.md
 
 # Vite
 vite.config.js.timestamp-*
+
+# Claude session memory (local only)
+.remember/
