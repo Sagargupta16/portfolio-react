@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.16.2] - 2026-07-09
+
+### Changed
+
+- lucide-icons/lucide #4512 (Vue Icon kebab-case icon-node prop) merged upstream 2026-07-09: added to projects.json contributions
+- statistics.open_source_prs: "7 merged + 12 open" -> "8 merged + 12 open"
+
 ## [3.16.1] - 2026-07-09
 
 ### Changed

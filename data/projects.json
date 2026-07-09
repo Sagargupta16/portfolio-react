@@ -917,6 +917,12 @@
          "status": "merged"
       },
       {
+         "repo": "lucide-icons/lucide",
+         "title": "Support kebab-case icon-node prop on Vue Icon component",
+         "url": "https://github.com/lucide-icons/lucide/pull/4512",
+         "status": "merged"
+      },
+      {
          "repo": "modelcontextprotocol/servers",
          "title": "Normalize git_log schema across filtered and unfiltered branches",
          "url": "https://github.com/modelcontextprotocol/servers/pull/4470",
