@@ -914,7 +914,7 @@
          "repo": "awslabs/agent-plugins",
          "title": "Quote CLAUDE_PLUGIN_ROOT in hook commands to support paths with spaces",
          "url": "https://github.com/awslabs/agent-plugins/pull/212",
-         "status": "open"
+         "status": "merged"
       },
       {
          "repo": "modelcontextprotocol/servers",

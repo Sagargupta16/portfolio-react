@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [3.16.1] - 2026-07-09
+
+### Changed
+
+- awslabs/agent-plugins #212 (quote CLAUDE_PLUGIN_ROOT in hook commands) merged upstream 2026-07-08: status flipped to merged in projects.json
+- statistics.open_source_prs: "6 merged + 1 open" -> "7 merged + 12 open" (all 12 open PRs live-verified 2026-07-09)
+
 ## [3.16.0] - 2026-06-28
 
 ### Changed
