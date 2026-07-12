@@ -35,3 +35,6 @@ vite.config.js.timestamp-*
 
 # Claude session memory (local only)
 .remember/
+
+# graphify knowledge graph artifacts
+graphify-out/
