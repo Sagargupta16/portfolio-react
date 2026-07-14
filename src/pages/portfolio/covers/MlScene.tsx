@@ -3,7 +3,6 @@ import { MONO_FONT } from "@/constants/theme";
 
 interface CoverSceneProps {
   tint: string;
-  variant?: string;
 }
 
 const HAIRLINE = "rgba(255,255,255,0.08)";

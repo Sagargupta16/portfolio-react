@@ -59,7 +59,9 @@ const PlacementPanel = ({ tint }: { tint: string }) => (
 const LanguagePanel = ({ tint }: { tint: string }) => (
    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
       {/* Two chat bubbles alternating typing dots */}
-      {[0, 1].map((side) => (
+      {[0, 1].map((side) => {
+         const bubbleBorder = side === 0 ? "rgba(255,255,255,0.14)" : `${tint}40`;
+         return (
          <div
             key={side}
             style={{
@@ -68,7 +70,7 @@ const LanguagePanel = ({ tint }: { tint: string }) => (
                gap: 3,
                padding: "5px 8px",
                borderRadius: side === 0 ? "8px 8px 8px 2px" : "8px 8px 2px 8px",
-               border: `1px solid ${side === 0 ? "rgba(255,255,255,0.14)" : `${tint}40`}`,
+               border: `1px solid ${bubbleBorder}`,
                background: side === 0 ? "rgba(255,255,255,0.04)" : `${tint}0c`,
             }}
          >
@@ -90,7 +92,8 @@ const LanguagePanel = ({ tint }: { tint: string }) => (
                />
             ))}
          </div>
-      ))}
+         );
+      })}
       {/* Live call dot */}
       <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
          <motion.span

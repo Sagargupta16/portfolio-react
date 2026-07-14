@@ -24,7 +24,6 @@ const NAV_SECTIONS: NavSection[] = [
 const Nav = () => {
    const { isTablet: isMobile } = useBreakpoint();
    const [activeSection, setActiveSection] = useState("hero");
-   const [sectionProgress, setSectionProgress] = useState(0);
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
    const [scrolled, setScrolled] = useState(false);
    const activeSectionRef = useRef("hero");
@@ -45,10 +44,6 @@ const Nav = () => {
                   const id = entry.target.id;
                   activeSectionRef.current = id;
                   setActiveSection(id);
-                  const rect = entry.boundingClientRect;
-                  const viewMiddle = window.innerHeight * 0.35;
-                  const progress = (viewMiddle - rect.top) / rect.height;
-                  setSectionProgress(Math.max(0, Math.min(1, progress)));
                }
             }
          },
@@ -93,7 +88,6 @@ const Nav = () => {
             isMobile={isMobile}
             sections={NAV_SECTIONS}
             activeSection={activeSection}
-            sectionProgress={sectionProgress}
             mobileMenuOpen={mobileMenuOpen}
             onNavigate={scrollToSection}
             onToggleMenu={toggleMenu}

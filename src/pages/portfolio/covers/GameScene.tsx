@@ -132,6 +132,7 @@ const Minesweeper = ({ tint }: { tint: string }) => (
       {Array.from({ length: 16 }, (_, i) => {
          const isMine = i === 9;
          const isDigit = i === 6;
+         const tileBorder = isMine ? `${tint}70` : "rgba(255,255,255,0.14)";
          return (
             <motion.div
                key={i}
@@ -148,7 +149,7 @@ const Minesweeper = ({ tint }: { tint: string }) => (
                   width: 22,
                   height: 22,
                   borderRadius: 3,
-                  border: `1px solid ${isMine ? `${tint}70` : "rgba(255,255,255,0.14)"}`,
+                  border: `1px solid ${tileBorder}`,
                   background: isMine ? `${tint}12` : "rgba(255,255,255,0.05)",
                   display: "flex",
                   alignItems: "center",

@@ -74,7 +74,7 @@ const HeroContent = () => {
                      flexShrink: 0,
                   }}
                />
-               DevOps/MLOps Consultant @ AWS
+               <span>DevOps/MLOps Consultant @ AWS</span>
             </span>
          </motion.div>
 

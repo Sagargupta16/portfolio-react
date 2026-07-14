@@ -3,7 +3,6 @@ import { MONO_FONT } from "@/constants/theme";
 
 interface CoverSceneProps {
   tint: string;
-  variant?: string;
 }
 
 /* Blue-green AWS deployment on Terraform -- ALB shifts traffic BLUE -> GREEN, zero downtime. */

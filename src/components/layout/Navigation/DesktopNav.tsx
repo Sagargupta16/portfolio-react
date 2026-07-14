@@ -10,7 +10,6 @@ interface NavSection {
 interface DesktopNavProps {
    sections: NavSection[];
    activeSection: string;
-   sectionProgress: number;
    onNavigate: (id: string) => void;
 }
 

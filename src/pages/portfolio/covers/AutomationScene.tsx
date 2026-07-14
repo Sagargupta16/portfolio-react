@@ -230,7 +230,15 @@ const BadgeOut = ({ tint }: { tint: string }) => (
   </div>
 );
 
-const AutomationScene = ({ tint, variant = "instagram" }: CoverSceneProps) => (
+const OUTPUTS: Record<string, ({ tint }: { tint: string }) => React.JSX.Element> = {
+  git: GitOut,
+  badge: BadgeOut,
+  instagram: InstagramOut,
+};
+
+const AutomationScene = ({ tint, variant = "instagram" }: CoverSceneProps) => {
+  const Output = OUTPUTS[variant] ?? InstagramOut;
+  return (
   <div
     aria-hidden="true"
     style={{ position: "absolute", inset: 0, overflow: "hidden", background: "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)" }}
@@ -263,7 +271,7 @@ const AutomationScene = ({ tint, variant = "instagram" }: CoverSceneProps) => (
       style={{ position: "absolute", top: "50%", width: 5, height: 5, marginTop: -2.5, borderRadius: "50%", background: "#60a5fa" }}
     />
 
-    {variant === "git" ? <GitOut tint={tint} /> : variant === "badge" ? <BadgeOut tint={tint} /> : <InstagramOut tint={tint} />}
+    <Output tint={tint} />
 
     {/* green success dot blinking at cycle end */}
     <motion.div
@@ -272,6 +280,7 @@ const AutomationScene = ({ tint, variant = "instagram" }: CoverSceneProps) => (
       style={{ position: "absolute", right: "4%", top: "24%", width: 5, height: 5, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 6px #22c55e80" }}
     />
   </div>
-);
+  );
+};
 
 export default AutomationScene;

@@ -14,7 +14,6 @@ interface NavBarProps {
    isMobile: boolean;
    sections: NavSection[];
    activeSection: string;
-   sectionProgress: number;
    mobileMenuOpen: boolean;
    onNavigate: (id: string) => void;
    onToggleMenu: () => void;
@@ -25,7 +24,6 @@ const NavBar = ({
    isMobile,
    sections,
    activeSection,
-   sectionProgress,
    mobileMenuOpen,
    onNavigate,
    onToggleMenu,
@@ -94,7 +92,6 @@ const NavBar = ({
                   <DesktopNav
                      sections={sections}
                      activeSection={activeSection}
-                     sectionProgress={sectionProgress}
                      onNavigate={onNavigate}
                   />
                   <button

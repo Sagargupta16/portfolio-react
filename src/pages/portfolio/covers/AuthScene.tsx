@@ -3,7 +3,6 @@ import { MONO_FONT } from "@/constants/theme";
 
 interface CoverSceneProps {
    tint: string;
-   variant?: string;
 }
 
 // One full auth cycle: type credentials -> submit -> JWT travels -> shield
