@@ -44,10 +44,7 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
             e.currentTarget.style.borderColor = `${color}1A`;
          }}
       >
-         <Icon
-            size={14}
-            style={{ color, flexShrink: 0, marginTop: 3 }}
-         />
+         <Icon size={14} style={{ color, flexShrink: 0, marginTop: 3 }} />
          <div style={{ minWidth: 0, flex: 1 }}>
             <div
                style={{

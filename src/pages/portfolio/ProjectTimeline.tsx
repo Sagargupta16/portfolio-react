@@ -34,7 +34,7 @@ const ProjectTimeline = ({
             borderRadius: 4,
             transformOrigin: "top",
             background:
-               "linear-gradient(to bottom, rgba(6,182,212,0.3), rgba(168,85,247,0.2) 50%, rgba(245,158,11,0.15) 80%, transparent)",
+               "linear-gradient(to bottom, rgba(96,165,250,0.3), rgba(56,189,248,0.2) 50%, rgba(245,158,11,0.15) 80%, transparent)",
          }}
       />
 

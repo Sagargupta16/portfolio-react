@@ -10,7 +10,6 @@ const AvatarMonogram = () => {
             borderRadius: "50%",
             background:
                "radial-gradient(circle at 30% 30%, rgba(18,18,42,0.9), rgba(10,10,20,0.85))",
-            backdropFilter: "blur(12px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

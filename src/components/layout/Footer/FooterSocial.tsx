@@ -28,8 +28,6 @@ const FooterSocial = () => {
                      borderRadius: 10,
                      border: "1px solid rgba(255, 255, 255, 0.06)",
                      background: "rgba(255, 255, 255, 0.03)",
-                     backdropFilter: "blur(12px)",
-                     WebkitBackdropFilter: "blur(12px)",
                      display: "flex",
                      alignItems: "center",
                      justifyContent: "center",
@@ -39,9 +37,9 @@ const FooterSocial = () => {
                   onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
                      e.currentTarget.style.color = CYAN;
                      e.currentTarget.style.borderColor =
-                        "rgba(6, 182, 212, 0.3)";
+                        "rgba(96, 165, 250, 0.3)";
                      e.currentTarget.style.background =
-                        "rgba(6, 182, 212, 0.08)";
+                        "rgba(96, 165, 250, 0.08)";
                   }}
                   onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
                      e.currentTarget.style.color = TEXT_SECONDARY;

@@ -31,7 +31,11 @@ const ModalContributions = ({
       <motion.div
          initial={{ opacity: 0, y: 15 }}
          animate={{ opacity: 1, y: 0 }}
-         transition={{ delay: baseDelay, duration: 0.4, ease: EASING.cinematic }}
+         transition={{
+            delay: baseDelay,
+            duration: 0.4,
+            ease: EASING.cinematic,
+         }}
          style={{
             marginTop: 8,
             paddingTop: 16,

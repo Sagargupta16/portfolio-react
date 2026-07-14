@@ -73,9 +73,7 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
          onKeyDown={clickable ? handleKey : undefined}
          role={clickable ? "button" : undefined}
          tabIndex={clickable ? 0 : undefined}
-         aria-label={
-            clickable ? `View details for ${data.title}` : undefined
-         }
+         aria-label={clickable ? `View details for ${data.title}` : undefined}
       >
          {/* Accent top bar */}
          <div

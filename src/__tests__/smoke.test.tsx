@@ -1,22 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 
-// Mock WebGL and Three.js since jsdom doesn't support them
-vi.mock("@react-three/fiber", () => ({
-   Canvas: ({ children }: { children: React.ReactNode }) => (
-      <div data-testid="canvas">{children}</div>
-   ),
-   useFrame: vi.fn(),
-}));
-
-vi.mock("@react-three/drei", () => ({
-   Float: ({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
-   ),
-   MeshDistortMaterial: () => null,
-   PerformanceMonitor: () => null,
-}));
-
 vi.mock("lenis", () => ({
    default: class {
       raf() {

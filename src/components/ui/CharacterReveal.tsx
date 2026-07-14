@@ -64,9 +64,7 @@ const CharacterReveal = ({
                   style={{ display: "inline-block" }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={
-                     isInView
-                        ? { opacity: 1, y: 0 }
-                        : { opacity: 0, y: 20 }
+                     isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
                   }
                   transition={{
                      type: "spring",

@@ -62,7 +62,11 @@ const reducer = (state: State, action: Action): State => {
       case "typeChar":
          return { ...state, typedChars: state.typedChars + 1 };
       case "advanceLine":
-         return { ...state, visibleLines: state.visibleLines + 1, typedChars: 0 };
+         return {
+            ...state,
+            visibleLines: state.visibleLines + 1,
+            typedChars: 0,
+         };
       case "rerun":
          return {
             phase: "typing",
@@ -121,11 +125,17 @@ const TerminalCard = ({
             );
             return () => clearTimeout(timeout);
          }
-         const timeout = setTimeout(() => dispatch({ type: "advanceLine" }), 300);
+         const timeout = setTimeout(
+            () => dispatch({ type: "advanceLine" }),
+            300,
+         );
          return () => clearTimeout(timeout);
       }
       const delay = line.delay ?? 80;
-      const timeout = setTimeout(() => dispatch({ type: "advanceLine" }), delay);
+      const timeout = setTimeout(
+         () => dispatch({ type: "advanceLine" }),
+         delay,
+      );
       return () => clearTimeout(timeout);
    }, [phase, visibleLines, typedChars, lines, typingSpeed, isComplete]);
 

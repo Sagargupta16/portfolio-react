@@ -138,7 +138,6 @@ const Portfolio = () => {
                                       "1px solid rgba(255, 255, 255, 0.06)",
                                    color: TEXT_SECONDARY,
                                    background: "rgba(255, 255, 255, 0.03)",
-                                   backdropFilter: "blur(8px)",
                                    display: "inline-flex",
                                    alignItems: "center",
                                    gap: 8,

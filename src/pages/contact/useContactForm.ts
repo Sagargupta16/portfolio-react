@@ -5,7 +5,9 @@ import type { FormData, Status } from "./contactConstants";
 
 const useContactForm = () => {
    const formRef = useRef<HTMLFormElement>(null);
-   const clearTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+   const clearTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+      undefined,
+   );
    const emailConfig = getEmailConfig();
 
    const [formData, setFormData] = useState<FormData>({

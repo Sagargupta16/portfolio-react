@@ -32,7 +32,6 @@ const ProjectLink = ({
          color: TEXT_SECONDARY,
          border: "1px solid rgba(255, 255, 255, 0.06)",
          background: "rgba(255, 255, 255, 0.03)",
-         backdropFilter: "blur(8px)",
          textDecoration: "none",
          transition: "color 0.2s ease, border-color 0.2s ease",
       }}

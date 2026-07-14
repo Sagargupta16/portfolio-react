@@ -62,7 +62,10 @@ export const staggerItem: Variants = {
 // ===== Line / Border =====
 export const lineGrow: Variants = {
    hidden: { scaleX: 0, originX: 0 },
-   visible: { scaleX: 1, transition: { duration: DURATION.slow, ease: "easeOut" } },
+   visible: {
+      scaleX: 1,
+      transition: { duration: DURATION.slow, ease: "easeOut" },
+   },
 };
 
 // ===== Section Reveal (for IntersectionObserver) =====
@@ -202,5 +205,7 @@ export const REDUCED_MOTION_VARIANT: Variants = {
 };
 
 /** Pick between full animation and reduced-motion fallback. */
-export const motionSafe = (variant: Variants, reducedMotion: boolean): Variants =>
-   reducedMotion ? REDUCED_MOTION_VARIANT : variant;
+export const motionSafe = (
+   variant: Variants,
+   reducedMotion: boolean,
+): Variants => (reducedMotion ? REDUCED_MOTION_VARIANT : variant);

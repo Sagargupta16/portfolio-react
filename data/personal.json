@@ -63,6 +63,6 @@
    ],
    "site": {
       "counter_namespace": "sagargupta-portfolio",
-      "tech_stack": ["React 19", "Vite 7", "Tailwind v4", "Three.js", "Motion"]
+      "tech_stack": ["React 19", "Vite 8", "Tailwind v4", "Motion", "Lenis"]
    }
 }

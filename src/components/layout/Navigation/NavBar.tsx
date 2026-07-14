@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { motion } from "motion/react";
 import { Menu, X } from "lucide-react";
-import { MONO_FONT, CYAN, TEXT_SECONDARY } from "@/constants/theme";
+import { TEXT_PRIMARY, TEXT_SECONDARY } from "@/constants/theme";
 import DesktopNav from "./DesktopNav";
 
 interface NavSection {
@@ -40,18 +40,12 @@ const NavBar = ({
             zIndex: 50,
             height: 64,
             backgroundColor: scrolled
-               ? "rgba(10, 10, 26, 0.6)"
-               : "rgba(10, 10, 26, 0.2)",
-            backdropFilter: scrolled ? "blur(16px)" : "blur(12px)",
-            WebkitBackdropFilter: scrolled ? "blur(16px)" : "blur(12px)",
-            boxShadow: scrolled
-               ? "0 10px 40px rgba(0,0,0,0.3), inset 0 -1px 0 rgba(255,255,255,0.04)"
-               : "none",
-            borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
-            // Don't transition backdrop-filter -- animating the blur radius re-blurs
-            // the moving page through every intermediate kernel. Snap it; fade the
-            // bg/shadow instead.
-            transition: "background-color 0.3s, box-shadow 0.3s",
+               ? "rgba(11, 16, 18, 0.92)"
+               : "rgba(11, 16, 18, 0.5)",
+            borderBottom: scrolled
+               ? "1px solid rgba(255, 255, 255, 0.06)"
+               : "1px solid transparent",
+            transition: "background-color 0.3s, border-color 0.3s",
          }}
          initial={{ y: -80, opacity: 0 }}
          animate={{ y: 0, opacity: 1 }}
@@ -71,33 +65,47 @@ const NavBar = ({
                marginRight: "auto",
             }}
          >
-            {/* Logo */}
+            {/* Logo mark */}
             <button
                onClick={() => onNavigate("hero")}
-               className="glow-cyan-text"
                style={{
-                  fontSize: 20,
+                  width: 40,
+                  height: 40,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 15,
                   fontWeight: 700,
-                  color: CYAN,
-                  letterSpacing: "0.05em",
-                  fontFamily: MONO_FONT,
+                  color: TEXT_PRIMARY,
+                  letterSpacing: "0.02em",
                   cursor: "pointer",
-                  background: "none",
-                  border: "none",
+                  background: "rgba(255, 255, 255, 0.06)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  borderRadius: 10,
                }}
                aria-label="Scroll to top"
             >
-               {"<SG />"}
+               SG
             </button>
 
-            {/* Desktop nav links */}
+            {/* Desktop nav links + CTA */}
             {!isMobile && (
-               <DesktopNav
-                  sections={sections}
-                  activeSection={activeSection}
-                  sectionProgress={sectionProgress}
-                  onNavigate={onNavigate}
-               />
+               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                  <DesktopNav
+                     sections={sections}
+                     activeSection={activeSection}
+                     sectionProgress={sectionProgress}
+                     onNavigate={onNavigate}
+                  />
+                  <button
+                     onClick={() => onNavigate("contact")}
+                     className="btn-pill"
+                     style={{ fontSize: 13 }}
+                     aria-label="Navigate to Contact"
+                  >
+                     Contact Me
+                  </button>
+               </div>
             )}
 
             {/* Mobile hamburger */}
@@ -118,7 +126,7 @@ const NavBar = ({
                      transition: "color 0.2s",
                   }}
                   onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-                     e.currentTarget.style.color = CYAN;
+                     e.currentTarget.style.color = TEXT_PRIMARY;
                   }}
                   onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
                      e.currentTarget.style.color = TEXT_SECONDARY;

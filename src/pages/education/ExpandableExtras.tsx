@@ -45,9 +45,9 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                         fontSize: 11,
                         padding: "3px 8px",
                         borderRadius: 6,
-                        background: "rgba(168,85,247,0.08)",
+                        background: "rgba(56,189,248,0.08)",
                         color: PURPLE,
-                        border: "1px solid rgba(168,85,247,0.15)",
+                        border: "1px solid rgba(56,189,248,0.15)",
                      }}
                   >
                      {skill}

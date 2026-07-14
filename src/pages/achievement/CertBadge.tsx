@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { CYAN, EASING, PURPLE, TEXT_PRIMARY, MONO_FONT } from "@/constants/theme";
+import {
+   CYAN,
+   EASING,
+   PURPLE,
+   TEXT_PRIMARY,
+   MONO_FONT,
+} from "@/constants/theme";
 import { credlyThumb } from "@utils/credlyThumb";
 
 interface CertBadgeProps {

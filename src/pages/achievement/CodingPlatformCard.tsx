@@ -92,20 +92,20 @@ const CodingPlatformCard = ({ platform, stats }: CodingPlatformCardProps) => (
                fontSize: 12,
                fontWeight: 600,
                color: CYAN,
-               border: "1px solid rgba(6,182,212,0.25)",
-               background: "rgba(6,182,212,0.06)",
+               border: "1px solid rgba(96,165,250,0.25)",
+               background: "rgba(96,165,250,0.06)",
                textDecoration: "none",
                transition: "all 0.2s",
             }}
             onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-               e.currentTarget.style.background = "rgba(6,182,212,0.15)";
-               e.currentTarget.style.borderColor = "rgba(6,182,212,0.5)";
+               e.currentTarget.style.background = "rgba(96,165,250,0.15)";
+               e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)";
                e.currentTarget.style.boxShadow =
-                  "0 0 20px rgba(6,182,212,0.15)";
+                  "0 0 20px rgba(96,165,250,0.15)";
             }}
             onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-               e.currentTarget.style.background = "rgba(6,182,212,0.06)";
-               e.currentTarget.style.borderColor = "rgba(6,182,212,0.25)";
+               e.currentTarget.style.background = "rgba(96,165,250,0.06)";
+               e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)";
                e.currentTarget.style.boxShadow = "none";
             }}
             aria-label={`View ${platform} profile`}

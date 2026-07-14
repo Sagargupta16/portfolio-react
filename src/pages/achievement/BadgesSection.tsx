@@ -37,7 +37,7 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                   width: 32,
                   height: 32,
                   borderRadius: 10,
-                  background: "rgba(168,85,247,0.1)",
+                  background: "rgba(56,189,248,0.1)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",

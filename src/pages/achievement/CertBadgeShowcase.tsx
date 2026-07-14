@@ -34,15 +34,13 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
                   width: 32,
                   height: 32,
                   borderRadius: 10,
-                  background: "rgba(6,182,212,0.1)",
+                  background: "rgba(96,165,250,0.1)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                }}
             >
-               <ShieldCheck
-                  style={{ width: 18, height: 18, color: CYAN }}
-               />
+               <ShieldCheck style={{ width: 18, height: 18, color: CYAN }} />
             </div>
             <h3
                style={{

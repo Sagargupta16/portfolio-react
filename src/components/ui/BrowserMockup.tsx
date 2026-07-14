@@ -38,6 +38,11 @@ const BrowserMockup = ({
          style={{
             perspective: "min(1400px, 100vw)",
             perspectiveOrigin: "50% 40%",
+            // The rotateX projection bulges wider than the layout box at the
+            // bottom edge, which creates horizontal page scroll on phones.
+            // The bottom is already faded out by the mask, so clipping the
+            // sideways spill is visually free.
+            overflowX: "clip",
          }}
       >
          <motion.div
@@ -57,8 +62,6 @@ const BrowserMockup = ({
                overflow: "hidden",
                border: "1px solid rgb(var(--ch-white) / 0.08)",
                background: "rgb(var(--ch-glass) / 0.5)",
-               backdropFilter: "blur(20px)",
-               WebkitBackdropFilter: "blur(20px)",
                boxShadow: `
                   0 8px 32px rgba(0, 0, 0, 0.4),
                   0 2px 4px rgba(0, 0, 0, 0.2),
@@ -195,7 +198,11 @@ const BrowserMockup = ({
 
             {/* Content area with fade-up */}
             <motion.div
-               style={{ position: "relative", padding: "24px 40px 48px" }}
+               style={{
+                  position: "relative",
+                  padding: "20px 16px 40px",
+                  maxWidth: "100%",
+               }}
                initial={{ opacity: 0, y: 20 }}
                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                transition={{

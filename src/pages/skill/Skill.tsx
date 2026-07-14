@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { getSkills } from "@data/dataLoader";
 import type { SkillsData } from "@/types";
 import { staggerContainer, staggerItem } from "@utils/animations";
-import { CYAN, TEXT_PRIMARY, MAX_WIDTH } from "@/constants/theme";
+import { MAX_WIDTH } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import SkillTagGroup from "./SkillTagGroup";
 import SecondarySkills from "./SecondarySkills";
@@ -63,25 +63,7 @@ const Skill = () => {
             >
                {primaryCategories.map(({ key, label, items }) => (
                   <motion.div key={key} variants={staggerItem}>
-                     <h3
-                        style={{
-                           fontSize: 20,
-                           fontWeight: 600,
-                           color: TEXT_PRIMARY,
-                           marginBottom: 16,
-                           display: "flex",
-                           alignItems: "center",
-                           gap: 12,
-                        }}
-                     >
-                        <div
-                           style={{
-                              height: 24,
-                              width: 4,
-                              borderRadius: 9999,
-                              background: `linear-gradient(to bottom, ${CYAN}, ${CYAN}4d)`,
-                           }}
-                        />
+                     <h3 className="dashed-rule" style={{ marginBottom: 24 }}>
                         {label}
                      </h3>
                      <SkillTagGroup items={items} />

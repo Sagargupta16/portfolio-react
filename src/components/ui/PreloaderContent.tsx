@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { MONO_FONT, CYAN, PURPLE, TEXT_MUTED } from "@/constants/theme";
+import { MONO_FONT, BLUE, TEXT_MUTED } from "@/constants/theme";
 
 interface PreloaderContentProps {
    displayProgress: number;
@@ -23,37 +23,28 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
             pointerEvents: "none",
          }}
       >
-         {/* Ambient glow */}
-         <div
-            style={{
-               position: "absolute",
-               width: 400,
-               height: 400,
-               borderRadius: "50%",
-               background:
-                  "radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 70%)",
-               filter: "blur(50px)",
-            }}
-         />
-
-         {/* SG Logo */}
+         {/* SG logo tile */}
          <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
             style={{
-               fontSize: 48,
-               fontWeight: 700,
+               width: 72,
+               height: 72,
+               borderRadius: 18,
+               display: "flex",
+               alignItems: "center",
+               justifyContent: "center",
+               fontSize: 28,
+               fontWeight: 800,
                fontFamily: MONO_FONT,
-               color: CYAN,
-               letterSpacing: "0.05em",
-               textShadow:
-                  "0 0 30px rgba(6,182,212,0.5), 0 0 60px rgba(6,182,212,0.25)",
+               color: "#0b1012",
+               background: "#67e8f9",
                position: "relative",
                zIndex: 1,
             }}
          >
-            {"<SG />"}
+            SG
          </motion.div>
 
          {/* Progress bar */}
@@ -61,7 +52,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
             style={{
                width: 160,
                height: 2,
-               background: "rgba(255, 255, 255, 0.04)",
+               background: "rgba(255, 255, 255, 0.06)",
                borderRadius: 4,
                overflow: "hidden",
                position: "relative",
@@ -71,7 +62,7 @@ const PreloaderContent = ({ displayProgress }: PreloaderContentProps) => {
             <motion.div
                style={{
                   height: "100%",
-                  background: `linear-gradient(90deg, ${CYAN}, ${PURPLE})`,
+                  background: BLUE,
                   borderRadius: 4,
                }}
                initial={{ width: "0%" }}

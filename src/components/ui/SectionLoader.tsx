@@ -11,7 +11,7 @@ const SPINNER_STYLE: React.CSSProperties = {
    width: 32,
    height: 32,
    borderRadius: "50%",
-   border: "2px solid rgba(6, 182, 212, 0.2)",
+   border: "2px solid rgba(96, 165, 250, 0.2)",
    borderTopColor: CYAN,
    animation: "spin 1s linear infinite",
 };
