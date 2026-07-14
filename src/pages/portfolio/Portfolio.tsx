@@ -12,7 +12,7 @@ import { MONO_FONT, TEXT_SECONDARY, MAX_WIDTH } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import { FILTERS, parseDate } from "./portfolioConstants";
 import type { ProjectWithCategory } from "./portfolioConstants";
-import ProjectTimeline from "./ProjectTimeline";
+import ProjectGrid from "./ProjectGrid";
 import OpenSourceBanner from "./OpenSourceBanner";
 import ProjectModal from "./ProjectModal";
 
@@ -179,8 +179,8 @@ const Portfolio = () => {
                })}
             </motion.div>
 
-            {/* Vertical timeline */}
-            <ProjectTimeline
+            {/* Card grid with live screenshots / animated covers */}
+            <ProjectGrid
                projects={filteredProjects}
                isMobile={isMobile}
                onOpenProject={handleOpenProject}

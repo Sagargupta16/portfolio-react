@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
-import { scaleRotateIn } from "@utils/animations";
 import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import {
    getCategoryColors,
@@ -10,12 +9,15 @@ import {
 } from "./portfolioConstants";
 import ProjectLink from "./ProjectLink";
 import ProjectCardHeader from "./ProjectCardHeader";
+import ProjectCover from "./covers/ProjectCover";
 
 interface ProjectCardProps {
    data: ProjectWithCategory;
    index?: number;
    onOpen?: () => void;
 }
+
+const MAX_VISIBLE_TAGS = 5;
 
 const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
    const hasGithub = isValidUrl(data.github);
@@ -30,6 +32,9 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
       Boolean(data.description);
    const clickable = hasDetail && Boolean(onOpen);
 
+   const visibleTags = data.tools_tech.slice(0, MAX_VISIBLE_TAGS);
+   const hiddenTagCount = data.tools_tech.length - visibleTags.length;
+
    const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (!clickable) return;
       if (e.key === "Enter" || e.key === " ") {
@@ -40,34 +45,28 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
 
    return (
       <motion.div
-         className="glass-card"
+         className="glass-card project-card"
          style={{
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
             cursor: clickable ? "pointer" : "default",
+            height: "100%",
          }}
          layout
-         variants={scaleRotateIn}
-         initial="hidden"
-         whileInView="visible"
+         initial={{ opacity: 0, y: 30 }}
+         whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-         exit={{ opacity: 0, y: -20, scale: 0.95 }}
+         exit={{ opacity: 0, y: -20, scale: 0.97 }}
          transition={{
-            ...(typeof scaleRotateIn.visible === "object" &&
-            "transition" in scaleRotateIn.visible
-               ? (
-                    scaleRotateIn.visible as {
-                       transition: Record<string, unknown>;
-                    }
-                 ).transition
-               : {}),
-            delay: Math.min(index * 0.1, 0.8),
-            layout: { duration: 0.7, ease: [0.4, 0, 0.2, 1] },
+            duration: 0.55,
+            ease: [0.16, 1, 0.3, 1],
+            delay: Math.min((index % 6) * 0.06, 0.35),
+            layout: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
          }}
          whileHover={{
             y: -6,
-            transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
+            transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
          }}
          onClick={clickable ? onOpen : undefined}
          onKeyDown={clickable ? handleKey : undefined}
@@ -75,18 +74,16 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
          tabIndex={clickable ? 0 : undefined}
          aria-label={clickable ? `View details for ${data.title}` : undefined}
       >
-         {/* Accent top bar */}
-         <div
-            style={{
-               height: isFeatured ? 4 : 3,
-               background: colors.gradient,
-               borderRadius: "12px 12px 0 0",
-            }}
+         {/* Media: live screenshot or animated scene */}
+         <ProjectCover
+            projectId={data.id}
+            title={data.title}
+            accent={colors.accent}
          />
 
          <div
             style={{
-               padding: "24px 24px 20px",
+               padding: "20px 22px 18px",
                display: "flex",
                flexDirection: "column",
                flex: 1,
@@ -99,13 +96,14 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
                isCollab={isCollab}
             />
 
-            {/* Description */}
+            {/* Description (clamped -- full text lives in the modal) */}
             <p
+               className="line-clamp-3"
                style={{
                   color: TEXT_SECONDARY,
-                  fontSize: 12,
-                  lineHeight: 1.7,
-                  marginBottom: 16,
+                  fontSize: 13,
+                  lineHeight: 1.65,
+                  marginBottom: 14,
                   flex: 1,
                }}
             >
@@ -118,10 +116,10 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
                   display: "flex",
                   flexWrap: "wrap",
                   gap: 4,
-                  marginBottom: 16,
+                  marginBottom: 14,
                }}
             >
-               {data.tools_tech.map((tool) => (
+               {visibleTags.map((tool) => (
                   <span
                      key={`${data.id}-tool-${tool}`}
                      style={{
@@ -129,32 +127,29 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
                         fontSize: 10,
                         padding: "3px 8px",
                         borderRadius: 6,
-                        background: `${colors.bgAlpha}0.08)`,
-                        color: colors.accent,
-                        border: `1px solid ${colors.borderAlpha}0.15)`,
+                        background: "rgba(255,255,255,0.05)",
+                        color: TEXT_SECONDARY,
+                        border: "1px solid rgba(255,255,255,0.08)",
                      }}
                   >
                      {tool}
                   </span>
                ))}
+               {hiddenTagCount > 0 && (
+                  <span
+                     style={{
+                        fontFamily: MONO_FONT,
+                        fontSize: 10,
+                        padding: "3px 8px",
+                        borderRadius: 6,
+                        color: colors.accent,
+                        border: "1px dashed rgba(255,255,255,0.12)",
+                     }}
+                  >
+                     +{hiddenTagCount}
+                  </span>
+               )}
             </div>
-
-            {/* Click-for-details hint (subtle, shown only when there's real detail to see) */}
-            {clickable && (
-               <p
-                  style={{
-                     fontFamily: MONO_FONT,
-                     fontSize: 10,
-                     color: colors.accent,
-                     opacity: 0.7,
-                     marginBottom: 12,
-                     letterSpacing: "0.02em",
-                  }}
-                  aria-hidden="true"
-               >
-                  Click for details
-               </p>
-            )}
 
             {/* Links */}
             {(hasGithub || hasLive) && (
@@ -162,7 +157,7 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
                   style={{
                      display: "flex",
                      gap: 8,
-                     paddingTop: 14,
+                     paddingTop: 12,
                      borderTop: "1px solid rgba(255,255,255,0.04)",
                   }}
                >

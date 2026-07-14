@@ -3,6 +3,7 @@ import { ReactLenis } from "lenis/react";
 import Nav from "@components/layout/Navigation/Nav";
 import Hero from "@components/layout/Header/Hero";
 import Footer from "@components/layout/Footer/Footer";
+import AmbientBackground from "@components/layout/AmbientBackground";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import ScrollProgress from "@components/ui/ScrollProgress";
 import BackToTop from "@components/ui/BackToTop";
@@ -47,6 +48,7 @@ const App = () => {
                <Preloader />
                <ScrollProgress />
                <KeyboardNav />
+               <AmbientBackground />
                <div className="relative min-h-screen">
                   <a href="#main-content" className="skip-link">
                      Skip to content

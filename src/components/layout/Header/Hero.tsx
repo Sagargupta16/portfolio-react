@@ -18,9 +18,7 @@ const Hero = () => {
          id="hero"
          className="relative min-h-screen overflow-hidden flex items-center justify-center"
       >
-         {/* Halftone dot spotlight behind the headline */}
-         <div className="absolute inset-0 grid-bg" />
-
+         {/* Dot texture comes from the site-wide AmbientBackground */}
          <HeroContent />
 
          {/* Scroll indicator */}
