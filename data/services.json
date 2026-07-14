@@ -44,6 +44,17 @@
       ]
    },
    {
+      "id": 7,
+      "title": "AI-Driven Development (AI-DLC)",
+      "list": [
+         "AI-first project setup: CLAUDE.md, skills, hooks, subagents",
+         "MCP integrations wired into the dev workflow",
+         "Spec-to-ship pipelines with Claude Code, Kiro, Amazon Q",
+         "Agent-executable runbooks and guardrails",
+         "Team enablement for AI pair-programming"
+      ]
+   },
+   {
       "id": 5,
       "title": "Cloud Consulting",
       "list": [

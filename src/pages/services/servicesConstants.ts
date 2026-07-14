@@ -1,4 +1,12 @@
-import { Cloud, Code, Trophy, Brain, Bot, Shield } from "lucide-react";
+import {
+   Cloud,
+   Code,
+   Trophy,
+   Brain,
+   Bot,
+   Shield,
+   Sparkles,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export const iconMap: Record<string, LucideIcon> = {
@@ -6,6 +14,7 @@ export const iconMap: Record<string, LucideIcon> = {
    "Cloud & DevOps": Cloud,
    "AI/ML & MLOps": Brain,
    "AI Agents & Tooling": Bot,
+   "AI-Driven Development (AI-DLC)": Sparkles,
    "Cloud Consulting": Shield,
    "Competitive Programming": Trophy,
 };

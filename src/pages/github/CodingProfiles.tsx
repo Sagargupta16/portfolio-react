@@ -98,7 +98,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                textAlign: "center",
             }}
          >
-            Profiles
+            Coding Platform Profiles
          </motion.h3>
 
          <motion.div

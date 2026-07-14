@@ -7,6 +7,7 @@ import {
    PURPLE,
    TEXT_PRIMARY,
 } from "@/constants/theme";
+import { getOrgLogo } from "@utils/orgLogos";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 
 interface EducationCardHeaderProps {
@@ -30,7 +31,9 @@ const InstitutionRow = ({ institution }: { institution: string }) => (
             flexShrink: 0,
          }}
       >
-         <GraduationCap style={{ width: 14, height: 14, color: PURPLE }} />
+         {getOrgLogo(institution, 16) ?? (
+            <GraduationCap style={{ width: 14, height: 14, color: PURPLE }} />
+         )}
       </div>
       <h3
          style={{

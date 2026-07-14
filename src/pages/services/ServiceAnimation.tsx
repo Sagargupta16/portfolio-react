@@ -4,6 +4,7 @@ import NeuralNetAnim from "./animations/NeuralNetAnim";
 import AgentChatAnim from "./animations/AgentChatAnim";
 import ArchitectureAnim from "./animations/ArchitectureAnim";
 import SortAnim from "./animations/SortAnim";
+import AiDlcAnim from "./animations/AiDlcAnim";
 
 interface ServiceAnimationProps {
    title: string;
@@ -15,6 +16,7 @@ const ANIM_MAP: Record<string, React.FC<{ color: string }>> = {
    "Cloud & DevOps": PipelineAnim,
    "AI/ML & MLOps": NeuralNetAnim,
    "AI Agents & Tooling": AgentChatAnim,
+   "AI-Driven Development (AI-DLC)": AiDlcAnim,
    "Cloud Consulting": ArchitectureAnim,
    "Competitive Programming": SortAnim,
 };
