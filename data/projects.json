@@ -838,6 +838,12 @@
    ],
    "open_source_contributions": [
       {
+         "repo": "axios/axios",
+         "title": "Synthesize AxiosError message from AggregateError on dual-stack connection failures",
+         "url": "https://github.com/axios/axios/pull/11059",
+         "status": "merged"
+      },
+      {
          "repo": "feast-dev/feast",
          "title": "Add Claude Code agent skills for Feast",
          "url": "https://github.com/feast-dev/feast/pull/6081",
