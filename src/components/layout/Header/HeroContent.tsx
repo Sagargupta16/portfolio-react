@@ -32,7 +32,9 @@ const HeroContent = () => {
 
    return (
       <motion.div
-         className="relative z-10 flex flex-col items-center text-center px-6 py-32 gap-7 max-w-4xl mx-auto"
+         // Bottom padding is deliberately larger than top: it reserves a lane for
+         // the absolute scroll indicator so it never overlaps the social icons.
+         className="relative z-10 flex flex-col items-center text-center px-6 pt-28 pb-36 gap-6 max-w-4xl mx-auto"
          variants={staggerContainer}
          initial="hidden"
          animate="visible"

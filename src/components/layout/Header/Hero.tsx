@@ -24,7 +24,7 @@ const Hero = () => {
          {/* Scroll indicator */}
          <motion.button
             onClick={scrollToAbout}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2 }}

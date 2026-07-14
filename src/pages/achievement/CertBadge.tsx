@@ -34,6 +34,9 @@ const CertBadge = ({
    entranceDelay,
 }: CertBadgeProps) => {
    const [isHovered, setIsHovered] = useState(false);
+   // If the CDN's resized variant fails (transient 5xx / cold cache on newly
+   // synced badges), fall back to the original full-size URL once.
+   const [useOriginal, setUseOriginal] = useState(false);
    const accent = (level && LEVEL_COLOR[level]) ?? CYAN;
 
    return (
@@ -90,7 +93,8 @@ const CertBadge = ({
                }}
             />
             <img
-               src={credlyThumb(imageUrl)}
+               src={useOriginal ? imageUrl : credlyThumb(imageUrl)}
+               onError={() => setUseOriginal(true)}
                alt={name}
                loading="lazy"
                width={size}

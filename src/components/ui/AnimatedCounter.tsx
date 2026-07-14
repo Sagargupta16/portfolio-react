@@ -51,13 +51,28 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
       return () => cancelAnimationFrame(rafId);
    }, [inView, numericValue, duration]);
 
+   // Short suffixes ("+", "k") read as part of the number; long ones
+   // (" merged + 12 open") are annotations and shrink so they don't dominate.
+   const suffixIsAnnotation = suffix.trim().length > 2;
+
    return (
       <span
          ref={ref}
-         className="font-mono text-3xl font-bold text-accent-cyan glow-cyan-text tabular-nums"
+         className="font-mono text-3xl font-bold text-accent-cyan tabular-nums"
       >
          {count.toFixed(decimals)}
-         {suffix && <span className="text-accent-cyan/70">{suffix}</span>}
+         {suffix && (
+            <span
+               className="text-accent-cyan/70"
+               style={
+                  suffixIsAnnotation
+                     ? { fontSize: "0.5em", fontWeight: 600 }
+                     : undefined
+               }
+            >
+               {suffix}
+            </span>
+         )}
       </span>
    );
 };
