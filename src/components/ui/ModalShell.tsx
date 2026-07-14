@@ -80,10 +80,8 @@ const ModalShell = ({
                      overflowY: "auto",
                      borderRadius: isMobile ? "20px 20px 0 0" : 20,
                      border: "1px solid rgba(255,255,255,0.1)",
-                     background:
-                        "linear-gradient(180deg, rgba(15,15,30,0.98) 0%, rgba(8,8,20,0.99) 100%)",
-                     boxShadow:
-                        "0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgb(var(--ch-cyan) / 0.04)",
+                     background: "#0e1417",
+                     boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
                   }}
                >
                   {children}

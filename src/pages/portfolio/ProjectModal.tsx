@@ -8,6 +8,7 @@ import {
 } from "./portfolioConstants";
 import ProjectModalHeader from "./ProjectModalHeader";
 import ProjectModalBody from "./ProjectModalBody";
+import ProjectCover from "./covers/ProjectCover";
 
 interface ProjectModalProps {
    project: ProjectWithCategory | null;
@@ -63,6 +64,12 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   colors={colors}
                   isMobile={isMobile}
                   onClose={onClose}
+               />
+               {/* Same cover media as the card: live screenshot or animated scene */}
+               <ProjectCover
+                  projectId={project.id}
+                  title={project.title}
+                  accent={colors.accent}
                />
                <ProjectModalBody
                   project={project}
