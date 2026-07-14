@@ -33,15 +33,25 @@ const CharacterReveal = ({
       margin: "0px 0px -80px 0px",
    });
 
-   const chars = useMemo(() => {
+   // Group characters by word so line-wrapping happens at word boundaries --
+   // per-character inline-blocks let the browser break mid-word ("Sagar G/upta").
+   const words = useMemo(() => {
       const counts: Record<string, number> = {};
-      return text.split("").map((char) => {
-         counts[char] = (counts[char] ?? 0) + 1;
-         return { char, id: `${char}-${counts[char]}` };
+      return text.split(" ").map((word) => {
+         counts[word] = (counts[word] ?? 0) + 1;
+         return {
+            id: `${word}-${counts[word]}`,
+            chars: word.split("").map((char, i) => ({
+               char,
+               id: `${word}-${counts[word]}-${i}`,
+            })),
+         };
       });
    }, [text]);
 
    const MotionTag = motionTags[as];
+
+   let charIndex = 0;
 
    return (
       <MotionTag
@@ -50,33 +60,37 @@ const CharacterReveal = ({
          style={{ display: "inline-block", ...style }}
          aria-label={text}
       >
-         {chars.map(({ char, id }, i) => {
-            if (char === " ") {
-               return (
-                  <span key={id} style={{ display: "inline-block" }}>
-                     &nbsp;
-                  </span>
-               );
-            }
-            return (
-               <motion.span
-                  key={id}
-                  style={{ display: "inline-block" }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={
-                     isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-                  }
-                  transition={{
-                     type: "spring",
-                     stiffness: 200,
-                     damping: 15,
-                     delay: i * stagger,
-                  }}
-               >
-                  {char}
-               </motion.span>
-            );
-         })}
+         {words.map((word, wi) => (
+            <span
+               key={word.id}
+               style={{ display: "inline-block", whiteSpace: "nowrap" }}
+            >
+               {word.chars.map(({ char, id }) => {
+                  const delay = charIndex++ * stagger;
+                  return (
+                     <motion.span
+                        key={id}
+                        style={{ display: "inline-block" }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={
+                           isInView
+                              ? { opacity: 1, y: 0 }
+                              : { opacity: 0, y: 20 }
+                        }
+                        transition={{
+                           type: "spring",
+                           stiffness: 200,
+                           damping: 15,
+                           delay,
+                        }}
+                     >
+                        {char}
+                     </motion.span>
+                  );
+               })}
+               {wi < words.length - 1 && <span>&nbsp;</span>}
+            </span>
+         ))}
       </MotionTag>
    );
 };
