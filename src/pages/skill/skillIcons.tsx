@@ -41,6 +41,12 @@ import {
    SiGit,
    SiAnthropic,
    SiGithubcopilot,
+   SiAstro,
+   SiGraphql,
+   SiLinux,
+   SiUnity,
+   SiVercel,
+   SiGooglechrome,
 } from "react-icons/si";
 import { FaJava, FaAws } from "react-icons/fa";
 import { TbBrandCSharp, TbBrandVscode, TbApi } from "react-icons/tb";
@@ -109,6 +115,7 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    // Frontend
    React: { Icon: SiReact, color: "#61DAFB" },
    "Next.js": { Icon: SiNextdotjs, color: "#FFFFFF" },
+   Astro: { Icon: SiAstro, color: "#FF5D01" },
    Vite: { Icon: SiVite, color: "#646CFF" },
    "Tailwind CSS": { Icon: SiTailwindcss, color: "#38BDF8" },
    "Three.js": { Icon: SiThreedotjs, color: "#FFFFFF" },
@@ -121,6 +128,7 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    "Express.js": { Icon: SiExpress, color: "#FFFFFF" },
    FastAPI: { Icon: SiFastapi, color: "#009688" },
    "REST API": { Icon: TbApi, color: BLUE },
+   GraphQL: { Icon: SiGraphql, color: "#E10098" },
    MongoDB: { Icon: SiMongodb, color: "#47A248" },
    PostgreSQL: { Icon: SiPostgresql, color: "#699ECA" },
    MySQL: { Icon: SiMysql, color: "#4479A1" },
@@ -134,7 +142,9 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    "GitHub Actions": { Icon: SiGithubactions, color: "#2088FF" },
    Jenkins: { Icon: SiJenkins, color: "#D24939" },
    "CI/CD Pipelines": { Icon: Workflow, color: BLUE },
+   GitOps: { Icon: GitFork, color: BLUE },
    "Blue-Green Deployment": { Icon: ArrowLeftRight, color: BLUE },
+   Linux: { Icon: SiLinux, color: "#FCC624" },
    "AWS CDK": { Icon: FaAws, color: AWS_ORANGE },
    "AWS Step Functions": { Icon: FaAws, color: AWS_ORANGE },
    "Infrastructure as Code": { Icon: FileCode2, color: BLUE },
@@ -153,6 +163,8 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    MLOps: { Icon: Workflow, color: BLUE },
    "LLM APIs": { Icon: Sparkles, color: BLUE },
    "RAG Pipelines": { Icon: Layers, color: BLUE },
+   "Feast (Feature Store)": { Icon: Database, color: BLUE },
+   LLMOps: { Icon: Bot, color: BLUE },
 
    // Tools & platforms
    "Claude Code": { Icon: SiAnthropic, color: "#D97757" },
@@ -167,6 +179,9 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    "MCP Protocol": { Icon: Plug, color: BLUE },
    "AI Agent Frameworks": { Icon: Bot, color: BLUE },
    SonarQube: { Icon: SiSonarqubeserver, color: "#4E9BCD" },
+   Unity: { Icon: SiUnity, color: "#FFFFFF" },
+   Vercel: { Icon: SiVercel, color: "#FFFFFF" },
+   "Chrome Extensions": { Icon: SiGooglechrome, color: "#4285F4" },
 
    // CS fundamentals
    "Data Structures & Algorithms": { Icon: Binary, color: BLUE },

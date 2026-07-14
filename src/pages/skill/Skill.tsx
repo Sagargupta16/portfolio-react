@@ -8,12 +8,14 @@ import PageSection from "@components/layout/PageSection";
 import SkillTagGroup from "./SkillTagGroup";
 import SecondarySkills from "./SecondarySkills";
 
+// Display order leads with the strongest positioning (DevOps/MLOps @ AWS),
+// mirroring the hero badge -- not alphabetical, not stack-conventional.
 const CATEGORY_CONFIG: Record<string, string> = {
-   languages: "Languages",
-   frontend: "Frontend",
-   backend: "Backend & Databases",
    cloud_devops: "Cloud & DevOps",
    ai_ml: "AI / Machine Learning",
+   languages: "Languages",
+   backend: "Backend & Databases",
+   frontend: "Frontend",
    tools_platforms: "Tools & Platforms",
 };
 
