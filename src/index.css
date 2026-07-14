@@ -65,6 +65,9 @@ html {
    /* Lenis owns smooth scrolling; CSS smooth here would double-drive programmatic
       scrolls (scrollIntoView) and fight it. Keep auto. */
    scroll-behavior: auto;
+   /* Below-fold reveal variants park elements at translateX(+-120px) until they
+      animate in; clip so that never widens the page on phones. */
+   overflow-x: clip;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
    /* Always reserve the scrollbar gutter so opening a modal (which locks body
