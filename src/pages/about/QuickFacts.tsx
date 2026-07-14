@@ -24,6 +24,13 @@ interface Fact {
 const QuickFacts = ({ isMobile }: { isMobile: boolean }) => {
    const facts = useMemo<Fact[]>(() => {
       const degree = getEducation()[0];
+      // "Master of Computer Applications (MCA)" -> "MCA" without regex
+      // (Sonar S8786 flags the capture-group pattern for backtracking).
+      const title = degree?.title ?? "";
+      const open = title.indexOf("(");
+      const close = title.indexOf(")", open + 1);
+      const degreeShort =
+         open !== -1 && close !== -1 ? title.slice(open + 1, close) : title;
       return [
          { Icon: MapPin, label: "Based in", value: getLocation() },
          {
@@ -36,8 +43,7 @@ const QuickFacts = ({ isMobile }: { isMobile: boolean }) => {
          {
             Icon: GraduationCap,
             label: "Education",
-            // "Master of Computer Applications (MCA)" -> "MCA"
-            value: `${/\(([^)]+)\)/.exec(degree?.title ?? "")?.[1] ?? degree?.title ?? ""}, NIT Warangal`,
+            value: `${degreeShort}, NIT Warangal`,
          },
          {
             Icon: Languages,
