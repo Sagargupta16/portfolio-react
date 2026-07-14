@@ -15,6 +15,8 @@ import aiCodeTranslator from "@assets/projects/ai-code-translator.webp";
 import contactManager from "@assets/projects/contact-manager.webp";
 import musicWebApp from "@assets/projects/music-web-app.webp";
 import claudeCostOptimizer from "@assets/projects/claude-cost-optimizer.webp";
+import kalchar from "@assets/projects/kalchar.webp";
+import sagas from "@assets/projects/sagas.webp";
 
 export interface SceneCoverProps {
    tint: string;
@@ -44,6 +46,7 @@ export type ProjectCover =
  */
 const COVER_BY_ID: Record<number, ProjectCover> = {
    // Featured
+   44: { kind: "image", src: kalchar }, // Kalchar (kalchar.co.in)
    37: { kind: "image", src: gitscope }, // GitScope (Chrome Web Store shot)
    15: { kind: "image", src: ledgerSync },
    2: { kind: "image", src: leetcodeRatingPredictor },
@@ -61,6 +64,7 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    27: { kind: "image", src: noobathon },
 
    // Others
+   46: { kind: "image", src: sagas }, // Sagas (sagargupta.online/sagas)
    40: { kind: "scene", Scene: AutomationScene, variant: "instagram" }, // Instagram Autopilot
    19: { kind: "image", src: financialDashboard },
    7: { kind: "scene", Scene: InfraScene }, // AWS DevOps Infrastructure
@@ -76,6 +80,8 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    6: { kind: "image", src: musicWebApp },
 
    // Community
+   45: { kind: "scene", Scene: DocsScene, variant: "skills" }, // skillcheck (npm CLI)
+   47: { kind: "scene", Scene: McpScene }, // ITR MCP
    38: { kind: "scene", Scene: DocsScene, variant: "skills" }, // Claude Skills
    36: { kind: "image", src: claudeCostOptimizer },
    43: { kind: "scene", Scene: McpScene, variant: "bedrock" }, // Bedrock Multi-Model MCP

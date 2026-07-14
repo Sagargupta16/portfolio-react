@@ -1,6 +1,30 @@
 {
    "featured_projects": [
       {
+         "id": 44,
+         "title": "Kalchar",
+         "description": "Production folk-art portfolio and commission site for a traditional artist - Madhubani, Pichwai, Lippan, and Gond artwork gallery with a buy filter, events, workshops, custom orders, and a server-rendered admin panel. Public pages are static, catalog lives in Neon Postgres behind a single data seam, and artwork images are served from Cloudflare R2.",
+         "date": "May 2026",
+         "tools_tech": [
+            "Next.js 16",
+            "React 19",
+            "TypeScript",
+            "Tailwind CSS 4",
+            "Neon Postgres",
+            "Drizzle ORM",
+            "Cloudflare R2",
+            "Vercel"
+         ],
+         "features": [
+            "Artwork gallery with buy filter, events, workshops, and custom-order flows",
+            "Admin panel (artworks, events, profile, maintainers) behind Auth.js + Google with a DB allowlist",
+            "Neon Postgres catalog via Drizzle, R2 image variants pipeline, WhatsApp order handoff",
+            "Static/SSG public pages + server-rendered admin on Vercel, Motion + Lenis animations"
+         ],
+         "github": "https://github.com/Sagargupta16/kalchar",
+         "live": "https://kalchar.co.in/"
+      },
+      {
          "id": 37,
          "title": "GitScope",
          "description": "A Chrome extension plus web dashboard that adds deep GitHub profile insights - 9-stat grid, coding personality badges, language breakdown, activity heatmap, contribution donut, repo growth timeline, profile comparison, and a leaderboard across everyone you follow. Published on the Chrome Web Store with GitHub OAuth for traffic analytics.",
@@ -115,19 +139,19 @@
       {
          "id": 3,
          "title": "Personal Portfolio",
-         "description": "A modern, dark-themed portfolio with 3D WebGL scene, glassmorphism effects, particle animations, and a data-driven architecture. Built with React 19, Vite 7, and Tailwind CSS v4.",
+         "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with live screenshots and animated SVG covers, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
          "date": "October 2022",
          "tools_tech": [
             "React 19",
-            "Vite",
+            "Vite 8",
             "Tailwind CSS v4",
-            "Three.js",
             "Motion",
+            "Lenis",
             "EmailJS"
          ],
          "features": [
-            "Interactive 3D hero scene with Three.js",
-            "Glassmorphism design with animated orbs",
+            "Minimal dark design with ambient aurora + beam background",
+            "Project cards with live site screenshots and animated SVG covers",
             "Data-driven content via JSON files",
             "GitHub activity calendar integration"
          ],
@@ -325,6 +349,27 @@
       }
    ],
    "other_projects": [
+      {
+         "id": 46,
+         "title": "Sagas",
+         "description": "A living library of unfinished books - original fantasy, fan fiction, and essays written in the open, one chapter at a time. Astro static site with content collections and zero client JS; every book is a folder of Markdown, drafts are public, and git history is the writing log.",
+         "date": "July 2026",
+         "tools_tech": [
+            "Astro 7",
+            "TypeScript",
+            "Markdown",
+            "Content Collections",
+            "GitHub Pages"
+         ],
+         "features": [
+            "Three shelves: original fantasy, fan fiction, and essays",
+            "One folder per book: book.md plus a Markdown file per chapter",
+            "Chapter status tracking (draft / revising / final) with RSS feed on publish",
+            "Zero client-side JavaScript, deploys to GitHub Pages on every push"
+         ],
+         "github": "https://github.com/Sagargupta16/sagas",
+         "live": "https://sagargupta.online/sagas/"
+      },
       {
          "id": 40,
          "title": "Instagram Autopilot",
@@ -628,6 +673,47 @@
       }
    ],
    "community_projects": [
+      {
+         "id": 45,
+         "title": "skillcheck",
+         "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, client-extension awareness across 6 runtimes (Claude Code, Codex, Gemini CLI, Copilot, Cursor, OpenCode), structure and reference validation, SARIF output, and a drop-in GitHub Action.",
+         "date": "July 2026",
+         "tools_tech": [
+            "TypeScript",
+            "Node.js",
+            "npm",
+            "GitHub Actions",
+            "SARIF"
+         ],
+         "features": [
+            "36 lint rules with message-for-message parity against the reference validator",
+            "Client-extension awareness: knows which frontmatter fields each of 6 runtimes accepts",
+            "Structure + relative-reference validation, trigger-test scaffolding",
+            "SARIF output for code scanning and a drop-in GitHub Action"
+         ],
+         "github": "https://github.com/Sagargupta16/skillcheck",
+         "live": "https://www.npmjs.com/package/@sagargupta1610/skillcheck"
+      },
+      {
+         "id": 47,
+         "title": "ITR MCP",
+         "description": "Local-first MCP server for Indian income tax, published on npm. Deterministic tax computation, old-vs-new regime comparison, advance tax planning, and document parsing - all on your machine. The LLM never does arithmetic; every number comes from a versioned, auditable rule pack. Works with Claude Desktop, Claude Code, and any MCP client.",
+         "date": "July 2026",
+         "tools_tech": [
+            "TypeScript",
+            "MCP Protocol",
+            "Node.js",
+            "npm"
+         ],
+         "features": [
+            "compute_tax and compare_regimes with slab, cess, and surcharge handling",
+            "Advance tax planning and LTCG/STCG capital gains computation",
+            "Local document parsing - no accounts, no uploads, no cloud",
+            "Versioned rule packs so every figure is auditable"
+         ],
+         "github": "https://github.com/Sagargupta16/itr-mcp",
+         "live": "https://www.npmjs.com/package/itr-mcp"
+      },
       {
          "id": 38,
          "title": "Claude Skills",
