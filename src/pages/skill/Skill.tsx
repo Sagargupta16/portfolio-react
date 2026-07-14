@@ -58,12 +58,12 @@ const Skill = () => {
       >
          <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
             <motion.div
-               style={{ display: "flex", flexDirection: "column", gap: 48 }}
+               style={{ display: "flex", flexDirection: "column", gap: 56 }}
                variants={staggerContainer}
             >
                {primaryCategories.map(({ key, label, items }) => (
                   <motion.div key={key} variants={staggerItem}>
-                     <h3 className="dashed-rule" style={{ marginBottom: 24 }}>
+                     <h3 className="dashed-rule" style={{ marginBottom: 28 }}>
                         {label}
                      </h3>
                      <SkillTagGroup items={items} />

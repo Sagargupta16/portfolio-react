@@ -539,6 +539,15 @@ img {
    transform: scale(0.96);
 }
 
+/* ===== Skill Item (icon + name rows, akobir tech-stack style) ===== */
+.skill-item {
+   transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.skill-item:hover {
+   transform: translateY(-2px);
+}
+
 /* ===== Form Input ===== */
 .form-input {
    width: 100%;

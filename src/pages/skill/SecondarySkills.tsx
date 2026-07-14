@@ -1,10 +1,6 @@
 import { motion } from "motion/react";
-import {
-   staggerContainer,
-   staggerItem,
-   waveCascadeContainer,
-   waveCascadeItem,
-} from "@utils/animations";
+import { staggerContainer, staggerItem } from "@utils/animations";
+import SkillTagGroup from "./SkillTagGroup";
 
 interface CategoryEntry {
    key: string;
@@ -22,44 +18,19 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
    return (
       <motion.div
          style={{
-            marginTop: 48,
+            marginTop: 56,
             display: "flex",
             flexDirection: "column",
-            gap: 32,
+            gap: 48,
          }}
          variants={staggerContainer}
       >
          {categories.map(({ key, label, items }) => (
             <motion.div key={key} variants={staggerItem}>
-               <h4 className="dashed-rule" style={{ marginBottom: 20 }}>
+               <h4 className="dashed-rule" style={{ marginBottom: 28 }}>
                   {label}
                </h4>
-               <motion.div
-                  style={{
-                     display: "flex",
-                     flexWrap: "wrap",
-                     gap: 8,
-                     justifyContent: "center",
-                  }}
-                  variants={waveCascadeContainer}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "0px 0px -100px 0px" }}
-               >
-                  {items.map((skill) => (
-                     <motion.span
-                        key={skill}
-                        className="skill-tag"
-                        style={{
-                           fontSize: 12,
-                           padding: "4px 12px",
-                        }}
-                        variants={waveCascadeItem}
-                     >
-                        {skill}
-                     </motion.span>
-                  ))}
-               </motion.div>
+               <SkillTagGroup items={items} small />
             </motion.div>
          ))}
       </motion.div>
