@@ -15,9 +15,18 @@ const MONTHS_IN_YEAR = 12;
 const CALENDAR_TIMEOUT_MS = 10_000;
 
 // -- Skeleton --
-const SKELETON_ROWS = Array.from({ length: DAYS_IN_WEEK }, (_, i) => `row-${i}`);
-const SKELETON_COLS = Array.from({ length: WEEKS_IN_YEAR }, (_, i) => `col-${i}`);
-const SKELETON_MONTHS = Array.from({ length: MONTHS_IN_YEAR }, (_, i) => `month-${i}`);
+const SKELETON_ROWS = Array.from(
+   { length: DAYS_IN_WEEK },
+   (_, i) => `row-${i}`,
+);
+const SKELETON_COLS = Array.from(
+   { length: WEEKS_IN_YEAR },
+   (_, i) => `col-${i}`,
+);
+const SKELETON_MONTHS = Array.from(
+   { length: MONTHS_IN_YEAR },
+   (_, i) => `month-${i}`,
+);
 
 const CalendarSkeleton = () => (
    <div
@@ -40,7 +49,9 @@ const CalendarSkeleton = () => (
                      width: 11,
                      height: 11,
                      borderRadius: 4,
-                     opacity: 0.3 + ((row * WEEKS_IN_YEAR + col) % DAYS_IN_WEEK) * 0.06,
+                     opacity:
+                        0.3 +
+                        ((row * WEEKS_IN_YEAR + col) % DAYS_IN_WEEK) * 0.06,
                      animationDelay: `${(row * WEEKS_IN_YEAR + col) * 2}ms`,
                   }}
                />

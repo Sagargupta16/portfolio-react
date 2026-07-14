@@ -12,7 +12,7 @@ import { MONO_FONT, TEXT_SECONDARY, MAX_WIDTH } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import { FILTERS, parseDate } from "./portfolioConstants";
 import type { ProjectWithCategory } from "./portfolioConstants";
-import ProjectTimeline from "./ProjectTimeline";
+import ProjectGrid from "./ProjectGrid";
 import OpenSourceBanner from "./OpenSourceBanner";
 import ProjectModal from "./ProjectModal";
 
@@ -138,7 +138,6 @@ const Portfolio = () => {
                                       "1px solid rgba(255, 255, 255, 0.06)",
                                    color: TEXT_SECONDARY,
                                    background: "rgba(255, 255, 255, 0.03)",
-                                   backdropFilter: "blur(8px)",
                                    display: "inline-flex",
                                    alignItems: "center",
                                    gap: 8,
@@ -180,8 +179,8 @@ const Portfolio = () => {
                })}
             </motion.div>
 
-            {/* Vertical timeline */}
-            <ProjectTimeline
+            {/* Card grid with live screenshots / animated covers */}
+            <ProjectGrid
                projects={filteredProjects}
                isMobile={isMobile}
                onOpenProject={handleOpenProject}

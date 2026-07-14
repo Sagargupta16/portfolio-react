@@ -13,9 +13,9 @@ export interface ContactColors {
 
 export const CONTACT_COLORS: Record<string, ContactColors> = {
    email: {
-      accent: "#06b6d4",
-      bg: "rgba(6,182,212,0.08)",
-      border: "rgba(6,182,212,0.15)",
+      accent: "#60a5fa",
+      bg: "rgba(96,165,250,0.08)",
+      border: "rgba(96,165,250,0.15)",
    },
    linkedin: {
       accent: "#0a66c2",

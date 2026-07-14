@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useLenis } from "lenis/react";
 import { getName, getRoles } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
-import { MONO_FONT, GREEN } from "@/constants/theme";
+import { GREEN, TEXT_SECONDARY } from "@/constants/theme";
 import HeroStats from "./HeroStats";
 import HeroSocial from "./HeroSocial";
 const RESUME_URL =
@@ -32,42 +32,60 @@ const HeroContent = () => {
 
    return (
       <motion.div
-         className="relative z-10 flex flex-col items-center text-center px-6 py-32 gap-7 max-w-4xl mx-auto"
+         // Bottom padding is deliberately larger than top: it reserves a lane for
+         // the absolute scroll indicator so it never overlaps the social icons.
+         className="relative z-10 flex flex-col items-center text-center px-6 pt-28 pb-36 gap-6 max-w-4xl mx-auto"
          variants={staggerContainer}
          initial="hidden"
          animate="visible"
       >
-         {/* Terminal badge */}
+         {/* Logo tile (akobir-style mark above the headline) */}
          <motion.div variants={staggerItem}>
-            <span
+            <div
                style={{
-                  display: "inline-flex",
+                  width: 64,
+                  height: 64,
+                  borderRadius: 16,
+                  display: "flex",
                   alignItems: "center",
-                  gap: 8,
-                  fontFamily: MONO_FONT,
-                  fontSize: 14,
-                  color: GREEN,
-                  background: "rgba(34, 197, 94, 0.06)",
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                  border: "1px solid rgba(34, 197, 94, 0.12)",
-                  borderRadius: 9999,
-                  padding: "4px 16px",
+                  justifyContent: "center",
+                  fontSize: 24,
+                  fontWeight: 800,
+                  letterSpacing: "-0.02em",
+                  color: "#0b1012",
+                  background: "#67e8f9",
                }}
+               aria-hidden="true"
             >
-               <span className="w-2 h-2 rounded-full bg-accent-green animate-glow-pulse" />
-               {"// Cloud Consultant \u2014 DevOps/MLOps @ AWS"}
-               <span className="animate-blink">|</span>
+               SG
+            </div>
+         </motion.div>
+
+         {/* Status badge */}
+         <motion.div variants={staggerItem}>
+            <span className="badge-pill">
+               <span
+                  className="animate-glow-pulse"
+                  style={{
+                     width: 8,
+                     height: 8,
+                     borderRadius: "50%",
+                     background: GREEN,
+                     flexShrink: 0,
+                  }}
+               />
+               <span>DevOps/MLOps Consultant @ AWS</span>
             </span>
          </motion.div>
 
          {/* Heading */}
          <motion.h1
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.1] tracking-tight"
+            className="text-5xl sm:text-6xl md:text-7xl font-semibold leading-[1.15] tracking-tight text-text-primary"
             variants={staggerItem}
          >
-            <span className="text-text-primary">Hi, I&apos;m </span>
-            <span className="gradient-text-vivid">{name}</span>
+            Hi, I&apos;m {name}.
+            <br />
+            Shipping cloud at scale.
          </motion.h1>
 
          {/* Animated role cycling */}
@@ -78,10 +96,11 @@ const HeroContent = () => {
             <AnimatePresence mode="wait">
                <motion.p
                   key={roleIndex}
-                  className="font-mono text-base md:text-xl text-accent-purple"
-                  initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -24, filter: "blur(8px)" }}
+                  className="text-base md:text-xl"
+                  style={{ color: TEXT_SECONDARY }}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -24 }}
                   transition={{ duration: 0.7, ease: "easeInOut" }}
                >
                   {roles[roleIndex]}
@@ -89,32 +108,32 @@ const HeroContent = () => {
             </AnimatePresence>
          </motion.div>
 
-         {/* Stats row */}
-         <HeroStats />
-
          {/* CTA buttons */}
          <motion.div
-            className="flex flex-wrap items-center justify-center gap-4 mt-4"
+            className="flex flex-wrap items-center justify-center gap-4"
             variants={staggerItem}
          >
             <motion.button
                onClick={scrollToProjects}
-               className="btn-primary text-sm font-semibold"
+               className="btn-outline text-sm font-semibold"
                whileHover={{ scale: 1.04 }}
                whileTap={{ scale: 0.97 }}
             >
-               View Projects
+               Explore Projects
             </motion.button>
             <motion.a
                href={RESUME_URL}
                download
-               className="btn-outline text-sm"
+               className="btn-primary text-sm"
                whileHover={{ scale: 1.04 }}
                whileTap={{ scale: 0.97 }}
             >
-               Download Resume
+               Download CV
             </motion.a>
          </motion.div>
+
+         {/* Stats row */}
+         <HeroStats />
 
          {/* Status widget + Social icons */}
          <HeroSocial />

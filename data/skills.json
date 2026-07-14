@@ -16,6 +16,7 @@
    "frontend": [
       "React",
       "Next.js",
+      "Astro",
       "Vite",
       "Tailwind CSS",
       "Three.js",
@@ -28,6 +29,7 @@
       "Express.js",
       "FastAPI",
       "REST API",
+      "GraphQL",
       "MongoDB",
       "PostgreSQL",
       "MySQL",
@@ -46,10 +48,12 @@
       "GitHub Actions",
       "Jenkins",
       "CI/CD Pipelines",
+      "GitOps",
       "Blue-Green Deployment",
       "AWS CDK",
       "AWS Step Functions",
-      "Infrastructure as Code"
+      "Infrastructure as Code",
+      "Linux"
    ],
    "ai_ml": [
       "AWS SageMaker",
@@ -64,7 +68,9 @@
       "Deep Learning",
       "MLOps",
       "LLM APIs",
-      "RAG Pipelines"
+      "RAG Pipelines",
+      "Feast (Feature Store)",
+      "LLMOps"
    ],
    "tools_platforms": [
       "Claude Code",
@@ -78,7 +84,10 @@
       "Figma",
       "MCP Protocol",
       "AI Agent Frameworks",
-      "SonarQube"
+      "SonarQube",
+      "Unity",
+      "Vercel",
+      "Chrome Extensions"
    ],
    "cs_fundamentals": [
       "Data Structures & Algorithms",

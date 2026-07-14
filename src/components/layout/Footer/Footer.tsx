@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "motion/react";
 import { staggerContainer } from "@utils/animations";
-import { MONO_FONT, CYAN } from "@/constants/theme";
+import { MONO_FONT, TEXT_PRIMARY } from "@/constants/theme";
 import FooterContent from "./FooterContent";
 
 const KONAMI: string[] = [
@@ -45,31 +45,18 @@ const Footer = () => {
 
    return (
       <footer
+         className="footer-fade"
          style={{
             position: "relative",
-            borderTop: "1px solid rgba(255, 255, 255, 0.04)",
+            borderTop: "1px solid rgba(255, 255, 255, 0.06)",
          }}
       >
-         {/* Gradient line at top */}
-         <div
-            style={{
-               position: "absolute",
-               top: 0,
-               left: 0,
-               right: 0,
-               height: 1,
-               background:
-                  "linear-gradient(to right, transparent, rgba(6,182,212,0.25), transparent)",
-            }}
-         />
-
          <motion.div
             style={{
                display: "flex",
                flexDirection: "column",
-               alignItems: "center",
-               gap: 20,
-               padding: "40px 24px",
+               gap: 24,
+               padding: "56px 24px 40px",
                maxWidth: 1280,
                margin: "0 auto",
             }}
@@ -88,13 +75,13 @@ const Footer = () => {
                   style={{
                      padding: "8px 16px",
                      borderRadius: 10,
-                     background:
-                        "linear-gradient(135deg, rgba(6,182,212,0.15), rgba(168,85,247,0.15))",
-                     border: "1px solid rgba(6,182,212,0.3)",
+                     background: "rgba(255, 255, 255, 0.08)",
+                     border: "1px solid rgba(255, 255, 255, 0.16)",
                      fontFamily: MONO_FONT,
                      fontSize: 12,
-                     color: CYAN,
+                     color: TEXT_PRIMARY,
                      textAlign: "center",
+                     alignSelf: "center",
                   }}
                >
                   You found the secret! Thanks for exploring.

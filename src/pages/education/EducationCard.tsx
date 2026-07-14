@@ -17,8 +17,15 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
    if (isMobile) {
       return (
          <motion.div
+            // key forces a fresh mount when the breakpoint flips -- otherwise
+            // Motion carries the desktop slideIn's parked x offset into this
+            // branch and the card renders shifted off-screen.
+            key="mobile"
             variants={staggerItem}
             custom={index}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
             style={{ marginBottom: 20 }}
          >
             <div
@@ -82,6 +89,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
 
    return (
       <motion.div
+         key="desktop"
          style={{
             display: "grid",
             gridTemplateColumns: "160px 40px 1fr",
@@ -89,6 +97,11 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
          }}
          variants={index % 2 === 0 ? slideInLeft : slideInRight}
          custom={index}
+         // Own viewport trigger -- parent propagation breaks after a
+         // breakpoint remount (see TimelineCardDesktop).
+         initial="hidden"
+         whileInView="visible"
+         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
       >
          {/* Left: Date + Location */}
          <div style={{ paddingTop: 4, textAlign: "right", paddingRight: 20 }}>

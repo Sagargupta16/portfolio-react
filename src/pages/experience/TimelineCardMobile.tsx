@@ -28,6 +28,11 @@ const TimelineCardMobile = ({
          layout="position"
          variants={staggerItem}
          custom={index}
+         // Own viewport trigger -- see TimelineCardDesktop for why parent
+         // propagation is not enough after a breakpoint remount.
+         initial="hidden"
+         whileInView="visible"
+         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
          style={{ marginBottom: 16 }}
          transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}
       >

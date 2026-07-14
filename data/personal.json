@@ -26,10 +26,10 @@
    "statistics": {
       "coding_questions": "1600+",
       "leetcode_rating": "2007",
-      "projects": "25+",
+      "projects": "40+",
       "contests": "100+",
       "industry_certifications": "6",
-      "open_source_prs": "8 merged + 12 open"
+      "open_source_prs": "9 merged + 7 open"
    },
    "languages": [
       { "name": "English", "level": "Professional Working" },
@@ -63,6 +63,6 @@
    ],
    "site": {
       "counter_namespace": "sagargupta-portfolio",
-      "tech_stack": ["React 19", "Vite 7", "Tailwind v4", "Three.js", "Motion"]
+      "tech_stack": ["React 19", "Vite 8", "Tailwind v4", "Motion", "Lenis"]
    }
 }

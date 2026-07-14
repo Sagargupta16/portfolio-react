@@ -1,10 +1,9 @@
 import type { ComponentType, ReactNode } from "react";
 import { motion } from "motion/react";
-import { ExternalLink, Sparkles } from "lucide-react";
+import { ExternalLink, Sparkles, Check } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import TechTag from "@components/ui/TechTag";
 import {
-   TEXT_PRIMARY,
    TEXT_SECONDARY,
    TEXT_MUTED,
    MONO_FONT,
@@ -38,27 +37,13 @@ const sectionLabelStyle: React.CSSProperties = {
    marginBottom: 8,
 };
 
-const linkButtonStyle = (accent: string): React.CSSProperties => ({
-   display: "inline-flex",
-   alignItems: "center",
-   gap: 6,
-   padding: "8px 14px",
-   marginTop: 12,
-   borderRadius: 10,
-   fontSize: 12,
-   fontWeight: 600,
-   color: TEXT_PRIMARY,
-   border: `1px solid ${accent}40`,
-   background: `${accent}10`,
-   textDecoration: "none",
-});
-
 interface ModalLinkProps {
    href: string;
    ariaLabel: string;
    icon: ComponentType<{ size?: number }>;
    label: string;
-   accent: string;
+   /** "primary" = solid blue (Live Demo), "outline" = soft white (Source). */
+   kind: "primary" | "outline";
 }
 
 const ModalLink = ({
@@ -66,16 +51,24 @@ const ModalLink = ({
    ariaLabel,
    icon: Icon,
    label,
-   accent,
+   kind,
 }: ModalLinkProps) => (
    <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      style={linkButtonStyle(accent)}
+      className={kind === "primary" ? "btn-primary" : "btn-outline"}
+      style={{
+         display: "inline-flex",
+         alignItems: "center",
+         gap: 8,
+         padding: "10px 18px",
+         fontSize: 13,
+         textDecoration: "none",
+      }}
       aria-label={ariaLabel}
    >
-      <Icon size={14} />
+      <Icon size={15} />
       {label}
    </a>
 );
@@ -176,16 +169,13 @@ const ProjectModalBody = ({
                            lineHeight: 1.6,
                         }}
                      >
-                        <span
+                        <Check
                            aria-hidden="true"
+                           size={14}
                            style={{
-                              width: 6,
-                              height: 6,
-                              borderRadius: "50%",
-                              background: colors.accent,
-                              marginTop: 7,
+                              color: colors.accent,
+                              marginTop: 3,
                               flexShrink: 0,
-                              boxShadow: `0 0 6px ${colors.accent}66`,
                            }}
                         />
                         <span style={{ flex: 1 }}>{f}</span>
@@ -232,22 +222,22 @@ const ProjectModalBody = ({
                   marginTop: 4,
                }}
             >
-               {hasGithub && (
-                  <ModalLink
-                     href={project.github}
-                     ariaLabel={`View ${project.title} on GitHub`}
-                     icon={FaGithub}
-                     label="View Source"
-                     accent={colors.accent}
-                  />
-               )}
                {hasLive && (
                   <ModalLink
                      href={project.live}
                      ariaLabel={`View ${project.title} live demo`}
                      icon={ExternalLink}
                      label="Live Demo"
-                     accent={colors.accent}
+                     kind="primary"
+                  />
+               )}
+               {hasGithub && (
+                  <ModalLink
+                     href={project.github}
+                     ariaLabel={`View ${project.title} on GitHub`}
+                     icon={FaGithub}
+                     label="View Source"
+                     kind="outline"
                   />
                )}
             </motion.div>

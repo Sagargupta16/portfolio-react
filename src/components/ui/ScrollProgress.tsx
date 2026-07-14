@@ -1,5 +1,5 @@
 import { motion, useScroll, useSpring } from "motion/react";
-import { CYAN, PURPLE } from "@/constants/theme";
+import { BLUE } from "@/constants/theme";
 
 const ScrollProgress = () => {
    const { scrollYProgress } = useScroll();
@@ -17,7 +17,7 @@ const ScrollProgress = () => {
             left: 0,
             right: 0,
             height: 3,
-            background: `linear-gradient(90deg, ${CYAN}, ${PURPLE})`,
+            background: BLUE,
             transformOrigin: "0%",
             scaleX,
             zIndex: 100,

@@ -3,12 +3,15 @@
 // inline `style={{}}` usage and animation variants in React components.
 
 // ===== Colors =====
-export const CYAN = "#06b6d4";
-export const PURPLE = "#a855f7";
+// Flat minimal palette (akobir-style): blue family only for accents.
+// Legacy names kept so 40+ call sites don't churn; values remapped.
+export const BLUE = "#2563eb"; // primary CTA
+export const CYAN = "#60a5fa"; // accent text / icons on dark
+export const PURPLE = "#38bdf8"; // secondary accent (roles, PoR)
 export const GREEN = "#22c55e";
 export const AMBER = "#f59e0b";
-export const PINK = "#ec4899";
-export const INDIGO = "#6366f1";
+export const PINK = "#38bdf8";
+export const INDIGO = "#60a5fa";
 export const ORANGE = "#f97316";
 export const RED = "#ef4444";
 
@@ -17,14 +20,13 @@ export const MEDAL_GOLD = "#fbbf24";
 export const MEDAL_SILVER = "#94a3b8";
 export const MEDAL_BRONZE = "#d97706";
 
-export const TEXT_PRIMARY = "#eeeef5";
-export const TEXT_SECONDARY = "#a5a5c0";
-// Lightened from #6e6e90 to clear WCAG 1.4.3 (4.5:1) for small informational
-// text on the dark glass backgrounds. Still reads as low-emphasis vs SECONDARY.
-export const TEXT_MUTED = "#8888a8";
+export const TEXT_PRIMARY = "#f4f6f7";
+export const TEXT_SECONDARY = "#9ca9b0";
+// Clears WCAG 1.4.3 (4.5:1) for small informational text on the near-black bg.
+export const TEXT_MUTED = "#8a97a0";
 
-export const GLASS_BORDER = "rgba(255, 255, 255, 0.06)";
-export const GLASS_BG = "rgba(255, 255, 255, 0.03)";
+export const GLASS_BORDER = "rgba(255, 255, 255, 0.08)";
+export const GLASS_BG = "rgba(255, 255, 255, 0.05)";
 
 // ===== Fonts =====
 export const MONO_FONT = "JetBrains Mono, ui-monospace, monospace";
@@ -117,14 +119,12 @@ export const SPRING = {
 
 // ===== Shared inline style objects =====
 
-/** Glassmorphism panel -- used by TerminalCard, ActivityFeed, NodeDiagram, StatsCard */
+/** Flat panel -- used by TerminalCard, ActivityFeed, NodeDiagram, StatsCard */
 export const GLASS_PANEL_STYLE: React.CSSProperties = {
    borderRadius: RADIUS.lg,
    overflow: "hidden",
    border: "1px solid rgb(var(--ch-white) / 0.06)",
-   background: "rgb(var(--ch-glass) / 0.5)",
-   backdropFilter: "blur(16px)",
-   WebkitBackdropFilter: "blur(16px)",
+   background: "var(--color-bg-card)",
 };
 
 /** Chrome header bar -- used by TerminalCard, ActivityFeed, BrowserMockup */

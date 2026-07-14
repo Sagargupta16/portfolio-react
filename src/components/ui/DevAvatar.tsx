@@ -23,7 +23,7 @@ const DevAvatar = () => {
                inset: 10,
                borderRadius: "50%",
                background:
-                  "conic-gradient(from 0deg, #06b6d4, #a855f7, #22c55e, #06b6d4)",
+                  "conic-gradient(from 0deg, #60a5fa, #38bdf8, #22c55e, #60a5fa)",
                opacity: 0.15,
                filter: "blur(20px)",
             }}
@@ -39,7 +39,7 @@ const DevAvatar = () => {
                borderRadius: "50%",
                padding: 2,
                background:
-                  "conic-gradient(from 0deg, #06b6d4, transparent 40%, #a855f7, transparent 80%, #06b6d4)",
+                  "conic-gradient(from 0deg, #60a5fa, transparent 40%, #38bdf8, transparent 80%, #60a5fa)",
             }}
             animate={{ rotate: 360 }}
             transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
@@ -50,7 +50,6 @@ const DevAvatar = () => {
                   height: "100%",
                   borderRadius: "50%",
                   background: "rgba(10, 10, 20, 0.8)",
-                  backdropFilter: "blur(8px)",
                }}
             />
          </motion.div>
@@ -96,7 +95,6 @@ const DevAvatar = () => {
                      height: 36,
                      borderRadius: 10,
                      background: `${color}0d`,
-                     backdropFilter: "blur(8px)",
                      border: `1px solid ${color}18`,
                      display: "flex",
                      alignItems: "center",

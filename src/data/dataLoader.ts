@@ -29,6 +29,10 @@ import contactData from "../../data/contact.json";
 // Consolidated data access
 // Individual data getters
 export const getName = (): string => personalData.name;
+export const getTitle = (): string => personalData.title;
+export const getLocation = (): string => personalData.location;
+export const getLanguages = (): { name: string; level: string }[] =>
+   personalData.languages;
 export const getRoles = (): string[] => personalData.roles;
 export const getAbout = (): Record<string, string> => personalData.about;
 export const getStatistics = (): Record<string, string> =>

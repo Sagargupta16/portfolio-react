@@ -1,5 +1,6 @@
 import { Building2 } from "lucide-react";
 import { TEXT_PRIMARY, TEXT_SECONDARY, PURPLE } from "@/constants/theme";
+import { getOrgLogo } from "@utils/orgLogos";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 
 interface CompanyHeaderProps {
@@ -38,7 +39,11 @@ const CompanyHeader = ({
                flexShrink: 0,
             }}
          >
-            <Building2 style={{ width: 14, height: 14, color: accentColor }} />
+            {getOrgLogo(item.company ?? "", 16) ?? (
+               <Building2
+                  style={{ width: 14, height: 14, color: accentColor }}
+               />
+            )}
          </div>
          <h3
             style={{

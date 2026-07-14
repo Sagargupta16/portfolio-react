@@ -38,7 +38,7 @@ const BackToTop = () => {
                   y: -2,
                   borderColor: "rgb(var(--ch-cyan) / 0.3)",
                   boxShadow:
-                     "0 0 25px rgba(6,182,212,0.15), 0 4px 20px rgba(0,0,0,0.3)",
+                     "0 0 25px rgba(96,165,250,0.15), 0 4px 20px rgba(0,0,0,0.3)",
                }}
                whileTap={{ scale: 0.9 }}
                transition={{ duration: 0.25 }}
@@ -52,8 +52,6 @@ const BackToTop = () => {
                   borderRadius: 12,
                   border: `1px solid ${GLASS_BORDER}`,
                   background: "rgb(var(--ch-glass) / 0.5)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
                   color: CYAN,
                   cursor: "pointer",
                   display: "flex",

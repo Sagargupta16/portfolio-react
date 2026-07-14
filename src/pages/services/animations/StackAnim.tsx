@@ -16,16 +16,16 @@ const StackAnim = ({ color }: StackAnimProps) => (
             width: 36,
             height: 22,
             borderRadius: 4,
-            border: "1px solid #06b6d430",
-            background: "#06b6d406",
+            border: "1px solid #60a5fa30",
+            background: "#60a5fa06",
             overflow: "hidden",
          }}
       >
          <div
             style={{
                height: 7,
-               background: "#06b6d40a",
-               borderBottom: "1px solid #06b6d418",
+               background: "#60a5fa0a",
+               borderBottom: "1px solid #60a5fa18",
             }}
          />
          <div
@@ -43,7 +43,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
                   repeat: Infinity,
                   times: [0, 0.2, 0.8, 1],
                }}
-               style={{ height: 2, borderRadius: 4, background: "#06b6d440" }}
+               style={{ height: 2, borderRadius: 4, background: "#60a5fa40" }}
             />
             <motion.div
                animate={{ width: ["0%", "55%", "55%", "0%"] }}
@@ -53,7 +53,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
                   repeat: Infinity,
                   times: [0, 0.2, 0.8, 1],
                }}
-               style={{ height: 2, borderRadius: 4, background: "#06b6d425" }}
+               style={{ height: 2, borderRadius: 4, background: "#60a5fa25" }}
             />
          </div>
       </div>
@@ -67,8 +67,8 @@ const StackAnim = ({ color }: StackAnimProps) => (
             width: 36,
             height: 16,
             borderRadius: 4,
-            border: "1px solid #a855f730",
-            background: "#a855f706",
+            border: "1px solid #38bdf830",
+            background: "#38bdf806",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -150,7 +150,7 @@ const StackAnim = ({ color }: StackAnimProps) => (
             height: 4,
             borderRadius: "50%",
             background: PURPLE,
-            boxShadow: "0 0 6px #a855f780",
+            boxShadow: "0 0 6px #38bdf880",
          }}
       />
 

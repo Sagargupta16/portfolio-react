@@ -1,11 +1,6 @@
 import { motion } from "motion/react";
-import {
-   staggerContainer,
-   staggerItem,
-   waveCascadeContainer,
-   waveCascadeItem,
-} from "@utils/animations";
-import { TEXT_PRIMARY, TEXT_SECONDARY, PURPLE } from "@/constants/theme";
+import { staggerContainer, staggerItem } from "@utils/animations";
+import SkillTagGroup from "./SkillTagGroup";
 
 interface CategoryEntry {
    key: string;
@@ -23,75 +18,19 @@ const SecondarySkills = ({ categories }: SecondarySkillsProps) => {
    return (
       <motion.div
          style={{
-            marginTop: 48,
+            marginTop: 56,
             display: "flex",
             flexDirection: "column",
-            gap: 32,
+            gap: 48,
          }}
          variants={staggerContainer}
       >
-         <div
-            className="section-divider"
-            style={{
-               height: 1,
-               background:
-                  "linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.04) 20%, rgba(6,182,212,0.3) 50%, rgba(255,255,255,0.04) 80%, transparent 95%)",
-            }}
-         />
-         <h3
-            style={{
-               fontSize: 20,
-               fontWeight: 600,
-               color: TEXT_PRIMARY,
-               textAlign: "center",
-            }}
-         >
-            Other Skills
-         </h3>
          {categories.map(({ key, label, items }) => (
             <motion.div key={key} variants={staggerItem}>
-               <h4
-                  style={{
-                     fontSize: 16,
-                     fontWeight: 500,
-                     color: TEXT_SECONDARY,
-                     marginBottom: 12,
-                     display: "flex",
-                     alignItems: "center",
-                     gap: 8,
-                  }}
-               >
-                  <div
-                     style={{
-                        height: 20,
-                        width: 3,
-                        borderRadius: 9999,
-                        background: `linear-gradient(to bottom, ${PURPLE}, rgb(var(--ch-purple) / 0.3))`,
-                     }}
-                  />
+               <h4 className="dashed-rule" style={{ marginBottom: 28 }}>
                   {label}
                </h4>
-               <motion.div
-                  style={{ display: "flex", flexWrap: "wrap", gap: 8 }}
-                  variants={waveCascadeContainer}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "0px 0px -100px 0px" }}
-               >
-                  {items.map((skill) => (
-                     <motion.span
-                        key={skill}
-                        className="skill-tag"
-                        style={{
-                           fontSize: 12,
-                           padding: "4px 12px",
-                        }}
-                        variants={waveCascadeItem}
-                     >
-                        {skill}
-                     </motion.span>
-                  ))}
-               </motion.div>
+               <SkillTagGroup items={items} small />
             </motion.div>
          ))}
       </motion.div>

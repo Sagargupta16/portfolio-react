@@ -9,7 +9,7 @@
 
 ![React Version](https://img.shields.io/badge/react-19-blue)
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178c6)
-![Vite Version](https://img.shields.io/badge/vite-7-purple)
+![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-4%20passing-22c55e)
 
@@ -19,25 +19,24 @@
 
 ## About
 
-A modern, dark-themed personal portfolio with 3D WebGL hero scene, glassmorphism UI, aurora gradient backgrounds, and rich Motion animations. Built as a single-page scroll application with TypeScript strict mode. All content is data-driven through JSON files for easy maintenance.
+A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Project cards carry live screenshots of deployed sites and animated SVG cover scenes for everything else. Built as a single-page scroll application with TypeScript strict mode; all content is data-driven through JSON files.
 
 ---
 
 ## Tech Stack
 
-| Category          | Technologies                                  |
-| ----------------- | --------------------------------------------- |
-| **Core**          | React 19, TypeScript, Vite 7, Tailwind CSS v4 |
-| **3D Scene**      | Three.js, React Three Fiber, React Three Drei |
-| **Animations**    | Motion (Framer Motion), tsParticles           |
-| **Fonts**         | Inter Variable, JetBrains Mono (self-hosted)  |
-| **Smooth Scroll** | Lenis (ReactLenis)                            |
-| **Icons**         | Lucide React, React Icons                     |
-| **Contact**       | EmailJS                                       |
-| **GitHub**        | react-github-calendar                         |
-| **Testing**       | Vitest, React Testing Library                 |
-| **Code Quality**  | ESLint (typescript-eslint), Prettier          |
-| **Deployment**    | GitHub Actions, GitHub Pages                  |
+| Category          | Technologies                                             |
+| ----------------- | -------------------------------------------------------- |
+| **Core**          | React 19, TypeScript, Vite 8 (Rolldown), Tailwind CSS v4 |
+| **Animations**    | Motion (Framer Motion)                                   |
+| **Fonts**         | Inter Variable, JetBrains Mono (self-hosted)             |
+| **Smooth Scroll** | Lenis (ReactLenis)                                       |
+| **Icons**         | Lucide React, React Icons                                |
+| **Contact**       | EmailJS                                                  |
+| **GitHub**        | react-github-calendar                                    |
+| **Testing**       | Vitest, React Testing Library                            |
+| **Code Quality**  | ESLint (typescript-eslint), Prettier                     |
+| **Deployment**    | GitHub Actions, GitHub Pages                             |
 
 ---
 
@@ -45,12 +44,12 @@ A modern, dark-themed personal portfolio with 3D WebGL hero scene, glassmorphism
 
 | Section          | Features                                                                                     |
 | ---------------- | -------------------------------------------------------------------------------------------- |
-| **Hero**         | 3D wireframe scene, particle field, role cycling, adaptive performance monitor               |
-| **About**        | Character reveal animation, highlights, animated stat counters                               |
+| **Hero**         | Logo tile, status badge, big two-line headline, role cycling, animated stat counters         |
+| **About**        | Character reveal animation, highlight cards, quick-facts band                                |
 | **Experience**   | Clickable timeline cards with modal (projects, internal contributions, achievements, skills) |
 | **Education**    | Academic timeline with CGPA counters and achievement highlights                              |
-| **Skills**       | Wave cascade tags, scroll-reveal text, categorized grid                                      |
-| **Projects**     | Filterable cards (Featured/Community/Collab/Others) + open source PR banner                  |
+| **Skills**       | Brand-icon rows under dashed category rules (96 skills, official brand colors)               |
+| **Projects**     | Filterable card grid with live screenshots + animated SVG covers, detail modal, OSS banner   |
 | **Achievements** | Certifications (auto-synced from Credly), badges, competitions                               |
 | **Services**     | Bento grid layout with rotation entrance                                                     |
 | **GitHub**       | 3D browser mockup, contribution calendar, coding profile cards                               |
@@ -108,22 +107,20 @@ data/                                  # JSON content files (edit these to custo
 └── contact.json
 src/
 ├── __tests__/                         # Vitest smoke tests + setup
+├── assets/projects/                   # 960x600 webp covers captured from live sites
 ├── components/
-│   ├── 3d/                            # Three.js hero scene + geometries
 │   ├── common/                        # ErrorBoundary
 │   ├── layout/
+│   │   ├── AmbientBackground.tsx      # Aurora glows + dot lattice + light beams
 │   │   ├── Header/                    # Hero (split into sub-components)
 │   │   ├── Navigation/                # Nav + DesktopNav + MobileMenu
-│   │   ├── Footer/                    # Footer + sub-components
+│   │   ├── Footer/                    # Footer + SITE/SOCIAL columns
 │   │   └── PageSection.tsx            # Reusable section wrapper
 │   └── ui/
-│       ├── AuroraBlobs.tsx            # Fluid aurora gradient background
-│       ├── ShootingStars.tsx          # Animated light streaks
-│       ├── BrowserMockup.tsx          # 3D tilted browser window
+│       ├── BrowserMockup.tsx          # 3D tilted browser window (CSS perspective)
 │       ├── TerminalCard.tsx           # Auto-typing terminal
-│       ├── CharacterReveal.tsx        # Spring char-by-char animation
-│       ├── ScrollRevealText.tsx       # Scroll-driven gradient text
-│       ├── GlassCard.tsx              # Hover tilt + cursor glow card
+│       ├── CharacterReveal.tsx        # Spring char-by-char animation (word-wrapped)
+│       ├── GlassCard.tsx              # Flat card with hover tilt
 │       ├── TechTag.tsx                # Reusable skill/tech tag
 │       └── ...
 ├── constants/
@@ -132,13 +129,14 @@ src/
 │   └── dataLoader.ts                  # Typed getter functions for JSON data
 ├── hooks/                             # Custom interaction hooks
 ├── pages/                             # 9 page sections (each split into sub-files)
+│   └── portfolio/covers/              # Cover registry + 8 animated SVG scenes
 ├── types/
 │   └── index.ts                       # All data interfaces (19 types)
 ├── utils/
 │   └── animations.ts                  # 16 Motion variant presets
 ├── App.tsx                            # Root layout with ReactLenis
 ├── index.tsx                          # Entry point
-└── index.css                          # Tailwind theme + glassmorphism + keyframes
+└── index.css                          # Tailwind theme tokens + component classes
 ```
 
 ---
@@ -147,16 +145,16 @@ src/
 
 All portfolio content lives in JSON files under `data/` at the project root:
 
-| File                | Content                                                          |
-| ------------------- | ---------------------------------------------------------------- |
-| `personal.json`     | Name, roles, bio, statistics, social profiles                    |
-| `education.json`    | Degrees, institutions, CGPA                                      |
-| `experience.json`   | Professional experience + positions of responsibility            |
-| `skills.json`       | Categorized skills (6 primary + 3 secondary categories)          |
-| `services.json`     | Service offerings                                                |
+| File                | Content                                                                                        |
+| ------------------- | ---------------------------------------------------------------------------------------------- |
+| `personal.json`     | Name, roles, bio, statistics, social profiles                                                  |
+| `education.json`    | Degrees, institutions, CGPA                                                                    |
+| `experience.json`   | Professional experience + positions of responsibility                                          |
+| `skills.json`       | Categorized skills (6 primary + 3 secondary categories)                                        |
+| `services.json`     | Service offerings                                                                              |
 | `projects.json`     | Featured, collaborative, community, other projects, open source PRs, and community discussions |
-| `achievements.json` | Certifications, badges, competitions, coding stats (auto-synced) |
-| `contact.json`      | Contact options + EmailJS config                                 |
+| `achievements.json` | Certifications, badges, competitions, coding stats (auto-synced)                               |
+| `contact.json`      | Contact options + EmailJS config                                                               |
 
 The `dataLoader.ts` module provides 22 typed getter functions. To update content, edit the JSON files only.
 
@@ -189,12 +187,12 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 
 ## More Projects
 
-| Project | Description |
-|---------|-------------|
-| [claude-cost-optimizer](https://github.com/Sagargupta16/claude-cost-optimizer) | Save 30-60% on Claude Code costs - proven strategies and benchmarks |
-| [Financial Dashboard](https://github.com/Sagargupta16/Financial-Dashboard) | Modern React financial dashboard with analytics and data visualization |
-| [InstagramLikesLeaderboard](https://github.com/Sagargupta16/InstagramLikesLeaderboard) | Browser tool showing who likes your Instagram posts the most |
-| [LeetCode Rating Predictor](https://github.com/Sagargupta16/LeetCode_Rating_Predictor) | Full-stack ML-powered LeetCode contest rating predictor |
+| Project                                                                                | Description                                                            |
+| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [claude-cost-optimizer](https://github.com/Sagargupta16/claude-cost-optimizer)         | Save 30-60% on Claude Code costs - proven strategies and benchmarks    |
+| [Financial Dashboard](https://github.com/Sagargupta16/Financial-Dashboard)             | Modern React financial dashboard with analytics and data visualization |
+| [InstagramLikesLeaderboard](https://github.com/Sagargupta16/InstagramLikesLeaderboard) | Browser tool showing who likes your Instagram posts the most           |
+| [LeetCode Rating Predictor](https://github.com/Sagargupta16/LeetCode_Rating_Predictor) | Full-stack ML-powered LeetCode contest rating predictor                |
 
 ---
 

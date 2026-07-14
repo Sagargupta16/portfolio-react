@@ -1,5 +1,12 @@
-import { getOpenSourceContributions, getCommunityDiscussions } from "@data/dataLoader";
-import type { Project, OpenSourceContribution, CommunityDiscussion } from "@/types";
+import {
+   getOpenSourceContributions,
+   getCommunityDiscussions,
+} from "@data/dataLoader";
+import type {
+   Project,
+   OpenSourceContribution,
+   CommunityDiscussion,
+} from "@/types";
 
 export const FILTERS = [
    "All",
@@ -40,10 +47,10 @@ export interface CategoryColors {
 
 export const CATEGORY_COLORS: Record<string, CategoryColors> = {
    Featured: {
-      accent: "#06b6d4",
-      gradient: "linear-gradient(to right, #06b6d4, #3b82f6)",
-      bgAlpha: "rgba(6,182,212,",
-      borderAlpha: "rgba(6,182,212,",
+      accent: "#60a5fa",
+      gradient: "linear-gradient(to right, #60a5fa, #3b82f6)",
+      bgAlpha: "rgba(96,165,250,",
+      borderAlpha: "rgba(96,165,250,",
    },
    Community: {
       accent: "#22c55e",
@@ -52,10 +59,10 @@ export const CATEGORY_COLORS: Record<string, CategoryColors> = {
       borderAlpha: "rgba(34,197,94,",
    },
    Collab: {
-      accent: "#a855f7",
-      gradient: "linear-gradient(to right, #a855f7, #6366f1)",
-      bgAlpha: "rgba(168,85,247,",
-      borderAlpha: "rgba(168,85,247,",
+      accent: "#38bdf8",
+      gradient: "linear-gradient(to right, #38bdf8, #0ea5e9)",
+      bgAlpha: "rgba(56,189,248,",
+      borderAlpha: "rgba(56,189,248,",
    },
    Others: {
       accent: "#f59e0b",

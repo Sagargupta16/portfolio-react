@@ -54,7 +54,7 @@ const AnimatedTimelineTrack = () => {
                width: 2,
                flex: 1,
                background:
-                  "linear-gradient(to bottom, rgba(168,85,247,0.4), rgba(168,85,247,0.1))",
+                  "linear-gradient(to bottom, rgba(56,189,248,0.4), rgba(56,189,248,0.1))",
                borderRadius: 4,
                transformOrigin: "top",
             }}

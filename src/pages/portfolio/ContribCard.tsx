@@ -19,7 +19,9 @@ const STATUS_CONFIG = {
 } as const;
 
 const ContribCard = ({ contrib }: ContribCardProps) => {
-   const config = STATUS_CONFIG[contrib.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.open;
+   const config =
+      STATUS_CONFIG[contrib.status as keyof typeof STATUS_CONFIG] ??
+      STATUS_CONFIG.open;
    const { color: statusColor, Icon: StatusIcon, label: statusLabel } = config;
    const hoverBg = `${statusColor}0F`;
    const hoverBorder = `${statusColor}33`;

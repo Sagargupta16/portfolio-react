@@ -1,4 +1,9 @@
-import { MEDAL_GOLD, MEDAL_SILVER, MEDAL_BRONZE, TEXT_MUTED } from "@/constants/theme";
+import {
+   MEDAL_GOLD,
+   MEDAL_SILVER,
+   MEDAL_BRONZE,
+   TEXT_MUTED,
+} from "@/constants/theme";
 
 export const LEVEL_ORDER: Record<string, number> = {
    Foundational: 0,

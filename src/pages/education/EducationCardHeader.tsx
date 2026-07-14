@@ -1,6 +1,13 @@
 import { GraduationCap } from "lucide-react";
 import type { Education } from "@/types";
-import { CYAN, GREEN, MONO_FONT, PURPLE, TEXT_PRIMARY } from "@/constants/theme";
+import {
+   CYAN,
+   GREEN,
+   MONO_FONT,
+   PURPLE,
+   TEXT_PRIMARY,
+} from "@/constants/theme";
+import { getOrgLogo } from "@utils/orgLogos";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 
 interface EducationCardHeaderProps {
@@ -16,15 +23,17 @@ const InstitutionRow = ({ institution }: { institution: string }) => (
             width: 28,
             height: 28,
             borderRadius: 10,
-            background: "rgba(168,85,247,0.1)",
-            border: "1px solid rgba(168,85,247,0.15)",
+            background: "rgba(56,189,248,0.1)",
+            border: "1px solid rgba(56,189,248,0.15)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
          }}
       >
-         <GraduationCap style={{ width: 14, height: 14, color: PURPLE }} />
+         {getOrgLogo(institution, 16) ?? (
+            <GraduationCap style={{ width: 14, height: 14, color: PURPLE }} />
+         )}
       </div>
       <h3
          style={{

@@ -70,6 +70,20 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
       gap: 8,
       // Fixed aspect ratio keeps cards visually consistent across viewports
       aspectRatio: "4 / 3",
+      // Long mono strings (the GitHub username) must shrink inside the grid
+      // track instead of widening it on small phones.
+      minWidth: 0,
+      overflow: "hidden",
+   };
+
+   const highlightStyle = {
+      fontSize: isMobile ? 18 : 24,
+      fontWeight: 700,
+      fontFamily: MONO_FONT,
+      color: TEXT_PRIMARY,
+      lineHeight: 1,
+      maxWidth: "100%",
+      overflowWrap: "anywhere" as const,
    };
 
    return (
@@ -84,7 +98,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                textAlign: "center",
             }}
          >
-            Profiles
+            Coding Platform Profiles
          </motion.h3>
 
          <motion.div
@@ -92,7 +106,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
             style={{
                display: "grid",
                gridTemplateColumns: isMobile
-                  ? "repeat(2, 1fr)"
+                  ? "repeat(2, minmax(0, 1fr))"
                   : "repeat(auto-fit, minmax(160px, 1fr))",
                gap: 12,
             }}
@@ -119,17 +133,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                >
                   GitHub
                </span>
-               <span
-                  style={{
-                     fontSize: 24,
-                     fontWeight: 700,
-                     fontFamily: MONO_FONT,
-                     color: TEXT_PRIMARY,
-                     lineHeight: 1,
-                  }}
-               >
-                  {githubUsername}
-               </span>
+               <span style={highlightStyle}>{githubUsername}</span>
                <span style={{ fontSize: 11, color: TEXT_MUTED }}>
                   Open Source Contributions
                </span>
@@ -175,17 +179,7 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                      >
                         {config.label}
                      </span>
-                     <span
-                        style={{
-                           fontSize: 24,
-                           fontWeight: 700,
-                           fontFamily: MONO_FONT,
-                           color: TEXT_PRIMARY,
-                           lineHeight: 1,
-                        }}
-                     >
-                        {config.highlight(s)}
-                     </span>
+                     <span style={highlightStyle}>{config.highlight(s)}</span>
                      <span style={{ fontSize: 11, color: TEXT_MUTED }}>
                         {config.subtitle(s)}
                      </span>

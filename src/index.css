@@ -1,52 +1,55 @@
 @import "tailwindcss";
 
-/* ===== Glassmorphism Theme ===== */
+/* ===== Minimal Dark Theme (akobir-style) =====
+   Near-black canvas, flat surfaces, one blue accent, white pill CTAs.
+   No glassmorphism, no gradient text, no glow. */
 @theme {
    --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
    --font-mono:
       "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
 
-   --color-bg-primary: #060610;
-   --color-bg-secondary: #0a0a1a;
-   --color-bg-tertiary: #101028;
-   --color-bg-card: #14142d;
-   --color-bg-card-hover: #1a1a3a;
-   --color-border: #262655;
-   --color-border-hover: #353575;
-   --color-border-glow: #06b6d4;
+   --color-bg-primary: #0b1012;
+   --color-bg-secondary: #0e1418;
+   --color-bg-tertiary: #10161a;
+   --color-bg-card: #0e1417;
+   --color-bg-card-hover: #131a1e;
+   --color-border: #1d2529;
+   --color-border-hover: #2b353a;
+   --color-border-glow: #2563eb;
 
-   --color-text-primary: #eeeef5;
-   --color-text-secondary: #a5a5c0;
-   /* Lightened from #6e6e90 for WCAG 1.4.3 (4.5:1) on dark glass surfaces. */
-   --color-text-muted: #8888a8;
+   --color-text-primary: #f4f6f7;
+   --color-text-secondary: #9ca9b0;
+   --color-text-muted: #76838b;
 
-   --color-accent-cyan: #06b6d4;
-   --color-accent-purple: #a855f7;
+   --color-accent-blue: #2563eb;
+   --color-accent-cyan: #60a5fa;
+   --color-accent-purple: #38bdf8;
    --color-accent-green: #22c55e;
    --color-accent-amber: #f59e0b;
-   --color-accent-pink: #ec4899;
+   --color-accent-pink: #38bdf8;
 
-   --color-glow-cyan: rgb(6 182 212 / 0.25);
-   --color-glow-purple: rgb(168 85 247 / 0.25);
+   --color-glow-cyan: rgb(96 165 250 / 0.15);
+   --color-glow-purple: rgb(56 189 248 / 0.15);
 }
 
-/* RGB channel tokens — use with rgb(var(--ch-*) / <alpha>) */
+/* RGB channel tokens -- use with rgb(var(--ch-*) / <alpha>) */
 :root {
-   --ch-cyan: 6 182 212;
-   --ch-purple: 168 85 247;
-   --ch-pink: 236 72 153;
+   --ch-cyan: 34 211 238;
+   --ch-blue: 37 99 235;
+   --ch-purple: 96 165 250;
+   --ch-pink: 56 189 248;
    --ch-amber: 245 158 11;
    --ch-green: 34 197 94;
    --ch-red: 239 68 68;
-   --ch-indigo: 99 102 241;
+   --ch-indigo: 96 165 250;
    --ch-white: 255 255 255;
    --ch-black: 0 0 0;
-   --ch-bg: 6 6 16;
-   --ch-bg-sec: 10 10 26;
-   --ch-glass: 15 15 35;
-   --ch-glass-h: 20 20 48;
-   --ch-bg-mid: 14 14 36;
-   --ch-cyan-light: 34 211 238;
+   --ch-bg: 11 16 18;
+   --ch-bg-sec: 14 20 24;
+   --ch-glass: 16 22 26;
+   --ch-glass-h: 22 30 35;
+   --ch-bg-mid: 13 18 22;
+   --ch-cyan-light: 103 232 249;
 }
 
 /* ===== Base Reset ===== */
@@ -62,6 +65,9 @@ html {
    /* Lenis owns smooth scrolling; CSS smooth here would double-drive programmatic
       scrolls (scrollIntoView) and fight it. Keep auto. */
    scroll-behavior: auto;
+   /* Below-fold reveal variants park elements at translateX(+-120px) until they
+      animate in; clip so that never widens the page on phones. */
+   overflow-x: clip;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
    /* Always reserve the scrollbar gutter so opening a modal (which locks body
@@ -90,23 +96,23 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-   background: rgb(var(--ch-cyan) / 0.3);
+   background: rgb(var(--ch-white) / 0.15);
    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-   background: rgb(var(--ch-cyan) / 0.6);
+   background: rgb(var(--ch-white) / 0.3);
 }
 
 /* Selection */
 ::selection {
-   background-color: #065e72;
+   background-color: #1d4ed8;
    color: #fff;
 }
 
 /* Focus */
 :focus-visible {
-   outline: 2px solid rgb(var(--ch-cyan) / 0.5);
+   outline: 2px solid rgb(var(--ch-blue) / 0.6);
    outline-offset: 2px;
 }
 
@@ -117,10 +123,10 @@ body {
    left: 8px;
    z-index: 1000;
    padding: 10px 18px;
-   border-radius: 10px;
+   border-radius: 8px;
    background: var(--color-bg-card);
    color: var(--color-text-primary);
-   border: 1px solid rgb(var(--ch-cyan) / 0.4);
+   border: 1px solid rgb(var(--ch-white) / 0.12);
    font-size: 0.875rem;
    font-weight: 600;
    transform: translateY(-150%);
@@ -213,10 +219,10 @@ img {
 @keyframes border-glow {
    0%,
    100% {
-      border-color: rgb(var(--ch-cyan) / 0.15);
+      border-color: rgb(var(--ch-white) / 0.08);
    }
    50% {
-      border-color: rgb(var(--ch-cyan) / 0.4);
+      border-color: rgb(var(--ch-white) / 0.2);
    }
 }
 
@@ -235,51 +241,6 @@ img {
    50% {
       transform: scale(1.15);
       opacity: 0.6;
-   }
-}
-
-@keyframes orb-drift-1 {
-   0%,
-   100% {
-      transform: translate(0, 0) scale(1);
-   }
-   25% {
-      transform: translate(60px, -40px) scale(1.1);
-   }
-   50% {
-      transform: translate(-30px, 50px) scale(0.95);
-   }
-   75% {
-      transform: translate(-50px, -20px) scale(1.05);
-   }
-}
-
-@keyframes orb-drift-2 {
-   0%,
-   100% {
-      transform: translate(0, 0) scale(1);
-   }
-   25% {
-      transform: translate(-50px, 30px) scale(1.05);
-   }
-   50% {
-      transform: translate(40px, -60px) scale(0.9);
-   }
-   75% {
-      transform: translate(20px, 40px) scale(1.1);
-   }
-}
-
-@keyframes orb-drift-3 {
-   0%,
-   100% {
-      transform: translate(0, 0) scale(1);
-   }
-   33% {
-      transform: translate(30px, 50px) scale(1.08);
-   }
-   66% {
-      transform: translate(-60px, -30px) scale(0.92);
    }
 }
 
@@ -310,283 +271,167 @@ img {
    animation: gradient-shift 4s ease infinite;
 }
 
-/* ===== Grid Background ===== */
+/* ===== Dot Texture (hero halftone backdrop) ===== */
 .grid-bg {
-   background-image:
-      linear-gradient(rgb(var(--ch-cyan) / 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--ch-cyan) / 0.03) 1px, transparent 1px);
-   background-size: 60px 60px;
+   background-image: radial-gradient(
+      rgb(var(--ch-white) / 0.05) 1px,
+      transparent 1px
+   );
+   background-size: 22px 22px;
+   /* Fade the dots toward the edges so the texture reads as a spotlight. */
+   mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 40%,
+      black 30%,
+      transparent 75%
+   );
+   -webkit-mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 40%,
+      black 30%,
+      transparent 75%
+   );
 }
 
-/* ===== Gradient Text ===== */
+/* ===== Solid Accent Text (gradient-text kept as compat alias) ===== */
 .gradient-text {
-   /* Solid fallback first -- if background-clip:text fails to paint (forced
-      colors, some print-to-PDF paths) the text stays readable instead of going
-      invisible. The transparent fill only applies where clip works. */
-   color: var(--color-accent-cyan);
-   background: linear-gradient(
-      135deg,
-      var(--color-accent-cyan),
-      var(--color-accent-purple)
-   );
-   -webkit-background-clip: text;
-   -webkit-text-fill-color: transparent;
-   background-clip: text;
+   color: var(--color-text-primary);
 }
 
 .gradient-text-vivid {
-   color: rgb(var(--ch-cyan-light));
-   background: linear-gradient(
-      135deg,
-      rgb(var(--ch-cyan-light)),
-      var(--color-accent-purple),
-      var(--color-accent-pink)
-   );
-   -webkit-background-clip: text;
-   -webkit-text-fill-color: transparent;
-   background-clip: text;
+   color: var(--color-text-primary);
 }
 
-/* ===== Glow Effects ===== */
-.glow-cyan {
-   box-shadow:
-      0 0 20px rgb(var(--ch-cyan) / 0.3),
-      0 0 60px rgb(var(--ch-cyan) / 0.1);
-}
-
-.glow-purple {
-   box-shadow:
-      0 0 20px rgb(var(--ch-purple) / 0.3),
-      0 0 60px rgb(var(--ch-purple) / 0.1);
-}
-
+/* ===== Glow classes neutralized (compat aliases -- flat style has no glow) ===== */
+.glow-cyan,
+.glow-purple,
 .glow-amber {
-   box-shadow:
-      0 0 20px rgb(var(--ch-amber) / 0.3),
-      0 0 60px rgb(var(--ch-amber) / 0.1);
+   box-shadow: none;
 }
 
 .glow-cyan-text {
-   text-shadow:
-      0 0 20px rgb(var(--ch-cyan) / 0.6),
-      0 0 50px rgb(var(--ch-cyan) / 0.3);
+   text-shadow: none;
 }
 
-/* ===== Glassmorphism Background ===== */
-.glass-bg {
-   position: fixed;
-   inset: 0;
-   z-index: -1;
-   overflow: hidden;
-   background: linear-gradient(
-      135deg,
-      var(--color-bg-primary) 0%,
-      var(--color-bg-secondary) 40%,
-      rgb(var(--ch-bg-mid)) 60%,
-      var(--color-bg-primary) 100%
-   );
-}
-
-.glass-orb {
-   position: absolute;
-   border-radius: 50%;
-   filter: blur(80px);
-   opacity: 0.4;
-   will-change: transform;
-}
-
-.glass-orb-1 {
-   width: 500px;
-   height: 500px;
-   background: radial-gradient(
-      circle,
-      rgb(var(--ch-cyan) / 0.3),
-      rgb(var(--ch-cyan) / 0.05)
-   );
-   top: 5%;
-   left: 10%;
-   animation: orb-drift-1 25s ease-in-out infinite;
-}
-
-.glass-orb-2 {
-   width: 450px;
-   height: 450px;
-   background: radial-gradient(
-      circle,
-      rgb(var(--ch-purple) / 0.25),
-      rgb(var(--ch-purple) / 0.05)
-   );
-   top: 30%;
-   right: 5%;
-   animation: orb-drift-2 30s ease-in-out infinite;
-}
-
-.glass-orb-3 {
-   width: 400px;
-   height: 400px;
-   background: radial-gradient(
-      circle,
-      rgb(var(--ch-pink) / 0.2),
-      rgb(var(--ch-pink) / 0.03)
-   );
-   bottom: 10%;
-   left: 20%;
-   animation: orb-drift-3 28s ease-in-out infinite;
-}
-
-.glass-orb-4 {
-   width: 350px;
-   height: 350px;
-   background: radial-gradient(
-      circle,
-      rgb(var(--ch-green) / 0.15),
-      rgb(var(--ch-green) / 0.03)
-   );
-   bottom: 30%;
-   right: 15%;
-   animation: orb-drift-1 22s ease-in-out infinite reverse;
-}
-
-.glass-orb-5 {
-   width: 300px;
-   height: 300px;
-   background: radial-gradient(
-      circle,
-      rgb(var(--ch-indigo) / 0.18),
-      rgb(var(--ch-indigo) / 0.03)
-   );
-   top: 55%;
-   left: 45%;
-   animation: orb-drift-2 26s ease-in-out infinite;
-}
-
-.glass-orb-bg {
-   width: 800px;
-   height: 800px;
-   background: radial-gradient(
-      circle,
-      rgb(var(--ch-cyan) / 0.05),
-      transparent 60%
-   );
-   top: 20%;
-   left: 30%;
-   filter: blur(120px);
-   opacity: 0.3;
-   animation: orb-drift-3 35s ease-in-out infinite;
-}
-
-/* ===== Glass Card ===== */
+/* ===== Flat Card (was glass-card) ===== */
 .glass-card {
-   background: rgb(var(--ch-glass) / 0.5);
-   backdrop-filter: blur(10px);
-   -webkit-backdrop-filter: blur(10px);
+   background: var(--color-bg-card);
    border: 1px solid rgb(var(--ch-white) / 0.06);
-   border-radius: 16px;
+   border-radius: 20px;
    transition:
-      background 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-      border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-   box-shadow:
-      0 4px 30px rgb(var(--ch-black) / 0.2),
-      inset 0 1px 0 rgb(var(--ch-white) / 0.04);
+      background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-   border-color: rgb(var(--ch-cyan) / 0.2);
-   background: rgb(var(--ch-glass-h) / 0.6);
-   box-shadow:
-      0 0 30px rgb(var(--ch-cyan) / 0.07),
-      0 8px 40px rgb(var(--ch-black) / 0.3),
-      inset 0 1px 0 rgb(var(--ch-white) / 0.06);
+   border-color: rgb(var(--ch-white) / 0.14);
+   background: var(--color-bg-card-hover);
    transform: translateY(-2px);
 }
 
 /* ===== Section Divider ===== */
 .section-divider {
    height: 1px;
-   background: linear-gradient(
-      90deg,
-      transparent 5%,
-      rgb(var(--ch-white) / 0.04) 20%,
-      rgb(var(--ch-cyan) / 0.2) 50%,
-      rgb(var(--ch-white) / 0.04) 80%,
-      transparent 95%
-   );
+   background: rgb(var(--ch-white) / 0.06);
 }
 
-/* ===== Section Alternating Backgrounds ===== */
-.section-dark {
-   background-color: transparent;
+/* ===== Project cards ===== */
+/* Screenshot zooms subtly when the card is hovered. */
+.project-cover-img {
+   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Darker band: a semi-opaque gradient instead of backdrop-filter. These are
-   full-width bands taller than the viewport; a backdrop blur here re-samples the
-   animated aurora/3D backdrop every scroll frame (the dominant fast-scroll jank
-   source). The gradient bakes into the layer and composites for free -- the faint
-   aurora still shows through, only the per-frame blur-of-a-moving-backdrop is gone. */
-.section-darker {
-   background: linear-gradient(
-      180deg,
-      rgb(var(--ch-bg-sec) / 0.38),
-      rgb(var(--ch-bg-sec) / 0.2)
-   );
+.project-card:hover .project-cover-img {
+   transform: scale(1.045);
 }
 
-/* ===== Gradient Buttons ===== */
-.btn-primary {
-   background: #06202d;
-   color: var(--color-accent-cyan);
+.line-clamp-3 {
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+   line-clamp: 3;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+}
+
+/* ===== Dashed Category Rule (tech-stack separators) ===== */
+.dashed-rule {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   color: var(--color-text-muted);
+   font-size: 12px;
    font-weight: 600;
-   border: 1px solid rgb(var(--ch-cyan) / 0.3);
-   border-radius: 12px;
-   padding: 12px 32px;
+   letter-spacing: 0.2em;
+   text-transform: uppercase;
+}
+
+.dashed-rule::before,
+.dashed-rule::after {
+   content: "";
+   flex: 1;
+   border-top: 1px dashed rgb(var(--ch-white) / 0.12);
+}
+
+/* ===== Section Alternating Backgrounds (flattened -- one canvas) ===== */
+.section-dark,
+.section-darker {
+   background: transparent;
+}
+
+/* ===== Buttons ===== */
+.btn-primary {
+   background: var(--color-accent-blue);
+   color: #fff;
+   font-weight: 600;
+   border: 1px solid transparent;
+   border-radius: 8px;
+   padding: 12px 28px;
    cursor: pointer;
    transition:
-      background 0.3s ease,
-      border-color 0.3s ease,
-      box-shadow 0.3s ease,
-      color 0.3s ease,
-      transform 0.3s ease;
-   backdrop-filter: blur(12px);
-   -webkit-backdrop-filter: blur(12px);
-   box-shadow:
-      0 4px 20px rgb(var(--ch-cyan) / 0.15),
-      inset 0 1px 0 rgb(var(--ch-cyan) / 0.1);
+      background 0.25s ease,
+      transform 0.25s ease;
 }
 
 .btn-primary:hover {
-   background: #063241;
-   border-color: rgb(var(--ch-cyan) / 0.5);
-   box-shadow:
-      0 6px 30px rgb(var(--ch-cyan) / 0.25),
-      0 0 0 1px rgb(var(--ch-cyan) / 0.15),
-      inset 0 1px 0 rgb(var(--ch-cyan) / 0.15);
+   background: #1d4ed8;
    transform: translateY(-1px);
-   color: #fff;
 }
 
 .btn-outline {
-   background: rgb(var(--ch-white) / 0.03);
-   color: var(--color-accent-cyan);
+   background: rgb(var(--ch-white) / 0.08);
+   color: var(--color-text-primary);
    font-weight: 600;
-   border: 1px solid rgb(var(--ch-white) / 0.08);
-   border-radius: 12px;
-   padding: 12px 32px;
+   border: 1px solid rgb(var(--ch-white) / 0.06);
+   border-radius: 8px;
+   padding: 12px 28px;
    cursor: pointer;
    transition:
-      background 0.3s ease,
-      border-color 0.3s ease,
-      box-shadow 0.3s ease,
-      transform 0.3s ease;
-   backdrop-filter: blur(12px);
-   -webkit-backdrop-filter: blur(12px);
+      background 0.25s ease,
+      border-color 0.25s ease,
+      transform 0.25s ease;
 }
 
 .btn-outline:hover {
-   background: rgb(var(--ch-cyan) / 0.08);
-   border-color: rgb(var(--ch-cyan) / 0.3);
-   box-shadow: 0 0 25px rgb(var(--ch-cyan) / 0.1);
+   background: rgb(var(--ch-white) / 0.14);
+   border-color: rgb(var(--ch-white) / 0.12);
+   transform: translateY(-1px);
+}
+
+/* White pill CTA (nav "Contact Me", akobir-style) */
+.btn-pill {
+   background: #fff;
+   color: #0b1012;
+   font-weight: 600;
+   border: none;
+   border-radius: 8px;
+   padding: 8px 18px;
+   cursor: pointer;
+   transition:
+      background 0.25s ease,
+      transform 0.25s ease;
+}
+
+.btn-pill:hover {
+   background: #e2e8f0;
    transform: translateY(-1px);
 }
 
@@ -601,31 +446,30 @@ img {
    border-radius: 6px;
    transition:
       background 0.25s ease,
-      border-color 0.25s ease,
-      box-shadow 0.25s ease;
+      border-color 0.25s ease;
 }
 
 .tag-cyan {
-   background: rgb(var(--ch-cyan) / 0.1);
-   color: var(--color-accent-cyan);
-   border: 1px solid rgb(var(--ch-cyan) / 0.15);
+   background: rgb(var(--ch-white) / 0.05);
+   color: var(--color-text-secondary);
+   border: 1px solid rgb(var(--ch-white) / 0.08);
 }
 
 .tag-cyan:hover {
-   background: rgb(var(--ch-cyan) / 0.2);
-   border-color: rgb(var(--ch-cyan) / 0.35);
-   box-shadow: 0 0 12px rgb(var(--ch-cyan) / 0.1);
+   background: rgb(var(--ch-white) / 0.1);
+   border-color: rgb(var(--ch-white) / 0.16);
+   color: var(--color-text-primary);
 }
 
 .tag-purple {
-   background: rgb(var(--ch-purple) / 0.1);
+   background: rgb(var(--ch-blue) / 0.12);
    color: var(--color-accent-purple);
-   border: 1px solid rgb(var(--ch-purple) / 0.15);
+   border: 1px solid rgb(var(--ch-blue) / 0.2);
 }
 
 .tag-purple:hover {
-   background: rgb(var(--ch-purple) / 0.2);
-   border-color: rgb(var(--ch-purple) / 0.35);
+   background: rgb(var(--ch-blue) / 0.2);
+   border-color: rgb(var(--ch-blue) / 0.35);
 }
 
 .tag-amber {
@@ -650,31 +494,43 @@ img {
    border-color: rgb(var(--ch-green) / 0.35);
 }
 
+/* Section header pill badge (akobir "Tech Stack" / "DevSpark" chip) */
+.badge-pill {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   font-size: 13px;
+   font-weight: 500;
+   color: var(--color-text-secondary);
+   background: rgb(var(--ch-white) / 0.05);
+   border: 1px solid rgb(var(--ch-white) / 0.08);
+   border-radius: 9999px;
+   padding: 6px 16px;
+}
+
 /* ===== Skill Tag ===== */
 .skill-tag {
    display: inline-flex;
    align-items: center;
-   font-family: var(--font-mono);
-   font-size: 0.8125rem;
+   font-size: 0.875rem;
+   font-weight: 500;
    padding: 8px 16px;
-   border-radius: 10px;
-   background: rgb(var(--ch-white) / 0.03);
+   border-radius: 8px;
+   background: rgb(var(--ch-white) / 0.04);
    border: 1px solid rgb(var(--ch-white) / 0.06);
    color: var(--color-text-secondary);
    transition:
       background 0.3s ease,
       border-color 0.3s ease,
       color 0.3s ease,
-      box-shadow 0.3s ease,
       transform 0.3s ease;
    cursor: default;
 }
 
 .skill-tag:hover {
-   border-color: rgb(var(--ch-cyan) / 0.3);
-   color: var(--color-accent-cyan);
-   background: rgb(var(--ch-cyan) / 0.08);
-   box-shadow: 0 0 20px rgb(var(--ch-cyan) / 0.08);
+   border-color: rgb(var(--ch-white) / 0.16);
+   color: var(--color-text-primary);
+   background: rgb(var(--ch-white) / 0.08);
    transform: translateY(-1px);
 }
 
@@ -683,14 +539,23 @@ img {
    transform: scale(0.96);
 }
 
+/* ===== Skill Item (icon + name rows, akobir tech-stack style) ===== */
+.skill-item {
+   transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
+}
+
+.skill-item:hover {
+   transform: translateY(-2px);
+}
+
 /* ===== Form Input ===== */
 .form-input {
    width: 100%;
-   background: rgb(var(--ch-bg-sec) / 0.5);
-   backdrop-filter: blur(12px);
-   -webkit-backdrop-filter: blur(12px);
-   border: 1px solid rgb(var(--ch-white) / 0.06);
-   border-radius: 12px;
+   background: rgb(var(--ch-white) / 0.04);
+   border: 1px solid rgb(var(--ch-white) / 0.08);
+   border-radius: 10px;
    padding: 14px 18px;
    color: var(--color-text-primary);
    font-size: 0.9375rem;
@@ -706,11 +571,9 @@ img {
 }
 
 .form-input:focus {
-   border-color: rgb(var(--ch-cyan) / 0.35);
-   background: rgb(var(--ch-bg-sec) / 0.7);
-   box-shadow:
-      0 0 0 3px rgb(var(--ch-cyan) / 0.08),
-      0 0 25px rgb(var(--ch-cyan) / 0.06);
+   border-color: rgb(var(--ch-blue) / 0.6);
+   background: rgb(var(--ch-white) / 0.06);
+   box-shadow: 0 0 0 3px rgb(var(--ch-blue) / 0.15);
 }
 
 .form-input--error {
@@ -719,9 +582,7 @@ img {
 
 .form-input--error:focus {
    border-color: rgb(var(--ch-red) / 0.6);
-   box-shadow:
-      0 0 0 3px rgb(var(--ch-red) / 0.08),
-      0 0 25px rgb(var(--ch-red) / 0.06);
+   box-shadow: 0 0 0 3px rgb(var(--ch-red) / 0.1);
 }
 
 /* ===== Skeleton Loading ===== */
@@ -742,7 +603,7 @@ img {
    display: inline-block;
    width: 2px;
    height: 1.1em;
-   background: var(--color-accent-purple);
+   background: var(--color-text-secondary);
    margin-left: 2px;
    vertical-align: text-bottom;
    animation: blink 1s step-end infinite;
@@ -776,54 +637,25 @@ img {
    animation-delay: calc(var(--col) * 8ms + 0.6s);
 }
 
-/* Browser mockup border glow pulse */
+/* Browser mockup border pulse (flat -- border only, no glow) */
 @keyframes mockup-glow {
    0%,
    100% {
-      box-shadow:
-         0 8px 32px rgba(0, 0, 0, 0.4),
-         0 2px 4px rgba(0, 0, 0, 0.2),
-         0 0 80px rgb(var(--ch-cyan) / 0.04),
-         inset 0 1px 0 rgb(var(--ch-white) / 0.04);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
    }
    50% {
-      box-shadow:
-         0 8px 32px rgba(0, 0, 0, 0.4),
-         0 2px 4px rgba(0, 0, 0, 0.2),
-         0 0 120px rgb(var(--ch-cyan) / 0.08),
-         inset 0 1px 0 rgb(var(--ch-white) / 0.06);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
    }
 }
 
-/* ===== Reduced Motion ===== */
-@media (prefers-reduced-motion: reduce) {
-   *,
-   *::before,
-   *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-   }
-
-   .glass-orb {
-      animation: none !important;
-      opacity: 0.25;
-   }
-
-   .glass-card:hover {
-      transform: none;
-   }
-
-   .skill-tag:hover,
-   .skill-tag:active {
-      transform: none;
-   }
-
-   .btn-primary:hover,
-   .btn-outline:hover {
-      transform: none;
-   }
+/* ===== Footer teal fade (akobir bottom-of-page glow) ===== */
+.footer-fade {
+   background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgb(13 60 68 / 0.55) 55%,
+      rgb(34 130 143 / 0.75) 100%
+   );
 }
 
 /* ===== Print Resume Mode ===== */
@@ -834,7 +666,6 @@ img {
       font-size: 11pt;
    }
 
-   .glass-bg,
    nav,
    footer,
    #contact,
@@ -844,18 +675,16 @@ img {
    #achievements,
    .section-divider,
    canvas,
-   .glass-orb,
    button,
    .btn-primary,
-   .btn-outline {
+   .btn-outline,
+   .btn-pill {
       display: none !important;
    }
 
    * {
       box-shadow: none !important;
       text-shadow: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
       color: black !important;
       transition: none !important;
       animation: none !important;
@@ -892,8 +721,6 @@ img {
 
    .gradient-text,
    .gradient-text-vivid {
-      background: none !important;
-      -webkit-text-fill-color: black !important;
       color: black !important;
    }
 }

@@ -31,7 +31,7 @@ const ModalHeaderShell = ({
          top: 0,
          zIndex: 10,
          padding: isMobile ? "16px 16px 12px" : "20px 24px 16px",
-         background: "rgba(12,12,28,0.9)",
+         background: "rgba(14,20,23,0.92)",
          backdropFilter: "blur(20px)",
          WebkitBackdropFilter: "blur(20px)",
          borderBottom: `1px solid ${GLASS_BORDER}`,

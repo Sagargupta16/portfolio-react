@@ -2,6 +2,35 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.0.0] - 2026-07-14
+
+### Changed
+
+- **Full redesign to minimal dark theme** (reference: akobirjs.me): near-black canvas (#0b1012), one blue accent family (#2563eb CTAs, lighter blues for icons/links), flat 1px-bordered cards, white pill nav CTA, badge-pill + big centered headline per section, dashed category rules
+- **Projects section rebuilt** as a responsive card grid (was alternating vertical timeline): 15 live-site screenshots (960x600 webp, captured from the deployed apps) + 8 themed animated SVG cover scenes (Infra, MCP, ML, Game, Docs, Automation, Auth, WebApp) for the 26 undeployed entries, mapped per project in `covers/coverRegistry.ts`
+- **Project modal**: cover media on top, flat surface, check-mark feature bullets, solid-blue/soft-white CTA buttons
+- **Skills**: bordered chip boxes replaced by brand-icon + name rows (96 skills, official brand colors via react-icons); categories reordered DevOps-first; added GitOps, Linux, Feast, LLMOps, GraphQL, Astro, Unity, Vercel, Chrome Extensions from resume variants
+- **About**: stat-counter grid (duplicate of hero stats) replaced by a quick-facts band (location, role, education, languages) driven by `personal.json`
+- **Site-wide `AmbientBackground`**: drifting aurora glows, dot lattice, sweeping light beams -- transform/opacity only, no backdrop-filter
+- Hero: logo tile + status badge + two-line headline; long counter suffixes render at half size
+
+### Added
+
+- Projects: Kalchar (kalchar.co.in), Sagas, skillcheck (npm), ITR MCP (npm) -- 41 total
+- `getTitle` / `getLocation` / `getLanguages` data-loader getters
+- Credly badge image fallback to the original URL when the CDN's resized variant fails
+
+### Removed
+
+- **Three.js and all WebGL**: `three`, `@react-three/fiber`, `@react-three/drei`, `@types/three`; SceneBackground, FloatingGeometry, ParticleField, AuroraBlobs, ShootingStars, InteractiveConstellation, ParallaxElements, SectionTransition, GlassBackground, ScrollRevealText, StatCounter (~800 kB less vendor JS)
+
+### Fixed
+
+- CharacterReveal wraps at word boundaries (About heading no longer breaks mid-name)
+- Horizontal page overflow on phones from reveal transforms and the 3D browser mockup projection
+- Experience cards stuck invisible after a breakpoint remount (per-card viewport triggers)
+- Duplicate project id 4 (Contact Manager -> 48), stale open_source_prs stat ("9 merged + 7 open", live-verified), TriNIT hackathon date (October 2023 -> March 2024)
+
 ## [3.16.2] - 2026-07-09
 
 ### Changed

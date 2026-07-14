@@ -4,7 +4,7 @@ import { getExperience, getPositionsOfResponsibility } from "@data/dataLoader";
 import { staggerContainer, fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
-import { CYAN, PURPLE, TEXT_PRIMARY, MAX_WIDTH_NARROW } from "@/constants/theme";
+import { CYAN, PURPLE, MAX_WIDTH_NARROW } from "@/constants/theme";
 import type { ProfessionalExperience } from "@/types";
 import TimelineCard from "./TimelineCard";
 import ExperienceModal from "./ExperienceModal";
@@ -46,26 +46,10 @@ const Experience = () => {
          {hasPositions && (
             <>
                <motion.h3
+                  className="dashed-rule"
                   variants={fadeInUp}
-                  style={{
-                     fontSize: 20,
-                     fontWeight: 700,
-                     color: TEXT_PRIMARY,
-                     marginTop: 48,
-                     marginBottom: 32,
-                     display: "flex",
-                     alignItems: "center",
-                     gap: 12,
-                  }}
+                  style={{ marginTop: 48, marginBottom: 32 }}
                >
-                  <div
-                     style={{
-                        height: 28,
-                        width: 4,
-                        borderRadius: 9999,
-                        background: `linear-gradient(to bottom, ${PURPLE}, rgba(168,85,247,0.3))`,
-                     }}
-                  />
                   Positions of Responsibility
                </motion.h3>
 

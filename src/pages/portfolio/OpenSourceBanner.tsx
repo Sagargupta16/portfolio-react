@@ -1,5 +1,12 @@
 import { motion } from "motion/react";
-import { GitPullRequest, GitMerge, CircleDot, GitPullRequestClosed, BadgeCheck, MessageCircle } from "lucide-react";
+import {
+   GitPullRequest,
+   GitMerge,
+   CircleDot,
+   GitPullRequestClosed,
+   BadgeCheck,
+   MessageCircle,
+} from "lucide-react";
 import {
    MONO_FONT,
    CYAN,
@@ -9,7 +16,10 @@ import {
    TEXT_MUTED,
 } from "@/constants/theme";
 import { staggerContainer, staggerItem } from "@utils/animations";
-import { OPEN_SOURCE_CONTRIBUTIONS, COMMUNITY_DISCUSSIONS } from "./portfolioConstants";
+import {
+   OPEN_SOURCE_CONTRIBUTIONS,
+   COMMUNITY_DISCUSSIONS,
+} from "./portfolioConstants";
 import ContribSection from "./ContribSection";
 import DiscussionCard from "./DiscussionCard";
 
@@ -57,7 +67,9 @@ const OpenSourceBanner = () => {
                   fontWeight: 500,
                }}
             >
-               ({OPEN_SOURCE_CONTRIBUTIONS.length + COMMUNITY_DISCUSSIONS.length})
+               (
+               {OPEN_SOURCE_CONTRIBUTIONS.length + COMMUNITY_DISCUSSIONS.length}
+               )
             </span>
          </div>
 
@@ -77,7 +89,7 @@ const OpenSourceBanner = () => {
                   borderRadius: "inherit",
                   padding: 1,
                   background:
-                     "linear-gradient(135deg, rgba(168,85,247,0.3), rgba(34,197,94,0.3), rgba(6,182,212,0.3))",
+                     "linear-gradient(135deg, rgba(56,189,248,0.3), rgba(34,197,94,0.3), rgba(96,165,250,0.3))",
                   mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                   maskComposite: "exclude",
                   WebkitMask:
@@ -171,13 +183,15 @@ const OpenSourceBanner = () => {
                            letterSpacing: "0.03em",
                         }}
                      >
-                        Accepted Discussion Answers ({acceptedDiscussions.length})
+                        Accepted Discussion Answers (
+                        {acceptedDiscussions.length})
                      </span>
                   </div>
                   <motion.div
                      style={{
                         display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                        gridTemplateColumns:
+                           "repeat(auto-fill, minmax(280px, 1fr))",
                         gap: 8,
                      }}
                      variants={staggerContainer}
@@ -229,7 +243,8 @@ const OpenSourceBanner = () => {
                   <motion.div
                      style={{
                         display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                        gridTemplateColumns:
+                           "repeat(auto-fill, minmax(280px, 1fr))",
                         gap: 8,
                      }}
                      variants={staggerContainer}

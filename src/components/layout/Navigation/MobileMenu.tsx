@@ -1,6 +1,6 @@
 import { memo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CYAN, TEXT_SECONDARY, GLASS_BORDER } from "@/constants/theme";
+import { TEXT_PRIMARY, TEXT_SECONDARY, GLASS_BORDER } from "@/constants/theme";
 import useFocusTrap from "@hooks/useFocusTrap";
 
 interface NavSection {
@@ -28,8 +28,8 @@ const rowStyle = (isActive: boolean): React.CSSProperties => ({
    cursor: "pointer",
    border: "none",
    transition: "color 0.2s ease, background-color 0.2s ease",
-   color: isActive ? CYAN : TEXT_SECONDARY,
-   backgroundColor: isActive ? "rgb(var(--ch-cyan) / 0.08)" : "transparent",
+   color: isActive ? TEXT_PRIMARY : TEXT_SECONDARY,
+   backgroundColor: isActive ? "rgb(var(--ch-white) / 0.08)" : "transparent",
 });
 
 const MobileMenu = ({
@@ -76,9 +76,7 @@ const MobileMenu = ({
                   style={{
                      position: "absolute",
                      inset: 0,
-                     backgroundColor: "rgba(0, 0, 0, 0.4)",
-                     backdropFilter: "blur(8px)",
-                     WebkitBackdropFilter: "blur(8px)",
+                     backgroundColor: "rgba(0, 0, 0, 0.55)",
                   }}
                   onClick={onClose}
                />
@@ -97,9 +95,7 @@ const MobileMenu = ({
                      right: 0,
                      bottom: 0,
                      width: "min(288px, 85vw)",
-                     backgroundColor: "rgba(12, 12, 30, 0.7)",
-                     backdropFilter: "blur(24px)",
-                     WebkitBackdropFilter: "blur(24px)",
+                     backgroundColor: "rgba(11, 16, 18, 0.97)",
                      borderLeft: `1px solid ${GLASS_BORDER}`,
                      boxShadow: "-10px 0 40px rgba(0, 0, 0, 0.3)",
                   }}

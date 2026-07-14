@@ -53,7 +53,7 @@ const Preloader = () => {
                      background: "rgba(6, 6, 16, 0.98)",
                      backdropFilter: "blur(40px)",
                      WebkitBackdropFilter: "blur(40px)",
-                     borderBottom: "1px solid rgba(6, 182, 212, 0.1)",
+                     borderBottom: "1px solid rgba(96, 165, 250, 0.1)",
                   }}
                />
 
@@ -76,7 +76,7 @@ const Preloader = () => {
                      background: "rgba(6, 6, 16, 0.98)",
                      backdropFilter: "blur(40px)",
                      WebkitBackdropFilter: "blur(40px)",
-                     borderTop: "1px solid rgba(6, 182, 212, 0.1)",
+                     borderTop: "1px solid rgba(96, 165, 250, 0.1)",
                   }}
                />
 

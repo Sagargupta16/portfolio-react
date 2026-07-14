@@ -37,11 +37,6 @@ export default defineConfig(() => ({
                if (!id.includes("node_modules")) return;
                if (id.includes("react-icons") || id.includes("lucide-react"))
                   return "icons";
-               if (
-                  id.includes("/three/") ||
-                  id.includes("@react-three/")
-               )
-                  return "threejs";
                if (id.includes("/motion/") || id.includes("framer-motion"))
                   return "animations";
                if (id.includes("/react/") || id.includes("/react-dom/"))
