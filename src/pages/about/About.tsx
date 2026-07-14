@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { getAbout, getStatistics } from "@data/dataLoader";
+import { getAbout } from "@data/dataLoader";
 import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
 import { GREEN, MONO_FONT, TEXT_PRIMARY, MAX_WIDTH } from "@/constants/theme";
 import DevAvatar from "@components/ui/DevAvatar";
@@ -8,11 +8,10 @@ import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import CharacterReveal from "@components/ui/CharacterReveal";
 import HighlightCard from "./HighlightCard";
-import StatCounter from "./StatCounter";
+import QuickFacts from "./QuickFacts";
 
 const About = () => {
    const aboutInfo = getAbout();
-   const statistics = getStatistics();
    const { isMobile } = useBreakpoint();
 
    const highlights = useMemo(
@@ -24,8 +23,6 @@ const About = () => {
       ],
       [aboutInfo],
    );
-
-   const statEntries = useMemo(() => Object.entries(statistics), [statistics]);
 
    return (
       <PageSection id="about" title="About Me" subtitle="Get to know me">
@@ -121,8 +118,8 @@ const About = () => {
                </motion.div>
             </motion.div>
 
-            {/* Stats Row */}
-            <StatCounter statEntries={statEntries} isMobile={isMobile} />
+            {/* Quick facts band (hero already shows the numeric stats) */}
+            <QuickFacts isMobile={isMobile} />
          </div>
       </PageSection>
    );

@@ -60,38 +60,41 @@ const LanguagePanel = ({ tint }: { tint: string }) => (
    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
       {/* Two chat bubbles alternating typing dots */}
       {[0, 1].map((side) => {
-         const bubbleBorder = side === 0 ? "rgba(255,255,255,0.14)" : `${tint}40`;
+         const bubbleBorder =
+            side === 0 ? "rgba(255,255,255,0.14)" : `${tint}40`;
          return (
-         <div
-            key={side}
-            style={{
-               alignSelf: side === 0 ? "flex-start" : "flex-end",
-               display: "flex",
-               gap: 3,
-               padding: "5px 8px",
-               borderRadius: side === 0 ? "8px 8px 8px 2px" : "8px 8px 2px 8px",
-               border: `1px solid ${bubbleBorder}`,
-               background: side === 0 ? "rgba(255,255,255,0.04)" : `${tint}0c`,
-            }}
-         >
-            {[0, 1, 2].map((d) => (
-               <motion.span
-                  key={d}
-                  animate={{ opacity: [0.2, 1, 0.2] }}
-                  transition={{
-                     duration: 1.2,
-                     repeat: Infinity,
-                     delay: side * 1.5 + d * 0.2,
-                  }}
-                  style={{
-                     width: 3,
-                     height: 3,
-                     borderRadius: "50%",
-                     background: "rgba(255,255,255,0.6)",
-                  }}
-               />
-            ))}
-         </div>
+            <div
+               key={side}
+               style={{
+                  alignSelf: side === 0 ? "flex-start" : "flex-end",
+                  display: "flex",
+                  gap: 3,
+                  padding: "5px 8px",
+                  borderRadius:
+                     side === 0 ? "8px 8px 8px 2px" : "8px 8px 2px 8px",
+                  border: `1px solid ${bubbleBorder}`,
+                  background:
+                     side === 0 ? "rgba(255,255,255,0.04)" : `${tint}0c`,
+               }}
+            >
+               {[0, 1, 2].map((d) => (
+                  <motion.span
+                     key={d}
+                     animate={{ opacity: [0.2, 1, 0.2] }}
+                     transition={{
+                        duration: 1.2,
+                        repeat: Infinity,
+                        delay: side * 1.5 + d * 0.2,
+                     }}
+                     style={{
+                        width: 3,
+                        height: 3,
+                        borderRadius: "50%",
+                        background: "rgba(255,255,255,0.6)",
+                     }}
+                  />
+               ))}
+            </div>
          );
       })}
       {/* Live call dot */}
@@ -99,9 +102,16 @@ const LanguagePanel = ({ tint }: { tint: string }) => (
          <motion.span
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 1.6, repeat: Infinity }}
-            style={{ width: 5, height: 5, borderRadius: "50%", background: "#22c55e" }}
+            style={{
+               width: 5,
+               height: 5,
+               borderRadius: "50%",
+               background: "#22c55e",
+            }}
          />
-         <span style={{ ...label, color: "rgba(255,255,255,0.4)" }}>Live call</span>
+         <span style={{ ...label, color: "rgba(255,255,255,0.4)" }}>
+            Live call
+         </span>
       </div>
    </div>
 );
@@ -114,21 +124,50 @@ const SocialPanel = ({ tint }: { tint: string }) => (
          padding: "6px 8px",
       }}
    >
-      <div style={{ height: 3, width: "70%", borderRadius: 2, background: "rgba(255,255,255,0.18)" }} />
-      <div style={{ height: 3, width: "45%", borderRadius: 2, background: "rgba(255,255,255,0.1)", marginTop: 3 }} />
-      <div style={{ display: "flex", gap: 8, marginTop: 7, alignItems: "center" }}>
+      <div
+         style={{
+            height: 3,
+            width: "70%",
+            borderRadius: 2,
+            background: "rgba(255,255,255,0.18)",
+         }}
+      />
+      <div
+         style={{
+            height: 3,
+            width: "45%",
+            borderRadius: 2,
+            background: "rgba(255,255,255,0.1)",
+            marginTop: 3,
+         }}
+      />
+      <div
+         style={{ display: "flex", gap: 8, marginTop: 7, alignItems: "center" }}
+      >
          <motion.span
             animate={{ scale: [1, 1.35, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
-            style={{ width: 6, height: 6, borderRadius: "50%", background: tint }}
+            style={{
+               width: 6,
+               height: 6,
+               borderRadius: "50%",
+               background: tint,
+            }}
          />
          <motion.span
             animate={{ scale: [1, 1.25, 1] }}
             transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-            style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(255,255,255,0.3)" }}
+            style={{
+               width: 6,
+               height: 6,
+               borderRadius: "50%",
+               background: "rgba(255,255,255,0.3)",
+            }}
          />
          {/* threaded reply line */}
-         <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
+         <div
+            style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }}
+         />
       </div>
    </div>
 );
@@ -143,11 +182,18 @@ const TravelPanel = ({ tint }: { tint: string }) => (
          height: 46,
       }}
    >
-      <div className="skeleton" style={{ position: "absolute", inset: 0, opacity: 0.5 }} />
+      <div
+         className="skeleton"
+         style={{ position: "absolute", inset: 0, opacity: 0.5 }}
+      />
       {/* Location pin dropping */}
       <motion.div
          animate={{ y: [-14, 0, 0, -14], opacity: [0, 1, 1, 0] }}
-         transition={{ duration: 3.4, repeat: Infinity, times: [0, 0.2, 0.85, 1] }}
+         transition={{
+            duration: 3.4,
+            repeat: Infinity,
+            times: [0, 0.2, 0.85, 1],
+         }}
          style={{
             position: "absolute",
             left: "46%",
@@ -277,17 +323,32 @@ const WebAppScene = ({ tint, variant }: CoverSceneProps) => {
                   {[0, 1, 2].map((i) => (
                      <motion.div
                         key={i}
-                        animate={{ opacity: i === 0 ? [0.9, 0.9] : [0.25, 0.5, 0.25] }}
-                        transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
+                        animate={{
+                           opacity: i === 0 ? [0.9, 0.9] : [0.25, 0.5, 0.25],
+                        }}
+                        transition={{
+                           duration: 3,
+                           repeat: Infinity,
+                           delay: i * 0.5,
+                        }}
                         style={{
                            height: 5,
                            borderRadius: 2,
-                           background: i === 0 ? `${tint}60` : "rgba(255,255,255,0.14)",
+                           background:
+                              i === 0 ? `${tint}60` : "rgba(255,255,255,0.14)",
                         }}
                      />
                   ))}
                </div>
-               <div style={{ flex: 1, padding: 9, display: "flex", flexDirection: "column", gap: 6 }}>
+               <div
+                  style={{
+                     flex: 1,
+                     padding: 9,
+                     display: "flex",
+                     flexDirection: "column",
+                     gap: 6,
+                  }}
+               >
                   {/* Header bar */}
                   <div
                      style={{

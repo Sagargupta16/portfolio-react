@@ -169,7 +169,9 @@ const Minesweeper = ({ tint }: { tint: string }) => (
                   />
                )}
                {isDigit && (
-                  <span style={{ ...label, fontSize: 9, color: "#22c55e" }}>2</span>
+                  <span style={{ ...label, fontSize: 9, color: "#22c55e" }}>
+                     2
+                  </span>
                )}
             </motion.div>
          );
@@ -218,7 +220,10 @@ const Snake = ({ tint }: { tint: string }) => (
                width: 13,
                height: 13,
                borderRadius: 4,
-               background: seg === 0 ? tint : `${tint}${["cc", "aa", "77", "44"][seg - 1]}`,
+               background:
+                  seg === 0
+                     ? tint
+                     : `${tint}${["cc", "aa", "77", "44"][seg - 1]}`,
             }}
          />
       ))}

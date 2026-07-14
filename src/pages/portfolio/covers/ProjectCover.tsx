@@ -45,7 +45,14 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
                }}
             />
          ) : (
-            <Suspense fallback={<div className="skeleton" style={{ position: "absolute", inset: 0 }} />}>
+            <Suspense
+               fallback={
+                  <div
+                     className="skeleton"
+                     style={{ position: "absolute", inset: 0 }}
+                  />
+               }
+            >
                <cover.Scene tint={accent} variant={cover.variant} />
             </Suspense>
          )}

@@ -65,7 +65,12 @@ const McpScene = ({ tint, variant }: CoverSceneProps) => {
          <svg
             viewBox="0 0 100 62"
             preserveAspectRatio="none"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+            style={{
+               position: "absolute",
+               inset: 0,
+               width: "100%",
+               height: "100%",
+            }}
          >
             {[
                "M20,16 L44,29",
@@ -170,7 +175,11 @@ const McpScene = ({ tint, variant }: CoverSceneProps) => {
                   <motion.span
                      key={i}
                      animate={{ opacity: [0.2, 1, 0.2] }}
-                     transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.3 }}
+                     transition={{
+                        duration: 1.6,
+                        repeat: Infinity,
+                        delay: i * 0.3,
+                     }}
                      style={{
                         width: 3,
                         height: 3,
