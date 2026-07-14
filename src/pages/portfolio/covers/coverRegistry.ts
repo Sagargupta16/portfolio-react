@@ -65,6 +65,7 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
 
    // Others
    46: { kind: "image", src: sagas }, // Sagas (sagargupta.online/sagas)
+   48: { kind: "image", src: contactManager }, // Contact Manager
    40: { kind: "scene", Scene: AutomationScene, variant: "instagram" }, // Instagram Autopilot
    19: { kind: "image", src: financialDashboard },
    7: { kind: "scene", Scene: InfraScene }, // AWS DevOps Infrastructure
@@ -94,13 +95,7 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    42: { kind: "scene", Scene: AutomationScene, variant: "badge" }, // Credly Badge Action
 };
 
-// "Others" list has a second project with id 4 (Contact Manager) colliding with
-// LeetCode Among Us in collaborative. Disambiguate by title at lookup time.
-const COVER_BY_TITLE: Record<string, ProjectCover> = {
-   "Contact Manager": { kind: "image", src: contactManager },
-};
-
 export const getProjectCover = (
    id: number,
-   title: string,
-): ProjectCover | undefined => COVER_BY_TITLE[title] ?? COVER_BY_ID[id];
+   _title: string,
+): ProjectCover | undefined => COVER_BY_ID[id];

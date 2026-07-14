@@ -526,7 +526,7 @@
          "live": ""
       },
       {
-         "id": 4,
+         "id": 48,
          "title": "Contact Manager",
          "description": "A full-stack MERN contact management app with MongoDB persistence, full CRUD, search/filter, dark/light mode with localStorage, and zero-refresh SPA navigation via React Router. Frontend on GitHub Pages, backend on Render.",
          "date": "July 2022",
