@@ -52,6 +52,8 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
    const pageWidth = containerWidth
       ? Math.min(containerWidth - 8, 900) * zoom
       : undefined;
+   const pageCountLabel =
+      numPages === 1 ? "1 page" : `${numPages} pages`;
 
    if (failed) {
       return (
@@ -106,9 +108,7 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
                   color: TEXT_MUTED,
                }}
             >
-               {numPages > 0
-                  ? `${numPages} page${numPages === 1 ? "" : "s"}`
-                  : "Loading..."}
+               {numPages > 0 ? pageCountLabel : "Loading..."}
             </span>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                <button
