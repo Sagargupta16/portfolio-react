@@ -51,6 +51,13 @@ jobs:
               echo "Validating JSON data files..."
               find data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
 
+         # Self-host the resume for the in-site CV viewer: fetch the latest
+         # release PDF and pre-render each page to high-res WebP (crisp images,
+         # no client-side PDF machinery). Runs before the build so Vite copies
+         # public/resume* into build/.
+         - name: Prepare resume (fetch PDF + render page images)
+           run: pnpm fetch:resume
+
          - name: Build with Vite
            run: pnpm build
 

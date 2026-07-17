@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useLenis } from "lenis/react";
+import { FileText } from "lucide-react";
 import { getName, getRoles } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { GREEN, TEXT_SECONDARY } from "@/constants/theme";
+import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import HeroStats from "./HeroStats";
 import HeroSocial from "./HeroSocial";
 const RESUME_URL =
@@ -11,6 +13,7 @@ const RESUME_URL =
 
 const HeroContent = () => {
    const [roleIndex, setRoleIndex] = useState(0);
+   const [cvOpen, setCvOpen] = useState(false);
 
    const name = useMemo(() => getName(), []);
    const roles = useMemo(() => getRoles(), []);
@@ -121,6 +124,21 @@ const HeroContent = () => {
             >
                Explore Projects
             </motion.button>
+            <motion.button
+               onClick={() => setCvOpen(true)}
+               className="btn-outline text-sm font-semibold"
+               style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+               }}
+               whileHover={{ scale: 1.04 }}
+               whileTap={{ scale: 0.97 }}
+               aria-haspopup="dialog"
+            >
+               <FileText size={15} />
+               View CV
+            </motion.button>
             <motion.a
                href={RESUME_URL}
                download
@@ -137,6 +155,9 @@ const HeroContent = () => {
 
          {/* Status widget + Social icons */}
          <HeroSocial />
+
+         {/* In-site CV viewer (lazy: pdf.js loads only when opened) */}
+         <CvViewerModal isOpen={cvOpen} onClose={() => setCvOpen(false)} />
       </motion.div>
    );
 };

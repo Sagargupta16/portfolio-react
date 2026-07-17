@@ -45,7 +45,9 @@ const ModalShell = ({
                   display: "flex",
                   alignItems: isMobile ? "flex-end" : "center",
                   justifyContent: "center",
-                  padding: isMobile ? 0 : 20,
+                  // Phones keep the bottom-anchored sheet but get breathing
+                  // room from the screen edges; desktop pads all around.
+                  padding: isMobile ? "12px 12px 16px" : 20,
                   background: "rgba(0,0,0,0.3)",
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
@@ -78,7 +80,9 @@ const ModalShell = ({
                      maxWidth: isMobile ? "100%" : 720,
                      maxHeight: isMobile ? "92vh" : "85vh",
                      overflowY: "auto",
-                     borderRadius: isMobile ? "20px 20px 0 0" : 20,
+                     // Sheet floats with side gaps now, so square bottom
+                     // corners would read as a rendering bug -- round all four.
+                     borderRadius: 20,
                      border: "1px solid rgba(255,255,255,0.1)",
                      background: "#0e1417",
                      boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
