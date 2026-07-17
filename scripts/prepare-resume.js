@@ -20,9 +20,9 @@ const PUBLIC_DIR = path.resolve(import.meta.dirname, "../public");
 const PDF_OUT = path.join(PUBLIC_DIR, "resume.pdf");
 const PAGES_DIR = path.join(PUBLIC_DIR, "resume-pages");
 
-// ~3x CSS pixels for a 900px-wide viewer -- crisp on retina at 150% zoom.
-const RENDER_SCALE = 3.5;
-const WEBP_QUALITY = 88;
+// 4x the PDF's natural size (~595pt page -> ~2380px) so the page stays
+// sharp on retina displays even at the viewer's 150% zoom.
+const RENDER_SCALE = 4;
 
 console.log("Fetching latest resume PDF...");
 const res = await fetch(RESUME_URL, { redirect: "follow" });
@@ -48,7 +48,9 @@ for await (const pagePng of document) {
       height = meta.height ?? 0;
    }
    const out = path.join(PAGES_DIR, `page-${pageNum}.webp`);
-   await img.webp({ quality: WEBP_QUALITY }).toFile(out);
+   // Lossless: typeset text smears badly under lossy WebP's DCT blocks.
+   // A mostly-white LaTeX page compresses tightly lossless anyway.
+   await img.webp({ lossless: true, effort: 6 }).toFile(out);
    console.log(`  ${out}`);
 }
 

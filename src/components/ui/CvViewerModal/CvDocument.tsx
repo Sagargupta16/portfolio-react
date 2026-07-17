@@ -78,11 +78,11 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
       );
    }
 
-   const pageCountLabel = manifest
-      ? manifest.pages === 1
-         ? "1 page"
-         : `${manifest.pages} pages`
-      : "Loading...";
+   let pageCountLabel = "Loading...";
+   if (manifest) {
+      pageCountLabel =
+         manifest.pages === 1 ? "1 page" : `${manifest.pages} pages`;
+   }
 
    return (
       <div style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
