@@ -38,3 +38,7 @@ vite.config.js.timestamp-*
 
 # graphify knowledge graph artifacts
 graphify-out/
+
+# Resume PDF is fetched at deploy time (CI) or via pnpm fetch:resume (dev) --
+# never committed; the source of truth is the latex-resume release.
+public/resume.pdf

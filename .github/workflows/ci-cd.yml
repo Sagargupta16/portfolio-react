@@ -54,6 +54,17 @@ jobs:
          - name: Build with Vite
            run: pnpm build
 
+         # Self-host the resume so the in-site CV viewer works: the GitHub
+         # release asset redirects to a signed CDN URL that sends
+         # Content-Disposition: attachment and no CORS header, so it can
+         # neither be framed nor fetched cross-origin by pdf.js.
+         - name: Fetch latest resume PDF into build
+           run: |
+              curl -sSfL --retry 3 \
+                 "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf" \
+                 -o build/resume.pdf
+              ls -la build/resume.pdf
+
          - name: Security audit
            run: |
               echo "Running security audit..."

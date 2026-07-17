@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.1.0] - 2026-07-17
+
+### Added
+
+- **In-site CV viewer**: "View CV" button in the hero opens a themed modal that renders the resume with pdf.js (react-pdf) -- zoom controls, open-in-new-tab, download CTA, text selection, mobile slide-up sheet. The viewer chunk (~128 kB gzip + worker) is lazy-loaded only when opened; the initial bundle is unchanged.
+- CI now fetches the latest `latex-resume` release PDF into `build/resume.pdf` at deploy time (the GitHub release asset itself sends `Content-Disposition: attachment` with no CORS header, so it cannot be framed or fetched cross-origin). `pnpm fetch:resume` does the same into `public/` for local dev (gitignored).
+
 ## [4.0.0] - 2026-07-14
 
 ### Changed
