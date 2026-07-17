@@ -6,8 +6,12 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ### Added
 
-- **In-site CV viewer**: "View CV" button in the hero opens a themed modal that renders the resume with pdf.js (react-pdf) -- zoom controls, open-in-new-tab, download CTA, text selection, mobile slide-up sheet. The viewer chunk (~128 kB gzip + worker) is lazy-loaded only when opened; the initial bundle is unchanged.
-- CI now fetches the latest `latex-resume` release PDF into `build/resume.pdf` at deploy time (the GitHub release asset itself sends `Content-Disposition: attachment` with no CORS header, so it cannot be framed or fetched cross-origin). `pnpm fetch:resume` does the same into `public/` for local dev (gitignored).
+- **In-site CV viewer**: "View CV" button in the hero opens a themed modal showing the resume as crisp pre-rendered images -- zoom controls (75-150%), open-in-new-tab, download CTA, mobile slide-up sheet. Viewer chunk is ~3.4 kB (lazy); page images load only when opened.
+- **Deploy-time resume pipeline** (`scripts/prepare-resume.js`, run by CI before build and via `pnpm fetch:resume` locally): fetches the latest `latex-resume` release PDF and renders each page to high-res WebP (3.5x scale, ~2083px wide) with a manifest -- the viewer always shows the latest released resume without committing any binary. Direct pdf.js rendering was tried first and rejected: the release asset cannot be fetched cross-origin (attachment disposition, no CORS), and live canvas rendering looked soft; pre-rendered images are sharper and drop ~1.4 MB of client-side PDF machinery.
+
+### Changed
+
+- All modals float with side gaps on phones (12px) instead of touching the screen edges; sheet corners fully rounded.
 
 ## [4.0.0] - 2026-07-14
 

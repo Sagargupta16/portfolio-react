@@ -1,59 +1,49 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import { useEffect, useState } from "react";
 import { ExternalLink, Download, ZoomIn, ZoomOut } from "lucide-react";
-import "react-pdf/dist/Page/TextLayer.css";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
 
-// Bundle the worker instead of pulling it from a CDN -- keeps the viewer
-// working offline and pins the version to the installed pdfjs-dist.
-pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
-
-// Base-path-aware: the site deploys under /portfolio-react/.
-const RESUME_PDF = `${import.meta.env.BASE_URL}resume.pdf`;
+// Pages are pre-rendered to high-res WebP at deploy time by
+// scripts/prepare-resume.js -- no client-side PDF machinery, no blur.
+const BASE = import.meta.env.BASE_URL;
+const MANIFEST_URL = `${BASE}resume-pages/manifest.json`;
+const RESUME_PDF = `${BASE}resume.pdf`;
 const RESUME_DOWNLOAD_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
 
 const ZOOM_STEPS = [0.75, 1, 1.25, 1.5];
 
+interface Manifest {
+   pages: number;
+   width: number;
+   height: number;
+}
+
 interface CvDocumentProps {
    isMobile: boolean;
 }
 
-/**
- * The pdf.js document body of the CV viewer. Split from the modal wrapper so
- * react-pdf (+ its worker) only loads when the viewer actually opens.
- */
 const CvDocument = ({ isMobile }: CvDocumentProps) => {
-   const containerRef = useRef<HTMLDivElement>(null);
-   const [containerWidth, setContainerWidth] = useState(0);
-   const [numPages, setNumPages] = useState(0);
+   const [manifest, setManifest] = useState<Manifest | null>(null);
    const [zoomIdx, setZoomIdx] = useState(1);
    const [failed, setFailed] = useState(false);
 
-   // Fit the page to the modal width; re-measure on resize.
    useEffect(() => {
-      const el = containerRef.current;
-      if (!el) return;
-      const measure = () => setContainerWidth(el.clientWidth);
-      measure();
-      const ro = new ResizeObserver(measure);
-      ro.observe(el);
-      return () => ro.disconnect();
+      let cancelled = false;
+      fetch(MANIFEST_URL)
+         .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${r.status}`))))
+         .then((m: Manifest) => {
+            if (!cancelled) setManifest(m);
+         })
+         .catch(() => {
+            if (!cancelled) setFailed(true);
+         });
+      return () => {
+         cancelled = true;
+      };
    }, []);
 
-   const onLoad = useCallback(
-      ({ numPages: n }: { numPages: number }) => setNumPages(n),
-      [],
-   );
-
    const zoom = ZOOM_STEPS[zoomIdx];
-   const pageWidth = containerWidth
-      ? Math.min(containerWidth - 8, 900) * zoom
-      : undefined;
-   const pageCountLabel =
-      numPages === 1 ? "1 page" : `${numPages} pages`;
+   const aspect = manifest ? manifest.width / manifest.height : 0.707;
 
    if (failed) {
       return (
@@ -88,6 +78,12 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
       );
    }
 
+   const pageCountLabel = manifest
+      ? manifest.pages === 1
+         ? "1 page"
+         : `${manifest.pages} pages`
+      : "Loading...";
+
    return (
       <div style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
          {/* Toolbar */}
@@ -108,7 +104,7 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
                   color: TEXT_MUTED,
                }}
             >
-               {numPages > 0 ? pageCountLabel : "Loading..."}
+               {pageCountLabel}
             </span>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                <button
@@ -116,7 +112,10 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
                   disabled={zoomIdx === 0}
                   aria-label="Zoom out"
                   className="btn-outline"
-                  style={{ padding: "6px 10px", opacity: zoomIdx === 0 ? 0.4 : 1 }}
+                  style={{
+                     padding: "6px 10px",
+                     opacity: zoomIdx === 0 ? 0.4 : 1,
+                  }}
                >
                   <ZoomOut size={14} />
                </button>
@@ -180,51 +179,49 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
 
          {/* Pages */}
          <div
-            ref={containerRef}
             style={{
                overflow: "auto",
-               padding: isMobile ? 8 : 16,
+               padding: isMobile ? 10 : 16,
                display: "flex",
                flexDirection: "column",
-               alignItems: "center",
+               alignItems: zoom > 1 ? "flex-start" : "center",
                gap: 12,
                background: "#0a0f11",
             }}
          >
-            <Document
-               file={RESUME_PDF}
-               onLoadSuccess={onLoad}
-               onLoadError={() => setFailed(true)}
-               loading={
-                  <div
-                     className="skeleton"
-                     style={{
-                        width: pageWidth ?? 320,
-                        aspectRatio: "0.773",
-                        borderRadius: 6,
-                     }}
-                  />
-               }
-               error={<span />}
-            >
-               {Array.from({ length: numPages }, (_, i) => (
-                  <Page
-                     key={`page-${i + 1}`}
-                     pageNumber={i + 1}
-                     width={pageWidth}
-                     loading={
-                        <div
-                           className="skeleton"
-                           style={{
-                              width: pageWidth ?? 320,
-                              aspectRatio: "0.773",
-                              borderRadius: 6,
-                           }}
-                        />
-                     }
-                  />
-               ))}
-            </Document>
+            {manifest
+               ? Array.from({ length: manifest.pages }, (_, i) => (
+                    <img
+                       key={`page-${i + 1}`}
+                       src={`${BASE}resume-pages/page-${i + 1}.webp`}
+                       alt={`CV page ${i + 1} of ${manifest.pages}`}
+                       width={manifest.width}
+                       height={manifest.height}
+                       loading={i === 0 ? "eager" : "lazy"}
+                       decoding="async"
+                       onError={() => setFailed(true)}
+                       style={{
+                          width: `${zoom * 100}%`,
+                          maxWidth: zoom === 1 ? 860 : undefined,
+                          height: "auto",
+                          borderRadius: 6,
+                          boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+                          flexShrink: 0,
+                       }}
+                    />
+                 ))
+               : Array.from({ length: 2 }, (_, i) => (
+                    <div
+                       key={`skeleton-${i}`}
+                       className="skeleton"
+                       style={{
+                          width: "100%",
+                          maxWidth: 860,
+                          aspectRatio: String(aspect),
+                          borderRadius: 6,
+                       }}
+                    />
+                 ))}
          </div>
       </div>
    );

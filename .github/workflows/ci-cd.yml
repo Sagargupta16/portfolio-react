@@ -51,19 +51,15 @@ jobs:
               echo "Validating JSON data files..."
               find data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
 
+         # Self-host the resume for the in-site CV viewer: fetch the latest
+         # release PDF and pre-render each page to high-res WebP (crisp images,
+         # no client-side PDF machinery). Runs before the build so Vite copies
+         # public/resume* into build/.
+         - name: Prepare resume (fetch PDF + render page images)
+           run: pnpm fetch:resume
+
          - name: Build with Vite
            run: pnpm build
-
-         # Self-host the resume so the in-site CV viewer works: the GitHub
-         # release asset redirects to a signed CDN URL that sends
-         # Content-Disposition: attachment and no CORS header, so it can
-         # neither be framed nor fetched cross-origin by pdf.js.
-         - name: Fetch latest resume PDF into build
-           run: |
-              curl -sSfL --retry 3 \
-                 "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf" \
-                 -o build/resume.pdf
-              ls -la build/resume.pdf
 
          - name: Security audit
            run: |

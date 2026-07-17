@@ -6,8 +6,8 @@ import ModalShell from "@components/ui/ModalShell";
 import ModalHeaderShell from "@components/ui/ModalHeaderShell";
 import { CYAN, TEXT_PRIMARY } from "@/constants/theme";
 
-// react-pdf + the pdf.js worker are heavy; load them only when the viewer
-// opens so the initial bundle stays untouched.
+// Kept lazy so the viewer code stays out of the initial bundle; the page
+// images themselves only load when the modal opens.
 const CvDocument = lazy(() => import("./CvDocument"));
 
 interface CvViewerModalProps {
