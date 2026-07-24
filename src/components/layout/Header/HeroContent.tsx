@@ -4,7 +4,7 @@ import { useLenis } from "lenis/react";
 import { FileText } from "lucide-react";
 import { getName, getRoles } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
-import { GREEN, TEXT_SECONDARY } from "@/constants/theme";
+import { CYAN, GREEN, TEXT_SECONDARY } from "@/constants/theme";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import HeroStats from "./HeroStats";
 import HeroSocial from "./HeroSocial";
@@ -81,14 +81,17 @@ const HeroContent = () => {
             </span>
          </motion.div>
 
-         {/* Heading */}
+         {/* Heading: display face, name in accent, second line dimmed for
+             hierarchy (both lines equally bright read flat) */}
          <motion.h1
-            className="text-5xl sm:text-6xl md:text-7xl font-semibold leading-[1.15] tracking-tight text-text-primary"
+            className="display-heading text-5xl sm:text-6xl md:text-7xl leading-[1.12] text-text-primary"
             variants={staggerItem}
          >
-            Hi, I&apos;m {name}.
+            Hi, I&apos;m <span style={{ color: CYAN }}>{name}</span>.
             <br />
-            Shipping cloud at scale.
+            <span style={{ color: "var(--color-text-secondary)" }}>
+               Shipping cloud at scale.
+            </span>
          </motion.h1>
 
          {/* Animated role cycling */}

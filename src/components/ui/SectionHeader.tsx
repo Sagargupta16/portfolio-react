@@ -24,10 +24,9 @@ const SectionHeader = ({ title, subtitle }: Props) => {
       >
          {subtitle && <span className="badge-pill">{subtitle}</span>}
          <h2
+            className="display-heading"
             style={{
                fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-               fontWeight: 600,
-               letterSpacing: "-0.02em",
                lineHeight: 1.2,
                color: "var(--color-text-primary)",
                maxWidth: 640,
