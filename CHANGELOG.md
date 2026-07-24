@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.2.0] - 2026-07-18
+
+### Changed
+
+- **Display typography**: hero headline and section titles now use Bricolage Grotesque (variable, self-hosted via Fontsource, ~41 kB latin subset) at weight 800 with -0.03em tracking via a new `.display-heading` class and `--font-display` token. Body text stays Inter, mono stays JetBrains Mono.
+- Hero headline hierarchy: name accented in light blue, second line ("Shipping cloud at scale.") dimmed to secondary -- two-tone replaces the flat all-white treatment.
+
 ## [4.1.0] - 2026-07-17
 
 ### Added

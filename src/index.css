@@ -7,6 +7,12 @@
    --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
    --font-mono:
       "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+   /* Display face for the hero headline + section titles ONLY -- body stays
+      Inter. This heading/body pairing is what keeps the big type from reading
+      as a Tailwind default. */
+   --font-display:
+      "Bricolage Grotesque Variable", "Bricolage Grotesque", "Inter Variable",
+      system-ui, sans-serif;
 
    --color-bg-primary: #0b1012;
    --color-bg-secondary: #0e1418;
@@ -289,6 +295,13 @@ img {
       black 30%,
       transparent 75%
    );
+}
+
+/* ===== Display Headings (Bricolage Grotesque) ===== */
+.display-heading {
+   font-family: var(--font-display);
+   font-weight: 800;
+   letter-spacing: -0.03em;
 }
 
 /* ===== Solid Accent Text (gradient-text kept as compat alias) ===== */
