@@ -10,6 +10,7 @@ import {
    EASING,
 } from "@/constants/theme";
 import type { ExperienceProject } from "@/types";
+import ProjectSourceLink from "./ProjectSourceLink";
 
 interface ModalProjectCardProps {
    project: ExperienceProject;
@@ -108,6 +109,14 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
             <TechTag key={s} label={s} accent={CYAN} size={10} />
          ))}
       </div>
+      {project.link && (
+         <ProjectSourceLink
+            href={project.link}
+            label={project.linkLabel}
+            projectName={project.name}
+            accentColor={CYAN}
+         />
+      )}
    </motion.div>
 );
 

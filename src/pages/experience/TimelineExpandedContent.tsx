@@ -3,6 +3,7 @@ import { FolderGit2 } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { TEXT_MUTED } from "@/constants/theme";
 import { BulletList, SkillTags } from "./experienceHelpers";
+import ProjectSourceLink from "./ProjectSourceLink";
 import { FADE_ENTRY } from "./experienceConstants";
 
 interface TimelineExpandedContentProps {
@@ -78,6 +79,14 @@ const TimelineExpandedContent = ({
                            skills={project.skills}
                            accentColor={accentColor}
                            extraStyle={{ marginTop: 12 }}
+                        />
+                     )}
+                     {project.link && (
+                        <ProjectSourceLink
+                           href={project.link}
+                           label={project.linkLabel}
+                           projectName={project.name}
+                           accentColor={accentColor}
                         />
                      )}
                   </motion.div>

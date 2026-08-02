@@ -1,6 +1,34 @@
 {
    "featured_projects": [
       {
+         "id": 49,
+         "title": "SageMaker Image Classification MLOps",
+         "description": "Published by AWS under the aws-samples organization (MIT-0) - an end-to-end, production-shaped MLOps pipeline for image classification on Amazon SageMaker, declared entirely in Terraform across 89 files and 14 reusable modules. Event-driven ingestion, multi-architecture training behind hard clinical quality gates, human-approved governed deployment, and a closed drift-to-retrain loop. The worked example classifies medical images, but the architecture is domain-agnostic.",
+         "date": "July 2026",
+         "tools_tech": [
+            "Terraform",
+            "Amazon SageMaker",
+            "SageMaker Pipelines",
+            "Python",
+            "TensorFlow",
+            "AWS Lambda",
+            "EventBridge",
+            "CodePipeline",
+            "Amazon Bedrock"
+         ],
+         "features": [
+            "Terraform owns every persistent resource - endpoint, auto-scaling, monitors, alarms; Lambda orchestrates only, never mutates infrastructure",
+            "Three architectures (VGG16, DenseNet121, EfficientNetV2M) trained in parallel with two-phase transfer learning, then ensembled",
+            "Clinical quality gate as a hard pipeline condition - accuracy >= 0.85, recall >= 0.95, precision >= 0.80, AUC >= 0.90, or the model is never registered",
+            "Closed-loop retraining: Model Monitor drift alarm triggers EventBridge, which restarts training; human approval still gates every deployment",
+            "Responsible AI built in - SageMaker Clarify bias/explainability reports, Model Cards, Bedrock Guardrails, and A2I human review",
+            "Security scanning clean: 0 checkov failed checks and 0 bandit issues, every suppression documented with a reason"
+         ],
+         "github": "https://github.com/aws-samples/sample-sagemaker-image-classification-mlops",
+         "live": "",
+         "organization": "aws-samples"
+      },
+      {
          "id": 44,
          "title": "Kalchar",
          "description": "Production folk-art portfolio and commission site for a traditional artist - Madhubani, Pichwai, Lippan, and Gond artwork gallery with a buy filter, events, workshops, custom orders, and a server-rendered admin panel. Public pages are static, catalog lives in Neon Postgres behind a single data seam, and artwork images are served from Cloudflare R2.",
