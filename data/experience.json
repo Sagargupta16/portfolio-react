@@ -56,12 +56,13 @@
                ]
             },
             {
-               "name": "Medical Image Classification MLOps Pipeline (Internal - SME Program)",
+               "name": "Medical Image Classification MLOps Pipeline (SME Program)",
                "date": "Jun 2025 - Aug 2025",
                "description": {
                   "1": "Architected end-to-end MLOps pipeline on SageMaker, automating data processing, multi-model training, and ensemble model creation for medical image classification.",
                   "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection - enabling zero-downtime model updates with automatic rollback.",
-                  "3": "Provisioned entire infrastructure with Terraform and built CI/CD via CodePipeline and CodeBuild, deploying CloudFront frontend and API Gateway + Lambda inference API."
+                  "3": "Provisioned entire infrastructure with Terraform and built CI/CD via CodePipeline and CodeBuild, deploying CloudFront frontend and API Gateway + Lambda inference API.",
+                  "4": "Generalized and published by AWS as an official sample under the aws-samples organization (MIT-0) - 89 Terraform files across 4 stacks and 14 reusable modules, with clinical quality gates, closed-loop drift retraining, and responsible-AI safeguards (Clarify bias reports, Model Cards, Bedrock Guardrails, A2I review)."
                },
                "skills": [
                   "AWS",
@@ -74,7 +75,9 @@
                   "CloudFront",
                   "Terraform",
                   "Python"
-               ]
+               ],
+               "link": "https://github.com/aws-samples/sample-sagemaker-image-classification-mlops",
+               "linkLabel": "aws-samples"
             },
             {
                "name": "DevOps Consultant - State Street",

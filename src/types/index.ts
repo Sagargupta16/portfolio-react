@@ -102,6 +102,10 @@ export interface ExperienceProject {
    date?: string;
    description: Record<string, string>;
    skills: string[];
+   /** Public artifact of this work, when one exists (e.g. a published sample repo). */
+   link?: string;
+   /** Short label for the link, defaults to "Source" when omitted. */
+   linkLabel?: string;
 }
 
 export interface InternalContribution {
