@@ -30,6 +30,8 @@ type SceneComponent = ComponentType<SceneCoverProps>;
 const InfraScene = lazy(() => import("./InfraScene"));
 const McpScene = lazy(() => import("./McpScene"));
 const MlScene = lazy(() => import("./MlScene"));
+const MlopsScene = lazy(() => import("./MlopsScene"));
+const GraphScene = lazy(() => import("./GraphScene"));
 const GameScene = lazy(() => import("./GameScene"));
 const DocsScene = lazy(() => import("./DocsScene"));
 const AutomationScene = lazy(() => import("./AutomationScene"));
@@ -46,6 +48,8 @@ export type ProjectCover =
  */
 const COVER_BY_ID: Record<number, ProjectCover> = {
    // Featured
+   49: { kind: "scene", Scene: MlopsScene }, // SageMaker Image Classification MLOps
+   50: { kind: "scene", Scene: GraphScene }, // Kinfolk (family DAG)
    44: { kind: "image", src: kalchar }, // Kalchar (kalchar.co.in)
    37: { kind: "image", src: gitscope }, // GitScope (Chrome Web Store shot)
    15: { kind: "image", src: ledgerSync },
@@ -64,6 +68,7 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    27: { kind: "image", src: noobathon },
 
    // Others
+   51: { kind: "scene", Scene: WebAppScene, variant: "contacts" }, // Orbit (personal CRM)
    46: { kind: "image", src: sagas }, // Sagas (sagargupta.online/sagas)
    48: { kind: "image", src: contactManager }, // Contact Manager
    40: { kind: "scene", Scene: AutomationScene, variant: "instagram" }, // Instagram Autopilot

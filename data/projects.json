@@ -29,6 +29,32 @@
          "organization": "aws-samples"
       },
       {
+         "id": 50,
+         "title": "Kinfolk",
+         "description": "Collaborative family graph where relatives each keep their own record, invite each other, and join matching people without either side losing their copy. A family is modelled as a directed acyclic graph rather than a tree: parentage hangs off a union row, so remarriages, half-siblings, single parents, and adoption are ordinary data instead of renderer special cases. Cross-tree identity is a consent-gated link, so merging is non-destructive and an unlink restores both original views.",
+         "date": "August 2026",
+         "tools_tech": [
+            "Next.js 16",
+            "TypeScript",
+            "Neon Postgres",
+            "Drizzle ORM",
+            "Auth.js v5",
+            "React Flow",
+            "ELK",
+            "Tailwind CSS 4"
+         ],
+         "features": [
+            "Family as a DAG: parentage hangs off a union row, so remarriages and adoption need no special cases",
+            "Consent-gated person links make cross-tree merging non-destructive and fully reversible",
+            "Union-find tree fusion with deterministic fused ids, so a combined graph is reproducible",
+            "Missing data is first-class: unknown is a stored value and approximate dates keep their own fields",
+            "Also a contact graph, where a friendship carries no generation and never reaches the layout engine",
+            "Contact values never render on cards or in their accessible labels"
+         ],
+         "github": "https://github.com/Sagargupta16/kinfolk",
+         "live": "https://sagargupta.online/kinfolk/"
+      },
+      {
          "id": 44,
          "title": "Kalchar",
          "description": "Production folk-art portfolio and commission site for a traditional artist - Madhubani, Pichwai, Lippan, and Gond artwork gallery with a buy filter, events, workshops, custom orders, and a server-rendered admin panel. Public pages are static, catalog lives in Neon Postgres behind a single data seam, and artwork images are served from Cloudflare R2.",
@@ -286,7 +312,7 @@
             "Subscription-based payments",
             "User registration and search"
          ],
-         "github": "https://github.com/Sagargupta16/TRINIT_BugBiters_Dev",
+         "github": "https://github.com/Sagargupta16/Lingua-Connect",
          "live": "",
          "team": "BugBiters",
          "organization": "TriNIT",
@@ -377,6 +403,30 @@
       }
    ],
    "other_projects": [
+      {
+         "id": 51,
+         "title": "Orbit",
+         "description": "Personal CRM for the people in your orbit: contacts, connections, and interaction history in a tabular relationship dashboard. FastAPI and SQLAlchemy 2 behind a React 19 frontend, with Google and GitHub OAuth against a live Neon Postgres database. The contacts surface is wired end to end; interactions, circles, and reminders are modelled in the schema and not yet exposed.",
+         "date": "July 2026",
+         "tools_tech": [
+            "FastAPI",
+            "Python 3.13",
+            "SQLAlchemy 2",
+            "Alembic",
+            "React 19",
+            "TypeScript",
+            "Vite",
+            "Neon Postgres"
+         ],
+         "features": [
+            "OAuth sign-in (Google and GitHub) with protected routes and a live Neon-backed API",
+            "Contacts dashboard wired to the backend, deployed to GitHub Pages",
+            "Alembic migrations over a SQLAlchemy 2 schema covering contacts, interactions, circles, and reminders",
+            "uv for Python and pnpm for the frontend, run together from root scripts"
+         ],
+         "github": "https://github.com/Sagargupta16/orbit",
+         "live": "https://sagargupta.online/orbit/"
+      },
       {
          "id": 46,
          "title": "Sagas",
@@ -724,8 +774,8 @@
       },
       {
          "id": 47,
-         "title": "ITR MCP",
-         "description": "Local-first MCP server for Indian income tax, published on npm. Deterministic tax computation, old-vs-new regime comparison, advance tax planning, and document parsing - all on your machine. The LLM never does arithmetic; every number comes from a versioned, auditable rule pack. Works with Claude Desktop, Claude Code, and any MCP client.",
+         "title": "ITR Agent",
+         "description": "Local-first MCP server that walks you through filing an Indian income tax return, published on npm. 12 tools spanning form selection, deterministic computation, old-vs-new regime comparison, advance tax planning, and document parsing - all on your machine. The LLM never does arithmetic; every number comes from a versioned, auditable rule pack. Works with Claude Desktop, Claude Code, and any MCP client.",
          "date": "July 2026",
          "tools_tech": [
             "TypeScript",
@@ -734,13 +784,14 @@
             "npm"
          ],
          "features": [
-            "compute_tax and compare_regimes with slab, cess, and surcharge handling",
-            "Advance tax planning and LTCG/STCG capital gains computation",
-            "Local document parsing - no accounts, no uploads, no cloud",
-            "Versioned rule packs so every figure is auditable"
+            "recommend_itr_form picks ITR-1/2/3/4 with rule-by-rule reasoning, including brought-forward losses that force ITR-3",
+            "file_my_itr guided interview plus a schedule-by-schedule filing checklist ending at e-verification",
+            "compute_tax covers FY 2025-26 slabs, 87A rebate with marginal relief, 111A/112A gains, surcharge caps, and cess",
+            "Reconciles Form 16 against AIS and 26AS to pre-empt 143(1)(a) intimations",
+            "AIS decrypt and parse happen on-device - no accounts, no uploads, no cloud"
          ],
-         "github": "https://github.com/Sagargupta16/itr-mcp",
-         "live": "https://www.npmjs.com/package/itr-mcp"
+         "github": "https://github.com/Sagargupta16/itr-agent",
+         "live": "https://www.npmjs.com/package/itr-agent"
       },
       {
          "id": 38,
@@ -1052,7 +1103,7 @@
          "repo": "awslabs/mcp",
          "title": "Accept skill-type results in search_documentation",
          "url": "https://github.com/awslabs/mcp/pull/4076",
-         "status": "open"
+         "status": "closed"
       }
    ],
    "community_discussions": [
