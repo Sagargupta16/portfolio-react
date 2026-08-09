@@ -30,7 +30,9 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
    useEffect(() => {
       let cancelled = false;
       fetch(MANIFEST_URL)
-         .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${r.status}`))))
+         .then((r) =>
+            r.ok ? r.json() : Promise.reject(new Error(`${r.status}`)),
+         )
          .then((m: Manifest) => {
             if (!cancelled) setManifest(m);
          })

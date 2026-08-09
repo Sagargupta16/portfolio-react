@@ -217,12 +217,7 @@
          "title": "SelfHub",
          "description": "A Model Context Protocol (MCP) server that acts as your personal digital memory hub - store notes, preferences, code snippets, tasks, and any info from any MCP-enabled AI assistant (Claude Desktop, VS Code Copilot). Your personal knowledge base travels with you across AI conversations.",
          "date": "March 2025",
-         "tools_tech": [
-            "TypeScript",
-            "MCP",
-            "Node.js",
-            "pnpm"
-         ],
+         "tools_tech": ["TypeScript", "MCP", "Node.js", "pnpm"],
          "features": [
             "MCP-compliant server with stdio transport for Claude Desktop + VS Code",
             "store_memory, list_memories, search_memories, and more tools",
@@ -258,10 +253,7 @@
          "github": "https://github.com/Sagargupta16/code-arena",
          "live": "https://sagargupta.online/code-arena/",
          "team": "Sagar & Pranshu",
-         "contributors": [
-            "Sagargupta16",
-            "Pranshu"
-         ]
+         "contributors": ["Sagargupta16", "Pranshu"]
       },
       {
          "id": 21,
@@ -287,10 +279,7 @@
          "live": "",
          "team": "MCA NITW Placement Team",
          "organization": "MCA-NITW",
-         "contributors": [
-            "Sagargupta16",
-            "MCA NITW Team"
-         ]
+         "contributors": ["Sagargupta16", "MCA NITW Team"]
       },
       {
          "id": 1,
@@ -316,10 +305,7 @@
          "live": "",
          "team": "BugBiters",
          "organization": "TriNIT",
-         "contributors": [
-            "Sagargupta16",
-            "Team Members"
-         ]
+         "contributors": ["Sagargupta16", "Team Members"]
       },
       {
          "id": 4,
@@ -343,10 +329,7 @@
          "live": "https://leetcode-among-us.onrender.com/",
          "team": "MCA NITW Dev Team",
          "organization": "MCA-NITW",
-         "contributors": [
-            "Sagargupta16",
-            "MCA NITW Team"
-         ]
+         "contributors": ["Sagargupta16", "MCA NITW Team"]
       },
       {
          "id": 23,
@@ -371,21 +354,14 @@
          "live": "",
          "team": "MCA NITW Dev Team",
          "organization": "MCA-NITW",
-         "contributors": [
-            "Sagargupta16",
-            "MCA NITW Team"
-         ]
+         "contributors": ["Sagargupta16", "MCA NITW Team"]
       },
       {
          "id": 27,
          "title": "Noobathon",
          "description": "A team hackathon project built during MCA 1st year at the CSEA Noobathon event, featuring a responsive web page created collaboratively in a team of 3.",
          "date": "April 2022",
-         "tools_tech": [
-            "HTML5",
-            "CSS3",
-            "Hackathon"
-         ],
+         "tools_tech": ["HTML5", "CSS3", "Hackathon"],
          "features": [
             "Built in a team of 3",
             "CSEA Noobathon hackathon entry",
@@ -396,10 +372,7 @@
          "live": "https://sayani13-glitch.github.io/noobathon_ON-11_1/",
          "team": "Team SKS",
          "organization": "CSEA NIT Warangal",
-         "contributors": [
-            "Sagargupta16",
-            "Team SKS"
-         ]
+         "contributors": ["Sagargupta16", "Team SKS"]
       }
    ],
    "other_projects": [
@@ -655,12 +628,7 @@
          "title": "PacMan Game Unity",
          "description": "A classic Pac-Man game recreated using Unity Engine with C# scripting for an authentic gaming experience.",
          "date": "June 2022",
-         "tools_tech": [
-            "Unity",
-            "C#",
-            "Game Development",
-            "Unity2D"
-         ],
+         "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Classic Pac-Man gameplay",
             "Unity2D graphics",
@@ -675,12 +643,7 @@
          "title": "Minesweeper Game Unity",
          "description": "A classic Minesweeper game recreated using Unity Engine with C# scripting, featuring grid-based gameplay and mine detection mechanics.",
          "date": "June 2022",
-         "tools_tech": [
-            "Unity",
-            "C#",
-            "Game Development",
-            "Unity2D"
-         ],
+         "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Classic Minesweeper gameplay",
             "Grid-based mine detection",
@@ -695,12 +658,7 @@
          "title": "Snake Game Unity",
          "description": "A classic Snake game built using Unity Engine with C# scripting, featuring smooth movement mechanics and score tracking.",
          "date": "June 2022",
-         "tools_tech": [
-            "Unity",
-            "C#",
-            "Game Development",
-            "Unity2D"
-         ],
+         "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Classic Snake gameplay",
             "Smooth movement mechanics",
@@ -715,12 +673,7 @@
          "title": "Flappy Bird Game Unity",
          "description": "A Flappy Bird clone built using Unity Engine with C# scripting, featuring physics-based gameplay and obstacle generation.",
          "date": "June 2022",
-         "tools_tech": [
-            "Unity",
-            "C#",
-            "Game Development",
-            "Unity2D"
-         ],
+         "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Flappy Bird gameplay",
             "Physics-based mechanics",
@@ -735,11 +688,7 @@
          "title": "Music Web Player",
          "description": "A modern music player with glassmorphism UI, built with vanilla HTML, CSS, and JavaScript. Features shuffle/repeat modes, rotating album art, and a seekable progress bar.",
          "date": "May 2022",
-         "tools_tech": [
-            "HTML5",
-            "CSS3",
-            "JavaScript"
-         ],
+         "tools_tech": ["HTML5", "CSS3", "JavaScript"],
          "features": [
             "Glassmorphism UI design",
             "Shuffle and repeat playback modes",
@@ -777,12 +726,7 @@
          "title": "ITR Agent",
          "description": "Local-first MCP server that walks you through filing an Indian income tax return, published on npm. 12 tools spanning form selection, deterministic computation, old-vs-new regime comparison, advance tax planning, and document parsing - all on your machine. The LLM never does arithmetic; every number comes from a versioned, auditable rule pack. Works with Claude Desktop, Claude Code, and any MCP client.",
          "date": "July 2026",
-         "tools_tech": [
-            "TypeScript",
-            "MCP Protocol",
-            "Node.js",
-            "npm"
-         ],
+         "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "npm"],
          "features": [
             "recommend_itr_form picks ITR-1/2/3/4 with rule-by-rule reasoning, including brought-forward losses that force ITR-3",
             "file_my_itr guided interview plus a schedule-by-schedule filing checklist ending at e-verification",
@@ -863,12 +807,7 @@
          "title": "MCP Toolkit",
          "description": "Reusable utilities and middleware for building production-ready MCP servers. Drop-in packages for the TypeScript SDK covering auth, caching, rate limiting, logging, and CORS - so you stop reimplementing the same plumbing for every MCP server.",
          "date": "March 2025",
-         "tools_tech": [
-            "TypeScript",
-            "MCP Protocol",
-            "Node.js",
-            "npm"
-         ],
+         "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "npm"],
          "features": [
             "@mcp-toolkit/auth - API key and JWT authentication",
             "@mcp-toolkit/cache - response caching with TTL and LRU",
@@ -903,11 +842,7 @@
          "title": "Awesome MCP Servers",
          "description": "A curated [awesome] list of Model Context Protocol servers, frameworks, clients, tutorials, and community resources - covering data, developer tools, cloud, productivity, search, AI/ML, finance, and observability.",
          "date": "March 2025",
-         "tools_tech": [
-            "MCP Protocol",
-            "AI Agents",
-            "Curated List"
-         ],
+         "tools_tech": ["MCP Protocol", "AI Agents", "Curated List"],
          "features": [
             "Categorized MCP server directory (Data, Dev Tools, Cloud, AI/ML, Finance)",
             "Frameworks and clients listings with official SDKs and Inspector",
@@ -944,12 +879,7 @@
          "title": "Agent Recipes",
          "description": "Copy-paste AI agent workflows for real-world developer tasks - code review, testing, migrations, documentation, security scanning, and deployment automation. Works with Claude Code, Cursor, Aider, or any AI coding assistant.",
          "date": "March 2025",
-         "tools_tech": [
-            "AI Agents",
-            "Claude Code",
-            "Cursor",
-            "Aider"
-         ],
+         "tools_tech": ["AI Agents", "Claude Code", "Cursor", "Aider"],
          "features": [
             "Code review: PR review, architecture review, dependency audit, performance review",
             "Testing: unit test generation, E2E writer, coverage gap finder",
@@ -964,13 +894,7 @@
          "title": "AI Git Hooks",
          "description": "AI-powered git hooks that review code, generate commit messages, catch bugs, and scan for security issues before you push. Drop-in hooks using Claude, OpenAI, or local Ollama for every stage of your git workflow.",
          "date": "March 2025",
-         "tools_tech": [
-            "Git Hooks",
-            "Claude",
-            "OpenAI",
-            "Ollama",
-            "Bash"
-         ],
+         "tools_tech": ["Git Hooks", "Claude", "OpenAI", "Ollama", "Bash"],
          "features": [
             "pre-commit: AI code review for bugs, style, anti-patterns",
             "prepare-commit-msg: auto-generated conventional commit messages from diff",

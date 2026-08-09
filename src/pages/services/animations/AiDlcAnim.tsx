@@ -144,7 +144,10 @@ const AiDlcAnim = ({ color }: AiDlcAnimProps) => (
 
       {/* Shipped check */}
       <motion.div
-         animate={{ opacity: [0.35, 0.35, 1, 1, 0.35], scale: [1, 1, 1.15, 1, 1] }}
+         animate={{
+            opacity: [0.35, 0.35, 1, 1, 0.35],
+            scale: [1, 1, 1.15, 1, 1],
+         }}
          transition={{
             duration: CYCLE,
             repeat: Infinity,
