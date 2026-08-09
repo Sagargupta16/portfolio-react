@@ -22,6 +22,7 @@ const VARIANT_CHIP: Record<string, string> = {
    language: "TUTORS",
    social: "THREADS",
    travel: "JOURNAL",
+   contacts: "CONTACTS",
 };
 
 const PlacementPanel = ({ tint }: { tint: string }) => (
@@ -222,6 +223,48 @@ const TravelPanel = ({ tint }: { tint: string }) => (
    </div>
 );
 
+/* Contact rows with an avatar and a relationship strand to the next person. */
+const ContactsPanel = ({ tint }: { tint: string }) => (
+   <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+      {[0, 1, 2].map((row) => (
+         <motion.div
+            key={row}
+            animate={{ opacity: [0.3, 0.85, 0.3] }}
+            transition={{ duration: 3.2, repeat: Infinity, delay: row * 0.5 }}
+            style={{ display: "flex", alignItems: "center", gap: 6 }}
+         >
+            <span
+               style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: "50%",
+                  border: `1px solid ${tint}70`,
+                  background: `${tint}20`,
+                  flexShrink: 0,
+               }}
+            />
+            <span
+               style={{
+                  height: 3,
+                  flex: 1,
+                  borderRadius: 2,
+                  background:
+                     row === 0 ? `${tint}55` : "rgba(255,255,255,0.14)",
+               }}
+            />
+            <span
+               style={{
+                  height: 3,
+                  width: 14,
+                  borderRadius: 2,
+                  background: "rgba(255,255,255,0.09)",
+               }}
+            />
+         </motion.div>
+      ))}
+   </div>
+);
+
 const DefaultPanel = ({ tint }: { tint: string }) => (
    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
       {[0, 1, 2].map((row) => (
@@ -246,6 +289,7 @@ const WebAppScene = ({ tint, variant }: CoverSceneProps) => {
    else if (variant === "language") panel = <LanguagePanel tint={tint} />;
    else if (variant === "social") panel = <SocialPanel tint={tint} />;
    else if (variant === "travel") panel = <TravelPanel tint={tint} />;
+   else if (variant === "contacts") panel = <ContactsPanel tint={tint} />;
    else panel = <DefaultPanel tint={tint} />;
 
    const chip = VARIANT_CHIP[variant ?? ""];
