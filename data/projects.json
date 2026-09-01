@@ -1033,7 +1033,7 @@
          "repo": "expressjs/multer",
          "title": "Do not consume maxCount for files skipped by fileFilter",
          "url": "https://github.com/expressjs/multer/pull/1426",
-         "status": "open"
+         "status": "merged"
       },
       {
          "repo": "aws-ia/terraform-aws-bedrock",
