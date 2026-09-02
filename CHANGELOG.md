@@ -2,6 +2,29 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.3.0] - 2026-09-02
+
+### Security
+
+- Cleared all 8 open Dependabot alerts (every flagged package is transitive; lockfile-level fixes):
+  - **pdfjs-dist** 5.6.205 -> 6.2.108 (high -- arbitrary JavaScript execution upon opening a malicious PDF) by bumping `pdf-to-img` 6.2.0 -> 7.0.0, whose only breaking change (dropping Node 20) doesn't apply since the project requires Node >=24.
+  - **undici** 7.28.0 -> 7.29.0 (5 alerts: cache-poisoning info disclosure, CRLF injection, cookie attribute injection, response desync) via the workspace override, now `>=7.29.0 <8` to stay on the 7.x line jsdom declares.
+  - **nanoid** 3.3.16 -> 3.3.18 (high -- infinite loop with zero size) via scoped override `nanoid@<4` so postcss keeps the CJS-compatible 3.x line.
+  - **postcss** 8.5.22 -> 8.5.26 (medium -- sourceMappingURL arbitrary .map read) via `>=8.5.23` override.
+- Also patched **brace-expansion** 5.0.8 -> 5.0.9 (high -- DoS via unbounded intermediate arrays, GHSA-rgw5-rvv9-x895; surfaced by `pnpm audit`, no Dependabot alert yet) via `>=5.0.9` override. `pnpm audit` is now fully clean.
+
+### Added
+
+- Projects: kinfolk (family tree maker) and orbit (personal CRM) cards; aws-samples SageMaker MLOps publication surfaced (#197, #198)
+
+### Fixed
+
+- Stale project links and animated cover mappings (#198)
+
+### Changed
+
+- Repo brought to a clean prettier baseline (#199); OSS contribution data synced to live state -- terraform-aws-vpc credit, multer #1426 merged (#200, #201)
+
 ## [4.2.0] - 2026-07-18
 
 ### Changed
