@@ -140,10 +140,13 @@ const StatsBand = () => {
       const oss = getOpenSourceContributions();
       const merged = oss.filter((c) => c.status === "merged");
       const mergedPrs = merged.filter((c) => c.url.includes("/pull/")).length;
+      const mergedRepos = new Set(merged.map((c) => c.repo));
       const coAuthored = merged.length - mergedPrs;
+      let mergedNote = `Across ${mergedRepos.size} projects`;
+      if (coAuthored === 1) mergedNote = "Plus 1 co-authored fix";
+      else if (coAuthored > 1) mergedNote = `Plus ${coAuthored} co-authored fixes`;
       const repoStars = new Map<string, number>();
       for (const c of oss) repoStars.set(c.repo, c.stars ?? 0);
-      const mergedRepos = new Set(merged.map((c) => c.repo));
       const starsReached = [...mergedRepos].reduce(
          (sum, repo) => sum + (repoStars.get(repo) ?? 0),
          0,
@@ -205,10 +208,7 @@ const StatsBand = () => {
             {
                value: String(mergedPrs),
                label: "PRs merged upstream",
-               note:
-                  coAuthored > 0
-                     ? `Plus ${coAuthored} co-authored fix${coAuthored > 1 ? "es" : ""}`
-                     : `Across ${mergedRepos.size} projects`,
+               note: mergedNote,
             },
             {
                value: formatStars(starsReached),
