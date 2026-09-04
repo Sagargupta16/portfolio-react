@@ -176,26 +176,6 @@ img {
    }
 }
 
-@keyframes float {
-   0%,
-   100% {
-      transform: translateY(0px);
-   }
-   50% {
-      transform: translateY(-12px);
-   }
-}
-
-@keyframes blink {
-   0%,
-   100% {
-      opacity: 1;
-   }
-   50% {
-      opacity: 0;
-   }
-}
-
 @keyframes scroll-hint {
    0% {
       opacity: 0;
@@ -210,43 +190,9 @@ img {
    }
 }
 
-@keyframes gradient-shift {
-   0% {
-      background-position: 0% 50%;
-   }
-   50% {
-      background-position: 100% 50%;
-   }
-   100% {
-      background-position: 0% 50%;
-   }
-}
-
-@keyframes border-glow {
-   0%,
-   100% {
-      border-color: rgb(var(--ch-white) / 0.08);
-   }
-   50% {
-      border-color: rgb(var(--ch-white) / 0.2);
-   }
-}
-
 @keyframes spin {
    to {
       transform: rotate(360deg);
-   }
-}
-
-@keyframes ring-pulse {
-   0%,
-   100% {
-      transform: scale(1);
-      opacity: 0.3;
-   }
-   50% {
-      transform: scale(1.15);
-      opacity: 0.6;
    }
 }
 
@@ -255,46 +201,8 @@ img {
    animation: glow-pulse 2s ease-in-out infinite;
 }
 
-.animate-shimmer {
-   background-size: 200% 100%;
-   animation: shimmer 2s linear infinite;
-}
-
-.animate-float {
-   animation: float 4s ease-in-out infinite;
-}
-
-.animate-blink {
-   animation: blink 1s step-end infinite;
-}
-
 .animate-scroll-hint {
    animation: scroll-hint 1.8s ease-in-out infinite;
-}
-
-.animate-gradient-shift {
-   background-size: 200% 200%;
-   animation: gradient-shift 4s ease infinite;
-}
-
-/* ===== Dot Texture (hero halftone backdrop) ===== */
-.grid-bg {
-   background-image: radial-gradient(
-      rgb(var(--ch-white) / 0.05) 1px,
-      transparent 1px
-   );
-   background-size: 22px 22px;
-   /* Fade the dots toward the edges so the texture reads as a spotlight. */
-   mask-image: radial-gradient(
-      ellipse 70% 60% at 50% 40%,
-      black 30%,
-      transparent 75%
-   );
-   -webkit-mask-image: radial-gradient(
-      ellipse 70% 60% at 50% 40%,
-      black 30%,
-      transparent 75%
-   );
 }
 
 /* ===== Display Headings (Bricolage Grotesque) ===== */
@@ -302,26 +210,6 @@ img {
    font-family: var(--font-display);
    font-weight: 800;
    letter-spacing: -0.03em;
-}
-
-/* ===== Solid Accent Text (gradient-text kept as compat alias) ===== */
-.gradient-text {
-   color: var(--color-text-primary);
-}
-
-.gradient-text-vivid {
-   color: var(--color-text-primary);
-}
-
-/* ===== Glow classes neutralized (compat aliases -- flat style has no glow) ===== */
-.glow-cyan,
-.glow-purple,
-.glow-amber {
-   box-shadow: none;
-}
-
-.glow-cyan-text {
-   text-shadow: none;
 }
 
 /* ===== Flat Card (was glass-card) ===== */
@@ -339,12 +227,6 @@ img {
    border-color: rgb(var(--ch-white) / 0.14);
    background: var(--color-bg-card-hover);
    transform: translateY(-2px);
-}
-
-/* ===== Section Divider ===== */
-.section-divider {
-   height: 1px;
-   background: rgb(var(--ch-white) / 0.06);
 }
 
 /* ===== Project cards ===== */
@@ -462,18 +344,6 @@ img {
       border-color 0.25s ease;
 }
 
-.tag-cyan {
-   background: rgb(var(--ch-white) / 0.05);
-   color: var(--color-text-secondary);
-   border: 1px solid rgb(var(--ch-white) / 0.08);
-}
-
-.tag-cyan:hover {
-   background: rgb(var(--ch-white) / 0.1);
-   border-color: rgb(var(--ch-white) / 0.16);
-   color: var(--color-text-primary);
-}
-
 .tag-purple {
    background: rgb(var(--ch-blue) / 0.12);
    color: var(--color-accent-purple);
@@ -483,28 +353,6 @@ img {
 .tag-purple:hover {
    background: rgb(var(--ch-blue) / 0.2);
    border-color: rgb(var(--ch-blue) / 0.35);
-}
-
-.tag-amber {
-   background: rgb(var(--ch-amber) / 0.1);
-   color: var(--color-accent-amber);
-   border: 1px solid rgb(var(--ch-amber) / 0.15);
-}
-
-.tag-amber:hover {
-   background: rgb(var(--ch-amber) / 0.2);
-   border-color: rgb(var(--ch-amber) / 0.35);
-}
-
-.tag-green {
-   background: rgb(var(--ch-green) / 0.1);
-   color: var(--color-accent-green);
-   border: 1px solid rgb(var(--ch-green) / 0.15);
-}
-
-.tag-green:hover {
-   background: rgb(var(--ch-green) / 0.2);
-   border-color: rgb(var(--ch-green) / 0.35);
 }
 
 /* Section header pill badge (akobir "Tech Stack" / "DevSpark" chip) */
@@ -519,37 +367,6 @@ img {
    border: 1px solid rgb(var(--ch-white) / 0.08);
    border-radius: 9999px;
    padding: 6px 16px;
-}
-
-/* ===== Skill Tag ===== */
-.skill-tag {
-   display: inline-flex;
-   align-items: center;
-   font-size: 0.875rem;
-   font-weight: 500;
-   padding: 8px 16px;
-   border-radius: 8px;
-   background: rgb(var(--ch-white) / 0.04);
-   border: 1px solid rgb(var(--ch-white) / 0.06);
-   color: var(--color-text-secondary);
-   transition:
-      background 0.3s ease,
-      border-color 0.3s ease,
-      color 0.3s ease,
-      transform 0.3s ease;
-   cursor: default;
-}
-
-.skill-tag:hover {
-   border-color: rgb(var(--ch-white) / 0.16);
-   color: var(--color-text-primary);
-   background: rgb(var(--ch-white) / 0.08);
-   transform: translateY(-1px);
-}
-
-/* Tap feedback -- the only motion most touch users see on these chips. */
-.skill-tag:active {
-   transform: scale(0.96);
 }
 
 /* ===== Skill Item (icon + name rows, akobir tech-stack style) ===== */
@@ -611,17 +428,6 @@ img {
    border-radius: 8px;
 }
 
-/* ===== Typewriter cursor ===== */
-.typewriter-cursor {
-   display: inline-block;
-   width: 2px;
-   height: 1.1em;
-   background: var(--color-text-secondary);
-   margin-left: 2px;
-   vertical-align: text-bottom;
-   animation: blink 1s step-end infinite;
-}
-
 /* ===== GitHub Calendar Override ===== */
 .react-activity-calendar {
    margin: 0 auto;
@@ -650,17 +456,6 @@ img {
    animation-delay: calc(var(--col) * 8ms + 0.6s);
 }
 
-/* Browser mockup border pulse (flat -- border only, no glow) */
-@keyframes mockup-glow {
-   0%,
-   100% {
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-   }
-   50% {
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-   }
-}
-
 /* ===== Footer teal fade (akobir bottom-of-page glow) ===== */
 .footer-fade {
    background: linear-gradient(
@@ -683,10 +478,9 @@ img {
    footer,
    #contact,
    #projects,
-   #github,
+   #stats,
    #services,
    #achievements,
-   .section-divider,
    canvas,
    button,
    .btn-primary,
@@ -725,15 +519,10 @@ img {
       color: #111 !important;
    }
 
-   .skill-tag,
    .tag {
       border: 1px solid #ccc !important;
       color: #333 !important;
       background: #f9f9f9 !important;
    }
 
-   .gradient-text,
-   .gradient-text-vivid {
-      color: black !important;
-   }
 }

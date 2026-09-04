@@ -48,13 +48,6 @@ export interface CodingPlatformStat {
 
 export type CodingPlatformStats = Record<string, CodingPlatformStat>;
 
-export interface AchievementsData {
-   certifications: Certification[];
-   learning_badges: LearningBadge[];
-   achievements: Achievement[];
-   coding_platform_stats: CodingPlatformStats;
-}
-
 // ===== Contact =====
 export interface ContactOption {
    id: number;
@@ -70,11 +63,6 @@ export interface EmailConfig {
    template_id: string;
    public_key: string;
    validation_pattern: string;
-}
-
-export interface ContactData {
-   contact_options: ContactOption[];
-   email_config: EmailConfig;
 }
 
 // ===== Education =====
@@ -143,11 +131,6 @@ export interface PositionOfResponsibility {
    skills: string[];
 }
 
-export interface ExperienceData {
-   professional_experience: ProfessionalExperience[];
-   positions_of_responsibility: PositionOfResponsibility[];
-}
-
 // ===== Personal =====
 export interface SocialProfile {
    id: number;
@@ -161,22 +144,12 @@ export interface SiteConfig {
    tech_stack?: string[];
 }
 
-export interface PersonalData {
-   name: string;
-   title: string;
-   location: string;
-   contact: {
-      email: string;
-      phone: string;
-      linkedin: string;
-      github: string;
-   };
-   roles: string[];
-   about: Record<string, string>;
-   statistics: Record<string, string>;
-   languages: Array<{ name: string; level: string }>;
-   social_profiles: SocialProfile[];
-   site: SiteConfig;
+export interface ImpactStats {
+   clients_served: string;
+   clients_note: string;
+   workloads_migrated: string;
+   aws_accounts: string;
+   security_controls: string;
 }
 
 // ===== Projects =====
@@ -196,6 +169,8 @@ export interface Project {
 
 export interface OpenSourceContribution {
    repo: string;
+   /** Upstream repo star count at last sync -- drives the "stars reached" stat. */
+   stars?: number;
    title: string;
    url: string;
    status: string;
@@ -207,15 +182,6 @@ export interface CommunityDiscussion {
    title: string;
    url: string;
    status: string;
-}
-
-export interface ProjectsData {
-   featured_projects: Project[];
-   collaborative_projects: Project[];
-   other_projects: Project[];
-   community_projects: Project[];
-   open_source_contributions: OpenSourceContribution[];
-   community_discussions: CommunityDiscussion[];
 }
 
 // ===== Skills =====

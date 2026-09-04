@@ -3,15 +3,14 @@ import { Mail, Calendar } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { LinkedinIcon, InstagramIcon, GitHubIcon } from "./ContactIcons";
 import type { IconStyleProps } from "./ContactIcons";
-export type { IconStyleProps } from "./ContactIcons";
 
-export interface ContactColors {
+interface ContactColors {
    accent: string;
    bg: string;
    border: string;
 }
 
-export const CONTACT_COLORS: Record<string, ContactColors> = {
+const CONTACT_COLORS: Record<string, ContactColors> = {
    email: {
       accent: "#60a5fa",
       bg: "rgba(96,165,250,0.08)",

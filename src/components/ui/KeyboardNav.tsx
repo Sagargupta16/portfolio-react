@@ -10,7 +10,7 @@ const SECTIONS = [
    "projects",
    "achievements",
    "services",
-   "github",
+   "stats",
    "contact",
 ];
 

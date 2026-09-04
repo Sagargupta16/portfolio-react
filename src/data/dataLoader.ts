@@ -6,6 +6,7 @@ import type {
    ContactOption,
    Education,
    EmailConfig,
+   ImpactStats,
    LearningBadge,
    OpenSourceContribution,
    PositionOfResponsibility,
@@ -35,8 +36,6 @@ export const getLanguages = (): { name: string; level: string }[] =>
    personalData.languages;
 export const getRoles = (): string[] => personalData.roles;
 export const getAbout = (): Record<string, string> => personalData.about;
-export const getStatistics = (): Record<string, string> =>
-   personalData.statistics;
 export const getSocialProfiles = (): SocialProfile[] =>
    personalData.social_profiles;
 export const getEducation = (): Education[] => educationData as Education[];
@@ -71,5 +70,7 @@ export const getContactOptions = (): ContactOption[] =>
 export const getEmailConfig = (): EmailConfig =>
    contactData.email_config as EmailConfig;
 export const getGitHubUsername = (): string => personalData.contact.github;
+export const getImpact = (): ImpactStats =>
+   personalData.impact as ImpactStats;
 export const getSiteConfig = (): SiteConfig =>
    (personalData.site || {}) as SiteConfig;

@@ -2,15 +2,35 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.4.0] - 2026-09-04
+
+### Removed
+
+- **Hero no longer carries any numbers.** The counter row (`HeroStats`) and its open-source-PR line are gone; the Stats section is now the site's single numeric summary. Matches the reference portfolios, which carry no figures above the fold, and stops the hero leading with competitive-programming metrics instead of the consulting work.
+- **Orphan-code sweep (knip-verified, every deletion cross-checked by grep):** 10 transitively-dead files (`ActivityFeed`, `NodeDiagram`, `ShapeRenderer`, `TerminalCard`, `useRevealInView`, `CodingPlatformCard`, `CodingPlatformsSection`, `TimelineExpandedContent`, `experienceHelpers`, `random`), 13 unused Motion variants incl. the `motionSafe` / `REDUCED_MOTION_VARIANT` helpers (which also contradicted the no-reduced-motion rule), unused theme tokens (`INDIGO`, `GLASS_BG`, `SPACE`, `TEXT_SIZE`, `LEADING`, `RADIUS`, `SPRING`, `GLASS_PANEL_STYLE`), 17 unreferenced CSS classes and 6 unreferenced keyframes (the glassmorphism-era `gradient-text`/`glow-*`/`tag-*`/`skill-tag`/`typewriter-cursor` set plus `grid-bg`), the five whole-file `*Data` type interfaces nothing imported, `getStatistics()` and the `statistics` block in `personal.json` (unrendered since the hero row went, and self-contradictory: 1600+ vs 1200+ problems). Six exports that were used only inside their own module lost the `export` keyword. `knip` now reports zero unused files, exports, types or dependencies.
+- **Print stylesheet fix:** `@media print` hid `#github`, which this PR renamed to `#stats` -- updated so print mode still hides the section; dropped its references to the deleted classes.
+
+### Changed
+
+- **GitHub section is now "Stats"**: nav label, footer link and section id all renamed (`#github` -> `#stats`), section heading is "By the Numbers" with a `Stats` badge. The contribution calendar and coding profiles stay in place underneath.
+
+### Added
+
+- `StatsBand` -- twelve animated counters in three `.dashed-rule` groups. **Consulting impact** (leads): clients served, workloads migrated, security controls, talks & patterns. **Delivery & credentials**: projects shipped, certifications, AWS badges, podium finishes (1st/2nd/3rd places counted from Awards). **Open source**: PRs merged upstream (strict PR count, co-authored commit credit noted separately), stars reached (combined stars of the projects merged into, 234k+), projects contributed to (with the 10k+ star count), community answers (accepted vs marked helpful).
+- `stars` field on every `open_source_contributions` entry (upstream star counts captured 2026-09-04) so reach is summed from data, not typed in. Live-verified all 25 PR statuses against the GitHub API in the same pass; `modelcontextprotocol/servers#4470` was recorded as open but has been closed -- corrected.
+- New `impact` block in `data/personal.json` holds the four consulting figures that exist only as prose in the engagement descriptions (clients, workloads, AWS accounts, security controls); talks and patterns are counted from `internal_contributions` by `type`.
+- Deduplicated: every figure now appears exactly once on the page. Competitive-programming numbers belong to the Coding Platform Profiles cards (per platform, with profile links, including HackerRank) and were dropped from `StatsBand`.
+- Every other figure is derived at render time from `data/*.json` (array lengths and `coding_platform_stats`) rather than written into the component, so counts cannot drift from the underlying entries. Reuses the existing `AnimatedCounter`.
+
 ## [4.3.0] - 2026-09-02
 
 ### Security
 
 - Cleared all 8 open Dependabot alerts (every flagged package is transitive; lockfile-level fixes):
-  - **pdfjs-dist** 5.6.205 -> 6.2.108 (high -- arbitrary JavaScript execution upon opening a malicious PDF) by bumping `pdf-to-img` 6.2.0 -> 7.0.0, whose only breaking change (dropping Node 20) doesn't apply since the project requires Node >=24.
-  - **undici** 7.28.0 -> 7.29.0 (5 alerts: cache-poisoning info disclosure, CRLF injection, cookie attribute injection, response desync) via the workspace override, now `>=7.29.0 <8` to stay on the 7.x line jsdom declares.
-  - **nanoid** 3.3.16 -> 3.3.18 (high -- infinite loop with zero size) via scoped override `nanoid@<4` so postcss keeps the CJS-compatible 3.x line.
-  - **postcss** 8.5.22 -> 8.5.26 (medium -- sourceMappingURL arbitrary .map read) via `>=8.5.23` override.
+   - **pdfjs-dist** 5.6.205 -> 6.2.108 (high -- arbitrary JavaScript execution upon opening a malicious PDF) by bumping `pdf-to-img` 6.2.0 -> 7.0.0, whose only breaking change (dropping Node 20) doesn't apply since the project requires Node >=24.
+   - **undici** 7.28.0 -> 7.29.0 (5 alerts: cache-poisoning info disclosure, CRLF injection, cookie attribute injection, response desync) via the workspace override, now `>=7.29.0 <8` to stay on the 7.x line jsdom declares.
+   - **nanoid** 3.3.16 -> 3.3.18 (high -- infinite loop with zero size) via scoped override `nanoid@<4` so postcss keeps the CJS-compatible 3.x line.
+   - **postcss** 8.5.22 -> 8.5.26 (medium -- sourceMappingURL arbitrary .map read) via `>=8.5.23` override.
 - Also patched **brace-expansion** 5.0.8 -> 5.0.9 (high -- DoS via unbounded intermediate arrays, GHSA-rgw5-rvv9-x895; surfaced by `pnpm audit`, no Dependabot alert yet) via `>=5.0.9` override. `pnpm audit` is now fully clean.
 
 ### Added
