@@ -6,7 +6,6 @@ import { getName, getRoles } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { CYAN, GREEN, TEXT_SECONDARY } from "@/constants/theme";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
-import HeroStats from "./HeroStats";
 import HeroSocial from "./HeroSocial";
 const RESUME_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
@@ -152,9 +151,6 @@ const HeroContent = () => {
                Download CV
             </motion.a>
          </motion.div>
-
-         {/* Stats row */}
-         <HeroStats />
 
          {/* Status widget + Social icons */}
          <HeroSocial />

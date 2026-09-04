@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import {
    getCertifications,
-   getCodingPlatformStats,
    getExperience,
    getImpact,
    getLearningBadges,
@@ -17,9 +16,11 @@ import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import useBreakpoint from "@hooks/useBreakpoint";
 
-/* Numeric breakdown behind the headline figures in the hero. Every value is
-   DERIVED from data/*.json rather than written here, so the counts cannot drift
-   away from the underlying entries. */
+/* The site's only numeric summary -- the hero deliberately carries no figures.
+   Coding-platform numbers are NOT here: they live with the platform cards below
+   (CodingProfiles), which show them per platform with profile links. Every value
+   is derived from data/*.json rather than written here, so the counts cannot
+   drift away from the underlying entries. */
 
 interface Stat {
    value: string;
@@ -98,11 +99,10 @@ const StatGroup = ({
 const StatsBand = () => {
    const { isMobile } = useBreakpoint();
 
-   const { impact, delivery, problemSolving } = useMemo(() => {
+   const { impact, delivery } = useMemo(() => {
       const certs = getCertifications();
       const badges = getLearningBadges();
       const oss = getOpenSourceContributions();
-      const platforms = getCodingPlatformStats();
       const impactData = getImpact();
 
       // Talks and published patterns are tagged by `type` on the experience
@@ -121,9 +121,6 @@ const StatsBand = () => {
          getCommunityProjects().length;
       const featuredCount = getFeaturedProjects().length;
       const mergedCount = oss.filter((pr) => pr.status === "merged").length;
-
-      const leetcode = platforms.leetcode;
-      const gfg = platforms.geeksforgeeks;
 
       return {
          impact: [
@@ -170,27 +167,6 @@ const StatsBand = () => {
                note: `of ${oss.length} raised`,
             },
          ] satisfies Stat[],
-         problemSolving: [
-            {
-               value: leetcode?.problems_solved ?? "0",
-               label: "LeetCode solved",
-               note: leetcode?.badge ? `${leetcode.badge} badge` : undefined,
-            },
-            {
-               value: leetcode?.contests ?? "0",
-               label: "Contests entered",
-            },
-            {
-               value: leetcode?.best_rating ?? "0",
-               label: "Peak rating",
-               note: "Contest best",
-            },
-            {
-               value: gfg?.problems_solved ?? "0",
-               label: "GeeksforGeeks",
-               note: "Problems solved",
-            },
-         ] satisfies Stat[],
       };
    }, []);
 
@@ -213,11 +189,6 @@ const StatsBand = () => {
          <StatGroup
             heading="Delivery & credentials"
             stats={delivery}
-            isMobile={isMobile}
-         />
-         <StatGroup
-            heading="Problem solving"
-            stats={problemSolving}
             isMobile={isMobile}
          />
       </div>

@@ -163,7 +163,7 @@ const GitHub = () => {
    return (
       <PageSection id="stats" title="By the Numbers" subtitle="Stats">
          <div style={{ maxWidth: MAX_WIDTH_WIDE, margin: "0 auto" }}>
-            {/* Derived counters: delivery/credentials + problem solving */}
+            {/* Derived counters: consulting impact + delivery/credentials */}
             <StatsBand />
 
             {/* 3D Browser Mockup */}
@@ -202,7 +202,11 @@ const GitHub = () => {
                </BrowserMockup>
             </div>
 
-            {/* Coding Profiles + GitHub */}
+            {/* Coding profiles own every competitive-programming figure,
+                so StatsBand above does not repeat them. */}
+            <p className="dashed-rule" style={{ marginBottom: 20 }}>
+               Coding profiles
+            </p>
             <CodingProfiles githubUsername={githubUsername} />
          </div>
       </PageSection>
