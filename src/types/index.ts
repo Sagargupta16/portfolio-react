@@ -174,6 +174,8 @@ export interface OpenSourceContribution {
    title: string;
    url: string;
    status: string;
+   /** ISO date the PR merged -- drives the hero LATEST line. Absent on commit credits. */
+   merged_at?: string;
    note?: string;
 }
 

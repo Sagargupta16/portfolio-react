@@ -34,7 +34,6 @@ export const getTitle = (): string => personalData.title;
 export const getLocation = (): string => personalData.location;
 export const getLanguages = (): { name: string; level: string }[] =>
    personalData.languages;
-export const getRoles = (): string[] => personalData.roles;
 export const getAbout = (): Record<string, string> => personalData.about;
 export const getSocialProfiles = (): SocialProfile[] =>
    personalData.social_profiles;
@@ -72,5 +71,6 @@ export const getEmailConfig = (): EmailConfig =>
 export const getGitHubUsername = (): string => personalData.contact.github;
 export const getImpact = (): ImpactStats =>
    personalData.impact as ImpactStats;
+export const getIntro = (): string => personalData.intro;
 export const getSiteConfig = (): SiteConfig =>
    (personalData.site || {}) as SiteConfig;
