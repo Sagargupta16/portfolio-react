@@ -6,6 +6,7 @@ import type {
    ContactOption,
    Education,
    EmailConfig,
+   ImpactStats,
    LearningBadge,
    OpenSourceContribution,
    PositionOfResponsibility,
@@ -71,5 +72,7 @@ export const getContactOptions = (): ContactOption[] =>
 export const getEmailConfig = (): EmailConfig =>
    contactData.email_config as EmailConfig;
 export const getGitHubUsername = (): string => personalData.contact.github;
+export const getImpact = (): ImpactStats =>
+   personalData.impact as ImpactStats;
 export const getSiteConfig = (): SiteConfig =>
    (personalData.site || {}) as SiteConfig;

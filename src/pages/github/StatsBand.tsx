@@ -3,6 +3,8 @@ import { motion } from "motion/react";
 import {
    getCertifications,
    getCodingPlatformStats,
+   getExperience,
+   getImpact,
    getLearningBadges,
    getOpenSourceContributions,
    getFeaturedProjects,
@@ -96,11 +98,21 @@ const StatGroup = ({
 const StatsBand = () => {
    const { isMobile } = useBreakpoint();
 
-   const { delivery, problemSolving } = useMemo(() => {
+   const { impact, delivery, problemSolving } = useMemo(() => {
       const certs = getCertifications();
       const badges = getLearningBadges();
       const oss = getOpenSourceContributions();
       const platforms = getCodingPlatformStats();
+      const impactData = getImpact();
+
+      // Talks and published patterns are tagged by `type` on the experience
+      // entries, so this count tracks the timeline instead of restating it.
+      const internal = getExperience().flatMap(
+         (job) => job.internal_contributions ?? [],
+      );
+      const speakingCount = internal.filter(
+         (c) => c.type === "talk" || c.type === "publication",
+      ).length;
 
       const projectCount =
          getFeaturedProjects().length +
@@ -114,6 +126,28 @@ const StatsBand = () => {
       const gfg = platforms.geeksforgeeks;
 
       return {
+         impact: [
+            {
+               value: impactData.clients_served,
+               label: "Clients served",
+               note: impactData.clients_note,
+            },
+            {
+               value: impactData.workloads_migrated,
+               label: "Workloads migrated",
+               note: `Into ${impactData.aws_accounts} AWS accounts`,
+            },
+            {
+               value: impactData.security_controls,
+               label: "Security controls",
+               note: "CCM v4.0 aligned",
+            },
+            {
+               value: String(speakingCount),
+               label: "Talks & patterns",
+               note: "Published org-wide at AWS",
+            },
+         ] satisfies Stat[],
          delivery: [
             {
                value: String(projectCount),
@@ -169,6 +203,13 @@ const StatsBand = () => {
             marginBottom: isMobile ? 48 : 64,
          }}
       >
+         {/* Consulting impact leads: it is the work clients and recruiters
+             are actually assessing. */}
+         <StatGroup
+            heading="Consulting impact"
+            stats={impact}
+            isMobile={isMobile}
+         />
          <StatGroup
             heading="Delivery & credentials"
             stats={delivery}

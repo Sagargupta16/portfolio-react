@@ -10,8 +10,9 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ### Added
 
-- `StatsBand` -- eight animated counters split into two `.dashed-rule` groups. **Delivery & credentials**: projects shipped, certifications, AWS badges, upstream PRs merged. **Problem solving**: LeetCode solved, contests entered, peak rating, GeeksforGeeks solved.
-- Every figure is derived at render time from `data/*.json` (array lengths and `coding_platform_stats`) rather than written into the component, so counts cannot drift from the underlying entries. Reuses the existing `AnimatedCounter`.
+- `StatsBand` -- twelve animated counters split into three `.dashed-rule` groups. **Consulting impact** (leads): clients served, workloads migrated, security controls, talks & patterns. **Delivery & credentials**: projects shipped, certifications, AWS badges, upstream PRs merged. **Problem solving**: LeetCode solved, contests entered, peak rating, GeeksforGeeks solved.
+- New `impact` block in `data/personal.json` holds the four consulting figures that exist only as prose in the engagement descriptions (clients, workloads, AWS accounts, security controls); talks and patterns are counted from `internal_contributions` by `type`.
+- Every other figure is derived at render time from `data/*.json` (array lengths and `coding_platform_stats`) rather than written into the component, so counts cannot drift from the underlying entries. Reuses the existing `AnimatedCounter`.
 
 ## [4.3.0] - 2026-09-02
 

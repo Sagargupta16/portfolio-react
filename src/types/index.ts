@@ -161,6 +161,14 @@ export interface SiteConfig {
    tech_stack?: string[];
 }
 
+export interface ImpactStats {
+   clients_served: string;
+   clients_note: string;
+   workloads_migrated: string;
+   aws_accounts: string;
+   security_controls: string;
+}
+
 export interface PersonalData {
    name: string;
    title: string;
@@ -174,6 +182,7 @@ export interface PersonalData {
    roles: string[];
    about: Record<string, string>;
    statistics: Record<string, string>;
+   impact: ImpactStats;
    languages: Array<{ name: string; level: string }>;
    social_profiles: SocialProfile[];
    site: SiteConfig;

@@ -31,6 +31,13 @@
       "industry_certifications": "6",
       "open_source_prs": "11 merged + 12 open"
    },
+   "impact": {
+      "clients_served": "3",
+      "clients_note": "State Street, DTCC, RWS",
+      "workloads_migrated": "50+",
+      "aws_accounts": "135+",
+      "security_controls": "1000+"
+   },
    "languages": [
       { "name": "English", "level": "Professional Working" },
       { "name": "Hindi", "level": "Native" }
