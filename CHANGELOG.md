@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.5.0] - 2026-09-04
+
+### Fixed
+
+- **Every Tailwind padding/margin utility on the site was silently dead.** `index.css` carried an unlayered `*, *::before, *::after { margin: 0; padding: 0 }` reset. Unlayered CSS beats every cascade layer, and Tailwind v4 emits utilities inside `@layer utilities`, so `pt-28`, `pb-36`, `px-6`, `mt-2` etc. computed to 0px everywhere; the site only looked right because nearly all spacing is inline `style`. The reset now lives in `@layer base` (mirroring Tailwind preflight). Audit of live usage found three call sites; net visible change is confined to the hero.
+- **Hero on phones**: the section was `min-h-screen` + `items-center`, so once the content outgrew the viewport the vertical centering pushed the logo tile under the fixed nav and the social icons into the scroll indicator. Now `items-start md:items-center`, with padding lanes retuned (`pt-24 pb-28 md:pt-20 md:pb-24`) so the hero clears the nav by 32px on mobile, never overlaps the scroll cue, and still fits one desktop viewport.
+- `PageSection` dropped its `py-24 px-6` class: the inline `padding` style always won, so the class was dead and, once utilities came alive, misleading.
+- Public copy no longer contains double dashes: the `title` field in `personal.json` rewritten with a comma.
+
+### Changed
+
+- **Hero says what he does, not just who he is.** The cycling role labels ("MLOps Engineer", "Full-Stack Developer", "Competitive Programmer"...) are replaced by a two-sentence intro from `personal.json` (`intro`) and one mono-labelled **LATEST** line, derived from data: the most recently merged upstream PR and the newest shipped project. Fills the space the stats row vacated with specifics instead of numbers; nothing here duplicates a section below.
+- `merged_at` added to the 10 merged PR entries in `projects.json` (live-verified dates) so LATEST can be computed instead of typed. `roles` removed from `personal.json` and `getRoles()` from the loader -- the cycling line was their only consumer.
+
 ## [4.4.0] - 2026-09-04
 
 ### Removed

@@ -58,13 +58,21 @@
    --ch-cyan-light: 103 232 249;
 }
 
-/* ===== Base Reset ===== */
-*,
-*::before,
-*::after {
-   margin: 0;
-   padding: 0;
-   box-sizing: border-box;
+/* ===== Base Reset =====
+   Must stay inside the base layer. Unlayered CSS beats every cascade layer, so
+   an unlayered universal padding reset silently nullified all Tailwind padding
+   and margin utilities, which sit in the utilities layer. Tailwind preflight
+   does the same reset inside the base layer; this mirrors it.
+   NOTE: keep apostrophes, backticks and braces out of comments in this file --
+   the Tailwind v4 CSS parser trips on them (Unterminated string). */
+@layer base {
+   *,
+   *::before,
+   *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+   }
 }
 
 html {
