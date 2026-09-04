@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
 import {
+   getAchievements,
    getCertifications,
+   getCommunityDiscussions,
    getExperience,
    getImpact,
    getLearningBadges,
@@ -27,6 +29,12 @@ interface Stat {
    label: string;
    note?: string;
 }
+
+const BIG_REPO_STARS = 10_000;
+
+/** 234448 -> "234k+", 442 -> "442". AnimatedCounter keeps "k+" as suffix. */
+const formatStars = (n: number): string =>
+   n >= 1000 ? `${Math.floor(n / 1000)}k+` : String(n);
 
 const StatTile = ({ stat, isMobile }: { stat: Stat; isMobile: boolean }) => (
    <motion.div
@@ -99,10 +107,9 @@ const StatGroup = ({
 const StatsBand = () => {
    const { isMobile } = useBreakpoint();
 
-   const { impact, delivery } = useMemo(() => {
+   const { impact, delivery, openSource } = useMemo(() => {
       const certs = getCertifications();
       const badges = getLearningBadges();
-      const oss = getOpenSourceContributions();
       const impactData = getImpact();
 
       // Talks and published patterns are tagged by `type` on the experience
@@ -120,7 +127,34 @@ const StatsBand = () => {
          getOtherProjects().length +
          getCommunityProjects().length;
       const featuredCount = getFeaturedProjects().length;
-      const mergedCount = oss.filter((pr) => pr.status === "merged").length;
+
+      // Podium = 1st/2nd/3rd place entries in the Awards data.
+      const podium = getAchievements().filter((a) =>
+         /^(1st|2nd|3rd) Place/.test(a.title),
+      );
+      const place = (n: string) =>
+         podium.filter((a) => a.title.startsWith(n)).length;
+
+      // Open source: "merged" entries can be PRs or a credited commit, so the
+      // PR count is the strict figure and co-authored fixes are noted separately.
+      const oss = getOpenSourceContributions();
+      const merged = oss.filter((c) => c.status === "merged");
+      const mergedPrs = merged.filter((c) => c.url.includes("/pull/")).length;
+      const coAuthored = merged.length - mergedPrs;
+      const repoStars = new Map<string, number>();
+      for (const c of oss) repoStars.set(c.repo, c.stars ?? 0);
+      const mergedRepos = new Set(merged.map((c) => c.repo));
+      const starsReached = [...mergedRepos].reduce(
+         (sum, repo) => sum + (repoStars.get(repo) ?? 0),
+         0,
+      );
+      const bigRepos = [...repoStars.values()].filter(
+         (s) => s >= BIG_REPO_STARS,
+      ).length;
+      const discussions = getCommunityDiscussions();
+      const accepted = discussions.filter(
+         (d) => d.status === "accepted",
+      ).length;
 
       return {
          impact: [
@@ -162,9 +196,34 @@ const StatsBand = () => {
                note: "Knowledge & learning",
             },
             {
-               value: String(mergedCount),
-               label: "Upstream PRs merged",
-               note: `of ${oss.length} raised`,
+               value: String(podium.length),
+               label: "Podium finishes",
+               note: `${place("1st")} first, ${place("2nd")} second, ${place("3rd")} third`,
+            },
+         ] satisfies Stat[],
+         openSource: [
+            {
+               value: String(mergedPrs),
+               label: "PRs merged upstream",
+               note:
+                  coAuthored > 0
+                     ? `Plus ${coAuthored} co-authored fix${coAuthored > 1 ? "es" : ""}`
+                     : `Across ${mergedRepos.size} projects`,
+            },
+            {
+               value: formatStars(starsReached),
+               label: "Stars reached",
+               note: "Combined, projects merged into",
+            },
+            {
+               value: String(repoStars.size),
+               label: "Projects contributed to",
+               note: `${bigRepos} with 10k+ stars`,
+            },
+            {
+               value: String(discussions.length),
+               label: "Community answers",
+               note: `${accepted} accepted, ${discussions.length - accepted} marked helpful`,
             },
          ] satisfies Stat[],
       };
@@ -189,6 +248,11 @@ const StatsBand = () => {
          <StatGroup
             heading="Delivery & credentials"
             stats={delivery}
+            isMobile={isMobile}
+         />
+         <StatGroup
+            heading="Open source"
+            stats={openSource}
             isMobile={isMobile}
          />
       </div>

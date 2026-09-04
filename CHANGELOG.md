@@ -14,9 +14,10 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ### Added
 
-- `StatsBand` -- twelve animated counters split into three `.dashed-rule` groups. **Consulting impact** (leads): clients served, workloads migrated, security controls, talks & patterns. **Delivery & credentials**: projects shipped, certifications, AWS badges, upstream PRs merged. **Problem solving**: LeetCode solved, contests entered, peak rating, GeeksforGeeks solved.
+- `StatsBand` -- twelve animated counters in three `.dashed-rule` groups. **Consulting impact** (leads): clients served, workloads migrated, security controls, talks & patterns. **Delivery & credentials**: projects shipped, certifications, AWS badges, podium finishes (1st/2nd/3rd places counted from Awards). **Open source**: PRs merged upstream (strict PR count, co-authored commit credit noted separately), stars reached (combined stars of the projects merged into, 234k+), projects contributed to (with the 10k+ star count), community answers (accepted vs marked helpful).
+- `stars` field on every `open_source_contributions` entry (upstream star counts captured 2026-09-04) so reach is summed from data, not typed in. Live-verified all 25 PR statuses against the GitHub API in the same pass; `modelcontextprotocol/servers#4470` was recorded as open but has been closed -- corrected.
 - New `impact` block in `data/personal.json` holds the four consulting figures that exist only as prose in the engagement descriptions (clients, workloads, AWS accounts, security controls); talks and patterns are counted from `internal_contributions` by `type`.
-- Deduplicated: every figure now appears exactly once on the page. Competitive-programming numbers belong to the `Coding profiles` band (per platform, with profile links, including HackerRank) and were dropped from `StatsBand`; the band is labelled so the split is visible.
+- Deduplicated: every figure now appears exactly once on the page. Competitive-programming numbers belong to the Coding Platform Profiles cards (per platform, with profile links, including HackerRank) and were dropped from `StatsBand`.
 - Every other figure is derived at render time from `data/*.json` (array lengths and `coding_platform_stats`) rather than written into the component, so counts cannot drift from the underlying entries. Reuses the existing `AnimatedCounter`.
 
 ## [4.3.0] - 2026-09-02

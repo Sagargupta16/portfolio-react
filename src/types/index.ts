@@ -205,6 +205,8 @@ export interface Project {
 
 export interface OpenSourceContribution {
    repo: string;
+   /** Upstream repo star count at last sync -- drives the "stars reached" stat. */
+   stars?: number;
    title: string;
    url: string;
    status: string;

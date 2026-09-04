@@ -928,60 +928,70 @@
    "open_source_contributions": [
       {
          "repo": "axios/axios",
+         "stars": 109194,
          "title": "Synthesize AxiosError message from AggregateError on dual-stack connection failures",
          "url": "https://github.com/axios/axios/pull/11059",
          "status": "merged"
       },
       {
          "repo": "feast-dev/feast",
+         "stars": 7248,
          "title": "Add Claude Code agent skills for Feast",
          "url": "https://github.com/feast-dev/feast/pull/6081",
          "status": "merged"
       },
       {
          "repo": "PrefectHQ/prefect",
+         "stars": 23772,
          "title": "Document that deployment steps are Python functions",
          "url": "https://github.com/PrefectHQ/prefect/pull/20956",
          "status": "merged"
       },
       {
          "repo": "awslabs/mcp",
+         "stars": 9657,
          "title": "Fix Kendra documentation menu to match source directory",
          "url": "https://github.com/awslabs/mcp/pull/2607",
          "status": "merged"
       },
       {
          "repo": "apache/airflow",
+         "stars": 46719,
          "title": "Add template_fields support to SalesforceBulkOperator",
          "url": "https://github.com/apache/airflow/pull/63109",
          "status": "merged"
       },
       {
          "repo": "cloudposse/terraform-aws-tfstate-backend",
+         "stars": 442,
          "title": "Add S3 native locking docs, fix variable descriptions",
          "url": "https://github.com/cloudposse/terraform-aws-tfstate-backend/pull/197",
          "status": "merged"
       },
       {
          "repo": "terraform-aws-modules/terraform-aws-dynamodb-table",
+         "stars": 119,
          "title": "Replace deprecated hash_key/range_key with key_schema",
          "url": "https://github.com/terraform-aws-modules/terraform-aws-dynamodb-table/pull/117",
          "status": "open"
       },
       {
          "repo": "hashicorp/terraform-provider-aws",
+         "stars": 11051,
          "title": "Fix IoT cloudwatch_metric substitution template validation",
          "url": "https://github.com/hashicorp/terraform-provider-aws/pull/46867",
          "status": "open"
       },
       {
          "repo": "NirmalScaria/le-git-graph",
+         "stars": 5861,
          "title": "Infinite scroll, configurable commit count, and performance improvements",
          "url": "https://github.com/NirmalScaria/le-git-graph/pull/109",
          "status": "open"
       },
       {
          "repo": "forem/selfhost",
+         "stars": 1483,
          "title": "Fix AWS Ansible deploy + Elastic IP allocation",
          "url": "https://github.com/forem/selfhost/pull/91",
          "status": "closed",
@@ -989,90 +999,105 @@
       },
       {
          "repo": "anthropics/skills",
+         "stars": 173666,
          "title": "Fix: extract procedures into references to fit truncation limit",
          "url": "https://github.com/anthropics/skills/pull/941",
          "status": "open"
       },
       {
          "repo": "anthropics/skills",
+         "stars": 173666,
          "title": "Fix: merge duplicate plugins to prevent double skill loading",
          "url": "https://github.com/anthropics/skills/pull/942",
          "status": "open"
       },
       {
          "repo": "awslabs/agent-plugins",
+         "stars": 886,
          "title": "Fix: check file extension before defusedxml dependency",
          "url": "https://github.com/awslabs/agent-plugins/pull/132",
          "status": "merged"
       },
       {
          "repo": "awslabs/agent-plugins",
+         "stars": 886,
          "title": "Quote CLAUDE_PLUGIN_ROOT in hook commands to support paths with spaces",
          "url": "https://github.com/awslabs/agent-plugins/pull/212",
          "status": "merged"
       },
       {
          "repo": "lucide-icons/lucide",
+         "stars": 24332,
          "title": "Support kebab-case icon-node prop on Vue Icon component",
          "url": "https://github.com/lucide-icons/lucide/pull/4512",
          "status": "merged"
       },
       {
          "repo": "aws-ia/terraform-aws-vpc",
+         "stars": 113,
          "title": "Root-caused the Cloud WAN attachment-replacement bug; fix co-authored into v4.8.0",
          "url": "https://github.com/aws-ia/terraform-aws-vpc/commit/489899c7198b6d0099275e2ffee6852b98c6012b",
          "status": "merged"
       },
       {
          "repo": "modelcontextprotocol/servers",
+         "stars": 90061,
          "title": "Normalize git_log schema across filtered and unfiltered branches",
          "url": "https://github.com/modelcontextprotocol/servers/pull/4470",
-         "status": "open"
+         "status": "closed"
       },
       {
          "repo": "expressjs/multer",
+         "stars": 12085,
          "title": "Do not consume maxCount for files skipped by fileFilter",
          "url": "https://github.com/expressjs/multer/pull/1426",
          "status": "merged"
       },
       {
          "repo": "aws-ia/terraform-aws-bedrock",
+         "stars": 85,
          "title": "name_prefix, tag propagation, external role support, MCP examples",
          "url": "https://github.com/aws-ia/terraform-aws-bedrock/pull/172",
          "status": "open"
       },
       {
          "repo": "anthropics/skills",
+         "stars": 173666,
          "title": "Correct path in package_skill.py docstring",
          "url": "https://github.com/anthropics/skills/pull/939",
          "status": "open"
       },
       {
          "repo": "hashicorp/terraform-provider-aws",
+         "stars": 11051,
          "title": "r/aws_vpc_endpoint: fix policy removal not resetting to default policy",
          "url": "https://github.com/hashicorp/terraform-provider-aws/pull/47940",
          "status": "open"
       },
       {
          "repo": "hashicorp/terraform-provider-aws",
+         "stars": 11051,
          "title": "r/aws_bedrockagentcore_harness: add additional_params to bedrock_model_config",
          "url": "https://github.com/hashicorp/terraform-provider-aws/pull/48389",
          "status": "open"
       },
       {
          "repo": "hashicorp/terraform-provider-aws",
+         "stars": 11051,
          "title": "r/aws_api_gateway_gateway_response: mark status_code Computed to fix persistent diff",
          "url": "https://github.com/hashicorp/terraform-provider-aws/pull/48390",
          "status": "open"
       },
       {
          "repo": "hashicorp/terraform-provider-aws",
+         "stars": 11051,
          "title": "r/aws_api_gateway_rest_api: apply binary_media_types removal when argument is deleted",
          "url": "https://github.com/hashicorp/terraform-provider-aws/pull/48396",
          "status": "open"
       },
       {
          "repo": "awslabs/mcp",
+         "stars": 9657,
          "title": "Accept skill-type results in search_documentation",
          "url": "https://github.com/awslabs/mcp/pull/4076",
          "status": "closed"
