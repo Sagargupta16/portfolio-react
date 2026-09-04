@@ -5,6 +5,7 @@ import { getGitHubUsername } from "@data/dataLoader";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { TEXT_MUTED, CYAN, MAX_WIDTH_WIDE } from "@/constants/theme";
 import CodingProfiles from "./CodingProfiles";
+import StatsBand from "./StatsBand";
 import PageSection from "@components/layout/PageSection";
 import BrowserMockup from "@components/ui/BrowserMockup";
 
@@ -160,12 +161,11 @@ const GitHub = () => {
    }, []);
 
    return (
-      <PageSection
-         id="github"
-         title="GitHub Activity"
-         subtitle="My open source contributions"
-      >
+      <PageSection id="stats" title="By the Numbers" subtitle="Stats">
          <div style={{ maxWidth: MAX_WIDTH_WIDE, margin: "0 auto" }}>
+            {/* Derived counters: delivery/credentials + problem solving */}
+            <StatsBand />
+
             {/* 3D Browser Mockup */}
             <div style={{ textAlign: "center" }}>
                <BrowserMockup

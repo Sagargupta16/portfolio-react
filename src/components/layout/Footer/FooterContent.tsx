@@ -13,7 +13,7 @@ const RESUME_URL =
 const SITE_LINKS: { id: string; label: string }[] = [
    { id: "hero", label: "Home" },
    { id: "projects", label: "Projects" },
-   { id: "github", label: "GitHub Activity" },
+   { id: "stats", label: "Stats" },
    { id: "contact", label: "Contact" },
 ];
 

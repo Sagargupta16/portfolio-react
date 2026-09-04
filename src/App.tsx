@@ -78,7 +78,7 @@ const App = () => {
                         <div className="section-darker" id="services">
                            <Services />
                         </div>
-                        <div className="section-dark" id="github">
+                        <div className="section-dark" id="stats">
                            <GitHub />
                         </div>
                         <div className="section-darker" id="contact">
