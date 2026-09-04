@@ -16,7 +16,7 @@ export const FILTERS = [
    "Others",
 ] as const;
 
-export const MONTHS: Record<string, number> = {
+const MONTHS: Record<string, number> = {
    January: 0,
    February: 1,
    March: 2,
@@ -45,7 +45,7 @@ export interface CategoryColors {
    borderAlpha: string;
 }
 
-export const CATEGORY_COLORS: Record<string, CategoryColors> = {
+const CATEGORY_COLORS: Record<string, CategoryColors> = {
    Featured: {
       accent: "#60a5fa",
       gradient: "linear-gradient(to right, #60a5fa, #3b82f6)",

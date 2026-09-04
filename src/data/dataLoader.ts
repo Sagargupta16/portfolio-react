@@ -36,8 +36,6 @@ export const getLanguages = (): { name: string; level: string }[] =>
    personalData.languages;
 export const getRoles = (): string[] => personalData.roles;
 export const getAbout = (): Record<string, string> => personalData.about;
-export const getStatistics = (): Record<string, string> =>
-   personalData.statistics;
 export const getSocialProfiles = (): SocialProfile[] =>
    personalData.social_profiles;
 export const getEducation = (): Education[] => educationData as Education[];

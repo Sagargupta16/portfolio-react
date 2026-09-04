@@ -18,7 +18,7 @@ import claudeCostOptimizer from "@assets/projects/claude-cost-optimizer.webp";
 import kalchar from "@assets/projects/kalchar.webp";
 import sagas from "@assets/projects/sagas.webp";
 
-export interface SceneCoverProps {
+interface SceneCoverProps {
    tint: string;
    variant?: string;
 }

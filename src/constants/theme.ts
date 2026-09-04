@@ -11,7 +11,6 @@ export const PURPLE = "#38bdf8"; // secondary accent (roles, PoR)
 export const GREEN = "#22c55e";
 export const AMBER = "#f59e0b";
 export const PINK = "#38bdf8";
-export const INDIGO = "#60a5fa";
 export const ORANGE = "#f97316";
 export const RED = "#ef4444";
 
@@ -26,7 +25,6 @@ export const TEXT_SECONDARY = "#9ca9b0";
 export const TEXT_MUTED = "#8a97a0";
 
 export const GLASS_BORDER = "rgba(255, 255, 255, 0.08)";
-export const GLASS_BG = "rgba(255, 255, 255, 0.05)";
 
 // ===== Fonts =====
 export const MONO_FONT = "JetBrains Mono, ui-monospace, monospace";
@@ -39,7 +37,7 @@ export const MAX_WIDTH_FORM = 896; // Contact form + cards
 
 // ===== Responsive Breakpoints =====
 // Align with Tailwind defaults -- single source of truth for media queries.
-export const BREAKPOINTS = {
+const BREAKPOINTS = {
    sm: 640,
    md: 768,
    lg: 1024,
@@ -50,51 +48,6 @@ export const MEDIA_QUERIES = {
    mobile: `(max-width: ${BREAKPOINTS.md - 1}px)`,
    tablet: `(max-width: ${BREAKPOINTS.lg - 1}px)`,
    reducedMotion: "(prefers-reduced-motion: reduce)",
-} as const;
-
-// ===== Spacing Scale (base-4 grid) =====
-// Every padding / gap / margin should resolve to one of these.
-export const SPACE = {
-   0: 0,
-   1: 4,
-   2: 8,
-   3: 12,
-   4: 16,
-   5: 20,
-   6: 24,
-   8: 32,
-   10: 40,
-   12: 48,
-} as const;
-
-// ===== Typography Scale =====
-// 7 steps, roughly 1.25 modular ratio at the higher end.
-export const TEXT_SIZE = {
-   xs: 11, // caption, tag
-   sm: 12, // subtle labels
-   base: 14, // body
-   md: 16, // card titles
-   lg: 20, // section sub-headers
-   xl: 24, // section headers
-   "2xl": 32, // page titles
-   "3xl": 48, // hero
-} as const;
-
-// ===== Line Heights =====
-export const LEADING = {
-   none: 1, // numerals, monograms
-   tight: 1.2, // headings
-   normal: 1.5, // body
-   relaxed: 1.7, // long-form paragraphs
-} as const;
-
-// ===== Border Radii =====
-export const RADIUS = {
-   sm: 6, // chips, tags
-   md: 10, // small cards
-   lg: 12, // standard cards
-   xl: 16, // panels, modals
-   pill: 9999,
 } as const;
 
 // ===== Animation Tokens =====
@@ -112,20 +65,7 @@ export const DURATION = {
    ambient: 20, // decorative background loops
 } as const;
 
-export const SPRING = {
-   gentle: { type: "spring" as const, stiffness: 80, damping: 16 },
-   default: { type: "spring" as const, stiffness: 100, damping: 15 },
-} as const;
-
 // ===== Shared inline style objects =====
-
-/** Flat panel -- used by TerminalCard, ActivityFeed, NodeDiagram, StatsCard */
-export const GLASS_PANEL_STYLE: React.CSSProperties = {
-   borderRadius: RADIUS.lg,
-   overflow: "hidden",
-   border: "1px solid rgb(var(--ch-white) / 0.06)",
-   background: "var(--color-bg-card)",
-};
 
 /** Chrome header bar -- used by TerminalCard, ActivityFeed, BrowserMockup */
 export const CHROME_BAR_STYLE: React.CSSProperties = {

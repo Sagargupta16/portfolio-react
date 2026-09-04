@@ -7,6 +7,8 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 ### Removed
 
 - **Hero no longer carries any numbers.** The counter row (`HeroStats`) and its open-source-PR line are gone; the Stats section is now the site's single numeric summary. Matches the reference portfolios, which carry no figures above the fold, and stops the hero leading with competitive-programming metrics instead of the consulting work.
+- **Orphan-code sweep (knip-verified, every deletion cross-checked by grep):** 10 transitively-dead files (`ActivityFeed`, `NodeDiagram`, `ShapeRenderer`, `TerminalCard`, `useRevealInView`, `CodingPlatformCard`, `CodingPlatformsSection`, `TimelineExpandedContent`, `experienceHelpers`, `random`), 13 unused Motion variants incl. the `motionSafe` / `REDUCED_MOTION_VARIANT` helpers (which also contradicted the no-reduced-motion rule), unused theme tokens (`INDIGO`, `GLASS_BG`, `SPACE`, `TEXT_SIZE`, `LEADING`, `RADIUS`, `SPRING`, `GLASS_PANEL_STYLE`), 17 unreferenced CSS classes and 6 unreferenced keyframes (the glassmorphism-era `gradient-text`/`glow-*`/`tag-*`/`skill-tag`/`typewriter-cursor` set plus `grid-bg`), the five whole-file `*Data` type interfaces nothing imported, `getStatistics()` and the `statistics` block in `personal.json` (unrendered since the hero row went, and self-contradictory: 1600+ vs 1200+ problems). Six exports that were used only inside their own module lost the `export` keyword. `knip` now reports zero unused files, exports, types or dependencies.
+- **Print stylesheet fix:** `@media print` hid `#github`, which this PR renamed to `#stats` -- updated so print mode still hides the section; dropped its references to the deleted classes.
 
 ### Changed
 
