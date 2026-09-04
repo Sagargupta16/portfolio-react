@@ -1,4 +1,28 @@
 {
    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-   "extends": ["github>Sagargupta16/shared-workflows"]
+   "extends": ["github>Sagargupta16/shared-workflows"],
+   "description": [
+      "Repo-level exceptions to the shared preset. Each rule names the upstream constraint that blocks the upgrade; remove the rule when the constraint clears.",
+      "Closing a grouped major PR does not stop Renovate re-proposing it (#208 closed 2026-09-03, #209 opened with identical content), so blocked majors must be disabled here."
+   ],
+   "packageRules": [
+      {
+         "description": "eslint-plugin-react (7.37.5) peers eslint <= ^9.7; ESLint 10 breaks pnpm lint with react/display-name getFilename errors. Re-enable when the plugin ships ESLint 10 support.",
+         "matchPackageNames": ["eslint", "@eslint/js"],
+         "matchUpdateTypes": ["major"],
+         "enabled": false
+      },
+      {
+         "description": "typescript-eslint (8.69.0) peers typescript >=4.8.4 <6.1.0. Re-enable when typescript-eslint supports TS 7.",
+         "matchPackageNames": ["typescript"],
+         "matchUpdateTypes": ["major"],
+         "enabled": false
+      },
+      {
+         "description": "The ajv@<7 and nanoid@<4 selectors in pnpm-workspace.yaml overrides deliberately pin those old majors for consumers that need them (ajv 7 rewrote its API; nanoid 4+ is ESM-only). Bumping the override value across the major boundary breaks them at runtime, not at install.",
+         "matchFileNames": ["pnpm-workspace.yaml"],
+         "matchPackageNames": ["ajv", "nanoid"],
+         "enabled": false
+      }
+   ]
 }
