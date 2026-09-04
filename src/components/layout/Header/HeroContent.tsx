@@ -1,28 +1,21 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useMemo, useCallback } from "react";
+import { motion } from "motion/react";
 import { useLenis } from "lenis/react";
 import { FileText } from "lucide-react";
-import { getName, getRoles } from "@data/dataLoader";
+import { getName, getIntro } from "@data/dataLoader";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { CYAN, GREEN, TEXT_SECONDARY } from "@/constants/theme";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import HeroSocial from "./HeroSocial";
+import HeroLatest from "./HeroLatest";
 const RESUME_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
 
 const HeroContent = () => {
-   const [roleIndex, setRoleIndex] = useState(0);
    const [cvOpen, setCvOpen] = useState(false);
 
    const name = useMemo(() => getName(), []);
-   const roles = useMemo(() => getRoles(), []);
-
-   useEffect(() => {
-      const interval = setInterval(() => {
-         setRoleIndex((prev) => (prev + 1) % roles.length);
-      }, 3000);
-      return () => clearInterval(interval);
-   }, [roles]);
+   const intro = useMemo(() => getIntro(), []);
 
    const lenis = useLenis();
    const scrollToProjects = useCallback(() => {
@@ -34,9 +27,10 @@ const HeroContent = () => {
 
    return (
       <motion.div
-         // Bottom padding is deliberately larger than top: it reserves a lane for
-         // the absolute scroll indicator so it never overlaps the social icons.
-         className="relative z-10 flex flex-col items-center text-center px-6 pt-28 pb-36 gap-6 max-w-4xl mx-auto"
+         // Bottom padding is larger than top: it reserves a lane for the absolute
+         // scroll indicator so it never overlaps the social icons. Sized so the
+         // hero still fits one desktop viewport (~800px) with the intro in place.
+         className="relative z-10 flex flex-col items-center text-center px-6 pt-24 pb-28 md:pt-20 md:pb-24 gap-6 max-w-4xl mx-auto"
          variants={staggerContainer}
          initial="hidden"
          animate="visible"
@@ -93,25 +87,18 @@ const HeroContent = () => {
             </span>
          </motion.h1>
 
-         {/* Animated role cycling */}
-         <motion.div
-            className="h-9 md:h-11 flex items-center justify-center"
+         {/* Intro: what to hire him for, in two sentences. Replaces the old
+             cycling role labels, which said nothing specific. */}
+         <motion.p
+            className="text-base md:text-lg"
+            style={{ color: TEXT_SECONDARY, maxWidth: 680, lineHeight: 1.6 }}
             variants={staggerItem}
          >
-            <AnimatePresence mode="wait">
-               <motion.p
-                  key={roleIndex}
-                  className="text-base md:text-xl"
-                  style={{ color: TEXT_SECONDARY }}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -24 }}
-                  transition={{ duration: 0.7, ease: "easeInOut" }}
-               >
-                  {roles[roleIndex]}
-               </motion.p>
-            </AnimatePresence>
-         </motion.div>
+            {intro}
+         </motion.p>
+
+         {/* LATEST -- derived from data: newest merged PR + newest shipped project */}
+         <HeroLatest />
 
          {/* CTA buttons */}
          <motion.div

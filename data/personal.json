@@ -1,21 +1,14 @@
 {
    "name": "Sagar Gupta",
-   "title": "Cloud Consultant -- Professional Services (DevOps/MLOps) at AWS",
+   "title": "Cloud Consultant, Professional Services (DevOps/MLOps) at AWS",
    "location": "Hyderabad, India",
+   "intro": "Cloud consultant at AWS Professional Services. I build the AWS platforms that regulated companies migrate onto: Terraform, CI/CD, MLOps pipelines, and lately the agent tooling that makes that work faster.",
    "contact": {
       "email": "sg85207@gmail.com",
       "phone": "+91-8770532413",
       "linkedin": "sagar-gupta-16-10",
       "github": "Sagargupta16"
    },
-   "roles": [
-      "Cloud Consultant at AWS - DevOps/MLOps",
-      "DevOps & Infrastructure Automation Engineer",
-      "MLOps Engineer",
-      "Full-Stack Developer",
-      "Open Source Contributor",
-      "Competitive Programmer"
-   ],
    "about": {
       "greeting": "👋 Hi, my name is Sagar Gupta.",
       "current_role": "💼 Cloud & DevOps/MLOps Engineer at AWS Professional Services, delivering DevOps engagements for leading financial institutions like State Street and DTCC. Leading a greenfield AWS migration for 50+ application workloads at RWS.",
