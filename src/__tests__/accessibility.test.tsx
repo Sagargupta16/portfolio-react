@@ -118,7 +118,23 @@ describe("accessible interactions", () => {
       expect(onClick).toHaveBeenCalledOnce();
    });
 
-   it("defaults to Full and lets System follow a reduced OS preference", async () => {
+   it("defaults to Full on a first visit with nothing stored", () => {
+      globalThis.localStorage.removeItem("portfolio-motion-preference");
+      const Probe = () => {
+         const { reducedMotion } = useMotionPreference();
+         return <output>{reducedMotion ? "reduced" : "full"}</output>;
+      };
+      renderWithMotion(
+         <>
+            <MotionPreferenceControl />
+            <Probe />
+         </>,
+      );
+      expect(screen.getByText("full")).toBeTruthy();
+      expect(document.documentElement.dataset.motion).toBe("full");
+   });
+
+   it("defaults to Full even when the OS prefers reduced motion, and toggles Full <-> Reduced", async () => {
       Object.defineProperty(globalThis, "matchMedia", {
          configurable: true,
          value: vi.fn((query: string) => ({
@@ -132,6 +148,8 @@ describe("accessible interactions", () => {
             dispatchEvent: vi.fn(() => false),
          })),
       });
+      // A value persisted by the retired System mode must read as Full.
+      globalThis.localStorage.setItem("portfolio-motion-preference", "system");
 
       const Probe = () => {
          const { reducedMotion } = useMotionPreference();
@@ -145,19 +163,27 @@ describe("accessible interactions", () => {
          </>,
       );
       expect(screen.getByText("full")).toBeTruthy();
+      expect(
+         screen.getByRole("button", {
+            name: "Motion mode: Full. Switch to Reduced",
+         }),
+      ).toBeTruthy();
 
-      // The control is a single button that cycles Full -> System -> Reduced.
+      // The control is a single button that toggles Full <-> Reduced.
       const toggle = () =>
          fireEvent.click(screen.getByRole("button", { name: /^Motion mode:/ }));
 
-      toggle(); // -> System, and the mocked OS preference is reduce
+      toggle(); // -> Reduced (explicit; the OS preference is never consulted)
       await waitFor(() => expect(screen.getByText("reduced")).toBeTruthy());
+      expect(document.documentElement.dataset.motion).toBe("reduced");
       expect(
-         screen.getByRole("button", { name: /^Motion mode: System/ }),
+         screen.getByRole("button", {
+            name: "Motion mode: Reduced. Switch to Full",
+         }),
       ).toBeTruthy();
-
-      toggle(); // -> Reduced (explicit)
-      await waitFor(() => expect(screen.getByText("reduced")).toBeTruthy());
+      expect(
+         globalThis.localStorage.getItem("portfolio-motion-preference"),
+      ).toBe("reduced");
 
       toggle(); // -> Full again, overriding the OS preference
       await waitFor(() => expect(screen.getByText("full")).toBeTruthy());

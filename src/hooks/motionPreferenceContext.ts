@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export type MotionPreference = "system" | "full" | "reduced";
+export type MotionPreference = "full" | "reduced";
 
 export interface MotionPreferenceValue {
    preference: MotionPreference;

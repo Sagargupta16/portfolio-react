@@ -47,7 +47,6 @@ const BREAKPOINTS = {
 export const MEDIA_QUERIES = {
    mobile: `(max-width: ${BREAKPOINTS.md - 1}px)`,
    tablet: `(max-width: ${BREAKPOINTS.lg - 1}px)`,
-   reducedMotion: "(prefers-reduced-motion: reduce)",
 } as const;
 
 // ===== Animation Tokens =====

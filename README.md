@@ -11,8 +11,8 @@
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178c6)
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
-![Tests](https://img.shields.io/badge/tests-16%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.6.3-2563eb)
+![Tests](https://img.shields.io/badge/tests-17%20passing-22c55e)
+![Version](https://img.shields.io/badge/version-4.7.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -20,7 +20,7 @@
 
 ## About
 
-A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Project cards carry live screenshots of deployed sites and animated SVG cover scenes for everything else. Built as a single-page scroll application with strict TypeScript, isolated lazy sections, data validation, and a persisted System/Full/Reduced motion preference.
+A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Project cards carry live screenshots of deployed sites and animated SVG cover scenes for everything else. Built as a single-page scroll application with strict TypeScript, isolated lazy sections, data validation, and a persisted Full/Reduced motion preference.
 
 ---
 
@@ -85,7 +85,7 @@ pnpm build
 | `pnpm dev`           | Start development server                       |
 | `pnpm build`         | Validate data and build to `/build`            |
 | `pnpm preview`       | Preview production build                       |
-| `pnpm test`          | Run 16 focused Vitest tests                    |
+| `pnpm test`          | Run 17 focused Vitest tests                    |
 | `pnpm validate:data` | Validate JSON schemas and cross-file rules     |
 | `pnpm lint`          | ESLint app and scripts (zero warnings)         |
 | `pnpm lint:fix`      | ESLint with auto-fix                           |
@@ -125,7 +125,7 @@ src/
 │       ├── CharacterReveal.tsx        # Spring char-by-char animation (word-wrapped)
 │       ├── DevAvatar.tsx              # About avatar: monogram + orbit of real stack glyphs
 │       ├── GlassCard.tsx              # Flat card with optional pointer tilt
-│       ├── MotionPreferenceControl.tsx # Persisted System/Full/Reduced selector
+│       ├── MotionPreferenceControl.tsx # Persisted Full/Reduced motion toggle
 │       ├── TechTag.tsx                # Reusable skill/tech tag
 │       └── ...
 ├── constants/
@@ -181,7 +181,7 @@ EmailJS browser identifiers are public client configuration and live in `data/co
 
 ## Motion Preference
 
-The floating control at the bottom-left persists one of three modes: **Full** is the default and enables the complete visual treatment, **System** follows the OS preference, and **Reduced** disables smooth scrolling and looping/decorative movement while preserving project and service artwork.
+The floating control at the bottom-left toggles between two persisted modes: **Full** is the default and enables the complete visual treatment regardless of the OS setting, and **Reduced** disables smooth scrolling and freezes looping/decorative movement while keeping project and service artwork visible.
 
 ---
 
@@ -194,7 +194,7 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 3. Lint application code and Node scripts with zero warnings
 4. Run strict TypeScript checking
 5. Validate JSON schemas and cross-file invariants
-6. Run all 16 focused tests
+6. Run all 17 focused tests
 7. Fail on high-severity dependency advisories
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts

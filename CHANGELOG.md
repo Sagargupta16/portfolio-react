@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.7.0] - 2026-09-05
+
+### Changed
+
+- **Motion control has two modes, Full and Reduced.** System mode (follow the OS `prefers-reduced-motion` setting) is retired: Full stays the default and the OS preference is never consulted, so motion is visible unless a visitor explicitly picks Reduced. A stored `system` value from earlier versions reads as Full. The now-unused `reducedMotion` media query is removed from the theme constants.
+
 ## [4.6.3] - 2026-09-05
 
 ### Fixed

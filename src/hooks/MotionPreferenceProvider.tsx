@@ -7,16 +7,16 @@ import {
    type ReactNode,
 } from "react";
 import { MotionConfig } from "motion/react";
-import { MEDIA_QUERIES } from "@/constants/theme";
-import useMediaQuery from "./useMediaQuery";
 import {
    MotionPreferenceContext,
    type MotionPreference,
 } from "./motionPreferenceContext";
 
 const STORAGE_KEY = "portfolio-motion-preference";
-const PREFERENCES = new Set<MotionPreference>(["system", "full", "reduced"]);
+const PREFERENCES = new Set<MotionPreference>(["full", "reduced"]);
 
+// Anything else in storage (including the retired "system" value) reads as
+// Full: the OS preference is never consulted, motion stays visible by default.
 const readPreference = (): MotionPreference => {
    if (globalThis.window == null) return "full";
    try {
@@ -34,13 +34,10 @@ export const MotionPreferenceProvider = ({
 }: {
    children: ReactNode;
 }) => {
-   const systemReducedMotion = useMediaQuery(MEDIA_QUERIES.reducedMotion);
    const [storedPreference, setStoredPreference] =
       useState<MotionPreference>(readPreference);
    const preference = storedPreference;
-   const reducedMotion =
-      preference === "reduced" ||
-      (preference === "system" && systemReducedMotion);
+   const reducedMotion = preference === "reduced";
 
    const setPreference = useCallback((next: MotionPreference) => {
       setStoredPreference(next);

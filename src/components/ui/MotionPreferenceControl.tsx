@@ -1,19 +1,17 @@
 import { motion } from "motion/react";
-import { Accessibility, Monitor, Sparkles } from "lucide-react";
+import { Accessibility, Sparkles } from "lucide-react";
 import { GLASS_BORDER, MONO_FONT, TEXT_PRIMARY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
 import type { MotionPreference } from "@hooks/motionPreferenceContext";
 
-const ORDER: MotionPreference[] = ["full", "system", "reduced"];
+const ORDER: MotionPreference[] = ["full", "reduced"];
 const LABELS: Record<MotionPreference, string> = {
    full: "Full",
-   system: "System",
    reduced: "Reduced",
 };
 
 const PreferenceIcon = ({ preference }: { preference: MotionPreference }) => {
-   if (preference === "system") return <Monitor size={16} />;
    if (preference === "reduced") return <Accessibility size={16} />;
    return <Sparkles size={16} />;
 };
