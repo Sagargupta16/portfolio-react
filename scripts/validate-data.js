@@ -460,7 +460,7 @@ try {
       resolve(ROOT, "src/pages/portfolio/covers/coverRegistry.ts"),
       "utf8",
    );
-   const coverIds = [...coverSource.matchAll(/^\s+(\d+):\s*\{/gm)].map(
+   const coverIds = [...coverSource.matchAll(/^[ \t]+(\d+):[ \t]*\{/gm)].map(
       (match) => Number(match[1]),
    );
    requireUnique(

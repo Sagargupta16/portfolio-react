@@ -7,6 +7,17 @@ import { getEducation } from "@data/education";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { CYAN, TEXT_MUTED, TEXT_PRIMARY, MONO_FONT } from "@/constants/theme";
 
+const EMPLOYER_SUFFIX = " at aws";
+
+/** "Cloud Consultant, ... at AWS" -> "Cloud Consultant" (no regex: Sonar S5852). */
+const compactRole = (title: string): string => {
+   const role = title.split(",")[0].trim();
+   if (role.toLowerCase().endsWith(EMPLOYER_SUFFIX)) {
+      return role.slice(0, -EMPLOYER_SUFFIX.length).trimEnd();
+   }
+   return role;
+};
+
 interface Fact {
    Icon: LucideIcon;
    label: string;
@@ -33,9 +44,7 @@ const QuickFacts = ({ isMobile }: { isMobile: boolean }) => {
             Icon: Briefcase,
             label: "Role",
             // Normalize the data's prose suffix to the compact fact-chip style.
-            value: `${getTitle()
-               .split(",")[0]
-               .replace(/\s+at\s+AWS$/i, "")} @ AWS`,
+            value: `${compactRole(getTitle())} @ AWS`,
          },
          {
             Icon: GraduationCap,

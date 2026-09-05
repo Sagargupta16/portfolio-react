@@ -11,15 +11,14 @@ on:
       workflows: ["Sync Credly Badges"]
       types: [completed]
 
-permissions:
-   contents: read
-
 concurrency:
    group: "pages-${{ github.ref }}"
    cancel-in-progress: true
 
 jobs:
    ci:
+      permissions:
+         contents: read
       if: >
          github.event_name != 'workflow_run' ||
          github.event.workflow_run.conclusion == 'success'
@@ -88,6 +87,7 @@ jobs:
       needs: ci
       runs-on: ubuntu-latest
       permissions:
+         contents: read
          pages: write
          id-token: write
       environment:

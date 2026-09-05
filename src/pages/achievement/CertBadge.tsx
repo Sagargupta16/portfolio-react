@@ -29,6 +29,31 @@ const LEVEL_COLOR: Record<string, string> = {
    Foundational: PURPLE,
 };
 const SESSION_TIME = Date.now();
+const EXPIRY_WARNING_DAYS = 90;
+const DAY_MS = 86_400_000;
+
+interface ExpiryMeta {
+   label: string;
+   color: string;
+}
+
+/** Expiry chip text and colour: red once past, amber inside the warning window. */
+const getExpiryMeta = (expiryDate?: string): ExpiryMeta | null => {
+   if (!expiryDate) return null;
+   const expiry = new Date(`${expiryDate}T00:00:00Z`);
+   const daysUntilExpiry = Math.ceil(
+      (expiry.getTime() - SESSION_TIME) / DAY_MS,
+   );
+   const when = expiry.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+   });
+   if (daysUntilExpiry < 0) return { label: `Expired ${when}`, color: RED };
+   if (daysUntilExpiry <= EXPIRY_WARNING_DAYS) {
+      return { label: `Expires ${when}`, color: AMBER };
+   }
+   return { label: `Expires ${when}`, color: TEXT_MUTED };
+};
 
 const CertBadge = ({
    name,
@@ -45,26 +70,19 @@ const CertBadge = ({
    // If the CDN's resized variant fails (transient 5xx / cold cache on newly
    // synced badges), fall back to the original full-size URL once.
    const [useOriginal, setUseOriginal] = useState(false);
-   const accent = (level && LEVEL_COLOR[level]) ?? CYAN;
-   const expiry = expiryDate ? new Date(`${expiryDate}T00:00:00Z`) : null;
-   const daysUntilExpiry = expiry
-      ? Math.ceil((expiry.getTime() - SESSION_TIME) / 86_400_000)
-      : null;
-   const expiryLabel = expiry
-      ? `${daysUntilExpiry !== null && daysUntilExpiry < 0 ? "Expired" : "Expires"} ${expiry.toLocaleDateString(
-           "en-US",
-           {
-              month: "short",
-              year: "numeric",
-           },
-        )}`
-      : null;
-   const expiryColor =
-      daysUntilExpiry !== null && daysUntilExpiry < 0
-         ? RED
-         : daysUntilExpiry !== null && daysUntilExpiry <= 90
-           ? AMBER
-           : TEXT_MUTED;
+   const accent = LEVEL_COLOR[level ?? ""] ?? CYAN;
+   const expiryMeta = getExpiryMeta(expiryDate);
+   const floatRepeat = reducedMotion ? 0 : Infinity;
+   const floatAnimation =
+      isHovered || reducedMotion ? { y: 0 } : { y: [0, -8, 0] };
+   const floatTransition = isHovered
+      ? { duration: 0.4 }
+      : {
+           duration: 3,
+           repeat: floatRepeat,
+           ease: "easeInOut" as const,
+           delay: floatDelay,
+        };
 
    return (
       <motion.a
@@ -94,17 +112,8 @@ const CertBadge = ({
       >
          {/* Badge image with float animation */}
          <motion.div
-            animate={isHovered || reducedMotion ? { y: 0 } : { y: [0, -8, 0] }}
-            transition={
-               isHovered
-                  ? { duration: 0.4 }
-                  : {
-                       duration: 3,
-                       repeat: reducedMotion ? 0 : Infinity,
-                       ease: "easeInOut",
-                       delay: floatDelay,
-                    }
-            }
+            animate={floatAnimation}
+            transition={floatTransition}
             style={{ position: "relative" }}
          >
             {/* Glow behind badge on hover */}
@@ -146,7 +155,7 @@ const CertBadge = ({
                flexDirection: "column",
                alignItems: "center",
                gap: 4,
-               minHeight: expiryLabel ? 58 : 42,
+               minHeight: expiryMeta ? 58 : 42,
             }}
          >
             <span
@@ -184,16 +193,16 @@ const CertBadge = ({
                   {level}
                </span>
             )}
-            {expiryLabel && (
+            {expiryMeta && (
                <span
                   style={{
                      fontSize: 9,
                      fontWeight: 600,
                      letterSpacing: "0.04em",
-                     color: expiryColor,
+                     color: expiryMeta.color,
                   }}
                >
-                  {expiryLabel}
+                  {expiryMeta.label}
                </span>
             )}
          </div>
