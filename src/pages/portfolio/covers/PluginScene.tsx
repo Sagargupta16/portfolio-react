@@ -4,7 +4,6 @@ import { GREEN, MONO_FONT } from "@/constants/theme";
 
 interface CoverSceneProps {
    tint: string;
-   variant?: string;
 }
 
 /*

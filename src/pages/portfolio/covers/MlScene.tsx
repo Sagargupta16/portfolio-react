@@ -4,7 +4,6 @@ import { MONO_FONT } from "@/constants/theme";
 
 interface CoverSceneProps {
    tint: string;
-   variant?: string;
 }
 
 /* Stock Market Prediction -- one LSTM, four tickers, a 5 day window walking

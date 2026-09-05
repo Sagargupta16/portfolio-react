@@ -40,9 +40,8 @@ const TILE_H = 22;
 
 type Ease = "easeInOut" | "linear";
 type Align = "center" | "left";
+/* [x1, y1, x2, y2] for connectors, [x, y, w, h] for panel boxes */
 type Quad = [number, number, number, number];
-/* [x1, y1, x2, y2] */
-type Line = Quad;
 /* [x, y, w, h, fill, rx, stroke?] */
 type Rect = [number, number, number, number, string, number, string?];
 
@@ -101,7 +100,7 @@ const STATUS_DOT: React.CSSProperties = {
 /* ---------- shared primitives ---------- */
 
 interface Statics {
-   lines?: Line[];
+   lines?: Quad[];
    rects?: Rect[];
 }
 
@@ -269,7 +268,7 @@ const MEMORY_HUB: HubSpec = {
    }),
 };
 
-const MEMORY_LINES: Line[] = [
+const MEMORY_LINES: Quad[] = [
    [CLAUDE_EXIT, EXIT_Y, 130, 83],
    [VSCODE_EXIT, EXIT_Y, 190, 83],
    [HUB_CX, HUB_Y + HUB_H, HUB_CX, PANEL.y],
@@ -401,9 +400,9 @@ const BEDROCK_LABELS: LabelSpec[] = LANES.map((l) => ({
    align: "left",
 }));
 
-const BEDROCK_LINES: Line[] = [
+const BEDROCK_LINES: Quad[] = [
    [PROMPT_RIGHT, HUB_CY, B_HUB_LEFT, HUB_CY],
-   ...LANES.map((l): Line => [B_HUB_RIGHT, HUB_CY, LANE_X, l.top + LANE_H / 2]),
+   ...LANES.map((l): Quad => [B_HUB_RIGHT, HUB_CY, LANE_X, l.top + LANE_H / 2]),
 ];
 
 /* prompt tile with its cursor bar, three model lanes */
@@ -499,7 +498,7 @@ const RELAY_LABELS: LabelSpec[] = RELAY_CLIENTS.map((c) => ({
    y: c.cy,
    text: c.name,
 }));
-const RELAY_LINES: Line[] = RELAY_CLIENTS.map((c): Line => [
+const RELAY_LINES: Quad[] = RELAY_CLIENTS.map((c): Quad => [
    ...c.exit,
    ...c.enter,
 ]);
