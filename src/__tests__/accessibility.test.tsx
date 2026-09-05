@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { BreakpointProvider } from "@hooks/BreakpointProvider";
 import { MotionPreferenceProvider } from "@hooks/MotionPreferenceProvider";
 import useMotionPreference from "@hooks/useMotionPreference";
 import MotionPreferenceControl from "@components/ui/MotionPreferenceControl";
@@ -9,8 +10,14 @@ import ProjectCard from "@pages/portfolio/ProjectCard";
 import TimelineCardContent from "@pages/experience/TimelineCardContent";
 import type { Education, ProfessionalExperience, Project } from "@/types";
 
+// MotionPreferenceControl reads useBreakpoint, which throws outside its
+// provider, so the harness supplies both application-root providers.
 const renderWithMotion = (ui: React.ReactNode) =>
-   render(<MotionPreferenceProvider>{ui}</MotionPreferenceProvider>);
+   render(
+      <BreakpointProvider>
+         <MotionPreferenceProvider>{ui}</MotionPreferenceProvider>
+      </BreakpointProvider>,
+   );
 
 const project: Project & { category: string } = {
    id: 3,
@@ -139,14 +146,20 @@ describe("accessible interactions", () => {
       );
       expect(screen.getByText("full")).toBeTruthy();
 
-      fireEvent.change(screen.getByRole("combobox"), {
-         target: { value: "system" },
-      });
+      // The control is a single button that cycles Full -> System -> Reduced.
+      const toggle = () =>
+         fireEvent.click(screen.getByRole("button", { name: /^Motion mode:/ }));
+
+      toggle(); // -> System, and the mocked OS preference is reduce
+      await waitFor(() => expect(screen.getByText("reduced")).toBeTruthy());
+      expect(
+         screen.getByRole("button", { name: /^Motion mode: System/ }),
+      ).toBeTruthy();
+
+      toggle(); // -> Reduced (explicit)
       await waitFor(() => expect(screen.getByText("reduced")).toBeTruthy());
 
-      fireEvent.change(screen.getByRole("combobox"), {
-         target: { value: "full" },
-      });
+      toggle(); // -> Full again, overriding the OS preference
       await waitFor(() => expect(screen.getByText("full")).toBeTruthy());
       expect(
          globalThis.localStorage.getItem("portfolio-motion-preference"),
