@@ -37,6 +37,10 @@ const DocsScene = lazy(() => import("./DocsScene"));
 const AutomationScene = lazy(() => import("./AutomationScene"));
 const AuthScene = lazy(() => import("./AuthScene"));
 const WebAppScene = lazy(() => import("./WebAppScene"));
+const GateScene = lazy(() => import("./GateScene"));
+const TaxScene = lazy(() => import("./TaxScene"));
+const PluginScene = lazy(() => import("./PluginScene"));
+const GuideScene = lazy(() => import("./GuideScene"));
 
 export type ProjectCover =
    | { kind: "image"; src: string }
@@ -64,7 +68,7 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    21: { kind: "scene", Scene: WebAppScene, variant: "placement" }, // Placemento
    1: { kind: "scene", Scene: WebAppScene, variant: "language" }, // Lingua Connect
    4: { kind: "image", src: leetcodeAmongUs }, // LeetCode Among Us (collab id 4)
-   23: { kind: "scene", Scene: WebAppScene }, // MCA NITW Website
+   23: { kind: "scene", Scene: WebAppScene, variant: "directory" }, // MCA NITW Website
    27: { kind: "image", src: noobathon },
 
    // Others
@@ -73,7 +77,7 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    48: { kind: "image", src: contactManager }, // Contact Manager
    40: { kind: "scene", Scene: AutomationScene, variant: "instagram" }, // Instagram Autopilot
    19: { kind: "image", src: financialDashboard },
-   7: { kind: "scene", Scene: InfraScene }, // AWS DevOps Infrastructure
+   7: { kind: "scene", Scene: InfraScene, variant: "pipeline" }, // AWS DevOps Infrastructure (GitHub Actions -> ECR -> ECS)
    24: { kind: "image", src: aiCodeTranslator },
    14: { kind: "scene", Scene: MlScene }, // Stock Market Prediction
    11: { kind: "scene", Scene: WebAppScene, variant: "social" }, // Brainstorm Verse
@@ -86,17 +90,17 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    6: { kind: "image", src: musicWebApp },
 
    // Community
-   45: { kind: "scene", Scene: DocsScene, variant: "skills" }, // skillcheck (npm CLI)
-   47: { kind: "scene", Scene: McpScene }, // ITR MCP
-   38: { kind: "scene", Scene: DocsScene, variant: "skills" }, // Claude Skills
+   45: { kind: "scene", Scene: DocsScene, variant: "lint" }, // skillcheck (npm CLI)
+   47: { kind: "scene", Scene: TaxScene }, // ITR Agent
+   38: { kind: "scene", Scene: PluginScene }, // Claude Skills
    36: { kind: "image", src: claudeCostOptimizer },
    43: { kind: "scene", Scene: McpScene, variant: "bedrock" }, // Bedrock Multi-Model MCP
-   30: { kind: "scene", Scene: McpScene, variant: "toolkit" }, // MCP Toolkit
-   35: { kind: "scene", Scene: DocsScene, variant: "recipes" }, // Claude Code Recipes
+   30: { kind: "scene", Scene: GateScene, variant: "middleware" }, // MCP Toolkit
+   35: { kind: "scene", Scene: DocsScene, variant: "claude-recipes" }, // Claude Code Recipes
    31: { kind: "scene", Scene: DocsScene, variant: "list" }, // Awesome MCP Servers
-   32: { kind: "scene", Scene: DocsScene, variant: "deploy" }, // Deploy Guide
-   33: { kind: "scene", Scene: DocsScene, variant: "recipes" }, // Agent Recipes
-   34: { kind: "scene", Scene: AutomationScene, variant: "git" }, // AI Git Hooks
+   32: { kind: "scene", Scene: GuideScene }, // Deploy Guide
+   33: { kind: "scene", Scene: DocsScene, variant: "agent-recipes" }, // Agent Recipes
+   34: { kind: "scene", Scene: GateScene, variant: "git" }, // AI Git Hooks
    42: { kind: "scene", Scene: AutomationScene, variant: "badge" }, // Credly Badge Action
 };
 
