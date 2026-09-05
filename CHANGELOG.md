@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.7.1] - 2026-09-05
+
+### Fixed
+
+- **Full mode glides on machines with the OS reduced-motion setting on.** Lenis ships `respectReducedMotion: true` by default, and when `prefers-reduced-motion: reduce` matches it turns every programmatic scroll (nav links, footer links, Back to top) into an instant jump. The option is now `false`: Full means full motion, and the in-app Reduced mode, which unmounts Lenis, is the only gate.
+
 ## [4.7.0] - 2026-09-05
 
 ### Changed

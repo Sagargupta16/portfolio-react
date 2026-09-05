@@ -20,6 +20,11 @@ const LENIS_OPTIONS = {
    wheelMultiplier: 1.1,
    touchMultiplier: 1.5,
    syncTouch: false,
+   // Lenis defaults this to true and then makes every programmatic scroll
+   // (nav links, footer links, Back to top) jump instantly whenever the OS
+   // prefers reduced motion. Full mode means full motion; the in-app Reduced
+   // mode (which unmounts Lenis entirely) is the only gate.
+   respectReducedMotion: false,
 };
 
 // Lazy Load "Below the fold" sections for massive performance gains
