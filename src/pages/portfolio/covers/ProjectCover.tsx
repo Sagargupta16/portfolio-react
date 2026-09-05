@@ -1,4 +1,5 @@
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
+import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import { getProjectCover } from "./coverRegistry";
 
 interface ProjectCoverProps {
@@ -14,10 +15,13 @@ interface ProjectCoverProps {
  */
 const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
    const cover = getProjectCover(projectId, title);
+   const frameRef = useRef<HTMLDivElement>(null);
+   useFreezeAnimations(frameRef);
    if (!cover) return null;
 
    return (
       <div
+         ref={frameRef}
          style={{
             position: "relative",
             aspectRatio: "16 / 10",

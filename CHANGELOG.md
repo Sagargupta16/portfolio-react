@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.6.2] - 2026-09-05
+
+### Fixed
+
+- **Reduced mode now freezes the artwork.** Motion's reduced-motion setting only makes transform loops instant; the opacity loops inside cover scenes and service animations kept running through the Web Animations API, so their dots blinked in place and Reduced looked like it did nothing. A `useFreezeAnimations` hook (in `ProjectCover` and `ServiceAnimation`) pauses every animation in the subtree at its rest frame while Reduced is active, sweeping again when a lazy scene mounts. The artwork stays visible and still; switching back to Full remounts the tree and the loops restart.
+
 ## [4.6.1] - 2026-09-05
 
 ### Fixed
