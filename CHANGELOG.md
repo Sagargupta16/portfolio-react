@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.6.3] - 2026-09-05
+
+### Fixed
+
+- **Wheel and touch scrolling in Reduced mode.** `body` carried `overflow-x: hidden` and `overscroll-behavior-y: none` while `html` has `overflow-x: clip`. Because the root is not `overflow: visible`, the body values never propagated to the viewport: body became a scroll container that can never scroll, and with chaining forbidden every wheel and touch delta stopped there. Keyboard and programmatic scrolling bypass chaining, and Lenis drives the wheel itself, so the bug only surfaced once Reduced mode switched to native scrolling. `overscroll-behavior-y: none` now sits on `html` (which owns the viewport scroller) and body no longer declares overflow; horizontal clipping is unchanged because the root already clips.
+
 ## [4.6.2] - 2026-09-05
 
 ### Fixed
