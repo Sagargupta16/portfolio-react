@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { getSocialProfiles } from "@data/dataLoader";
+import { getSocialProfiles } from "@data/personal";
 import { staggerItem } from "@utils/animations";
 import { TEXT_SECONDARY, CYAN } from "@/constants/theme";
 import ICON_MAP from "@utils/iconMap";
@@ -32,7 +32,8 @@ const FooterSocial = () => {
                      alignItems: "center",
                      justifyContent: "center",
                      color: TEXT_SECONDARY,
-                     transition: "all 0.3s",
+                     transition:
+                        "color 0.3s, border-color 0.3s, background-color 0.3s",
                   }}
                   onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
                      e.currentTarget.style.color = CYAN;
@@ -50,7 +51,7 @@ const FooterSocial = () => {
                   }}
                   whileHover={{ scale: 1.15, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  aria-label={`Visit ${profile.name} profile`}
+                  aria-label={`Visit ${profile.name} profile (opens in a new tab)`}
                >
                   <IconComponent size={16} />
                </motion.a>

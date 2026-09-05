@@ -5,25 +5,25 @@ on:
       branches: [main]
    pull_request:
       branches: [main]
-   # Rebuild after the Credly sync bot pushes new badge data. A push by the
-   # default GITHUB_TOKEN does not retrigger `on: push`, so deploy via
-   # workflow_run instead (not subject to that restriction).
+   # A push made by the Credly workflow's GITHUB_TOKEN does not trigger another
+   # push workflow, so rebuild the site after a successful badge sync.
    workflow_run:
       workflows: ["Sync Credly Badges"]
       types: [completed]
 
-# Allow only one concurrent deployment
+permissions:
+   contents: read
+
 concurrency:
    group: "pages-${{ github.ref }}"
    cancel-in-progress: true
 
 jobs:
    ci:
+      if: >
+         github.event_name != 'workflow_run' ||
+         github.event.workflow_run.conclusion == 'success'
       runs-on: ubuntu-latest
-      permissions:
-         contents: read
-         pages: write
-         id-token: write
       timeout-minutes: 20
       steps:
          - name: Checkout code
@@ -32,61 +32,67 @@ jobs:
          - name: Setup pnpm
            uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
            with:
-              version: 11
+              version: 11.10.0
 
          - name: Setup Node.js
            uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
            with:
               node-version: 24
-              cache: "pnpm"
+              cache: pnpm
 
          - name: Install dependencies
            run: pnpm install --frozen-lockfile
 
-         - name: Lint code
+         - name: Check formatting
+           run: pnpm format:check
+
+         - name: Lint code and scripts
            run: pnpm lint
 
-         - name: Validate JSON data files
-           run: |
-              echo "Validating JSON data files..."
-              find data -name "*.json" -exec echo "Checking {}" \; -exec node -e "JSON.parse(require('fs').readFileSync('{}', 'utf8'))" \;
+         - name: Type-check
+           run: pnpm type-check
 
-         # Self-host the resume for the in-site CV viewer: fetch the latest
-         # release PDF and pre-render each page to high-res WebP (crisp images,
-         # no client-side PDF machinery). Runs before the build so Vite copies
-         # public/resume* into build/.
-         - name: Prepare resume (fetch PDF + render page images)
+         - name: Validate portfolio data
+           run: pnpm validate:data
+
+         - name: Run tests
+           run: pnpm test
+
+         - name: Security audit
+           run: pnpm audit --audit-level=high
+
+         # Deployment builds self-host the latest released CV. Pull requests
+         # intentionally skip this network dependency; Vite can still compile
+         # and test the viewer's failure state without generated public files.
+         - name: Prepare resume
+           if: github.event_name != 'pull_request'
            run: pnpm fetch:resume
 
          - name: Build with Vite
            run: pnpm build
 
-         - name: Security audit
-           run: |
-              echo "Running security audit..."
-              pnpm audit --audit-level=high || echo "Security vulnerabilities found, but continuing build"
-           continue-on-error: true
-
          - name: Setup Pages
+           if: github.event_name != 'pull_request'
            uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
 
-         - name: Upload artifact
+         - name: Upload Pages artifact
+           if: github.event_name != 'pull_request'
            uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
            with:
-              path: "build"
+              path: build
 
    deploy:
       if: >
          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
          (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+      needs: ci
+      runs-on: ubuntu-latest
       permissions:
          pages: write
          id-token: write
       environment:
          name: github-pages
          url: ${{ steps.deployment.outputs.page_url }}
-      runs-on: ubuntu-latest
-      needs: ci
       steps:
          - name: Deploy to GitHub Pages
            id: deployment

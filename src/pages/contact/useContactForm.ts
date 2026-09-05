@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback } from "react";
 import emailjs from "@emailjs/browser";
-import { getEmailConfig } from "@data/dataLoader";
+import { getEmailConfig } from "@data/contact";
 import type { FormData, Status } from "./contactConstants";
 
 const useContactForm = () => {
@@ -27,8 +27,8 @@ const useContactForm = () => {
    // toast path is errors. The toast is raised in the handlers alongside the
    // error status (not via an effect mirroring status.type) and stays until the
    // user dismisses it or edits a field -- no auto-dismiss timer.
-   const showError = useCallback((message: string) => {
-      setStatus({ type: "error", message });
+   const showError = useCallback((message: string, field?: "email") => {
+      setStatus({ type: "error", message, field });
       setToastVisible(true);
    }, []);
 
@@ -37,8 +37,9 @@ const useContactForm = () => {
          const { name, value } = e.target;
          setFormData((prev) => ({ ...prev, [name]: value }));
          if (status.message) setStatus({ type: "", message: "" });
+         if (toastVisible) setToastVisible(false);
       },
-      [status.message],
+      [status.message, toastVisible],
    );
 
    const handleSubmit = useCallback(
@@ -55,7 +56,7 @@ const useContactForm = () => {
          if (emailConfig.validation_pattern) {
             const pattern = new RegExp(emailConfig.validation_pattern);
             if (!pattern.test(formData.email)) {
-               showError("Please enter a valid email address.");
+               showError("Please enter a valid email address.", "email");
                return;
             }
          }

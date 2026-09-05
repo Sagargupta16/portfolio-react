@@ -3,7 +3,7 @@ import {
    getCertifications,
    getLearningBadges,
    getAchievements,
-} from "@data/dataLoader";
+} from "@data/achievements";
 import PageSection from "@components/layout/PageSection";
 import { MAX_WIDTH } from "@/constants/theme";
 import { LEVEL_ORDER } from "./achievementConstants";

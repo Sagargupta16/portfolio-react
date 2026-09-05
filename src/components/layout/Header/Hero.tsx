@@ -20,7 +20,7 @@ const Hero = () => {
          // and centering it would push the logo under the fixed nav and the
          // socials into the scroll indicator's lane. HeroContent's pt/pb padding
          // reserves both lanes once the section is allowed to grow.
-         className="relative min-h-screen overflow-hidden flex items-start md:items-center justify-center"
+         className="relative min-h-dvh overflow-hidden flex items-start md:items-center justify-center"
       >
          {/* Dot texture comes from the site-wide AmbientBackground */}
          <HeroContent />

@@ -48,7 +48,7 @@ const DesktopNav = ({
                         ? "rgba(255, 255, 255, 0.08)"
                         : "transparent",
                   }}
-                  aria-current={isActive ? "true" : undefined}
+                  aria-current={isActive ? "location" : undefined}
                   onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
                      if (!isActive) {
                         e.currentTarget.style.color = TEXT_PRIMARY;

@@ -1,4 +1,5 @@
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
+import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import CompanyHeader from "./CompanyHeader";
 
 interface TimelineCardContentProps {
@@ -28,44 +29,90 @@ const TimelineCardContent = ({
             isMobile={isMobile}
             marginLeft={ml}
          />
-         {hasDetail && (
-            <p
-               style={{
-                  color: accentColor,
-                  fontSize: 12,
-                  fontWeight: 500,
-                  marginTop: 12,
-                  marginLeft: ml,
-                  opacity: 0.7,
-               }}
-            >
-               Click to view details
-            </p>
+         {"description" in item && (
+            <details style={{ marginTop: 12, marginLeft: ml }}>
+               <summary
+                  style={{
+                     color: accentColor,
+                     cursor: "pointer",
+                     fontSize: 12,
+                     fontWeight: 600,
+                  }}
+               >
+                  Responsibilities
+               </summary>
+               <ul
+                  style={{
+                     display: "flex",
+                     flexDirection: "column",
+                     gap: 6,
+                     marginTop: 10,
+                     paddingLeft: 18,
+                     color: TEXT_SECONDARY,
+                     fontSize: 12,
+                     lineHeight: 1.7,
+                  }}
+               >
+                  {Object.values(item.description).map((detail) => (
+                     <li key={detail}>{detail}</li>
+                  ))}
+               </ul>
+               <div
+                  style={{
+                     display: "flex",
+                     flexWrap: "wrap",
+                     gap: 4,
+                     marginTop: 10,
+                  }}
+               >
+                  {item.skills.map((skill) => (
+                     <span
+                        key={skill}
+                        style={{
+                           padding: "2px 7px",
+                           borderRadius: 6,
+                           color: accentColor,
+                           background: `${accentColor}0D`,
+                           border: `1px solid ${accentColor}20`,
+                           fontFamily: MONO_FONT,
+                           fontSize: 10,
+                        }}
+                     >
+                        {skill}
+                     </span>
+                  ))}
+               </div>
+            </details>
          )}
       </>
    );
 
-   if (hasDetail) {
-      return (
-         <button
-            onClick={onClick}
-            style={{
-               cursor: "pointer",
-               background: "none",
-               border: "none",
-               padding: 0,
-               textAlign: "left",
-               width: "100%",
-               color: "inherit",
-            }}
-            aria-label={`View details for ${item.company}`}
-         >
-            {content}
-         </button>
-      );
-   }
-
-   return <div>{content}</div>;
+   return (
+      <div>
+         {content}
+         {hasDetail && (
+            <button
+               type="button"
+               onClick={onClick}
+               style={{
+                  display: "inline-flex",
+                  marginTop: 12,
+                  marginLeft: ml,
+                  padding: 0,
+                  cursor: "pointer",
+                  background: "none",
+                  border: "none",
+                  color: accentColor,
+                  fontSize: 12,
+                  fontWeight: 600,
+               }}
+               aria-label={`View details for ${item.company}`}
+            >
+               View details
+            </button>
+         )}
+      </div>
+   );
 };
 
 export default TimelineCardContent;

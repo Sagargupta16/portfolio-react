@@ -28,6 +28,7 @@ const ServiceAnimation = ({ title, color }: ServiceAnimationProps) => {
 
    return (
       <div
+         aria-hidden="true"
          style={{
             transform: "scale(1.8)",
             transformOrigin: "center",

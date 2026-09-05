@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { ContactOption } from "@/types";
 import { staggerItem } from "@utils/animations";
 import { TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
-import { getContactMeta } from "./contactConstants";
+import { CONTACT_META, DEFAULT_CONTACT_META } from "./contactConstants";
 
 interface ContactCardProps {
    option: ContactOption;
@@ -11,13 +11,14 @@ interface ContactCardProps {
 }
 
 const ContactCard = ({ option, isMobile }: ContactCardProps) => {
-   const { Icon, colors } = getContactMeta(option.title);
+   const { Icon, colors } = CONTACT_META[option.icon] ?? DEFAULT_CONTACT_META;
+   const opensNewTab = option.link.startsWith("https://");
 
    return (
       <motion.a
          href={option.link}
-         target="_blank"
-         rel="noopener noreferrer"
+         target={opensNewTab ? "_blank" : undefined}
+         rel={opensNewTab ? "noopener noreferrer" : undefined}
          variants={staggerItem}
          className="glass-card"
          style={{
@@ -30,7 +31,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
             textDecoration: "none",
             cursor: "pointer",
          }}
-         aria-label={`${option.title}: ${option.value}`}
+         aria-label={`${option.title}: ${option.value}${opensNewTab ? " (opens in a new tab)" : ""}`}
       >
          <div
             style={{

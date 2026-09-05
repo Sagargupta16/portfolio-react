@@ -8,14 +8,14 @@
       <!-- SEO Meta Tags -->
       <meta
          name="description"
-         content="Sagar Gupta - DevOps & Cloud Consultant at AWS. Portfolio showcasing cloud infrastructure, CI/CD pipelines, Terraform automation, ML engineering, and 25+ projects with 2000+ coding problems solved."
+         content="Sagar Gupta - DevOps & Cloud Consultant at AWS. Portfolio showcasing cloud infrastructure, CI/CD pipelines, Terraform automation, ML engineering, and 40+ projects with 1600+ coding problems solved."
       />
       <meta
          name="keywords"
          content="Sagar Gupta, DevOps Engineer, Cloud Consultant, AWS, Amazon Web Services, Terraform, CI/CD, MLOps, React, Portfolio, Software Developer, Cloud Infrastructure, LeetCode, Competitive Programming"
       />
       <meta name="author" content="Sagar Gupta" />
-      <meta name="theme-color" content="#060610" />
+      <meta name="theme-color" content="#0b1012" />
       <meta name="robots" content="index, follow" />
       <link rel="canonical" href="https://sagargupta.online/portfolio-react/" />
 
@@ -31,14 +31,19 @@
       />
       <meta
          property="og:description"
-         content="Cloud infrastructure, CI/CD automation, and ML engineering. 6 AWS certifications, 2000+ coding problems, 25+ projects. Currently building at Amazon Web Services."
+         content="Cloud infrastructure, CI/CD automation, and ML engineering. 6 cloud certifications, 1600+ coding problems, and 40+ projects. Currently building at Amazon Web Services."
       />
       <meta
          property="og:image"
-         content="https://sagargupta.online/portfolio-react/og-image.png"
+         content="https://sagargupta.online/portfolio-react/og-image.jpg"
       />
-      <meta property="og:image:width" content="1536" />
-      <meta property="og:image:height" content="768" />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta
+         property="og:image:alt"
+         content="Sagar Gupta, DevOps and Cloud Consultant portfolio"
+      />
+      <meta property="og:image:width" content="1920" />
+      <meta property="og:image:height" content="945" />
       <meta property="og:site_name" content="Sagar Gupta Portfolio" />
       <meta property="og:locale" content="en_US" />
 
@@ -50,12 +55,16 @@
       />
       <meta
          name="twitter:description"
-         content="Cloud infrastructure, CI/CD automation, and ML engineering. 6 AWS certifications, 2000+ coding problems, 25+ projects."
+         content="Cloud infrastructure, CI/CD automation, and ML engineering. 6 cloud certifications, 1600+ coding problems, and 40+ projects."
       />
       <meta name="twitter:creator" content="@SagarGupta1610" />
       <meta
          name="twitter:image"
-         content="https://sagargupta.online/portfolio-react/og-image.png"
+         content="https://sagargupta.online/portfolio-react/og-image.jpg"
+      />
+      <meta
+         name="twitter:image:alt"
+         content="Sagar Gupta, DevOps and Cloud Consultant portfolio"
       />
 
       <!-- JSON-LD Structured Data -->
@@ -70,7 +79,7 @@
                   "url": "https://sagargupta.online",
                   "image": "https://avatars.githubusercontent.com/u/92421383",
                   "jobTitle": "Cloud Consultant - DevOps/MLOps",
-                  "description": "DevOps/MLOps Consultant at AWS Professional Services. 6x AWS Certified. Building cloud infrastructure, CI/CD pipelines, and ML engineering solutions for enterprise clients.",
+                  "description": "DevOps/MLOps Consultant at AWS Professional Services. 6x certified across AWS and Terraform. Building cloud infrastructure, CI/CD pipelines, and ML engineering solutions for enterprise clients.",
                   "worksFor": {
                      "@type": "Organization",
                      "name": "Amazon Web Services",
@@ -113,7 +122,7 @@
                   "@id": "https://sagargupta.online/portfolio-react/#website",
                   "url": "https://sagargupta.online/portfolio-react/",
                   "name": "Sagar Gupta Portfolio",
-                  "description": "Portfolio of Sagar Gupta - DevOps & Cloud Consultant at AWS. Cloud infrastructure, CI/CD automation, ML engineering, and 25+ projects.",
+                  "description": "Portfolio of Sagar Gupta - DevOps & Cloud Consultant at AWS. Cloud infrastructure, CI/CD automation, ML engineering, and 40+ projects.",
                   "author": { "@id": "https://sagargupta.online/#person" }
                }
             ]
@@ -141,20 +150,11 @@
       <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       <link rel="manifest" href="/favicon_io/site.webmanifest" />
 
-      <!-- Preconnect hints for analytics origins (scripts load at end of <body>) -->
-      <link rel="preconnect" href="https://scripts.simpleanalyticscdn.com" />
-      <link rel="preconnect" href="https://www.googletagmanager.com" />
-
       <title>Sagar Gupta | DevOps & Cloud Consultant at AWS</title>
    </head>
 
    <body>
       <noscript>
-         <img
-            src="https://queue.simpleanalyticscdn.com/noscript.gif"
-            alt=""
-            referrerpolicy="no-referrer-when-downgrade"
-         />
          <p>You need to enable JavaScript to run this app.</p>
       </noscript>
       <div id="root"></div>
@@ -166,30 +166,33 @@
         requirements don't apply -- both GTM and SimpleAnalytics serve
         continuously-updated bundles that would break any fixed integrity hash.
       -->
-      <script>
-         globalThis.addEventListener("DOMContentLoaded", function () {
-            var d = globalThis.document;
+      <script type="module">
+         if (import.meta.env.VITE_ANALYTICS_ENABLED !== "false") {
+            globalThis.addEventListener("DOMContentLoaded", function () {
+               var d = globalThis.document;
 
-            // SimpleAnalytics
-            var sa = d.createElement("script");
-            sa.async = true;
-            sa.defer = true;
-            sa.src = "https://scripts.simpleanalyticscdn.com/latest.js";
-            d.body.appendChild(sa);
+               // SimpleAnalytics
+               var sa = d.createElement("script");
+               sa.async = true;
+               sa.defer = true;
+               sa.src = "https://scripts.simpleanalyticscdn.com/latest.js";
+               d.body.appendChild(sa);
 
-            // Google Analytics (gtag)
-            var ga = d.createElement("script");
-            ga.async = true;
-            ga.src = "https://www.googletagmanager.com/gtag/js?id=G-PFFMG7D8DP";
-            d.body.appendChild(ga);
+               // Google Analytics (gtag)
+               var ga = d.createElement("script");
+               ga.async = true;
+               ga.src =
+                  "https://www.googletagmanager.com/gtag/js?id=G-PFFMG7D8DP";
+               d.body.appendChild(ga);
 
-            globalThis.dataLayer = globalThis.dataLayer || [];
-            function gtag() {
-               globalThis.dataLayer.push(arguments);
-            }
-            gtag("js", new Date());
-            gtag("config", "G-PFFMG7D8DP");
-         });
+               globalThis.dataLayer = globalThis.dataLayer || [];
+               function gtag() {
+                  globalThis.dataLayer.push(arguments);
+               }
+               gtag("js", new Date());
+               gtag("config", "G-PFFMG7D8DP");
+            });
+         }
       </script>
    </body>
 </html>

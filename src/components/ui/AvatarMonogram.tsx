@@ -1,7 +1,9 @@
 import { motion } from "motion/react";
 import { MONO_FONT, CYAN, PURPLE, GREEN } from "@/constants/theme";
+import useMotionPreference from "@hooks/useMotionPreference";
 
 const AvatarMonogram = () => {
+   const { reducedMotion } = useMotionPreference();
    return (
       <div
          style={{
@@ -41,10 +43,12 @@ const AvatarMonogram = () => {
                letterSpacing: "0.1em",
             }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0.4, 1, 0.4] }}
+            animate={
+               reducedMotion ? { opacity: 1 } : { opacity: [0.4, 1, 0.4] }
+            }
             transition={{
                duration: 2,
-               repeat: Infinity,
+               repeat: reducedMotion ? 0 : Infinity,
                ease: "easeInOut",
                delay: 0.8,
             }}

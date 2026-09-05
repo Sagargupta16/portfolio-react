@@ -36,7 +36,8 @@ const ContactForm = ({
 }: ContactFormProps) => {
    // The only programmatic validation today is the email-pattern check, so an
    // error status maps to the email field. Surface it inline + to AT.
-   const emailError = status.type === "error" ? status.message : "";
+   const emailError =
+      status.type === "error" && status.field === "email" ? status.message : "";
    return (
       <form
          ref={formRef}
@@ -72,6 +73,8 @@ const ContactForm = ({
                placeholder="John Doe"
                value={formData.name}
                onChange={onChange}
+               autoComplete="name"
+               maxLength={100}
                required
                className="form-input"
             />
@@ -88,6 +91,8 @@ const ContactForm = ({
                placeholder="john@example.com"
                value={formData.email}
                onChange={onChange}
+               autoComplete="email"
+               maxLength={254}
                required
                className={`form-input${emailError ? " form-input--error" : ""}`}
                aria-invalid={emailError ? true : undefined}
@@ -119,6 +124,8 @@ const ContactForm = ({
                placeholder="Tell me about your project or idea..."
                value={formData.message}
                onChange={onChange}
+               minLength={10}
+               maxLength={5000}
                required
                className="form-input"
                style={{ resize: "vertical" }}

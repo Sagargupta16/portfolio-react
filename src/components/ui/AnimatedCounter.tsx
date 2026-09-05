@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+import useMotionPreference from "@hooks/useMotionPreference";
 
 interface Props {
    value: string | number;
@@ -8,6 +9,7 @@ interface Props {
 
 const AnimatedCounter = ({ value, duration = 2 }: Props) => {
    const [count, setCount] = useState<number>(0);
+   const { reducedMotion } = useMotionPreference();
 
    const { ref, inView } = useInView({
       threshold: 0.5,
@@ -33,7 +35,7 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
    }, [value]);
 
    useEffect(() => {
-      if (!inView) return;
+      if (!inView || reducedMotion) return;
 
       let rafId = 0;
       const startTime = performance.now();
@@ -49,7 +51,9 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
 
       rafId = requestAnimationFrame(animate);
       return () => cancelAnimationFrame(rafId);
-   }, [inView, numericValue, duration]);
+   }, [inView, numericValue, duration, reducedMotion]);
+
+   const displayedCount = reducedMotion && inView ? numericValue : count;
 
    // Short suffixes ("+", "k") read as part of the number; long ones
    // (" merged + 12 open") are annotations and shrink so they don't dominate.
@@ -60,7 +64,7 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
          ref={ref}
          className="font-mono text-3xl font-bold text-accent-cyan tabular-nums"
       >
-         {count.toFixed(decimals)}
+         {displayedCount.toFixed(decimals)}
          {suffix && (
             <span
                className="text-accent-cyan/70"

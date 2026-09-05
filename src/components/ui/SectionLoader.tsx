@@ -18,7 +18,7 @@ const SPINNER_STYLE: React.CSSProperties = {
 
 const SectionLoader = () => (
    <div style={CONTAINER_STYLE} role="status" aria-label="Loading section">
-      <div style={SPINNER_STYLE} />
+      <div aria-hidden="true" style={SPINNER_STYLE} />
    </div>
 );
 

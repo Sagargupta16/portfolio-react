@@ -43,18 +43,17 @@ export interface ContactMeta {
    colors: ContactColors;
 }
 
-export const getContactMeta = (title: string): ContactMeta => {
-   const t = title.toLowerCase();
-   if (t.includes("email")) return { Icon: Mail, colors: CONTACT_COLORS.email };
-   if (t.includes("linkedin"))
-      return { Icon: LinkedinIcon, colors: CONTACT_COLORS.linkedin };
-   if (t.includes("instagram"))
-      return { Icon: InstagramIcon, colors: CONTACT_COLORS.instagram };
-   if (t.includes("book") || t.includes("call"))
-      return { Icon: Calendar, colors: CONTACT_COLORS.calendar };
-   if (t.includes("github"))
-      return { Icon: GitHubIcon, colors: CONTACT_COLORS.github };
-   return { Icon: Mail, colors: CONTACT_COLORS.email };
+export const DEFAULT_CONTACT_META: ContactMeta = {
+   Icon: Mail,
+   colors: CONTACT_COLORS.email,
+};
+
+export const CONTACT_META: Record<string, ContactMeta> = {
+   MdOutlineEmail: DEFAULT_CONTACT_META,
+   BsLinkedin: { Icon: LinkedinIcon, colors: CONTACT_COLORS.linkedin },
+   FiInstagram: { Icon: InstagramIcon, colors: CONTACT_COLORS.instagram },
+   FiCalendar: { Icon: Calendar, colors: CONTACT_COLORS.calendar },
+   FiGithub: { Icon: GitHubIcon, colors: CONTACT_COLORS.github },
 };
 
 export interface FormData {
@@ -64,6 +63,7 @@ export interface FormData {
 }
 
 export interface Status {
-   type: string;
+   type: "" | "error";
    message: string;
+   field?: "email";
 }

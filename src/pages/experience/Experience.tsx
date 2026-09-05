@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, LayoutGroup } from "motion/react";
-import { getExperience, getPositionsOfResponsibility } from "@data/dataLoader";
+import { getExperience, getPositionsOfResponsibility } from "@data/experience";
 import { staggerContainer, fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";

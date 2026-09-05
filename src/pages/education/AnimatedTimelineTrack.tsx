@@ -5,7 +5,7 @@ import { PURPLE } from "@/constants/theme";
 const AnimatedTimelineTrack = () => {
    const ref = useRef<HTMLDivElement>(null);
    const isInView = useInView(ref, {
-      once: false,
+      once: true,
       margin: "0px 0px -50px 0px",
    });
 

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { getSkills } from "@data/dataLoader";
+import { getSkills } from "@data/skills";
 import type { SkillsData } from "@/types";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { MAX_WIDTH } from "@/constants/theme";

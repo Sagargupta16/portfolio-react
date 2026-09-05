@@ -21,6 +21,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
 
    const hasAchievements = (item.achievements?.length ?? 0) > 0;
    const hasSkills = (item.skills?.length ?? 0) > 0;
+   const achievementsId = `education-achievements-${item.id}`;
 
    if (!hasAchievements && !hasSkills) return null;
 
@@ -61,6 +62,8 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
             <div style={{ marginLeft, marginTop: 12 }}>
                <button
                   onClick={() => setIsExpanded(!isExpanded)}
+                  aria-expanded={isExpanded}
+                  aria-controls={achievementsId}
                   style={{
                      display: "flex",
                      alignItems: "center",
@@ -92,6 +95,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                <AnimatePresence>
                   {isExpanded && (
                      <motion.div
+                        id={achievementsId}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}

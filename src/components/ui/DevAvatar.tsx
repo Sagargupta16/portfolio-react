@@ -1,14 +1,17 @@
 import { motion } from "motion/react";
 import { orbitItems, floatVariant } from "./devAvatarData";
 import AvatarMonogram from "./AvatarMonogram";
+import useMotionPreference from "@hooks/useMotionPreference";
 
 const DevAvatar = () => {
+   const { reducedMotion } = useMotionPreference();
    const size = 320;
    const center = size / 2;
    const orbitRadius = 130;
 
    return (
       <div
+         aria-hidden="true"
          style={{
             width: size,
             height: size,
@@ -27,7 +30,7 @@ const DevAvatar = () => {
                opacity: 0.15,
                filter: "blur(20px)",
             }}
-            animate={{ rotate: 360 }}
+            animate={reducedMotion ? undefined : { rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
          />
 
@@ -41,7 +44,7 @@ const DevAvatar = () => {
                background:
                   "conic-gradient(from 0deg, #60a5fa, transparent 40%, #38bdf8, transparent 80%, #60a5fa)",
             }}
-            animate={{ rotate: 360 }}
+            animate={reducedMotion ? undefined : { rotate: 360 }}
             transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
          >
             <div
@@ -102,9 +105,9 @@ const DevAvatar = () => {
                   }}
                   initial={{ opacity: 0, scale: 0 }}
                   animate="animate"
-                  variants={floatVariant(delay)}
+                  variants={floatVariant(delay, reducedMotion)}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{}}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: delay * 0.3 }}
                >
                   <Icon style={{ width: 16, height: 16, color }} />

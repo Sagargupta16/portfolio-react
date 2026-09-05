@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useReducer, useRef } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import type { Activity } from "react-github-calendar";
-import { getGitHubUsername } from "@data/dataLoader";
+import { getGitHubUsername } from "@data/personal";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { TEXT_MUTED, CYAN, MAX_WIDTH_WIDE } from "@/constants/theme";
 import CodingProfiles from "./CodingProfiles";

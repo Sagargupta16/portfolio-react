@@ -25,7 +25,7 @@ export default defineConfig(() => ({
    },
    build: {
       outDir: "build",
-      sourcemap: "hidden",
+      sourcemap: false,
       target: "esnext",
       minify: "esbuild",
       cssCodeSplit: true,

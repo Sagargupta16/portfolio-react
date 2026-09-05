@@ -76,6 +76,7 @@
 }
 
 html {
+   color-scheme: dark;
    /* Lenis owns smooth scrolling; CSS smooth here would double-drive programmatic
       scrolls (scrollIntoView) and fight it. Keep auto. */
    scroll-behavior: auto;
@@ -126,8 +127,8 @@ body {
 
 /* Focus */
 :focus-visible {
-   outline: 2px solid rgb(var(--ch-blue) / 0.6);
-   outline-offset: 2px;
+   outline: 2px solid var(--color-accent-cyan);
+   outline-offset: 3px;
 }
 
 /* Skip to content -- visible only when focused (WCAG 2.4.1 Bypass Blocks) */
@@ -213,6 +214,26 @@ img {
    animation: scroll-hint 1.8s ease-in-out infinite;
 }
 
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+   scroll-behavior: auto !important;
+   animation-duration: 0.01ms !important;
+   animation-iteration-count: 1 !important;
+   transition-duration: 0.01ms !important;
+}
+
+html[data-motion="reduced"]
+   :is(
+      .btn-primary,
+      .btn-outline,
+      .btn-pill,
+      .skill-item,
+      .project-cover-img
+   ):hover {
+   transform: none;
+}
+
 /* ===== Display Headings (Bricolage Grotesque) ===== */
 .display-heading {
    font-family: var(--font-display);
@@ -227,14 +248,12 @@ img {
    border-radius: 20px;
    transition:
       background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
    border-color: rgb(var(--ch-white) / 0.14);
    background: var(--color-bg-card-hover);
-   transform: translateY(-2px);
 }
 
 /* ===== Project cards ===== */
@@ -532,5 +551,4 @@ img {
       color: #333 !important;
       background: #f9f9f9 !important;
    }
-
 }

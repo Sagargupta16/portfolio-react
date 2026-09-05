@@ -24,12 +24,12 @@ export const orbitItems: OrbitItem[] = [
    { Icon: Code2, color: "#38bdf8", delay: 2.5, angle: 300 },
 ];
 
-export const floatVariant = (delay: number) => ({
+export const floatVariant = (delay: number, reducedMotion = false) => ({
    animate: {
-      y: [-8, 8, -8],
+      y: reducedMotion ? 0 : [-8, 8, -8],
       transition: {
-         duration: 4,
-         repeat: Infinity,
+         duration: reducedMotion ? 0 : 4,
+         repeat: reducedMotion ? 0 : Infinity,
          ease: "easeInOut" as const,
          delay,
       },

@@ -1,13 +1,14 @@
-import { useState, useMemo, useCallback } from "react";
+import { lazy, Suspense, useState, useMemo, useCallback } from "react";
 import { motion } from "motion/react";
 import { useLenis } from "lenis/react";
 import { FileText } from "lucide-react";
-import { getName, getIntro } from "@data/dataLoader";
+import { getHeadline, getIntro, getName, getRoleLabel } from "@data/personal";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { CYAN, GREEN, TEXT_SECONDARY } from "@/constants/theme";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import HeroSocial from "./HeroSocial";
-import HeroLatest from "./HeroLatest";
+
+const HeroLatest = lazy(() => import("./HeroLatest"));
 const RESUME_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
 
@@ -16,6 +17,8 @@ const HeroContent = () => {
 
    const name = useMemo(() => getName(), []);
    const intro = useMemo(() => getIntro(), []);
+   const roleLabel = useMemo(() => getRoleLabel(), []);
+   const headline = useMemo(() => getHeadline(), []);
 
    const lenis = useLenis();
    const scrollToProjects = useCallback(() => {
@@ -70,7 +73,7 @@ const HeroContent = () => {
                      flexShrink: 0,
                   }}
                />
-               <span>DevOps/MLOps Consultant @ AWS</span>
+               <span>{roleLabel}</span>
             </span>
          </motion.div>
 
@@ -83,7 +86,7 @@ const HeroContent = () => {
             Hi, I&apos;m <span style={{ color: CYAN }}>{name}</span>.
             <br />
             <span style={{ color: "var(--color-text-secondary)" }}>
-               Shipping cloud at scale.
+               {headline}
             </span>
          </motion.h1>
 
@@ -98,7 +101,9 @@ const HeroContent = () => {
          </motion.p>
 
          {/* LATEST -- derived from data: newest merged PR + newest shipped project */}
-         <HeroLatest />
+         <Suspense fallback={null}>
+            <HeroLatest />
+         </Suspense>
 
          {/* CTA buttons */}
          <motion.div

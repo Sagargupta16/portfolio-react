@@ -71,15 +71,11 @@ export interface Education {
    date: string;
    title: string;
    institution: string;
-   institutionType: string;
    department?: string;
-   alsoKnownAs?: string;
    board?: string;
    field?: string;
    location: string;
    cgpa: string;
-   percentage: string;
-   display_text: string;
    achievements?: string[];
    skills: string[];
 }
@@ -111,10 +107,6 @@ export interface ProfessionalExperience {
    location: string;
    summary: string;
    projects?: ExperienceProject[];
-   project?: string;
-   description?: Record<string, string>;
-   /** Aggregated from child projects when absent at this level. */
-   skills?: string[];
    internal_contributions?: InternalContribution[];
    internal_achievements?: InternalContribution[];
 }
@@ -140,7 +132,6 @@ export interface SocialProfile {
 }
 
 export interface SiteConfig {
-   counter_namespace?: string;
    tech_stack?: string[];
 }
 
@@ -170,10 +161,10 @@ export interface Project {
 export interface OpenSourceContribution {
    repo: string;
    /** Upstream repo star count at last sync -- drives the "stars reached" stat. */
-   stars?: number;
+   stars: number;
    title: string;
    url: string;
-   status: string;
+   status: "merged" | "open" | "closed";
    /** ISO date the PR merged -- drives the hero LATEST line. Absent on commit credits. */
    merged_at?: string;
    note?: string;
@@ -183,7 +174,7 @@ export interface CommunityDiscussion {
    repo: string;
    title: string;
    url: string;
-   status: string;
+   status: "accepted" | "helpful";
 }
 
 // ===== Skills =====

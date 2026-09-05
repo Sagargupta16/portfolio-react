@@ -19,11 +19,9 @@
 
 ## Testing
 
-- [ ] `pnpm lint` passes (zero warnings)
+- [ ] `pnpm check` passes (format, lint, types, tests, and data)
 - [ ] `pnpm build` succeeds
-- [ ] `pnpm test` passes
-- [ ] `pnpm type-check` passes
-- [ ] Visually verified in browser
+- [ ] Visually verified in browser when UI behavior changes
 
 ## Checklist
 

@@ -7,11 +7,10 @@ import AmbientBackground from "@components/layout/AmbientBackground";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import ScrollProgress from "@components/ui/ScrollProgress";
 import BackToTop from "@components/ui/BackToTop";
-import Preloader from "@components/ui/Preloader";
-import KeyboardNav from "@components/ui/KeyboardNav";
 import SectionLoader from "@components/ui/SectionLoader";
-import SystemStatus from "@components/ui/SystemStatus";
 import { BreakpointProvider } from "@hooks/BreakpointProvider";
+import { MotionPreferenceProvider } from "@hooks/MotionPreferenceProvider";
+import { CONTENT_SECTIONS } from "@/constants/sections";
 
 // Lazy Load "Below the fold" sections for massive performance gains
 const About = lazy(() => import("@pages/about/About"));
@@ -24,6 +23,116 @@ const Achievement = lazy(() => import("@pages/achievement/Achievement"));
 const Contact = lazy(() => import("@pages/contact/Contact"));
 const GitHub = lazy(() => import("@pages/github/GitHub"));
 
+const SECTION_COMPONENTS = {
+   about: About,
+   experience: Experience,
+   education: Education,
+   skills: Skill,
+   projects: Portfolio,
+   achievements: Achievement,
+   services: Services,
+   stats: GitHub,
+   contact: Contact,
+};
+
+const SectionPlaceholder = ({
+   id,
+   label,
+   failed = false,
+}: {
+   id: string;
+   label: string;
+   failed?: boolean;
+}) => (
+   <section
+      id={id}
+      aria-label={`${label} ${failed ? "unavailable" : "loading"}`}
+      style={{ minHeight: "30vh", scrollMarginTop: 64 }}
+   >
+      {failed ? (
+         <div
+            role="alert"
+            style={{
+               maxWidth: 640,
+               margin: "0 auto",
+               padding: "96px 24px",
+               textAlign: "center",
+            }}
+         >
+            <h2>{label} is temporarily unavailable</h2>
+            <p style={{ marginTop: 8, color: "var(--color-text-secondary)" }}>
+               Refresh the page to try loading this section again.
+            </p>
+            <button
+               type="button"
+               className="btn-outline"
+               onClick={() => globalThis.location.reload()}
+               style={{ marginTop: 16 }}
+            >
+               Refresh page
+            </button>
+         </div>
+      ) : (
+         <SectionLoader />
+      )}
+   </section>
+);
+
+const AppContent = () => {
+   return (
+      <ReactLenis
+         root
+         options={{
+            lerp: 0.1,
+            smoothWheel: true,
+            wheelMultiplier: 1.1,
+            touchMultiplier: 1.5,
+            syncTouch: false,
+         }}
+      >
+         <ErrorBoundary>
+            <ScrollProgress />
+            <AmbientBackground />
+            <div className="relative min-h-dvh">
+               <a href="#main-content" className="skip-link">
+                  Skip to content
+               </a>
+               <Nav />
+               <main id="main-content" tabIndex={-1}>
+                  <Hero />
+                  {CONTENT_SECTIONS.map(({ id, label, surface }) => {
+                     const Section = SECTION_COMPONENTS[id];
+                     return (
+                        <div key={id} className={surface}>
+                           <ErrorBoundary
+                              fallback={
+                                 <SectionPlaceholder
+                                    id={id}
+                                    label={label}
+                                    failed
+                                 />
+                              }
+                           >
+                              <Suspense
+                                 fallback={
+                                    <SectionPlaceholder id={id} label={label} />
+                                 }
+                              >
+                                 <Section />
+                              </Suspense>
+                           </ErrorBoundary>
+                        </div>
+                     );
+                  })}
+               </main>
+               <Footer />
+               <BackToTop />
+            </div>
+         </ErrorBoundary>
+      </ReactLenis>
+   );
+};
+
 const App = () => {
    useEffect(() => {
       globalThis.history.scrollRestoration = "manual";
@@ -31,68 +140,11 @@ const App = () => {
    }, []);
 
    return (
-      <ReactLenis
-         root
-         options={{
-            // lerp-based smoothing (not a fixed duration) so a fast flick
-            // resolves quickly instead of being forced through a full 1s curve --
-            // keeps scrolling smooth but responsive when the user scrolls hard.
-            lerp: 0.1,
-            wheelMultiplier: 1.1,
-            touchMultiplier: 1.5,
-            syncTouch: false,
-         }}
-      >
-         <BreakpointProvider>
-            <ErrorBoundary>
-               <Preloader />
-               <ScrollProgress />
-               <KeyboardNav />
-               <AmbientBackground />
-               <div className="relative min-h-screen">
-                  <a href="#main-content" className="skip-link">
-                     Skip to content
-                  </a>
-                  <Nav />
-                  <main id="main-content" tabIndex={-1}>
-                     <Hero />
-                     <Suspense fallback={<SectionLoader />}>
-                        <div className="section-darker">
-                           <About />
-                        </div>
-                        <div className="section-dark">
-                           <Experience />
-                        </div>
-                        <div className="section-darker">
-                           <Education />
-                        </div>
-                        <div className="section-dark">
-                           <Skill />
-                        </div>
-                        <div className="section-darker" id="projects">
-                           <Portfolio />
-                        </div>
-                        <div className="section-dark" id="achievements">
-                           <Achievement />
-                        </div>
-                        <div className="section-darker" id="services">
-                           <Services />
-                        </div>
-                        <div className="section-dark" id="stats">
-                           <GitHub />
-                        </div>
-                        <div className="section-darker" id="contact">
-                           <Contact />
-                        </div>
-                     </Suspense>
-                  </main>
-                  <Footer />
-                  <BackToTop />
-                  <SystemStatus />
-               </div>
-            </ErrorBoundary>
-         </BreakpointProvider>
-      </ReactLenis>
+      <BreakpointProvider>
+         <MotionPreferenceProvider>
+            <AppContent />
+         </MotionPreferenceProvider>
+      </BreakpointProvider>
    );
 };
 

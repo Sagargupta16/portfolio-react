@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { ArrowUpRight, Trophy, Code, Star } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
-import { getCodingPlatformStats } from "@data/dataLoader";
+import { getCodingPlatformStats } from "@data/achievements";
 import type { CodingPlatformStat } from "@/types";
 import { staggerContainer, fadeInUp } from "@utils/animations";
 import {

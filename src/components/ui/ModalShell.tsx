@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { EASING } from "@/constants/theme";
 
 interface ModalShellProps {
-   /** When null the modal is closed. Any truthy value renders it. */
+   /** Whether the modal is rendered. */
    isOpen: boolean;
    onClose: () => void;
    dialogRef: RefObject<HTMLDivElement | null>;
@@ -47,7 +47,9 @@ const ModalShell = ({
                   justifyContent: "center",
                   // Phones keep the bottom-anchored sheet but get breathing
                   // room from the screen edges; desktop pads all around.
-                  padding: isMobile ? "12px 12px 16px" : 20,
+                  padding: isMobile
+                     ? "12px 12px max(16px, env(safe-area-inset-bottom))"
+                     : 20,
                   background: "rgba(0,0,0,0.3)",
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
@@ -78,7 +80,7 @@ const ModalShell = ({
                      position: "relative",
                      width: "100%",
                      maxWidth: isMobile ? "100%" : 720,
-                     maxHeight: isMobile ? "92vh" : "85vh",
+                     maxHeight: isMobile ? "calc(100dvh - 28px)" : "85dvh",
                      overflowY: "auto",
                      // Sheet floats with side gaps now, so square bottom
                      // corners would read as a rendering bug -- round all four.

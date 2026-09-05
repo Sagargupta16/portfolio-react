@@ -5,7 +5,7 @@ import {
    getCollaborativeProjects,
    getOtherProjects,
    getCommunityProjects,
-} from "@data/dataLoader";
+} from "@data/projects";
 import { fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { MONO_FONT, TEXT_SECONDARY, MAX_WIDTH } from "@/constants/theme";
@@ -22,13 +22,7 @@ const Portfolio = () => {
       useState<ProjectWithCategory | null>(null);
 
    const handleFilterChange = useCallback((filter: string) => {
-      if (document.startViewTransition) {
-         document.startViewTransition(() => {
-            setActiveFilter(filter);
-         });
-      } else {
-         setActiveFilter(filter);
-      }
+      setActiveFilter(filter);
    }, []);
    const { isMobile } = useBreakpoint();
 
@@ -152,6 +146,7 @@ const Portfolio = () => {
                         }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.97 }}
+                        aria-pressed={isActive}
                         aria-label={`${filter} (${count} project${count === 1 ? "" : "s"})`}
                      >
                         <span>{filter}</span>

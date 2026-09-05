@@ -3,16 +3,18 @@ import { motion } from "motion/react";
 import {
    getAchievements,
    getCertifications,
-   getCommunityDiscussions,
-   getExperience,
-   getImpact,
    getLearningBadges,
+} from "@data/achievements";
+import { getExperience } from "@data/experience";
+import { getImpact } from "@data/personal";
+import {
+   getCommunityDiscussions,
    getOpenSourceContributions,
    getFeaturedProjects,
    getCollaborativeProjects,
    getOtherProjects,
    getCommunityProjects,
-} from "@data/dataLoader";
+} from "@data/projects";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
@@ -81,7 +83,7 @@ const StatGroup = ({
    isMobile: boolean;
 }) => (
    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <p className="dashed-rule">{heading}</p>
+      <h3 className="dashed-rule">{heading}</h3>
       <motion.div
          variants={staggerContainer}
          initial="hidden"
@@ -144,9 +146,14 @@ const StatsBand = () => {
       const coAuthored = merged.length - mergedPrs;
       let mergedNote = `Across ${mergedRepos.size} projects`;
       if (coAuthored === 1) mergedNote = "Plus 1 co-authored fix";
-      else if (coAuthored > 1) mergedNote = `Plus ${coAuthored} co-authored fixes`;
+      else if (coAuthored > 1)
+         mergedNote = `Plus ${coAuthored} co-authored fixes`;
       const repoStars = new Map<string, number>();
-      for (const c of oss) repoStars.set(c.repo, c.stars ?? 0);
+      for (const contribution of oss) {
+         if (!repoStars.has(contribution.repo)) {
+            repoStars.set(contribution.repo, contribution.stars);
+         }
+      }
       const starsReached = [...mergedRepos].reduce(
          (sum, repo) => sum + (repoStars.get(repo) ?? 0),
          0,

@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useMemo, type ReactNode } from "react";
 import { motion, type HTMLMotionProps } from "motion/react";
-import useReducedMotion from "@hooks/useReducedMotion";
+import useMotionPreference from "@hooks/useMotionPreference";
 
 interface GlassCardOwnProps {
    children: ReactNode;
@@ -21,26 +21,26 @@ const GlassCard = ({
    borderGlow = true,
    ...props
 }: GlassCardProps) => {
-   const ref = useRef<HTMLDivElement>(null);
-   const rafPending = useRef(false);
-   const reducedMotion = useReducedMotion();
+   const cardRef = useRef<HTMLDivElement>(null);
+   const rafPendingRef = useRef(false);
+   const { reducedMotion } = useMotionPreference();
    const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
    const [isHovered, setIsHovered] = useState(false);
 
    const handleMouseMove = useCallback(
       (e: React.MouseEvent<HTMLElement>) => {
-         if (reducedMotion || !ref.current || rafPending.current) return;
+         if (reducedMotion || !cardRef.current || rafPendingRef.current) return;
          const clientX = e.clientX;
          const clientY = e.clientY;
-         rafPending.current = true;
+         rafPendingRef.current = true;
          requestAnimationFrame(() => {
-            if (ref.current) {
-               const rect = ref.current.getBoundingClientRect();
+            if (cardRef.current) {
+               const rect = cardRef.current.getBoundingClientRect();
                const x = (clientX - rect.left) / rect.width;
                const y = (clientY - rect.top) / rect.height;
                setMousePos({ x, y });
             }
-            rafPending.current = false;
+            rafPendingRef.current = false;
          });
       },
       [reducedMotion],
@@ -74,7 +74,7 @@ const GlassCard = ({
 
    return (
       <motion.div
-         ref={ref}
+         ref={cardRef}
          className={`glass-card ${className}`}
          style={{
             position: "relative",
