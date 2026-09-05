@@ -83,6 +83,13 @@ html {
    /* Below-fold reveal variants park elements at translateX(+-120px) until they
       animate in; clip so that never widens the page on phones. */
    overflow-x: clip;
+   /* Stop iOS rubber-band and Android scroll chaining at the page extremes.
+      This must live on the root, which owns the viewport scroller. On body it
+      made body a scroll container that can never scroll, and with chaining
+      forbidden every wheel and touch delta died there; Lenis hid that by
+      driving the wheel itself, so Reduced mode (native scrolling) could not
+      scroll at all. */
+   overscroll-behavior-y: none;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
    /* Always reserve the scrollbar gutter so opening a modal (which locks body
@@ -95,10 +102,9 @@ body {
    background-color: var(--color-bg-primary);
    color: var(--color-text-primary);
    line-height: 1.7;
-   overflow-x: hidden;
-   /* Stop iOS rubber-band / Android scroll-chaining from fighting Lenis at the
-      page extremes. */
-   overscroll-behavior-y: none;
+   /* clip, not hidden: hidden would turn body into a scroll container again
+      (overflow-y auto) and re-break wheel scrolling. clip only clips. */
+   overflow-x: clip;
 }
 
 /* Scrollbar */
