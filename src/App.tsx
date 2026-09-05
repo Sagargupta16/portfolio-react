@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense, type ReactNode } from "react";
 import { ReactLenis } from "lenis/react";
 import Nav from "@components/layout/Navigation/Nav";
 import Hero from "@components/layout/Header/Hero";
@@ -7,10 +7,20 @@ import AmbientBackground from "@components/layout/AmbientBackground";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import ScrollProgress from "@components/ui/ScrollProgress";
 import BackToTop from "@components/ui/BackToTop";
+import MotionPreferenceControl from "@components/ui/MotionPreferenceControl";
 import SectionLoader from "@components/ui/SectionLoader";
 import { BreakpointProvider } from "@hooks/BreakpointProvider";
 import { MotionPreferenceProvider } from "@hooks/MotionPreferenceProvider";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { CONTENT_SECTIONS } from "@/constants/sections";
+
+const LENIS_OPTIONS = {
+   lerp: 0.1,
+   smoothWheel: true,
+   wheelMultiplier: 1.1,
+   touchMultiplier: 1.5,
+   syncTouch: false,
+};
 
 // Lazy Load "Below the fold" sections for massive performance gains
 const About = lazy(() => import("@pages/about/About"));
@@ -78,18 +88,22 @@ const SectionPlaceholder = ({
    </section>
 );
 
+// Reduced mode hands scrolling back to the browser. With no Lenis instance,
+// useLenis() returns undefined and the nav, hero, footer and BackToTop callers
+// already fall back to native scrollIntoView / scrollTo.
+const SmoothScroll = ({ children }: { children: ReactNode }) => {
+   const { reducedMotion } = useMotionPreference();
+   if (reducedMotion) return children;
+   return (
+      <ReactLenis root options={LENIS_OPTIONS}>
+         {children}
+      </ReactLenis>
+   );
+};
+
 const AppContent = () => {
    return (
-      <ReactLenis
-         root
-         options={{
-            lerp: 0.1,
-            smoothWheel: true,
-            wheelMultiplier: 1.1,
-            touchMultiplier: 1.5,
-            syncTouch: false,
-         }}
-      >
+      <SmoothScroll>
          <ErrorBoundary>
             <ScrollProgress />
             <AmbientBackground />
@@ -127,9 +141,10 @@ const AppContent = () => {
                </main>
                <Footer />
                <BackToTop />
+               <MotionPreferenceControl />
             </div>
          </ErrorBoundary>
-      </ReactLenis>
+      </SmoothScroll>
    );
 };
 

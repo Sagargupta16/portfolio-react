@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-16%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.6.0-2563eb)
+![Version](https://img.shields.io/badge/version-4.6.1-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -181,7 +181,7 @@ EmailJS browser identifiers are public client configuration and live in `data/co
 
 ## Motion Preference
 
-The footer control persists one of three modes: **Full** is the default and enables the complete visual treatment, **System** follows the OS preference, and **Reduced** disables smooth scrolling and looping/decorative movement while preserving project and service artwork.
+The floating control at the bottom-left persists one of three modes: **Full** is the default and enables the complete visual treatment, **System** follows the OS preference, and **Reduced** disables smooth scrolling and looping/decorative movement while preserving project and service artwork.
 
 ---
 

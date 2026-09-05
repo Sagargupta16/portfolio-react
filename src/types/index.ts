@@ -9,7 +9,7 @@ export interface Certification {
    issueDate: string;
    badgeId: string;
    badgeUrl: string;
-   level: string;
+   level?: string;
    expiryDate?: string;
    imageUrl: string;
 }

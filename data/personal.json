@@ -1,6 +1,8 @@
 {
    "name": "Sagar Gupta",
    "title": "Cloud Consultant, Professional Services (DevOps/MLOps) at AWS",
+   "role": "Cloud Consultant",
+   "employer": "AWS",
    "location": "Hyderabad, India",
    "intro": "Cloud consultant at AWS Professional Services. I build the AWS platforms that regulated companies migrate onto: Terraform, CI/CD, MLOps pipelines, and lately the agent tooling that makes that work faster.",
    "role_label": "DevOps/MLOps Consultant @ AWS",

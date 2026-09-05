@@ -84,6 +84,21 @@ const requireUrl = (value, path, protocols = ["https:"]) => {
    }
 };
 
+const requireUrlOnHost = (value, path, hostname, pathPrefix = "/") => {
+   let url;
+   try {
+      url = new URL(value);
+   } catch {
+      fail(path, "must be a valid URL");
+      return;
+   }
+   if (url.protocol !== "https:") fail(path, "must use https:");
+   if (url.hostname !== hostname) fail(path, `must be hosted on ${hostname}`);
+   if (!url.pathname.startsWith(pathPrefix)) {
+      fail(path, `must have a path starting with ${pathPrefix}`);
+   }
+};
+
 const requireIsoDate = (value, path) => {
    if (!/^\d{4}-\d{2}-\d{2}$/.test(value ?? "")) {
       fail(path, "must use YYYY-MM-DD format");
@@ -120,6 +135,8 @@ if (requireRecord(personal, "data/personal.json")) {
       "role_label",
       "headline",
       "availability",
+      "role",
+      "employer",
    ]) {
       requireString(personal[field], `personal.${field}`);
    }
@@ -358,7 +375,6 @@ if (requireRecord(achievements, "achievements")) {
       "issueDate",
       "badgeId",
       "badgeUrl",
-      "level",
       "imageUrl",
    ]);
    validateEntityArray(badges, "achievements.learning_badges", [
@@ -376,18 +392,27 @@ if (requireRecord(achievements, "achievements")) {
    ];
    requireUnique(allBadges, "badgeId", "achievements.all_badges");
    for (const [index, badge] of allBadges.entries()) {
-      requireIsoDate(
-         badge.issueDate,
-         `achievements.all_badges[${index}].issueDate`,
-      );
+      const badgePath = `achievements.all_badges[${index}]`;
+      requireIsoDate(badge.issueDate, `${badgePath}.issueDate`);
       if (badge.expiryDate) {
-         requireIsoDate(
-            badge.expiryDate,
-            `achievements.all_badges[${index}].expiryDate`,
-         );
+         requireIsoDate(badge.expiryDate, `${badgePath}.expiryDate`);
       }
-      requireUrl(badge.badgeUrl, `achievements.all_badges[${index}].badgeUrl`);
-      requireUrl(badge.imageUrl, `achievements.all_badges[${index}].imageUrl`);
+      if (badge.level !== undefined) {
+         requireString(badge.level, `${badgePath}.level`);
+      }
+      // Mirror the hosts src/__tests__/data-integrity.test.ts enforces so the
+      // weekly Credly bot cannot commit data that the deploy gate rejects.
+      requireUrlOnHost(
+         badge.badgeUrl,
+         `${badgePath}.badgeUrl`,
+         "www.credly.com",
+         "/badges/",
+      );
+      requireUrlOnHost(
+         badge.imageUrl,
+         `${badgePath}.imageUrl`,
+         "images.credly.com",
+      );
    }
    validateEntityArray(achievements.achievements, "achievements.achievements", [
       "title",

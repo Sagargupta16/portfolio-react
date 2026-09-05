@@ -44,9 +44,12 @@ const getExpiryMeta = (expiryDate?: string): ExpiryMeta | null => {
    const daysUntilExpiry = Math.ceil(
       (expiry.getTime() - SESSION_TIME) / DAY_MS,
    );
+   // Format in UTC: the date is UTC midnight, so a local-zone format would
+   // roll 1st-of-month expiries back a month for viewers west of UTC.
    const when = expiry.toLocaleDateString("en-US", {
       month: "short",
       year: "numeric",
+      timeZone: "UTC",
    });
    if (daysUntilExpiry < 0) return { label: `Expired ${when}`, color: RED };
    if (daysUntilExpiry <= EXPIRY_WARNING_DAYS) {
@@ -72,6 +75,15 @@ const CertBadge = ({
    const [useOriginal, setUseOriginal] = useState(false);
    const accent = LEVEL_COLOR[level ?? ""] ?? CYAN;
    const expiryMeta = getExpiryMeta(expiryDate);
+   // aria-label replaces the anchor's content for assistive tech, so the level
+   // chip and expiry state rendered inside it must be folded in here.
+   const ariaLabel = [
+      `${name} credential`,
+      level && `${level} level`,
+      expiryMeta?.label,
+   ]
+      .filter(Boolean)
+      .join(", ");
    const floatRepeat = reducedMotion ? 0 : Infinity;
    const floatAnimation =
       isHovered || reducedMotion ? { y: 0 } : { y: [0, -8, 0] };
@@ -89,7 +101,7 @@ const CertBadge = ({
          href={badgeUrl}
          target="_blank"
          rel="noopener noreferrer"
-         aria-label={`${name} credential (opens in a new tab)`}
+         aria-label={`${ariaLabel} (opens in a new tab)`}
          initial={{ opacity: 0, y: 40, scale: 0.8 }}
          whileInView={{ opacity: 1, y: 0, scale: 1 }}
          viewport={{ once: true, margin: "0px 0px -60px 0px" }}

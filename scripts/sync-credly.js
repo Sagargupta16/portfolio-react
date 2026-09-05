@@ -36,11 +36,19 @@ function isCertification(badgeOrName) {
    return CERTIFICATION_PATTERNS.some((pattern) => pattern.test(name));
 }
 
+// Credly's own level scale. It is authoritative whenever a template declares
+// one; the issuer tier in the badge name is only a fallback for templates that
+// leave the field empty or "N/A".
+const CREDLY_LEVELS = ["Foundational", "Intermediate", "Advanced"];
+
 function mapLevel(badge) {
-   const declaredLevel = badge.badge_template?.level || "";
-   if (/professional/i.test(declaredLevel)) return "Professional";
-   if (/associate/i.test(declaredLevel)) return "Associate";
-   if (/foundational|practitioner/i.test(declaredLevel)) return "Foundational";
+   const declaredLevel = (badge.badge_template?.level || "")
+      .trim()
+      .toLowerCase();
+   const credlyLevel = CREDLY_LEVELS.find(
+      (level) => level.toLowerCase() === declaredLevel,
+   );
+   if (credlyLevel) return credlyLevel;
 
    const name = badge.badge_template?.name || "";
    if (/professional/i.test(name)) return "Professional";
@@ -90,7 +98,6 @@ function transformBadge(badge, id) {
 
    const level = mapLevel(badge);
    if (level) entry.level = level;
-   else if (type === "Industry Certification") entry.level = "Unspecified";
 
    const expiry = formatDate(badge.expires_at_date || badge.expires_at);
    if (expiry) entry.expiryDate = expiry;

@@ -8,7 +8,7 @@
          "issueDate": "2026-01-31",
          "badgeId": "be7f9e0a-593a-4544-8dfd-f69f669ec57d",
          "badgeUrl": "https://www.credly.com/badges/be7f9e0a-593a-4544-8dfd-f69f669ec57d",
-         "level": "Associate",
+         "level": "Intermediate",
          "expiryDate": "2029-01-31",
          "imageUrl": "https://images.credly.com/images/b9feab85-1a43-4f6c-99a5-631b88d5461b/image.png"
       },
@@ -32,7 +32,7 @@
          "issueDate": "2025-06-28",
          "badgeId": "d6dc337a-0af5-48f8-b64f-eb2a5925f07b",
          "badgeUrl": "https://www.credly.com/badges/d6dc337a-0af5-48f8-b64f-eb2a5925f07b",
-         "level": "Associate",
+         "level": "Intermediate",
          "expiryDate": "2028-06-28",
          "imageUrl": "https://images.credly.com/images/1a634b4e-3d6b-4a74-b118-c0dcb429e8d2/image.png"
       },
@@ -56,7 +56,7 @@
          "issueDate": "2024-07-07",
          "badgeId": "591e74ef-f6a8-4b77-82dc-07e06fb8060e",
          "badgeUrl": "https://www.credly.com/badges/591e74ef-f6a8-4b77-82dc-07e06fb8060e",
-         "level": "Associate",
+         "level": "Intermediate",
          "expiryDate": "2027-07-07",
          "imageUrl": "https://images.credly.com/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png"
       },
@@ -163,6 +163,7 @@
          "issueDate": "2025-10-27",
          "badgeId": "4850c937-dcee-4f8f-9e1c-50263e4e7f92",
          "badgeUrl": "https://www.credly.com/badges/4850c937-dcee-4f8f-9e1c-50263e4e7f92",
+         "level": "Intermediate",
          "imageUrl": "https://images.credly.com/images/a5e0f58e-77c2-452d-b81d-79981315f238/blob"
       },
       {
