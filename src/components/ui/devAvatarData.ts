@@ -1,37 +1,66 @@
-import {
-   Code2,
-   Cloud,
-   Terminal,
-   Braces,
-   Database,
-   GitBranch,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import type { SkillIcon } from "@pages/skill/skillIcons";
+import { getSkillIcon } from "@pages/skill/skillIcons";
+import { TEXT_PRIMARY } from "@/constants/theme";
+
+// Geometry of the 320 px frame. About.tsx scales the whole avatar 0.8 on
+// phones, so nothing in here is responsive.
+export const AVATAR_SIZE = 320;
+export const DISC_DIAMETER = 168;
+export const ORBIT_RADIUS = 124;
+export const TILE_SIZE = 40;
+export const TILE_RADIUS = 12;
+export const GLYPH_SIZE = 18;
+export const MONOGRAM_SIZE = 64;
+
+/** One clockwise revolution of the stack ring, in seconds. */
+export const ORBIT_PERIOD = 40;
+
+// Flat-card surface shared by the disc and the tiles (mirrors .glass-card).
+export const CARD_FILL = "var(--color-bg-card)";
+export const HAIRLINE = "rgba(255, 255, 255, 0.06)";
+/** Body-text token at 72% alpha (0xb8) so the glyph tint follows the theme. */
+export const GLYPH_COLOR = `${TEXT_PRIMARY}b8`;
+
+/**
+ * The eight tools he actually ships with, clockwise from 12 o'clock. Names
+ * are Skills-registry keys so each glyph is the same brand mark the Skills
+ * section renders; the registry colour is discarded (one blue family only).
+ */
+const ORBIT_SKILLS = [
+   "AWS",
+   "Terraform",
+   "GitHub Actions",
+   "Docker",
+   "Python",
+   "Bash",
+   "TypeScript",
+   "Claude Code",
+] as const;
 
 export interface OrbitItem {
-   Icon: LucideIcon;
-   color: string;
-   delay: number;
+   name: string;
+   Icon: SkillIcon["Icon"];
+   /** Degrees clockwise from 12 o'clock. */
    angle: number;
 }
 
-export const orbitItems: OrbitItem[] = [
-   { Icon: Cloud, color: "#60a5fa", delay: 0, angle: 0 },
-   { Icon: Terminal, color: "#22c55e", delay: 0.5, angle: 60 },
-   { Icon: Braces, color: "#38bdf8", delay: 1, angle: 120 },
-   { Icon: Database, color: "#f59e0b", delay: 1.5, angle: 180 },
-   { Icon: GitBranch, color: "#60a5fa", delay: 2, angle: 240 },
-   { Icon: Code2, color: "#38bdf8", delay: 2.5, angle: 300 },
-];
+const ORBIT_STEP = 360 / ORBIT_SKILLS.length;
 
-export const floatVariant = (delay: number, reducedMotion = false) => ({
-   animate: {
-      y: reducedMotion ? 0 : [-8, 8, -8],
-      transition: {
-         duration: reducedMotion ? 0 : 4,
-         repeat: reducedMotion ? 0 : Infinity,
-         ease: "easeInOut" as const,
-         delay,
-      },
-   },
+export const orbitItems: OrbitItem[] = ORBIT_SKILLS.flatMap((name, index) => {
+   const skill = getSkillIcon(name);
+   if (!skill) return [];
+   return [{ name, Icon: skill.Icon, angle: index * ORBIT_STEP }];
 });
+
+/**
+ * Centre of a tile on the orbit track, in frame px (y grows downward).
+ * Rounded so the diagonal tiles keep crisp 1 px borders in Reduced mode.
+ */
+export const orbitPosition = (angle: number) => {
+   const rad = (angle * Math.PI) / 180;
+   const centre = AVATAR_SIZE / 2;
+   return {
+      x: Math.round(centre + ORBIT_RADIUS * Math.sin(rad)),
+      y: Math.round(centre - ORBIT_RADIUS * Math.cos(rad)),
+   };
+};

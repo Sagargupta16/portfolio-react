@@ -1,119 +1,98 @@
 import { motion } from "motion/react";
-import { orbitItems, floatVariant } from "./devAvatarData";
-import AvatarMonogram from "./AvatarMonogram";
 import useMotionPreference from "@hooks/useMotionPreference";
+import AvatarMonogram from "./AvatarMonogram";
+import {
+   AVATAR_SIZE,
+   CARD_FILL,
+   GLYPH_COLOR,
+   GLYPH_SIZE,
+   HAIRLINE,
+   ORBIT_PERIOD,
+   ORBIT_RADIUS,
+   TILE_RADIUS,
+   TILE_SIZE,
+   orbitItems,
+   orbitPosition,
+} from "./devAvatarData";
 
+const SPIN = {
+   duration: ORBIT_PERIOD,
+   repeat: Infinity,
+   ease: "linear" as const,
+};
+
+/**
+ * SG monogram with the real stack orbiting it. The ring turns clockwise once
+ * per ORBIT_PERIOD and every tile counter-rotates so its logo stays upright;
+ * that is the only motion. Disc, initials and dashed track never move, and
+ * the entrance comes from About.tsx's wrapper variant, not from here.
+ */
 const DevAvatar = () => {
    const { reducedMotion } = useMotionPreference();
-   const size = 320;
-   const center = size / 2;
-   const orbitRadius = 130;
+   const centre = AVATAR_SIZE / 2;
 
    return (
       <div
          aria-hidden="true"
          style={{
-            width: size,
-            height: size,
+            width: AVATAR_SIZE,
+            height: AVATAR_SIZE,
             position: "relative",
             margin: "0 auto",
          }}
       >
-         {/* Outer glow ring */}
-         <motion.div
-            style={{
-               position: "absolute",
-               inset: 10,
-               borderRadius: "50%",
-               background:
-                  "conic-gradient(from 0deg, #60a5fa, #38bdf8, #22c55e, #60a5fa)",
-               opacity: 0.15,
-               filter: "blur(20px)",
-            }}
-            animate={reducedMotion ? undefined : { rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-         />
-
-         {/* Rotating gradient border */}
-         <motion.div
-            style={{
-               position: "absolute",
-               inset: 30,
-               borderRadius: "50%",
-               padding: 2,
-               background:
-                  "conic-gradient(from 0deg, #60a5fa, transparent 40%, #38bdf8, transparent 80%, #60a5fa)",
-            }}
-            animate={reducedMotion ? undefined : { rotate: 360 }}
-            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-         >
-            <div
-               style={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: "50%",
-                  background: "rgba(10, 10, 20, 0.8)",
-               }}
-            />
-         </motion.div>
-
-         {/* Inner circle with monogram */}
          <AvatarMonogram />
 
-         {/* Dashed orbit ring */}
+         {/* Dashed orbit track (same 0.06 hairline as the card borders) */}
          <svg
-            style={{
-               position: "absolute",
-               inset: 0,
-               width: size,
-               height: size,
-            }}
-            viewBox={`0 0 ${size} ${size}`}
+            style={{ position: "absolute", inset: 0 }}
+            width={AVATAR_SIZE}
+            height={AVATAR_SIZE}
+            viewBox={`0 0 ${AVATAR_SIZE} ${AVATAR_SIZE}`}
          >
             <circle
-               cx={center}
-               cy={center}
-               r={orbitRadius}
+               cx={centre}
+               cy={centre}
+               r={ORBIT_RADIUS}
                fill="none"
-               stroke="rgba(255,255,255,0.06)"
+               stroke={HAIRLINE}
                strokeWidth="1"
                strokeDasharray="4 6"
             />
          </svg>
 
-         {/* Orbiting icons */}
-         {orbitItems.map(({ Icon, color, delay, angle }) => {
-            const rad = (angle * Math.PI) / 180;
-            const x = center + orbitRadius * Math.cos(rad) - 18;
-            const y = center + orbitRadius * Math.sin(rad) - 18;
-
-            return (
-               <motion.div
-                  key={angle}
-                  style={{
-                     position: "absolute",
-                     left: x,
-                     top: y,
-                     width: 36,
-                     height: 36,
-                     borderRadius: 10,
-                     background: `${color}0d`,
-                     border: `1px solid ${color}18`,
-                     display: "flex",
-                     alignItems: "center",
-                     justifyContent: "center",
-                  }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate="animate"
-                  variants={floatVariant(delay, reducedMotion)}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7, delay: delay * 0.3 }}
-               >
-                  <Icon style={{ width: 16, height: 16, color }} />
-               </motion.div>
-            );
-         })}
+         {/* Stack ring: one wrapper rotation plus eight counter-rotations */}
+         <motion.div
+            style={{ position: "absolute", inset: 0 }}
+            animate={reducedMotion ? undefined : { rotate: 360 }}
+            transition={SPIN}
+         >
+            {orbitItems.map(({ name, Icon, angle }) => {
+               const { x, y } = orbitPosition(angle);
+               return (
+                  <motion.div
+                     key={name}
+                     style={{
+                        position: "absolute",
+                        left: x - TILE_SIZE / 2,
+                        top: y - TILE_SIZE / 2,
+                        width: TILE_SIZE,
+                        height: TILE_SIZE,
+                        borderRadius: TILE_RADIUS,
+                        background: CARD_FILL,
+                        border: `1px solid ${HAIRLINE}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                     }}
+                     animate={reducedMotion ? undefined : { rotate: -360 }}
+                     transition={SPIN}
+                  >
+                     <Icon size={GLYPH_SIZE} color={GLYPH_COLOR} />
+                  </motion.div>
+               );
+            })}
+         </motion.div>
       </div>
    );
 };

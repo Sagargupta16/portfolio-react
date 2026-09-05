@@ -75,7 +75,11 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                      pointerEvents: "none",
                   }}
                />
-               <ServiceAnimation title={service.title} color={colors.icon} />
+               <ServiceAnimation
+                  title={service.title}
+                  color={colors.icon}
+                  compact={isMobile}
+               />
             </div>
 
             {/* Right: Content */}
