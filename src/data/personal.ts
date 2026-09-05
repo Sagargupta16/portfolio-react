@@ -2,7 +2,8 @@ import type { ImpactStats, SiteConfig, SocialProfile } from "@/types";
 import personalData from "../../data/personal.json";
 
 export const getName = (): string => personalData.name;
-export const getTitle = (): string => personalData.title;
+export const getRole = (): string => personalData.role;
+export const getEmployer = (): string => personalData.employer;
 export const getLocation = (): string => personalData.location;
 export const getLanguages = (): { name: string; level: string }[] =>
    personalData.languages;

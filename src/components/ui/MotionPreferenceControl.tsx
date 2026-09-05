@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { Accessibility, Monitor, Sparkles } from "lucide-react";
-import { MONO_FONT, TEXT_PRIMARY } from "@/constants/theme";
+import { GLASS_BORDER, MONO_FONT, TEXT_PRIMARY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
 import type { MotionPreference } from "@hooks/motionPreferenceContext";
@@ -45,10 +45,8 @@ const MotionPreferenceControl = () => {
             justifyContent: "center",
             gap: 8,
             borderRadius: 12,
-            border: "1px solid rgb(var(--ch-white) / 0.12)",
-            background: "rgb(var(--ch-glass) / 0.88)",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
+            border: `1px solid ${GLASS_BORDER}`,
+            background: "var(--color-bg-card)",
             boxShadow: "0 6px 24px rgba(0,0,0,0.35)",
             color: TEXT_PRIMARY,
             cursor: "pointer",

@@ -86,11 +86,12 @@ const NavBar = ({
                SG
             </button>
 
-            {/* Desktop nav links + CTA */}
+            {/* Desktop nav links + CTA. Contact is the pill, so the link list skips it;
+                the mobile menu (no pill) keeps the Contact entry. */}
             {!isMobile && (
                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                   <DesktopNav
-                     sections={sections}
+                     sections={sections.filter((s) => s.id !== "contact")}
                      activeSection={activeSection}
                      onNavigate={onNavigate}
                   />

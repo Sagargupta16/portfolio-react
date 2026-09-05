@@ -4,13 +4,43 @@ import { useLenis } from "lenis/react";
 import { FileText } from "lucide-react";
 import { getHeadline, getIntro, getName, getRoleLabel } from "@data/personal";
 import { staggerContainer, staggerItem } from "@utils/animations";
-import { CYAN, GREEN, TEXT_SECONDARY } from "@/constants/theme";
+import { CYAN, GREEN, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
+import ErrorBoundary from "@components/common/ErrorBoundary";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
+import useBreakpoint from "@hooks/useBreakpoint";
 import HeroSocial from "./HeroSocial";
 
 const HeroLatest = lazy(() => import("./HeroLatest"));
 const RESUME_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
+const NBSP = "\u00A0";
+
+/* Truthy on purpose: ErrorBoundary treats a falsy fallback as "not provided"
+   and renders its full "Something went wrong" panel. A failed HeroLatest chunk
+   should just drop the line, not replace the hero. */
+const OMIT_LINE = <></>;
+
+/* Holds the LATEST row's slot while its chunk loads so the CTAs and socials
+   below do not jump when it arrives. Mirrors HeroLatest's layout and type
+   metrics (mono label + one 14px/1.6 line) with blank content. */
+const HeroLatestPlaceholder = () => {
+   const { isMobile } = useBreakpoint();
+   return (
+      <div
+         aria-hidden="true"
+         style={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            alignItems: isMobile ? "center" : "baseline",
+            justifyContent: "center",
+            gap: isMobile ? 4 : 14,
+         }}
+      >
+         <span style={{ fontFamily: MONO_FONT, fontSize: 10 }}>{NBSP}</span>
+         <span style={{ fontSize: 14, lineHeight: 1.6 }}>{NBSP}</span>
+      </div>
+   );
+};
 
 const HeroContent = () => {
    const [cvOpen, setCvOpen] = useState(false);
@@ -100,10 +130,14 @@ const HeroContent = () => {
             {intro}
          </motion.p>
 
-         {/* LATEST -- derived from data: newest merged PR + newest shipped project */}
-         <Suspense fallback={null}>
-            <HeroLatest />
-         </Suspense>
+         {/* LATEST -- derived from data: newest merged PR + newest shipped project.
+             Own boundary: a failed chunk omits the line instead of reaching the
+             root ErrorBoundary and blanking the page. */}
+         <ErrorBoundary fallback={OMIT_LINE}>
+            <Suspense fallback={<HeroLatestPlaceholder />}>
+               <HeroLatest />
+            </Suspense>
+         </ErrorBoundary>
 
          {/* CTA buttons */}
          <motion.div

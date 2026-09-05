@@ -150,21 +150,21 @@
       {
          "id": 13,
          "title": "Blue Green AWS Terraform",
-         "description": "A comprehensive Infrastructure as Code solution for implementing Blue-Green deployment on AWS using Terraform, providing a complete CI/CD pipeline with zero-downtime deployments across ECS Fargate, ALB, CodePipeline, and KMS-encrypted artifacts.",
+         "description": "A comprehensive Infrastructure as Code solution for implementing Blue-Green deployment on AWS using Terraform, providing a complete CI/CD pipeline with zero-downtime deployments across ECS on EC2, ALB, CodePipeline, and KMS-encrypted artifacts.",
          "date": "July 2025",
          "tools_tech": [
             "Terraform",
             "AWS",
             "Docker",
-            "ECS Fargate",
+            "ECS on EC2",
             "CodePipeline",
             "HCL"
          ],
          "features": [
             "Zero-downtime Blue-Green deployments orchestrated by CodeDeploy",
             "Automated CI/CD with CodePipeline + CodeBuild + ECR",
-            "Containerized apps on ECS Fargate with ALB health checks",
-            "KMS encryption, IAM least-privilege, multi-environment (dev/staging/prod)"
+            "Containerized app on ECS EC2 container instances behind an ALB with a prod listener (:80) and a test listener (:8080)",
+            "KMS encryption, IAM least-privilege, multi-environment (dev/test/prod)"
          ],
          "github": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform",
          "live": ""
@@ -261,17 +261,17 @@
          "description": "A comprehensive web-based placement management system for MCA students at NIT Warangal, with student dashboards, company profiles, placement analytics, JWT + email OTP auth, interview experience sharing, and role-based access control. Built as a monorepo serving the entire batch.",
          "date": "January 2024",
          "tools_tech": [
-            "React 18",
+            "React 19",
             "Node.js",
             "Express",
             "MongoDB Atlas",
-            "AG Grid",
+            "Recharts",
             "JWT",
             "Email OTP"
          ],
          "features": [
             "JWT auth with email OTP verification, role-based access (admin/student)",
-            "AG Grid-powered student/company data tables with advanced filtering",
+            "Searchable, sortable student/company data tables (custom DataTable component)",
             "Placement analytics, trend visualization, interview experience sharing",
             "Automated email notifications for placement activities"
          ],
@@ -467,21 +467,20 @@
       {
          "id": 7,
          "title": "AWS DevOps Infrastructure",
-         "description": "A full-stack FARM (FastAPI, React, MongoDB) application containerized with Docker and deployed on AWS ECS, with a comprehensive CI/CD pipeline using GitHub Actions, Terraform, and Amazon ECR.",
+         "description": "A full-stack FARM (FastAPI, React, MongoDB) application containerized with Docker and deployed on AWS ECS, with a comprehensive CI/CD pipeline using GitHub Actions and Amazon ECR.",
          "date": "November 2023",
          "tools_tech": [
             "AWS",
             "Docker",
             "FastAPI",
             "React",
-            "Terraform",
             "GitHub Actions",
             "MongoDB Atlas"
          ],
          "features": [
             "Dockerized FARM stack with user management and blog system",
             "Automated CI/CD: GitHub Actions -> ECR -> ECS",
-            "AWS infrastructure as code with Terraform",
+            "Docker Compose setup for local multi-container development",
             "Test coverage reporting with Pytest, linting via Pylint + Flake8 + Prettier"
          ],
          "github": "https://github.com/Sagargupta16/DevOps-AWS-FARM",
@@ -533,11 +532,11 @@
       {
          "id": 11,
          "title": "Brainstorm Verse",
-         "description": "A modern idea-sharing platform built with Next.js 14 App Router where creativity meets collaboration. Threaded comments, personalized user profiles, secure Clerk authentication, and file uploads via UploadThing.",
+         "description": "A modern idea-sharing platform built with Next.js 16 App Router where creativity meets collaboration. Idea feed powered by server actions, personalized user profiles, secure Clerk authentication, and file uploads via UploadThing.",
          "date": "August 2023",
          "tools_tech": [
             "TypeScript",
-            "Next.js 14",
+            "Next.js 16",
             "MongoDB 8",
             "Tailwind CSS",
             "shadcn/ui",
@@ -545,9 +544,9 @@
             "UploadThing"
          ],
          "features": [
-            "Next.js 14 App Router with TypeScript + shadcn/ui components",
+            "Next.js 16 App Router with TypeScript + shadcn/ui components",
             "Secure authentication with Clerk, personalized onboarding",
-            "Threaded comments, real-time updates, image/file uploads",
+            "Server-action idea posting with path revalidation, image/file uploads",
             "React Hook Form + Zod validation"
          ],
          "github": "https://github.com/Sagargupta16/brainstorm-verse",
@@ -556,7 +555,7 @@
       {
          "id": 26,
          "title": "Authentication System",
-         "description": "A production-ready MERN authentication module with JWT tokens (7-day expiry), bcrypt password hashing, Joi password-complexity validation, and CORS-enabled protected routes. Reusable auth scaffold for MERN stack applications.",
+         "description": "A production-ready MERN authentication module with JWT tokens (7-day expiry), bcrypt password hashing, Joi password-complexity validation, and a CORS-enabled Express API with a token-gated React home route. Reusable auth scaffold for MERN stack applications.",
          "date": "September 2023",
          "tools_tech": [
             "Express",
@@ -568,7 +567,7 @@
             "Joi"
          ],
          "features": [
-            "JWT-based auth with 7-day expiry and protected routes",
+            "JWT-based auth with 7-day expiry; the React home route is gated on the stored token",
             "Password complexity enforced via joi-password-complexity (upper/lower/digit/symbol)",
             "Bcrypt password hashing with salt rounds",
             "CORS-enabled, server-side Joi schema validation, React Router frontend"
@@ -656,12 +655,12 @@
       {
          "id": 17,
          "title": "Snake Game Unity",
-         "description": "A classic Snake game built using Unity Engine with C# scripting, featuring smooth movement mechanics and score tracking.",
+         "description": "A classic Snake game built using Unity Engine with C# scripting, featuring timer-stepped grid movement, adjustable speed sliders, and score tracking.",
          "date": "June 2022",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Classic Snake gameplay",
-            "Smooth movement mechanics",
+            "Timer-stepped grid movement with adjustable snake and food-spawn speed sliders",
             "Score tracking",
             "Unity2D graphics"
          ],
@@ -671,13 +670,13 @@
       {
          "id": 18,
          "title": "Flappy Bird Game Unity",
-         "description": "A Flappy Bird clone built using Unity Engine with C# scripting, featuring physics-based gameplay and obstacle generation.",
+         "description": "A Flappy Bird clone built using Unity Engine with C# scripting, featuring physics-based gameplay and pipes that oscillate up and down at different speeds.",
          "date": "June 2022",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Flappy Bird gameplay",
             "Physics-based mechanics",
-            "Procedural obstacles",
+            "Oscillating pipe obstacles",
             "Unity2D graphics"
          ],
          "github": "https://github.com/Sagargupta16/FlappyBird-Game__UnityEngine",
@@ -740,7 +739,7 @@
       {
          "id": 38,
          "title": "Claude Skills",
-         "description": "Custom Claude Code plugin marketplace (v5.1.0) with 16 curated plugins covering dev workflow, testing, CI/CD, Docker, refactoring, git workflows, open source contributions, Python clean code, animation, and more. Installable via /plugin marketplace.",
+         "description": "Custom Claude Code plugin marketplace (v5.2.0) with 16 curated plugins covering dev workflow, Docker, dependency audits, refactoring, git workflows, open source contributions, Python clean code, animation, and more. Installable via /plugin marketplace.",
          "date": "June 2026",
          "tools_tech": [
             "Claude Code",
@@ -751,7 +750,7 @@
          ],
          "features": [
             "16 curated plugins spanning agents, hooks, skills, and slash commands",
-            "Stack-specific plugins (farm-stack, ci-cd, docker-deploy, deps-audit, repo-polish)",
+            "Stack-specific plugins (farm-stack, docker-deploy, deps-audit, repo-polish)",
             "clean-code (Python Clean Code catalog) and motion (animation audit/add/fix) plugins",
             "CI validation pipeline and tiered installation guide"
          ],
@@ -783,21 +782,21 @@
       {
          "id": 43,
          "title": "Bedrock Multi-Model MCP",
-         "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stable Diffusion 3.5, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
+         "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stability AI, Luma, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
          "date": "April 2026",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
             "AWS Bedrock",
             "Converse API",
-            "Nova Canvas",
-            "Nova Reel"
+            "Stability AI",
+            "Luma Ray 2"
          ],
          "features": [
             "bedrock_ask and bedrock_compare - send prompts to one model or 2-5 side-by-side",
-            "Text models: Llama 4 Maverick/Scout, Mistral Large, Nova Pro/Lite, Claude, Cohere, DeepSeek R1",
-            "Image models: Nova Canvas (2048x2048), Titan Image v2, SD 3.5 Large, SDXL",
-            "Video generation via Nova Reel (async S3 output), bearer token auth fallback"
+            "Text models: Claude, Llama 4 Maverick/Scout, Mistral Large 3, Nova Pro/Lite, Qwen3, DeepSeek V3.2/R1, GPT-OSS",
+            "Image models: Stable Image Ultra, SD 3.5 Large, Stable Image Core (1536x1536)",
+            "Video generation via Luma Ray 2 (async S3 output), Titan/Cohere embeddings, bearer token auth fallback"
          ],
          "github": "https://github.com/Sagargupta16/bedrock-multi-model-mcp",
          "live": ""
@@ -820,7 +819,7 @@
       {
          "id": 35,
          "title": "Claude Code Recipes",
-         "description": "47 copy-paste recipes for Claude Code covering 12 commands, 9 subagents, 5 hooks, and MCP configs. Every recipe works out of the box - just drop into your .claude/ folder and use immediately.",
+         "description": "47 copy-paste recipes for Claude Code covering 15 commands, 9 subagents, 5 hooks, skills, workflows, CLAUDE.md templates, and MCP configs. Every recipe works out of the box - just drop into your .claude/ folder and use immediately.",
          "date": "March 2026",
          "tools_tech": [
             "Claude Code",
@@ -829,7 +828,7 @@
             "Automation"
          ],
          "features": [
-            "12 command recipes (/code-review, /pr-description, /refactor, /debug, /migrate)",
+            "15 command recipes (/code-review, /pr-description, /refactor, /debug, /migrate)",
             "9 subagent recipes (researcher, test-runner, code-reviewer, security-analyst)",
             "5 hook recipes + MCP server configurations",
             "Model-tier annotations (haiku/sonnet/opus) for cost-aware adoption"
@@ -855,7 +854,7 @@
       {
          "id": 32,
          "title": "Deploy Guide",
-         "description": "Step-by-step deployment guides for every platform - 25+ guides, 10 platforms, 8 frameworks, 5 databases. Covers GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare Pages, AWS ECS, DigitalOcean, and more.",
+         "description": "Step-by-step deployment guides for every platform - 37 guides, 12 platforms, 14 frameworks, 6 databases. Covers GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare Pages, AWS ECS, DigitalOcean, and more.",
          "date": "March 2025",
          "tools_tech": [
             "DevOps",
@@ -866,9 +865,9 @@
             "Cloudflare"
          ],
          "features": [
-            "10 platform guides (GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare, AWS ECS, DigitalOcean)",
-            "8 framework guides (React, Next.js, Express, FastAPI, Flask, Django, MERN, FARM)",
-            "5 database guides with free-tier notes",
+            "12 platform guides (GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare, AWS ECS, AWS Amplify, DigitalOcean, Coolify, Hetzner)",
+            "14 framework guides (React, Next.js, Astro, SvelteKit, Angular, Express, NestJS, FastAPI, Flask, Django, Rails, Go, MERN, FARM)",
+            "6 database guides with free-tier notes",
             "Copy-paste configurations, CI/CD templates, custom domain walkthroughs"
          ],
          "github": "https://github.com/Sagargupta16/deploy-guide",
@@ -893,7 +892,7 @@
          "id": 34,
          "title": "AI Git Hooks",
          "description": "AI-powered git hooks that review code, generate commit messages, catch bugs, and scan for security issues before you push. Drop-in hooks using Claude, OpenAI, or local Ollama for every stage of your git workflow.",
-         "date": "March 2025",
+         "date": "March 2026",
          "tools_tech": ["Git Hooks", "Claude", "OpenAI", "Ollama", "Bash"],
          "features": [
             "pre-commit: AI code review for bugs, style, anti-patterns",
@@ -919,7 +918,7 @@
             "Auto-fetch Credly badges via public API and sync weekly",
             "Categorized sections: Industry Certifications, Professional/Partner, Knowledge/Learning",
             "Non-destructive updates using <!-- CREDLY-BADGES:START/END --> markers",
-            "Dark/light theme support via Credly CDN, configurable retry and categorization"
+            "Configurable badge size, retry logic, and categorization keywords"
          ],
          "github": "https://github.com/Sagargupta16/credly-badge-readme-action",
          "live": ""

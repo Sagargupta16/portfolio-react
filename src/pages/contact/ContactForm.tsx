@@ -4,7 +4,9 @@ import { TEXT_SECONDARY, RED } from "@/constants/theme";
 import type { FormData, Status } from "./contactConstants";
 
 interface ContactFormProps {
-   formRef: React.RefObject<HTMLFormElement | null>;
+   // Callback ref from useContactForm: it also moves focus to the name field
+   // when the form remounts after "Send another message".
+   formRef: React.Ref<HTMLFormElement>;
    formData: FormData;
    isLoading: boolean;
    isMobile: boolean;

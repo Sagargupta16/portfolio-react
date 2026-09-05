@@ -1,4 +1,5 @@
 import {
+   Fragment,
    useCallback,
    useEffect,
    useMemo,
@@ -50,11 +51,11 @@ export const MotionPreferenceProvider = ({
       }
    }, []);
 
+   const motionMode = reducedMotion ? "reduced" : "full";
+
    useEffect(() => {
-      document.documentElement.dataset.motion = reducedMotion
-         ? "reduced"
-         : "full";
-   }, [reducedMotion]);
+      document.documentElement.dataset.motion = motionMode;
+   }, [motionMode]);
 
    const value = useMemo(
       () => ({ preference, reducedMotion, setPreference }),
@@ -64,7 +65,10 @@ export const MotionPreferenceProvider = ({
    return (
       <MotionPreferenceContext value={value}>
          <MotionConfig reducedMotion={reducedMotion ? "always" : "never"}>
-            {children}
+            {/* Motion copies reducedMotion into each element once, when it
+                mounts, so a live change never reaches elements already on
+                screen. Re-keying the subtree remounts them with the new value. */}
+            <Fragment key={motionMode}>{children}</Fragment>
          </MotionConfig>
       </MotionPreferenceContext>
    );

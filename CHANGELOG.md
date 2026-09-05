@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.6.1] - 2026-09-05
+
+### Fixed
+
+- **Motion control** is mounted at App level (it sat inside the footer's staggered row, so its fixed position resolved against a transformed parent and it was invisible until the footer scrolled in). Opaque card surface with the token border, no backdrop-filter. **Reduced mode now really disables Lenis**: scrolling is native and in-page links jump. The preference applies live: toggling remounts the Motion tree under the provider, so open disclosures and an unsent contact draft reset on toggle. Back to top jumps instantly in Reduced mode.
+- **Hero**: the lazy LATEST line has its own error boundary (a failed chunk omits the line instead of blanking the page) and a same-height placeholder, so the hero no longer shifts when the chunk arrives.
+- **404 page**: the OS `prefers-reduced-motion` block is gone (the in-app control is the only motion gate) and the numeral floats again.
+- **Certifications**: Credly's own level is used consistently (the three AWS Associate certs now read Intermediate, Terraform Associate stays Foundational), `level` is optional in the validator and the type, expiry months are computed in UTC so they no longer shift a month west of UTC, and each badge link's accessible name includes level and expiry state. The validator enforces the Credly hosts the tests check, so the weekly sync cannot commit data that CI rejects. `achievements.json` regenerated from the live API.
+- **Experience**: responsibility lists show accent dot markers again (Tailwind preflight had stripped the bullets); the Responsibilities and View details controls are 44 px tap targets.
+- **Contact**: focus moves to the "Message sent!" heading after a send and to the Name field after "Send another message"; the confirmation is announced through the status region. The typing-dots animation removal from 4.6.0 stands.
+- **Desktop nav**: the Contact link is dropped from the link list because the Contact Me pill already covers it; the mobile menu keeps its Contact entry.
+- **Quick Facts** read role and employer from `personal.json` (`role`, `employer`) instead of a component-side string split; footer SITE links derive from the section registry.
+
+### Changed
+
+- **`data/projects.json`**: 13 stale claims corrected against the real repositories. Blue Green: ECS on EC2 with dev/test/prod and :80/:8080 listeners; FARM repo: no Terraform; Bedrock MCP: Stability AI and Luma Ray 2 with the current text-model list; Claude Skills v5.2.0 without the retired ci-cd plugin; Claude Code Recipes 15 commands; Deploy Guide 37 guides / 12 platforms / 14 frameworks / 6 databases; Credly action without the theme claim; Authentication System token-gated home route; Brainstorm Verse Next.js 16 with server actions; Flappy Bird oscillating pipes; Snake stepped grid movement; Placemento React 19 with Recharts; AI Git Hooks dated March 2026.
+- **Tests**: the data-integrity suite derives the project count from the JSON instead of a hardcoded 44.
+
 ## [4.6.0] - 2026-09-05
 
 ### Added

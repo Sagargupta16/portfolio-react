@@ -10,6 +10,7 @@ import {
    getOtherProjects,
 } from "@data/projects";
 import { getProjectCover } from "@pages/portfolio/covers/coverRegistry";
+import projectsData from "../../data/projects.json";
 
 const allProjects = [
    ...getFeaturedProjects(),
@@ -18,9 +19,18 @@ const allProjects = [
    ...getCommunityProjects(),
 ];
 
+// Every project array in projects.json carries `github`; contributions and
+// discussions do not. Counting structurally keeps this a rule about coverage
+// (no project array is left out of the checks below), not a snapshot of
+// today's content that every routine update would have to bump.
+const jsonProjectCount = Object.values(projectsData)
+   .flat()
+   .filter((entry) => "github" in entry).length;
+
 describe("portfolio data invariants", () => {
    it("keeps project IDs unique and every project mapped to a cover", () => {
-      expect(allProjects).toHaveLength(44);
+      expect(allProjects.length).toBeGreaterThan(0);
+      expect(allProjects).toHaveLength(jsonProjectCount);
       expect(new Set(allProjects.map((project) => project.id)).size).toBe(
          allProjects.length,
       );

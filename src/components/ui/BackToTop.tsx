@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useLenis } from "lenis/react";
 import { ChevronUp } from "lucide-react";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { CYAN, GLASS_BORDER } from "@/constants/theme";
 
 const SCROLL_THRESHOLD_PX = 500;
@@ -11,6 +12,7 @@ const BackToTop = () => {
    const { isMobile } = useBreakpoint();
    const [visible, setVisible] = useState(false);
    const lenis = useLenis();
+   const { reducedMotion } = useMotionPreference();
 
    const handleScroll = useCallback(() => {
       setVisible(window.scrollY > SCROLL_THRESHOLD_PX);
@@ -23,7 +25,11 @@ const BackToTop = () => {
 
    const scrollToTop = () => {
       if (lenis) lenis.scrollTo(0);
-      else window.scrollTo({ top: 0, behavior: "smooth" });
+      else
+         window.scrollTo({
+            top: 0,
+            behavior: reducedMotion ? "auto" : "smooth",
+         });
    };
 
    return (

@@ -4,19 +4,27 @@ import { useLenis } from "lenis/react";
 import { getName, getSiteConfig, getSocialProfiles } from "@data/personal";
 import { staggerItem } from "@utils/animations";
 import { MONO_FONT, TEXT_PRIMARY } from "@/constants/theme";
+import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useBreakpoint from "@hooks/useBreakpoint";
 import FooterSocial from "./FooterSocial";
-import MotionPreferenceControl from "@components/ui/MotionPreferenceControl";
 
 const CURRENT_YEAR = new Date().getFullYear();
 const RESUME_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
+const LINK_COLOR = "rgba(244, 246, 247, 0.9)";
 
+// The footer lists a subset of the section registry in registry order. Home
+// targets the hero, which is not a registered content section.
+const FOOTER_SECTION_IDS = new Set<ContentSectionId>([
+   "projects",
+   "stats",
+   "contact",
+]);
 const SITE_LINKS: { id: string; label: string }[] = [
    { id: "hero", label: "Home" },
-   { id: "projects", label: "Projects" },
-   { id: "stats", label: "Stats" },
-   { id: "contact", label: "Contact" },
+   ...CONTENT_SECTIONS.filter(({ id }) => FOOTER_SECTION_IDS.has(id)).map(
+      ({ id, label }) => ({ id, label }),
+   ),
 ];
 
 const columnHeading: React.CSSProperties = {
@@ -31,7 +39,7 @@ const columnHeading: React.CSSProperties = {
 const columnLink: React.CSSProperties = {
    display: "block",
    fontSize: 14,
-   color: "rgba(244, 246, 247, 0.9)",
+   color: LINK_COLOR,
    padding: "4px 0",
    cursor: "pointer",
    background: "none",
@@ -107,8 +115,7 @@ const FooterContent = () => {
                         e.currentTarget.style.color = TEXT_PRIMARY;
                      }}
                      onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.currentTarget.style.color =
-                           "rgba(244, 246, 247, 0.9)";
+                        e.currentTarget.style.color = LINK_COLOR;
                      }}
                   >
                      {link.label}
@@ -122,7 +129,7 @@ const FooterContent = () => {
                      e.currentTarget.style.color = TEXT_PRIMARY;
                   }}
                   onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                     e.currentTarget.style.color = "rgba(244, 246, 247, 0.9)";
+                     e.currentTarget.style.color = LINK_COLOR;
                   }}
                >
                   Download CV
@@ -144,8 +151,7 @@ const FooterContent = () => {
                         e.currentTarget.style.color = TEXT_PRIMARY;
                      }}
                      onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                        e.currentTarget.style.color =
-                           "rgba(244, 246, 247, 0.9)";
+                        e.currentTarget.style.color = LINK_COLOR;
                      }}
                   >
                      {profile.name}
@@ -154,14 +160,11 @@ const FooterContent = () => {
             </nav>
          </motion.div>
 
-         {/* Bottom row: tech strip + motion preference */}
+         {/* Bottom row: tech strip */}
          <motion.div
             style={{
                display: "flex",
-               flexDirection: isMobile ? "column" : "row",
-               alignItems: "center",
-               justifyContent: "space-between",
-               gap: 12,
+               justifyContent: "center",
                width: "100%",
                paddingTop: 20,
                borderTop: "1px solid rgba(255,255,255,0.08)",
@@ -191,7 +194,7 @@ const FooterContent = () => {
                      key={tech}
                      style={{
                         fontSize: 10,
-                        color: "rgba(244,246,247,0.9)",
+                        color: LINK_COLOR,
                         fontFamily: MONO_FONT,
                         padding: "2px 8px",
                         borderRadius: 4,
@@ -203,7 +206,6 @@ const FooterContent = () => {
                   </span>
                ))}
             </div>
-            <MotionPreferenceControl />
          </motion.div>
       </>
    );

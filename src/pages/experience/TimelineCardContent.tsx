@@ -9,6 +9,17 @@ interface TimelineCardContentProps {
    onClick?: () => void;
 }
 
+// The 12px trigger labels sit on the body 1.7 line-height (a ~20px line
+// box); 12px of padding above and below lifts each hit area past the 44px
+// mobile minimum (WCAG 2.5.8) without changing the label's size or weight.
+const TRIGGER_PAD = 12;
+const TRIGGER_STYLE: React.CSSProperties = {
+   padding: `${TRIGGER_PAD}px 0`,
+   cursor: "pointer",
+   fontSize: 12,
+   fontWeight: 600,
+};
+
 const TimelineCardContent = ({
    item,
    accentColor,
@@ -30,15 +41,8 @@ const TimelineCardContent = ({
             marginLeft={ml}
          />
          {"description" in item && (
-            <details style={{ marginTop: 12, marginLeft: ml }}>
-               <summary
-                  style={{
-                     color: accentColor,
-                     cursor: "pointer",
-                     fontSize: 12,
-                     fontWeight: 600,
-                  }}
-               >
+            <details style={{ marginLeft: ml }}>
+               <summary style={{ ...TRIGGER_STYLE, color: accentColor }}>
                   Responsibilities
                </summary>
                <ul
@@ -46,15 +50,32 @@ const TimelineCardContent = ({
                      display: "flex",
                      flexDirection: "column",
                      gap: 6,
-                     marginTop: 10,
-                     paddingLeft: 18,
                      color: TEXT_SECONDARY,
                      fontSize: 12,
                      lineHeight: 1.7,
                   }}
                >
                   {Object.values(item.description).map((detail) => (
-                     <li key={detail}>{detail}</li>
+                     <li
+                        key={detail}
+                        style={{
+                           display: "flex",
+                           alignItems: "flex-start",
+                           gap: 8,
+                        }}
+                     >
+                        <span
+                           style={{
+                              width: 5,
+                              height: 5,
+                              borderRadius: "50%",
+                              background: `${accentColor}80`,
+                              marginTop: 8,
+                              flexShrink: 0,
+                           }}
+                        />
+                        {detail}
+                     </li>
                   ))}
                </ul>
                <div
@@ -95,16 +116,17 @@ const TimelineCardContent = ({
                type="button"
                onClick={onClick}
                style={{
-                  display: "inline-flex",
-                  marginTop: 12,
+                  ...TRIGGER_STYLE,
+                  display: "flex",
+                  alignItems: "center",
+                  width: "fit-content",
                   marginLeft: ml,
-                  padding: 0,
-                  cursor: "pointer",
+                  // The bottom padding only exists to grow the hit area; pull
+                  // it back so the card ends where the old 12px-margin label did.
+                  marginBottom: -TRIGGER_PAD,
                   background: "none",
                   border: "none",
                   color: accentColor,
-                  fontSize: 12,
-                  fontWeight: 600,
                }}
                aria-label={`View details for ${item.company}`}
             >

@@ -4,7 +4,20 @@ import { getEmailConfig } from "@data/contact";
 import type { FormData, Status } from "./contactConstants";
 
 const useContactForm = () => {
-   const formRef = useRef<HTMLFormElement>(null);
+   const formElementRef = useRef<HTMLFormElement>(null);
+   // Armed by resetConfirmation, consumed the next time the form mounts. The
+   // form only remounts after the confirmation's exit animation (AnimatePresence
+   // mode="wait"), so an effect keyed on showConfirmation would run while the
+   // form is still absent; the ref callback is the one hook that fires on mount.
+   const focusFirstFieldOnMountRef = useRef(false);
+   const formRef = useCallback((node: HTMLFormElement | null) => {
+      formElementRef.current = node;
+      if (!node || !focusFirstFieldOnMountRef.current) return;
+      focusFirstFieldOnMountRef.current = false;
+      node
+         .querySelector<HTMLInputElement>('input[name="name"]')
+         ?.focus({ preventScroll: true });
+   }, []);
    const clearTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
       undefined,
    );
@@ -47,11 +60,11 @@ const useContactForm = () => {
          e.preventDefault();
 
          const honeypot =
-            formRef.current?.querySelector<HTMLInputElement>(
+            formElementRef.current?.querySelector<HTMLInputElement>(
                '[name="website"]',
             );
          if (honeypot?.value) return;
-         if (!formRef.current) return;
+         if (!formElementRef.current) return;
 
          if (emailConfig.validation_pattern) {
             const pattern = new RegExp(emailConfig.validation_pattern);
@@ -68,7 +81,7 @@ const useContactForm = () => {
             const result = await emailjs.sendForm(
                emailConfig.service_id,
                emailConfig.template_id,
-               formRef.current,
+               formElementRef.current,
                emailConfig.public_key,
             );
 
@@ -76,7 +89,7 @@ const useContactForm = () => {
                setSentName(formData.name);
                setShowConfirmation(true);
                setFormData({ name: "", email: "", message: "" });
-               formRef.current.reset();
+               formElementRef.current.reset();
             } else {
                // EmailJS resolved with a non-200 status -- surface it instead of
                // silently doing nothing.
@@ -100,6 +113,7 @@ const useContactForm = () => {
    }, []);
 
    const resetConfirmation = useCallback(() => {
+      focusFirstFieldOnMountRef.current = true;
       setShowConfirmation(false);
    }, []);
 

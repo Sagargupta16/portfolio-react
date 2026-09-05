@@ -20,7 +20,8 @@ const Achievement = () => {
       () =>
          [...rawCertifications].sort(
             (a, b) =>
-               (LEVEL_ORDER[a.level] ?? 99) - (LEVEL_ORDER[b.level] ?? 99),
+               (LEVEL_ORDER[a.level ?? ""] ?? 99) -
+               (LEVEL_ORDER[b.level ?? ""] ?? 99),
          ),
       [rawCertifications],
    );
