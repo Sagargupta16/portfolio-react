@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import StackAnim from "./animations/StackAnim";
 import PipelineAnim from "./animations/PipelineAnim";
 import NeuralNetAnim from "./animations/NeuralNetAnim";
@@ -34,11 +36,14 @@ const ServiceAnimation = ({
    compact = false,
 }: ServiceAnimationProps) => {
    const AnimComponent = ANIM_MAP[title];
+   const frameRef = useRef<HTMLDivElement>(null);
+   useFreezeAnimations(frameRef);
 
    if (!AnimComponent) return null;
 
    return (
       <div
+         ref={frameRef}
          aria-hidden="true"
          style={{
             transform: `scale(${compact ? SCALE_COMPACT : SCALE_DESKTOP})`,
