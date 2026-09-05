@@ -1,18 +1,13 @@
-import { useContext } from "react";
-import useMediaQuery from "./useMediaQuery";
+import { use } from "react";
 import { BreakpointContext, type BreakpointValue } from "./breakpointContext";
-import { MEDIA_QUERIES } from "@/constants/theme";
 
-/**
- * Access the current breakpoint state. Falls back to fresh useMediaQuery
- * calls if used outside BreakpointProvider -- keeps components self-sufficient
- * in tests.
- */
+/** Access breakpoint state supplied once at the application root. */
 const useBreakpoint = (): BreakpointValue => {
-   const ctx = useContext(BreakpointContext);
-   const fallbackIsMobile = useMediaQuery(MEDIA_QUERIES.mobile);
-   const fallbackIsTablet = useMediaQuery(MEDIA_QUERIES.tablet);
-   return ctx ?? { isMobile: fallbackIsMobile, isTablet: fallbackIsTablet };
+   const context = use(BreakpointContext);
+   if (!context) {
+      throw new Error("useBreakpoint must be used within BreakpointProvider");
+   }
+   return context;
 };
 
 export default useBreakpoint;

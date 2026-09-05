@@ -28,20 +28,16 @@ const CvDocument = ({ isMobile }: CvDocumentProps) => {
    const [failed, setFailed] = useState(false);
 
    useEffect(() => {
-      let cancelled = false;
-      fetch(MANIFEST_URL)
+      const controller = new AbortController();
+      fetch(MANIFEST_URL, { signal: controller.signal })
          .then((r) =>
             r.ok ? r.json() : Promise.reject(new Error(`${r.status}`)),
          )
-         .then((m: Manifest) => {
-            if (!cancelled) setManifest(m);
-         })
-         .catch(() => {
-            if (!cancelled) setFailed(true);
+         .then((m: Manifest) => setManifest(m))
+         .catch((error: Error) => {
+            if (error.name !== "AbortError") setFailed(true);
          });
-      return () => {
-         cancelled = true;
-      };
+      return () => controller.abort();
    }, []);
 
    const zoom = ZOOM_STEPS[zoomIdx];

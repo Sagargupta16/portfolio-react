@@ -64,7 +64,7 @@ const TrophyCard = ({ item, index }: TrophyCardProps) => {
          className="glass-card"
          initial={{ opacity: 0, y: 25, scale: 0.97 }}
          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-         viewport={{ once: false, margin: "0px 0px -40px 0px" }}
+         viewport={{ once: true, margin: "0px 0px -40px 0px" }}
          transition={{
             delay: index * 0.08,
             duration: 0.7,

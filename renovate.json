@@ -2,19 +2,14 @@
    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
    "extends": ["github>Sagargupta16/shared-workflows"],
    "description": [
-      "Repo-level exceptions to the shared preset. Each rule names the upstream constraint that blocks the upgrade; remove the rule when the constraint clears.",
-      "Closing a grouped major PR does not stop Renovate re-proposing it (#208 closed 2026-09-03, #209 opened with identical content), so blocked majors must be disabled here."
+      "Repo-level exceptions to the shared preset. Each rule names the compatibility constraint it protects; remove the rule when the constraint clears.",
+      "The TypeScript 7 compiler runs beside the TypeScript 6 API alias required by typescript-eslint. Override selectors stay protected from unsafe cross-major rewrites."
    ],
    "packageRules": [
       {
-         "description": "eslint-plugin-react (7.37.5) peers eslint <= ^9.7; ESLint 10 breaks pnpm lint with react/display-name getFilename errors. Re-enable when the plugin ships ESLint 10 support.",
-         "matchPackageNames": ["eslint", "@eslint/js"],
-         "matchUpdateTypes": ["major"],
-         "enabled": false
-      },
-      {
-         "description": "typescript-eslint (8.69.0) peers typescript >=4.8.4 <6.1.0. Re-enable when typescript-eslint supports TS 7.",
-         "matchPackageNames": ["typescript"],
+         "description": "typescript-eslint requires the TypeScript 6 programmatic API. Keep the dependency named typescript on @typescript/typescript6 while the separately aliased typescript-7 package supplies the tsc binary.",
+         "matchDepNames": ["typescript"],
+         "matchPackageNames": ["@typescript/typescript6"],
          "matchUpdateTypes": ["major"],
          "enabled": false
       },

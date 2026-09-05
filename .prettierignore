@@ -1,12 +1,8 @@
 # Build output
 build/
 
-# Generated, not hand-maintained. Formatting these only creates churn:
-# a tool rewrites them on its own schedule and undoes whatever we do here.
+# Generated lock file; pnpm owns its formatting.
 pnpm-lock.yaml
-# scripts/sync-credly.js writes this with JSON.stringify(_, null, 2) every week,
-# which is 2-space where our config is 3-space. See the Credly note in CLAUDE.md.
-data/achievements.json
 
 # Knowledge graph output (gitignored, but keep prettier off it locally too)
 graphify-out/

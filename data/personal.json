@@ -3,10 +3,10 @@
    "title": "Cloud Consultant, Professional Services (DevOps/MLOps) at AWS",
    "location": "Hyderabad, India",
    "intro": "Cloud consultant at AWS Professional Services. I build the AWS platforms that regulated companies migrate onto: Terraform, CI/CD, MLOps pipelines, and lately the agent tooling that makes that work faster.",
+   "role_label": "DevOps/MLOps Consultant @ AWS",
+   "headline": "Shipping cloud at scale.",
+   "availability": "Currently building cloud infrastructure at AWS",
    "contact": {
-      "email": "sg85207@gmail.com",
-      "phone": "+91-8770532413",
-      "linkedin": "sagar-gupta-16-10",
       "github": "Sagargupta16"
    },
    "about": {
@@ -54,7 +54,6 @@
       }
    ],
    "site": {
-      "counter_namespace": "sagargupta-portfolio",
       "tech_stack": ["React 19", "Vite 8", "Tailwind v4", "Motion", "Lenis"]
    }
 }

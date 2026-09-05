@@ -22,7 +22,7 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
          <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, margin: "0px 0px -60px 0px" }}
+            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
             variants={fadeInUp}
             style={{
                display: "flex",
@@ -83,6 +83,7 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
                   name={badge.name}
                   imageUrl={badge.imageUrl}
                   badgeUrl={badge.badgeUrl}
+                  expiryDate={badge.expiryDate}
                   size={badgeSize}
                   floatDelay={i * 0.4}
                   entranceDelay={i * 0.06}

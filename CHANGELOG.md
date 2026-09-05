@@ -2,6 +2,69 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.6.0] - 2026-09-05
+
+### Added
+
+- **Project covers rebuilt for accuracy.** Every one of the 29 animated cover scenes was researched against the project's actual code (28 local checkouts, one GitHub README) and rebuilt or re-variant-ed so it depicts the project's real mechanism instead of a category placeholder. Four new families: `GateScene` (MCP Toolkit middleware chain; AI Git Hooks pre-commit/pre-push), `TaxScene` (ITR Agent: Form 16 / AIS / 26AS into a rule ladder and ITR-form pick), `PluginScene` (Claude Skills marketplace install), `GuideScene` (Deploy Guide decision tree). `MlopsScene` rebuilt in place (ensemble, clinical gate, manual approval, endpoint, drift alarm, retrain loop). Project-specific variants replace shared bodies in `WebAppScene` (placement, tutoring, directory, contacts, ideas, travel), `DocsScene` (lint, list, agent-recipes, claude-recipes), `AutomationScene` (instagram carousel pipeline, badge README sync), `McpScene` (memory store/search, bedrock fan-out), `InfraScene` (blue-green canary; new GitHub Actions -> ECR -> ECS pipeline for the FARM repo, which never used Terraform), `GameScene` (per-game mechanics, PacMan phone overflow fixed), plus retunes of `GraphScene`, `MlScene`, `AuthScene`. Large families split into sibling folders (`covers/webapp`, `covers/game`, `covers/gate`, `covers/automation`).
+- **Service card animations and the About avatar rebuilt for accuracy.** The seven `*Anim.tsx` illustrations in `src/pages/services/animations/` now depict the actual deliverable behind each heading, researched from `experience.json`, `services.json`, `projects.json` and the resume: Cloud & DevOps shows a `.tf` module passing a tftest gate into an ALB blue-green cutover; AI/ML & MLOps shows a SageMaker pipeline with a quality gate, drift alarm and retrain arc; AI Agents & Tooling shows a `tools/call` round trip over stdio; AI-Driven Development shows `CLAUDE.md` plus a hook gating a diff; Cloud Consulting shows SCP and Security Hub controls landing on accounts; Full-Stack shows browser and phone clients through a FastAPI box into a Postgres table with a live socket push; Competitive Programming shows accepted submissions climbing a rating curve past the Knight threshold. Each stays within 8 animated nodes, 2 labels, `color` plus neutrals, transform and opacity only. `DevAvatar` drops the conic-gradient rainbow, blur halo and navy fills for a single blue-family orbit of eight real stack glyphs (AWS, Terraform, GitHub Actions, Docker, Python, Bash, TypeScript, Claude Code) around the monogram, honouring the in-app Reduced mode.
+- Scene rules now live in a reusable skill (`project-cover-scenes`): fixed signature, tint-plus-neutrals palette, transform/opacity loops with <= 12 animated nodes per variant, <= 4 mono labels from the project's own vocabulary, no OS-motion gating, Sonar-clean dispatch. Verified: 44 cards render (15 screenshots, 29 scenes) with 259 running animations under the All filter, zero console errors, no overflow at desktop or 375 px.
+- A central section registry now owns section IDs, labels, order, and surface classes for both rendering and navigation.
+- Eight domain-specific data modules keep unrelated JSON out of the eager bundle. `HeroLatest` now loads separately from the initial hero; the production entry fell from 127.00 kB (41.21 kB gzip) to 57.66 kB (17.93 kB gzip).
+- `scripts/validate-data.js` validates required fields, URLs, unique IDs, contribution states and merge dates, repository-star consistency, credential fields, EmailJS regex syntax, and exact project-cover parity. Every production build runs it first.
+- A persisted motion selector offers Full, System, and Reduced modes. Full is the default and preserves the complete visual treatment; System follows the OS preference; Reduced disables Lenis smoothing, looping/decorative movement, and counter animation while keeping project and service artwork visible.
+- Sixteen focused Vitest tests now cover the app shell, lazy section IDs and observation, shared breakpoint subscriptions, data invariants, URL/date helpers, project controls, education disclosures, timeline semantics, and motion overrides.
+
+### Changed
+
+- Each below-the-fold section now has its own Suspense placeholder and ErrorBoundary fallback, so a slow or failed chunk cannot block or replace the whole page.
+- Navigation observes both initial placeholders and their lazy replacements through IntersectionObserver plus MutationObserver.
+- Breakpoint consumers now use only the two provider-owned media-query subscriptions instead of creating two fallback subscriptions per component.
+- Project cards and experience timelines use explicit Details buttons instead of button-like containers around headings and external links.
+- Public hero/about copy moved into `personal.json`; contact icons now resolve from their authored data field; position-of-responsibility details are visible through native disclosures.
+- The manifest, 404 page, theme metadata, social descriptions, and README now match the current minimal-dark application and 40+ project dataset.
+- The social preview moved from a 1,146,794-byte PNG to a 97,675-byte JPEG.
+
+### Fixed
+
+- **Per-segment easing on every keyframe loop.** Motion drives `opacity` through the Web Animations API and `x`/`y`/`scale` through its JS frameloop; with a keyframe array plus `times` and a single `ease` string, WAAPI applied that easing across the whole iteration while the JS track eased per segment, so travelling dots faded at the wrong beats and hold segments shrank. 151 transitions across 25 cover and service animation files now pass an easing array of length keyframes minus one (a local `perSegment`/`loop` helper per file). Measured live with `document.getAnimations()`: whole-iteration easing on multi-keyframe animations went from 152 of 259 in the Projects grid and 18 of 51 in Services to 0 of both.
+
+- Removed five duplicate section IDs and repaired scroll-spy registration for sections that mount after the navigation effect.
+- Fixed the Quick Facts role rendering `at AWS @ AWS`.
+- External project links no longer have Enter intercepted by a parent pseudo-button.
+- Added filter pressed state, education disclosure relationships, correct `aria-current` tokens, an in-trap mobile menu close control, stronger focus outlines, semantic Stats/Footer headings, and explicit new-tab announcements.
+- Certification cards now display expiry state, including expired and soon-to-expire credentials.
+- Credly synchronization now prioritizes authoritative badge-template metadata; a live run corrected the Terraform Associate credential level from `Associate` to Credly's `Foundational` classification.
+- Contact delivery failures no longer mark the email field invalid; field bounds, toast dismissal, and persistent success confirmation now match actual state.
+- Dynamic viewport and safe-area sizing prevent hero/modal clipping under mobile browser chrome.
+- Stable once-only reveals, composed ambient beam transforms, non-overlapping fixed controls, and corrected mobile avatar sizing remove visual replay and layout defects.
+
+### Security
+
+- Removed unused duplicate email, phone, and LinkedIn PII from `personal.json`; canonical public contact data remains in `contact.json`.
+- Analytics honors `VITE_ANALYTICS_ENABLED=false`, and the unconditional no-script tracking pixel is gone.
+- Production artifacts no longer publish hidden source maps.
+- Resume and Credly requests now have timeouts; resume preparation verifies the PDF header and rendered page count; Credly retries only retryable failures and prioritizes authoritative level/category metadata.
+- pnpm now enforces strict peer dependencies without shameful hoisting.
+
+### CI
+
+- CI now enforces formatting, linting for application and Node scripts, strict types, data validation, all tests, a non-suppressed high-severity dependency audit, and a production build.
+- Pull requests no longer depend on the external resume release; only deployment builds fetch and render the CV.
+- Pages write and OIDC permissions now exist only on the deploy job. Credly syncs are serialized and validate generated data before committing.
+
+### Dependencies
+
+- Upgraded the project compiler from TypeScript 6.0.3 to TypeScript 7.0.2. The official `@typescript/typescript6` 6.0.2 compatibility package remains aliased as `typescript` for typescript-eslint's programmatic API, while the `typescript-7` alias owns the `tsc` binary.
+- Upgraded ESLint 9.39.5 -> 10.10.0 without peer suppressions. Replaced incompatible `eslint-plugin-react` and `eslint-plugin-jsx-a11y` with pinned `@eslint-react/eslint-plugin` 5.18.7 and `eslint-plugin-jsx-a11y-x` 0.2.0; the stricter React rules also drove fetch cleanup, render purity, ref naming, and React 19 context API fixes.
+- Upgraded Vitest 4.1.11 -> 5.0.0; all 16 tests pass unchanged.
+- Updated `lucide-react` 1.39.0 -> 1.40.0, `motion` 13.1.1 -> 13.2.0, and `@types/react-dom` 19.2.5 -> 19.2.7.
+- Standardized local and CI package management on pnpm 11.10.0. The previously merged lockfile/Renovate protections (#210, #214) remain for unsafe override-selector rewrites; their ESLint and compiler holds are superseded by the migrations above.
+
+### Removed
+
+- Removed the artificial preloader, global single-character navigation shortcuts, false system-status/visitor widget, stale generated schema fields, and the obsolete OG PNG.
+
 ## [4.5.0] - 2026-09-04
 
 ### Fixed

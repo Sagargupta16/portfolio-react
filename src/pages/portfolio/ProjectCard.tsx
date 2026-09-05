@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Eye } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import {
@@ -35,14 +35,6 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
    const visibleTags = data.tools_tech.slice(0, MAX_VISIBLE_TAGS);
    const hiddenTagCount = data.tools_tech.length - visibleTags.length;
 
-   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (!clickable) return;
-      if (e.key === "Enter" || e.key === " ") {
-         e.preventDefault();
-         onOpen?.();
-      }
-   };
-
    return (
       <motion.div
          className="glass-card project-card"
@@ -50,7 +42,7 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
-            cursor: clickable ? "pointer" : "default",
+            cursor: "default",
             height: "100%",
          }}
          layout
@@ -68,11 +60,6 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
             y: -6,
             transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
          }}
-         onClick={clickable ? onOpen : undefined}
-         onKeyDown={clickable ? handleKey : undefined}
-         role={clickable ? "button" : undefined}
-         tabIndex={clickable ? 0 : undefined}
-         aria-label={clickable ? `View details for ${data.title}` : undefined}
       >
          {/* Media: live screenshot or animated scene */}
          <ProjectCover
@@ -152,15 +139,39 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
             </div>
 
             {/* Links */}
-            {(hasGithub || hasLive) && (
+            {(clickable || hasGithub || hasLive) && (
                <div
                   style={{
                      display: "flex",
+                     flexWrap: "wrap",
                      gap: 8,
                      paddingTop: 12,
                      borderTop: "1px solid rgba(255,255,255,0.04)",
                   }}
                >
+                  {clickable && (
+                     <button
+                        type="button"
+                        onClick={onOpen}
+                        style={{
+                           display: "inline-flex",
+                           alignItems: "center",
+                           gap: 4,
+                           padding: "4px 12px",
+                           borderRadius: 10,
+                           fontSize: 12,
+                           fontWeight: 500,
+                           color: colors.accent,
+                           border: `1px solid ${colors.accent}4D`,
+                           background: "rgba(255, 255, 255, 0.03)",
+                           cursor: "pointer",
+                        }}
+                        aria-label={`View details for ${data.title}`}
+                     >
+                        <Eye size={14} />
+                        Details
+                     </button>
+                  )}
                   {hasGithub && (
                      <ProjectLink
                         href={data.github}

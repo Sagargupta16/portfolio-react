@@ -19,7 +19,7 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
          <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, margin: "0px 0px -60px 0px" }}
+            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
             variants={fadeInUp}
             style={{
                display: "flex",
@@ -81,6 +81,7 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
                   imageUrl={cert.imageUrl}
                   badgeUrl={cert.badgeUrl}
                   level={cert.level}
+                  expiryDate={cert.expiryDate}
                   size={badgeSize}
                   floatDelay={i * 0.5}
                   entranceDelay={i * 0.1}

@@ -25,7 +25,10 @@ const PAGES_DIR = path.join(PUBLIC_DIR, "resume-pages");
 const RENDER_SCALE = 4;
 
 console.log("Fetching latest resume PDF...");
-const res = await fetch(RESUME_URL, { redirect: "follow" });
+const res = await fetch(RESUME_URL, {
+   redirect: "follow",
+   signal: AbortSignal.timeout(30_000),
+});
 if (!res.ok || !res.body) {
    console.error(`Failed to fetch resume: HTTP ${res.status}`);
    process.exit(1);
@@ -34,7 +37,11 @@ await mkdir(PAGES_DIR, { recursive: true });
 await pipeline(res.body, createWriteStream(PDF_OUT));
 
 console.log("Rendering pages...");
-const document = await pdf(await readFile(PDF_OUT), { scale: RENDER_SCALE });
+const pdfBuffer = await readFile(PDF_OUT);
+if (pdfBuffer.subarray(0, 5).toString("ascii") !== "%PDF-") {
+   throw new Error("Downloaded resume is not a valid PDF");
+}
+const document = await pdf(pdfBuffer, { scale: RENDER_SCALE });
 
 let pageNum = 0;
 let width = 0;
@@ -52,6 +59,10 @@ for await (const pagePng of document) {
    // A mostly-white LaTeX page compresses tightly lossless anyway.
    await img.webp({ lossless: true, effort: 6 }).toFile(out);
    console.log(`  ${out}`);
+}
+
+if (pageNum === 0 || width === 0 || height === 0) {
+   throw new Error("Resume renderer produced no valid pages");
 }
 
 await writeFile(

@@ -1,5 +1,6 @@
 import { memo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { X } from "lucide-react";
 import { TEXT_PRIMARY, TEXT_SECONDARY, GLASS_BORDER } from "@/constants/theme";
 import useFocusTrap from "@hooks/useFocusTrap";
 
@@ -117,10 +118,30 @@ const MobileMenu = ({
                      }}
                   >
                      <button
+                        type="button"
+                        onClick={onClose}
+                        aria-label="Close navigation menu"
+                        style={{
+                           width: 44,
+                           height: 44,
+                           alignSelf: "flex-end",
+                           display: "inline-flex",
+                           alignItems: "center",
+                           justifyContent: "center",
+                           color: TEXT_SECONDARY,
+                           background: "transparent",
+                           border: "none",
+                           borderRadius: 10,
+                           cursor: "pointer",
+                        }}
+                     >
+                        <X size={20} />
+                     </button>
+                     <button
                         onClick={() => onNavigate("hero")}
                         style={rowStyle(activeSection === "hero")}
                         aria-current={
-                           activeSection === "hero" ? "true" : undefined
+                           activeSection === "hero" ? "location" : undefined
                         }
                      >
                         Home
@@ -135,7 +156,7 @@ const MobileMenu = ({
                               initial={{ opacity: 0, x: 20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: index * 0.03 }}
-                              aria-current={isActive ? "true" : undefined}
+                              aria-current={isActive ? "location" : undefined}
                               aria-label={`Navigate to ${section.label}`}
                            >
                               {section.label}

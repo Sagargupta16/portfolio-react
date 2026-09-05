@@ -26,7 +26,7 @@ const ProjectSourceLink = ({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`View ${projectName} source on GitHub`}
+      aria-label={`View ${projectName} source on GitHub (opens in a new tab)`}
       style={{
          display: "inline-flex",
          alignItems: "center",

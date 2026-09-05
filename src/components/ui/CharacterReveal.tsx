@@ -63,6 +63,7 @@ const CharacterReveal = ({
          {words.map((word, wi) => (
             <span
                key={word.id}
+               aria-hidden="true"
                style={{ display: "inline-block", whiteSpace: "nowrap" }}
             >
                {word.chars.map(({ char, id }) => {

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
 
@@ -6,139 +7,254 @@ interface CoverSceneProps {
 }
 
 /*
- * Kinfolk: two family trees that turn out to share a person. Left tree is
- * yours, right tree is a relative's, and the dashed link between the two
- * matching nodes resolves into a solid join. That consent-gated merge is the
- * whole product, so it gets the beat.
+ * Kinfolk: two family records that turn out to describe the same human.
+ * Record A on the left, Record B on the right, each an index-card pedigree
+ * (marriage line with the union bead sitting on it, a stem down to the
+ * sibling bar, children dropping off the bar) laid over two generation
+ * rails. The dashed hairline between the matching cards is the pending
+ * person_link; consent draws it solid, the join pulses, ACCEPTED lands, and
+ * then the link releases while both records stay exactly where they were.
  *
- * Coordinates are viewBox units (0..100 x, 0..60 y) so the graph scales with
- * the 16:10 slot instead of drifting on narrow cards.
+ * Coordinates are viewBox units (0..100 x, 0..60 y) so the pedigree scales
+ * with the 16:10 slot instead of drifting on narrow cards.
  */
 
-const CYCLE = 6.5;
+const CYCLE = 6;
+const EASE = "easeInOut";
+/*
+ * For the two HTML labels Motion hands opacity to WAAPI, where a single ease
+ * string stretches over the whole iteration and drags keyframes off their
+ * `times`. The SVG elements run on Motion's JS keyframe generator, which
+ * honours `times` regardless of ease shape; they take the same per-segment
+ * arrays so every beat reads off one storyboard clock.
+ */
+const eases = (segments: number, ease: "easeInOut" | "easeOut" = EASE) =>
+   Array.from({ length: segments }, () => ease);
+const GREEN = "#22c55e";
+const NON_SCALING = "non-scaling-stroke";
+const DIM_INK = "rgba(255,255,255,0.34)";
 
-/* Left tree: a union with two children. Right tree: same shape, mirrored. */
-const LEFT = {
-   a: { x: 16, y: 15 },
-   b: { x: 34, y: 15 },
-   c1: { x: 13, y: 40 },
-   c2: { x: 31, y: 40 },
-   union: { x: 25, y: 24 },
+/* Index-card footprint, viewBox units. */
+const CARD_W = 7;
+const CARD_H = 4.4;
+const HALF_W = CARD_W / 2;
+const HALF_H = CARD_H / 2;
+const BEAD = 2.6;
+const ELBOW = 1.5;
+
+/* Rows: parents on the marriage line, sibling bar, children. */
+const PARENT_Y = 15;
+const BAR_Y = 30;
+const CHILD_Y = 40;
+
+/* Generation rails behind each row, full slot width. */
+const RAILS = [
+   { y: 11, h: 8 },
+   { y: 36, h: 8 },
+];
+
+interface Point {
+   x: number;
+   y: number;
+}
+
+interface Family {
+   a: Point;
+   b: Point;
+   c1: Point;
+   c2: Point;
+   union: Point;
+}
+
+/* Left record: a union with two children. Right record: mirrored. */
+const LEFT: Family = {
+   a: { x: 16, y: PARENT_Y },
+   b: { x: 34, y: PARENT_Y },
+   c1: { x: 13, y: CHILD_Y },
+   c2: { x: 31, y: CHILD_Y },
+   union: { x: 25, y: PARENT_Y },
 };
-const RIGHT = {
-   a: { x: 66, y: 15 },
-   b: { x: 84, y: 15 },
-   c1: { x: 69, y: 40 },
-   c2: { x: 87, y: 40 },
-   union: { x: 75, y: 24 },
+const RIGHT: Family = {
+   a: { x: 66, y: PARENT_Y },
+   b: { x: 84, y: PARENT_Y },
+   c1: { x: 69, y: CHILD_Y },
+   c2: { x: 87, y: CHILD_Y },
+   union: { x: 75, y: PARENT_Y },
 };
 
-/* The shared human: LEFT.b and RIGHT.a are the same person in both trees. */
-const SHARED_FROM = LEFT.b;
-const SHARED_TO = RIGHT.a;
+/* The shared human: LEFT.b and RIGHT.a are the same person in both records. */
+const LINK_FROM: Point = { x: LEFT.b.x + HALF_W, y: PARENT_Y };
+const LINK_TO: Point = { x: RIGHT.a.x - HALF_W, y: PARENT_Y };
+const LINK_MID_X = (LINK_FROM.x + LINK_TO.x) / 2;
+const LINK_PATH = `M ${LINK_FROM.x} ${LINK_FROM.y} L ${LINK_TO.x} ${LINK_TO.y}`;
 
-const label: React.CSSProperties = {
+const LABELS = {
+   recordA: "RECORD A",
+   recordB: "RECORD B",
+   samePerson: "SAME PERSON",
+   accepted: "ACCEPTED",
+};
+
+const label: CSSProperties = {
    fontFamily: MONO_FONT,
-   fontSize: 6.5,
+   fontSize: 7,
    fontWeight: 700,
    letterSpacing: "0.14em",
    textTransform: "uppercase",
+   position: "absolute",
+};
+
+/*
+ * Breathing for ordinary cards; the shared card lights up during beat 2,
+ * holds lit through the join, and dims again as the link releases.
+ */
+const CARD_MOTION = {
+   plain: { opacity: [0.5, 0.85, 0.5], times: [0, 0.3, 0.7] },
+   shared: { opacity: [0.6, 0.6, 1, 1, 0.6], times: [0, 0.23, 0.38, 0.88, 1] },
 };
 
 const Person = ({
-   cx,
-   cy,
+   at,
    tint,
    delay,
-   highlight,
+   shared = false,
 }: {
-   cx: number;
-   cy: number;
+   at: Point;
    tint: string;
    delay: number;
-   highlight?: boolean;
-}) => (
-   <motion.circle
-      cx={cx}
-      cy={cy}
-      r={3.4}
-      fill={highlight ? `${tint}30` : `${tint}12`}
-      stroke={highlight ? tint : `${tint}55`}
-      strokeWidth={highlight ? 1.2 : 0.9}
-      vectorEffect="non-scaling-stroke"
-      initial={{ opacity: 0.55 }}
-      animate={{ opacity: highlight ? [0.6, 1, 0.6] : [0.5, 0.85, 0.5] }}
-      transition={{
-         duration: CYCLE,
-         repeat: Infinity,
-         delay,
-         times: [0, 0.3, 0.7],
-         ease: "easeInOut",
-      }}
-   />
-);
+   shared?: boolean;
+}) => {
+   const beat = shared ? CARD_MOTION.shared : CARD_MOTION.plain;
+   return (
+      <motion.rect
+         x={at.x - HALF_W}
+         y={at.y - HALF_H}
+         width={CARD_W}
+         height={CARD_H}
+         rx={0.8}
+         fill={shared ? `${tint}30` : `${tint}12`}
+         stroke={shared ? tint : `${tint}55`}
+         strokeWidth={shared ? 1.2 : 0.9}
+         vectorEffect={NON_SCALING}
+         initial={{ opacity: beat.opacity[0] }}
+         animate={{ opacity: beat.opacity }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            delay: shared ? 0 : delay,
+            times: beat.times,
+            ease: eases(beat.times.length - 1),
+         }}
+      />
+   );
+};
 
-/* Parentage hangs off the union node, never off a parent pair. */
-const Family = ({
+/* Marriage line, union bead on the line, stem to the sibling bar, elbows. */
+const Lineage = ({ t, tint }: { t: Family; tint: string }) => {
+   const barTop = BAR_Y + ELBOW;
+   const childTop = CHILD_Y - HALF_H;
+   return (
+      <>
+         <path
+            d={`M ${t.a.x + HALF_W} ${t.a.y} L ${t.b.x - HALF_W} ${t.b.y}`}
+            stroke={`${tint}30`}
+            strokeWidth={0.8}
+            fill="none"
+            vectorEffect={NON_SCALING}
+         />
+         <path
+            d={`M ${t.union.x} ${t.union.y} L ${t.union.x} ${BAR_Y}`}
+            stroke={`${tint}2e`}
+            strokeWidth={0.8}
+            fill="none"
+            vectorEffect={NON_SCALING}
+         />
+         <path
+            d={`M ${t.c1.x} ${childTop} L ${t.c1.x} ${barTop} Q ${t.c1.x} ${BAR_Y} ${t.c1.x + ELBOW} ${BAR_Y} L ${t.c2.x - ELBOW} ${BAR_Y} Q ${t.c2.x} ${BAR_Y} ${t.c2.x} ${barTop} L ${t.c2.x} ${childTop}`}
+            stroke={`${tint}2e`}
+            strokeWidth={0.8}
+            fill="none"
+            vectorEffect={NON_SCALING}
+         />
+         <rect
+            x={t.union.x - BEAD / 2}
+            y={t.union.y - BEAD / 2}
+            width={BEAD}
+            height={BEAD}
+            rx={0.6}
+            fill={`${tint}45`}
+         />
+      </>
+   );
+};
+
+/* Parentage hangs off the union bead, never off a parent pair. */
+const Record = ({
    t,
    tint,
    delay,
    sharedKey,
 }: {
-   t: typeof LEFT;
+   t: Family;
    tint: string;
    delay: number;
    sharedKey: "a" | "b";
 }) => (
    <>
-      {/* partner bar into the union node */}
-      <path
-         d={`M ${t.a.x} ${t.a.y} L ${t.b.x} ${t.b.y}`}
-         stroke={`${tint}30`}
-         strokeWidth={0.8}
-         fill="none"
-         vectorEffect="non-scaling-stroke"
-      />
-      {/* union -> each child */}
-      <path
-         d={`M ${t.union.x} ${t.union.y} L ${t.union.x} ${t.union.y + 6} L ${t.c1.x} ${t.union.y + 6} L ${t.c1.x} ${t.c1.y}`}
-         stroke={`${tint}2e`}
-         strokeWidth={0.8}
-         fill="none"
-         vectorEffect="non-scaling-stroke"
-      />
-      <path
-         d={`M ${t.union.x} ${t.union.y} L ${t.union.x} ${t.union.y + 6} L ${t.c2.x} ${t.union.y + 6} L ${t.c2.x} ${t.c2.y}`}
-         stroke={`${tint}2e`}
-         strokeWidth={0.8}
-         fill="none"
-         vectorEffect="non-scaling-stroke"
-      />
-      {/* the union itself, drawn small so it reads as a joint not a person */}
-      <rect
-         x={t.union.x - 1.3}
-         y={t.union.y - 1.3}
-         width={2.6}
-         height={2.6}
-         rx={0.6}
-         fill={`${tint}45`}
-      />
+      <Lineage t={t} tint={tint} />
+      <Person at={t.a} tint={tint} delay={delay} shared={sharedKey === "a"} />
       <Person
-         cx={t.a.x}
-         cy={t.a.y}
-         tint={tint}
-         delay={delay}
-         highlight={sharedKey === "a"}
-      />
-      <Person
-         cx={t.b.x}
-         cy={t.b.y}
+         at={t.b}
          tint={tint}
          delay={delay + 0.2}
-         highlight={sharedKey === "b"}
+         shared={sharedKey === "b"}
       />
-      <Person cx={t.c1.x} cy={t.c1.y} tint={tint} delay={delay + 0.4} />
-      <Person cx={t.c2.x} cy={t.c2.y} tint={tint} delay={delay + 0.6} />
+      <Person at={t.c1} tint={tint} delay={delay + 0.4} />
+      <Person at={t.c2} tint={tint} delay={delay + 0.6} />
+   </>
+);
+
+/* Pending hairline, consent draw, and the fused-identity pulse. */
+const PersonLink = ({ tint }: { tint: string }) => (
+   <>
+      <path
+         d={LINK_PATH}
+         stroke={`${tint}2a`}
+         strokeWidth={1}
+         strokeDasharray="2 2"
+         fill="none"
+         vectorEffect={NON_SCALING}
+      />
+      <motion.path
+         d={LINK_PATH}
+         stroke={GREEN}
+         strokeWidth={1.4}
+         strokeLinecap="round"
+         fill="none"
+         vectorEffect={NON_SCALING}
+         initial={{ pathLength: 0, opacity: 0 }}
+         animate={{ pathLength: [0, 0, 1, 1, 1], opacity: [0, 0, 1, 1, 0] }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            times: [0, 0.35, 0.55, 0.9, 1],
+            ease: eases(4),
+         }}
+      />
+      <motion.circle
+         cx={LINK_MID_X}
+         cy={PARENT_Y}
+         r={2}
+         fill={GREEN}
+         initial={{ opacity: 0, scale: 0.4 }}
+         animate={{ opacity: [0, 0, 1, 0], scale: [0.4, 0.4, 1.5, 0.4] }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            times: [0, 0.55, 0.62, 0.72],
+            ease: eases(3, "easeOut"),
+         }}
+      />
    </>
 );
 
@@ -174,94 +290,69 @@ const GraphScene = ({ tint }: CoverSceneProps) => (
             height: "100%",
          }}
       >
-         <Family t={LEFT} tint={tint} delay={0} sharedKey="b" />
-         <Family t={RIGHT} tint={tint} delay={0.5} sharedKey="a" />
+         {/* generation rails: one band per row, no text */}
+         {RAILS.map((rail) => (
+            <rect
+               key={rail.y}
+               x={0}
+               y={rail.y}
+               width={100}
+               height={rail.h}
+               fill="rgba(255,255,255,0.03)"
+            />
+         ))}
 
-         {/* the candidate match, dashed until both sides consent */}
-         <path
-            d={`M ${SHARED_FROM.x} ${SHARED_FROM.y} L ${SHARED_TO.x} ${SHARED_TO.y}`}
-            stroke={`${tint}2a`}
-            strokeWidth={1}
-            strokeDasharray="2 2"
-            fill="none"
-            vectorEffect="non-scaling-stroke"
-         />
-         {/* consent lands: the link resolves solid, then releases */}
-         <motion.path
-            d={`M ${SHARED_FROM.x} ${SHARED_FROM.y} L ${SHARED_TO.x} ${SHARED_TO.y}`}
-            stroke="#22c55e"
-            strokeWidth={1.4}
-            strokeLinecap="round"
-            fill="none"
-            vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: [0, 1, 1, 1], opacity: [0, 1, 1, 0] }}
-            transition={{
-               duration: CYCLE,
-               repeat: Infinity,
-               times: [0.35, 0.55, 0.85, 1],
-               ease: "easeInOut",
-            }}
-         />
-         {/* the fused identity pulses once the join completes */}
-         <motion.circle
-            cx={(SHARED_FROM.x + SHARED_TO.x) / 2}
-            cy={SHARED_FROM.y}
-            r={2}
-            fill="#22c55e"
-            initial={{ opacity: 0, scale: 0.4 }}
-            animate={{ opacity: [0, 0, 1, 0], scale: [0.4, 0.4, 1.5, 0.4] }}
-            transition={{
-               duration: CYCLE,
-               repeat: Infinity,
-               times: [0, 0.52, 0.62, 0.8],
-               ease: "easeOut",
-            }}
-         />
+         <Record t={LEFT} tint={tint} delay={0} sharedKey="b" />
+         <Record t={RIGHT} tint={tint} delay={0.5} sharedKey="a" />
+         <PersonLink tint={tint} />
       </svg>
 
-      {/* which tree is which */}
-      <div
-         style={{
-            ...label,
-            position: "absolute",
-            left: "7%",
-            bottom: "9%",
-            color: "rgba(255,255,255,0.34)",
-         }}
-      >
-         my tree
+      {/* which record is which */}
+      <div style={{ ...label, left: "7%", bottom: "9%", color: DIM_INK }}>
+         {LABELS.recordA}
       </div>
-      <div
-         style={{
-            ...label,
-            position: "absolute",
-            right: "7%",
-            bottom: "9%",
-            color: "rgba(255,255,255,0.34)",
-         }}
-      >
-         cousin
+      <div style={{ ...label, right: "7%", bottom: "9%", color: DIM_INK }}>
+         {LABELS.recordB}
       </div>
+      {/* rises with the consent draw, settles back as the link releases */}
       <motion.div
-         animate={{ opacity: [0.35, 0.35, 0.9, 0.35] }}
+         animate={{ opacity: [0.35, 0.35, 0.9, 0.9, 0.35] }}
          transition={{
             duration: CYCLE,
             repeat: Infinity,
-            times: [0, 0.52, 0.64, 0.85],
+            times: [0, 0.35, 0.55, 0.9, 1],
+            ease: eases(4),
          }}
          style={{
             ...label,
-            position: "absolute",
             left: 0,
             right: 0,
             top: "6%",
             textAlign: "center",
-            fontSize: 6,
-            color: "#22c55ecc",
+            color: `${GREEN}cc`,
          }}
       >
-         same person
+         {LABELS.samePerson}
+      </motion.div>
+      {/* lands under the midpoint as the join pulses */}
+      <motion.div
+         animate={{ opacity: [0, 0, 0.9, 0.9, 0] }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            times: [0, 0.55, 0.66, 0.9, 1],
+            ease: eases(4),
+         }}
+         style={{
+            ...label,
+            left: 0,
+            right: 0,
+            top: "32%",
+            textAlign: "center",
+            color: `${GREEN}cc`,
+         }}
+      >
+         {LABELS.accepted}
       </motion.div>
    </div>
 );

@@ -25,11 +25,23 @@ const CERTIFICATION_PATTERNS = [
    /terraform associate/i,
 ];
 
-function isCertification(badgeName) {
-   return CERTIFICATION_PATTERNS.some((p) => p.test(badgeName));
+function isCertification(badgeOrName) {
+   const badge = typeof badgeOrName === "string" ? null : badgeOrName;
+   const name =
+      typeof badgeOrName === "string"
+         ? badgeOrName
+         : badge?.badge_template?.name || "";
+   const category = badge?.badge_template?.type_category || "";
+   if (/certification/i.test(category)) return true;
+   return CERTIFICATION_PATTERNS.some((pattern) => pattern.test(name));
 }
 
 function mapLevel(badge) {
+   const declaredLevel = badge.badge_template?.level || "";
+   if (/professional/i.test(declaredLevel)) return "Professional";
+   if (/associate/i.test(declaredLevel)) return "Associate";
+   if (/foundational|practitioner/i.test(declaredLevel)) return "Foundational";
+
    const name = badge.badge_template?.name || "";
    if (/professional/i.test(name)) return "Professional";
    if (/associate/i.test(name)) return "Associate";
@@ -52,7 +64,7 @@ function getIssuerName(badge) {
 
 function getBadgeType(badge) {
    const name = badge.badge_template?.name || "";
-   if (isCertification(name)) return "Industry Certification";
+   if (isCertification(badge)) return "Industry Certification";
    if (/knowledge/i.test(name)) return "Knowledge Badge";
    if (/partner/i.test(name)) return "Partner Badge";
    if (/proficient|well-architected/i.test(name)) return "Proficiency Badge";
@@ -78,6 +90,7 @@ function transformBadge(badge, id) {
 
    const level = mapLevel(badge);
    if (level) entry.level = level;
+   else if (type === "Industry Certification") entry.level = "Unspecified";
 
    const expiry = formatDate(badge.expires_at_date || badge.expires_at);
    if (expiry) entry.expiryDate = expiry;
@@ -99,7 +112,9 @@ async function fetchBadges() {
    let lastError;
    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
-         const res = await fetch(API_URL);
+         const res = await fetch(API_URL, {
+            signal: AbortSignal.timeout(15_000),
+         });
          if (res.ok) {
             const json = await res.json();
             const badges = json.data || json;
@@ -112,11 +127,12 @@ async function fetchBadges() {
          }
          const retriable = res.status >= 500 || res.status === 429;
          const msg = `Credly API returned ${res.status}: ${res.statusText}`;
-         if (!retriable || attempt === MAX_RETRIES) throw new Error(msg);
-         console.warn(`  attempt ${attempt} failed (${msg}), retrying…`);
+         const error = new Error(msg);
+         error.retriable = retriable;
+         throw error;
       } catch (err) {
          lastError = err;
-         if (attempt === MAX_RETRIES) throw err;
+         if (err.retriable === false || attempt === MAX_RETRIES) throw err;
          console.warn(`  attempt ${attempt} error: ${err.message}, retrying…`);
       }
       await sleep(INITIAL_BACKOFF_MS * 2 ** (attempt - 1));
@@ -142,11 +158,10 @@ async function main() {
    });
 
    for (const badge of sorted) {
-      const name = badge.badge_template?.name || "";
-      // Skip retired badges
+      // Skip revoked badges
       if (badge.state === "revoked") continue;
 
-      if (isCertification(name)) {
+      if (isCertification(badge)) {
          certifications.push(transformBadge(badge, certId++));
       } else {
          learningBadges.push(transformBadge(badge, badgeId++));
@@ -171,7 +186,7 @@ async function main() {
       coding_platform_stats: existing.coding_platform_stats || {},
    };
 
-   writeFileSync(DATA_PATH, JSON.stringify(updated, null, 2) + "\n", "utf8");
+   writeFileSync(DATA_PATH, JSON.stringify(updated, null, 3) + "\n", "utf8");
    console.log(`Updated ${DATA_PATH}`);
 
    // Summary

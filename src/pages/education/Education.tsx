@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { getEducation } from "@data/dataLoader";
+import { getEducation } from "@data/education";
 import { staggerContainer } from "@utils/animations";
 import { MAX_WIDTH_NARROW } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";

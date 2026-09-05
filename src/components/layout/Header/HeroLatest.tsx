@@ -6,7 +6,7 @@ import {
    getCollaborativeProjects,
    getOtherProjects,
    getCommunityProjects,
-} from "@data/dataLoader";
+} from "@data/projects";
 import { parseDate, isValidUrl } from "@pages/portfolio/portfolioConstants";
 import { staggerItem } from "@utils/animations";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";

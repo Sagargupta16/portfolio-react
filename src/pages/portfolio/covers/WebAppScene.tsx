@@ -1,408 +1,277 @@
+import type { ComponentType, CSSProperties } from "react";
+import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
-import { MONO_FONT } from "@/constants/theme";
+import ContactsPanel from "./webapp/ContactsPanel";
+import DefaultPanel from "./webapp/DefaultPanel";
+import DirectoryPanel from "./webapp/DirectoryPanel";
+import PlacementPanel from "./webapp/PlacementPanel";
+import SocialPanel from "./webapp/SocialPanel";
+import { CREATE_IDEA_PULSE } from "./webapp/socialBeats";
+import TravelPanel from "./webapp/TravelPanel";
+import TutoringPanel from "./webapp/TutoringPanel";
+import {
+   LABEL,
+   WHITE_03,
+   WHITE_06,
+   WHITE_08,
+   WHITE_10,
+   WHITE_12,
+   WHITE_18,
+   WHITE_85,
+   type NavPulse,
+   type PanelProps,
+} from "./webapp/shared";
 
 interface CoverSceneProps {
    tint: string;
    variant?: string;
 }
 
-/* Full-stack web app: browser frame with an animated dashboard skeleton.
-   Variants swap the content panel: placement | language | social | travel. */
+/* Full-stack web app: browser frame with a sidebar rail and a content panel.
+   Each variant swaps the panel (covers/webapp/*Panel.tsx) and configures the
+   rail: placement | language | directory | contacts | social | travel. */
 
-const label: React.CSSProperties = {
-   fontFamily: MONO_FONT,
-   fontSize: 7,
-   fontWeight: 700,
-   letterSpacing: 1,
-   textTransform: "uppercase",
+interface FrameConfig {
+   bars: number; // sidebar nav items
+   active: number; // highlighted nav index
+   whiteActive?: boolean; // solid white active pill instead of tint
+   sidebarHidden?: boolean; // top-header apps have no rail
+   sidebarEnter?: boolean; // rail slides in at the start of each cycle
+   pulse?: NavPulse; // one nav item lit in step with the panel's beats
+   headerBar: boolean; // page-title bar above the panel
+}
+
+const DEFAULT_FRAME: FrameConfig = { bars: 3, active: 0, headerBar: true };
+
+const FRAME_BY_VARIANT: Record<string, FrameConfig> = {
+   placement: { bars: 4, active: 2, headerBar: true },
+   language: { bars: 3, active: 0, headerBar: true },
+   directory: { bars: 5, active: 3, sidebarEnter: true, headerBar: true },
+   contacts: { bars: 5, active: 1, whiteActive: true, headerBar: true },
+   social: { bars: 5, active: 0, pulse: CREATE_IDEA_PULSE, headerBar: true },
+   travel: { bars: 0, active: -1, sidebarHidden: true, headerBar: false },
 };
 
-const VARIANT_CHIP: Record<string, string> = {
-   placement: "PLACEMENTS",
+const PANEL_BY_VARIANT: Record<string, ComponentType<PanelProps>> = {
+   placement: PlacementPanel,
+   language: TutoringPanel,
+   directory: DirectoryPanel,
+   contacts: ContactsPanel,
+   social: SocialPanel,
+   travel: TravelPanel,
+};
+
+const CHIP_BY_VARIANT: Record<string, string> = {
    language: "TUTORS",
-   social: "THREADS",
-   travel: "JOURNAL",
+   directory: "ALUMNI",
    contacts: "CONTACTS",
+   social: "IDEAS",
+   travel: "JOURNALS",
 };
 
-const PlacementPanel = ({ tint }: { tint: string }) => (
+const BAR_INDEXES = [0, 1, 2, 3, 4, 5];
+const CHROME_DOTS = [0, 1, 2];
+const RAIL_WIDTH = 40;
+const RAIL_SLIDE = RAIL_WIDTH + 16;
+
+const EASE: Easing = "easeInOut";
+
+/* One ease per keyframe segment: Motion runs opacity through WAAPI, which
+   would spread a single ease over the whole iteration while transforms ease
+   each segment, pulling the two tracks off the beats. */
+const perSegment = (keyframeCount: number, ease: Easing = EASE): Easing[] =>
+   Array.from({ length: keyframeCount - 1 }, () => ease);
+
+/* Infinite keyframe loop with per-segment easing. */
+const loop = (
+   duration: number,
+   times: number[],
+   ease: Easing = EASE,
+): Transition => ({
+   duration,
+   repeat: Infinity,
+   times,
+   ease: perSegment(times.length, ease),
+});
+
+const RAIL: CSSProperties = {
+   width: RAIL_WIDTH,
+   flexShrink: 0,
+   borderRight: `1px solid ${WHITE_06}`,
+   padding: 7,
+   display: "flex",
+   flexDirection: "column",
+   gap: 4,
+};
+
+const ROOT: CSSProperties = {
+   position: "absolute",
+   inset: 0,
+   overflow: "hidden",
+   background: "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)",
+};
+
+const WINDOW: CSSProperties = {
+   position: "absolute",
+   left: "12%",
+   right: "12%",
+   top: "12%",
+   bottom: "14%",
+   borderRadius: 8,
+   border: `1px solid ${WHITE_12}`,
+   background: "rgba(255,255,255,0.02)",
+   overflow: "hidden",
+};
+
+const CONTENT: CSSProperties = {
+   flex: 1,
+   minWidth: 0,
+   padding: 9,
+   display: "flex",
+   flexDirection: "column",
+   gap: 6,
+};
+
+const HEADER_BAR: CSSProperties = {
+   display: "block",
+   height: 7,
+   width: "55%",
+   borderRadius: 3,
+   background: WHITE_12,
+   flexShrink: 0,
+};
+
+const CHIP: CSSProperties = {
+   ...LABEL,
+   position: "absolute",
+   right: "13%",
+   top: "15%",
+   padding: "2px 6px",
+   borderRadius: 3,
+};
+
+const ChromeBar = () => (
    <div
       style={{
+         height: 16,
          display: "flex",
-         alignItems: "flex-end",
-         gap: 6,
-         height: 42,
-         padding: "0 4px",
+         alignItems: "center",
+         gap: 3,
+         padding: "0 8px",
+         borderBottom: `1px solid ${WHITE_08}`,
+         background: WHITE_03,
       }}
    >
-      {[26, 38, 18].map((h, i) => (
-         <motion.div
-            key={h}
-            animate={{ scaleY: [0.3, 1, 1, 0.3] }}
-            transition={{
-               duration: 4,
-               repeat: Infinity,
-               delay: i * 0.25,
-               times: [0, 0.25, 0.85, 1],
-            }}
+      {CHROME_DOTS.map((i) => (
+         <span
+            key={i}
             style={{
-               width: 14,
-               height: h,
-               borderRadius: "3px 3px 0 0",
-               background: i === 1 ? `${tint}80` : `${tint}40`,
-               transformOrigin: "bottom",
+               width: 4,
+               height: 4,
+               borderRadius: "50%",
+               background: WHITE_18,
             }}
          />
       ))}
-   </div>
-);
-
-const LanguagePanel = ({ tint }: { tint: string }) => (
-   <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-      {/* Two chat bubbles alternating typing dots */}
-      {[0, 1].map((side) => {
-         const bubbleBorder =
-            side === 0 ? "rgba(255,255,255,0.14)" : `${tint}40`;
-         return (
-            <div
-               key={side}
-               style={{
-                  alignSelf: side === 0 ? "flex-start" : "flex-end",
-                  display: "flex",
-                  gap: 3,
-                  padding: "5px 8px",
-                  borderRadius:
-                     side === 0 ? "8px 8px 8px 2px" : "8px 8px 2px 8px",
-                  border: `1px solid ${bubbleBorder}`,
-                  background:
-                     side === 0 ? "rgba(255,255,255,0.04)" : `${tint}0c`,
-               }}
-            >
-               {[0, 1, 2].map((d) => (
-                  <motion.span
-                     key={d}
-                     animate={{ opacity: [0.2, 1, 0.2] }}
-                     transition={{
-                        duration: 1.2,
-                        repeat: Infinity,
-                        delay: side * 1.5 + d * 0.2,
-                     }}
-                     style={{
-                        width: 3,
-                        height: 3,
-                        borderRadius: "50%",
-                        background: "rgba(255,255,255,0.6)",
-                     }}
-                  />
-               ))}
-            </div>
-         );
-      })}
-      {/* Live call dot */}
-      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-         <motion.span
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 1.6, repeat: Infinity }}
-            style={{
-               width: 5,
-               height: 5,
-               borderRadius: "50%",
-               background: "#22c55e",
-            }}
-         />
-         <span style={{ ...label, color: "rgba(255,255,255,0.4)" }}>
-            Live call
-         </span>
-      </div>
-   </div>
-);
-
-const SocialPanel = ({ tint }: { tint: string }) => (
-   <div
-      style={{
-         border: "1px solid rgba(255,255,255,0.1)",
-         borderRadius: 6,
-         padding: "6px 8px",
-      }}
-   >
-      <div
+      <span
          style={{
-            height: 3,
-            width: "70%",
-            borderRadius: 2,
-            background: "rgba(255,255,255,0.18)",
-         }}
-      />
-      <div
-         style={{
-            height: 3,
-            width: "45%",
-            borderRadius: 2,
-            background: "rgba(255,255,255,0.1)",
-            marginTop: 3,
-         }}
-      />
-      <div
-         style={{ display: "flex", gap: 8, marginTop: 7, alignItems: "center" }}
-      >
-         <motion.span
-            animate={{ scale: [1, 1.35, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            style={{
-               width: 6,
-               height: 6,
-               borderRadius: "50%",
-               background: tint,
-            }}
-         />
-         <motion.span
-            animate={{ scale: [1, 1.25, 1] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-            style={{
-               width: 6,
-               height: 6,
-               borderRadius: "50%",
-               background: "rgba(255,255,255,0.3)",
-            }}
-         />
-         {/* threaded reply line */}
-         <div
-            style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }}
-         />
-      </div>
-   </div>
-);
-
-const TravelPanel = ({ tint }: { tint: string }) => (
-   <div
-      style={{
-         border: "1px solid rgba(255,255,255,0.1)",
-         borderRadius: 6,
-         overflow: "hidden",
-         position: "relative",
-         height: 46,
-      }}
-   >
-      <div
-         className="skeleton"
-         style={{ position: "absolute", inset: 0, opacity: 0.5 }}
-      />
-      {/* Location pin dropping */}
-      <motion.div
-         animate={{ y: [-14, 0, 0, -14], opacity: [0, 1, 1, 0] }}
-         transition={{
-            duration: 3.4,
-            repeat: Infinity,
-            times: [0, 0.2, 0.85, 1],
-         }}
-         style={{
-            position: "absolute",
-            left: "46%",
-            top: "26%",
-            width: 10,
-            height: 10,
-            borderRadius: "50% 50% 50% 0",
-            transform: "rotate(-45deg)",
-            background: tint,
-         }}
-      />
-      {/* Like dot */}
-      <motion.span
-         animate={{ scale: [1, 1.3, 1] }}
-         transition={{ duration: 1.8, repeat: Infinity }}
-         style={{
-            position: "absolute",
-            right: 6,
-            bottom: 5,
-            width: 6,
+            marginLeft: 8,
             height: 6,
-            borderRadius: "50%",
-            background: "#22c55e",
+            width: "40%",
+            borderRadius: 3,
+            background: WHITE_06,
          }}
       />
    </div>
 );
 
-/* Contact rows with an avatar and a relationship strand to the next person. */
-const ContactsPanel = ({ tint }: { tint: string }) => (
-   <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-      {[0, 1, 2].map((row) => (
-         <motion.div
-            key={row}
-            animate={{ opacity: [0.3, 0.85, 0.3] }}
-            transition={{ duration: 3.2, repeat: Infinity, delay: row * 0.5 }}
-            style={{ display: "flex", alignItems: "center", gap: 6 }}
-         >
-            <span
-               style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  border: `1px solid ${tint}70`,
-                  background: `${tint}20`,
-                  flexShrink: 0,
-               }}
-            />
-            <span
-               style={{
-                  height: 3,
-                  flex: 1,
-                  borderRadius: 2,
-                  background:
-                     row === 0 ? `${tint}55` : "rgba(255,255,255,0.14)",
-               }}
-            />
-            <span
-               style={{
-                  height: 3,
-                  width: 14,
-                  borderRadius: 2,
-                  background: "rgba(255,255,255,0.09)",
-               }}
-            />
-         </motion.div>
-      ))}
-   </div>
-);
+const NAV_BAR: CSSProperties = {
+   position: "relative",
+   display: "block",
+   height: 5,
+   borderRadius: 2,
+   overflow: "hidden",
+};
 
-const DefaultPanel = ({ tint }: { tint: string }) => (
-   <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-      {[0, 1, 2].map((row) => (
+/* One nav item: the active one is a filled pill; the `pulse` item carries a
+   tint overlay that lights up in step with the panel (Social's Create Idea).
+   The pulse's transition comes from socialBeats with a single ease, so the
+   overlay re-derives one ease per segment from its keyframe count. */
+const NavBar = ({
+   tint,
+   config,
+   index,
+}: {
+   tint: string;
+   config: FrameConfig;
+   index: number;
+}) => {
+   const activeBg = config.whiteActive ? WHITE_85 : `${tint}60`;
+   const pulse = config.pulse;
+   return (
+      <span
+         style={{
+            ...NAV_BAR,
+            background: index === config.active ? activeBg : WHITE_10,
+         }}
+      >
+         {pulse?.index === index && (
+            <motion.span
+               animate={{ opacity: pulse.opacity }}
+               transition={{
+                  ...pulse.transition,
+                  ease: perSegment(pulse.opacity.length),
+               }}
+               style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: `${tint}99`,
+               }}
+            />
+         )}
+      </span>
+   );
+};
+
+/* Nav rail: static bars, one active. `sidebarEnter` slides the rail in at
+   the start of each cycle (a sidenav mounting after login). */
+const Sidebar = ({ tint, config }: { tint: string; config: FrameConfig }) => {
+   const bars = BAR_INDEXES.slice(0, config.bars).map((i) => (
+      <NavBar key={i} tint={tint} config={config} index={i} />
+   ));
+
+   if (config.sidebarEnter) {
+      return (
          <motion.div
-            key={row}
-            animate={{ opacity: [0.25, 0.7, 0.25] }}
-            transition={{ duration: 2.6, repeat: Infinity, delay: row * 0.4 }}
-            style={{
-               height: 8,
-               borderRadius: 3,
-               border: "1px solid rgba(255,255,255,0.08)",
-               background: row === 0 ? `${tint}0c` : "rgba(255,255,255,0.03)",
+            animate={{
+               x: [-RAIL_SLIDE, 0, 0, -RAIL_SLIDE],
+               opacity: [0, 1, 1, 0],
             }}
-         />
-      ))}
-   </div>
-);
+            transition={loop(5, [0, 0.12, 0.96, 1])}
+            style={RAIL}
+         >
+            {bars}
+         </motion.div>
+      );
+   }
+   return <div style={RAIL}>{bars}</div>;
+};
 
 const WebAppScene = ({ tint, variant }: CoverSceneProps) => {
-   let panel: React.ReactNode;
-   if (variant === "placement") panel = <PlacementPanel tint={tint} />;
-   else if (variant === "language") panel = <LanguagePanel tint={tint} />;
-   else if (variant === "social") panel = <SocialPanel tint={tint} />;
-   else if (variant === "travel") panel = <TravelPanel tint={tint} />;
-   else if (variant === "contacts") panel = <ContactsPanel tint={tint} />;
-   else panel = <DefaultPanel tint={tint} />;
-
-   const chip = VARIANT_CHIP[variant ?? ""];
+   const key = variant ?? "";
+   const Panel = PANEL_BY_VARIANT[key] ?? DefaultPanel;
+   const frame = FRAME_BY_VARIANT[key] ?? DEFAULT_FRAME;
+   const chip = CHIP_BY_VARIANT[key];
 
    return (
-      <div
-         aria-hidden="true"
-         style={{
-            position: "absolute",
-            inset: 0,
-            overflow: "hidden",
-            background: "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)",
-         }}
-      >
-         {/* Browser window */}
-         <div
-            style={{
-               position: "absolute",
-               left: "12%",
-               right: "12%",
-               top: "12%",
-               bottom: "14%",
-               borderRadius: 8,
-               border: "1px solid rgba(255,255,255,0.12)",
-               background: "rgba(255,255,255,0.02)",
-               overflow: "hidden",
-            }}
-         >
-            {/* Chrome bar */}
-            <div
-               style={{
-                  height: 16,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 3,
-                  padding: "0 8px",
-                  borderBottom: "1px solid rgba(255,255,255,0.08)",
-                  background: "rgba(255,255,255,0.03)",
-               }}
-            >
-               {[0, 1, 2].map((i) => (
-                  <span
-                     key={i}
-                     style={{
-                        width: 4,
-                        height: 4,
-                        borderRadius: "50%",
-                        background: "rgba(255,255,255,0.18)",
-                     }}
-                  />
-               ))}
-               <div
-                  style={{
-                     marginLeft: 8,
-                     height: 6,
-                     width: "40%",
-                     borderRadius: 3,
-                     background: "rgba(255,255,255,0.06)",
-                  }}
-               />
-            </div>
-
-            {/* App body: sidebar + content */}
+      <div aria-hidden="true" style={ROOT}>
+         <div style={WINDOW}>
+            <ChromeBar />
             <div style={{ display: "flex", height: "calc(100% - 16px)" }}>
-               <div
-                  style={{
-                     width: 40,
-                     borderRight: "1px solid rgba(255,255,255,0.07)",
-                     padding: 7,
-                     display: "flex",
-                     flexDirection: "column",
-                     gap: 5,
-                  }}
-               >
-                  {[0, 1, 2].map((i) => (
-                     <motion.div
-                        key={i}
-                        animate={{
-                           opacity: i === 0 ? [0.9, 0.9] : [0.25, 0.5, 0.25],
-                        }}
-                        transition={{
-                           duration: 3,
-                           repeat: Infinity,
-                           delay: i * 0.5,
-                        }}
-                        style={{
-                           height: 5,
-                           borderRadius: 2,
-                           background:
-                              i === 0 ? `${tint}60` : "rgba(255,255,255,0.14)",
-                        }}
-                     />
-                  ))}
-               </div>
-               <div
-                  style={{
-                     flex: 1,
-                     padding: 9,
-                     display: "flex",
-                     flexDirection: "column",
-                     gap: 6,
-                  }}
-               >
-                  {/* Header bar */}
-                  <div
-                     style={{
-                        height: 7,
-                        width: "55%",
-                        borderRadius: 3,
-                        background: "rgba(255,255,255,0.12)",
-                     }}
-                  />
-                  {panel}
+               {!frame.sidebarHidden && <Sidebar tint={tint} config={frame} />}
+               <div style={CONTENT}>
+                  {frame.headerBar && <span style={HEADER_BAR} />}
+                  <Panel tint={tint} />
                </div>
             </div>
          </div>
@@ -410,12 +279,7 @@ const WebAppScene = ({ tint, variant }: CoverSceneProps) => {
          {chip && (
             <span
                style={{
-                  ...label,
-                  position: "absolute",
-                  right: "13%",
-                  top: "15%",
-                  padding: "2px 6px",
-                  borderRadius: 3,
+                  ...CHIP,
                   border: `1px solid ${tint}35`,
                   background: `${tint}0a`,
                   color: `${tint}cc`,

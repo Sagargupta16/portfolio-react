@@ -1,19 +1,24 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import {
+   AMBER,
    CYAN,
    EASING,
    PURPLE,
+   RED,
+   TEXT_MUTED,
    TEXT_PRIMARY,
    MONO_FONT,
 } from "@/constants/theme";
 import { credlyThumb } from "@utils/credlyThumb";
+import useMotionPreference from "@hooks/useMotionPreference";
 
 interface CertBadgeProps {
    name: string;
    imageUrl: string;
    badgeUrl: string;
    level?: string;
+   expiryDate?: string;
    size: number;
    floatDelay: number;
    entranceDelay: number;
@@ -23,31 +28,71 @@ const LEVEL_COLOR: Record<string, string> = {
    Associate: CYAN,
    Foundational: PURPLE,
 };
+const SESSION_TIME = Date.now();
+const EXPIRY_WARNING_DAYS = 90;
+const DAY_MS = 86_400_000;
+
+interface ExpiryMeta {
+   label: string;
+   color: string;
+}
+
+/** Expiry chip text and colour: red once past, amber inside the warning window. */
+const getExpiryMeta = (expiryDate?: string): ExpiryMeta | null => {
+   if (!expiryDate) return null;
+   const expiry = new Date(`${expiryDate}T00:00:00Z`);
+   const daysUntilExpiry = Math.ceil(
+      (expiry.getTime() - SESSION_TIME) / DAY_MS,
+   );
+   const when = expiry.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+   });
+   if (daysUntilExpiry < 0) return { label: `Expired ${when}`, color: RED };
+   if (daysUntilExpiry <= EXPIRY_WARNING_DAYS) {
+      return { label: `Expires ${when}`, color: AMBER };
+   }
+   return { label: `Expires ${when}`, color: TEXT_MUTED };
+};
 
 const CertBadge = ({
    name,
    imageUrl,
    badgeUrl,
    level,
+   expiryDate,
    size,
    floatDelay,
    entranceDelay,
 }: CertBadgeProps) => {
+   const { reducedMotion } = useMotionPreference();
    const [isHovered, setIsHovered] = useState(false);
    // If the CDN's resized variant fails (transient 5xx / cold cache on newly
    // synced badges), fall back to the original full-size URL once.
    const [useOriginal, setUseOriginal] = useState(false);
-   const accent = (level && LEVEL_COLOR[level]) ?? CYAN;
+   const accent = LEVEL_COLOR[level ?? ""] ?? CYAN;
+   const expiryMeta = getExpiryMeta(expiryDate);
+   const floatRepeat = reducedMotion ? 0 : Infinity;
+   const floatAnimation =
+      isHovered || reducedMotion ? { y: 0 } : { y: [0, -8, 0] };
+   const floatTransition = isHovered
+      ? { duration: 0.4 }
+      : {
+           duration: 3,
+           repeat: floatRepeat,
+           ease: "easeInOut" as const,
+           delay: floatDelay,
+        };
 
    return (
       <motion.a
          href={badgeUrl}
          target="_blank"
          rel="noopener noreferrer"
-         aria-label={name}
+         aria-label={`${name} credential (opens in a new tab)`}
          initial={{ opacity: 0, y: 40, scale: 0.8 }}
          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-         viewport={{ once: false, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
          transition={{
             delay: entranceDelay,
             duration: 0.7,
@@ -67,17 +112,8 @@ const CertBadge = ({
       >
          {/* Badge image with float animation */}
          <motion.div
-            animate={isHovered ? { y: 0 } : { y: [0, -8, 0] }}
-            transition={
-               isHovered
-                  ? { duration: 0.4 }
-                  : {
-                       duration: 3,
-                       repeat: Infinity,
-                       ease: "easeInOut",
-                       delay: floatDelay,
-                    }
-            }
+            animate={floatAnimation}
+            transition={floatTransition}
             style={{ position: "relative" }}
          >
             {/* Glow behind badge on hover */}
@@ -119,7 +155,7 @@ const CertBadge = ({
                flexDirection: "column",
                alignItems: "center",
                gap: 4,
-               minHeight: 42,
+               minHeight: expiryMeta ? 58 : 42,
             }}
          >
             <span
@@ -127,7 +163,7 @@ const CertBadge = ({
                   fontSize: 11,
                   fontWeight: 600,
                   fontFamily: MONO_FONT,
-                  color: isHovered ? TEXT_PRIMARY : "rgba(255,255,255,0.4)",
+                  color: isHovered ? TEXT_PRIMARY : TEXT_MUTED,
                   textAlign: "center",
                   maxWidth: size + 20,
                   lineHeight: 1.2,
@@ -155,6 +191,18 @@ const CertBadge = ({
                   }}
                >
                   {level}
+               </span>
+            )}
+            {expiryMeta && (
+               <span
+                  style={{
+                     fontSize: 9,
+                     fontWeight: 600,
+                     letterSpacing: "0.04em",
+                     color: expiryMeta.color,
+                  }}
+               >
+                  {expiryMeta.label}
                </span>
             )}
          </div>

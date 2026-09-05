@@ -66,7 +66,7 @@ const ModalLink = ({
          fontSize: 13,
          textDecoration: "none",
       }}
-      aria-label={ariaLabel}
+      aria-label={`${ariaLabel} (opens in a new tab)`}
    >
       <Icon size={15} />
       {label}

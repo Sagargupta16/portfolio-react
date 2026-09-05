@@ -18,14 +18,15 @@ const useFocusTrap = <T extends HTMLElement>(
    active: boolean,
 ): RefObject<T | null> => {
    const containerRef = useRef<T>(null);
-   const previouslyFocused = useRef<HTMLElement | null>(null);
+   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
 
    useEffect(() => {
       if (!active) return;
       const container = containerRef.current;
       if (!container) return;
 
-      previouslyFocused.current = document.activeElement as HTMLElement | null;
+      previouslyFocusedRef.current =
+         document.activeElement as HTMLElement | null;
 
       const focusables = Array.from(
          container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
@@ -64,7 +65,7 @@ const useFocusTrap = <T extends HTMLElement>(
       document.addEventListener("keydown", onKeyDown);
       return () => {
          document.removeEventListener("keydown", onKeyDown);
-         previouslyFocused.current?.focus?.();
+         previouslyFocusedRef.current?.focus?.();
       };
    }, [active]);
 

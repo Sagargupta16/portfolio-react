@@ -1,7 +1,7 @@
 import {
    getOpenSourceContributions,
    getCommunityDiscussions,
-} from "@data/dataLoader";
+} from "@data/projects";
 import type {
    Project,
    OpenSourceContribution,

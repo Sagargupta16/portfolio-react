@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { getServices } from "@data/dataLoader";
+import { getServices } from "@data/services";
 import { staggerContainer } from "@utils/animations";
 import { MAX_WIDTH } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";

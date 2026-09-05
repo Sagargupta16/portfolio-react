@@ -33,15 +33,15 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
       <AnimatePresence>
          {visible && (
             <motion.div
-               role="status"
-               aria-live={type === "error" ? "assertive" : "polite"}
+               role={type === "error" ? "alert" : "status"}
+               aria-live={type === "error" ? undefined : "polite"}
                initial={{ opacity: 0, y: 40, x: 20, scale: 0.95 }}
                animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
                exit={{ opacity: 0, y: 20, x: 20, scale: 0.95 }}
                transition={{ type: "spring", stiffness: 400, damping: 30 }}
                style={{
                   position: "fixed",
-                  bottom: 32,
+                  bottom: 88,
                   right: 32,
                   zIndex: 300,
                   display: "flex",

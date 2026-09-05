@@ -7,9 +7,5 @@ export const BreakpointProvider = ({ children }: { children: ReactNode }) => {
    const isMobile = useMediaQuery(MEDIA_QUERIES.mobile);
    const isTablet = useMediaQuery(MEDIA_QUERIES.tablet);
    const value = useMemo(() => ({ isMobile, isTablet }), [isMobile, isTablet]);
-   return (
-      <BreakpointContext.Provider value={value}>
-         {children}
-      </BreakpointContext.Provider>
-   );
+   return <BreakpointContext value={value}>{children}</BreakpointContext>;
 };

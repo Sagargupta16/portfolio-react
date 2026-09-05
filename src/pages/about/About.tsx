@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { getAbout } from "@data/dataLoader";
+import { getAbout, getAvailability } from "@data/personal";
 import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
 import { GREEN, MONO_FONT, TEXT_PRIMARY, MAX_WIDTH } from "@/constants/theme";
 import DevAvatar from "@components/ui/DevAvatar";
@@ -12,6 +12,7 @@ import QuickFacts from "./QuickFacts";
 
 const About = () => {
    const aboutInfo = getAbout();
+   const availability = getAvailability();
    const { isMobile } = useBreakpoint();
 
    const highlights = useMemo(
@@ -42,7 +43,16 @@ const About = () => {
                   style={{ display: "flex", justifyContent: "center" }}
                >
                   <div
-                     style={isMobile ? { transform: "scale(0.8)" } : undefined}
+                     style={
+                        isMobile
+                           ? {
+                                width: 256,
+                                height: 256,
+                                transform: "scale(0.8)",
+                                transformOrigin: "top left",
+                             }
+                           : undefined
+                     }
                   >
                      <DevAvatar />
                   </div>
@@ -81,7 +91,7 @@ const About = () => {
                            fontWeight: 500,
                         }}
                      >
-                        currently building cloud infrastructure at AWS
+                        {availability}
                      </span>
                   </div>
 

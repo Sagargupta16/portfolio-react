@@ -2,14 +2,21 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { MapPin, Briefcase, GraduationCap, Languages } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import {
-   getLocation,
-   getTitle,
-   getLanguages,
-   getEducation,
-} from "@data/dataLoader";
+import { getLocation, getTitle, getLanguages } from "@data/personal";
+import { getEducation } from "@data/education";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { CYAN, TEXT_MUTED, TEXT_PRIMARY, MONO_FONT } from "@/constants/theme";
+
+const EMPLOYER_SUFFIX = " at aws";
+
+/** "Cloud Consultant, ... at AWS" -> "Cloud Consultant" (no regex: Sonar S5852). */
+const compactRole = (title: string): string => {
+   const role = title.split(",")[0].trim();
+   if (role.toLowerCase().endsWith(EMPLOYER_SUFFIX)) {
+      return role.slice(0, -EMPLOYER_SUFFIX.length).trimEnd();
+   }
+   return role;
+};
 
 interface Fact {
    Icon: LucideIcon;
@@ -36,9 +43,8 @@ const QuickFacts = ({ isMobile }: { isMobile: boolean }) => {
          {
             Icon: Briefcase,
             label: "Role",
-            // "Cloud Consultant -- Professional Services (DevOps/MLOps) at AWS"
-            // is a mouthful for a fact chip; keep the part before the dash.
-            value: getTitle().split(" -- ")[0] + " @ AWS",
+            // Normalize the data's prose suffix to the compact fact-chip style.
+            value: `${compactRole(getTitle())} @ AWS`,
          },
          {
             Icon: GraduationCap,

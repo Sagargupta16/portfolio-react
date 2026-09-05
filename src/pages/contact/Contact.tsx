@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import Toast from "@components/ui/Toast";
-import { getContactOptions } from "@data/dataLoader";
+import { getContactOptions } from "@data/contact";
 import { rotateInUp, staggerContainer } from "@utils/animations";
 import { MAX_WIDTH_FORM } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
@@ -97,7 +97,7 @@ const Contact = () => {
 
                <Toast
                   message={status.message || ""}
-                  type={(status.type || "success") as "success" | "error"}
+                  type="error"
                   visible={toastVisible}
                   onClose={dismissToast}
                />

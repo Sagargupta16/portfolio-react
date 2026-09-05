@@ -1,57 +1,48 @@
-import { motion } from "motion/react";
-import { MONO_FONT, CYAN, PURPLE, GREEN } from "@/constants/theme";
+import { getName } from "@data/personal";
+import { CYAN } from "@/constants/theme";
+import {
+   AVATAR_SIZE,
+   CARD_FILL,
+   DISC_DIAMETER,
+   HAIRLINE,
+   MONOGRAM_SIZE,
+} from "./devAvatarData";
 
+/** "Sagar Gupta" -> "SG": first letter of the first two words. */
+const toInitials = (name: string) =>
+   name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((word) => word.charAt(0).toUpperCase())
+      .join("");
+
+/**
+ * Static flat disc with the initials in the hero's display face and accent.
+ * Nothing here moves; the ring in DevAvatar carries the only motion.
+ */
 const AvatarMonogram = () => {
+   const initials = toInitials(getName());
+
    return (
       <div
          style={{
             position: "absolute",
-            inset: 34,
+            inset: (AVATAR_SIZE - DISC_DIAMETER) / 2,
             borderRadius: "50%",
-            background:
-               "radial-gradient(circle at 30% 30%, rgba(18,18,42,0.9), rgba(10,10,20,0.85))",
+            background: CARD_FILL,
+            border: `1px solid ${HAIRLINE}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            flexDirection: "column",
-            gap: 4,
          }}
       >
-         <motion.span
-            style={{
-               fontSize: 48,
-               fontWeight: 800,
-               fontFamily: MONO_FONT,
-               background: `linear-gradient(135deg, ${CYAN}, ${PURPLE})`,
-               WebkitBackgroundClip: "text",
-               WebkitTextFillColor: "transparent",
-               lineHeight: 1,
-            }}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
+         <span
+            className="display-heading"
+            style={{ fontSize: MONOGRAM_SIZE, lineHeight: 1, color: CYAN }}
          >
-            SG
-         </motion.span>
-         <motion.span
-            style={{
-               fontFamily: MONO_FONT,
-               fontSize: 11,
-               color: GREEN,
-               letterSpacing: "0.1em",
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{
-               duration: 2,
-               repeat: Infinity,
-               ease: "easeInOut",
-               delay: 0.8,
-            }}
-         >
-            {"> dev"}
-            <span style={{ color: CYAN }}>_</span>
-         </motion.span>
+            {initials}
+         </span>
       </div>
    );
 };

@@ -63,7 +63,7 @@ const Footer = () => {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{}}
+            viewport={{ once: true }}
          >
             <FooterContent />
 

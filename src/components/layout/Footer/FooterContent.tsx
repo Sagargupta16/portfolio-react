@@ -1,12 +1,14 @@
 import { useMemo, useCallback } from "react";
 import { motion } from "motion/react";
 import { useLenis } from "lenis/react";
-import { getName, getSiteConfig, getSocialProfiles } from "@data/dataLoader";
+import { getName, getSiteConfig, getSocialProfiles } from "@data/personal";
 import { staggerItem } from "@utils/animations";
-import { MONO_FONT, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
+import { MONO_FONT, TEXT_PRIMARY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import FooterSocial from "./FooterSocial";
+import MotionPreferenceControl from "@components/ui/MotionPreferenceControl";
 
+const CURRENT_YEAR = new Date().getFullYear();
 const RESUME_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
 
@@ -29,7 +31,7 @@ const columnHeading: React.CSSProperties = {
 const columnLink: React.CSSProperties = {
    display: "block",
    fontSize: 14,
-   color: "rgba(244, 246, 247, 0.75)",
+   color: "rgba(244, 246, 247, 0.9)",
    padding: "4px 0",
    cursor: "pointer",
    background: "none",
@@ -88,14 +90,14 @@ const FooterContent = () => {
                   SG
                </span>
                <p style={{ color: "rgba(244,246,247,0.8)", fontSize: 14 }}>
-                  &copy; {new Date().getFullYear()} {name}. All rights reserved.
+                  &copy; {CURRENT_YEAR} {name}. All rights reserved.
                </p>
                <FooterSocial />
             </div>
 
             {/* SITE column */}
             <nav aria-label="Footer site links">
-               <p style={columnHeading}>Site</p>
+               <h2 style={columnHeading}>Site</h2>
                {SITE_LINKS.map((link) => (
                   <button
                      key={link.id}
@@ -106,7 +108,7 @@ const FooterContent = () => {
                      }}
                      onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.currentTarget.style.color =
-                           "rgba(244, 246, 247, 0.75)";
+                           "rgba(244, 246, 247, 0.9)";
                      }}
                   >
                      {link.label}
@@ -120,7 +122,7 @@ const FooterContent = () => {
                      e.currentTarget.style.color = TEXT_PRIMARY;
                   }}
                   onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                     e.currentTarget.style.color = "rgba(244, 246, 247, 0.75)";
+                     e.currentTarget.style.color = "rgba(244, 246, 247, 0.9)";
                   }}
                >
                   Download CV
@@ -129,20 +131,21 @@ const FooterContent = () => {
 
             {/* SOCIAL column */}
             <nav aria-label="Footer social links">
-               <p style={columnHeading}>Social</p>
+               <h2 style={columnHeading}>Social</h2>
                {socialProfiles.map((profile) => (
                   <a
                      key={profile.id}
                      href={profile.link}
                      target="_blank"
                      rel="noopener noreferrer"
+                     aria-label={`${profile.name} (opens in a new tab)`}
                      style={columnLink}
                      onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
                         e.currentTarget.style.color = TEXT_PRIMARY;
                      }}
                      onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
                         e.currentTarget.style.color =
-                           "rgba(244, 246, 247, 0.75)";
+                           "rgba(244, 246, 247, 0.9)";
                      }}
                   >
                      {profile.name}
@@ -151,7 +154,7 @@ const FooterContent = () => {
             </nav>
          </motion.div>
 
-         {/* Bottom row: tech strip + keyboard hint */}
+         {/* Bottom row: tech strip + motion preference */}
          <motion.div
             style={{
                display: "flex",
@@ -177,7 +180,7 @@ const FooterContent = () => {
                <span
                   style={{
                      fontSize: 11,
-                     color: TEXT_MUTED,
+                     color: "rgba(244,246,247,0.85)",
                      fontFamily: MONO_FONT,
                   }}
                >
@@ -188,7 +191,7 @@ const FooterContent = () => {
                      key={tech}
                      style={{
                         fontSize: 10,
-                        color: "rgba(244,246,247,0.7)",
+                        color: "rgba(244,246,247,0.9)",
                         fontFamily: MONO_FONT,
                         padding: "2px 8px",
                         borderRadius: 4,
@@ -200,17 +203,7 @@ const FooterContent = () => {
                   </span>
                ))}
             </div>
-            {!isMobile && (
-               <p
-                  style={{
-                     color: "rgba(244,246,247,0.5)",
-                     fontSize: 10,
-                     fontFamily: MONO_FONT,
-                  }}
-               >
-                  Press 0-9 to navigate sections &middot; j/k to scroll
-               </p>
-            )}
+            <MotionPreferenceControl />
          </motion.div>
       </>
    );

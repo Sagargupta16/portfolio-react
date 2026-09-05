@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { getSocialProfiles } from "@data/dataLoader";
+import { getSocialProfiles } from "@data/personal";
 import { staggerItem } from "@utils/animations";
 import { TEXT_PRIMARY, TEXT_SECONDARY } from "@/constants/theme";
 import ICON_MAP from "@utils/iconMap";
@@ -32,7 +32,8 @@ const HeroSocial = () => {
                      alignItems: "center",
                      justifyContent: "center",
                      color: TEXT_SECONDARY,
-                     transition: "all 0.3s",
+                     transition:
+                        "color 0.3s, border-color 0.3s, background-color 0.3s",
                   }}
                   whileHover={{
                      scale: 1.1,
@@ -42,7 +43,7 @@ const HeroSocial = () => {
                      background: "rgba(255, 255, 255, 0.08)",
                   }}
                   whileTap={{ scale: 0.9 }}
-                  aria-label={`Visit ${profile.name} profile`}
+                  aria-label={`Visit ${profile.name} profile (opens in a new tab)`}
                >
                   <IconComponent size={18} />
                </motion.a>
