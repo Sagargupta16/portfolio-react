@@ -69,11 +69,14 @@ const FADE_OUT = LOOP - FADE_OUT_START;
 
 const TRAVEL_EASE: Ease[] = ["linear", "easeInOut", "linear"];
 
+/* Motion runs opacity through WAAPI. A single ease string becomes the effect
+   easing over the whole iteration, which warps `times`; a per-segment array
+   makes the effect linear and honours `times` on both the WAAPI and JS paths. */
 const loop = (times: number[], ease: Ease | Ease[] = "linear") => ({
    duration: LOOP,
    repeat: Infinity,
    times,
-   ease,
+   ease: Array.isArray(ease) ? ease : times.slice(1).map(() => ease),
 });
 
 /* moment the rail tip crosses the centre of an account (linear sweep) */
@@ -98,7 +101,7 @@ const branch = (
 ) =>
    [
       `M${parentX} ${parentBottom} V${busY}`,
-      `M${childXs[0]} ${busY} H${childXs[childXs.length - 1]}`,
+      `M${childXs[0]} ${busY} H${childXs.at(-1)}`,
       ...childXs.map((x) => `M${x} ${busY} V${childTop}`),
    ].join(" ");
 

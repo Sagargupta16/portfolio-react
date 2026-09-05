@@ -1,4 +1,5 @@
 import type { ComponentType, CSSProperties } from "react";
+import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
 import ContactsPanel from "./webapp/ContactsPanel";
 import DefaultPanel from "./webapp/DefaultPanel";
@@ -17,7 +18,6 @@ import {
    WHITE_12,
    WHITE_18,
    WHITE_85,
-   loop,
    type NavPulse,
    type PanelProps,
 } from "./webapp/shared";
@@ -73,6 +73,26 @@ const BAR_INDEXES = [0, 1, 2, 3, 4, 5];
 const CHROME_DOTS = [0, 1, 2];
 const RAIL_WIDTH = 40;
 const RAIL_SLIDE = RAIL_WIDTH + 16;
+
+const EASE: Easing = "easeInOut";
+
+/* One ease per keyframe segment: Motion runs opacity through WAAPI, which
+   would spread a single ease over the whole iteration while transforms ease
+   each segment, pulling the two tracks off the beats. */
+const perSegment = (keyframeCount: number, ease: Easing = EASE): Easing[] =>
+   Array.from({ length: keyframeCount - 1 }, () => ease);
+
+/* Infinite keyframe loop with per-segment easing. */
+const loop = (
+   duration: number,
+   times: number[],
+   ease: Easing = EASE,
+): Transition => ({
+   duration,
+   repeat: Infinity,
+   times,
+   ease: perSegment(times.length, ease),
+});
 
 const RAIL: CSSProperties = {
    width: RAIL_WIDTH,
@@ -174,7 +194,9 @@ const NAV_BAR: CSSProperties = {
 };
 
 /* One nav item: the active one is a filled pill; the `pulse` item carries a
-   tint overlay that lights up in step with the panel (Social's Create Idea). */
+   tint overlay that lights up in step with the panel (Social's Create Idea).
+   The pulse's transition comes from socialBeats with a single ease, so the
+   overlay re-derives one ease per segment from its keyframe count. */
 const NavBar = ({
    tint,
    config,
@@ -196,7 +218,10 @@ const NavBar = ({
          {pulse?.index === index && (
             <motion.span
                animate={{ opacity: pulse.opacity }}
-               transition={pulse.transition}
+               transition={{
+                  ...pulse.transition,
+                  ease: perSegment(pulse.opacity.length),
+               }}
                style={{
                   position: "absolute",
                   inset: 0,

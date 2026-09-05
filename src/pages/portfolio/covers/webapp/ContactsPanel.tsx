@@ -1,3 +1,4 @@
+import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
 import {
    HAIRLINE,
@@ -15,7 +16,6 @@ import {
    WHITE_85,
    avatar,
    bar,
-   loop,
    type PanelProps,
 } from "./shared";
 
@@ -36,6 +36,22 @@ const T_SELECT = 0.52;
 const T_SELECTED = 0.6;
 const T_FADE = 0.92;
 const T_GONE = 0.96;
+
+const EASE: Easing = "easeInOut";
+
+/* Infinite keyframe loop with one ease per segment: Motion runs opacity
+   through WAAPI, which would spread a single ease over the whole iteration
+   while transforms ease each segment, pulling the two tracks off the beats. */
+const loop = (
+   duration: number,
+   times: number[],
+   ease: Easing = EASE,
+): Transition => ({
+   duration,
+   repeat: Infinity,
+   times,
+   ease: times.slice(1).map(() => ease),
+});
 
 type Status = "active" | "paused" | "pending";
 

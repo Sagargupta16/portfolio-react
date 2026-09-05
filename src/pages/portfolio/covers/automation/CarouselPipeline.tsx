@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import type { Easing } from "motion/react";
 import {
    AMBER,
    CENTER_XY,
@@ -20,6 +21,11 @@ import { Hairline, SuccessDot, TravelDot } from "./primitives";
 /* Instagram Autopilot: cron -> Bedrock prompt -> five slides, one filtered ->
    survivors publish to a phone -> history commits back to a file. */
 
+/* One ease per keyframe segment, so the WAAPI opacity track and the frameloop
+   transform tracks share one schedule; see perSegment in primitives.tsx. */
+const perSegment = (times: number[], ease: Easing = "easeInOut"): Easing[] =>
+   times.slice(1).map(() => ease);
+
 const TILE = 14;
 const TILE_GAP = 3;
 const TILE_RADIUS = 3;
@@ -32,6 +38,7 @@ const PHONE_WIDTH = 22;
 const PHONE_LEFT_EDGE = `calc(${PHONE_RIGHT} + ${PHONE_WIDTH}px)`;
 
 /* Three prompt lines typing in as one scaleX group. */
+const PROMPT_TIMES = secs(0, 0.8, 1.7, 5.6, 5.95, CYCLE);
 const PromptPanel = ({ tint, text }: { tint: string; text: string }) => (
    <div
       style={{
@@ -56,8 +63,8 @@ const PromptPanel = ({ tint, text }: { tint: string; text: string }) => (
             transition={{
                duration: CYCLE,
                repeat: Infinity,
-               ease: "easeInOut",
-               times: secs(0, 0.8, 1.7, 5.6, 5.95, CYCLE),
+               ease: perSegment(PROMPT_TIMES),
+               times: PROMPT_TIMES,
             }}
             style={{
                position: "absolute",
@@ -89,6 +96,7 @@ const PromptPanel = ({ tint, text }: { tint: string; text: string }) => (
 /* Lights up in sequence, then slides into the phone and resets. */
 const SurvivorTile = ({ tint, index }: { tint: string; index: number }) => {
    const lit = 1.8 + 0.3 * index;
+   const times = secs(0, lit, lit + 0.3, 3.4, 4.2, 5.7, CYCLE);
    return (
       <motion.div
          animate={{
@@ -99,8 +107,8 @@ const SurvivorTile = ({ tint, index }: { tint: string; index: number }) => {
          transition={{
             duration: CYCLE,
             repeat: Infinity,
-            ease: "easeInOut",
-            times: secs(0, lit, lit + 0.3, 3.4, 4.2, 5.7, CYCLE),
+            ease: perSegment(times),
+            times,
          }}
          style={{
             width: TILE,
@@ -115,6 +123,7 @@ const SurvivorTile = ({ tint, index }: { tint: string; index: number }) => {
 
 /* The content-filtered slide: dashed slot whose single amber flash kicks
    outward, so it reads as a rejection even when the tint is amber. */
+const FLASH_TIMES = secs(0, 2.4, 2.47, 2.55, CYCLE);
 const FilteredTile = () => (
    <div
       style={{
@@ -130,7 +139,8 @@ const FilteredTile = () => (
          transition={{
             duration: CYCLE,
             repeat: Infinity,
-            times: secs(0, 2.4, 2.47, 2.55, CYCLE),
+            ease: perSegment(FLASH_TIMES),
+            times: FLASH_TIMES,
          }}
          style={{
             position: "absolute",
@@ -165,6 +175,8 @@ const CarouselStrip = ({ tint, text }: { tint: string; text: string }) => (
 );
 
 /* Phone frame: the published square fades in, then pagination dots. */
+const PUBLISH_TIMES = secs(0, 3.9, 4.3, 5.7, 5.95, CYCLE);
+const PAGINATION_TIMES = secs(0, 4.1, 4.4, 5.7, 5.95, CYCLE);
 const PhoneOut = ({ tint, text }: { tint: string; text: string }) => (
    <div
       style={{
@@ -192,8 +204,8 @@ const PhoneOut = ({ tint, text }: { tint: string; text: string }) => (
             transition={{
                duration: CYCLE,
                repeat: Infinity,
-               ease: "easeInOut",
-               times: secs(0, 3.9, 4.3, 5.7, 5.95, CYCLE),
+               ease: perSegment(PUBLISH_TIMES),
+               times: PUBLISH_TIMES,
             }}
             style={{
                position: "absolute",
@@ -210,7 +222,8 @@ const PhoneOut = ({ tint, text }: { tint: string; text: string }) => (
             transition={{
                duration: CYCLE,
                repeat: Infinity,
-               times: secs(0, 4.1, 4.4, 5.7, 5.95, CYCLE),
+               ease: perSegment(PAGINATION_TIMES),
+               times: PAGINATION_TIMES,
             }}
             style={{
                position: "absolute",

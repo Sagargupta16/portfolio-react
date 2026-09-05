@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, type Easing } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
 
 interface CoverSceneProps {
@@ -24,6 +24,14 @@ const GREEN = "#22c55e";
 const RAIL = "rgba(255,255,255,0.08)";
 const DIM = "rgba(255,255,255,0.3)";
 const LOOP = { duration: CYCLE, repeat: Infinity };
+const EASE_IN_OUT: Easing = "easeInOut";
+/* times plus one easing per segment: Motion runs opacity through WAAPI, where
+   a single easing spans the whole iteration, while transforms ease per segment
+   on the frameloop; the array keeps both tracks on the same beats */
+const timed = (times: number[], ease: Easing = EASE_IN_OUT) => ({
+   times,
+   ease: times.slice(1).map(() => ease),
+});
 const ABS: React.CSSProperties = { position: "absolute" };
 const ROW: React.CSSProperties = { display: "flex", alignItems: "center" };
 const CENTER: React.CSSProperties = { ...ROW, justifyContent: "center" };
@@ -83,7 +91,7 @@ const TG2: Cycle = {
 };
 const CANARY_TIMES = [0, 0.42, 0.48, 0.6, 0.64, 0.8, 0.86, 0.9, 1];
 const CLIP = { height: 9, overflow: "hidden" as const };
-const BLINK = { duration: 1.6, repeat: Infinity, times: [0, 0.5, 0.5, 1] };
+const BLINK = { duration: 1.6, repeat: Infinity, ...timed([0, 0.5, 0.5, 1]) };
 const HEX = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
 const bar = { height: 2, borderRadius: 2, marginTop: 5 };
 const bars = { padding: "0 8px" };
@@ -92,7 +100,11 @@ const AlbNode = ({ tint }: { tint: string }) => (
    <div style={{ ...HUB, ...CENTER, ...box(tint, 68, 24), marginLeft: -34 }}>
       <motion.span
          animate={{ opacity: [0.4, 1, 0.4] }}
-         transition={{ duration: 2, repeat: Infinity }}
+         transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: [EASE_IN_OUT, EASE_IN_OUT],
+         }}
          style={{ ...dot(3, tint), marginRight: 5 }}
       />
       <span style={{ ...label, fontSize: 8, color: tint }}>ALB :80</span>
@@ -112,7 +124,7 @@ const TrafficDot = ({ dir, color, delay }: DotProps) => (
          y: [0, 18, 18, 40, 40],
          opacity: [0, 1, 1, 0, 0],
       }}
-      transition={{ ...LOOP, delay, times: DOT_TIMES, ease: "linear" }}
+      transition={{ ...LOOP, delay, ...timed(DOT_TIMES, "linear") }}
    />
 );
 
@@ -149,7 +161,7 @@ type EnvProps = { name: string; color: string; left: string; cycle: Cycle };
 const EnvBox = ({ name, color, left, cycle }: EnvProps) => (
    <motion.div
       animate={{ opacity: cycle.opacity }}
-      transition={{ ...LOOP, times: cycle.times }}
+      transition={{ ...LOOP, ...timed(cycle.times) }}
       style={{ ...ENV, ...box(color, 84, 56), left }}
    >
       <div style={{ ...ROW, gap: 4, padding: "6px 8px 4px" }}>
@@ -160,7 +172,7 @@ const EnvBox = ({ name, color, left, cycle }: EnvProps) => (
       {cycle.drain ? (
          <motion.div
             animate={cycle.drain}
-            transition={{ ...LOOP, times: DRAIN_TIMES }}
+            transition={{ ...LOOP, ...timed(DRAIN_TIMES) }}
             style={{ ...bars, transformOrigin: "left" }}
          >
             <RequestBars color={color} />
@@ -181,7 +193,7 @@ const CanaryLabel = () => (
             y: [0, 0, 0, 0, -9, -9, -9, 0, 0],
             opacity: [0, 0, 1, 1, 1, 1, 0, 0, 0],
          }}
-         transition={{ ...LOOP, times: CANARY_TIMES }}
+         transition={{ ...LOOP, ...timed(CANARY_TIMES) }}
          style={{ ...label, color: `${GREEN}cc`, lineHeight: "9px" }}
       >
          <div>CANARY 30%</div>
@@ -280,7 +292,7 @@ const PipelineRail = ({ tint }: { tint: string }) => (
             opacity: [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
             scale: [1, 1, 1, 1, 1, 1.5, 1.5, 1.5, 1.5, 1.5, 1, 1],
          }}
-         transition={{ ...LOOP, times: HOP_T, ease: "easeInOut" }}
+         transition={{ ...LOOP, ...timed(HOP_T) }}
       />
    </svg>
 );
@@ -288,7 +300,7 @@ const PipelineRail = ({ tint }: { tint: string }) => (
 const CommitDot = ({ tint }: { tint: string }) => (
    <motion.div
       animate={{ scale: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
-      transition={{ ...LOOP, times: [0, 0.06, 0.93, 1] }}
+      transition={{ ...LOOP, ...timed([0, 0.06, 0.93, 1]) }}
       style={{
          ...ABS,
          left: "6%",
@@ -304,12 +316,12 @@ const TestChip = ({ tint }: { tint: string }) => (
    <div style={stage(tint, 44, 18, "26%")}>
       <motion.div
          animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
-         transition={{ ...LOOP, times: [0, 0.27, 0.3, 0.36, 0.4, 1] }}
+         transition={{ ...LOOP, ...timed([0, 0.27, 0.3, 0.36, 0.4, 1]) }}
          style={{ ...ABS, inset: -1, borderRadius: 4, border: GATE }}
       />
       <motion.span
          animate={{ scale: [0, 0, 1.3, 1, 1, 0], opacity: [0, 0, 1, 1, 1, 0] }}
-         transition={{ ...LOOP, times: [0, 0.29, 0.32, 0.35, 0.95, 1] }}
+         transition={{ ...LOOP, ...timed([0, 0.29, 0.32, 0.35, 0.95, 1]) }}
          style={{ ...ABS, top: -2, right: -2, ...dot(3, GREEN) }}
       />
       <span style={tag(tint)}>PYTEST</span>
@@ -325,7 +337,7 @@ const BuildChip = ({ tint }: { tint: string }) => (
             animate={{ opacity: [0.2, 0.2, 1, 1, 0.2] }}
             transition={{
                ...LOOP,
-               times: [0, 0.48 + i * 0.03, 0.52 + i * 0.03, 0.95, 1],
+               ...timed([0, 0.48 + i * 0.03, 0.52 + i * 0.03, 0.95, 1]),
             }}
             style={{ width: 16, height: 2, borderRadius: 1, background: tint }}
          />
@@ -339,13 +351,13 @@ const EcrBox = ({ tint }: { tint: string }) => (
    <div style={stage(tint, 34, 26, ECR_LEFT)}>
       <motion.div
          animate={{ opacity: [0, 0, 1, 0, 0] }}
-         transition={{ ...LOOP, times: [0, 0.66, 0.7, 0.76, 1] }}
+         transition={{ ...LOOP, ...timed([0, 0.66, 0.7, 0.76, 1]) }}
          style={{ ...ABS, inset: 0, borderRadius: 3, background: `${tint}18` }}
       />
       <span style={{ ...tag(tint), position: "relative" }}>ECR</span>
       <motion.div
          animate={{ opacity: [0, 0, 1, 1, 0], y: [4, 4, 0, 0, 4] }}
-         transition={{ ...LOOP, times: [0, 0.67, 0.72, 0.95, 1] }}
+         transition={{ ...LOOP, ...timed([0, 0.67, 0.72, 0.95, 1]) }}
          style={{ ...stage(tint, 44, 12, "50%"), top: "100%", marginTop: 4 }}
       >
          <span style={{ ...label, fontSize: 6.5, color: `${tint}b0` }}>
@@ -384,7 +396,7 @@ const EcsPanel = ({ tint }: { tint: string }) => (
       <span style={status} />
       <motion.span
          animate={{ opacity: [0, 0, 1, 1, 1, 0], scale: [1, 1, 1.4, 1, 1, 1] }}
-         transition={{ ...LOOP, times: [0, 0.88, 0.91, 0.94, 0.985, 1] }}
+         transition={{ ...LOOP, ...timed([0, 0.88, 0.91, 0.94, 0.985, 1]) }}
          style={{ ...status, background: GREEN }}
       />
       <motion.div
@@ -392,12 +404,12 @@ const EcsPanel = ({ tint }: { tint: string }) => (
             x: [0, 0, -56, -56, 0, 0, 0],
             opacity: [1, 1, 0, 0, 0, 0, 1],
          }}
-         transition={{ ...LOOP, times: [0, 0.8, 0.88, 0.9, 0.91, 0.96, 1] }}
+         transition={{ ...LOOP, ...timed([0, 0.8, 0.88, 0.9, 0.91, 0.96, 1]) }}
          style={{ ...pill, background: "rgba(255,255,255,0.22)" }}
       />
       <motion.div
          animate={{ x: [56, 56, 0, 0, 0, 56], opacity: [0, 0, 1, 1, 0, 0] }}
-         transition={{ ...LOOP, times: [0, 0.8, 0.88, 0.96, 0.995, 1] }}
+         transition={{ ...LOOP, ...timed([0, 0.8, 0.88, 0.96, 0.995, 1]) }}
          style={{ ...pill, background: `${tint}b0` }}
       />
    </div>

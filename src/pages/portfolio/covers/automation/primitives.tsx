@@ -1,7 +1,15 @@
 import { motion } from "motion/react";
+import type { Easing } from "motion/react";
 import { CENTER_Y, CYCLE, GREEN, caption, secs } from "./sceneTokens";
 
 /* Shared building blocks for the AutomationScene family. */
+
+/* Motion eases a keyframe array per segment on its frameloop (x, y, scale)
+   but across the whole iteration on WAAPI values (opacity), so a single ease
+   pulls the two tracks out of phase. One ease per segment keeps them in step;
+   every keyframed node in this family builds it from its `times`. */
+const perSegment = (times: number[], ease: Easing = "easeInOut"): Easing[] =>
+   times.slice(1).map(() => ease);
 
 export const Hairline = ({
    tint,
@@ -63,6 +71,7 @@ export const TravelDot = ({
    const sx = reverse ? -1 : 1;
    const anchorX = reverse ? { right: 0 } : { left: 0 };
    const anchorY = dy < 0 ? { bottom: 0 } : { top: 0 };
+   const times = secs(0, from, from + 0.08, to - 0.08, to, CYCLE);
    return (
       <div style={{ position: "absolute", left, width, top, height }}>
          <motion.div
@@ -74,8 +83,8 @@ export const TravelDot = ({
             transition={{
                duration: CYCLE,
                repeat: Infinity,
-               ease: "easeInOut",
-               times: secs(0, from, from + 0.08, to - 0.08, to, CYCLE),
+               ease: perSegment(times),
+               times,
             }}
             style={{ position: "absolute", inset: 0 }}
          >
@@ -131,45 +140,51 @@ export const StageBox = ({
 );
 
 /* One-shot border flash laid over a StageBox when the pipeline reaches it. */
-export const PulseRing = ({ tint, at }: { tint: string; at: number }) => (
-   <motion.div
-      animate={{ opacity: [0, 0, 1, 0, 0], scale: [1, 1, 1.08, 1, 1] }}
-      transition={{
-         duration: CYCLE,
-         repeat: Infinity,
-         ease: "easeInOut",
-         times: secs(0, at, at + 0.25, at + 0.9, CYCLE),
-      }}
-      style={{
-         position: "absolute",
-         inset: -1,
-         borderRadius: 6,
-         border: `1px solid ${tint}cc`,
-      }}
-   />
-);
+export const PulseRing = ({ tint, at }: { tint: string; at: number }) => {
+   const times = secs(0, at, at + 0.25, at + 0.9, CYCLE);
+   return (
+      <motion.div
+         animate={{ opacity: [0, 0, 1, 0, 0], scale: [1, 1, 1.08, 1, 1] }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            ease: perSegment(times),
+            times,
+         }}
+         style={{
+            position: "absolute",
+            inset: -1,
+            borderRadius: 6,
+            border: `1px solid ${tint}cc`,
+         }}
+      />
+   );
+};
 
 /* Green pop at cycle end for the publish / changed=true signal. */
-export const SuccessDot = ({ at }: { at: number }) => (
-   <motion.div
-      animate={{
-         opacity: [0, 0, 1, 1, 0, 0],
-         scale: [0.6, 0.6, 1.3, 1, 0.6, 0.6],
-      }}
-      transition={{
-         duration: CYCLE,
-         repeat: Infinity,
-         ease: "easeInOut",
-         times: secs(0, at, at + 0.2, at + 0.7, at + 1.1, CYCLE),
-      }}
-      style={{
-         position: "absolute",
-         right: "4%",
-         top: "24%",
-         width: 5,
-         height: 5,
-         borderRadius: "50%",
-         background: GREEN,
-      }}
-   />
-);
+export const SuccessDot = ({ at }: { at: number }) => {
+   const times = secs(0, at, at + 0.2, at + 0.7, at + 1.1, CYCLE);
+   return (
+      <motion.div
+         animate={{
+            opacity: [0, 0, 1, 1, 0, 0],
+            scale: [0.6, 0.6, 1.3, 1, 0.6, 0.6],
+         }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            ease: perSegment(times),
+            times,
+         }}
+         style={{
+            position: "absolute",
+            right: "4%",
+            top: "24%",
+            width: 5,
+            height: 5,
+            borderRadius: "50%",
+            background: GREEN,
+         }}
+      />
+   );
+};

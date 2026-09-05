@@ -147,7 +147,7 @@ const loop = (times: number[], ease: "linear" | "easeInOut" = EASE) => ({
    duration: CYCLE,
    repeat: Infinity,
    times,
-   ease,
+   ease: Array.from({ length: times.length - 1 }, () => ease),
 });
 
 /* Dot: fade in at the card edge, run the trunk, hold, take the middle branch. */

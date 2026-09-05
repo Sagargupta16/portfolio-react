@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
 import { AMBER, GREEN } from "@/constants/theme";
 import {
@@ -12,7 +13,6 @@ import {
    WHITE_35,
    avatar,
    bar,
-   loop,
    type PanelProps,
 } from "./shared";
 
@@ -34,6 +34,22 @@ const T_FLIP = 0.44;
 const T_STATS = 0.5;
 const T_STATS_DONE = 0.692;
 const T_RESET = 0.885;
+
+const EASE: Easing = "easeInOut";
+
+/* Infinite keyframe loop with one ease per segment: Motion runs opacity
+   through WAAPI, which would spread a single ease over the whole iteration
+   while transforms ease each segment, pulling the two tracks off the beats. */
+const loop = (
+   duration: number,
+   times: number[],
+   ease: Easing = EASE,
+): Transition => ({
+   duration,
+   repeat: Infinity,
+   times,
+   ease: times.slice(1).map(() => ease),
+});
 
 const LABEL_DIM: CSSProperties = { ...LABEL, color: WHITE_35 };
 

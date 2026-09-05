@@ -147,11 +147,14 @@ const problemBox = (left: number): React.CSSProperties => ({
    borderRadius: 2,
 });
 
+/* One easing per segment, not one string: Motion applies a single `ease`
+   across the whole iteration on WAAPI-accelerated values (opacity) but per
+   segment on the JS clock (x, y, scale), so the tracks drift apart. */
 const loop = (times: number[], ease: LoopEase = "easeInOut") => ({
    duration: LOOP,
    repeat: Infinity,
    times,
-   ease,
+   ease: times.slice(1).map(() => ease),
 });
 
 interface ProblemProps extends SortAnimProps {

@@ -273,7 +273,7 @@ const ActiveMarker = ({ color }: AgentChatAnimProps) => (
          duration: CYCLE,
          repeat: Infinity,
          times: MARKER.times,
-         ease: "linear",
+         ease: segmentEase(MARKER.times, "linear"),
       }}
       style={{
          position: "absolute",

@@ -100,12 +100,18 @@ const tinted = (tint: string): CSSProperties => ({
 
 const line = { fill: "none", vectorEffect: "non-scaling-stroke" as const };
 
+const EASE = "easeInOut" as const;
+
+/* Motion runs opacity loops through WAAPI, where a single ease is applied
+ * across the whole iteration and the `times` offsets land at eased moments.
+ * A per-segment ease array puts the easing on each keyframe instead, so the
+ * WAAPI (opacity) and JS (transform, pathLength) loops share one schedule. */
 const loop = (times: number[], delay = 0) => ({
    duration: CYCLE,
    repeat: Infinity,
    delay,
    times,
-   ease: "easeInOut" as const,
+   ease: times.slice(1).map(() => EASE),
 });
 
 /* Hold-then-move keyframes: every stop is entered twice so it holds. */

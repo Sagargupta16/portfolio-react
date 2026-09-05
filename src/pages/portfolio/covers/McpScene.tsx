@@ -60,15 +60,28 @@ interface Loop {
 
 type Beat = Omit<Loop, "duration">;
 
+const EASE_IN_OUT: Ease = "easeInOut";
+/* one easing per keyframe segment: Motion runs opacity through WAAPI, where a
+   single easing spans the whole iteration, while transforms ease per segment
+   on the frameloop; the array keeps both tracks on the same beats */
+const perSegment = (times: number[], ease: Ease = EASE_IN_OUT): Ease[] =>
+   times.slice(1).map(() => ease);
+
 const loopProps = ({
    duration,
    times,
-   ease = "easeInOut",
+   ease = EASE_IN_OUT,
    delay,
    ...animate
 }: Loop) => ({
    animate,
-   transition: { duration, times, ease, delay, repeat: Infinity },
+   transition: {
+      duration,
+      times,
+      ease: perSegment(times, ease),
+      delay,
+      repeat: Infinity,
+   },
 });
 
 const pct = (x: number) => `${(x / STAGE_W) * 100}%`;
@@ -231,7 +244,12 @@ const HubFace = ({ tint, hub: { cx, text } }: TintProps & { hub: HubSpec }) => (
             <motion.span
                key={i}
                animate={{ opacity: [0.2, 1, 0.2] }}
-               transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.3 }}
+               transition={{
+                  duration: 1.6,
+                  repeat: Infinity,
+                  delay: i * 0.3,
+                  ease: [EASE_IN_OUT, EASE_IN_OUT],
+               }}
                style={STATUS_DOT}
             />
          ))}

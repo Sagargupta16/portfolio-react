@@ -11,6 +11,7 @@ import {
    WHITE_28,
    WHITE_70,
    clock,
+   eases,
    labelStyle,
    loop,
    svgStyle,
@@ -106,6 +107,7 @@ const MOUTH_Y = PAC_R * Math.sin(MOUTH_HALF);
 const MOUTH = `M0,0 L${MOUTH_X},${-MOUTH_Y} A${PAC_R},${PAC_R} 0 0 1 ${MOUTH_X},${MOUTH_Y} Z`;
 const CHOMP = 0.5;
 const CHOMP_SCALE = [1, 0.1, 1];
+const CHOMP_EASE = eases(CHOMP_SCALE.length - 1);
 const PAC_X = [START.x, START.x, CORNER.x, CORNER.x, START.x, START.x];
 const PAC_X_TIMES = [
    0,
@@ -296,7 +298,7 @@ const PacMan = ({ tint }: { tint: string }) => (
          fill={INK}
          initial={{ scaleY: 1 }}
          animate={{ scaleY: CHOMP_SCALE }}
-         transition={{ duration: CHOMP, repeat: Infinity, ease: "easeInOut" }}
+         transition={{ duration: CHOMP, repeat: Infinity, ease: CHOMP_EASE }}
       />
    </motion.g>
 );

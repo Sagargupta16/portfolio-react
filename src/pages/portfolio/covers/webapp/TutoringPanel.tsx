@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
 import { GREEN } from "@/constants/theme";
 import {
@@ -11,7 +12,6 @@ import {
    WHITE_35,
    avatar,
    bar,
-   loop,
    type PanelProps,
 } from "./shared";
 
@@ -34,6 +34,22 @@ const T_JOIN = 0.54;
 const T_ROOM = 0.654;
 const T_ROOM_IN = 0.73;
 const T_RESET = 0.846;
+
+const EASE: Easing = "easeInOut";
+
+/* Infinite keyframe loop with one ease per segment: Motion runs opacity
+   through WAAPI, which would spread a single ease over the whole iteration
+   while transforms ease each segment, pulling the two tracks off the beats. */
+const loop = (
+   duration: number,
+   times: number[],
+   ease: Easing = EASE,
+): Transition => ({
+   duration,
+   repeat: Infinity,
+   times,
+   ease: times.slice(1).map(() => ease),
+});
 
 /* Cards sit at 22% of the panel on desktop but never higher than 7 px, so
    the slot row under them still clears the ~35 px phone-slot clip. */
@@ -260,7 +276,11 @@ const RoomTile = ({ tint }: PanelProps) => (
       >
          <motion.span
             animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 1.6, repeat: Infinity }}
+            transition={{
+               duration: 1.6,
+               repeat: Infinity,
+               ease: [EASE, EASE],
+            }}
             style={{
                position: "absolute",
                left: 2,

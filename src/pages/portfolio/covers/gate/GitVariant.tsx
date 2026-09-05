@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import type { Easing } from "motion/react";
 import { Dot, Label, LoopDot, Shapes, Shell } from "./primitives";
 import {
    AMBER,
@@ -73,7 +74,19 @@ const COMMIT = beat({
    times: [0, 0.65, 0.68, 0.71, HOLD, GONE, 1],
 });
 /* footer on its own 3 s clock: REDACTED breathes, a regex scanline sweeps */
-const REDACT: Loop = { duration: 3, opacity: [0.3, 0.7, 0.3] };
+const REDACT_OPACITY = [0.3, 0.7, 0.3];
+/* no `times` on REDACT, so loopProps would pass one ease; map it per segment */
+const EASE_IN_OUT: Easing = "easeInOut";
+const perSegment = (keyframeCount: number) =>
+   Array.from({ length: keyframeCount - 1 }, () => EASE_IN_OUT);
+const REDACT = {
+   animate: { opacity: REDACT_OPACITY },
+   transition: {
+      duration: 3,
+      ease: perSegment(REDACT_OPACITY.length),
+      repeat: Infinity,
+   },
+};
 const SCAN: Loop = {
    duration: 3,
    ease: LINEAR,
@@ -213,7 +226,7 @@ const GitVariant = ({ tint }: TintProps) => (
             NO_ISSUES
          </Label>
       </motion.div>
-      <motion.span style={chip} {...loopProps(REDACT)}>
+      <motion.span style={chip} {...REDACT}>
          REDACTED
       </motion.span>
       <Label left={pctX(250)} bottom="9.5%" color={`${tint}90`}>

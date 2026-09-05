@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
 import {
    CARD,
@@ -12,7 +13,6 @@ import {
    WHITE_28,
    WHITE_35,
    bar,
-   loop,
    type PanelProps,
 } from "./shared";
 
@@ -43,6 +43,22 @@ const T_DIP = 0.78;
 const T_DIPPED = 0.84;
 const T_REFETCHED = 0.9;
 const T_RESET = 0.96;
+
+const EASE: Easing = "easeInOut";
+
+/* Infinite keyframe loop with one ease per segment: Motion runs opacity
+   through WAAPI, which would spread a single ease over the whole iteration
+   while transforms ease each segment, pulling the two tracks off the beats. */
+const loop = (
+   duration: number,
+   times: number[],
+   ease: Easing = EASE,
+): Transition => ({
+   duration,
+   repeat: Infinity,
+   times,
+   ease: times.slice(1).map(() => ease),
+});
 
 interface TagSpec {
    width: number;

@@ -61,13 +61,18 @@ const tile = (e: string, bg: string) => ({
    display: "grid",
    placeItems: "center",
 });
+/** One easing per keyframe segment so Motion's WAAPI (opacity) and JS
+    (transform) tracks ease the same segments; a single easing spans the whole
+    WAAPI iteration and desyncs the two. */
+const perSegment = (count: number, ease: Ease = EASE): Ease[] =>
+   Array.from({ length: count - 1 }, () => ease);
 /** Infinite keyframe loop; `times` must match the keyframe count. */
 const loop = (d: number, times: number[], delay = 0, ease: Ease = EASE) => ({
    duration: d,
    repeat: Infinity,
    times,
    delay,
-   ease,
+   ease: perSegment(times.length, ease),
 });
 
 const LABEL: CSSProperties = {
@@ -261,7 +266,7 @@ const DocCard = ({
       ))}
       <motion.div
          animate={{ y: [0, -3, 0] }}
-         transition={{ duration: cycle, repeat: Infinity, ease: EASE }}
+         transition={{ duration: cycle, repeat: Infinity, ease: perSegment(3) }}
          style={{
             ...at("9%", "19%"),
             ...box(CARD_W, CARD_H, `${tint}38`, PANEL_BG),
@@ -352,7 +357,11 @@ const TerminalStrip = ({
          {children}
          <motion.span
             animate={{ opacity: [1, 0, 1] }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            transition={{
+               duration: 1,
+               repeat: Infinity,
+               ease: perSegment(3, "linear"),
+            }}
             style={{ width: 4, height: 8, background: W55 }}
          />
          <motion.div
@@ -410,7 +419,7 @@ interface StatusProps {
 const StatusRow = ({ text, left, top, cycle, reveal }: StatusProps) => {
    const transition = reveal
       ? loop(cycle, reveal)
-      : { duration: 2.2, repeat: Infinity, ease: EASE };
+      : { duration: 2.2, repeat: Infinity, ease: perSegment(3) };
    const opacity = reveal ? [0, 0, 1, 1, 0] : [0.5, 1, 0.5];
    return (
       <motion.div

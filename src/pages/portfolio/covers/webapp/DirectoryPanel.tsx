@@ -1,3 +1,4 @@
+import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
 import {
    CARD,
@@ -10,7 +11,6 @@ import {
    WHITE_35,
    WHITE_60,
    bar,
-   loop,
    type PanelProps,
 } from "./shared";
 
@@ -21,6 +21,22 @@ const CYCLE = 5;
 const CARDS_TOP = 21;
 const CARD_HEIGHT = 40;
 const FOOT_TOP = CARDS_TOP + CARD_HEIGHT + 5;
+
+const EASE: Easing = "easeInOut";
+
+/* Infinite keyframe loop with one ease per segment: Motion runs opacity
+   through WAAPI, which would spread a single ease over the whole iteration
+   while transforms ease each segment, pulling the two tracks off the beats. */
+const loop = (
+   duration: number,
+   times: number[],
+   ease: Easing = EASE,
+): Transition => ({
+   duration,
+   repeat: Infinity,
+   times,
+   ease: times.slice(1).map(() => ease),
+});
 
 interface CardSpec {
    id: string;
@@ -150,7 +166,11 @@ const AlumniCard = ({ tint, spec }: { tint: string; spec: CardSpec }) => (
             {spec.hover ? (
                <motion.span
                   animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 1.2, repeat: Infinity }}
+                  transition={{
+                     duration: 1.2,
+                     repeat: Infinity,
+                     ease: [EASE, EASE],
+                  }}
                   style={bar(10, tint, 2)}
                />
             ) : (

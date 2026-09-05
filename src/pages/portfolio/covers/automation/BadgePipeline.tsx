@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import type { Easing } from "motion/react";
 import {
    CENTER_Y,
    CYCLE,
@@ -21,6 +22,11 @@ import {
 
 /* Credly Badge README Action: cron -> badges.json -> categorize into three
    rows -> splice between the START/END markers of README.md. */
+
+/* One ease per keyframe segment, so the WAAPI opacity track and the frameloop
+   transform tracks share one schedule; see perSegment in primitives.tsx. */
+const perSegment = (times: number[], ease: Easing = "easeInOut"): Easing[] =>
+   times.slice(1).map(() => ease);
 
 const CATEGORIZE_LEFT_PCT = 52;
 const README_RIGHT = "8%";
@@ -57,14 +63,15 @@ const SORT_LANES: SortLane[] = [
 ];
 
 /* Fetched payload inside the first stage. */
+const PAYLOAD_TIMES = secs(0, 0.8, 1.3, 5.4, 5.8, CYCLE);
 const PayloadDots = () => (
    <motion.div
       animate={{ opacity: [0, 0, 1, 1, 0, 0], y: [-3, -3, 0, 0, -3, -3] }}
       transition={{
          duration: CYCLE,
          repeat: Infinity,
-         ease: "easeInOut",
-         times: secs(0, 0.8, 1.3, 5.4, 5.8, CYCLE),
+         ease: perSegment(PAYLOAD_TIMES),
+         times: PAYLOAD_TIMES,
       }}
       style={{ display: "flex", flexDirection: "column", gap: 3 }}
    >
@@ -150,14 +157,15 @@ const SortFan = ({ tint }: { tint: string }) => (
 );
 
 /* Dashed START/END markers that flash once after the splice. */
+const MARKER_TIMES = secs(0, 4.6, 4.85, 5.1, CYCLE);
 const Markers = ({ tint }: { tint: string }) => (
    <motion.div
       animate={{ opacity: [0.5, 0.5, 1, 0.5, 0.5] }}
       transition={{
          duration: CYCLE,
          repeat: Infinity,
-         ease: "easeInOut",
-         times: secs(0, 4.6, 4.85, 5.1, CYCLE),
+         ease: perSegment(MARKER_TIMES),
+         times: MARKER_TIMES,
       }}
       style={{ position: "absolute", inset: 0 }}
    >
@@ -187,41 +195,44 @@ const BadgeRow = ({
    count: number;
    top: number;
    at: number;
-}) => (
-   <motion.div
-      animate={{
-         scaleX: [0, 0, 1, 1, 1, 0, 0],
-         opacity: [1, 1, 1, 1, 0, 0, 1],
-      }}
-      transition={{
-         duration: CYCLE,
-         repeat: Infinity,
-         ease: "easeInOut",
-         times: secs(0, at, at + 0.35, 5.4, 5.7, 5.75, CYCLE),
-      }}
-      style={{
-         position: "absolute",
-         left: 8,
-         top,
-         display: "flex",
-         gap: 3,
-         originX: 0,
-      }}
-   >
-      {Array.from({ length: count }, (_, i) => (
-         <div
-            key={i}
-            style={{
-               width: 5,
-               height: 5,
-               borderRadius: "50%",
-               border: `1px solid ${tint}59`,
-               background: `${tint}1a`,
-            }}
-         />
-      ))}
-   </motion.div>
-);
+}) => {
+   const times = secs(0, at, at + 0.35, 5.4, 5.7, 5.75, CYCLE);
+   return (
+      <motion.div
+         animate={{
+            scaleX: [0, 0, 1, 1, 1, 0, 0],
+            opacity: [1, 1, 1, 1, 0, 0, 1],
+         }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            ease: perSegment(times),
+            times,
+         }}
+         style={{
+            position: "absolute",
+            left: 8,
+            top,
+            display: "flex",
+            gap: 3,
+            originX: 0,
+         }}
+      >
+         {Array.from({ length: count }, (_, i) => (
+            <div
+               key={i}
+               style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  border: `1px solid ${tint}59`,
+                  background: `${tint}1a`,
+               }}
+            />
+         ))}
+      </motion.div>
+   );
+};
 
 const ReadmePanel = ({ tint, text }: { tint: string; text: string }) => (
    <div

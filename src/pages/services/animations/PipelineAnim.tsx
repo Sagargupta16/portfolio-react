@@ -99,11 +99,14 @@ const GREEN_OPACITY = [0, 0, 1, 1, 0];
 const LED_TIMES = [0, 0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.84, 1];
 const LED_SCALE = [1, 1, 1.4, 1, 1.4, 1, 1.4, 1, 1];
 
+/* One easing per segment, not one string: Motion applies a single `ease`
+   across the whole iteration on WAAPI-accelerated values (opacity) but per
+   segment on the JS clock (x, y, scale), so the tracks drift apart. */
 const loop = (times: number[], ease: Easing = EASE): Transition => ({
    duration: LOOP,
    repeat: Infinity,
    times,
-   ease,
+   ease: times.slice(1).map(() => ease),
 });
 
 /* .tf module tile: two static code hairlines and a plan bar that fills. */

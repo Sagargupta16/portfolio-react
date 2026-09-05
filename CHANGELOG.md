@@ -27,6 +27,8 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ### Fixed
 
+- **Per-segment easing on every keyframe loop.** Motion drives `opacity` through the Web Animations API and `x`/`y`/`scale` through its JS frameloop; with a keyframe array plus `times` and a single `ease` string, WAAPI applied that easing across the whole iteration while the JS track eased per segment, so travelling dots faded at the wrong beats and hold segments shrank. 151 transitions across 25 cover and service animation files now pass an easing array of length keyframes minus one (a local `perSegment`/`loop` helper per file). Measured live with `document.getAnimations()`: whole-iteration easing on multi-keyframe animations went from 152 of 259 in the Projects grid and 18 of 51 in Services to 0 of both.
+
 - Removed five duplicate section IDs and repaired scroll-spy registration for sections that mount after the navigation effect.
 - Fixed the Quick Facts role rendering `at AWS @ AWS`.
 - External project links no longer have Enter intercepted by a parent pseudo-button.

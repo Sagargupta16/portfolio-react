@@ -11,6 +11,7 @@ import {
    WHITE_12,
    WHITE_28,
    WHITE_70,
+   eases,
    labelStyle,
    loop,
    svgStyle,
@@ -58,6 +59,7 @@ const OVERRUN = 10;
 const BOB = 7;
 const SWEEP_X = [170, -20];
 const BOB_Y = [0, -BOB, 0, BOB, 0];
+const BOB_EASE = eases(BOB_Y.length - 1, "linear");
 const postRect = (p: Post) =>
    p.hung
       ? { y: -OVERRUN, height: p.h + OVERRUN }
@@ -145,7 +147,7 @@ const Posts = () => (
                   ease: "linear",
                   delay: p.delay,
                },
-               y: { duration: p.bob, repeat: Infinity, ease: "linear" },
+               y: { duration: p.bob, repeat: Infinity, ease: BOB_EASE },
             }}
          />
       ))}
@@ -208,7 +210,7 @@ const Flappy = ({ tint }: { tint: string }) => (
       <motion.span
          initial={{ opacity: 0.2 }}
          animate={{ opacity: [0.2, 0.45, 0.2] }}
-         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+         transition={{ duration: 2, repeat: Infinity, ease: eases(2) }}
          style={{ ...labelStyle, left: "60%", top: "8%" }}
       >
          SWITCHTIME

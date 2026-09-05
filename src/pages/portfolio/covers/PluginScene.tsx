@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
 import { GREEN, MONO_FONT } from "@/constants/theme";
 
@@ -34,7 +35,17 @@ const WHITE_BAR = "rgba(255,255,255,0.14)";
 const WHITE_GLYPH = "rgba(255,255,255,0.5)";
 const WHITE_TEXT = "rgba(255,255,255,0.7)";
 
-const LOOP = { duration: CYCLE, repeat: Infinity, ease: "easeInOut" } as const;
+/*
+ * Motion runs opacity through WAAPI, where a single ease string stretches over
+ * the whole iteration and drags keyframes off their `times`; one ease per
+ * segment keeps the WAAPI and JS tracks on the same storyboard clock.
+ */
+const loop = (times: number[], ease: Easing = "easeInOut"): Transition => ({
+   duration: CYCLE,
+   repeat: Infinity,
+   times,
+   ease: times.slice(1).map(() => ease),
+});
 
 const label: CSSProperties = {
    fontFamily: MONO_FONT,
@@ -110,7 +121,7 @@ const RegistryRow = ({
       {highlighted && (
          <motion.div
             animate={{ opacity: [0.3, 1, 1, 0.3, 0.3] }}
-            transition={{ ...LOOP, times: fadeTimes(T_SELECT) }}
+            transition={loop(fadeTimes(T_SELECT))}
             style={{
                ...fill,
                zIndex: -1,
@@ -170,7 +181,7 @@ const RegistryPanel = ({ tint }: { tint: string }) => (
 const InstallChip = ({ tint }: { tint: string }) => (
    <motion.div
       animate={{ opacity: [0, 1, 1, 0, 0], y: [3, 0, 0, 0, 3] }}
-      transition={{ ...LOOP, times: fadeTimes(T_SELECT) }}
+      transition={loop(fadeTimes(T_SELECT))}
       style={{
          ...label,
          ...row,
@@ -211,10 +222,8 @@ const Connector = ({ tint }: { tint: string }) => (
             x: ["-100%", "-100%", "-85%", "-15%", "0%", "0%", "-100%"],
             opacity: [0, 0, 1, 1, 0, 0, 0],
          }}
-         transition={{
-            ...LOOP,
-            ease: "linear",
-            times: [
+         transition={loop(
+            [
                0,
                T_SELECT,
                T_SELECT + at(0.15),
@@ -223,7 +232,8 @@ const Connector = ({ tint }: { tint: string }) => (
                T_GONE,
                1,
             ],
-         }}
+            "linear",
+         )}
          style={{ ...fill, opacity: 0 }}
       >
          <Dot
@@ -299,7 +309,7 @@ const ComponentChip = ({ index, children }: ChipProps) => (
          opacity: [0, 0, 1, 1, 1, 0, 0],
          scale: [0.6, 0.6, 1.06, 1, 1, 1, 0.6],
       }}
-      transition={{ ...LOOP, times: popTimes(index) }}
+      transition={loop(popTimes(index))}
       style={{
          ...row,
          justifyContent: "center",
@@ -319,10 +329,7 @@ const PassedBadge = () => (
    <div style={{ ...row, position: "absolute", right: 8, bottom: 8, gap: 5 }}>
       <motion.span
          animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
-         transition={{
-            ...LOOP,
-            times: fadeTimes(T_PASSED + at(0.15), T_PASSED + at(0.45)),
-         }}
+         transition={loop(fadeTimes(T_PASSED + at(0.15), T_PASSED + at(0.45)))}
          style={{ ...label, color: WHITE_DIM, opacity: 0 }}
       >
          PASSED
@@ -332,10 +339,7 @@ const PassedBadge = () => (
             opacity: [0, 0, 1, 1, 0, 0],
             scale: [0.5, 0.5, 1, 1, 1, 0.5],
          }}
-         transition={{
-            ...LOOP,
-            times: fadeTimes(T_PASSED, T_PASSED + at(0.35)),
-         }}
+         transition={loop(fadeTimes(T_PASSED, T_PASSED + at(0.35)))}
          style={{
             position: "relative",
             width: 13,
@@ -376,10 +380,7 @@ const PluginTile = ({ tint }: { tint: string }) => (
    >
       <motion.div
          animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
-         transition={{
-            ...LOOP,
-            times: fadeTimes(T_ARRIVE, T_ARRIVE + at(0.2)),
-         }}
+         transition={loop(fadeTimes(T_ARRIVE, T_ARRIVE + at(0.2)))}
          style={{
             position: "absolute",
             inset: -1,

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import type { Easing } from "motion/react";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
 
 interface AiDlcAnimProps {
@@ -12,7 +13,16 @@ interface AiDlcAnimProps {
    eight Motion nodes, transform and opacity only. */
 
 const CYCLE = 5;
-const LOOP = { duration: CYCLE, repeat: Infinity } as const;
+
+/* Motion runs opacity through WAAPI. A single ease string becomes the effect
+   easing over the whole iteration, which warps `times`; a per-segment array
+   makes the effect linear and honours `times` on both the WAAPI and JS paths. */
+const loop = (times: number[], ease: Easing = "easeInOut") => ({
+   duration: CYCLE,
+   repeat: Infinity,
+   times,
+   ease: times.slice(1).map(() => ease),
+});
 
 const WHITE_HAIRLINE = "rgba(255,255,255,0.15)";
 const WHITE_LABEL = "rgba(255,255,255,0.45)";
@@ -133,11 +143,10 @@ const ScaffoldPanel = ({ color }: TintProps) => (
             y: [0, 0, 10, 10, 20, 20, 20, 0],
             opacity: [0, 1, 1, 1, 1, 1, 0, 0],
          }}
-         transition={{
-            ...LOOP,
-            times: [0, 0.02, 0.05, 0.08, 0.11, 0.14, 0.17, 1],
-            ease: "easeInOut",
-         }}
+         transition={loop(
+            [0, 0.02, 0.05, 0.08, 0.11, 0.14, 0.17, 1],
+            "easeInOut",
+         )}
          style={{
             position: "absolute",
             left: 6,
@@ -158,11 +167,7 @@ const SpecAndDiff = ({ color }: TintProps) => {
       <>
          <motion.div
             animate={{ x: [12, 0, 0, 0, 12], opacity: [0, 1, 1, 0, 0] }}
-            transition={{
-               ...LOOP,
-               times: [0, 0.12, 0.85, 0.95, 1],
-               ease: "easeOut",
-            }}
+            transition={loop([0, 0.12, 0.85, 0.95, 1], "easeOut")}
             style={{
                position: "absolute",
                left: 44,
@@ -178,11 +183,7 @@ const SpecAndDiff = ({ color }: TintProps) => {
                scaleX: [0, 0, 1, 1, 1, 0],
                opacity: [0, 1, 1, 1, 0, 0],
             }}
-            transition={{
-               ...LOOP,
-               times: [0, 0.15, 0.36, 0.85, 0.95, 1],
-               ease: "easeOut",
-            }}
+            transition={loop([0, 0.15, 0.36, 0.85, 0.95, 1], "easeOut")}
             style={{
                position: "absolute",
                left: 44,
@@ -229,7 +230,7 @@ const GateFlash = ({
 }) => (
    <motion.div
       animate={{ opacity: FLASH }}
-      transition={{ ...LOOP, times }}
+      transition={loop(times)}
       style={{ ...GATE_STYLE, background }}
    />
 );
@@ -260,11 +261,7 @@ const Attempts = ({ color }: TintProps) => (
             y: [0, 0, 0, 14, 14, 8, 8, 0],
             opacity: [0, 0, 1, 1, 1, 1, 0, 0],
          }}
-         transition={{
-            ...LOOP,
-            times: [0, 0.38, 0.4, 0.48, 0.5, 0.55, 0.6, 1],
-            ease: "easeInOut",
-         }}
+         transition={loop([0, 0.38, 0.4, 0.48, 0.5, 0.55, 0.6, 1], "easeInOut")}
          style={{ ...DOT_STYLE, background: color }}
       />
       <motion.div
@@ -272,11 +269,7 @@ const Attempts = ({ color }: TintProps) => (
             y: [0, 0, 0, 16, 28, 28, 0],
             opacity: [0, 0, 1, 1, 1, 0, 0],
          }}
-         transition={{
-            ...LOOP,
-            times: [0, 0.58, 0.6, 0.68, 0.78, 0.82, 1],
-            ease: "easeInOut",
-         }}
+         transition={loop([0, 0.58, 0.6, 0.68, 0.78, 0.82, 1], "easeInOut")}
          style={{ ...DOT_STYLE, background: color }}
       />
       <motion.div
@@ -284,11 +277,7 @@ const Attempts = ({ color }: TintProps) => (
             scale: [0.6, 0.6, 1, 1.3, 1, 1, 0.6],
             opacity: [0, 0, 1, 1, 1, 1, 0],
          }}
-         transition={{
-            ...LOOP,
-            times: [0, 0.78, 0.82, 0.86, 0.9, 0.95, 1],
-            ease: "easeOut",
-         }}
+         transition={loop([0, 0.78, 0.82, 0.86, 0.9, 0.95, 1], "easeOut")}
          style={{
             ...DOT_STYLE,
             left: DOT_LEFT - 0.5,
