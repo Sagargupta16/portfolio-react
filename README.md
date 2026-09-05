@@ -123,6 +123,7 @@ src/
 │   └── ui/
 │       ├── BrowserMockup.tsx          # 3D tilted browser window (CSS perspective)
 │       ├── CharacterReveal.tsx        # Spring char-by-char animation (word-wrapped)
+│       ├── DevAvatar.tsx              # About avatar: monogram + orbit of real stack glyphs
 │       ├── GlassCard.tsx              # Flat card with optional pointer tilt
 │       ├── MotionPreferenceControl.tsx # Persisted System/Full/Reduced selector
 │       ├── TechTag.tsx                # Reusable skill/tech tag
@@ -136,7 +137,8 @@ src/
 │   └── ...
 ├── hooks/                             # Breakpoint, focus, and motion-preference providers
 ├── pages/                             # 9 page sections (each split into sub-files)
-│   └── portfolio/covers/              # Cover registry + 10 lazy animated SVG scenes
+│   ├── portfolio/covers/              # Cover registry + 14 lazy scene families (webapp/, game/, gate/, automation/ variants)
+│   └── services/animations/           # 7 service card animations on an 80x80 canvas
 ├── types/
 │   └── index.ts                       # Data contracts
 ├── utils/
