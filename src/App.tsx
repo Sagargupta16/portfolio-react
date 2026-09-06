@@ -162,7 +162,10 @@ const AppContent = () => {
                      );
                   })}
                </main>
-               <Footer />
+               {/* A footer failure must never reach the root boundary and blank the page. */}
+               <ErrorBoundary fallback={<></>}>
+                  <Footer />
+               </ErrorBoundary>
                <BackToTop />
                <MotionPreferenceControl />
             </div>

@@ -179,8 +179,8 @@ const FooterStatusBar = () => {
             }}
          >
             <span style={labelStyle}>Build</span>
-            <span style={chipStyle}>v{__APP_VERSION__}</span>
-            <span style={chipStyle}>{__BUILD_DATE__}</span>
+            <span style={chipStyle}>v{import.meta.env.APP_VERSION}</span>
+            <span style={chipStyle}>{import.meta.env.BUILD_DATE}</span>
          </div>
       </motion.div>
    );

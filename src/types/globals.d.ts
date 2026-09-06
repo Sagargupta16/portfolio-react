@@ -1,3 +1,5 @@
-/* Build-time constants injected by the `define` block in vite.config.js. */
-declare const __APP_VERSION__: string;
-declare const __BUILD_DATE__: string;
+/* Build-time values injected by the `define` block in vite.config.js. */
+interface ImportMetaEnv {
+   readonly APP_VERSION: string;
+   readonly BUILD_DATE: string;
+}

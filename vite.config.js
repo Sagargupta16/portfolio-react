@@ -13,8 +13,10 @@ export default defineConfig(() => ({
    base: "/portfolio-react/",
    // Build stamp shown in the footer status bar.
    define: {
-      __APP_VERSION__: JSON.stringify(pkg.version),
-      __BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 10)),
+      "import.meta.env.APP_VERSION": JSON.stringify(pkg.version),
+      "import.meta.env.BUILD_DATE": JSON.stringify(
+         new Date().toISOString().slice(0, 10),
+      ),
    },
    resolve: {
       alias: {
