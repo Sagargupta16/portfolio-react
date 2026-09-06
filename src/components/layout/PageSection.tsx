@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
-import { sectionRevealEnhanced } from "@utils/animations";
+import { sectionRevealEnhanced, VIEWPORT_MARGIN } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import SectionHeader from "@components/ui/SectionHeader";
 
@@ -30,7 +30,7 @@ const PageSection = ({
          }}
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
          variants={sectionRevealEnhanced}
       >
          {maxWidth ? (
