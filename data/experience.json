@@ -15,7 +15,7 @@
                "description": {
                   "1": "Leading greenfield AWS migration as the sole DevOps consultant - onboarding 50+ application workloads into 135+ AWS accounts, designing AWS Organizations OU structure, SCPs, tag policies, and Terraform + GitHub Actions CI/CD, cutting infrastructure setup time ~90% (3+ days per account to under 4 hours) versus manual provisioning.",
                   "2": "Implemented governance and infrastructure security controls - preventative SCPs, tag compliance guardrails, Config rules, and Security Hub standards across the org - enforcing least-privilege access and CCMv4-aligned regulatory posture from day one.",
-                  "3": "Architecting the multi-account networking foundation - Transit Gateway hub-and-spoke, centralized VPC design, hybrid connectivity (VPN/Direct Connect), DNS resolution, and egress control via centralized inspection.",
+                  "3": "Architecting the multi-account networking foundation - Transit Gateway hub-and-spoke, centralized VPC design, hybrid connectivity (VPN/Direct Connect), Route 53 DNS resolution, and egress control via centralized inspection.",
                   "4": "Driving architecture decisions and defining migration roadmap for 50+ application workloads into 135+ AWS accounts. Delivering recommendations on cost optimization, HA, and DR to customer stakeholders.",
                   "5": "Used Kiro for AI-driven requirement analysis, architecture documentation, and implementation specs."
                },
@@ -120,7 +120,12 @@
                "year": "2025"
             },
             {
-               "title": "2 APG Patterns Peer Reviewed",
+               "title": "3 APG Patterns Peer Reviewed",
+               "type": "publication",
+               "year": "2025-2026"
+            },
+            {
+               "title": "AWS Sample Published: SageMaker Image Classification MLOps Pipeline (aws-samples, MIT-0)",
                "type": "publication",
                "year": "2025"
             }
