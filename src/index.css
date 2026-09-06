@@ -211,6 +211,15 @@ img {
    }
 }
 
+/* Learning-badge rail: the track holds two copies of the list, so sliding it
+   by half its own width lands exactly on the second copy and the loop is
+   seamless. */
+@keyframes badge-rail {
+   to {
+      transform: translateX(-50%);
+   }
+}
+
 /* ===== Animation Utilities ===== */
 .animate-glow-pulse {
    animation: glow-pulse 2s ease-in-out infinite;
@@ -230,13 +239,16 @@ html[data-motion="reduced"] *::after {
 }
 
 html[data-motion="reduced"]
-   :is(.btn-primary, .btn-outline, .btn-pill, .skill-item):is(
-      :hover,
-      :focus-visible
-   ),
+   :is(.btn-primary, .btn-outline, .btn-pill):is(:hover, :focus-visible),
 html[data-motion="reduced"]
    .project-card:is(:hover, :has(:focus-visible))
    .project-cover-img {
+   transform: none;
+}
+
+/* The footer underline is state, not decoration: Reduced shows it in full
+   the moment a link is hovered or focused instead of drawing it in. */
+html[data-motion="reduced"] .footer-link:is(:hover, :focus-visible)::after {
    transform: none;
 }
 
@@ -416,16 +428,53 @@ html[data-motion="reduced"]
    padding: 6px 16px;
 }
 
-/* ===== Skill Item (icon + name rows, akobir tech-stack style) ===== */
-.skill-item {
-   transition:
-      transform 0.25s ease,
-      opacity 0.25s ease;
+/* ===== Badge Rail (learning badges marquee) =====
+   BadgeRail.tsx sets the loop length and gap as custom properties. Each copy
+   of the list carries its own trailing gap, so the seam is spaced like every
+   other badge. Hover (pointer devices only) and keyboard focus pause the
+   loop. clip, not hidden: focus must never scroll the container, the
+   component slides the track into view instead. */
+.badge-rail {
+   overflow: clip;
+   -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 10%,
+      #000 90%,
+      transparent
+   );
+   mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 10%,
+      #000 90%,
+      transparent
+   );
 }
 
-.skill-item:hover,
-.skill-item:focus-visible {
-   transform: translateY(-2px);
+.badge-rail__track {
+   display: flex;
+   width: max-content;
+   animation: badge-rail var(--rail-duration, 48s) linear infinite;
+}
+
+.badge-rail__group {
+   display: flex;
+   align-items: flex-start;
+   flex-shrink: 0;
+   gap: var(--rail-gap, 24px);
+   padding-right: var(--rail-gap, 24px);
+   list-style: none;
+}
+
+.badge-rail:focus-within .badge-rail__track {
+   animation-play-state: paused;
+}
+
+@media (hover: hover) {
+   .badge-rail:hover .badge-rail__track {
+      animation-play-state: paused;
+   }
 }
 
 /* ===== Form Input ===== */
@@ -439,8 +488,7 @@ html[data-motion="reduced"]
    font-size: 0.9375rem;
    transition:
       background 0.3s ease,
-      border-color 0.3s ease,
-      box-shadow 0.3s ease;
+      border-color 0.3s ease;
    outline: none;
 }
 
@@ -451,7 +499,6 @@ html[data-motion="reduced"]
 .form-input:focus {
    border-color: rgb(var(--ch-blue) / 0.6);
    background: rgb(var(--ch-white) / 0.06);
-   box-shadow: 0 0 0 3px rgb(var(--ch-blue) / 0.15);
 }
 
 .form-input--error {
@@ -460,7 +507,38 @@ html[data-motion="reduced"]
 
 .form-input--error:focus {
    border-color: rgb(var(--ch-red) / 0.6);
-   box-shadow: 0 0 0 3px rgb(var(--ch-red) / 0.1);
+}
+
+/* Field wrapper: an accent underline draws in from the left while the input
+   inside has focus. It replaces the old box-shadow focus ring (transform
+   only, no halo). grid, not block: a textarea is inline-block and would leave
+   a descender gap above the line. */
+.form-field {
+   position: relative;
+   display: grid;
+}
+
+.form-field::after {
+   content: "";
+   position: absolute;
+   left: 10px;
+   right: 10px;
+   bottom: 0;
+   height: 2px;
+   border-radius: 2px;
+   background: var(--color-accent-cyan);
+   transform: scaleX(0);
+   transform-origin: left;
+   transition: transform 0.25s ease;
+   pointer-events: none;
+}
+
+.form-field:focus-within::after {
+   transform: scaleX(1);
+}
+
+.form-field:has(.form-input--error)::after {
+   background: rgb(var(--ch-red) / 0.7);
 }
 
 /* ===== Skeleton Loading ===== */
@@ -512,6 +590,37 @@ html[data-motion="reduced"]
       rgb(13 60 68 / 0.55) 55%,
       rgb(34 130 143 / 0.75) 100%
    );
+}
+
+/* Footer column links: a hairline slides in from the left on hover (pointer
+   devices) and keyboard focus. fit-content keeps the line as wide as the
+   label, not the column. */
+.footer-link {
+   position: relative;
+   width: fit-content;
+}
+
+.footer-link::after {
+   content: "";
+   position: absolute;
+   left: 0;
+   right: 0;
+   bottom: 2px;
+   height: 1px;
+   background: currentColor;
+   transform: scaleX(0);
+   transform-origin: left;
+   transition: transform 0.25s ease;
+}
+
+.footer-link:focus-visible::after {
+   transform: scaleX(1);
+}
+
+@media (hover: hover) {
+   .footer-link:hover::after {
+      transform: scaleX(1);
+   }
 }
 
 /* ===== Print Resume Mode ===== */

@@ -1,8 +1,9 @@
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import type { ContactOption } from "@/types";
 import { staggerItem } from "@utils/animations";
-import { TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { DURATION, EASING, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
 import { CONTACT_META, DEFAULT_CONTACT_META } from "./contactConstants";
 
 interface ContactCardProps {
@@ -10,16 +11,35 @@ interface ContactCardProps {
    isMobile: boolean;
 }
 
+/* Same lift language as the About highlight cards: one hover label on the
+   link, the icon tile and the arrow animate their own "hover" variant.
+   .glass-card CSS owns the border and background shift. */
+const HOVER = "hover";
+const LIFT_SPRING = { type: "spring", stiffness: 380, damping: 26 } as const;
+const ICON_SPRING = { type: "spring", stiffness: 420, damping: 16 } as const;
+const ARROW_TRANSITION = { duration: DURATION.quick, ease: EASING.brisk };
+
+const cardVariants: Variants = {
+   ...staggerItem,
+   [HOVER]: { y: -6, transition: LIFT_SPRING },
+};
+const tileVariants: Variants = { [HOVER]: { scale: 1.12, rotate: 6 } };
+const arrowVariants: Variants = { [HOVER]: { x: 2, y: -2 } };
+
 const ContactCard = ({ option, isMobile }: ContactCardProps) => {
    const { Icon, colors } = CONTACT_META[option.icon] ?? DEFAULT_CONTACT_META;
+   const { reducedMotion } = useMotionPreference();
    const opensNewTab = option.link.startsWith("https://");
+   const hover = reducedMotion ? undefined : HOVER;
 
    return (
       <motion.a
          href={option.link}
          target={opensNewTab ? "_blank" : undefined}
          rel={opensNewTab ? "noopener noreferrer" : undefined}
-         variants={staggerItem}
+         variants={cardVariants}
+         whileHover={hover}
+         whileFocus={hover}
          className="glass-card"
          style={{
             padding: isMobile ? "16px 16px" : "16px 20px",
@@ -33,7 +53,9 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
          }}
          aria-label={`${option.title}: ${option.value}${opensNewTab ? " (opens in a new tab)" : ""}`}
       >
-         <div
+         <motion.div
+            variants={tileVariants}
+            transition={ICON_SPRING}
             style={{
                width: 44,
                height: 44,
@@ -53,7 +75,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
                   color: colors.accent,
                }}
             />
-         </div>
+         </motion.div>
          <div style={{ minWidth: 0, flex: 1 }}>
             <p
                style={{
@@ -93,7 +115,14 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
             }}
          >
             {!isMobile && option.message}
-            <ArrowUpRight style={{ width: 14, height: 14 }} />
+            <motion.span
+               aria-hidden="true"
+               variants={arrowVariants}
+               transition={ARROW_TRANSITION}
+               style={{ display: "inline-flex" }}
+            >
+               <ArrowUpRight style={{ width: 14, height: 14 }} />
+            </motion.span>
          </div>
       </motion.a>
    );

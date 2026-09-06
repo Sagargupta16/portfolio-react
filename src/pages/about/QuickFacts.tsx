@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { MapPin, Briefcase, GraduationCap, Languages } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -9,14 +9,38 @@ import {
    getLanguages,
 } from "@data/personal";
 import { getEducation } from "@data/education";
-import { staggerContainer, staggerItem } from "@utils/animations";
-import { CYAN, TEXT_MUTED, TEXT_PRIMARY, MONO_FONT } from "@/constants/theme";
+import {
+   CYAN,
+   DURATION,
+   EASING,
+   TEXT_MUTED,
+   TEXT_PRIMARY,
+   MONO_FONT,
+} from "@/constants/theme";
 
 interface Fact {
    Icon: LucideIcon;
    label: string;
    value: string;
 }
+
+/* Each chip rises in a beat after the one before it; the delay is capped so a
+   longer list would still settle inside the section reveal. */
+const FACT_STAGGER_S = 0.07;
+const MAX_STAGGER_S = 0.3;
+
+const factItem: Variants = {
+   hidden: { opacity: 0, y: 10 },
+   visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+         delay: Math.min(index * FACT_STAGGER_S, MAX_STAGGER_S),
+         duration: DURATION.default,
+         ease: EASING.cinematic,
+      },
+   }),
+};
 
 /**
  * Compact facts band under the About bio -- location, role, degree, languages.
@@ -66,15 +90,15 @@ const QuickFacts = ({ isMobile }: { isMobile: boolean }) => {
             paddingTop: isMobile ? 24 : 32,
             borderTop: "1px dashed rgba(255,255,255,0.12)",
          }}
-         variants={staggerContainer}
          initial="hidden"
          whileInView="visible"
          viewport={{ once: true, margin: "0px 0px -80px 0px" }}
       >
-         {facts.map(({ Icon, label, value }) => (
+         {facts.map(({ Icon, label, value }, index) => (
             <motion.div
                key={label}
-               variants={staggerItem}
+               variants={factItem}
+               custom={index}
                style={{
                   display: "flex",
                   flexDirection: "column",

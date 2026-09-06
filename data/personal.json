@@ -4,6 +4,7 @@
    "role": "Cloud Consultant",
    "employer": "AWS",
    "location": "Hyderabad, India",
+   "timezone": "Asia/Kolkata",
    "intro": "Cloud consultant at AWS Professional Services. I build the AWS platforms that regulated companies migrate onto: Terraform, CI/CD, MLOps pipelines, and lately the agent tooling that makes that work faster.",
    "role_label": "DevOps/MLOps Consultant @ AWS",
    "headline": "Shipping cloud at scale.",

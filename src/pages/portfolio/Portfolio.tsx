@@ -72,11 +72,15 @@ const TAP = { scale: 0.97 };
 
 const Portfolio = () => {
    const [activeFilter, setActiveFilter] = useState<string>("Featured");
+   // Flips on the first filter change: cards mounted afterwards enter with the
+   // short swap rise instead of the taller first-scroll reveal.
+   const [hasFiltered, setHasFiltered] = useState(false);
    const [selectedProject, setSelectedProject] =
       useState<ProjectWithCategory | null>(null);
 
    const handleFilterChange = useCallback((filter: string) => {
       setActiveFilter(filter);
+      setHasFiltered(true);
    }, []);
    const { isMobile } = useBreakpoint();
 
@@ -220,6 +224,7 @@ const Portfolio = () => {
             <ProjectGrid
                projects={filteredProjects}
                isMobile={isMobile}
+               hasFiltered={hasFiltered}
                onOpenProject={handleOpenProject}
             />
 

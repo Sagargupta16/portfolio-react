@@ -1,158 +1,121 @@
-import type { CSSProperties, ReactNode, RefObject } from "react";
-import { motion, useTransform, type MotionValue } from "motion/react";
+import type { CSSProperties, RefObject } from "react";
+import {
+   motion,
+   useScroll,
+   useTransform,
+   type MotionValue,
+} from "motion/react";
 import useMediaQuery from "@hooks/useMediaQuery";
 import useMotionPreference from "@hooks/useMotionPreference";
 import usePointerParallax from "@hooks/usePointerParallax";
-import { EASING, MEDIA_QUERIES } from "@/constants/theme";
-import { CARD_FILL, GLYPH_COLOR, HAIRLINE } from "@components/ui/devAvatarData";
+import { MEDIA_QUERIES } from "@/constants/theme";
+import StackTile from "../StackTile";
 import {
-   DRIFT,
-   DRIFT_STAGGER,
-   DRIFT_TIMES,
-   ENTER_DELAY,
-   ENTER_DURATION,
-   ENTER_RISE,
    HERO_STACK_SLOTS,
    TILE_OPACITY,
    TILE_SIZES,
-   heroStackItems,
-   type HeroStackItem,
+   TOP_LANE_FADE,
+   isTopLane,
+   laneSign,
+   placeItems,
    type HeroStackSlot,
-   type TileSize,
+   type Placement,
 } from "./heroStackData";
 
-/* One ease per keyframe segment so every track shares one schedule (the
-   cover scenes' perSegment helpers do the same). */
-const DRIFT_EASE = DRIFT_TIMES.slice(1).map(() => "easeInOut" as const);
-const STAGGER_STEP = 0.05;
-const STAGGER_CAP = 0.3;
+const SIZE = TILE_SIZES.compact;
+const placements = placeItems(HERO_STACK_SLOTS);
 
-interface Placement {
-   item: HeroStackItem;
-   slot: HeroStackSlot;
-}
-
-/* Outer node: slot position and resting alpha. Static, so the entrance and
-   drift below never fight it for opacity or transform. */
-const slotStyle = (slot: HeroStackSlot, size: TileSize): CSSProperties => ({
+/* Slot position and resting alpha. Static, so the entrance and drift inside
+   never fight it for opacity or transform. */
+const slotStyle = (slot: HeroStackSlot): CSSProperties => ({
    position: "absolute",
    left: `${slot.x}%`,
    top: `${slot.y}%`,
-   width: size.tile,
-   height: size.tile,
-   marginLeft: -size.tile / 2,
-   marginTop: -size.tile / 2,
+   width: SIZE.tile,
+   height: SIZE.tile,
+   marginLeft: -SIZE.tile / 2,
+   marginTop: -SIZE.tile / 2,
    opacity: TILE_OPACITY,
 });
 
-interface TileProps {
-   item: HeroStackItem;
-   slot: HeroStackSlot;
+interface FieldValues {
+   scrollY: MotionValue<number>;
+   pointerX: MotionValue<number>;
+   pointerY: MotionValue<number>;
+}
+
+type FloatingTileProps = Placement<HeroStackSlot> & {
    index: number;
-   size: TileSize;
-   reducedMotion: boolean;
-}
-
-/* Middle node fades and rises in once the copy has settled; the inner node is
-   the visible tile and carries the drift loop. Reduced leaves the tile at
-   rest: MotionConfig snaps the rise and only the fade plays. */
-const Tile = ({ item, slot, index, size, reducedMotion }: TileProps) => {
-   const { Icon } = item;
-   return (
-      <motion.div
-         initial={{ opacity: 0, y: ENTER_RISE }}
-         animate={{ opacity: 1, y: 0 }}
-         transition={{
-            duration: ENTER_DURATION,
-            ease: EASING.cinematic,
-            delay: ENTER_DELAY + Math.min(index * STAGGER_STEP, STAGGER_CAP),
-         }}
-      >
-         <motion.div
-            style={{
-               width: size.tile,
-               height: size.tile,
-               borderRadius: size.radius,
-               background: CARD_FILL,
-               border: `1px solid ${HAIRLINE}`,
-               display: "flex",
-               alignItems: "center",
-               justifyContent: "center",
-            }}
-            animate={reducedMotion ? undefined : DRIFT}
-            transition={{
-               duration: slot.period,
-               times: DRIFT_TIMES,
-               ease: DRIFT_EASE,
-               repeat: Infinity,
-               delay: index * DRIFT_STAGGER,
-            }}
-         >
-            <Icon size={size.glyph} color={GLYPH_COLOR} />
-         </motion.div>
-      </motion.div>
-   );
+   values: FieldValues;
 };
 
-interface ParallaxSlotProps {
-   px: MotionValue<number>;
-   py: MotionValue<number>;
-   slot: HeroStackSlot;
-   size: TileSize;
-   children: ReactNode;
-}
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
-/* Pointer parallax on the outer node: the springs are shared, only the depth
-   differs per tile, so nearer tiles travel further. */
-const ParallaxSlot = ({ px, py, slot, size, children }: ParallaxSlotProps) => {
-   const x = useTransform(px, (value) => value * slot.depth);
-   const y = useTransform(py, (value) => value * slot.depth);
-   return (
-      <motion.div style={{ ...slotStyle(slot, size), x, y }}>
-         {children}
-      </motion.div>
+/* Top-lane tiles fade with the first scroll; the bottom lane keeps its alpha. */
+const laneOpacity = (slot: HeroStackSlot, scroll: number) =>
+   isTopLane(slot)
+      ? TILE_OPACITY * (1 - clamp01(scroll / TOP_LANE_FADE))
+      : TILE_OPACITY;
+
+/* Scroll slides the tile towards its own edge, never towards the copy; the
+   shared pointer springs add a per-depth offset where the pointer can hover. */
+const FloatingTile = ({ item, slot, index, values }: FloatingTileProps) => {
+   const { scrollY, pointerX, pointerY } = values;
+   const outward = laneSign(slot) * slot.speed;
+   const x = useTransform(
+      [scrollY, pointerX],
+      ([scroll = 0, pointer = 0]: number[]) =>
+         scroll * outward + pointer * slot.depth,
    );
-};
-
-interface LayerProps {
-   placements: Placement[];
-   size: TileSize;
-}
-
-/* Mounted only when the pointer can hover and motion is Full, so the springs
-   and the pointermove listener do not exist otherwise. */
-const ParallaxTiles = ({
-   hostRef,
-   placements,
-   size,
-}: LayerProps & { hostRef: RefObject<HTMLElement | null> }) => {
-   const { x: px, y: py } = usePointerParallax(hostRef);
-   return placements.map(({ item, slot }, index) => (
-      <ParallaxSlot key={item.name} px={px} py={py} slot={slot} size={size}>
-         <Tile
+   const y = useTransform(pointerY, (pointer) => pointer * slot.depth);
+   const opacity = useTransform(scrollY, (scroll) => laneOpacity(slot, scroll));
+   return (
+      <motion.div style={{ ...slotStyle(slot), x, y, opacity }}>
+         <StackTile
             item={item}
-            slot={slot}
             index={index}
-            size={size}
+            size={SIZE}
+            period={slot.period}
             reducedMotion={false}
          />
-      </ParallaxSlot>
+      </motion.div>
+   );
+};
+
+interface FloatingTilesProps {
+   hostRef: RefObject<HTMLElement | null>;
+   canHover: boolean;
+}
+
+/* Full mode only: the scroll value, springs and pointer listener exist here. */
+const FloatingTiles = ({ hostRef, canHover }: FloatingTilesProps) => {
+   const { scrollY } = useScroll();
+   const { x: pointerX, y: pointerY } = usePointerParallax({
+      host: hostRef,
+      enabled: canHover,
+   });
+   const values = { scrollY, pointerX, pointerY };
+   return placements.map(({ item, slot }, index) => (
+      <FloatingTile
+         key={item.name}
+         item={item}
+         slot={slot}
+         index={index}
+         values={values}
+      />
    ));
 };
 
-const StaticTiles = ({
-   placements,
-   size,
-   reducedMotion,
-}: LayerProps & { reducedMotion: boolean }) =>
+/* Reduced: every tile visible at its slot, no values and no listeners. */
+const RestingTiles = () =>
    placements.map(({ item, slot }, index) => (
-      <div key={item.name} style={slotStyle(slot, size)}>
-         <Tile
+      <div key={item.name} style={slotStyle(slot)}>
+         <StackTile
             item={item}
-            slot={slot}
             index={index}
-            size={size}
-            reducedMotion={reducedMotion}
+            size={SIZE}
+            period={slot.period}
+            reducedMotion
          />
       </div>
    ));
@@ -163,45 +126,29 @@ interface HeroStackFieldProps {
 }
 
 /**
- * Floating stack field: the ranked hero_stack glyphs as flat DevAvatar-style
- * tiles in the hero's empty corners and, on wide viewports, its flanks.
+ * Floating stack field inside the hero for phones and tablets: the six
+ * top-ranked hero_stack glyphs as flat tiles in the hero's empty corners,
+ * drifting on their own loops and sliding outward as the page scrolls.
  * Decorative only (aria-hidden, no pointer events, z-0 under the copy). The
  * in-app motion preference is the only gate: Reduced keeps the tiles visible
- * and still, with no drift, no springs and no pointer listener.
+ * and still. From 1280px up StackFieldBackdrop owns the field instead.
  */
 const HeroStackField = ({ hostRef }: HeroStackFieldProps) => {
    const { reducedMotion } = useMotionPreference();
    const wide = useMediaQuery(MEDIA_QUERIES.wide);
    const canHover = useMediaQuery(MEDIA_QUERIES.hover);
 
-   const size = wide ? TILE_SIZES.wide : TILE_SIZES.compact;
-   const slots = wide
-      ? HERO_STACK_SLOTS
-      : HERO_STACK_SLOTS.filter((slot) => !slot.wide);
-   const placements = slots.flatMap((slot, index): Placement[] => {
-      const item = heroStackItems.at(index);
-      return item ? [{ item, slot }] : [];
-   });
-
-   if (placements.length === 0) return null;
+   if (wide || placements.length === 0) return null;
 
    return (
       <div
          aria-hidden="true"
          className="absolute inset-0 z-0 pointer-events-none"
       >
-         {canHover && !reducedMotion ? (
-            <ParallaxTiles
-               hostRef={hostRef}
-               placements={placements}
-               size={size}
-            />
+         {reducedMotion ? (
+            <RestingTiles />
          ) : (
-            <StaticTiles
-               placements={placements}
-               size={size}
-               reducedMotion={reducedMotion}
-            />
+            <FloatingTiles hostRef={hostRef} canHover={canHover} />
          )}
       </div>
    );

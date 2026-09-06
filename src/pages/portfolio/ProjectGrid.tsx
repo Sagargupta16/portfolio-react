@@ -5,16 +5,20 @@ import ProjectCard from "./ProjectCard";
 interface ProjectGridProps {
    projects: ProjectWithCategory[];
    isMobile: boolean;
+   /** True once the filter has changed: later cards mount as swap entries. */
+   hasFiltered: boolean;
    onOpenProject: (project: ProjectWithCategory) => void;
 }
 
 /**
  * Responsive card grid: 1 column on phones, 2 on tablet, 3 on wide desktop.
- * Replaces the old alternating vertical timeline.
+ * On a filter change popLayout lifts the leaving cards out of the flow, the
+ * survivors glide to their new slots and the newcomers rise into the gaps.
  */
 const ProjectGrid = ({
    projects,
    isMobile,
+   hasFiltered,
    onOpenProject,
 }: ProjectGridProps) => (
    <div
@@ -33,6 +37,7 @@ const ProjectGrid = ({
                key={`${project.category}-${project.id}-${project.title}`}
                data={project}
                index={idx}
+               entering={hasFiltered}
                onOpen={() => onOpenProject(project)}
             />
          ))}

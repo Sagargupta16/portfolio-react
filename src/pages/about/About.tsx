@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { getAbout, getAvailability } from "@data/personal";
 import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
 import { GREEN, MONO_FONT, TEXT_PRIMARY, MAX_WIDTH } from "@/constants/theme";
@@ -9,6 +9,21 @@ import PageSection from "@components/layout/PageSection";
 import CharacterReveal from "@components/ui/CharacterReveal";
 import HighlightCard from "./HighlightCard";
 import QuickFacts from "./QuickFacts";
+
+/* The bio fades in as one block; its highlight cards then cascade in behind
+   it. Colocated because the shared staggerContainer runs a tighter step, and
+   the cards must not carry the delay themselves (see HighlightCard). */
+const HIGHLIGHT_STAGGER_S = 0.08;
+const HIGHLIGHT_LEAD_S = 0.15;
+const highlightsContainer: Variants = {
+   hidden: {},
+   visible: {
+      transition: {
+         staggerChildren: HIGHLIGHT_STAGGER_S,
+         delayChildren: HIGHLIGHT_LEAD_S,
+      },
+   },
+};
 
 const About = () => {
    const aboutInfo = getAbout();
@@ -109,7 +124,8 @@ const About = () => {
                   />
 
                   {/* Highlights */}
-                  <div
+                  <motion.div
+                     variants={highlightsContainer}
                      style={{
                         display: "flex",
                         flexDirection: "column",
@@ -124,7 +140,7 @@ const About = () => {
                            isMobile={isMobile}
                         />
                      ))}
-                  </div>
+                  </motion.div>
                </motion.div>
             </motion.div>
 

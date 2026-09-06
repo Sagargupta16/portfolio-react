@@ -137,6 +137,7 @@ if (requireRecord(personal, "data/personal.json")) {
       "availability",
       "role",
       "employer",
+      "timezone",
    ]) {
       requireString(personal[field], `personal.${field}`);
    }
