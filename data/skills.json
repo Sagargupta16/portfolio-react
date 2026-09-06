@@ -125,6 +125,8 @@
       "PostgreSQL",
       "Claude Code",
       "Linux",
-      "PyTorch"
+      "PyTorch",
+      "Bash",
+      "FastAPI"
    ]
 }

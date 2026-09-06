@@ -27,6 +27,17 @@ const LENIS_OPTIONS = {
    respectReducedMotion: false,
 };
 
+// Site-wide floating stack field (>= 1280px). Lazy so the skill glyph
+// registry stays out of the entry bundle.
+const StackFieldBackdrop = lazy(
+   () => import("@components/layout/StackFieldBackdrop"),
+);
+
+/* Truthy on purpose: ErrorBoundary treats a falsy fallback as "not provided"
+   and renders its full "Something went wrong" panel. A failed field chunk
+   should leave the flanks empty, not replace the page. */
+const OMIT_BACKDROP = <></>;
+
 // Lazy Load "Below the fold" sections for massive performance gains
 const About = lazy(() => import("@pages/about/About"));
 const Experience = lazy(() => import("@pages/experience/Experience"));
@@ -112,6 +123,13 @@ const AppContent = () => {
          <ErrorBoundary>
             <ScrollProgress />
             <AmbientBackground />
+            {/* Fixed at z-0 before the page wrapper in DOM order: above the
+                ambient glows (z -1), below every section (painted later). */}
+            <ErrorBoundary fallback={OMIT_BACKDROP}>
+               <Suspense fallback={null}>
+                  <StackFieldBackdrop />
+               </Suspense>
+            </ErrorBoundary>
             <div className="relative min-h-dvh">
                <a href="#main-content" className="skip-link">
                   Skip to content

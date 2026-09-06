@@ -35,9 +35,11 @@ const Hero = () => {
          {/* Dot texture comes from the site-wide AmbientBackground */}
          <HeroContent />
 
-         {/* Floating stack field: after the copy in DOM order so the headline
-             paints first, under it visually (z-0 beneath HeroContent's z-10).
-             Lazy so the skill glyph registry stays out of the entry bundle. */}
+         {/* Floating stack field for phones and tablets (StackFieldBackdrop
+             owns the flanks from 1280px up): after the copy in DOM order so
+             the headline paints first, under it visually (z-0 beneath
+             HeroContent's z-10). Lazy so the skill glyph registry stays out
+             of the entry bundle. */}
          <ErrorBoundary fallback={OMIT_FIELD}>
             <Suspense fallback={null}>
                <HeroStackField hostRef={sectionRef} />
