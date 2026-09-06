@@ -26,8 +26,9 @@ const RAIL_BASE = "rgb(255 255 255 / 0.06)";
 const FILL_ALPHA = "73";
 
 // A zero-width first column holds the spine item, which spans every row but
-// the last so the rail can stop at the last node. Cards auto-place into the
-// second column, one per row, because the spine already occupies the first.
+// the last so the rail can stop at the last node. The .timeline-spine-list
+// rule pins every card to the second column: without it, the last row's free
+// first cell would capture the final card and collapse it to 0 px.
 const LIST_STYLE: React.CSSProperties = {
    display: "grid",
    gridTemplateColumns: "0px minmax(0, 1fr)",
@@ -108,7 +109,7 @@ const DrawnList = ({ accentColor, count, children }: TimelineSpineProps) => {
    const scaleY = reducedMotion ? filled : smooth;
 
    return (
-      <div ref={listRef} style={LIST_STYLE}>
+      <div ref={listRef} className="timeline-spine-list" style={LIST_STYLE}>
          <div
             aria-hidden
             style={{

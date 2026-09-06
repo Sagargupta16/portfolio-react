@@ -282,6 +282,14 @@ html[data-motion="reduced"]
    overflow: hidden;
 }
 
+/* Timeline spine list: the rail lives in a 0px first column that spans all rows
+   but the last, so every card must be pinned to the second column (inline
+   grid-column on the spine item wins over this rule). */
+.timeline-spine-list > * {
+   grid-column: 2;
+   min-width: 0;
+}
+
 /* ===== Dashed Category Rule (tech-stack separators) ===== */
 .dashed-rule {
    display: flex;
