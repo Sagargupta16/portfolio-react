@@ -13,13 +13,11 @@ interface ToastProps {
 const TOAST_COLORS = {
    success: {
       accent: GREEN,
-      bg: "rgb(var(--ch-green) / 0.08)",
       border: "rgb(var(--ch-green) / 0.15)",
       icon: CheckCircle,
    },
    error: {
       accent: RED,
-      bg: "rgb(var(--ch-red) / 0.08)",
       border: "rgb(var(--ch-red) / 0.15)",
       icon: XCircle,
    },
@@ -53,7 +51,7 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                   backdropFilter: "blur(24px)",
                   WebkitBackdropFilter: "blur(24px)",
                   border: `1px solid ${config.border}`,
-                  boxShadow: `0 10px 40px rgba(0,0,0,0.4), 0 0 20px ${config.bg}`,
+                  boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
                   maxWidth: 360,
                   minWidth: 240,
                }}

@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import {
    AMBER,
    CYAN,
+   DURATION,
    EASING,
    PURPLE,
    RED,
@@ -31,6 +32,21 @@ const LEVEL_COLOR: Record<string, string> = {
 const SESSION_TIME = Date.now();
 const EXPIRY_WARNING_DAYS = 90;
 const DAY_MS = 86_400_000;
+const MAX_STAGGER_S = 0.3;
+
+/* One hover label on the anchor; every child animates its own "hover" variant
+   so the whole badge responds as a unit with zero React state. */
+const HOVER = "hover";
+const FLOAT_KEYFRAMES = [0, -8, 0];
+const FLOAT_EASE = FLOAT_KEYFRAMES.slice(1).map(() => "easeInOut" as const);
+const IMAGE_SPRING = { type: "spring", stiffness: 300, damping: 20 } as const;
+
+/* Hovering parks the float so the badge sits still under the cursor. */
+const floatVariants: Variants = {
+   [HOVER]: { y: 0, transition: { duration: DURATION.default } },
+};
+const imageVariants: Variants = { [HOVER]: { scale: 1.08 } };
+const nameVariants: Variants = { [HOVER]: { color: TEXT_PRIMARY } };
 
 interface ExpiryMeta {
    label: string;
@@ -69,7 +85,6 @@ const CertBadge = ({
    entranceDelay,
 }: CertBadgeProps) => {
    const { reducedMotion } = useMotionPreference();
-   const [isHovered, setIsHovered] = useState(false);
    // If the CDN's resized variant fails (transient 5xx / cold cache on newly
    // synced badges), fall back to the original full-size URL once.
    const [useOriginal, setUseOriginal] = useState(false);
@@ -84,16 +99,17 @@ const CertBadge = ({
    ]
       .filter(Boolean)
       .join(", ");
-   const floatRepeat = reducedMotion ? 0 : Infinity;
-   const floatAnimation =
-      isHovered || reducedMotion ? { y: 0 } : { y: [0, -8, 0] };
-   const floatTransition = isHovered
-      ? { duration: 0.4 }
+   const hover = reducedMotion ? undefined : HOVER;
+   const floatLoop = reducedMotion
+      ? undefined
       : {
-           duration: 3,
-           repeat: floatRepeat,
-           ease: "easeInOut" as const,
-           delay: floatDelay,
+           y: FLOAT_KEYFRAMES,
+           transition: {
+              duration: 3,
+              repeat: Infinity,
+              ease: FLOAT_EASE,
+              delay: floatDelay,
+           },
         };
 
    return (
@@ -102,16 +118,16 @@ const CertBadge = ({
          target="_blank"
          rel="noopener noreferrer"
          aria-label={`${ariaLabel} (opens in a new tab)`}
-         initial={{ opacity: 0, y: 40, scale: 0.8 }}
-         whileInView={{ opacity: 1, y: 0, scale: 1 }}
+         initial={{ opacity: 0, y: 24 }}
+         whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
          transition={{
-            delay: entranceDelay,
-            duration: 0.7,
+            delay: Math.min(entranceDelay, MAX_STAGGER_S),
+            duration: 0.5,
             ease: EASING.cinematic,
          }}
-         onHoverStart={() => setIsHovered(true)}
-         onHoverEnd={() => setIsHovered(false)}
+         whileHover={hover}
+         whileFocus={hover}
          style={{
             display: "flex",
             flexDirection: "column",
@@ -123,39 +139,20 @@ const CertBadge = ({
          }}
       >
          {/* Badge image with float animation */}
-         <motion.div
-            animate={floatAnimation}
-            transition={floatTransition}
-            style={{ position: "relative" }}
-         >
-            {/* Glow behind badge on hover */}
-            <div
-               style={{
-                  position: "absolute",
-                  inset: -8,
-                  borderRadius: "50%",
-                  background: `radial-gradient(circle, ${accent}20, transparent 70%)`,
-                  opacity: isHovered ? 1 : 0,
-                  transition: "opacity 0.3s ease",
-                  pointerEvents: "none",
-               }}
-            />
-            <img
+         <motion.div animate={floatLoop} variants={floatVariants}>
+            <motion.img
                src={useOriginal ? imageUrl : credlyThumb(imageUrl)}
                onError={() => setUseOriginal(true)}
                alt={name}
                loading="lazy"
                width={size}
                height={size}
+               variants={imageVariants}
+               transition={IMAGE_SPRING}
                style={{
                   width: size,
                   height: size,
                   objectFit: "contain",
-                  transition: "transform 0.3s ease, filter 0.3s ease",
-                  transform: isHovered ? "scale(1.12)" : "scale(1)",
-                  filter: isHovered
-                     ? `drop-shadow(0 4px 20px ${accent}50) brightness(1.05)`
-                     : "brightness(0.88)",
                }}
             />
          </motion.div>
@@ -170,16 +167,16 @@ const CertBadge = ({
                minHeight: expiryMeta ? 58 : 42,
             }}
          >
-            <span
+            <motion.span
+               variants={nameVariants}
                style={{
                   fontSize: 11,
                   fontWeight: 600,
                   fontFamily: MONO_FONT,
-                  color: isHovered ? TEXT_PRIMARY : TEXT_MUTED,
+                  color: TEXT_MUTED,
                   textAlign: "center",
                   maxWidth: size + 20,
                   lineHeight: 1.2,
-                  transition: "color 0.3s ease",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: "vertical",
@@ -187,7 +184,7 @@ const CertBadge = ({
                }}
             >
                {name}
-            </span>
+            </motion.span>
             {level && (
                <span
                   style={{

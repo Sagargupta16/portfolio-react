@@ -3,7 +3,13 @@ import { Code } from "lucide-react";
 import type { Variants } from "motion/react";
 import type { Service } from "@/types";
 import useBreakpoint from "@hooks/useBreakpoint";
-import { TEXT_PRIMARY, TEXT_SECONDARY } from "@/constants/theme";
+import useMotionPreference from "@hooks/useMotionPreference";
+import {
+   DURATION,
+   EASING,
+   TEXT_PRIMARY,
+   TEXT_SECONDARY,
+} from "@/constants/theme";
 import GlassCard from "@components/ui/GlassCard";
 import { iconMap, ACCENT_COLORS } from "./servicesConstants";
 import ServiceAnimation from "./ServiceAnimation";
@@ -14,30 +20,34 @@ interface ServiceCardProps {
 }
 
 const bentoEntry: Variants = {
-   hidden: { opacity: 0, y: 30, rotate: -1 },
+   hidden: { opacity: 0, y: 24 },
    visible: {
       opacity: 1,
       y: 0,
-      rotate: 0,
-      transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.5, ease: EASING.cinematic },
    },
+};
+
+/* Lift only: .glass-card CSS owns the border and background shift. */
+const HOVER_LIFT = {
+   y: -6,
+   transition: { duration: DURATION.quick, ease: EASING.brisk },
 };
 
 const ServiceCard = ({ service, index }: ServiceCardProps) => {
    const [isHovered, setIsHovered] = useState(false);
    const { isMobile } = useBreakpoint();
+   const { reducedMotion } = useMotionPreference();
    const colors = ACCENT_COLORS[index % ACCENT_COLORS.length];
    const IconComponent = iconMap[service.title] || Code;
+   const lift = reducedMotion ? undefined : HOVER_LIFT;
 
    return (
       <GlassCard
          style={{ padding: 0, overflow: "hidden" }}
          variants={bentoEntry}
-         whileHover={{
-            y: -6,
-            boxShadow: `0 12px 40px ${colors.borderHover}`,
-            transition: { duration: 0.4 },
-         }}
+         whileHover={lift}
+         whileFocus={lift}
          onHoverStart={() => setIsHovered(true)}
          onHoverEnd={() => setIsHovered(false)}
       >

@@ -230,13 +230,13 @@ html[data-motion="reduced"] *::after {
 }
 
 html[data-motion="reduced"]
-   :is(
-      .btn-primary,
-      .btn-outline,
-      .btn-pill,
-      .skill-item,
-      .project-cover-img
-   ):hover {
+   :is(.btn-primary, .btn-outline, .btn-pill, .skill-item):is(
+      :hover,
+      :focus-visible
+   ),
+html[data-motion="reduced"]
+   .project-card:is(:hover, :has(:focus-visible))
+   .project-cover-img {
    transform: none;
 }
 
@@ -257,18 +257,20 @@ html[data-motion="reduced"]
       border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.glass-card:hover {
+.glass-card:hover,
+.glass-card:focus-visible {
    border-color: rgb(var(--ch-white) / 0.14);
    background: var(--color-bg-card-hover);
 }
 
 /* ===== Project cards ===== */
-/* Screenshot zooms subtly when the card is hovered. */
+/* Screenshot zooms subtly when the card is hovered or holds keyboard focus. */
 .project-cover-img {
    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.project-card:hover .project-cover-img {
+.project-card:hover .project-cover-img,
+.project-card:has(:focus-visible) .project-cover-img {
    transform: scale(1.045);
 }
 
@@ -319,7 +321,8 @@ html[data-motion="reduced"]
       transform 0.25s ease;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus-visible {
    background: #1d4ed8;
    transform: translateY(-1px);
 }
@@ -338,7 +341,8 @@ html[data-motion="reduced"]
       transform 0.25s ease;
 }
 
-.btn-outline:hover {
+.btn-outline:hover,
+.btn-outline:focus-visible {
    background: rgb(var(--ch-white) / 0.14);
    border-color: rgb(var(--ch-white) / 0.12);
    transform: translateY(-1px);
@@ -358,7 +362,8 @@ html[data-motion="reduced"]
       transform 0.25s ease;
 }
 
-.btn-pill:hover {
+.btn-pill:hover,
+.btn-pill:focus-visible {
    background: #e2e8f0;
    transform: translateY(-1px);
 }
@@ -383,7 +388,8 @@ html[data-motion="reduced"]
    border: 1px solid rgb(var(--ch-blue) / 0.2);
 }
 
-.tag-purple:hover {
+.tag-purple:hover,
+.tag-purple:focus-visible {
    background: rgb(var(--ch-blue) / 0.2);
    border-color: rgb(var(--ch-blue) / 0.35);
 }
@@ -409,7 +415,8 @@ html[data-motion="reduced"]
       opacity 0.25s ease;
 }
 
-.skill-item:hover {
+.skill-item:hover,
+.skill-item:focus-visible {
    transform: translateY(-2px);
 }
 

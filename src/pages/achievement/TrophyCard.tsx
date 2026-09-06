@@ -1,9 +1,11 @@
 import { motion } from "motion/react";
 import { Trophy } from "lucide-react";
 import type { Achievement } from "@/types";
+import useMotionPreference from "@hooks/useMotionPreference";
 import {
    MONO_FONT,
    CYAN,
+   DURATION,
    EASING,
    TEXT_PRIMARY,
    TEXT_SECONDARY,
@@ -29,6 +31,15 @@ const ORDINAL_SUFFIX: Record<string, string> = {
    "1": "st",
    "2": "nd",
    "3": "rd",
+};
+
+const MAX_STAGGER_S = 0.3;
+
+/* Lift only: .glass-card CSS owns the border shift, which keeps the coloured
+   left accent intact (Motion would overwrite all four sides). */
+const HOVER_LIFT = {
+   y: -4,
+   transition: { duration: DURATION.quick, ease: EASING.brisk },
 };
 
 const splitTitle = (title: string): [string, string] => {
@@ -58,23 +69,22 @@ const parsePlacement = (
 
 const TrophyCard = ({ item, index }: TrophyCardProps) => {
    const { rank, event, color } = parsePlacement(item.title);
+   const { reducedMotion } = useMotionPreference();
+   const lift = reducedMotion ? undefined : HOVER_LIFT;
 
    return (
       <motion.div
          className="glass-card"
-         initial={{ opacity: 0, y: 25, scale: 0.97 }}
-         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-         viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+         initial={{ opacity: 0, y: 24 }}
+         whileInView={{ opacity: 1, y: 0 }}
+         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
          transition={{
-            delay: index * 0.08,
-            duration: 0.7,
+            delay: Math.min(index * 0.05, MAX_STAGGER_S),
+            duration: 0.5,
             ease: EASING.cinematic,
          }}
-         whileHover={{
-            y: -4,
-            boxShadow: `0 8px 30px ${color}25`,
-            transition: { duration: 0.25 },
-         }}
+         whileHover={lift}
+         whileFocus={lift}
          style={{
             padding: "20px 20px",
             display: "flex",
