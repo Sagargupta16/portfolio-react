@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.9.0] - 2026-09-06
+
+### Added
+
+- **Floating glyphs across the whole page.** The hero-only stack field became a site-wide fixed layer: twelve brand-coloured 44 px skill tiles in the outer flanks (outside the 1280 px content column) that drift on their own loops, ride the scroll at per-tile depth with a wrap so they keep cycling through the viewport, fade out over the last 5% of the page so the footer stays clear, and follow the pointer on hover-capable desktops. Phones and tablets keep the six-tile hero lanes (32 px, brand colours), which slide toward their edge as you scroll. Static in Reduced. `hero_stack` grew to 14 names.
+- **Projects reflow on filter change.** Surviving cards glide to their new slot on a spring, leaving cards pin in place and fade, newcomers rise in with a capped stagger. The card now forwards its ref, which also fixes a pre-existing silent bug where exits were never pinned.
+- **Skills come alive.** Each category arrives as it scrolls in: the dashed rule and a category glyph first, then the chips in a left-to-right wave; six category glyphs breathe slowly; chips lift on a spring with a ghost hairline on hover and focus, flat at rest on touch.
+- **Learning badges as a marquee rail.** The 15 Credly learning badges scroll in a slow duplicated track (48 s desktop, 60 s phone) with soft edge fades, pausing on hover and on keyboard focus, and sliding a focused badge into the clear area. Reduced shows the static wrapped grid.
+- **Footer status bar.** The last row is now a live status line: a ticking local clock for the timezone in `personal.json`, the availability line, the stack chips, and a build stamp (version and build date injected by Vite).
+- **About, Contact and Footer micro-interactions.** Highlight and contact cards lift with a springing icon and brightening hairline on hover and focus; Quick Facts chips cascade in; contact inputs draw an accent underline on focus and the submit arrow nudges; the footer brand tile spins once per hover or focus and SITE and SOCIAL links use a sliding underline.
+
+### Fixed
+
+- **Timeline cards no longer collapse.** The spine rail occupies a zero-width first grid column that spans all rows but the last, so the final card of every timeline auto-placed into that free cell and shrank to a sliver; cards are now pinned to the content column.
+- **Phone motion control** stays hidden until the first 120 px of scroll so it no longer covers the hero CTAs at the fold.
+
 ## [4.8.0] - 2026-09-05
 
 ### Added
