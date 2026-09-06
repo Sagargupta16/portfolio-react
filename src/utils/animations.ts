@@ -1,16 +1,23 @@
 import type { Variants } from "motion/react";
 import { DURATION, EASING } from "@/constants/theme";
 
+// ===== Shared Reveal Tokens =====
+/** Travel for section-level reveals (PageSection, headers, banners). */
+const OFFSET = 24;
+/** Travel for list items inside a stagger container. */
+const ITEM_OFFSET = 16;
+/** One viewport margin for every whileInView reveal: fires 60px before the element clears the fold. */
+export const VIEWPORT_MARGIN = "0px 0px -60px 0px";
+
 // ===== Transition Presets =====
 const transitions = {
-   default: { duration: DURATION.default, ease: "easeOut" as const },
-   quick: { duration: DURATION.quick, ease: "easeInOut" as const },
+   default: { duration: 0.5, ease: EASING.cinematic },
+   item: { duration: 0.35, ease: EASING.cinematic },
 };
 
 // ===== Directional Fade (parameterized) =====
 type Direction = "up" | "down" | "left" | "right" | "none";
 
-const OFFSET = 60;
 const directionOffset: Record<Direction, { x?: number; y?: number }> = {
    up: { y: OFFSET },
    down: { y: -OFFSET },
@@ -40,60 +47,32 @@ export const staggerContainer: Variants = {
    hidden: {},
    visible: {
       transition: {
-         staggerChildren: 0.1,
-         delayChildren: 0.2,
+         staggerChildren: 0.06,
+         delayChildren: 0.1,
       },
    },
 };
 
 export const staggerItem: Variants = {
-   hidden: { opacity: 0, y: 20 },
-   visible: { opacity: 1, y: 0, transition: transitions.quick },
+   hidden: { opacity: 0, y: ITEM_OFFSET },
+   visible: { opacity: 1, y: 0, transition: transitions.item },
 };
 
-// ===== Enhanced Section Reveal (with scale) =====
+// ===== Section Reveal =====
+// Opacity + a short rise only: scaling a whole section promoted a viewport-sized
+// layer and re-rasterised every card at the end of the tween.
 export const sectionRevealEnhanced: Variants = {
-   hidden: { opacity: 0, y: 50, scale: 0.98 },
+   hidden: { opacity: 0, y: OFFSET },
    visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
-      transition: { duration: 0.7, ease: EASING.smooth },
+      transition: { duration: 0.6, ease: EASING.cinematic },
    },
 };
 
-// ===== 3D-Feel Reveals =====
-export const rotateInUp: Variants = {
-   hidden: { opacity: 0, y: 80, rotateX: 12, transformPerspective: 800 },
-   visible: {
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      transition: { duration: 0.7, ease: EASING.smooth },
-   },
-};
-
-// ===== Alternating Slide (for timelines) =====
-export const slideInLeft: Variants = {
-   hidden: { opacity: 0, x: -120, skewY: 1.5 },
-   visible: {
-      opacity: 1,
-      x: 0,
-      skewY: 0,
-      transition: { duration: 0.65, ease: EASING.smooth },
-   },
-};
-
-export const slideInRight: Variants = {
-   hidden: { opacity: 0, x: 120, skewY: -1.5 },
-   visible: {
-      opacity: 1,
-      x: 0,
-      skewY: 0,
-      transition: { duration: 0.65, ease: EASING.smooth },
-   },
-};
-
+// ===== Tamed Legacy Reveals =====
+// Names kept for their consumers; the perspective, skew and 120px parking are gone.
+export const rotateInUp: Variants = createFade("up");
 // ===== Wave Cascade (for skill tags) =====
 export const waveCascadeContainer: Variants = {
    hidden: {},
@@ -103,12 +82,11 @@ export const waveCascadeContainer: Variants = {
 };
 
 export const waveCascadeItem: Variants = {
-   hidden: { opacity: 0, y: 30, scale: 0.85, filter: "blur(4px)" },
+   hidden: { opacity: 0, y: ITEM_OFFSET, scale: 0.94 },
    visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      filter: "blur(0px)",
-      transition: { duration: 0.4, ease: EASING.brisk },
+      transition: { duration: DURATION.default, ease: EASING.brisk },
    },
 };

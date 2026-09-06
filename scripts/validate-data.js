@@ -270,9 +270,50 @@ if (requireRecord(experience, "experience")) {
    }
 }
 
+const PRIMARY_SKILL_CATEGORIES = [
+   "languages",
+   "frontend",
+   "backend",
+   "cloud_devops",
+   "ai_ml",
+   "tools_platforms",
+];
+const HERO_STACK_PATH = "skills.hero_stack";
+const HERO_STACK_MIN = 10;
+const HERO_STACK_MAX = 14;
+
 if (requireRecord(skills, "skills")) {
    for (const [category, values] of Object.entries(skills)) {
       requireStringArray(values, `skills.${category}`);
+   }
+   // hero_stack names the glyphs floating behind the hero. Each must be a
+   // primary-category skill so the field never shows a name the Skills
+   // section does not, and the list stays inside the slot budget.
+   const heroStack = skills.hero_stack;
+   if (heroStack !== undefined && requireArray(heroStack, HERO_STACK_PATH)) {
+      if (
+         heroStack.length < HERO_STACK_MIN ||
+         heroStack.length > HERO_STACK_MAX
+      ) {
+         fail(
+            HERO_STACK_PATH,
+            `must list ${HERO_STACK_MIN} to ${HERO_STACK_MAX} skills`,
+         );
+      }
+      const primarySkills = new Set(
+         PRIMARY_SKILL_CATEGORIES.flatMap((category) =>
+            Array.isArray(skills[category]) ? skills[category] : [],
+         ),
+      );
+      const seen = new Set();
+      for (const [index, name] of heroStack.entries()) {
+         const path = `${HERO_STACK_PATH}[${index}]`;
+         if (!primarySkills.has(name)) {
+            fail(path, `${JSON.stringify(name)} is not a primary skill`);
+         }
+         if (seen.has(name)) fail(path, `duplicates ${JSON.stringify(name)}`);
+         seen.add(name);
+      }
    }
 }
 

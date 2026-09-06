@@ -8,9 +8,9 @@ import {
    getCommunityProjects,
 } from "@data/projects";
 import { parseDate, isValidUrl } from "@pages/portfolio/portfolioConstants";
-import { staggerItem } from "@utils/animations";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
+import { heroLatest } from "./heroMotion";
 
 /* One derived line under the hero intro: the most recently merged upstream PR
    and the newest shipped project. Nothing is hand-written here, so it moves on
@@ -50,7 +50,7 @@ const HeroLatest = () => {
 
    return (
       <motion.div
-         variants={staggerItem}
+         variants={heroLatest}
          style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",

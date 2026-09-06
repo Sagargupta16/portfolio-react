@@ -4,6 +4,7 @@ import { getExperience, getPositionsOfResponsibility } from "@data/experience";
 import { staggerContainer, fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
+import TimelineSpine from "@components/ui/TimelineSpine";
 import { CYAN, PURPLE, MAX_WIDTH_NARROW } from "@/constants/theme";
 import type { ProfessionalExperience } from "@/types";
 import TimelineCard from "./TimelineCard";
@@ -30,16 +31,18 @@ const Experience = () => {
       >
          <LayoutGroup>
             <motion.div variants={staggerContainer}>
-               {experienceArray.map((item, index) => (
-                  <TimelineCard
-                     key={item.id}
-                     item={item}
-                     index={index}
-                     accentColor={CYAN}
-                     isMobile={isMobile}
-                     onClick={() => setSelectedExp(item)}
-                  />
-               ))}
+               <TimelineSpine accentColor={CYAN} count={experienceArray.length}>
+                  {experienceArray.map((item, index) => (
+                     <TimelineCard
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        accentColor={CYAN}
+                        isMobile={isMobile}
+                        onClick={() => setSelectedExp(item)}
+                     />
+                  ))}
+               </TimelineSpine>
             </motion.div>
          </LayoutGroup>
 
@@ -55,15 +58,20 @@ const Experience = () => {
 
                <LayoutGroup>
                   <motion.div variants={staggerContainer}>
-                     {positionsArray.map((item, index) => (
-                        <TimelineCard
-                           key={item.id}
-                           item={item}
-                           index={index}
-                           accentColor={PURPLE}
-                           isMobile={isMobile}
-                        />
-                     ))}
+                     <TimelineSpine
+                        accentColor={PURPLE}
+                        count={positionsArray.length}
+                     >
+                        {positionsArray.map((item, index) => (
+                           <TimelineCard
+                              key={item.id}
+                              item={item}
+                              index={index}
+                              accentColor={PURPLE}
+                              isMobile={isMobile}
+                           />
+                        ))}
+                     </TimelineSpine>
                   </motion.div>
                </LayoutGroup>
             </>

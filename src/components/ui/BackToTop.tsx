@@ -4,15 +4,19 @@ import { useLenis } from "lenis/react";
 import { ChevronUp } from "lucide-react";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
-import { CYAN, GLASS_BORDER } from "@/constants/theme";
+import { CYAN, DURATION, EASING, GLASS_BORDER } from "@/constants/theme";
 
 const SCROLL_THRESHOLD_PX = 500;
+
+/* Lift plus border tint; the black depth shadow below stays static. */
+const HOVER_LIFT = { y: -2, borderColor: "rgb(var(--ch-cyan) / 0.3)" };
 
 const BackToTop = () => {
    const { isMobile } = useBreakpoint();
    const [visible, setVisible] = useState(false);
    const lenis = useLenis();
    const { reducedMotion } = useMotionPreference();
+   const lift = reducedMotion ? undefined : HOVER_LIFT;
 
    const handleScroll = useCallback(() => {
       setVisible(window.scrollY > SCROLL_THRESHOLD_PX);
@@ -40,14 +44,10 @@ const BackToTop = () => {
                initial={{ opacity: 0, scale: 0.8, y: 20 }}
                animate={{ opacity: 1, scale: 1, y: 0 }}
                exit={{ opacity: 0, scale: 0.8, y: 20 }}
-               whileHover={{
-                  y: -2,
-                  borderColor: "rgb(var(--ch-cyan) / 0.3)",
-                  boxShadow:
-                     "0 0 25px rgba(96,165,250,0.15), 0 4px 20px rgba(0,0,0,0.3)",
-               }}
+               whileHover={lift}
+               whileFocus={lift}
                whileTap={{ scale: 0.9 }}
-               transition={{ duration: 0.25 }}
+               transition={{ duration: DURATION.quick, ease: EASING.brisk }}
                style={{
                   position: "fixed",
                   bottom: isMobile ? 20 : 32,

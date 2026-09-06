@@ -1,12 +1,20 @@
 import type { ReactNode } from "react";
-import { motion, useInView } from "motion/react";
+import {
+   motion,
+   useInView,
+   useScroll,
+   useSpring,
+   useTransform,
+} from "motion/react";
 import { useRef } from "react";
 import {
    MONO_FONT,
    TEXT_MUTED,
    CHROME_BAR_STYLE,
    EASING,
+   DURATION,
 } from "@/constants/theme";
+import useMotionPreference from "@hooks/useMotionPreference";
 
 interface BrowserMockupProps {
    children: ReactNode;
@@ -21,16 +29,49 @@ const DOT_STYLE = {
    background: "rgb(var(--ch-white) / 0.12)",
 } as const;
 
+// The frame starts STAND_UP_DEG further back and stands up to tiltDeg as it
+// scrolls in, settling once its centre reaches the viewport centre.
+const STAND_UP_DEG = 15;
+const TILT_SPRING = { stiffness: 80, damping: 25 } as const;
+
+const FRAME_HIDDEN = { opacity: 0, scale: 0.94, y: 40 };
+const FRAME_VISIBLE = { opacity: 1, scale: 1, y: 0 };
+const CONTENT_HIDDEN = { opacity: 0, y: 20 };
+const CONTENT_VISIBLE = { opacity: 1, y: 0 };
+
+// Chrome details follow the frame; the last one starts at 0.6s.
+const HAIRLINE_DELAY = 0.2;
+const CONTENT_DELAY = 0.3;
+const DOTS_DELAY = 0.3;
+const DOTS_STAGGER = 0.08;
+const PATH_DELAY = 0.4;
+const PATH_STAGGER = 0.1;
+const ACTIVITY_DELAY = 0.45;
+const ACTIVITY_STAGGER = 0.05;
+
 const BrowserMockup = ({
    children,
    path = ["sagargupta16", "contributions"],
    tiltDeg = 48,
 }: BrowserMockupProps) => {
    const ref = useRef<HTMLDivElement>(null);
+   const { reducedMotion } = useMotionPreference();
    const isInView = useInView(ref, {
       once: true,
       margin: "0px 0px -100px 0px",
    });
+
+   // Scroll-linked values bypass MotionConfig, so Reduced pins the tilt below.
+   const { scrollYProgress } = useScroll({
+      target: ref,
+      offset: ["start end", "center center"],
+   });
+   const scrollTilt = useTransform(
+      scrollYProgress,
+      [0, 1],
+      [tiltDeg + STAND_UP_DEG, tiltDeg],
+   );
+   const rotateX = useSpring(scrollTilt, TILT_SPRING);
 
    return (
       <div
@@ -46,17 +87,14 @@ const BrowserMockup = ({
          }}
       >
          <motion.div
-            initial={{ rotateX: tiltDeg + 15, opacity: 0, scale: 0.9, y: 40 }}
-            animate={
-               isInView
-                  ? { rotateX: tiltDeg, opacity: 1, scale: 1, y: 0 }
-                  : { rotateX: tiltDeg + 15, opacity: 0, scale: 0.9, y: 40 }
-            }
+            initial={FRAME_HIDDEN}
+            animate={isInView ? FRAME_VISIBLE : FRAME_HIDDEN}
             transition={{
-               duration: 1,
+               duration: DURATION.slow,
                ease: EASING.cinematic,
             }}
             style={{
+               rotateX: reducedMotion ? tiltDeg : rotateX,
                transformOrigin: "50% 2%",
                borderRadius: 12,
                overflow: "hidden",
@@ -65,7 +103,6 @@ const BrowserMockup = ({
                boxShadow: `
                   0 8px 32px rgba(0, 0, 0, 0.4),
                   0 2px 4px rgba(0, 0, 0, 0.2),
-                  0 0 120px rgb(var(--ch-cyan) / 0.06),
                   inset 0 1px 0 rgb(var(--ch-white) / 0.04)
                `,
                maskImage:
@@ -74,8 +111,9 @@ const BrowserMockup = ({
                   "linear-gradient(black 50%, rgba(0, 0, 0, 0.5) 75%, transparent 100%)",
             }}
          >
-            {/* Animated glow border on top edge */}
+            {/* Top edge hairline */}
             <motion.div
+               aria-hidden
                initial={{ scaleX: 0, opacity: 0 }}
                animate={
                   isInView
@@ -83,8 +121,8 @@ const BrowserMockup = ({
                      : { scaleX: 0, opacity: 0 }
                }
                transition={{
-                  duration: 1,
-                  delay: 0.4,
+                  duration: DURATION.slow,
+                  delay: HAIRLINE_DELAY,
                   ease: EASING.cinematic,
                }}
                style={{
@@ -113,6 +151,7 @@ const BrowserMockup = ({
             >
                {/* Traffic light dots */}
                <div
+                  aria-hidden
                   style={{
                      display: "flex",
                      gap: 4,
@@ -130,19 +169,27 @@ const BrowserMockup = ({
                               ? { scale: 1, opacity: 1 }
                               : { scale: 0, opacity: 0 }
                         }
-                        transition={{ delay: 0.6 + i * 0.08, duration: 0.4 }}
+                        transition={{
+                           delay: DOTS_DELAY + i * DOTS_STAGGER,
+                           duration: DURATION.default,
+                           ease: EASING.cinematic,
+                        }}
                      />
                   ))}
                </div>
 
-               {/* Path breadcrumb with typewriter reveal */}
+               {/* Path breadcrumb with staggered reveal */}
                {path.map((segment, i) => (
                   <motion.span
                      key={segment}
                      style={{ display: "contents" }}
                      initial={{ opacity: 0 }}
                      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                     transition={{ delay: 0.8 + i * 0.15, duration: 0.4 }}
+                     transition={{
+                        delay: PATH_DELAY + i * PATH_STAGGER,
+                        duration: DURATION.default,
+                        ease: EASING.cinematic,
+                     }}
                   >
                      {i > 0 && (
                         <span
@@ -177,8 +224,11 @@ const BrowserMockup = ({
 
                <div style={{ flex: 1, minWidth: 0 }} />
 
-               {/* Activity level indicator with staggered fade */}
-               <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
+               {/* Activity level indicator with staggered pop */}
+               <div
+                  aria-hidden
+                  style={{ display: "flex", gap: 3, flexShrink: 0 }}
+               >
                   {[0.06, 0.12, 0.25, 0.45].map((opacity, i) => (
                      <motion.div
                         key={opacity}
@@ -190,7 +240,11 @@ const BrowserMockup = ({
                         }}
                         initial={{ scale: 0 }}
                         animate={isInView ? { scale: 1 } : { scale: 0 }}
-                        transition={{ delay: 1 + i * 0.1, duration: 0.4 }}
+                        transition={{
+                           delay: ACTIVITY_DELAY + i * ACTIVITY_STAGGER,
+                           duration: DURATION.default,
+                           ease: EASING.cinematic,
+                        }}
                      />
                   ))}
                </div>
@@ -203,11 +257,11 @@ const BrowserMockup = ({
                   padding: "20px 16px 40px",
                   maxWidth: "100%",
                }}
-               initial={{ opacity: 0, y: 20 }}
-               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+               initial={CONTENT_HIDDEN}
+               animate={isInView ? CONTENT_VISIBLE : CONTENT_HIDDEN}
                transition={{
-                  delay: 0.5,
-                  duration: 1,
+                  delay: CONTENT_DELAY,
+                  duration: DURATION.slow,
                   ease: EASING.cinematic,
                }}
             >

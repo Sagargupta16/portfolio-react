@@ -1,9 +1,13 @@
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
-import { slideInLeft, slideInRight } from "@utils/animations";
 import { splitDateRange, isPresent } from "@utils/dateRange";
-import { MONO_FONT, GREEN, TEXT_MUTED } from "@/constants/theme";
+import { MONO_FONT, GREEN, TEXT_MUTED, EASING } from "@/constants/theme";
+import {
+   TimelineNode,
+   TIMELINE_DATE_COLUMN,
+   TIMELINE_TRACK_COLUMN,
+} from "@components/ui/TimelineSpine";
 import TimelineCardContent from "./TimelineCardContent";
 import PresentIndicator from "./PresentIndicator";
 
@@ -13,6 +17,16 @@ interface TimelineCardDesktopProps {
    accentColor: string;
    onClick?: () => void;
 }
+
+// Every card sits right of the track, so it enters from the track side only.
+const timelineEntry: Variants = {
+   hidden: { opacity: 0, x: -24 },
+   visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.5, ease: EASING.cinematic },
+   },
+};
 
 const TimelineCardDesktop = ({
    item,
@@ -28,10 +42,10 @@ const TimelineCardDesktop = ({
          layout="position"
          style={{
             display: "grid",
-            gridTemplateColumns: "160px 40px 1fr",
+            gridTemplateColumns: `${TIMELINE_DATE_COLUMN}px ${TIMELINE_TRACK_COLUMN}px 1fr`,
             gap: 0,
          }}
-         variants={index % 2 === 0 ? slideInLeft : slideInRight}
+         variants={timelineEntry}
          custom={index}
          // Own viewport trigger: parent propagation breaks when the card
          // remounts after a resize across the mobile/desktop boundary (the
@@ -104,47 +118,15 @@ const TimelineCardDesktop = ({
             )}
          </div>
 
-         {/* Center: Timeline track */}
+         {/* Center: Timeline track (the rail itself is drawn by TimelineSpine) */}
          <div
             style={{
                display: "flex",
                flexDirection: "column",
                alignItems: "center",
-               position: "relative",
             }}
          >
-            <div
-               style={{
-                  width: 16,
-                  height: 16,
-                  borderRadius: "50%",
-                  border: `2px solid ${active ? GREEN : accentColor}`,
-                  backgroundColor: "rgba(6, 6, 16, 0.6)",
-                  marginTop: 4,
-                  position: "relative",
-                  zIndex: 2,
-                  flexShrink: 0,
-                  boxShadow: active ? `0 0 0 4px ${GREEN}22` : undefined,
-               }}
-            >
-               <div
-                  className="animate-glow-pulse"
-                  style={{
-                     position: "absolute",
-                     inset: 3,
-                     borderRadius: "50%",
-                     backgroundColor: active ? GREEN : accentColor,
-                  }}
-               />
-            </div>
-            <div
-               style={{
-                  width: 2,
-                  flex: 1,
-                  background: `linear-gradient(to bottom, ${accentColor}40, ${accentColor}10)`,
-                  borderRadius: 4,
-               }}
-            />
+            <TimelineNode color={active ? GREEN : accentColor} ring={active} />
          </div>
 
          {/* Right: Content card */}

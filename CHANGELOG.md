@@ -2,6 +2,29 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.8.0] - 2026-09-05
+
+### Added
+
+- **Floating stack field in the hero.** Twelve ranked skills from a new `hero_stack` key in `skills.json` (validated: 10 to 14 names, each in a primary category, no duplicates) render as flat glyph tiles in the hero flanks: ten 40 px tiles from 1280 px up, six 28 px corner tiles below that, never over the copy at any width. Each tile drifts on its own 9 to 14 s per-segment-eased loop; on hover-capable desktops one pointer listener drives two springs for a depth parallax of 4 to 10 px with no React state. Lazy chunk, aria-hidden, static at rest in Reduced.
+- **Scroll-drawn timeline spine** (`TimelineSpine`) for Experience, Positions and Education: one continuous rail fills with scroll, nodes pop as their card arrives, cards enter from the track side only. Reduced pins the rail full.
+- **Sliding active pill in the desktop nav** (`layoutId`), a hide-on-scroll-down / show-on-scroll-up bar past 120 px (never while the mobile menu is open, in Reduced, or during a nav-initiated scroll), and a hamburger to X morph.
+- **Sliding filter pill** on the Projects filter bar, chips sharing one geometry.
+
+### Changed
+
+- **Hero entrance choreography**: logo, badge, a clipped two-line headline reveal, intro, LATEST row, CTAs and socials arrive in beats and land within 1.2 s; CTAs hand hover to the stylesheet and Motion only handles the press; social tiles gain focus parity.
+- **Section reveals share one rhythm**: opacity plus a 24 px rise firing 60 px before the fold; no whole-section scale, skew, perspective or blur anywhere in the shared variants; section headers pop the badge before the title slides out of a clip. `slideInLeft` and `slideInRight` are gone (unused).
+- **Hover language without glows**: service, trophy and Back to top hovers drop animated box-shadow halos for a transform lift plus border colour; cert badges lose the drop-shadow and brightness filter and scale on a spring; the toast loses its tinted glow; every hover has a focus-visible twin; GlassCard's tilt runs on motion values (max 4 deg, hover-capable pointers only).
+- **Projects** mount cover scenes only within 300 px of the viewport (about five loops instead of 29 under All) and scene covers zoom on hover like screenshots.
+- **Stats** counters count through Motion `animate()` with zero per-frame React renders; the GitHub calendar mockup stands up as it scrolls in and drops its cyan glow.
+- **Ambient backdrop** drops its blur filters and permanent `will-change`; wider gradient stops keep the soft falloff, and a third very slow glow adds depth.
+- **Motion control on phones** stays hidden (and out of the tab order) until the page has scrolled 120 px, so it no longer sits on the hero CTAs at the fold; desktop shows it from the start.
+
+### Removed
+
+- `react-intersection-observer` (replaced by Motion's `useInView`).
+
 ## [4.7.1] - 2026-09-05
 
 ### Fixed

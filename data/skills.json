@@ -112,5 +112,19 @@
       "Open Source",
       "AI Agents & MCP",
       "Game Development"
+   ],
+   "hero_stack": [
+      "AWS (EC2, ECS, S3, Lambda, RDS, CloudFront)",
+      "Terraform",
+      "Docker",
+      "GitHub Actions",
+      "Python",
+      "TypeScript",
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Claude Code",
+      "Linux",
+      "PyTorch"
    ]
 }

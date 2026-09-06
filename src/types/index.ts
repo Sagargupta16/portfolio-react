@@ -190,6 +190,16 @@ export interface SkillsData {
    areas_of_interest: string[];
 }
 
+/** data/skills.json: the category map plus the hero field's ranked picks. */
+export interface SkillsFile extends SkillsData {
+   /**
+    * Ranked names for the floating field behind the hero: 10 to 14 entries,
+    * each also listed in a primary category (validate-data.js enforces both).
+    * Not a category, so it stays off SkillsData and out of the Skills section.
+    */
+   hero_stack?: string[];
+}
+
 // ===== Services =====
 export interface Service {
    id: number;

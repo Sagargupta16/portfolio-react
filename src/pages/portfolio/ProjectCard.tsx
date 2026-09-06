@@ -1,7 +1,8 @@
 import { motion } from "motion/react";
 import { ExternalLink, Eye } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
-import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
+import { DURATION, EASING, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
+import useMotionPreference from "@hooks/useMotionPreference";
 import {
    getCategoryColors,
    isValidUrl,
@@ -19,7 +20,14 @@ interface ProjectCardProps {
 
 const MAX_VISIBLE_TAGS = 5;
 
+// Hover lift; whileFocus gets the same target so keyboard focus matches.
+const CARD_LIFT = {
+   y: -6,
+   transition: { duration: DURATION.quick, ease: EASING.brisk },
+};
+
 const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
+   const { reducedMotion } = useMotionPreference();
    const hasGithub = isValidUrl(data.github);
    const hasLive = isValidUrl(data.live);
    const colors = getCategoryColors(data.category);
@@ -34,6 +42,7 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
 
    const visibleTags = data.tools_tech.slice(0, MAX_VISIBLE_TAGS);
    const hiddenTagCount = data.tools_tech.length - visibleTags.length;
+   const lift = reducedMotion ? undefined : CARD_LIFT;
 
    return (
       <motion.div
@@ -52,14 +61,12 @@ const ProjectCard = ({ data, index = 0, onOpen }: ProjectCardProps) => {
          exit={{ opacity: 0, y: -20, scale: 0.97 }}
          transition={{
             duration: 0.55,
-            ease: [0.16, 1, 0.3, 1],
-            delay: Math.min((index % 6) * 0.06, 0.35),
+            ease: EASING.cinematic,
+            delay: Math.min((index % 6) * 0.05, 0.3),
             layout: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
          }}
-         whileHover={{
-            y: -6,
-            transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
-         }}
+         whileHover={lift}
+         whileFocus={lift}
       >
          {/* Media: live screenshot or animated scene */}
          <ProjectCover

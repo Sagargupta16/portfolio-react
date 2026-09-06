@@ -1,11 +1,15 @@
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { Education } from "@/types";
-import { staggerItem, slideInLeft, slideInRight } from "@utils/animations";
+import { staggerItem } from "@utils/animations";
 import { splitDateRange } from "@utils/dateRange";
-import { MONO_FONT, PURPLE, TEXT_MUTED } from "@/constants/theme";
+import { MONO_FONT, PURPLE, TEXT_MUTED, EASING } from "@/constants/theme";
+import {
+   TimelineNode,
+   TIMELINE_DATE_COLUMN,
+   TIMELINE_TRACK_COLUMN,
+} from "@components/ui/TimelineSpine";
 import EducationCardContent from "./EducationCardContent";
-import AnimatedTimelineTrack from "./AnimatedTimelineTrack";
 
 interface EducationCardProps {
    item: Education;
@@ -13,12 +17,22 @@ interface EducationCardProps {
    isMobile: boolean;
 }
 
+// Every card sits right of the track, so it enters from the track side only.
+const timelineEntry: Variants = {
+   hidden: { opacity: 0, x: -24 },
+   visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.5, ease: EASING.cinematic },
+   },
+};
+
 const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
    if (isMobile) {
       return (
          <motion.div
             // key forces a fresh mount when the breakpoint flips -- otherwise
-            // Motion carries the desktop slideIn's parked x offset into this
+            // Motion carries the desktop entry's parked x offset into this
             // branch and the card renders shifted off-screen.
             key="mobile"
             variants={staggerItem}
@@ -62,7 +76,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                            color: TEXT_MUTED,
                         }}
                      >
-                        — {splitDateRange(item.date).end}
+                        - {splitDateRange(item.date).end}
                      </span>
                   )}
                   {item.location && (
@@ -92,10 +106,10 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
          key="desktop"
          style={{
             display: "grid",
-            gridTemplateColumns: "160px 40px 1fr",
+            gridTemplateColumns: `${TIMELINE_DATE_COLUMN}px ${TIMELINE_TRACK_COLUMN}px 1fr`,
             gap: 0,
          }}
-         variants={index % 2 === 0 ? slideInLeft : slideInRight}
+         variants={timelineEntry}
          custom={index}
          // Own viewport trigger -- parent propagation breaks after a
          // breakpoint remount (see TimelineCardDesktop).
@@ -144,8 +158,16 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
             )}
          </div>
 
-         {/* Center: Timeline track */}
-         <AnimatedTimelineTrack />
+         {/* Center: Timeline track (the rail itself is drawn by TimelineSpine) */}
+         <div
+            style={{
+               display: "flex",
+               flexDirection: "column",
+               alignItems: "center",
+            }}
+         >
+            <TimelineNode color={PURPLE} />
+         </div>
 
          {/* Right: Content card */}
          <div

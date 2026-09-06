@@ -3,17 +3,28 @@ import { motion } from "motion/react";
 import { useLenis } from "lenis/react";
 import { FileText } from "lucide-react";
 import { getHeadline, getIntro, getName, getRoleLabel } from "@data/personal";
-import { staggerContainer, staggerItem } from "@utils/animations";
 import { CYAN, GREEN, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import useBreakpoint from "@hooks/useBreakpoint";
 import HeroSocial from "./HeroSocial";
+import {
+   HEADLINE_MASK_STYLE,
+   heroContainer,
+   heroHeadline,
+   heroHeadlineLine,
+   heroIntro,
+   heroLabel,
+   heroLogo,
+   heroRow,
+   passThroughTransform,
+} from "./heroMotion";
 
 const HeroLatest = lazy(() => import("./HeroLatest"));
 const RESUME_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
 const NBSP = "\u00A0";
+const CTA_TAP = { scale: 0.97 };
 
 /* Truthy on purpose: ErrorBoundary treats a falsy fallback as "not provided"
    and renders its full "Something went wrong" panel. A failed HeroLatest chunk
@@ -64,12 +75,12 @@ const HeroContent = () => {
          // scroll indicator so it never overlaps the social icons. Sized so the
          // hero still fits one desktop viewport (~800px) with the intro in place.
          className="relative z-10 flex flex-col items-center text-center px-6 pt-24 pb-28 md:pt-20 md:pb-24 gap-6 max-w-4xl mx-auto"
-         variants={staggerContainer}
+         variants={heroContainer}
          initial="hidden"
          animate="visible"
       >
          {/* Logo tile (akobir-style mark above the headline) */}
-         <motion.div variants={staggerItem}>
+         <motion.div variants={heroLogo}>
             <div
                style={{
                   width: 64,
@@ -91,7 +102,7 @@ const HeroContent = () => {
          </motion.div>
 
          {/* Status badge */}
-         <motion.div variants={staggerItem}>
+         <motion.div variants={heroLabel}>
             <span className="badge-pill">
                <span
                   className="animate-glow-pulse"
@@ -108,15 +119,24 @@ const HeroContent = () => {
          </motion.div>
 
          {/* Heading: display face, name in accent, second line dimmed for
-             hierarchy (both lines equally bright read flat) */}
+             hierarchy (both lines equally bright read flat). Each line slides
+             up out of its own clipping wrapper; see HEADLINE_MASK_STYLE. */}
          <motion.h1
             className="display-heading text-5xl sm:text-6xl md:text-7xl leading-[1.12] text-text-primary"
-            variants={staggerItem}
+            variants={heroHeadline}
          >
-            Hi, I&apos;m <span style={{ color: CYAN }}>{name}</span>.
-            <br />
-            <span style={{ color: "var(--color-text-secondary)" }}>
-               {headline}
+            <span style={HEADLINE_MASK_STYLE}>
+               <motion.span className="block" variants={heroHeadlineLine}>
+                  Hi, I&apos;m <span style={{ color: CYAN }}>{name}</span>.
+               </motion.span>
+            </span>
+            <span style={HEADLINE_MASK_STYLE}>
+               <motion.span
+                  className="block text-text-secondary"
+                  variants={heroHeadlineLine}
+               >
+                  {headline}
+               </motion.span>
             </span>
          </motion.h1>
 
@@ -125,7 +145,7 @@ const HeroContent = () => {
          <motion.p
             className="text-base md:text-lg"
             style={{ color: TEXT_SECONDARY, maxWidth: 680, lineHeight: 1.6 }}
-            variants={staggerItem}
+            variants={heroIntro}
          >
             {intro}
          </motion.p>
@@ -139,16 +159,17 @@ const HeroContent = () => {
             </Suspense>
          </ErrorBoundary>
 
-         {/* CTA buttons */}
+         {/* CTA buttons. The .btn-* stylesheet owns the hover lift; Motion only
+             writes transform during the press (see passThroughTransform). */}
          <motion.div
             className="flex flex-wrap items-center justify-center gap-4"
-            variants={staggerItem}
+            variants={heroRow}
          >
             <motion.button
                onClick={scrollToProjects}
                className="btn-outline text-sm font-semibold"
-               whileHover={{ scale: 1.04 }}
-               whileTap={{ scale: 0.97 }}
+               whileTap={CTA_TAP}
+               transformTemplate={passThroughTransform}
             >
                Explore Projects
             </motion.button>
@@ -160,8 +181,8 @@ const HeroContent = () => {
                   alignItems: "center",
                   gap: 8,
                }}
-               whileHover={{ scale: 1.04 }}
-               whileTap={{ scale: 0.97 }}
+               whileTap={CTA_TAP}
+               transformTemplate={passThroughTransform}
                aria-haspopup="dialog"
             >
                <FileText size={15} />
@@ -171,8 +192,8 @@ const HeroContent = () => {
                href={RESUME_URL}
                download
                className="btn-primary text-sm"
-               whileHover={{ scale: 1.04 }}
-               whileTap={{ scale: 0.97 }}
+               whileTap={CTA_TAP}
+               transformTemplate={passThroughTransform}
             >
                Download CV
             </motion.a>

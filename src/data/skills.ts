@@ -1,4 +1,9 @@
-import type { SkillsData } from "@/types";
+import type { SkillsData, SkillsFile } from "@/types";
 import skillsData from "../../data/skills.json";
 
-export const getSkills = (): SkillsData => skillsData as SkillsData;
+const skillsFile = skillsData as SkillsFile;
+
+export const getSkills = (): SkillsData => skillsFile;
+
+/** Ranked hero field names; the field renders as many as it has slots. */
+export const getHeroStack = (): string[] => skillsFile.hero_stack ?? [];

@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
-import { useInView } from "react-intersection-observer";
+import { useEffect, useMemo, useRef } from "react";
+import { animate, useInView } from "motion/react";
+import { EASING } from "@/constants/theme";
 import useMotionPreference from "@hooks/useMotionPreference";
 
 interface Props {
@@ -8,13 +9,10 @@ interface Props {
 }
 
 const AnimatedCounter = ({ value, duration = 2 }: Props) => {
-   const [count, setCount] = useState<number>(0);
+   const ref = useRef<HTMLSpanElement>(null);
+   const numberRef = useRef<HTMLSpanElement>(null);
    const { reducedMotion } = useMotionPreference();
-
-   const { ref, inView } = useInView({
-      threshold: 0.5,
-      triggerOnce: true,
-   });
+   const inView = useInView(ref, { once: true, amount: 0.5 });
 
    // Parse a leading number (incl. one decimal point, e.g. "9.5") + trailing
    // suffix (e.g. "+", "k"). decimals drives toFixed so values like a CGPA of
@@ -34,26 +32,22 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
       return { numericValue: 0, decimals: 0, suffix: str };
    }, [value]);
 
+   // The count writes textContent straight from Motion's frameloop: no React
+   // state, so twelve tiles counting together cost zero commits. Reduced skips
+   // the effect and renders the final value below.
    useEffect(() => {
-      if (!inView || reducedMotion) return;
+      const node = numberRef.current;
+      if (!inView || reducedMotion || !node) return;
 
-      let rafId = 0;
-      const startTime = performance.now();
-      const durationMs = duration * 1000;
-
-      const animate = (currentTime: number) => {
-         const elapsed = currentTime - startTime;
-         const progress = Math.min(elapsed / durationMs, 1);
-         const eased = 1 - Math.pow(1 - progress, 3);
-         setCount(eased * numericValue);
-         if (progress < 1) rafId = requestAnimationFrame(animate);
-      };
-
-      rafId = requestAnimationFrame(animate);
-      return () => cancelAnimationFrame(rafId);
-   }, [inView, numericValue, duration, reducedMotion]);
-
-   const displayedCount = reducedMotion && inView ? numericValue : count;
+      const controls = animate(0, numericValue, {
+         duration,
+         ease: EASING.cinematic,
+         onUpdate: (latest) => {
+            node.textContent = latest.toFixed(decimals);
+         },
+      });
+      return () => controls.stop();
+   }, [inView, reducedMotion, numericValue, decimals, duration]);
 
    // Short suffixes ("+", "k") read as part of the number; long ones
    // (" merged + 12 open") are annotations and shrink so they don't dominate.
@@ -64,7 +58,9 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
          ref={ref}
          className="font-mono text-3xl font-bold text-accent-cyan tabular-nums"
       >
-         {displayedCount.toFixed(decimals)}
+         <span ref={numberRef}>
+            {(reducedMotion ? numericValue : 0).toFixed(decimals)}
+         </span>
          {suffix && (
             <span
                className="text-accent-cyan/70"
