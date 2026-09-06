@@ -1,6 +1,7 @@
-import { motion } from "motion/react";
+import { motion, type TransformProperties, type Variants } from "motion/react";
 import { Send } from "lucide-react";
-import { TEXT_SECONDARY, RED } from "@/constants/theme";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { DURATION, EASING, TEXT_SECONDARY, RED } from "@/constants/theme";
 import type { FormData, Status } from "./contactConstants";
 
 interface ContactFormProps {
@@ -27,6 +28,23 @@ const labelStyle: React.CSSProperties = {
    marginBottom: 8,
 };
 
+/* The .btn-primary stylesheet owns the hover lift. The hover label only
+   drives the arrow child; Motion writes the button transform during the
+   press alone, so it never overrides the CSS lift (see passThroughTransform). */
+const HOVER = "hover";
+const SUBMIT_TAP = { scale: 0.97 };
+const ARROW_NUDGE_PX = 3;
+const ARROW_TRANSITION = { duration: DURATION.quick, ease: EASING.brisk };
+const arrowVariants: Variants = { [HOVER]: { x: ARROW_NUDGE_PX } };
+
+/* Once a whileTap settles, Motion writes transform: none inline, which beats
+   the stylesheet hover lift for good. Returning the generated string as-is
+   leaves the inline transform empty at rest. */
+const passThroughTransform = (
+   _transform: TransformProperties,
+   generated: string,
+) => generated;
+
 const ContactForm = ({
    formRef,
    formData,
@@ -36,10 +54,12 @@ const ContactForm = ({
    onChange,
    onSubmit,
 }: ContactFormProps) => {
+   const { reducedMotion } = useMotionPreference();
    // The only programmatic validation today is the email-pattern check, so an
    // error status maps to the email field. Surface it inline + to AT.
    const emailError =
       status.type === "error" && status.field === "email" ? status.message : "";
+   const hover = reducedMotion || isLoading ? undefined : HOVER;
    return (
       <form
          ref={formRef}
@@ -68,38 +88,45 @@ const ContactForm = ({
             <label htmlFor="contact-name" style={labelStyle}>
                Name
             </label>
-            <input
-               id="contact-name"
-               type="text"
-               name="name"
-               placeholder="John Doe"
-               value={formData.name}
-               onChange={onChange}
-               autoComplete="name"
-               maxLength={100}
-               required
-               className="form-input"
-            />
+            {/* .form-field draws the accent underline while its input has focus */}
+            <div className="form-field">
+               <input
+                  id="contact-name"
+                  type="text"
+                  name="name"
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={onChange}
+                  autoComplete="name"
+                  maxLength={100}
+                  required
+                  className="form-input"
+               />
+            </div>
          </div>
 
          <div>
             <label htmlFor="contact-email" style={labelStyle}>
                Email
             </label>
-            <input
-               id="contact-email"
-               type="email"
-               name="email"
-               placeholder="john@example.com"
-               value={formData.email}
-               onChange={onChange}
-               autoComplete="email"
-               maxLength={254}
-               required
-               className={`form-input${emailError ? " form-input--error" : ""}`}
-               aria-invalid={emailError ? true : undefined}
-               aria-describedby={emailError ? "contact-email-error" : undefined}
-            />
+            <div className="form-field">
+               <input
+                  id="contact-email"
+                  type="email"
+                  name="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={onChange}
+                  autoComplete="email"
+                  maxLength={254}
+                  required
+                  className={`form-input${emailError ? " form-input--error" : ""}`}
+                  aria-invalid={emailError ? true : undefined}
+                  aria-describedby={
+                     emailError ? "contact-email-error" : undefined
+                  }
+               />
+            </div>
             {emailError && (
                <p
                   id="contact-email-error"
@@ -119,19 +146,21 @@ const ContactForm = ({
             <label htmlFor="contact-message" style={labelStyle}>
                Message
             </label>
-            <textarea
-               id="contact-message"
-               name="message"
-               rows={isMobile ? 4 : 5}
-               placeholder="Tell me about your project or idea..."
-               value={formData.message}
-               onChange={onChange}
-               minLength={10}
-               maxLength={5000}
-               required
-               className="form-input"
-               style={{ resize: "vertical" }}
-            />
+            <div className="form-field">
+               <textarea
+                  id="contact-message"
+                  name="message"
+                  rows={isMobile ? 4 : 5}
+                  placeholder="Tell me about your project or idea..."
+                  value={formData.message}
+                  onChange={onChange}
+                  minLength={10}
+                  maxLength={5000}
+                  required
+                  className="form-input"
+                  style={{ resize: "vertical" }}
+               />
+            </div>
          </div>
 
          <motion.button
@@ -140,8 +169,10 @@ const ContactForm = ({
             className="btn-primary"
             aria-label={isLoading ? "Sending message..." : "Send message"}
             aria-busy={isLoading}
-            whileHover={isLoading ? undefined : { scale: 1.02 }}
-            whileTap={isLoading ? undefined : { scale: 0.97 }}
+            whileHover={hover}
+            whileFocus={hover}
+            whileTap={isLoading ? undefined : SUBMIT_TAP}
+            transformTemplate={passThroughTransform}
             style={{
                width: "100%",
                display: "flex",
@@ -166,7 +197,14 @@ const ContactForm = ({
                />
             ) : (
                <>
-                  <Send style={{ width: 16, height: 16 }} />
+                  <motion.span
+                     aria-hidden="true"
+                     variants={arrowVariants}
+                     transition={ARROW_TRANSITION}
+                     style={{ display: "inline-flex" }}
+                  >
+                     <Send style={{ width: 16, height: 16 }} />
+                  </motion.span>
                   Send Message
                </>
             )}

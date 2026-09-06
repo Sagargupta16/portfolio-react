@@ -1,12 +1,14 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState } from "react";
 import { motion } from "motion/react";
 import { useLenis } from "lenis/react";
-import { getName, getSiteConfig, getSocialProfiles } from "@data/personal";
+import { getName, getSocialProfiles } from "@data/personal";
 import { staggerItem } from "@utils/animations";
-import { MONO_FONT, TEXT_PRIMARY } from "@/constants/theme";
+import { EASING } from "@/constants/theme";
 import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useMotionPreference from "@hooks/useMotionPreference";
 import FooterSocial from "./FooterSocial";
+import FooterStatusBar from "./FooterStatusBar";
 
 const CURRENT_YEAR = new Date().getFullYear();
 const RESUME_URL =
@@ -27,6 +29,16 @@ const SITE_LINKS: { id: string; label: string }[] = [
    ),
 ];
 
+/* Brand tile: one full turn per hover or keyboard focus. The turn count only
+   ever grows, so each spin runs forward once and never unwinds on leave. */
+const FULL_TURN_DEG = 360;
+const SPIN_SPRING = { type: "spring", stiffness: 110, damping: 14 } as const;
+const TILE_TAP = { scale: 0.94 };
+const TILE_TRANSITION = {
+   rotate: SPIN_SPRING,
+   scale: { duration: 0.12, ease: EASING.brisk },
+};
+
 const columnHeading: React.CSSProperties = {
    fontSize: 12,
    fontWeight: 700,
@@ -36,6 +48,8 @@ const columnHeading: React.CSSProperties = {
    marginBottom: 12,
 };
 
+/* .footer-link in the stylesheet draws the sliding underline on hover and
+   keyboard focus; the colour stays put. */
 const columnLink: React.CSSProperties = {
    display: "block",
    fontSize: 14,
@@ -49,10 +63,20 @@ const columnLink: React.CSSProperties = {
 
 const FooterContent = () => {
    const { isMobile } = useBreakpoint();
+   const { reducedMotion } = useMotionPreference();
    const name = useMemo(() => getName(), []);
-   const siteConfig = useMemo(() => getSiteConfig(), []);
    const socialProfiles = useMemo(() => getSocialProfiles(), []);
-   const techStack = siteConfig.tech_stack || [];
+
+   const [turns, setTurns] = useState(0);
+   const spin = useCallback(() => setTurns((count) => count + 1), []);
+   // Mouse clicks focus the button too; only keyboard focus earns a turn, or
+   // a click would spin the tile twice.
+   const spinOnKeyboardFocus = (e: React.FocusEvent<HTMLButtonElement>) => {
+      if (e.currentTarget.matches(":focus-visible")) spin();
+   };
+   const spinTarget = reducedMotion
+      ? undefined
+      : { rotate: turns * FULL_TURN_DEG };
 
    const lenis = useLenis();
    const scrollTo = useCallback(
@@ -80,11 +104,21 @@ const FooterContent = () => {
          >
             {/* Brand */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-               <span
+               <motion.button
+                  type="button"
+                  onClick={() => scrollTo("hero")}
+                  onHoverStart={spin}
+                  onFocus={spinOnKeyboardFocus}
+                  whileTap={TILE_TAP}
+                  animate={spinTarget}
+                  transition={TILE_TRANSITION}
+                  aria-label="Home"
                   style={{
                      width: 48,
                      height: 48,
                      borderRadius: 12,
+                     border: "none",
+                     cursor: "pointer",
                      display: "flex",
                      alignItems: "center",
                      justifyContent: "center",
@@ -93,10 +127,9 @@ const FooterContent = () => {
                      color: "#0b1012",
                      background: "#67e8f9",
                   }}
-                  aria-hidden="true"
                >
                   SG
-               </span>
+               </motion.button>
                <p style={{ color: "rgba(244,246,247,0.8)", fontSize: 14 }}>
                   &copy; {CURRENT_YEAR} {name}. All rights reserved.
                </p>
@@ -109,14 +142,10 @@ const FooterContent = () => {
                {SITE_LINKS.map((link) => (
                   <button
                      key={link.id}
+                     type="button"
+                     className="footer-link"
                      onClick={() => scrollTo(link.id)}
                      style={columnLink}
-                     onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.currentTarget.style.color = TEXT_PRIMARY;
-                     }}
-                     onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.currentTarget.style.color = LINK_COLOR;
-                     }}
                   >
                      {link.label}
                   </button>
@@ -124,13 +153,8 @@ const FooterContent = () => {
                <a
                   href={RESUME_URL}
                   download
+                  className="footer-link"
                   style={columnLink}
-                  onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                     e.currentTarget.style.color = TEXT_PRIMARY;
-                  }}
-                  onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                     e.currentTarget.style.color = LINK_COLOR;
-                  }}
                >
                   Download CV
                </a>
@@ -146,13 +170,8 @@ const FooterContent = () => {
                      target="_blank"
                      rel="noopener noreferrer"
                      aria-label={`${profile.name} (opens in a new tab)`}
+                     className="footer-link"
                      style={columnLink}
-                     onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                        e.currentTarget.style.color = TEXT_PRIMARY;
-                     }}
-                     onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                        e.currentTarget.style.color = LINK_COLOR;
-                     }}
                   >
                      {profile.name}
                   </a>
@@ -160,53 +179,8 @@ const FooterContent = () => {
             </nav>
          </motion.div>
 
-         {/* Bottom row: tech strip */}
-         <motion.div
-            style={{
-               display: "flex",
-               justifyContent: "center",
-               width: "100%",
-               paddingTop: 20,
-               borderTop: "1px solid rgba(255,255,255,0.08)",
-            }}
-            variants={staggerItem}
-         >
-            <div
-               style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-               }}
-            >
-               <span
-                  style={{
-                     fontSize: 11,
-                     color: "rgba(244,246,247,0.85)",
-                     fontFamily: MONO_FONT,
-                  }}
-               >
-                  Built with
-               </span>
-               {techStack.map((tech) => (
-                  <span
-                     key={tech}
-                     style={{
-                        fontSize: 10,
-                        color: LINK_COLOR,
-                        fontFamily: MONO_FONT,
-                        padding: "2px 8px",
-                        borderRadius: 4,
-                        background: "rgba(255,255,255,0.06)",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                     }}
-                  >
-                     {tech}
-                  </span>
-               ))}
-            </div>
-         </motion.div>
+         {/* Bottom row: status bar (clock, availability, stack, build stamp) */}
+         <FooterStatusBar />
       </>
    );
 };
