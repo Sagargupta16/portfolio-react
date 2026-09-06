@@ -47,6 +47,10 @@ const BREAKPOINTS = {
 export const MEDIA_QUERIES = {
    mobile: `(max-width: ${BREAKPOINTS.md - 1}px)`,
    tablet: `(max-width: ${BREAKPOINTS.lg - 1}px)`,
+   /** Flanks beside the 896px hero column are wide enough for 40px tiles. */
+   wide: `(min-width: ${BREAKPOINTS.xl}px)`,
+   /** The primary pointer can hover: the gate for pointer-driven decoration. */
+   hover: "(hover: hover)",
 } as const;
 
 // ===== Animation Tokens =====
