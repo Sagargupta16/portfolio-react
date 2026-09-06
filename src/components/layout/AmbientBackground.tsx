@@ -1,13 +1,28 @@
 import { motion } from "motion/react";
+import type { Easing } from "motion/react";
 import useMotionPreference from "@hooks/useMotionPreference";
 
 /**
  * Site-wide premium backdrop (aceternity/reactbits-style, CSS only):
- * - two slow-drifting radial aurora glows in the blue family
+ * - three slow-drifting radial glows in the blue family (wide gradient
+ *   stops give the soft falloff; no CSS effects on any layer). Each glow
+ *   animates `transform` directly so Motion hands the loop to WAAPI and the
+ *   compositor owns the layer while it runs: no will-change, no repaint.
  * - a faint dot lattice
  * - two diagonal light beams sweeping on long loops
  * Fixed, behind everything, pointer-events none. Transform/opacity only.
  */
+const EASE_IN_OUT: Easing = "easeInOut";
+// Three-keyframe loops: one ease per segment so every layer returns to frame 0.
+const GLOW_EASE: Easing[] = [EASE_IN_OUT, EASE_IN_OUT];
+/** Out-and-back drift between two transforms, landing on the first frame. */
+const drift = (from: string, to: string) => ({ transform: [from, to, from] });
+
+const glowStyle = {
+   position: "absolute",
+   borderRadius: "50%",
+} as const;
+
 const AmbientBackground = () => {
    const { reducedMotion } = useMotionPreference();
 
@@ -40,46 +55,62 @@ const AmbientBackground = () => {
          {/* Aurora glow: top */}
          <motion.div
             style={{
-               position: "absolute",
+               ...glowStyle,
                top: "-30%",
                left: "50%",
                width: 1100,
                height: 800,
                marginLeft: -550,
-               borderRadius: "50%",
                background:
-                  "radial-gradient(ellipse at center, rgb(37 99 235 / 0.14), rgb(34 211 238 / 0.05) 45%, transparent 70%)",
-               filter: "blur(60px)",
-               willChange: "transform",
+                  "radial-gradient(ellipse at center, rgb(37 99 235 / 0.14), rgb(34 211 238 / 0.05) 40%, transparent 75%)",
             }}
             animate={
                reducedMotion
                   ? undefined
-                  : { x: [-80, 80, -80], y: [0, 40, 0], scale: [1, 1.08, 1] }
+                  : drift(
+                       "translate(-80px, 0px) scale(1)",
+                       "translate(80px, 40px) scale(1.08)",
+                    )
             }
-            transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 26, repeat: Infinity, ease: GLOW_EASE }}
          />
 
          {/* Aurora glow: bottom-right teal (echoes the footer fade) */}
          <motion.div
             style={{
-               position: "absolute",
+               ...glowStyle,
                bottom: "-35%",
                right: "-15%",
                width: 900,
                height: 700,
-               borderRadius: "50%",
                background:
-                  "radial-gradient(ellipse at center, rgb(34 130 143 / 0.12), transparent 65%)",
-               filter: "blur(70px)",
-               willChange: "transform",
+                  "radial-gradient(ellipse at center, rgb(34 130 143 / 0.12), transparent 70%)",
             }}
             animate={
                reducedMotion
                   ? undefined
-                  : { x: [40, -60, 40], y: [20, -30, 20] }
+                  : drift("translate(40px, 20px)", "translate(-60px, -30px)")
             }
-            transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 32, repeat: Infinity, ease: GLOW_EASE }}
+         />
+
+         {/* Aurora glow: bottom-left depth layer, slowest, counter-drifting */}
+         <motion.div
+            style={{
+               ...glowStyle,
+               bottom: "-25%",
+               left: "-15%",
+               width: 700,
+               height: 600,
+               background:
+                  "radial-gradient(ellipse at center, rgb(37 99 235 / 0.07), transparent 70%)",
+            }}
+            animate={
+               reducedMotion
+                  ? undefined
+                  : drift("translate(30px, -20px)", "translate(-40px, 30px)")
+            }
+            transition={{ duration: 40, repeat: Infinity, ease: GLOW_EASE }}
          />
 
          {/* Beam 1: thin diagonal light streak sweeping across */}
@@ -94,7 +125,6 @@ const AmbientBackground = () => {
                   "linear-gradient(180deg, transparent, rgb(96 165 250 / 0.35) 30%, rgb(96 165 250 / 0.35) 70%, transparent)",
                rotate: 24,
                transformOrigin: "top center",
-               willChange: "transform, opacity",
                opacity: reducedMotion ? 0 : undefined,
             }}
             animate={
@@ -122,7 +152,6 @@ const AmbientBackground = () => {
                   "linear-gradient(180deg, transparent, rgb(56 189 248 / 0.22) 30%, rgb(56 189 248 / 0.22) 70%, transparent)",
                rotate: 24,
                transformOrigin: "top center",
-               willChange: "transform, opacity",
                opacity: reducedMotion ? 0 : undefined,
             }}
             animate={
