@@ -5,6 +5,8 @@ export const getName = (): string => personalData.name;
 export const getRole = (): string => personalData.role;
 export const getEmployer = (): string => personalData.employer;
 export const getLocation = (): string => personalData.location;
+export const getTimezone = (): string => personalData.timezone;
+export const getAvailability = (): string => personalData.availability;
 export const getLanguages = (): { name: string; level: string }[] =>
    personalData.languages;
 export const getAbout = (): Record<string, string> => personalData.about;
@@ -15,6 +17,5 @@ export const getImpact = (): ImpactStats => personalData.impact as ImpactStats;
 export const getIntro = (): string => personalData.intro;
 export const getRoleLabel = (): string => personalData.role_label;
 export const getHeadline = (): string => personalData.headline;
-export const getAvailability = (): string => personalData.availability;
 export const getSiteConfig = (): SiteConfig =>
    (personalData.site ?? {}) as SiteConfig;
