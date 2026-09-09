@@ -8,12 +8,12 @@ import { ExternalLink, Eye } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import { DURATION, EASING, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import { VIEWPORT_MARGIN } from "@utils/animations";
+import { hasProjectUrl } from "@utils/projectMetadata";
 import useMotionPreference from "@hooks/useMotionPreference";
 import {
    getCategoryColors,
-   isValidUrl,
    type ProjectWithCategory,
-} from "./portfolioConstants";
+} from "./projectConstants";
 import ProjectLink from "./ProjectLink";
 import ProjectCardHeader from "./ProjectCardHeader";
 import ProjectCover from "./covers/ProjectCover";
@@ -69,8 +69,8 @@ const ProjectCard = ({
    ref,
 }: ProjectCardProps) => {
    const { reducedMotion } = useMotionPreference();
-   const hasGithub = isValidUrl(data.github);
-   const hasLive = isValidUrl(data.live);
+   const hasGithub = hasProjectUrl(data.github);
+   const hasLive = hasProjectUrl(data.live);
    const colors = getCategoryColors(data.category);
    const isFeatured = data.category === "Featured";
    const isCollab = data.category === "Collab";

@@ -28,11 +28,12 @@ const SPIN = {
  * the entrance comes from About.tsx's wrapper variant, not from here.
  */
 const DevAvatar = () => {
-   const { reducedMotion } = useMotionPreference();
+   const { preference, reducedMotion } = useMotionPreference();
    const centre = AVATAR_SIZE / 2;
 
    return (
       <div
+         key={preference}
          aria-hidden="true"
          style={{
             width: AVATAR_SIZE,

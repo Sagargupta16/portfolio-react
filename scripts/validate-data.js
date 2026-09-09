@@ -524,7 +524,7 @@ if (requireRecord(contact, "contact")) {
 
 try {
    const coverSource = readFileSync(
-      resolve(ROOT, "src/pages/portfolio/covers/coverRegistry.ts"),
+      resolve(ROOT, "src/pages/projects/covers/coverRegistry.ts"),
       "utf8",
    );
    const coverIds = [...coverSource.matchAll(/^[ \t]+(\d+):[ \t]*\{/gm)].map(

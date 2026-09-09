@@ -60,6 +60,7 @@ const DesktopNav = ({
                   style={{
                      position: "relative",
                      padding: "6px 12px",
+                     minHeight: 44,
                      fontSize: 13,
                      fontWeight: 500,
                      borderRadius: 8,

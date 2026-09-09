@@ -24,10 +24,11 @@ const glowStyle = {
 } as const;
 
 const AmbientBackground = () => {
-   const { reducedMotion } = useMotionPreference();
+   const { preference, reducedMotion } = useMotionPreference();
 
    return (
       <div
+         key={preference}
          aria-hidden="true"
          style={{
             position: "fixed",

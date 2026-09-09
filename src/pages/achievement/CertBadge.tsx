@@ -84,7 +84,7 @@ const CertBadge = ({
    floatDelay,
    entranceDelay,
 }: CertBadgeProps) => {
-   const { reducedMotion } = useMotionPreference();
+   const { preference, reducedMotion } = useMotionPreference();
    // If the CDN's resized variant fails (transient 5xx / cold cache on newly
    // synced badges), fall back to the original full-size URL once.
    const [useOriginal, setUseOriginal] = useState(false);
@@ -139,7 +139,11 @@ const CertBadge = ({
          }}
       >
          {/* Badge image with float animation */}
-         <motion.div animate={floatLoop} variants={floatVariants}>
+         <motion.div
+            key={preference}
+            animate={floatLoop}
+            variants={floatVariants}
+         >
             <motion.img
                src={useOriginal ? imageUrl : credlyThumb(imageUrl)}
                onError={() => setUseOriginal(true)}

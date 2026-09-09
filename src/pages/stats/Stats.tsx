@@ -126,7 +126,7 @@ const calendarReducer = (
 };
 
 // -- Main component --
-const GitHub = () => {
+const Stats = () => {
    const { isMobile } = useBreakpoint();
    const githubUsername = getGitHubUsername();
    const [calendarState, dispatch] = useReducer(calendarReducer, "loading");
@@ -210,4 +210,4 @@ const GitHub = () => {
    );
 };
 
-export default GitHub;
+export default Stats;

@@ -7,7 +7,7 @@ import {
    getOtherProjects,
    getCommunityProjects,
 } from "@data/projects";
-import { parseDate, isValidUrl } from "@pages/portfolio/portfolioConstants";
+import { parseProjectDate, hasProjectUrl } from "@utils/projectMetadata";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { heroLatest } from "./heroMotion";
@@ -35,9 +35,11 @@ const HeroLatest = () => {
          ...getOtherProjects(),
          ...getCommunityProjects(),
       ]
-         .filter((p) => isValidUrl(p.live))
+         .filter((p) => hasProjectUrl(p.live))
          .sort(
-            (a, b) => parseDate(b.date).getTime() - parseDate(a.date).getTime(),
+            (a, b) =>
+               parseProjectDate(b.date).getTime() -
+               parseProjectDate(a.date).getTime(),
          )[0];
       const projectText = newestProject
          ? `${newestProject.title} shipped`

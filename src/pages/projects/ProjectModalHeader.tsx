@@ -1,7 +1,7 @@
 import { Calendar, Users, Star, FolderGit2 } from "lucide-react";
 import ModalHeaderShell from "@components/ui/ModalHeaderShell";
 import { TEXT_PRIMARY, TEXT_MUTED, MONO_FONT } from "@/constants/theme";
-import type { CategoryColors, ProjectWithCategory } from "./portfolioConstants";
+import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
 
 interface ProjectModalHeaderProps {
    project: ProjectWithCategory;

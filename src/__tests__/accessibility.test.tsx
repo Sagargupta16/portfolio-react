@@ -6,7 +6,7 @@ import useMotionPreference from "@hooks/useMotionPreference";
 import MotionPreferenceControl from "@components/ui/MotionPreferenceControl";
 import QuickFacts from "@pages/about/QuickFacts";
 import ExpandableExtras from "@pages/education/ExpandableExtras";
-import ProjectCard from "@pages/portfolio/ProjectCard";
+import ProjectCard from "@pages/projects/ProjectCard";
 import TimelineCardContent from "@pages/experience/TimelineCardContent";
 import type { Education, ProfessionalExperience, Project } from "@/types";
 

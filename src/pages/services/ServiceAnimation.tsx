@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
+import useMotionPreference from "@hooks/useMotionPreference";
 import StackAnim from "./animations/StackAnim";
 import PipelineAnim from "./animations/PipelineAnim";
 import NeuralNetAnim from "./animations/NeuralNetAnim";
@@ -37,6 +38,7 @@ const ServiceAnimation = ({
 }: ServiceAnimationProps) => {
    const AnimComponent = ANIM_MAP[title];
    const frameRef = useRef<HTMLDivElement>(null);
+   const { preference } = useMotionPreference();
    useFreezeAnimations(frameRef);
 
    if (!AnimComponent) return null;
@@ -50,7 +52,7 @@ const ServiceAnimation = ({
             transformOrigin: "center",
          }}
       >
-         <AnimComponent color={color} />
+         <AnimComponent key={preference} color={color} />
       </div>
    );
 };

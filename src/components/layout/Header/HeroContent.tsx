@@ -1,12 +1,12 @@
-import { lazy, Suspense, useState, useMemo, useCallback } from "react";
+import { lazy, Suspense, useState, useMemo } from "react";
 import { motion } from "motion/react";
-import { useLenis } from "lenis/react";
-import { FileText } from "lucide-react";
+import { ArrowDownRight, Download, FileText } from "lucide-react";
 import { getHeadline, getIntro, getName, getRoleLabel } from "@data/personal";
 import { CYAN, GREEN, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useSectionNavigation from "@hooks/useSectionNavigation";
 import HeroSocial from "./HeroSocial";
 import {
    HEADLINE_MASK_STYLE,
@@ -61,13 +61,7 @@ const HeroContent = () => {
    const roleLabel = useMemo(() => getRoleLabel(), []);
    const headline = useMemo(() => getHeadline(), []);
 
-   const lenis = useLenis();
-   const scrollToProjects = useCallback(() => {
-      const el = document.getElementById("projects");
-      if (!el) return;
-      if (lenis) lenis.scrollTo(el, { offset: -64 });
-      else el.scrollIntoView();
-   }, [lenis]);
+   const { navigateToSection } = useSectionNavigation();
 
    return (
       <motion.div
@@ -162,39 +156,36 @@ const HeroContent = () => {
          {/* CTA buttons. The .btn-* stylesheet owns the hover lift; Motion only
              writes transform during the press (see passThroughTransform). */}
          <motion.div
-            className="flex flex-wrap items-center justify-center gap-4"
+            className="grid w-full max-w-sm grid-cols-2 items-center gap-3 sm:flex sm:w-auto sm:max-w-none sm:flex-wrap sm:justify-center sm:gap-4"
             variants={heroRow}
          >
             <motion.button
-               onClick={scrollToProjects}
-               className="btn-outline text-sm font-semibold"
+               onClick={() => navigateToSection("projects")}
+               className="btn-primary col-span-2 inline-flex items-center justify-center gap-2 text-sm sm:col-span-1"
                whileTap={CTA_TAP}
                transformTemplate={passThroughTransform}
             >
                Explore Projects
+               <ArrowDownRight size={16} aria-hidden="true" />
             </motion.button>
             <motion.button
                onClick={() => setCvOpen(true)}
-               className="btn-outline text-sm font-semibold"
-               style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-               }}
+               className="btn-outline inline-flex items-center justify-center gap-2 text-sm font-semibold"
                whileTap={CTA_TAP}
                transformTemplate={passThroughTransform}
                aria-haspopup="dialog"
             >
-               <FileText size={15} />
+               <FileText size={15} aria-hidden="true" />
                View CV
             </motion.button>
             <motion.a
                href={RESUME_URL}
                download
-               className="btn-primary text-sm"
+               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-3 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
                whileTap={CTA_TAP}
                transformTemplate={passThroughTransform}
             >
+               <Download size={15} aria-hidden="true" />
                Download CV
             </motion.a>
          </motion.div>

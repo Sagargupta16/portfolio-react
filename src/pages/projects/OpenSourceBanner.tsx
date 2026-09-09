@@ -19,7 +19,7 @@ import { staggerContainer, staggerItem } from "@utils/animations";
 import {
    OPEN_SOURCE_CONTRIBUTIONS,
    COMMUNITY_DISCUSSIONS,
-} from "./portfolioConstants";
+} from "./projectConstants";
 import ContribSection from "./ContribSection";
 import DiscussionCard from "./DiscussionCard";
 

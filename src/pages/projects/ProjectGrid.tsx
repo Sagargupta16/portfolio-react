@@ -1,5 +1,5 @@
 import { AnimatePresence } from "motion/react";
-import type { ProjectWithCategory } from "./portfolioConstants";
+import type { ProjectWithCategory } from "./projectConstants";
 import ProjectCard from "./ProjectCard";
 
 interface ProjectGridProps {

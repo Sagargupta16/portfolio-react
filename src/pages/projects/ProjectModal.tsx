@@ -5,7 +5,7 @@ import ModalShell from "@components/ui/ModalShell";
 import {
    getCategoryColors,
    type ProjectWithCategory,
-} from "./portfolioConstants";
+} from "./projectConstants";
 import ProjectModalHeader from "./ProjectModalHeader";
 import ProjectModalBody from "./ProjectModalBody";
 import ProjectCover from "./covers/ProjectCover";

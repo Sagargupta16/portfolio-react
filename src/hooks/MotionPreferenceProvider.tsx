@@ -1,5 +1,4 @@
 import {
-   Fragment,
    useCallback,
    useEffect,
    useMemo,
@@ -62,10 +61,7 @@ export const MotionPreferenceProvider = ({
    return (
       <MotionPreferenceContext value={value}>
          <MotionConfig reducedMotion={reducedMotion ? "always" : "never"}>
-            {/* Motion copies reducedMotion into each element once, when it
-                mounts, so a live change never reaches elements already on
-                screen. Re-keying the subtree remounts them with the new value. */}
-            <Fragment key={motionMode}>{children}</Fragment>
+            {children}
          </MotionConfig>
       </MotionPreferenceContext>
    );

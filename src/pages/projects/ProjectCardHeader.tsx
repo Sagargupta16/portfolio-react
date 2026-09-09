@@ -1,6 +1,6 @@
 import { Calendar, Users, Star, FolderGit2 } from "lucide-react";
 import { MONO_FONT, TEXT_PRIMARY, TEXT_MUTED, AMBER } from "@/constants/theme";
-import type { CategoryColors, ProjectWithCategory } from "./portfolioConstants";
+import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
 
 interface ProjectCardHeaderProps {
    data: ProjectWithCategory;

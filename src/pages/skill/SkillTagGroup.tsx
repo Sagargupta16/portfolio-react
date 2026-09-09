@@ -13,7 +13,7 @@ import {
    MEDIA_QUERIES,
    TEXT_PRIMARY,
 } from "@/constants/theme";
-import { getSkillIcon } from "./skillIcons";
+import { getSkillIcon } from "@utils/skillIcons";
 
 interface SkillTagGroupProps {
    items: string[];

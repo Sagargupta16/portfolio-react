@@ -16,8 +16,9 @@ import {
    MAX_WIDTH,
 } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
-import { FILTERS, parseDate } from "./portfolioConstants";
-import type { ProjectWithCategory } from "./portfolioConstants";
+import { parseProjectDate } from "@utils/projectMetadata";
+import { FILTERS } from "./projectConstants";
+import type { ProjectWithCategory } from "./projectConstants";
 import ProjectGrid from "./ProjectGrid";
 import OpenSourceBanner from "./OpenSourceBanner";
 import ProjectModal from "./ProjectModal";
@@ -70,7 +71,7 @@ const PILL_STYLE: CSSProperties = {
 const PILL_SPRING = { type: "spring", stiffness: 500, damping: 40 } as const;
 const TAP = { scale: 0.97 };
 
-const Portfolio = () => {
+const Projects = () => {
    const [activeFilter, setActiveFilter] = useState<string>("Featured");
    // Flips on the first filter change: cards mounted afterwards enter with the
    // short swap rise instead of the taller first-scroll reveal.
@@ -139,7 +140,9 @@ const Portfolio = () => {
       else list = [...featured, ...community, ...collab, ...others];
 
       return list.sort(
-         (a, b) => parseDate(b.date).getTime() - parseDate(a.date).getTime(),
+         (a, b) =>
+            parseProjectDate(b.date).getTime() -
+            parseProjectDate(a.date).getTime(),
       );
    }, [
       activeFilter,
@@ -240,4 +243,4 @@ const Portfolio = () => {
    );
 };
 
-export default Portfolio;
+export default Projects;

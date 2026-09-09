@@ -1,43 +1,47 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+   act,
+   fireEvent,
+   render,
+   screen,
+   waitFor,
+} from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { BreakpointProvider } from "@hooks/BreakpointProvider";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { CONTENT_SECTIONS } from "@/constants/sections";
 
 vi.mock("@pages/about/About", () => ({
-   default: () => <section id="about">About section</section>,
+   default: () => <div>About section</div>,
 }));
 vi.mock("@pages/experience/Experience", () => ({
-   default: () => <section id="experience">Experience section</section>,
+   default: () => <div>Experience section</div>,
 }));
 vi.mock("@pages/education/Education", () => ({
-   default: () => <section id="education">Education section</section>,
+   default: () => <div>Education section</div>,
 }));
 vi.mock("@pages/skill/Skill", () => ({
-   default: () => <section id="skills">Skills section</section>,
+   default: () => <div>Skills section</div>,
 }));
-vi.mock("@pages/portfolio/Portfolio", () => ({
-   default: () => <section id="projects">Projects section</section>,
+vi.mock("@pages/projects/Projects", () => ({
+   default: () => <div>Projects section</div>,
 }));
 vi.mock("@pages/achievement/Achievement", () => ({
-   default: () => <section id="achievements">Achievements section</section>,
+   default: () => <div>Achievements section</div>,
 }));
 vi.mock("@pages/services/Services", () => ({
-   default: () => <section id="services">Services section</section>,
+   default: () => <div>Services section</div>,
 }));
-vi.mock("@pages/github/GitHub", () => ({
-   default: () => <section id="stats">Stats section</section>,
+vi.mock("@pages/stats/Stats", () => ({
+   default: () => <div>Stats section</div>,
 }));
 vi.mock("@pages/contact/Contact", () => ({
-   default: () => <section id="contact">Contact section</section>,
+   default: () => <div>Contact section</div>,
 }));
 
-vi.mock("lenis", () => ({
-   default: class {
-      raf() {}
-      destroy() {}
-      scrollTo() {}
-   },
+vi.mock("lenis/react", () => ({
+   ReactLenis: ({ children }: { children?: React.ReactNode }) =>
+      children ?? null,
+   useLenis: () => undefined,
 }));
 
 describe("application shell", () => {
@@ -57,6 +61,10 @@ describe("application shell", () => {
       const { default: App } = await import("../App");
       const { container } = render(<App />);
       expect(container.querySelector("main")).toBeTruthy();
+      expect(screen.queryByText("Contact section")).toBeNull();
+      fireEvent.click(
+         screen.getByRole("button", { name: "Navigate to Contact" }),
+      );
       await screen.findByText("Contact section");
 
       for (const section of CONTENT_SECTIONS) {
@@ -68,6 +76,62 @@ describe("application shell", () => {
          );
       });
    }, 15_000);
+
+   it("mounts an approaching section without loading distant sections", async () => {
+      const observers: {
+         callback: IntersectionObserverCallback;
+         options?: IntersectionObserverInit;
+         elements: Element[];
+      }[] = [];
+      Object.defineProperty(globalThis, "IntersectionObserver", {
+         configurable: true,
+         value: class {
+            entry: (typeof observers)[number];
+            constructor(
+               callback: IntersectionObserverCallback,
+               options?: IntersectionObserverInit,
+            ) {
+               this.entry = { callback, options, elements: [] };
+               observers.push(this.entry);
+            }
+            observe(element: Element) {
+               this.entry.elements.push(element);
+            }
+            unobserve() {}
+            disconnect() {}
+         },
+      });
+
+      const { default: App } = await import("../App");
+      render(<App />);
+      expect(screen.queryByText("Skills section")).toBeNull();
+      const approaching = observers.find(
+         ({ options, elements }) =>
+            options?.rootMargin === "400px 0px" &&
+            elements.some((element) => element.id === "skills"),
+      );
+      expect(approaching).toBeDefined();
+      await act(async () => {
+         approaching?.callback(
+            [
+               {
+                  isIntersecting: true,
+                  target: screen.getByRole("region", { name: "Skills" }),
+                  boundingClientRect: new DOMRect(),
+                  intersectionRect: new DOMRect(),
+                  intersectionRatio: 1,
+                  rootBounds: null,
+                  time: 0,
+               },
+            ],
+            {} as IntersectionObserver,
+         );
+      });
+
+      expect(await screen.findByText("Skills section")).toBeTruthy();
+      expect(screen.queryByText("Contact section")).toBeNull();
+      expect(screen.queryByText("Projects section")).toBeNull();
+   });
 
    it("shares two media-query subscriptions across breakpoint consumers", () => {
       const matchMedia = vi.fn((query: string) => ({

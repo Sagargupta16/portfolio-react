@@ -1,8 +1,8 @@
-import { lazy, Suspense, useCallback, useRef } from "react";
+import { lazy, Suspense, useRef } from "react";
 import { motion } from "motion/react";
-import { useLenis } from "lenis/react";
 import { ChevronDown } from "lucide-react";
 import ErrorBoundary from "@components/common/ErrorBoundary";
+import useSectionNavigation from "@hooks/useSectionNavigation";
 import HeroContent from "./HeroContent";
 
 const HeroStackField = lazy(() => import("./HeroStackField"));
@@ -14,18 +14,13 @@ const OMIT_FIELD = <></>;
 
 const Hero = () => {
    const sectionRef = useRef<HTMLElement>(null);
-   const lenis = useLenis();
-   const scrollToAbout = useCallback(() => {
-      const el = document.getElementById("about");
-      if (!el) return;
-      if (lenis) lenis.scrollTo(el, { offset: -64 });
-      else el.scrollIntoView();
-   }, [lenis]);
+   const { navigateToSection } = useSectionNavigation();
 
    return (
       <section
          ref={sectionRef}
          id="hero"
+         tabIndex={-1}
          // Top-aligned on phones: the content is taller than the viewport there,
          // and centering it would push the logo under the fixed nav and the
          // socials into the scroll indicator's lane. HeroContent's pt/pb padding
@@ -48,8 +43,8 @@ const Hero = () => {
 
          {/* Scroll indicator */}
          <motion.button
-            onClick={scrollToAbout}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
+            onClick={() => navigateToSection("about")}
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex min-h-11 min-w-11 flex-col items-center justify-center gap-1 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2 }}

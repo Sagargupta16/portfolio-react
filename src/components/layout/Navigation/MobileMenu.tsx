@@ -90,12 +90,15 @@ const MobileMenu = ({
                   aria-modal="true"
                   aria-label="Navigation menu"
                   tabIndex={-1}
+                  data-lenis-prevent
                   style={{
                      position: "absolute",
                      top: 64,
                      right: 0,
                      bottom: 0,
                      width: "min(288px, 85vw)",
+                     overflowY: "auto",
+                     overscrollBehavior: "contain",
                      backgroundColor: "rgba(11, 16, 18, 0.97)",
                      borderLeft: `1px solid ${GLASS_BORDER}`,
                      boxShadow: "-10px 0 40px rgba(0, 0, 0, 0.3)",

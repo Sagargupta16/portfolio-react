@@ -54,6 +54,23 @@ export default [
       },
    },
    {
+      files: ["src/{components,hooks,utils,data}/**/*.{ts,tsx}"],
+      rules: {
+         "no-restricted-imports": [
+            "error",
+            {
+               patterns: [
+                  {
+                     group: ["@pages/**", "**/pages/**"],
+                     message:
+                        "Shared modules must not import page code. Move reusable helpers to src/utils or src/data.",
+                  },
+               ],
+            },
+         ],
+      },
+   },
+   {
       files: ["scripts/**/*.js"],
       languageOptions: {
          globals: {

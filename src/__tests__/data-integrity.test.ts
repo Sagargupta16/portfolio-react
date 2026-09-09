@@ -9,7 +9,7 @@ import {
    getOpenSourceContributions,
    getOtherProjects,
 } from "@data/projects";
-import { getProjectCover } from "@pages/portfolio/covers/coverRegistry";
+import { getProjectCover } from "@pages/projects/covers/coverRegistry";
 import projectsData from "../../data/projects.json";
 
 const allProjects = [

@@ -22,11 +22,10 @@ const PageSection = ({
    const { isMobile } = useBreakpoint();
 
    return (
-      <motion.section
-         id={id}
+      <motion.div
+         data-section-content={id}
          style={{
             padding: isMobile ? "64px 16px" : "96px 24px",
-            scrollMarginTop: 64,
          }}
          initial="hidden"
          whileInView="visible"
@@ -44,7 +43,7 @@ const PageSection = ({
                {children}
             </>
          )}
-      </motion.section>
+      </motion.div>
    );
 };
 

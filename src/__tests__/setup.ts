@@ -47,6 +47,12 @@ Object.defineProperty(globalThis, "scrollTo", {
    value: vi.fn(),
 });
 
+Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
+   configurable: true,
+   writable: true,
+   value: vi.fn(),
+});
+
 Object.defineProperty(globalThis, "IntersectionObserver", {
    configurable: true,
    writable: true,
@@ -68,6 +74,7 @@ Object.defineProperty(globalThis, "ResizeObserver", {
 });
 
 beforeEach(() => {
+   globalThis.history.replaceState(null, "", "/");
    Object.defineProperty(globalThis, "matchMedia", {
       configurable: true,
       writable: true,
