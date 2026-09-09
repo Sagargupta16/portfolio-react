@@ -3,7 +3,7 @@ import { Trophy } from "lucide-react";
 import type { Achievement } from "@/types";
 import { fadeInUp } from "@utils/animations";
 import { AMBER } from "@/constants/theme";
-import TrophyCard from "./TrophyCard";
+import CompetitionResult from "./CompetitionResult";
 import "./achievements.css";
 
 interface CompetitionsSectionProps {
@@ -13,8 +13,18 @@ interface CompetitionsSectionProps {
 const CompetitionsSection = ({ achievements }: CompetitionsSectionProps) => {
    if (achievements.length === 0) return null;
 
+   const podiumFinishes = achievements.filter((item) =>
+      /^(?:1st|2nd|3rd) Place - /.test(item.title),
+   );
+   const podiumIds = new Set(podiumFinishes.map((item) => item.id));
+   const otherResults = achievements.filter((item) => !podiumIds.has(item.id));
+   const groups = [
+      { title: "Podium finishes", items: podiumFinishes },
+      { title: "Other results", items: otherResults },
+   ].filter((group) => group.items.length > 0);
+
    return (
-      <div>
+      <div className="competition-record">
          <motion.div
             className="subsection-heading"
             initial="hidden"
@@ -27,9 +37,25 @@ const CompetitionsSection = ({ achievements }: CompetitionsSectionProps) => {
             <span className="subsection-count">{achievements.length}</span>
          </motion.div>
 
-         <div className="awards-grid">
-            {achievements.map((item, i) => (
-               <TrophyCard key={item.id} item={item} index={i} />
+         <div
+            className={`competition-groups${groups.length === 1 ? " competition-groups--single" : ""}`}
+         >
+            {groups.map((group) => (
+               <div className="competition-group" key={group.title}>
+                  <h4 className="competition-group-title">
+                     {group.title}
+                     <span>{group.items.length}</span>
+                  </h4>
+                  <ul className="competition-results" aria-label={group.title}>
+                     {group.items.map((item, index) => (
+                        <CompetitionResult
+                           key={item.id}
+                           item={item}
+                           index={index}
+                        />
+                     ))}
+                  </ul>
+               </div>
             ))}
          </div>
       </div>

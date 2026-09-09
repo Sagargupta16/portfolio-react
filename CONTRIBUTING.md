@@ -95,9 +95,11 @@ The `hero_stack` list in the same JSON file controls the floating hero artwork. 
 
 For an existing section, start with its entry point in the table above and follow its local component imports.
 
-The project showcase has its own [projects.css](src/pages/projects/projects.css) for the search toolbar, cards, contributions, and responsive featured layout. The service grid uses [services.css](src/pages/services/services.css), and the competition cards use [achievements.css](src/pages/achievement/achievements.css). Shared section headings, text actions, and disclosures are styled in `src/index.css`.
+The project showcase has its own [projects.css](src/pages/projects/projects.css) for the search toolbar, cards, contributions, and responsive featured layout. The service grid uses [services.css](src/pages/services/services.css), and the competition results use [achievements.css](src/pages/achievement/achievements.css). Shared section headings, text actions, and disclosures are styled in `src/index.css`.
 
 Use `subsection-heading` for a left-aligned group title with an icon and optional `subsection-count`. Use `dashed-rule` for smaller category labels with a trailing divider. Skills keep centered category labels and chips.
+
+Competition results remain in [data/achievements.json](data/achievements.json). Titles starting with `1st Place -`, `2nd Place -`, or `3rd Place -` appear under Podium finishes; all other entries appear under Other results. [CompetitionResult.tsx](src/pages/achievement/CompetitionResult.tsx) renders the placement, event, and metadata.
 
 For a new section:
 
