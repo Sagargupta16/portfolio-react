@@ -87,6 +87,8 @@ The `hero_stack` list in the same JSON file controls the floating hero artwork. 
 
 For an existing section, start with its entry point in the table above and follow its local component imports.
 
+The project showcase has its own [projects.css](src/pages/projects/projects.css) for the search toolbar, cards, and responsive featured layout. Shared section-heading styles live in `src/index.css`.
+
 For a new section:
 
 1. Create its component under `src/pages/` and use `PageSection` for its heading and content layout.

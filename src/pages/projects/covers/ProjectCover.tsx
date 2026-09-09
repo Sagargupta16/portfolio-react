@@ -83,9 +83,9 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
    return (
       <div
          ref={frameRef}
+         className="project-cover"
          style={{
             position: "relative",
-            aspectRatio: "16 / 10",
             overflow: "hidden",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
             background: "#0c1216",

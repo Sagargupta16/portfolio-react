@@ -1,13 +1,15 @@
 import { motion, type Variants } from "motion/react";
 import { VIEWPORT_MARGIN } from "@utils/animations";
-import { EASING } from "@/constants/theme";
+import { EASING, MAX_WIDTH } from "@/constants/theme";
+import { CONTENT_SECTIONS } from "@/constants/sections";
 
 interface Props {
+   sectionId: string;
    title: string;
    subtitle?: string;
 }
 
-// Badge pops first, then the title slides up out of its clip 120ms later.
+// The eyebrow appears first, then the title slides up out of its clip.
 const headerContainer: Variants = {
    hidden: {},
    visible: { transition: { staggerChildren: 0.12 } },
@@ -27,16 +29,16 @@ const titleReveal: Variants = {
    visible: { y: 0, transition: { duration: 0.7, ease: EASING.cinematic } },
 };
 
-const SectionHeader = ({ title, subtitle }: Props) => {
+const SectionHeader = ({ sectionId, title, subtitle }: Props) => {
+   const sectionIndex = CONTENT_SECTIONS.findIndex(
+      ({ id }) => id === sectionId,
+   );
+
    return (
       <motion.div
+         className="section-header"
          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 20,
-            marginBottom: 56,
-            textAlign: "center",
+            maxWidth: MAX_WIDTH,
          }}
          variants={headerContainer}
          initial="hidden"
@@ -44,29 +46,30 @@ const SectionHeader = ({ title, subtitle }: Props) => {
          viewport={{ once: true, margin: VIEWPORT_MARGIN }}
       >
          {subtitle && (
-            <motion.span className="badge-pill" variants={badgeReveal}>
-               {subtitle}
-            </motion.span>
-         )}
-         <h2
-            className="display-heading"
-            style={{
-               fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-               lineHeight: 1.2,
-               color: "var(--color-text-primary)",
-               maxWidth: 640,
-               overflow: "hidden",
-            }}
-         >
-            {/* The padding rides on the sliding span so descenders keep room at
-                rest while y: 100% parks the whole span below the clip. */}
-            <motion.span
-               variants={titleReveal}
-               style={{ display: "block", paddingBottom: "0.1em" }}
+            <motion.div
+               className="section-header-eyebrow"
+               variants={badgeReveal}
             >
-               {title}
-            </motion.span>
-         </h2>
+               {sectionIndex >= 0 && (
+                  <span aria-hidden="true" className="section-header-number">
+                     {String(sectionIndex + 1).padStart(2, "0")} /
+                  </span>
+               )}
+               {subtitle}
+            </motion.div>
+         )}
+         <div className="section-header-heading">
+            <h2 className="display-heading">
+               {/* Keep room for descenders inside the animated clipping area. */}
+               <motion.span
+                  variants={titleReveal}
+                  style={{ display: "block", paddingBottom: "0.1em" }}
+               >
+                  {title}
+               </motion.span>
+            </h2>
+            <span className="section-header-rule" aria-hidden="true" />
+         </div>
       </motion.div>
    );
 };

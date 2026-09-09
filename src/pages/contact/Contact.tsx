@@ -33,6 +33,7 @@ const Contact = () => {
          id="contact"
          title="Get In Touch"
          subtitle="Let's work together"
+         maxWidth={MAX_WIDTH_FORM}
       >
          <motion.div
             style={{

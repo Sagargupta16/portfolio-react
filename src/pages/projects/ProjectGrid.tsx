@@ -4,7 +4,7 @@ import ProjectCard from "./ProjectCard";
 
 interface ProjectGridProps {
    projects: ProjectWithCategory[];
-   isMobile: boolean;
+   highlightFirst: boolean;
    /** True once the filter has changed: later cards mount as swap entries. */
    hasFiltered: boolean;
    onOpenProject: (project: ProjectWithCategory) => void;
@@ -17,20 +17,11 @@ interface ProjectGridProps {
  */
 const ProjectGrid = ({
    projects,
-   isMobile,
+   highlightFirst,
    hasFiltered,
    onOpenProject,
 }: ProjectGridProps) => (
-   <div
-      style={{
-         display: "grid",
-         gridTemplateColumns: isMobile
-            ? "1fr"
-            : "repeat(auto-fill, minmax(340px, 1fr))",
-         gap: 24,
-         alignItems: "stretch",
-      }}
-   >
+   <div className="project-grid" id="project-results">
       <AnimatePresence mode="popLayout">
          {projects.map((project, idx) => (
             <ProjectCard
@@ -38,6 +29,7 @@ const ProjectGrid = ({
                data={project}
                index={idx}
                entering={hasFiltered}
+               spotlight={highlightFirst && idx === 0}
                onOpen={() => onOpenProject(project)}
             />
          ))}

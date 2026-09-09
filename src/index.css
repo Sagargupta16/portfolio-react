@@ -259,6 +259,78 @@ html[data-motion="reduced"] .footer-link:is(:hover, :focus-visible)::after {
    letter-spacing: -0.03em;
 }
 
+/* ===== Section headings ===== */
+.section-header {
+   margin: 0 auto clamp(32px, 4vw, 48px);
+   text-align: left;
+}
+
+.section-header-eyebrow {
+   display: flex;
+   align-items: baseline;
+   gap: 12px;
+   margin-bottom: 12px;
+   color: var(--color-text-secondary);
+   font-family: var(--font-mono);
+   font-size: 12px;
+}
+
+.section-header-number {
+   color: var(--color-accent-cyan);
+   font-variant-numeric: tabular-nums;
+}
+
+.section-header-heading {
+   display: flex;
+   align-items: center;
+   gap: clamp(16px, 3vw, 32px);
+}
+
+.section-header-heading h2 {
+   min-width: 0;
+   max-width: 90%;
+   overflow: hidden;
+   font-size: clamp(2rem, 4vw, 3rem);
+   line-height: 1.15;
+   text-wrap: balance;
+}
+
+.section-header-rule {
+   flex: 1;
+   min-width: 16px;
+   height: 1px;
+   background: var(--color-border-hover);
+}
+
+.hero-latest-link {
+   display: inline-flex;
+   align-items: center;
+   min-height: 44px;
+   color: var(--color-text-secondary);
+   text-decoration: underline;
+   text-decoration-color: var(--color-border-hover);
+   text-underline-offset: 4px;
+   transition:
+      color 0.2s ease,
+      text-decoration-color 0.2s ease;
+}
+
+.badge-pill.hero-role {
+   max-width: 100%;
+   padding: 6px 12px;
+   font-size: 12px;
+   text-wrap: balance;
+}
+
+.hero-actions {
+   grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+}
+
+.hero-latest-link:is(:hover, :focus-visible) {
+   color: var(--color-accent-cyan);
+   text-decoration-color: currentColor;
+}
+
 /* ===== Flat Card (was glass-card) ===== */
 .glass-card {
    background: var(--color-bg-card);

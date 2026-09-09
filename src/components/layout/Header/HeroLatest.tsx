@@ -8,7 +8,7 @@ import {
    getCommunityProjects,
 } from "@data/projects";
 import { parseProjectDate, hasProjectUrl } from "@utils/projectMetadata";
-import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
+import { MONO_FONT, TEXT_MUTED } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { heroLatest } from "./heroMotion";
 
@@ -45,10 +45,17 @@ const HeroLatest = () => {
          ? `${newestProject.title} shipped`
          : null;
 
-      return [prText, projectText].filter(Boolean).join(" · ");
+      const links: { text: string; href: string }[] = [];
+      if (latestPr && prText) {
+         links.push({ text: prText, href: latestPr.url });
+      }
+      if (newestProject && projectText && hasProjectUrl(newestProject.live)) {
+         links.push({ text: projectText, href: newestProject.live });
+      }
+      return links;
    }, []);
 
-   if (!latest) return null;
+   if (!latest.length) return null;
 
    return (
       <motion.div
@@ -56,7 +63,7 @@ const HeroLatest = () => {
          style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
-            alignItems: isMobile ? "center" : "baseline",
+            alignItems: "center",
             justifyContent: "center",
             gap: isMobile ? 4 : 14,
          }}
@@ -74,9 +81,30 @@ const HeroLatest = () => {
          >
             Latest
          </span>
-         <span style={{ fontSize: 14, lineHeight: 1.6, color: TEXT_SECONDARY }}>
-            {latest}
-         </span>
+         <div
+            style={{
+               display: "flex",
+               flexWrap: "wrap",
+               alignItems: "center",
+               justifyContent: "center",
+               gap: "0 12px",
+               fontSize: 14,
+               lineHeight: 1.6,
+            }}
+         >
+            {latest.map(({ text, href }) => (
+               <a
+                  key={href}
+                  href={href}
+                  className="hero-latest-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${text} (opens in a new tab)`}
+               >
+                  {text}
+               </a>
+            ))}
+         </div>
       </motion.div>
    );
 };

@@ -1,12 +1,18 @@
-import { useState, useMemo, useCallback, type CSSProperties } from "react";
+import {
+   useState,
+   useMemo,
+   useCallback,
+   useRef,
+   type CSSProperties,
+} from "react";
 import { motion, type Variants } from "motion/react";
+import { Search, X } from "lucide-react";
 import {
    getFeaturedProjects,
    getCollaborativeProjects,
    getOtherProjects,
    getCommunityProjects,
 } from "@data/projects";
-import useBreakpoint from "@hooks/useBreakpoint";
 import {
    BLUE,
    DURATION,
@@ -22,6 +28,7 @@ import type { ProjectWithCategory } from "./projectConstants";
 import ProjectGrid from "./ProjectGrid";
 import OpenSourceBanner from "./OpenSourceBanner";
 import ProjectModal from "./ProjectModal";
+import "./projects.css";
 
 // The chips inherit the section's hidden/visible state, so they reveal when
 // the filter bar scrolls in rather than when the lazy chunk mounts.
@@ -49,9 +56,10 @@ const CHIP_STYLE: CSSProperties = {
    display: "inline-flex",
    alignItems: "center",
    gap: 8,
-   padding: "8px 20px",
+   padding: "8px 12px",
+   minHeight: 44,
    borderRadius: CHIP_RADIUS,
-   fontSize: 14,
+   fontSize: 13,
    fontFamily: MONO_FONT,
    fontWeight: 500,
    cursor: "pointer",
@@ -73,6 +81,8 @@ const TAP = { scale: 0.97 };
 
 const Projects = () => {
    const [activeFilter, setActiveFilter] = useState<string>("Featured");
+   const [query, setQuery] = useState("");
+   const searchRef = useRef<HTMLInputElement>(null);
    // Flips on the first filter change: cards mounted afterwards enter with the
    // short swap rise instead of the taller first-scroll reveal.
    const [hasFiltered, setHasFiltered] = useState(false);
@@ -83,7 +93,6 @@ const Projects = () => {
       setActiveFilter(filter);
       setHasFiltered(true);
    }, []);
-   const { isMobile } = useBreakpoint();
 
    const featuredProjects = useMemo(() => getFeaturedProjects(), []);
    const communityProjects = useMemo(() => getCommunityProjects(), []);
@@ -117,7 +126,7 @@ const Projects = () => {
       [counts],
    );
 
-   const filteredProjects = useMemo(() => {
+   const categoryProjects = useMemo(() => {
       const featured = featuredProjects.map((p) => ({
          ...p,
          category: "Featured",
@@ -152,6 +161,25 @@ const Projects = () => {
       otherProjects,
    ]);
 
+   const filteredProjects = useMemo(() => {
+      const terms = query.trim().toLowerCase().split(/\s+/);
+      return categoryProjects.filter((project) => {
+         const text = [
+            project.title,
+            project.description,
+            ...project.tools_tech,
+         ]
+            .join(" ")
+            .toLowerCase();
+         return terms.every((term) => text.includes(term));
+      });
+   }, [categoryProjects, query]);
+
+   const clearSearch = () => {
+      setQuery("");
+      searchRef.current?.focus();
+   };
+
    const handleOpenProject = useCallback(
       (project: ProjectWithCategory) => setSelectedProject(project),
       [],
@@ -160,76 +188,137 @@ const Projects = () => {
    return (
       <PageSection id="projects" title="Projects" subtitle="Things I've built">
          <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
-            {/* Filter buttons */}
             <motion.div
-               style={{
-                  display: "flex",
-                  gap: isMobile ? 8 : 12,
-                  marginBottom: 48,
-                  justifyContent: "center",
-                  flexWrap: "wrap",
-               }}
+               className="project-toolbar"
                variants={filterBarVariants}
             >
-               {visibleFilters.map((filter) => {
-                  const isActive = activeFilter === filter;
-                  const count = counts[filter] ?? 0;
-                  return (
-                     <motion.button
-                        key={filter}
-                        type="button"
-                        onClick={() => handleFilterChange(filter)}
-                        style={{
-                           ...CHIP_STYLE,
-                           color: isActive ? ACTIVE_LABEL : TEXT_SECONDARY,
-                        }}
-                        variants={filterChipVariants}
-                        whileTap={TAP}
-                        aria-pressed={isActive}
-                        aria-label={`${filter} (${count} project${count === 1 ? "" : "s"})`}
-                     >
-                        {isActive && (
-                           <motion.span
-                              layoutId="project-filter"
-                              aria-hidden="true"
-                              style={PILL_STYLE}
-                              transition={PILL_SPRING}
-                           />
-                        )}
-                        <span style={{ position: "relative" }}>{filter}</span>
-                        <span
-                           aria-hidden="true"
+               <div
+                  className="project-filters"
+                  role="group"
+                  aria-label="Filter projects"
+               >
+                  {visibleFilters.map((filter) => {
+                     const isActive = activeFilter === filter;
+                     const count = counts[filter] ?? 0;
+                     return (
+                        <motion.button
+                           key={filter}
+                           type="button"
+                           onClick={() => handleFilterChange(filter)}
                            style={{
-                              position: "relative",
-                              fontFamily: MONO_FONT,
-                              fontSize: 11,
-                              fontWeight: 600,
-                              opacity: 0.65,
-                              padding: "1px 6px",
-                              borderRadius: 6,
-                              background: isActive
-                                 ? "rgba(0, 0, 0, 0.18)"
-                                 : "rgba(255, 255, 255, 0.06)",
-                              transition: "background-color 0.2s ease",
-                              // Use tabular digits so 1-digit and 2-digit counts
-                              // don't shift the button width during filter swaps.
-                              fontVariantNumeric: "tabular-nums",
+                              ...CHIP_STYLE,
+                              color: isActive ? ACTIVE_LABEL : TEXT_SECONDARY,
                            }}
+                           variants={filterChipVariants}
+                           whileTap={TAP}
+                           aria-pressed={isActive}
+                           aria-controls="project-results"
+                           aria-label={`${filter} (${count} project${count === 1 ? "" : "s"})`}
                         >
-                           {count}
-                        </span>
-                     </motion.button>
-                  );
-               })}
+                           {isActive && (
+                              <motion.span
+                                 layoutId="project-filter"
+                                 aria-hidden="true"
+                                 style={PILL_STYLE}
+                                 transition={PILL_SPRING}
+                              />
+                           )}
+                           <span style={{ position: "relative" }}>
+                              {filter}
+                           </span>
+                           <span
+                              aria-hidden="true"
+                              style={{
+                                 position: "relative",
+                                 fontFamily: MONO_FONT,
+                                 fontSize: 11,
+                                 fontWeight: 600,
+                                 opacity: 0.65,
+                                 padding: "1px 6px",
+                                 borderRadius: 6,
+                                 background: isActive
+                                    ? "rgba(0, 0, 0, 0.18)"
+                                    : "rgba(255, 255, 255, 0.06)",
+                                 transition: "background-color 0.2s ease",
+                                 // Use tabular digits so 1-digit and 2-digit counts
+                                 // don't shift the button width during filter swaps.
+                                 fontVariantNumeric: "tabular-nums",
+                              }}
+                           >
+                              {count}
+                           </span>
+                        </motion.button>
+                     );
+                  })}
+               </div>
+               <div className="project-search">
+                  <Search size={18} aria-hidden="true" />
+                  <input
+                     ref={searchRef}
+                     type="text"
+                     inputMode="search"
+                     value={query}
+                     onChange={(event) => {
+                        setQuery(event.target.value);
+                        setHasFiltered(true);
+                     }}
+                     onKeyDown={(event) => {
+                        if (event.key === "Escape") clearSearch();
+                     }}
+                     placeholder="Search title or technology"
+                     aria-label="Search projects"
+                     aria-describedby="project-result-count"
+                     aria-controls="project-results"
+                     autoComplete="off"
+                     spellCheck={false}
+                  />
+                  {query && (
+                     <button
+                        type="button"
+                        className="project-action"
+                        aria-label="Clear search"
+                        onClick={clearSearch}
+                     >
+                        <X size={16} aria-hidden="true" />
+                     </button>
+                  )}
+               </div>
             </motion.div>
 
+            <div className="project-results-summary">
+               <span id="project-result-count" role="status" aria-live="polite">
+                  {filteredProjects.length} of {counts[activeFilter]} projects
+               </span>
+               <span>Newest first</span>
+            </div>
+
             {/* Card grid with live screenshots / animated covers */}
-            <ProjectGrid
-               projects={filteredProjects}
-               isMobile={isMobile}
-               hasFiltered={hasFiltered}
-               onOpenProject={handleOpenProject}
-            />
+            {filteredProjects.length ? (
+               <ProjectGrid
+                  projects={filteredProjects}
+                  highlightFirst={activeFilter === "Featured" && !query.trim()}
+                  hasFiltered={hasFiltered}
+                  onOpenProject={handleOpenProject}
+               />
+            ) : (
+               <div className="project-empty" id="project-results">
+                  <h3>No matching projects</h3>
+                  <p>
+                     Try another name or technology, or reset the filters to
+                     explore all {counts.All} projects.
+                  </p>
+                  <button
+                     type="button"
+                     className="btn-outline"
+                     onClick={() => {
+                        handleFilterChange("All");
+                        clearSearch();
+                     }}
+                  >
+                     Reset filters
+                  </button>
+               </div>
+            )}
 
             {/* Open Source Contributions Banner */}
             <OpenSourceBanner />

@@ -1,5 +1,5 @@
-import type { ComponentType } from "react";
-import { CYAN, TEXT_SECONDARY } from "@/constants/theme";
+import type { ComponentType, CSSProperties } from "react";
+import { CYAN } from "@/constants/theme";
 
 interface ProjectLinkProps {
    href: string;
@@ -21,31 +21,13 @@ const ProjectLink = ({
       target="_blank"
       rel="noopener noreferrer"
       onClick={(e) => e.stopPropagation()}
-      style={{
-         display: "inline-flex",
-         alignItems: "center",
-         gap: 4,
-         padding: "4px 12px",
-         borderRadius: 10,
-         fontSize: 12,
-         fontWeight: 500,
-         color: TEXT_SECONDARY,
-         border: "1px solid rgba(255, 255, 255, 0.06)",
-         background: "rgba(255, 255, 255, 0.03)",
-         textDecoration: "none",
-         transition: "color 0.2s ease, border-color 0.2s ease",
-      }}
-      onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-         e.currentTarget.style.color = accentColor;
-         e.currentTarget.style.borderColor = `${accentColor}4D`;
-      }}
-      onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-         e.currentTarget.style.color = TEXT_SECONDARY;
-         e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
-      }}
+      className="project-action"
+      style={{ "--project-accent": accentColor } as CSSProperties}
       aria-label={`${ariaLabel} (opens in a new tab)`}
    >
-      <Icon size={14} />
+      <span aria-hidden="true">
+         <Icon size={16} />
+      </span>
       {label}
    </a>
 );

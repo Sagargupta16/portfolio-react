@@ -1,125 +1,32 @@
-import { Calendar, Users, Star, FolderGit2 } from "lucide-react";
-import { MONO_FONT, TEXT_PRIMARY, TEXT_MUTED, AMBER } from "@/constants/theme";
-import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
+import { Users, Star } from "lucide-react";
+import { AMBER } from "@/constants/theme";
+import type { ProjectWithCategory } from "./projectConstants";
 
 interface ProjectCardHeaderProps {
    data: ProjectWithCategory;
-   colors: CategoryColors;
    isFeatured: boolean;
    isCollab: boolean;
 }
 
 const ProjectCardHeader = ({
    data,
-   colors,
    isFeatured,
    isCollab,
 }: ProjectCardHeaderProps) => (
    <>
-      {/* Header: icon + title */}
-      <div
-         style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 12,
-            marginBottom: 12,
-         }}
-      >
-         <div
-            style={{
-               width: 36,
-               height: 36,
-               borderRadius: 10,
-               background: `${colors.bgAlpha}0.1)`,
-               border: `1px solid ${colors.borderAlpha}0.2)`,
-               display: "flex",
-               alignItems: "center",
-               justifyContent: "center",
-               flexShrink: 0,
-               marginTop: 2,
-            }}
-         >
-            {isFeatured ? (
-               <Star size={18} style={{ color: colors.accent }} />
-            ) : (
-               <FolderGit2 size={18} style={{ color: colors.accent }} />
-            )}
-         </div>
-         <div style={{ minWidth: 0, flex: 1 }}>
-            <h3
-               style={{
-                  fontSize: 16,
-                  fontWeight: 700,
-                  color: TEXT_PRIMARY,
-                  lineHeight: 1.2,
-               }}
-            >
-               {data.title}
-            </h3>
-            <div
-               style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  marginTop: 4,
-                  flexWrap: "wrap",
-               }}
-            >
-               <span
-                  style={{
-                     display: "inline-flex",
-                     alignItems: "center",
-                     gap: 4,
-                     fontSize: 11,
-                     color: TEXT_MUTED,
-                     fontFamily: MONO_FONT,
-                  }}
-               >
-                  <Calendar size={10} style={{ flexShrink: 0 }} />
-                  {data.date}
-               </span>
-               {(isCollab || (isFeatured && data.team)) && data.team && (
-                  <span
-                     style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 4,
-                        fontSize: 11,
-                        color: colors.accent,
-                        fontFamily: MONO_FONT,
-                     }}
-                  >
-                     <Users size={10} style={{ flexShrink: 0 }} />
-                     {data.team}
-                  </span>
-               )}
-            </div>
-         </div>
+      <div className="project-card-meta">
+         <span className="project-card-category">
+            {isFeatured && <Star size={12} aria-hidden="true" />}
+            {data.category}
+         </span>
+         <span>{data.date}</span>
       </div>
-
-      {/* Featured badge */}
-      {isFeatured && (
-         <div
-            style={{
-               display: "inline-flex",
-               alignItems: "center",
-               gap: 4,
-               padding: "3px 8px",
-               borderRadius: 6,
-               background: `${colors.bgAlpha}0.08)`,
-               border: `1px solid ${colors.borderAlpha}0.15)`,
-               fontSize: 10,
-               fontWeight: 700,
-               color: colors.accent,
-               letterSpacing: "0.05em",
-               textTransform: "uppercase",
-               marginBottom: 12,
-               alignSelf: "flex-start",
-            }}
-         >
-            <Star size={10} />
-            Featured
-         </div>
+      <h3 className="project-card-title">{data.title}</h3>
+      {(isCollab || isFeatured) && data.team && (
+         <span className="project-card-team">
+            <Users size={14} aria-hidden="true" />
+            {data.team}
+         </span>
       )}
 
       {/* Achievement badge for collaborative */}

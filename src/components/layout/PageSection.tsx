@@ -34,12 +34,20 @@ const PageSection = ({
       >
          {maxWidth ? (
             <div style={{ maxWidth, margin: "0 auto" }}>
-               <SectionHeader title={title} subtitle={subtitle} />
+               <SectionHeader
+                  sectionId={id}
+                  title={title}
+                  subtitle={subtitle}
+               />
                {children}
             </div>
          ) : (
             <>
-               <SectionHeader title={title} subtitle={subtitle} />
+               <SectionHeader
+                  sectionId={id}
+                  title={title}
+                  subtitle={subtitle}
+               />
                {children}
             </>
          )}
