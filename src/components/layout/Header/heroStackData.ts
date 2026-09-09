@@ -1,5 +1,5 @@
-import type { SkillIcon } from "@pages/skill/skillIcons";
-import { getSkillIcon } from "@pages/skill/skillIcons";
+import type { SkillIcon } from "@utils/skillIcons";
+import { getSkillIcon } from "@utils/skillIcons";
 import { getHeroStack } from "@data/skills";
 
 /**

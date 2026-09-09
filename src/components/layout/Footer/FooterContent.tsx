@@ -1,12 +1,12 @@
 import { useMemo, useCallback, useState } from "react";
 import { motion } from "motion/react";
-import { useLenis } from "lenis/react";
 import { getName, getSocialProfiles } from "@data/personal";
 import { staggerItem } from "@utils/animations";
 import { EASING } from "@/constants/theme";
 import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
+import useSectionNavigation from "@hooks/useSectionNavigation";
 import FooterSocial from "./FooterSocial";
 import FooterStatusBar from "./FooterStatusBar";
 
@@ -51,7 +51,9 @@ const columnHeading: React.CSSProperties = {
 /* .footer-link in the stylesheet draws the sliding underline on hover and
    keyboard focus; the colour stays put. */
 const columnLink: React.CSSProperties = {
-   display: "block",
+   display: "flex",
+   alignItems: "center",
+   minHeight: 44,
    fontSize: 14,
    color: LINK_COLOR,
    padding: "4px 0",
@@ -78,16 +80,7 @@ const FooterContent = () => {
       ? undefined
       : { rotate: turns * FULL_TURN_DEG };
 
-   const lenis = useLenis();
-   const scrollTo = useCallback(
-      (id: string) => {
-         const el = document.getElementById(id);
-         if (!el) return;
-         if (lenis) lenis.scrollTo(el, { offset: -64 });
-         else el.scrollIntoView();
-      },
-      [lenis],
-   );
+   const { navigateToSection } = useSectionNavigation();
 
    return (
       <>
@@ -106,7 +99,7 @@ const FooterContent = () => {
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                <motion.button
                   type="button"
-                  onClick={() => scrollTo("hero")}
+                  onClick={() => navigateToSection("hero")}
                   onHoverStart={spin}
                   onFocus={spinOnKeyboardFocus}
                   whileTap={TILE_TAP}
@@ -144,7 +137,7 @@ const FooterContent = () => {
                      key={link.id}
                      type="button"
                      className="footer-link"
-                     onClick={() => scrollTo(link.id)}
+                     onClick={() => navigateToSection(link.id)}
                      style={columnLink}
                   >
                      {link.label}

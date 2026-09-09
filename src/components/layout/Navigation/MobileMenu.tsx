@@ -1,7 +1,7 @@
 import { memo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X } from "lucide-react";
-import { TEXT_PRIMARY, TEXT_SECONDARY, GLASS_BORDER } from "@/constants/theme";
+import { ArrowRight, X } from "lucide-react";
+import { TEXT_SECONDARY, GLASS_BORDER } from "@/constants/theme";
 import useFocusTrap from "@hooks/useFocusTrap";
 
 interface NavSection {
@@ -16,22 +16,6 @@ interface MobileMenuProps {
    onNavigate: (id: string) => void;
    onClose: () => void;
 }
-
-const rowStyle = (isActive: boolean): React.CSSProperties => ({
-   textAlign: "left",
-   padding: "12px 16px",
-   minHeight: 44,
-   display: "flex",
-   alignItems: "center",
-   borderRadius: 10,
-   fontSize: 14,
-   fontWeight: 500,
-   cursor: "pointer",
-   border: "none",
-   transition: "color 0.2s ease, background-color 0.2s ease",
-   color: isActive ? TEXT_PRIMARY : TEXT_SECONDARY,
-   backgroundColor: isActive ? "rgb(var(--ch-white) / 0.08)" : "transparent",
-});
 
 const MobileMenu = ({
    open,
@@ -90,12 +74,15 @@ const MobileMenu = ({
                   aria-modal="true"
                   aria-label="Navigation menu"
                   tabIndex={-1}
+                  data-lenis-prevent
                   style={{
                      position: "absolute",
                      top: 64,
                      right: 0,
                      bottom: 0,
                      width: "min(288px, 85vw)",
+                     overflowY: "auto",
+                     overscrollBehavior: "contain",
                      backgroundColor: "rgba(11, 16, 18, 0.97)",
                      borderLeft: `1px solid ${GLASS_BORDER}`,
                      boxShadow: "-10px 0 40px rgba(0, 0, 0, 0.3)",
@@ -138,28 +125,49 @@ const MobileMenu = ({
                         <X size={20} />
                      </button>
                      <button
+                        type="button"
                         onClick={() => onNavigate("hero")}
-                        style={rowStyle(activeSection === "hero")}
+                        className="mobile-nav-link"
                         aria-current={
                            activeSection === "hero" ? "location" : undefined
                         }
                      >
+                        <span className="mobile-nav-number" aria-hidden="true">
+                           00
+                        </span>
                         Home
+                        <ArrowRight
+                           size={16}
+                           className="action-arrow"
+                           aria-hidden="true"
+                        />
                      </button>
                      {sections.map((section, index) => {
                         const isActive = activeSection === section.id;
                         return (
                            <motion.button
                               key={section.id}
+                              type="button"
                               onClick={() => onNavigate(section.id)}
-                              style={rowStyle(isActive)}
+                              className="mobile-nav-link"
                               initial={{ opacity: 0, x: 20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: index * 0.03 }}
                               aria-current={isActive ? "location" : undefined}
                               aria-label={`Navigate to ${section.label}`}
                            >
+                              <span
+                                 className="mobile-nav-number"
+                                 aria-hidden="true"
+                              >
+                                 {String(index + 1).padStart(2, "0")}
+                              </span>
                               {section.label}
+                              <ArrowRight
+                                 size={16}
+                                 className="action-arrow"
+                                 aria-hidden="true"
+                              />
                            </motion.button>
                         );
                      })}

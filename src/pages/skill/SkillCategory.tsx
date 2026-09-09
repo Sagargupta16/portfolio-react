@@ -79,7 +79,7 @@ const SkillCategory = ({
    small = false,
    breathe = false,
 }: SkillCategoryProps) => {
-   const { reducedMotion } = useMotionPreference();
+   const { preference, reducedMotion } = useMotionPreference();
    const Heading = small ? motion.h4 : motion.h3;
    const breathing = breathe && !reducedMotion ? breathVariants : undefined;
 
@@ -90,12 +90,13 @@ const SkillCategory = ({
          viewport={{ once: true, margin: VIEWPORT_MARGIN }}
       >
          <Heading
-            className="dashed-rule"
+            className="dashed-rule dashed-rule--centered"
             style={{ marginBottom: 28 }}
             variants={ruleVariants}
          >
             <span style={LABEL_STYLE}>
                <motion.span
+                  key={preference}
                   aria-hidden="true"
                   style={GLYPH_STYLE}
                   variants={breathing}

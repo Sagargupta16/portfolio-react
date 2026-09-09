@@ -1,0 +1,20 @@
+.service-grid {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr);
+   gap: 20px;
+}
+
+.service-art-light {
+   opacity: 0.2;
+   transition: opacity 0.2s ease;
+}
+
+.service-card:is(:hover, :has(:focus-visible)) .service-art-light {
+   opacity: 0.5;
+}
+
+@media (min-width: 1024px) {
+   .service-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+}

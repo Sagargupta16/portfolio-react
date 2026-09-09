@@ -11,8 +11,8 @@ import ICON_MAP from "@utils/iconMap";
 import useMotionPreference from "@hooks/useMotionPreference";
 
 const TILE_STYLE: React.CSSProperties = {
-   width: 36,
-   height: 36,
+   width: 44,
+   height: 44,
    borderRadius: 10,
    border: "1px solid rgba(255, 255, 255, 0.06)",
    backgroundColor: "rgba(255, 255, 255, 0.03)",
@@ -54,7 +54,13 @@ const FooterSocial = () => {
 
    return (
       <motion.div
-         style={{ display: "flex", alignItems: "center", gap: 12 }}
+         style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            gap: 12,
+         }}
          variants={staggerItem}
       >
          {socialProfiles.map((profile) => {

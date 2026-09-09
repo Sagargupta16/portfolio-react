@@ -43,11 +43,7 @@ const ContribSection = ({
          </span>
       </div>
       <motion.div
-         style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: 8,
-         }}
+         className="contribution-grid"
          variants={staggerContainer}
          initial="hidden"
          whileInView="visible"

@@ -2,18 +2,21 @@ import type {
    CommunityDiscussion,
    OpenSourceContribution,
    Project,
+   ProjectsFile,
 } from "@/types";
 import projectsData from "../../data/projects.json";
 
-export const getFeaturedProjects = (): Project[] =>
-   projectsData.featured_projects as Project[];
+const projects = projectsData as ProjectsFile;
+
+export const getSpotlightProjectId = (): number | null =>
+   projects.spotlight_project_id ?? null;
+export const getFeaturedProjects = (): Project[] => projects.featured_projects;
 export const getCollaborativeProjects = (): Project[] =>
-   projectsData.collaborative_projects as Project[];
-export const getOtherProjects = (): Project[] =>
-   projectsData.other_projects as Project[];
+   projects.collaborative_projects;
+export const getOtherProjects = (): Project[] => projects.other_projects;
 export const getCommunityProjects = (): Project[] =>
-   (projectsData.community_projects ?? []) as Project[];
+   projects.community_projects ?? [];
 export const getOpenSourceContributions = (): OpenSourceContribution[] =>
-   (projectsData.open_source_contributions ?? []) as OpenSourceContribution[];
+   projects.open_source_contributions ?? [];
 export const getCommunityDiscussions = (): CommunityDiscussion[] =>
-   (projectsData.community_discussions ?? []) as CommunityDiscussion[];
+   projects.community_discussions ?? [];

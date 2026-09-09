@@ -3,6 +3,7 @@ import { useScroll, useMotionValueEvent } from "motion/react";
 import { useLenis } from "lenis/react";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
+import useSectionNavigation from "@hooks/useSectionNavigation";
 import { NAV_SECTIONS } from "@/constants/sections";
 import NavBar from "./NavBar";
 import MobileMenu from "./MobileMenu";
@@ -16,6 +17,7 @@ const NAV_SCROLL = { source: "nav" };
 const Nav = () => {
    const { isTablet: isMobile } = useBreakpoint();
    const { reducedMotion } = useMotionPreference();
+   const { navigateToSection } = useSectionNavigation();
    const [activeSection, setActiveSection] = useState("hero");
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
    const [scrolled, setScrolled] = useState(false);
@@ -41,9 +43,7 @@ const Nav = () => {
       setHidden(y > HIDE_AFTER && y > previous);
    });
 
-   // Observe the current element for each section ID. Suspense placeholders are
-   // replaced as lazy chunks resolve, so a MutationObserver attaches the
-   // scroll-spy to each replacement instead of capturing only the initial DOM.
+   // DeferredSection keeps each anchor mounted while its content loads.
    useEffect(() => {
       const observer = new IntersectionObserver(
          (entries) => {
@@ -56,44 +56,19 @@ const Nav = () => {
             rootMargin: "-35% 0px -60% 0px",
          },
       );
-      const observedElements = new Set<Element>();
-      const observeMountedSections = () => {
-         for (const id of [
-            "hero",
-            ...NAV_SECTIONS.map((section) => section.id),
-         ]) {
-            const element = document.getElementById(id);
-            if (element && !observedElements.has(element)) {
-               observedElements.add(element);
-               observer.observe(element);
-            }
-         }
-      };
-
-      observeMountedSections();
-      const main = document.getElementById("main-content");
-      const mountObserver = new MutationObserver(observeMountedSections);
-      if (main) mountObserver.observe(main, { childList: true, subtree: true });
-
-      return () => {
-         mountObserver.disconnect();
-         observer.disconnect();
-      };
+      for (const id of ["hero", ...NAV_SECTIONS.map((section) => section.id)]) {
+         const element = document.getElementById(id);
+         if (element) observer.observe(element);
+      }
+      return () => observer.disconnect();
    }, []);
 
    const scrollToSection = useCallback(
       (id: string) => {
-         const el = document.getElementById(id);
-         if (el) {
-            // Route through Lenis so smooth scrolling matches the rest of the
-            // page (CSS scroll-behavior is auto now, so native smooth is off).
-            if (lenis)
-               lenis.scrollTo(el, { offset: -64, userData: NAV_SCROLL });
-            else el.scrollIntoView();
-         }
+         navigateToSection(id);
          setMobileMenuOpen(false);
       },
-      [lenis],
+      [navigateToSection],
    );
 
    const toggleMenu = useCallback(() => setMobileMenuOpen((o) => !o), []);

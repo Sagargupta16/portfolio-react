@@ -56,7 +56,7 @@ const MotionPreferenceControl = () => {
             pointerEvents: shown ? "auto" : "none",
             left: isMobile ? 20 : 32,
             bottom: isMobile ? 20 : 32,
-            zIndex: 60,
+            zIndex: 30,
             minWidth: 44,
             height: 44,
             padding: isMobile ? 0 : "0 14px",

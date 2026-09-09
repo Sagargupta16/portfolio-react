@@ -177,6 +177,18 @@ export interface CommunityDiscussion {
    status: "accepted" | "helpful";
 }
 
+/** Editable project content and showcase settings in data/projects.json. */
+export interface ProjectsFile {
+   /** Featured project pinned above the date-sorted grid; null disables it. */
+   spotlight_project_id?: number | null;
+   featured_projects: Project[];
+   collaborative_projects: Project[];
+   other_projects: Project[];
+   community_projects?: Project[];
+   open_source_contributions?: OpenSourceContribution[];
+   community_discussions?: CommunityDiscussion[];
+}
+
 // ===== Skills =====
 export interface SkillsData {
    languages: string[];

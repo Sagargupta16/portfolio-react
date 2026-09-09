@@ -11,7 +11,7 @@
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178c6)
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
-![Tests](https://img.shields.io/badge/tests-17%20passing-22c55e)
+![Tests](https://img.shields.io/badge/tests-22%20passing-22c55e)
 ![Version](https://img.shields.io/badge/version-4.9.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
@@ -20,7 +20,9 @@
 
 ## About
 
-A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Project cards carry live screenshots of deployed sites and animated SVG cover scenes for everything else. Built as a single-page scroll application with strict TypeScript, isolated lazy sections, data validation, and a persisted Full/Reduced motion preference.
+A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Project cards carry live screenshots of deployed sites and animated SVG cover scenes for everything else. Built as a single-page scroll application with strict TypeScript, sections loaded near the viewport, data validation, and a persisted Full/Reduced motion preference.
+
+Section links support reloads and browser history. Navigation loads the content before scrolling to its destination, while motion changes preserve form drafts, project filters, and keyboard focus.
 
 ---
 
@@ -78,6 +80,8 @@ pnpm test
 pnpm build
 ```
 
+For a file map, editing recipes, and contribution checks, read the [contributor guide](CONTRIBUTING.md).
+
 ## Scripts
 
 | Command              | Description                                    |
@@ -85,7 +89,7 @@ pnpm build
 | `pnpm dev`           | Start development server                       |
 | `pnpm build`         | Validate data and build to `/build`            |
 | `pnpm preview`       | Preview production build                       |
-| `pnpm test`          | Run 17 focused Vitest tests                    |
+| `pnpm test`          | Run 22 focused Vitest tests                    |
 | `pnpm validate:data` | Validate JSON schemas and cross-file rules     |
 | `pnpm lint`          | ESLint app and scripts (zero warnings)         |
 | `pnpm lint:fix`      | ESLint with auto-fix                           |
@@ -110,7 +114,7 @@ data/                                  # JSON content files (edit these to custo
 ├── services.json
 └── contact.json
 src/
-├── __tests__/                         # App-shell, accessibility, utility, and data-invariant tests
+├── __tests__/                         # Navigation, real form/filter, accessibility, utility, and data tests
 ├── assets/projects/                   # 960x600 webp covers captured from live sites
 ├── components/
 │   ├── common/                        # ErrorBoundary
@@ -119,7 +123,8 @@ src/
 │   │   ├── Header/                    # Hero (split into sub-components)
 │   │   ├── Navigation/                # Nav + DesktopNav + MobileMenu
 │   │   ├── Footer/                    # Footer + SITE/SOCIAL columns
-│   │   └── PageSection.tsx            # Reusable section wrapper
+│   │   ├── DeferredSection.tsx        # Stable anchors + lazy loading/error boundaries
+│   │   └── PageSection.tsx            # Shared section heading and content layout
 │   └── ui/
 │       ├── BrowserMockup.tsx          # 3D tilted browser window (CSS perspective)
 │       ├── CharacterReveal.tsx        # Spring char-by-char animation (word-wrapped)
@@ -135,15 +140,27 @@ src/
 │   ├── personal.ts
 │   ├── projects.ts
 │   └── ...
-├── hooks/                             # Breakpoint, focus, and motion-preference providers
+├── hooks/                             # Breakpoint, focus, section-navigation, and motion providers
 ├── pages/                             # 9 page sections (each split into sub-files)
-│   ├── portfolio/covers/              # Cover registry + 14 lazy scene families (webapp/, game/, gate/, automation/ variants)
-│   └── services/animations/           # 7 service card animations on an 80x80 canvas
+│   ├── about/
+│   ├── experience/
+│   ├── education/
+│   ├── skill/
+│   ├── projects/                      # Projects.tsx, filters, cards, and detail modal
+│   │   └── covers/                    # Cover registry + 14 lazy scene families
+│   ├── achievement/
+│   ├── services/
+│   │   └── animations/                # 7 service card animations on an 80x80 canvas
+│   ├── stats/                         # Stats.tsx, impact figures, and coding profiles
+│   └── contact/
 ├── types/
 │   └── index.ts                       # Data contracts
 ├── utils/
-│   └── animations.ts                  # Shared Motion variants
-├── App.tsx                            # Lenis root + isolated lazy section boundaries
+│   ├── animations.ts                  # Shared Motion variants
+│   ├── projectMetadata.ts             # Project date parsing and link availability
+│   ├── skillIcons.ts                  # Shared brand/concept icon registry
+│   └── ...                            # Date ranges, social icons, and credential images
+├── App.tsx                            # Stable Lenis root + viewport-deferred section boundaries
 ├── index.tsx                          # Entry point
 └── index.css                          # Tailwind theme tokens + component classes
 ```
@@ -165,7 +182,7 @@ All portfolio content lives in JSON files under `data/` at the project root:
 | `achievements.json` | Certifications, badges, competitions, coding stats (auto-synced)                               |
 | `contact.json`      | Contact options + EmailJS config                                                               |
 
-Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. To update content, edit the JSON files only.
+Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. Existing text and metadata can usually be updated in JSON alone. Adding or removing a project also requires a matching cover registration; follow the [project editing recipe](CONTRIBUTING.md#add-or-remove-a-project).
 
 Certifications are automatically synced from Credly via a weekly GitHub Actions workflow (`sync-credly.yml`) and validated before the bot can commit them.
 
@@ -194,7 +211,7 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 3. Lint application code and Node scripts with zero warnings
 4. Run strict TypeScript checking
 5. Validate JSON schemas and cross-file invariants
-6. Run all 17 focused tests
+6. Run all 22 focused tests
 7. Fail on high-severity dependency advisories
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts

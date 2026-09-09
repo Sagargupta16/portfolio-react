@@ -9,7 +9,7 @@ import {
    getOpenSourceContributions,
    getOtherProjects,
 } from "@data/projects";
-import { getProjectCover } from "@pages/portfolio/covers/coverRegistry";
+import { getProjectCover } from "@pages/projects/covers/coverRegistry";
 import projectsData from "../../data/projects.json";
 
 const allProjects = [
@@ -24,6 +24,7 @@ const allProjects = [
 // (no project array is left out of the checks below), not a snapshot of
 // today's content that every routine update would have to bump.
 const jsonProjectCount = Object.values(projectsData)
+   .filter(Array.isArray)
    .flat()
    .filter((entry) => "github" in entry).length;
 

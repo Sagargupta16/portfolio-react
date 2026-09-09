@@ -352,6 +352,22 @@ if (requireRecord(projects, "projects")) {
    }
    requireUnique(allProjects, "id", "projects.all_categories");
 
+   const spotlightId = projects.spotlight_project_id;
+   if (
+      spotlightId !== undefined &&
+      spotlightId !== null &&
+      (!Number.isInteger(spotlightId) ||
+         !Array.isArray(projects.featured_projects) ||
+         !projects.featured_projects.some(
+            (project) => project?.id === spotlightId,
+         ))
+   ) {
+      fail(
+         "projects.spotlight_project_id",
+         "must be null or the numeric id of a featured project",
+      );
+   }
+
    const contributions = projects.open_source_contributions;
    if (requireArray(contributions, "projects.open_source_contributions")) {
       requireUnique(contributions, "url", "projects.open_source_contributions");
@@ -524,7 +540,7 @@ if (requireRecord(contact, "contact")) {
 
 try {
    const coverSource = readFileSync(
-      resolve(ROOT, "src/pages/portfolio/covers/coverRegistry.ts"),
+      resolve(ROOT, "src/pages/projects/covers/coverRegistry.ts"),
       "utf8",
    );
    const coverIds = [...coverSource.matchAll(/^[ \t]+(\d+):[ \t]*\{/gm)].map(

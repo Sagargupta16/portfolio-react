@@ -3,17 +3,14 @@ import { motion } from "motion/react";
 import { ExternalLink, Sparkles, Check } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import TechTag from "@components/ui/TechTag";
+import { hasProjectUrl } from "@utils/projectMetadata";
 import {
    TEXT_SECONDARY,
    TEXT_MUTED,
    MONO_FONT,
    EASING,
 } from "@/constants/theme";
-import {
-   isValidUrl,
-   type CategoryColors,
-   type ProjectWithCategory,
-} from "./portfolioConstants";
+import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
 
 interface ProjectModalBodyProps {
    project: ProjectWithCategory;
@@ -93,8 +90,8 @@ const ProjectModalBody = ({
 }: ProjectModalBodyProps) => {
    const features = project.features ?? [];
    const contributors = project.contributors ?? [];
-   const hasGithub = isValidUrl(project.github);
-   const hasLive = isValidUrl(project.live);
+   const hasGithub = hasProjectUrl(project.github);
+   const hasLive = hasProjectUrl(project.live);
 
    return (
       <div

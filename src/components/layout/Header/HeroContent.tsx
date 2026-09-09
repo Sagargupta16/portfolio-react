@@ -1,12 +1,12 @@
-import { lazy, Suspense, useState, useMemo, useCallback } from "react";
+import { lazy, Suspense, useState, useMemo } from "react";
 import { motion } from "motion/react";
-import { useLenis } from "lenis/react";
-import { FileText } from "lucide-react";
+import { ArrowDownRight, Download, FileText } from "lucide-react";
 import { getHeadline, getIntro, getName, getRoleLabel } from "@data/personal";
 import { CYAN, GREEN, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useSectionNavigation from "@hooks/useSectionNavigation";
 import HeroSocial from "./HeroSocial";
 import {
    HEADLINE_MASK_STYLE,
@@ -42,13 +42,15 @@ const HeroLatestPlaceholder = () => {
          style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
-            alignItems: isMobile ? "center" : "baseline",
+            alignItems: "center",
             justifyContent: "center",
             gap: isMobile ? 4 : 14,
          }}
       >
          <span style={{ fontFamily: MONO_FONT, fontSize: 10 }}>{NBSP}</span>
-         <span style={{ fontSize: 14, lineHeight: 1.6 }}>{NBSP}</span>
+         <span style={{ fontSize: 14, lineHeight: 1.6, minHeight: 44 }}>
+            {NBSP}
+         </span>
       </div>
    );
 };
@@ -61,20 +63,12 @@ const HeroContent = () => {
    const roleLabel = useMemo(() => getRoleLabel(), []);
    const headline = useMemo(() => getHeadline(), []);
 
-   const lenis = useLenis();
-   const scrollToProjects = useCallback(() => {
-      const el = document.getElementById("projects");
-      if (!el) return;
-      if (lenis) lenis.scrollTo(el, { offset: -64 });
-      else el.scrollIntoView();
-   }, [lenis]);
+   const { navigateToSection } = useSectionNavigation();
 
    return (
       <motion.div
-         // Bottom padding is larger than top: it reserves a lane for the absolute
-         // scroll indicator so it never overlaps the social icons. Sized so the
-         // hero still fits one desktop viewport (~800px) with the intro in place.
-         className="relative z-10 flex flex-col items-center text-center px-6 pt-24 pb-28 md:pt-20 md:pb-24 gap-6 max-w-4xl mx-auto"
+         // Reserve separate lanes for the fixed nav and the scroll indicator.
+         className="relative z-10 flex flex-col items-center text-center px-6 pt-24 pb-24 md:pt-20 gap-5 md:gap-6 max-w-4xl mx-auto"
          variants={heroContainer}
          initial="hidden"
          animate="visible"
@@ -83,8 +77,8 @@ const HeroContent = () => {
          <motion.div variants={heroLogo}>
             <div
                style={{
-                  width: 64,
-                  height: 64,
+                  width: "clamp(48px, 8vw, 64px)",
+                  height: "clamp(48px, 8vw, 64px)",
                   borderRadius: 16,
                   display: "flex",
                   alignItems: "center",
@@ -92,8 +86,8 @@ const HeroContent = () => {
                   fontSize: 24,
                   fontWeight: 800,
                   letterSpacing: "-0.02em",
-                  color: "#0b1012",
-                  background: "#67e8f9",
+                  color: "var(--color-bg-primary)",
+                  background: CYAN,
                }}
                aria-hidden="true"
             >
@@ -103,7 +97,7 @@ const HeroContent = () => {
 
          {/* Status badge */}
          <motion.div variants={heroLabel}>
-            <span className="badge-pill">
+            <span className="badge-pill hero-role">
                <span
                   className="animate-glow-pulse"
                   style={{
@@ -122,17 +116,21 @@ const HeroContent = () => {
              hierarchy (both lines equally bright read flat). Each line slides
              up out of its own clipping wrapper; see HEADLINE_MASK_STYLE. */}
          <motion.h1
-            className="display-heading text-5xl sm:text-6xl md:text-7xl leading-[1.12] text-text-primary"
+            className="display-heading leading-[1.12] text-text-primary"
+            style={{ fontSize: "clamp(2.25rem, 1rem + 5.5vw, 4.5rem)" }}
             variants={heroHeadline}
          >
             <span style={HEADLINE_MASK_STYLE}>
-               <motion.span className="block" variants={heroHeadlineLine}>
+               <motion.span
+                  className="block text-balance"
+                  variants={heroHeadlineLine}
+               >
                   Hi, I&apos;m <span style={{ color: CYAN }}>{name}</span>.
                </motion.span>
             </span>
             <span style={HEADLINE_MASK_STYLE}>
                <motion.span
-                  className="block text-text-secondary"
+                  className="block text-balance text-text-secondary"
                   variants={heroHeadlineLine}
                >
                   {headline}
@@ -162,39 +160,37 @@ const HeroContent = () => {
          {/* CTA buttons. The .btn-* stylesheet owns the hover lift; Motion only
              writes transform during the press (see passThroughTransform). */}
          <motion.div
-            className="flex flex-wrap items-center justify-center gap-4"
+            className="hero-actions grid w-full max-w-sm items-center gap-3 sm:flex sm:w-auto sm:max-w-none sm:flex-wrap sm:justify-center sm:gap-4"
             variants={heroRow}
          >
             <motion.button
-               onClick={scrollToProjects}
-               className="btn-outline text-sm font-semibold"
+               onClick={() => navigateToSection("projects")}
+               className="btn-primary col-span-2 inline-flex items-center justify-center gap-2 text-sm sm:col-span-1"
                whileTap={CTA_TAP}
                transformTemplate={passThroughTransform}
             >
                Explore Projects
+               <ArrowDownRight size={16} aria-hidden="true" />
             </motion.button>
             <motion.button
                onClick={() => setCvOpen(true)}
-               className="btn-outline text-sm font-semibold"
-               style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-               }}
+               className="btn-outline inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold"
+               style={{ paddingInline: 16 }}
                whileTap={CTA_TAP}
                transformTemplate={passThroughTransform}
                aria-haspopup="dialog"
             >
-               <FileText size={15} />
+               <FileText size={15} aria-hidden="true" />
                View CV
             </motion.button>
             <motion.a
                href={RESUME_URL}
                download
-               className="btn-primary text-sm"
+               className="inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-2 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
                whileTap={CTA_TAP}
                transformTemplate={passThroughTransform}
             >
+               <Download size={15} aria-hidden="true" />
                Download CV
             </motion.a>
          </motion.div>

@@ -1,5 +1,5 @@
-import type { SkillIcon } from "@pages/skill/skillIcons";
-import { getSkillIcon } from "@pages/skill/skillIcons";
+import type { SkillIcon } from "@utils/skillIcons";
+import { getSkillIcon } from "@utils/skillIcons";
 import { TEXT_PRIMARY } from "@/constants/theme";
 
 // Geometry of the 320 px frame. About.tsx scales the whole avatar 0.8 on

@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { ShieldCheck } from "lucide-react";
 import { fadeInUp } from "@utils/animations";
 import type { Certification } from "@/types";
-import { CYAN, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
+import { CYAN } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import CertBadge from "./CertBadge";
 
@@ -17,52 +17,15 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
    return (
       <div>
          <motion.div
+            className="subsection-heading"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "0px 0px -60px 0px" }}
             variants={fadeInUp}
-            style={{
-               display: "flex",
-               alignItems: "center",
-               justifyContent: "center",
-               gap: 8,
-               marginBottom: 32,
-            }}
          >
-            <div
-               style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 10,
-                  background: "rgba(96,165,250,0.1)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-               }}
-            >
-               <ShieldCheck style={{ width: 18, height: 18, color: CYAN }} />
-            </div>
-            <h3
-               style={{
-                  fontSize: 20,
-                  fontWeight: 700,
-                  color: TEXT_PRIMARY,
-               }}
-            >
-               Industry Certifications
-            </h3>
-            <span
-               style={{
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: TEXT_MUTED,
-                  padding: "2px 8px",
-                  borderRadius: 6,
-                  background: "rgba(255,255,255,0.04)",
-               }}
-            >
-               {certifications.length}
-            </span>
+            <ShieldCheck size={22} style={{ color: CYAN }} aria-hidden="true" />
+            <h3>Industry Certifications</h3>
+            <span className="subsection-count">{certifications.length}</span>
          </motion.div>
 
          <div

@@ -126,7 +126,7 @@ const calendarReducer = (
 };
 
 // -- Main component --
-const GitHub = () => {
+const Stats = () => {
    const { isMobile } = useBreakpoint();
    const githubUsername = getGitHubUsername();
    const [calendarState, dispatch] = useReducer(calendarReducer, "loading");
@@ -161,7 +161,12 @@ const GitHub = () => {
    }, []);
 
    return (
-      <PageSection id="stats" title="By the Numbers" subtitle="Stats">
+      <PageSection
+         id="stats"
+         title="By the Numbers"
+         subtitle="Stats"
+         maxWidth={MAX_WIDTH_WIDE}
+      >
          <div style={{ maxWidth: MAX_WIDTH_WIDE, margin: "0 auto" }}>
             {/* Derived counters: consulting impact, delivery/credentials, open source */}
             <StatsBand />
@@ -210,4 +215,4 @@ const GitHub = () => {
    );
 };
 
-export default GitHub;
+export default Stats;

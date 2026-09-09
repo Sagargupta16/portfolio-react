@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useLenis } from "lenis/react";
 import { ChevronUp } from "lucide-react";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
+import useSectionNavigation from "@hooks/useSectionNavigation";
 import { CYAN, DURATION, EASING, GLASS_BORDER } from "@/constants/theme";
 
 const SCROLL_THRESHOLD_PX = 500;
@@ -14,7 +14,7 @@ const HOVER_LIFT = { y: -2, borderColor: "rgb(var(--ch-cyan) / 0.3)" };
 const BackToTop = () => {
    const { isMobile } = useBreakpoint();
    const [visible, setVisible] = useState(false);
-   const lenis = useLenis();
+   const { navigateToSection } = useSectionNavigation();
    const { reducedMotion } = useMotionPreference();
    const lift = reducedMotion ? undefined : HOVER_LIFT;
 
@@ -27,20 +27,11 @@ const BackToTop = () => {
       return () => window.removeEventListener("scroll", handleScroll);
    }, [handleScroll]);
 
-   const scrollToTop = () => {
-      if (lenis) lenis.scrollTo(0);
-      else
-         window.scrollTo({
-            top: 0,
-            behavior: reducedMotion ? "auto" : "smooth",
-         });
-   };
-
    return (
       <AnimatePresence>
          {visible && (
             <motion.button
-               onClick={scrollToTop}
+               onClick={() => navigateToSection("hero")}
                initial={{ opacity: 0, scale: 0.8, y: 20 }}
                animate={{ opacity: 1, scale: 1, y: 0 }}
                exit={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -52,7 +43,7 @@ const BackToTop = () => {
                   position: "fixed",
                   bottom: isMobile ? 20 : 32,
                   right: isMobile ? 20 : 32,
-                  zIndex: 50,
+                  zIndex: 30,
                   width: 44,
                   height: 44,
                   borderRadius: 12,

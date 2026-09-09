@@ -112,8 +112,8 @@ const NavBar = ({
             <button
                onClick={() => onNavigate("hero")}
                style={{
-                  width: 40,
-                  height: 40,
+                  width: 44,
+                  height: 44,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -143,7 +143,7 @@ const NavBar = ({
                   <button
                      onClick={() => onNavigate("contact")}
                      className="btn-pill"
-                     style={{ fontSize: 13 }}
+                     style={{ fontSize: 13, minHeight: 44 }}
                      aria-label="Navigate to Contact"
                   >
                      Contact Me

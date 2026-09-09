@@ -1,5 +1,8 @@
+import type { CSSProperties } from "react";
+import { ArrowRight } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
+import Disclosure from "@components/ui/Disclosure";
 import CompanyHeader from "./CompanyHeader";
 
 interface TimelineCardContentProps {
@@ -8,17 +11,6 @@ interface TimelineCardContentProps {
    isMobile: boolean;
    onClick?: () => void;
 }
-
-// The 12px trigger labels sit on the body 1.7 line-height (a ~20px line
-// box); 12px of padding above and below lifts each hit area past the 44px
-// mobile minimum (WCAG 2.5.8) without changing the label's size or weight.
-const TRIGGER_PAD = 12;
-const TRIGGER_STYLE: React.CSSProperties = {
-   padding: `${TRIGGER_PAD}px 0`,
-   cursor: "pointer",
-   fontSize: 12,
-   fontWeight: 600,
-};
 
 const TimelineCardContent = ({
    item,
@@ -41,69 +33,68 @@ const TimelineCardContent = ({
             marginLeft={ml}
          />
          {"description" in item && (
-            <details style={{ marginLeft: ml }}>
-               <summary style={{ ...TRIGGER_STYLE, color: accentColor }}>
-                  Responsibilities
-               </summary>
-               <ul
-                  style={{
-                     display: "flex",
-                     flexDirection: "column",
-                     gap: 6,
-                     color: TEXT_SECONDARY,
-                     fontSize: 12,
-                     lineHeight: 1.7,
-                  }}
-               >
-                  {Object.values(item.description).map((detail) => (
-                     <li
-                        key={detail}
-                        style={{
-                           display: "flex",
-                           alignItems: "flex-start",
-                           gap: 8,
-                        }}
-                     >
-                        <span
+            <div style={{ marginLeft: ml, marginTop: 12 }}>
+               <Disclosure label="Responsibilities" accentColor={accentColor}>
+                  <ul
+                     style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 6,
+                        color: TEXT_SECONDARY,
+                        fontSize: 12,
+                        lineHeight: 1.7,
+                     }}
+                  >
+                     {Object.values(item.description).map((detail) => (
+                        <li
+                           key={detail}
                            style={{
-                              width: 5,
-                              height: 5,
-                              borderRadius: "50%",
-                              background: `${accentColor}80`,
-                              marginTop: 8,
-                              flexShrink: 0,
+                              display: "flex",
+                              alignItems: "flex-start",
+                              gap: 8,
                            }}
-                        />
-                        {detail}
-                     </li>
-                  ))}
-               </ul>
-               <div
-                  style={{
-                     display: "flex",
-                     flexWrap: "wrap",
-                     gap: 4,
-                     marginTop: 10,
-                  }}
-               >
-                  {item.skills.map((skill) => (
-                     <span
-                        key={skill}
-                        style={{
-                           padding: "2px 7px",
-                           borderRadius: 6,
-                           color: accentColor,
-                           background: `${accentColor}0D`,
-                           border: `1px solid ${accentColor}20`,
-                           fontFamily: MONO_FONT,
-                           fontSize: 10,
-                        }}
-                     >
-                        {skill}
-                     </span>
-                  ))}
-               </div>
-            </details>
+                        >
+                           <span
+                              style={{
+                                 width: 5,
+                                 height: 5,
+                                 borderRadius: "50%",
+                                 background: `${accentColor}80`,
+                                 marginTop: 8,
+                                 flexShrink: 0,
+                              }}
+                           />
+                           {detail}
+                        </li>
+                     ))}
+                  </ul>
+                  <div
+                     style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 4,
+                        marginTop: 10,
+                     }}
+                  >
+                     {item.skills.map((skill) => (
+                        <span
+                           key={skill}
+                           style={{
+                              padding: "2px 7px",
+                              borderRadius: 6,
+                              color: accentColor,
+                              background: `${accentColor}0D`,
+                              border: `1px solid ${accentColor}20`,
+                              fontFamily: MONO_FONT,
+                              fontSize: 10,
+                           }}
+                        >
+                           {skill}
+                        </span>
+                     ))}
+                  </div>
+               </Disclosure>
+            </div>
          )}
       </>
    );
@@ -111,26 +102,26 @@ const TimelineCardContent = ({
    return (
       <div>
          {content}
-         {hasDetail && (
+         {hasDetail && onClick && (
             <button
                type="button"
                onClick={onClick}
-               style={{
-                  ...TRIGGER_STYLE,
-                  display: "flex",
-                  alignItems: "center",
-                  width: "fit-content",
-                  marginLeft: ml,
-                  // The bottom padding only exists to grow the hit area; pull
-                  // it back so the card ends where the old 12px-margin label did.
-                  marginBottom: -TRIGGER_PAD,
-                  background: "none",
-                  border: "none",
-                  color: accentColor,
-               }}
+               className="text-action"
+               style={
+                  {
+                     "--action-accent": accentColor,
+                     marginLeft: ml,
+                     marginTop: 4,
+                  } as CSSProperties
+               }
                aria-label={`View details for ${item.company}`}
             >
                View details
+               <ArrowRight
+                  size={16}
+                  className="action-arrow"
+                  aria-hidden="true"
+               />
             </button>
          )}
       </div>

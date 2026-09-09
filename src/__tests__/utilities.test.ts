@@ -1,11 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { credlyThumb } from "@utils/credlyThumb";
 import { isPresent, splitDateRange } from "@utils/dateRange";
-import {
-   getCategoryColors,
-   isValidUrl,
-   parseDate,
-} from "@pages/portfolio/portfolioConstants";
+import { hasProjectUrl, parseProjectDate } from "@utils/projectMetadata";
+import { getCategoryColors } from "@pages/projects/projectConstants";
 
 describe("shared utilities", () => {
    it("splits date ranges and recognizes current roles", () => {
@@ -19,15 +16,15 @@ describe("shared utilities", () => {
    });
 
    it("parses known project months and safely falls back for unknown input", () => {
-      expect(parseDate("September 2026").getFullYear()).toBe(2026);
-      expect(parseDate("September 2026").getMonth()).toBe(8);
-      expect(parseDate("Unknown nope").getFullYear()).toBe(1900);
+      expect(parseProjectDate("September 2026").getFullYear()).toBe(2026);
+      expect(parseProjectDate("September 2026").getMonth()).toBe(8);
+      expect(parseProjectDate("Unknown nope").getFullYear()).toBe(1900);
    });
 
    it("rejects empty project links and falls back for unknown categories", () => {
-      expect(isValidUrl("https://example.com")).toBe(true);
-      expect(isValidUrl("#")).toBe(false);
-      expect(isValidUrl("")).toBe(false);
+      expect(hasProjectUrl("https://example.com")).toBe(true);
+      expect(hasProjectUrl("#")).toBe(false);
+      expect(hasProjectUrl("")).toBe(false);
       expect(getCategoryColors("missing")).toEqual(getCategoryColors("Others"));
    });
 

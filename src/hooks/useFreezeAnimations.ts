@@ -8,9 +8,9 @@ import useMotionPreference from "./useMotionPreference";
  * Motion's `reducedMotion="always"` makes transform loops instant, but the
  * opacity loops in cover scenes and service artwork keep running through
  * WAAPI, so the dots kept blinking in place. Pausing at time 0 shows each
- * loop's rest frame and keeps the artwork visible and still. Leaving Reduced
- * remounts the tree (the provider keys its children on the resolved mode), so
- * no resume path is needed here.
+ * loop's rest frame and keeps the artwork visible and still. The caller keys
+ * only its decorative scene on the preference, so leaving Reduced restarts
+ * that artwork without remounting the surrounding interactive content.
  */
 const useFreezeAnimations = (ref: RefObject<HTMLElement | null>) => {
    const { reducedMotion } = useMotionPreference();

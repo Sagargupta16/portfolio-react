@@ -1,6 +1,7 @@
 import { Suspense, useRef, type CSSProperties, type ReactNode } from "react";
 import { useInView } from "motion/react";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { getProjectCover } from "./coverRegistry";
 
 interface ProjectCoverProps {
@@ -29,6 +30,7 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
    const cover = getProjectCover(projectId, title);
    const frameRef = useRef<HTMLDivElement>(null);
    const nearViewport = useInView(frameRef, { margin: SCENE_MOUNT_MARGIN });
+   const { preference } = useMotionPreference();
    useFreezeAnimations(frameRef);
    if (!cover) return null;
 
@@ -61,7 +63,11 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             style={FILL}
          >
             <Suspense fallback={<div className="skeleton" style={FILL} />}>
-               <cover.Scene tint={accent} variant={cover.variant} />
+               <cover.Scene
+                  key={preference}
+                  tint={accent}
+                  variant={cover.variant}
+               />
             </Suspense>
          </div>
       );
@@ -77,9 +83,9 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
    return (
       <div
          ref={frameRef}
+         className="project-cover"
          style={{
             position: "relative",
-            aspectRatio: "16 / 10",
             overflow: "hidden",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
             background: "#0c1216",

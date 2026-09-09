@@ -1,10 +1,10 @@
 import { AnimatePresence } from "motion/react";
-import type { ProjectWithCategory } from "./portfolioConstants";
+import type { ProjectWithCategory } from "./projectConstants";
 import ProjectCard from "./ProjectCard";
 
 interface ProjectGridProps {
    projects: ProjectWithCategory[];
-   isMobile: boolean;
+   spotlightProjectId: number | null;
    /** True once the filter has changed: later cards mount as swap entries. */
    hasFiltered: boolean;
    onOpenProject: (project: ProjectWithCategory) => void;
@@ -17,20 +17,11 @@ interface ProjectGridProps {
  */
 const ProjectGrid = ({
    projects,
-   isMobile,
+   spotlightProjectId,
    hasFiltered,
    onOpenProject,
 }: ProjectGridProps) => (
-   <div
-      style={{
-         display: "grid",
-         gridTemplateColumns: isMobile
-            ? "1fr"
-            : "repeat(auto-fill, minmax(340px, 1fr))",
-         gap: 24,
-         alignItems: "stretch",
-      }}
-   >
+   <div className="project-grid" id="project-results">
       <AnimatePresence mode="popLayout">
          {projects.map((project, idx) => (
             <ProjectCard
@@ -38,6 +29,7 @@ const ProjectGrid = ({
                data={project}
                index={idx}
                entering={hasFiltered}
+               spotlight={project.id === spotlightProjectId}
                onOpen={() => onOpenProject(project)}
             />
          ))}
