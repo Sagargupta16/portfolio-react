@@ -23,6 +23,7 @@ const DiscussionCard = ({ discussion }: DiscussionCardProps) => {
          href={discussion.url}
          target="_blank"
          rel="noopener noreferrer"
+         title={`${discussion.repo}: ${discussion.title}`}
          className="contribution-link"
          style={{ "--contribution-accent": color } as CSSProperties}
       >

@@ -97,6 +97,8 @@ For an existing section, start with its entry point in the table above and follo
 
 The project showcase has its own [projects.css](src/pages/projects/projects.css) for the search toolbar, cards, contributions, and responsive featured layout. The service grid uses [services.css](src/pages/services/services.css), and the competition cards use [achievements.css](src/pages/achievement/achievements.css). Shared section headings, text actions, and disclosures are styled in `src/index.css`.
 
+Use `subsection-heading` for a left-aligned group title with an icon and optional `subsection-count`. Use `dashed-rule` for smaller category labels with a trailing divider. Skills keep centered category labels and chips.
+
 For a new section:
 
 1. Create its component under `src/pages/` and use `PageSection` for its heading and content layout.

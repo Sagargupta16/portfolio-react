@@ -90,7 +90,7 @@ const SkillCategory = ({
          viewport={{ once: true, margin: VIEWPORT_MARGIN }}
       >
          <Heading
-            className="dashed-rule"
+            className="dashed-rule dashed-rule--centered"
             style={{ marginBottom: 28 }}
             variants={ruleVariants}
          >

@@ -29,6 +29,7 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
          href={contrib.url}
          target="_blank"
          rel="noopener noreferrer"
+         title={`${contrib.repo}: ${contrib.title}`}
          className="contribution-link"
          style={{ "--contribution-accent": statusColor } as CSSProperties}
       >

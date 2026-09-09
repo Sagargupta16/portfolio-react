@@ -7,14 +7,7 @@ import {
    BadgeCheck,
    MessageCircle,
 } from "lucide-react";
-import {
-   MONO_FONT,
-   CYAN,
-   GREEN,
-   PURPLE,
-   TEXT_PRIMARY,
-   TEXT_MUTED,
-} from "@/constants/theme";
+import { MONO_FONT, CYAN, GREEN, PURPLE } from "@/constants/theme";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import {
    OPEN_SOURCE_CONTRIBUTIONS,
@@ -46,37 +39,22 @@ const OpenSourceBanner = () => {
          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
       >
-         <div
-            style={{
-               display: "flex",
-               alignItems: "center",
-               gap: 8,
-               marginBottom: 24,
-               justifyContent: "center",
-            }}
-         >
-            <GitPullRequest size={20} style={{ color: GREEN }} />
-            <h3 style={{ fontSize: 20, fontWeight: 700, color: TEXT_PRIMARY }}>
-               Open Source Contributions
-            </h3>
-            <span
-               style={{
-                  fontSize: 12,
-                  fontFamily: MONO_FONT,
-                  color: TEXT_MUTED,
-                  fontWeight: 500,
-               }}
-            >
-               (
+         <div className="subsection-heading">
+            <GitPullRequest
+               size={22}
+               style={{ color: GREEN }}
+               aria-hidden="true"
+            />
+            <h3>Open Source Contributions</h3>
+            <span className="subsection-count">
                {OPEN_SOURCE_CONTRIBUTIONS.length + COMMUNITY_DISCUSSIONS.length}
-               )
             </span>
          </div>
 
          <div
             className="glass-card"
             style={{
-               padding: 24,
+               padding: 16,
                border: "1px solid rgba(34,197,94,0.2)",
                position: "relative",
                overflow: "hidden",

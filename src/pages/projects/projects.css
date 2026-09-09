@@ -239,7 +239,7 @@
    display: grid;
    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
    grid-auto-rows: 1fr;
-   gap: 12px;
+   gap: 8px;
 }
 
 .contribution-grid > div {
@@ -250,10 +250,10 @@
    display: grid;
    grid-template-columns: 14px minmax(0, 1fr) 14px;
    align-items: start;
-   gap: 10px;
+   gap: 8px;
    height: 100%;
    min-height: 44px;
-   padding: 14px;
+   padding: 10px 12px;
    border: 1px solid
       color-mix(in srgb, var(--contribution-accent) 12%, transparent);
    border-radius: 12px;
@@ -261,7 +261,8 @@
    text-decoration: none;
    transition:
       background-color 0.2s ease,
-      border-color 0.2s ease;
+      border-color 0.2s ease,
+      transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .contribution-link:is(:hover, :focus-visible) {
@@ -278,12 +279,42 @@
    color: var(--contribution-accent);
 }
 
+.contribution-link > .contribution-icon:first-child {
+   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-motion="full"] .contribution-link:focus-visible {
+   transform: translateY(-2px);
+}
+
+html[data-motion="full"]
+   .contribution-link:focus-visible
+   > .contribution-icon:first-child {
+   transform: rotate(-8deg) scale(1.08);
+}
+
+@media (hover: hover) {
+   html[data-motion="full"] .contribution-link:hover {
+      transform: translateY(-2px);
+   }
+
+   html[data-motion="full"]
+      .contribution-link:hover
+      > .contribution-icon:first-child {
+      transform: rotate(-8deg) scale(1.08);
+   }
+}
+
+html[data-motion="full"] .contribution-link:active {
+   transform: scale(0.99);
+   transition-duration: 0.1s;
+}
+
 .contribution-meta {
    display: grid;
    grid-template-columns: minmax(0, 1fr) auto;
-   align-items: start;
+   align-items: center;
    gap: 6px 8px;
-   min-height: 3.2em;
    color: var(--contribution-accent);
    font-family: var(--font-mono);
    font-size: 11px;
@@ -292,9 +323,11 @@
 
 .contribution-repo {
    min-width: 0;
+   overflow: hidden;
    font-size: 11px;
    font-weight: 600;
-   overflow-wrap: anywhere;
+   text-overflow: ellipsis;
+   white-space: nowrap;
 }
 
 .contribution-status {
@@ -316,10 +349,10 @@
    -webkit-line-clamp: 2;
    line-clamp: 2;
    margin-top: 4px;
-   min-height: 3.2em;
+   min-height: 3em;
    color: var(--color-text-secondary);
    font-size: 13px;
-   line-height: 1.6;
+   line-height: 1.5;
 }
 
 @media (min-width: 768px) {

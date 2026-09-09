@@ -23,6 +23,7 @@ import {
    MAX_WIDTH,
 } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { parseProjectDate } from "@utils/projectMetadata";
 import { FILTERS } from "./projectConstants";
 import type { ProjectWithCategory } from "./projectConstants";
@@ -81,6 +82,7 @@ const PILL_SPRING = { type: "spring", stiffness: 500, damping: 40 } as const;
 const TAP = { scale: 0.97 };
 
 const Projects = () => {
+   const { reducedMotion } = useMotionPreference();
    const [activeFilter, setActiveFilter] = useState<string>("Featured");
    const [query, setQuery] = useState("");
    const searchRef = useRef<HTMLInputElement>(null);
@@ -318,7 +320,13 @@ const Projects = () => {
                   onOpenProject={handleOpenProject}
                />
             ) : (
-               <div className="project-empty" id="project-results">
+               <motion.div
+                  className="project-empty"
+                  id="project-results"
+                  initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.18, ease: EASING.cinematic }}
+               >
                   <h3>No matching projects</h3>
                   <p>
                      Try another name or technology, or reset the filters to
@@ -334,7 +342,7 @@ const Projects = () => {
                   >
                      Reset filters
                   </button>
-               </div>
+               </motion.div>
             )}
 
             {/* Open Source Contributions Banner */}

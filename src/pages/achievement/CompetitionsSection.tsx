@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { Trophy } from "lucide-react";
 import type { Achievement } from "@/types";
 import { fadeInUp } from "@utils/animations";
+import { AMBER } from "@/constants/theme";
 import TrophyCard from "./TrophyCard";
 import "./achievements.css";
 
@@ -15,15 +16,15 @@ const CompetitionsSection = ({ achievements }: CompetitionsSectionProps) => {
    return (
       <div>
          <motion.div
-            className="awards-heading"
+            className="subsection-heading"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "0px 0px -60px 0px" }}
             variants={fadeInUp}
          >
-            <Trophy size={22} aria-hidden="true" />
+            <Trophy size={22} style={{ color: AMBER }} aria-hidden="true" />
             <h3>Competitions & Awards</h3>
-            <span className="awards-count">{achievements.length}</span>
+            <span className="subsection-count">{achievements.length}</span>
          </motion.div>
 
          <div className="awards-grid">

@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { BookOpen } from "lucide-react";
 import type { LearningBadge } from "@/types";
 import { fadeInUp, VIEWPORT_MARGIN } from "@utils/animations";
-import { PURPLE, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
+import { PURPLE } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
 import BadgeRail from "./BadgeRail";
@@ -39,52 +39,15 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
    return (
       <div>
          <motion.div
+            className="subsection-heading"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: VIEWPORT_MARGIN }}
             variants={fadeInUp}
-            style={{
-               display: "flex",
-               alignItems: "center",
-               justifyContent: "center",
-               gap: 8,
-               marginBottom: 24,
-            }}
          >
-            <div
-               style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 10,
-                  background: "rgba(56,189,248,0.1)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-               }}
-            >
-               <BookOpen style={{ width: 18, height: 18, color: PURPLE }} />
-            </div>
-            <h3
-               style={{
-                  fontSize: 20,
-                  fontWeight: 700,
-                  color: TEXT_PRIMARY,
-               }}
-            >
-               Learning & Training
-            </h3>
-            <span
-               style={{
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: TEXT_MUTED,
-                  padding: "2px 8px",
-                  borderRadius: 6,
-                  background: "rgba(255,255,255,0.04)",
-               }}
-            >
-               {badges.length}
-            </span>
+            <BookOpen size={22} style={{ color: PURPLE }} aria-hidden="true" />
+            <h3>Learning & Training</h3>
+            <span className="subsection-count">{badges.length}</span>
          </motion.div>
 
          {showRail ? (

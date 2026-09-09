@@ -36,8 +36,8 @@ const MAX_STAGGER_S = 0.3;
 /* Lift only: .glass-card CSS owns the border shift, which keeps the coloured
    left accent intact (Motion would overwrite all four sides). */
 const HOVER_LIFT = {
-   y: -4,
-   transition: { duration: DURATION.quick, ease: EASING.brisk },
+   y: -2,
+   transition: { type: "spring" as const, visualDuration: 0.2, bounce: 0.12 },
 };
 
 const splitTitle = (title: string): [string, string] => {
@@ -71,17 +71,18 @@ const TrophyCard = ({ item, index }: TrophyCardProps) => {
    const lift = reducedMotion ? undefined : HOVER_LIFT;
    const isRanking = rank.startsWith("Rank ");
    const displayRank = isRanking ? rank.slice(5) : rank;
+   const revealDelay = Math.min(index * 0.05, MAX_STAGGER_S);
 
    return (
       <motion.div
          className="glass-card award-card"
-         initial={{ opacity: 0, y: 24 }}
+         initial={reducedMotion ? false : { opacity: 0, y: 12 }}
          whileInView={{
             opacity: 1,
             y: 0,
             transition: {
-               delay: Math.min(index * 0.05, MAX_STAGGER_S),
-               duration: 0.5,
+               delay: reducedMotion ? 0 : revealDelay,
+               duration: reducedMotion ? 0 : DURATION.default,
                ease: EASING.cinematic,
             },
          }}
@@ -99,8 +100,23 @@ const TrophyCard = ({ item, index }: TrophyCardProps) => {
          }
       >
          {/* Rank / Placement */}
-         <div
+         <motion.div
             className={`award-rank${isRanking ? " award-rank--numeric" : ""}`}
+            initial={
+               reducedMotion ? false : { opacity: 0, scale: 0.8, rotate: -12 }
+            }
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+            transition={
+               reducedMotion
+                  ? { duration: 0 }
+                  : {
+                       type: "spring",
+                       visualDuration: 0.3,
+                       bounce: 0.15,
+                       delay: revealDelay + 0.05,
+                    }
+            }
             aria-hidden="true"
          >
             {rank ? (
@@ -111,19 +127,19 @@ const TrophyCard = ({ item, index }: TrophyCardProps) => {
                   </span>
                </>
             ) : (
-               <Trophy size={24} />
+               <Trophy size={20} />
             )}
-         </div>
+         </motion.div>
 
          {/* Event details */}
          <div className="award-body">
             <h4 className="award-title" aria-label={item.title}>
                {event}
             </h4>
-            {item.organizer && (
-               <p className="award-organizer">{item.organizer}</p>
-            )}
-            <div className="award-footer">
+            <div className="award-meta">
+               {item.organizer && (
+                  <span className="award-organizer">{item.organizer}</span>
+               )}
                {item.date && <span>{item.date}</span>}
                {item.type && <span className="award-type">{item.type}</span>}
             </div>

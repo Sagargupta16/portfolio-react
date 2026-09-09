@@ -93,18 +93,10 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
 
    return (
       <div style={{ marginTop: 48 }}>
-         <motion.h3
-            variants={fadeInUp}
-            style={{
-               fontSize: 20,
-               fontWeight: 700,
-               color: TEXT_PRIMARY,
-               marginBottom: 20,
-               textAlign: "center",
-            }}
-         >
-            Coding Platform Profiles
-         </motion.h3>
+         <motion.div className="subsection-heading" variants={fadeInUp}>
+            <Code size={22} style={{ color: PURPLE }} aria-hidden="true" />
+            <h3>Coding Platform Profiles</h3>
+         </motion.div>
 
          <motion.div
             variants={staggerContainer}
