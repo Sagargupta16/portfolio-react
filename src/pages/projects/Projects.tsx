@@ -12,6 +12,7 @@ import {
    getCollaborativeProjects,
    getOtherProjects,
    getCommunityProjects,
+   getSpotlightProjectId,
 } from "@data/projects";
 import {
    BLUE,
@@ -98,6 +99,10 @@ const Projects = () => {
    const communityProjects = useMemo(() => getCommunityProjects(), []);
    const collaborativeProjects = useMemo(() => getCollaborativeProjects(), []);
    const otherProjects = useMemo(() => getOtherProjects(), []);
+   const spotlightProjectId =
+      activeFilter === "Featured" && !query.trim()
+         ? getSpotlightProjectId()
+         : null;
 
    // Counts per filter -- drives both the badge text and the "hide empty" rule.
    const counts = useMemo<Record<string, number>>(() => {
@@ -163,7 +168,7 @@ const Projects = () => {
 
    const filteredProjects = useMemo(() => {
       const terms = query.trim().toLowerCase().split(/\s+/);
-      return categoryProjects.filter((project) => {
+      const matches = categoryProjects.filter((project) => {
          const text = [
             project.title,
             project.description,
@@ -173,7 +178,17 @@ const Projects = () => {
             .toLowerCase();
          return terms.every((term) => text.includes(term));
       });
-   }, [categoryProjects, query]);
+      const spotlight = matches.find(
+         (project) => project.id === spotlightProjectId,
+      );
+      return spotlight
+         ? [spotlight, ...matches.filter((project) => project !== spotlight)]
+         : matches;
+   }, [categoryProjects, query, spotlightProjectId]);
+
+   const hasSpotlight = filteredProjects.some(
+      (project) => project.id === spotlightProjectId,
+   );
 
    const clearSearch = () => {
       setQuery("");
@@ -289,14 +304,16 @@ const Projects = () => {
                <span id="project-result-count" role="status" aria-live="polite">
                   {filteredProjects.length} of {counts[activeFilter]} projects
                </span>
-               <span>Newest first</span>
+               <span>
+                  {hasSpotlight ? "Spotlight, then newest" : "Newest first"}
+               </span>
             </div>
 
             {/* Card grid with live screenshots / animated covers */}
             {filteredProjects.length ? (
                <ProjectGrid
                   projects={filteredProjects}
-                  highlightFirst={activeFilter === "Featured" && !query.trim()}
+                  spotlightProjectId={spotlightProjectId}
                   hasFiltered={hasFiltered}
                   onOpenProject={handleOpenProject}
                />

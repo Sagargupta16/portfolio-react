@@ -10,8 +10,11 @@ import {
    AMBER,
    TEXT_PRIMARY,
    TEXT_MUTED,
+   DURATION,
+   EASING,
 } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useMotionPreference from "@hooks/useMotionPreference";
 
 const PLATFORM_CONFIG: Record<
    string,
@@ -53,6 +56,8 @@ interface CodingProfilesProps {
 
 const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
    const { isMobile } = useBreakpoint();
+   const { reducedMotion } = useMotionPreference();
+   const lift = reducedMotion ? undefined : { y: -4 };
    const stats = getCodingPlatformStats();
    const entries = Object.entries(stats).filter(
       ([key]) => key in PLATFORM_CONFIG,
@@ -118,7 +123,9 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                rel="noopener noreferrer"
                className="glass-card"
                variants={fadeInUp}
-               whileHover={{ y: -4, borderColor: "rgba(165,165,192,0.3)" }}
+               whileHover={lift}
+               whileFocus={lift}
+               transition={{ duration: DURATION.quick, ease: EASING.brisk }}
                style={cardStyle}
             >
                <FaGithub size={20} style={{ color: TEXT_PRIMARY }} />
@@ -147,7 +154,12 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                      marginTop: 4,
                   }}
                >
-                  View Profile <ArrowUpRight size={12} />
+                  View Profile
+                  <ArrowUpRight
+                     size={14}
+                     className="action-arrow action-arrow--external"
+                     aria-hidden="true"
+                  />
                </span>
             </motion.a>
 
@@ -164,7 +176,12 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                      rel="noopener noreferrer"
                      className="glass-card"
                      variants={fadeInUp}
-                     whileHover={{ y: -4, borderColor: `${config.color}40` }}
+                     whileHover={lift}
+                     whileFocus={lift}
+                     transition={{
+                        duration: DURATION.quick,
+                        ease: EASING.brisk,
+                     }}
                      style={cardStyle}
                   >
                      <config.icon size={20} style={{ color: config.color }} />
@@ -193,7 +210,12 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
                            marginTop: 4,
                         }}
                      >
-                        View <ArrowUpRight size={12} />
+                        View
+                        <ArrowUpRight
+                           size={14}
+                           className="action-arrow action-arrow--external"
+                           aria-hidden="true"
+                        />
                      </span>
                   </motion.a>
                );

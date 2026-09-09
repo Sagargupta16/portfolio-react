@@ -1,14 +1,12 @@
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { Trophy } from "lucide-react";
 import type { Achievement } from "@/types";
 import useMotionPreference from "@hooks/useMotionPreference";
 import {
-   MONO_FONT,
    CYAN,
    DURATION,
    EASING,
-   TEXT_PRIMARY,
-   TEXT_SECONDARY,
    TEXT_MUTED,
    MEDAL_GOLD,
    MEDAL_SILVER,
@@ -71,121 +69,65 @@ const TrophyCard = ({ item, index }: TrophyCardProps) => {
    const { rank, event, color } = parsePlacement(item.title);
    const { reducedMotion } = useMotionPreference();
    const lift = reducedMotion ? undefined : HOVER_LIFT;
+   const isRanking = rank.startsWith("Rank ");
+   const displayRank = isRanking ? rank.slice(5) : rank;
 
    return (
       <motion.div
-         className="glass-card"
+         className="glass-card award-card"
          initial={{ opacity: 0, y: 24 }}
-         whileInView={{ opacity: 1, y: 0 }}
+         whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: {
+               delay: Math.min(index * 0.05, MAX_STAGGER_S),
+               duration: 0.5,
+               ease: EASING.cinematic,
+            },
+         }}
          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
          transition={{
-            delay: Math.min(index * 0.05, MAX_STAGGER_S),
-            duration: 0.5,
-            ease: EASING.cinematic,
+            duration: DURATION.quick,
+            ease: EASING.brisk,
          }}
          whileHover={lift}
-         whileFocus={lift}
-         style={{
-            padding: "20px 20px",
-            display: "flex",
-            alignItems: "center",
-            gap: 16,
-            borderLeft: `3px solid ${color}`,
-            cursor: "default",
-         }}
+         style={
+            {
+               "--award-accent": color,
+               borderLeft: `3px solid ${color}`,
+            } as CSSProperties
+         }
       >
          {/* Rank / Placement */}
          <div
-            style={{
-               minWidth: 52,
-               display: "flex",
-               flexDirection: "column",
-               alignItems: "center",
-               flexShrink: 0,
-            }}
+            className={`award-rank${isRanking ? " award-rank--numeric" : ""}`}
+            aria-hidden="true"
          >
             {rank ? (
-               <span
-                  style={{
-                     fontSize: rank.startsWith("Rank") ? 14 : 28,
-                     fontWeight: 800,
-                     fontFamily: MONO_FONT,
-                     color,
-                     lineHeight: 1,
-                  }}
-               >
-                  {rank}
-               </span>
+               <>
+                  <span className="award-rank-value">{displayRank}</span>
+                  <span className="award-rank-caption">
+                     {isRanking ? "Rank" : "Place"}
+                  </span>
+               </>
             ) : (
-               <Trophy size={24} style={{ color }} />
+               <Trophy size={24} />
             )}
          </div>
 
          {/* Event details */}
-         <div style={{ flex: 1, minWidth: 0 }}>
-            <h4
-               style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: TEXT_PRIMARY,
-                  lineHeight: 1.5,
-                  marginBottom: 4,
-               }}
-            >
+         <div className="award-body">
+            <h4 className="award-title" aria-label={item.title}>
                {event}
             </h4>
-            <div
-               style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  flexWrap: "wrap",
-               }}
-            >
-               {item.organizer && (
-                  <span
-                     style={{
-                        fontSize: 12,
-                        fontWeight: 500,
-                        color: TEXT_SECONDARY,
-                     }}
-                  >
-                     {item.organizer}
-                  </span>
-               )}
-               {item.date && (
-                  <span
-                     style={{
-                        fontSize: 11,
-                        fontFamily: MONO_FONT,
-                        color: TEXT_MUTED,
-                     }}
-                  >
-                     {item.date}
-                  </span>
-               )}
+            {item.organizer && (
+               <p className="award-organizer">{item.organizer}</p>
+            )}
+            <div className="award-footer">
+               {item.date && <span>{item.date}</span>}
+               {item.type && <span className="award-type">{item.type}</span>}
             </div>
          </div>
-
-         {/* Type tag */}
-         {item.type && (
-            <span
-               style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  color,
-                  padding: "3px 8px",
-                  borderRadius: 4,
-                  border: `1px solid ${color}25`,
-                  background: `${color}08`,
-                  flexShrink: 0,
-               }}
-            >
-               {item.type}
-            </span>
-         )}
       </motion.div>
    );
 };

@@ -43,7 +43,7 @@ const BackToTop = () => {
                   position: "fixed",
                   bottom: isMobile ? 20 : 32,
                   right: isMobile ? 20 : 32,
-                  zIndex: 50,
+                  zIndex: 30,
                   width: 44,
                   height: 44,
                   borderRadius: 12,

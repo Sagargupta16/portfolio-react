@@ -85,16 +85,21 @@ describe("accessible interactions", () => {
       expect(onOpen).toHaveBeenCalledOnce();
    });
 
-   it("connects education disclosure state to its panel", () => {
+   it("opens and closes education achievements with a native disclosure", () => {
       render(<ExpandableExtras item={education} marginLeft={0} />);
-      const trigger = screen.getByRole("button", { name: /1 Achievements/ });
-      const panelId = trigger.getAttribute("aria-controls");
-      expect(trigger.getAttribute("aria-expanded")).toBe("false");
+      const disclosure = screen.getByRole("group") as HTMLDetailsElement;
+      const trigger = disclosure.querySelector("summary")!;
+      expect(trigger.textContent).toBe("1 achievement");
+      expect(disclosure.open).toBe(false);
 
       fireEvent.click(trigger);
-      expect(trigger.getAttribute("aria-expanded")).toBe("true");
-      expect(document.getElementById(panelId ?? "")).toBeTruthy();
-      expect(screen.getByText("Graduated with distinction")).toBeTruthy();
+      expect(disclosure.open).toBe(true);
+      expect(
+         disclosure.contains(screen.getByText("Graduated with distinction")),
+      ).toBe(true);
+
+      fireEvent.click(trigger);
+      expect(disclosure.open).toBe(false);
    });
 
    it("keeps timeline headings outside the explicit Details control", () => {

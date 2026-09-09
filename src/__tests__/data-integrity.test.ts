@@ -24,6 +24,7 @@ const allProjects = [
 // (no project array is left out of the checks below), not a snapshot of
 // today's content that every routine update would have to bump.
 const jsonProjectCount = Object.values(projectsData)
+   .filter(Array.isArray)
    .flat()
    .filter((entry) => "github" in entry).length;
 

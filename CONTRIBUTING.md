@@ -77,6 +77,14 @@ The hero's latest-work line and the Stats section derive their values from the c
 
 The validator reports `missing project id` for a JSON record without a cover and `orphan project id` for a cover without a record. Keep registry keys as numeric literals, matching the existing entries.
 
+### Choose the spotlight project
+
+Set the top-level `spotlight_project_id` in [data/projects.json](data/projects.json) to the numeric ID of a record in `featured_projects`. For example, `"spotlight_project_id": 50` selects Kinfolk, and `15` selects Ledger Sync.
+
+The selected project appears first with a Spotlight label and a wide desktop card. The remaining featured projects stay sorted by date. Search results and other categories use the regular date-sorted grid.
+
+Set the value to `null` or remove the setting to disable the spotlight. If you remove the selected project or move it out of `featured_projects`, update this setting too. `pnpm validate:data` rejects invalid IDs.
+
 ### Add a skill or change its icon
 
 Add the skill name to its category in [data/skills.json](data/skills.json). To give it an icon, add the exact name to `SKILL_ICONS` in [src/utils/skillIcons.ts](src/utils/skillIcons.ts). A skill without a registered icon still renders as text.
@@ -87,7 +95,7 @@ The `hero_stack` list in the same JSON file controls the floating hero artwork. 
 
 For an existing section, start with its entry point in the table above and follow its local component imports.
 
-The project showcase has its own [projects.css](src/pages/projects/projects.css) for the search toolbar, cards, and responsive featured layout. Shared section-heading styles live in `src/index.css`.
+The project showcase has its own [projects.css](src/pages/projects/projects.css) for the search toolbar, cards, contributions, and responsive featured layout. The service grid uses [services.css](src/pages/services/services.css), and the competition cards use [achievements.css](src/pages/achievement/achievements.css). Shared section headings, text actions, and disclosures are styled in `src/index.css`.
 
 For a new section:
 
@@ -102,6 +110,8 @@ For a new section:
 Global CSS variables, Tailwind theme values, and shared CSS classes live in [src/index.css](src/index.css). JavaScript colors, breakpoints, and animation values live in [theme.ts](src/constants/theme.ts). Keep corresponding values consistent when changing the theme.
 
 Use `useMotionPreference` for Full/Reduced behavior. Full is the default; Reduced freezes decorative movement and uses native scrolling. Preserve interactive component state when switching preferences. Only decorative artwork should be keyed by the motion preference.
+
+Use [Disclosure.tsx](src/components/ui/Disclosure.tsx) for expandable content. Its native `details` element owns keyboard interaction and open state; CSS animates the chevron and content entrance. Use the shared `text-action` and `action-arrow` classes for text buttons with matching hover and keyboard feedback.
 
 Check the affected section at phone and desktop widths, with keyboard navigation and in both motion modes.
 

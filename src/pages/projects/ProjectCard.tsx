@@ -4,7 +4,7 @@ import {
    type TargetAndTransition,
    type Transition,
 } from "motion/react";
-import { ExternalLink, Eye } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import { DURATION, EASING } from "@/constants/theme";
 import { VIEWPORT_MARGIN } from "@utils/animations";
@@ -132,6 +132,7 @@ const ProjectCard = ({
                data={data}
                isFeatured={isFeatured}
                isCollab={isCollab}
+               spotlight={spotlight}
             />
 
             {/* Description (clamped -- full text lives in the modal) */}
@@ -159,8 +160,12 @@ const ProjectCard = ({
                         className="project-action project-action--primary"
                         aria-label={`View details for ${data.title}`}
                      >
-                        <Eye size={16} aria-hidden="true" />
                         Details
+                        <ArrowRight
+                           size={16}
+                           className="action-arrow"
+                           aria-hidden="true"
+                        />
                      </button>
                   )}
                   {hasGithub && (

@@ -4,7 +4,7 @@ import ProjectCard from "./ProjectCard";
 
 interface ProjectGridProps {
    projects: ProjectWithCategory[];
-   highlightFirst: boolean;
+   spotlightProjectId: number | null;
    /** True once the filter has changed: later cards mount as swap entries. */
    hasFiltered: boolean;
    onOpenProject: (project: ProjectWithCategory) => void;
@@ -17,7 +17,7 @@ interface ProjectGridProps {
  */
 const ProjectGrid = ({
    projects,
-   highlightFirst,
+   spotlightProjectId,
    hasFiltered,
    onOpenProject,
 }: ProjectGridProps) => (
@@ -29,7 +29,7 @@ const ProjectGrid = ({
                data={project}
                index={idx}
                entering={hasFiltered}
-               spotlight={highlightFirst && idx === 0}
+               spotlight={project.id === spotlightProjectId}
                onOpen={() => onOpenProject(project)}
             />
          ))}

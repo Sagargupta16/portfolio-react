@@ -16,8 +16,8 @@ import useMotionPreference from "@hooks/useMotionPreference";
 import { heroRow } from "./heroMotion";
 
 const TILE_STYLE: CSSProperties = {
-   width: 40,
-   height: 40,
+   width: 44,
+   height: 44,
    borderRadius: 10,
    border: "1px solid rgba(255, 255, 255, 0.08)",
    backgroundColor: "rgba(255, 255, 255, 0.04)",
@@ -52,7 +52,10 @@ const HeroSocial = () => {
    const hover = reducedMotion ? undefined : TILE_HOVER;
 
    return (
-      <motion.div className="flex items-center gap-3 mt-2" variants={heroRow}>
+      <motion.div
+         className="flex flex-wrap items-center justify-center gap-3 mt-2"
+         variants={heroRow}
+      >
          {socialProfiles.map((profile) => {
             const IconComponent = ICON_MAP[profile.icon];
             if (!IconComponent) return null;

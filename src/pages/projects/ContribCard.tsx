@@ -1,12 +1,12 @@
-import { GitMerge, CircleDot, GitPullRequestClosed } from "lucide-react";
-import type { OpenSourceContribution } from "@/types";
+import type { CSSProperties } from "react";
 import {
-   MONO_FONT,
-   PURPLE,
-   GREEN,
-   ORANGE,
-   TEXT_SECONDARY,
-} from "@/constants/theme";
+   ArrowUpRight,
+   GitMerge,
+   CircleDot,
+   GitPullRequestClosed,
+} from "lucide-react";
+import type { OpenSourceContribution } from "@/types";
+import { PURPLE, GREEN, ORANGE } from "@/constants/theme";
 
 interface ContribCardProps {
    contrib: OpenSourceContribution;
@@ -23,89 +23,32 @@ const ContribCard = ({ contrib }: ContribCardProps) => {
       STATUS_CONFIG[contrib.status as keyof typeof STATUS_CONFIG] ??
       STATUS_CONFIG.open;
    const { color: statusColor, Icon: StatusIcon, label: statusLabel } = config;
-   const hoverBg = `${statusColor}0F`;
-   const hoverBorder = `${statusColor}33`;
 
    return (
       <a
          href={contrib.url}
          target="_blank"
          rel="noopener noreferrer"
-         style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 8,
-            padding: "12px 12px",
-            borderRadius: 10,
-            background: "rgba(255,255,255,0.02)",
-            border: `1px solid ${statusColor}1A`,
-            textDecoration: "none",
-            transition: "all 0.2s",
-         }}
-         onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-            e.currentTarget.style.background = hoverBg;
-            e.currentTarget.style.borderColor = hoverBorder;
-         }}
-         onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-            e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-            e.currentTarget.style.borderColor = `${statusColor}1A`;
-         }}
+         className="contribution-link"
+         style={{ "--contribution-accent": statusColor } as CSSProperties}
       >
          <StatusIcon
             size={14}
-            style={{ color: statusColor, flexShrink: 0, marginTop: 3 }}
+            className="contribution-icon"
+            aria-hidden="true"
          />
          <div style={{ minWidth: 0, flex: 1 }}>
-            <div
-               style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  justifyContent: "space-between",
-               }}
-            >
-               <span
-                  style={{
-                     fontSize: 11,
-                     fontFamily: MONO_FONT,
-                     color: statusColor,
-                     fontWeight: 600,
-                  }}
-               >
-                  {contrib.repo}
-               </span>
-               <span
-                  style={{
-                     fontSize: 9,
-                     fontFamily: MONO_FONT,
-                     fontWeight: 700,
-                     letterSpacing: "0.05em",
-                     textTransform: "uppercase",
-                     padding: "2px 4px",
-                     borderRadius: 4,
-                     background: `${statusColor}1F`,
-                     color: statusColor,
-                     border: `1px solid ${statusColor}40`,
-                     flexShrink: 0,
-                  }}
-               >
-                  {statusLabel}
-               </span>
+            <div className="contribution-meta">
+               <span className="contribution-repo">{contrib.repo}</span>
+               <span className="contribution-status">{statusLabel}</span>
             </div>
-            <p
-               style={{
-                  fontSize: 12,
-                  color: TEXT_SECONDARY,
-                  lineHeight: 1.5,
-                  marginTop: 2,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-               }}
-            >
-               {contrib.title}
-            </p>
+            <p className="contribution-title">{contrib.title}</p>
          </div>
+         <ArrowUpRight
+            size={14}
+            className="contribution-icon action-arrow action-arrow--external"
+            aria-hidden="true"
+         />
       </a>
    );
 };

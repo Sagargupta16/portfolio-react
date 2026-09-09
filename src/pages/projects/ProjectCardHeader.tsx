@@ -1,4 +1,4 @@
-import { Users, Star } from "lucide-react";
+import { Pin, Users, Star } from "lucide-react";
 import { AMBER } from "@/constants/theme";
 import type { ProjectWithCategory } from "./projectConstants";
 
@@ -6,18 +6,24 @@ interface ProjectCardHeaderProps {
    data: ProjectWithCategory;
    isFeatured: boolean;
    isCollab: boolean;
+   spotlight: boolean;
 }
 
 const ProjectCardHeader = ({
    data,
    isFeatured,
    isCollab,
+   spotlight,
 }: ProjectCardHeaderProps) => (
    <>
       <div className="project-card-meta">
          <span className="project-card-category">
-            {isFeatured && <Star size={12} aria-hidden="true" />}
-            {data.category}
+            {spotlight ? (
+               <Pin size={12} aria-hidden="true" />
+            ) : (
+               isFeatured && <Star size={12} aria-hidden="true" />
+            )}
+            {spotlight ? "Spotlight" : data.category}
          </span>
          <span>{data.date}</span>
       </div>

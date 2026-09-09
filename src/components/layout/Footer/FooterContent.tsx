@@ -51,7 +51,9 @@ const columnHeading: React.CSSProperties = {
 /* .footer-link in the stylesheet draws the sliding underline on hover and
    keyboard focus; the colour stays put. */
 const columnLink: React.CSSProperties = {
-   display: "block",
+   display: "flex",
+   alignItems: "center",
+   minHeight: 44,
    fontSize: 14,
    color: LINK_COLOR,
    padding: "4px 0",

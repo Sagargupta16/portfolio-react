@@ -137,6 +137,11 @@ body {
    outline-offset: 3px;
 }
 
+/* Navigation focuses landmarks for orientation, without framing the whole page. */
+:is(section, main)[tabindex="-1"]:focus {
+   outline: none;
+}
+
 /* Skip to content -- visible only when focused (WCAG 2.4.1 Bypass Blocks) */
 .skip-link {
    position: fixed;
@@ -252,6 +257,11 @@ html[data-motion="reduced"] .footer-link:is(:hover, :focus-visible)::after {
    transform: none;
 }
 
+html[data-motion="reduced"] :is(a, button) .action-arrow,
+html[data-motion="reduced"] .project-action:active {
+   transform: none;
+}
+
 /* ===== Display Headings (Bricolage Grotesque) ===== */
 .display-heading {
    font-family: var(--font-display);
@@ -331,6 +341,47 @@ html[data-motion="reduced"] .footer-link:is(:hover, :focus-visible)::after {
    text-decoration-color: currentColor;
 }
 
+.mobile-nav-link {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   min-height: 48px;
+   padding: 12px 16px;
+   border: 0;
+   border-radius: 10px;
+   background: transparent;
+   color: var(--color-text-secondary);
+   font-size: 14px;
+   font-weight: 500;
+   text-align: left;
+   cursor: pointer;
+   transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+}
+
+.mobile-nav-link:is(:hover, :focus-visible),
+.mobile-nav-link[aria-current="location"] {
+   background: rgb(var(--ch-white) / 0.08);
+   color: var(--color-text-primary);
+}
+
+.mobile-nav-number {
+   color: var(--color-text-muted);
+   font-family: var(--font-mono);
+   font-size: 11px;
+   font-variant-numeric: tabular-nums;
+}
+
+.mobile-nav-link[aria-current="location"] .mobile-nav-number {
+   color: var(--color-accent-cyan);
+}
+
+.mobile-nav-link > .action-arrow {
+   margin-left: auto;
+   color: var(--color-accent-cyan);
+}
+
 /* ===== Flat Card (was glass-card) ===== */
 .glass-card {
    background: var(--color-bg-card);
@@ -342,7 +393,8 @@ html[data-motion="reduced"] .footer-link:is(:hover, :focus-visible)::after {
 }
 
 .glass-card:hover,
-.glass-card:focus-visible {
+.glass-card:focus-visible,
+.glass-card:has(:focus-visible) {
    border-color: rgb(var(--ch-white) / 0.14);
    background: var(--color-bg-card-hover);
 }
@@ -458,6 +510,125 @@ html[data-motion="reduced"] .footer-link:is(:hover, :focus-visible)::after {
 .btn-pill:focus-visible {
    background: #e2e8f0;
    transform: translateY(-1px);
+}
+
+/* ===== Text actions and disclosures ===== */
+.text-action {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   min-height: 44px;
+   padding: 8px 0;
+   border: 0;
+   border-radius: 6px;
+   background: transparent;
+   color: var(--action-accent, var(--color-accent-cyan));
+   font-size: 13px;
+   font-weight: 600;
+   line-height: 1.5;
+   text-decoration: none;
+   text-underline-offset: 5px;
+   cursor: pointer;
+}
+
+.text-action:is(:hover, :focus-visible) {
+   text-decoration: underline;
+}
+
+.action-arrow {
+   flex-shrink: 0;
+   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:is(a, button):focus-visible .action-arrow {
+   transform: translateX(3px);
+}
+
+:is(a, button):focus-visible .action-arrow--external {
+   transform: translate(2px, -2px);
+}
+
+@media (hover: hover) {
+   :is(a, button):hover .action-arrow {
+      transform: translateX(3px);
+   }
+
+   :is(a, button):hover .action-arrow--external {
+      transform: translate(2px, -2px);
+   }
+}
+
+.disclosure > summary {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   min-height: 44px;
+   padding: 10px 12px;
+   border: 1px solid var(--color-border);
+   border-radius: 10px;
+   background: rgb(var(--ch-white) / 0.02);
+   color: var(--color-text-secondary);
+   font-size: 13px;
+   font-weight: 600;
+   line-height: 1.5;
+   list-style: none;
+   cursor: pointer;
+   transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+}
+
+.disclosure > summary::-webkit-details-marker {
+   display: none;
+}
+
+.disclosure-label {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+}
+
+.disclosure-label > svg,
+.disclosure-chevron {
+   flex-shrink: 0;
+   color: var(--disclosure-accent);
+}
+
+.disclosure > summary:is(:hover, :focus-visible),
+.disclosure[open] > summary {
+   border-color: color-mix(in srgb, var(--disclosure-accent) 35%, transparent);
+   background: color-mix(in srgb, var(--disclosure-accent) 6%, transparent);
+   color: var(--color-text-primary);
+}
+
+.disclosure-chevron {
+   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.disclosure[open] > summary .disclosure-chevron {
+   transform: rotate(180deg);
+}
+
+.disclosure-content {
+   padding: 12px 2px 0;
+}
+
+.disclosure[open] > .disclosure-content {
+   animation: disclosure-enter 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes disclosure-enter {
+   from {
+      opacity: 0;
+      transform: translateY(-6px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
 }
 
 /* ===== Tag / Badge ===== */

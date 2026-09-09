@@ -29,6 +29,15 @@ const titleReveal: Variants = {
    visible: { y: 0, transition: { duration: 0.7, ease: EASING.cinematic } },
 };
 
+const ruleReveal: Variants = {
+   hidden: { opacity: 0, scaleX: 0 },
+   visible: {
+      opacity: 1,
+      scaleX: 1,
+      transition: { duration: 0.6, ease: EASING.cinematic },
+   },
+};
+
 const SectionHeader = ({ sectionId, title, subtitle }: Props) => {
    const sectionIndex = CONTENT_SECTIONS.findIndex(
       ({ id }) => id === sectionId,
@@ -68,7 +77,12 @@ const SectionHeader = ({ sectionId, title, subtitle }: Props) => {
                   {title}
                </motion.span>
             </h2>
-            <span className="section-header-rule" aria-hidden="true" />
+            <motion.span
+               className="section-header-rule"
+               variants={ruleReveal}
+               style={{ transformOrigin: "left" }}
+               aria-hidden="true"
+            />
          </div>
       </motion.div>
    );
