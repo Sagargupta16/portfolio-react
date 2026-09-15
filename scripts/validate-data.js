@@ -141,6 +141,13 @@ if (requireRecord(personal, "data/personal.json")) {
    ]) {
       requireString(personal[field], `personal.${field}`);
    }
+   requireStringArray(personal.hero_taglines, "personal.hero_taglines");
+   if (
+      Array.isArray(personal.hero_taglines) &&
+      personal.hero_taglines.length === 0
+   ) {
+      fail("personal.hero_taglines", "must contain at least one tagline");
+   }
    if (requireRecord(personal.contact, "personal.contact")) {
       requireString(personal.contact.github, "personal.contact.github");
    }

@@ -2,10 +2,16 @@ import type { ReactNode } from "react";
 import { FaAws } from "react-icons/fa";
 import nitwLogo from "@assets/logos/nitw.webp";
 import davvLogo from "@assets/logos/davv.webp";
+import ikarusLogo from "@assets/logos/ikarus3d.webp";
+import happyDaysLogo from "@assets/logos/happy-days-school.webp";
+import kidsGardenLogo from "@assets/logos/kids-garden-school.webp";
 
-const LOGO_IMAGES: Record<string, string> = {
-   "National Institute of Technology Warangal": nitwLogo,
-   "Devi Ahilya Vishwavidyalaya (DAVV)": davvLogo,
+const LOGO_IMAGES: Record<string, { src: string; wide?: boolean }> = {
+   "National Institute of Technology Warangal": { src: nitwLogo },
+   "Devi Ahilya Vishwavidyalaya (DAVV)": { src: davvLogo },
+   "Ikarus-3D": { src: ikarusLogo, wide: true },
+   "Happy Days School": { src: happyDaysLogo, wide: true },
+   "Kids Garden School": { src: kidsGardenLogo },
 };
 
 /**
@@ -25,14 +31,21 @@ export const getOrgLogo = (name: string, size = 18): ReactNode => {
          (name.includes("NIT Warangal") && k.includes("Warangal")),
    );
    if (imageKey) {
+      const image = LOGO_IMAGES[imageKey];
+      const width = image.wide ? size * 1.5 : size;
       return (
          <img
-            src={LOGO_IMAGES[imageKey]}
+            src={image.src}
             alt=""
             aria-hidden="true"
-            width={size}
+            width={width}
             height={size}
-            style={{ width: size, height: size, objectFit: "contain" }}
+            style={{
+               width,
+               height: size,
+               objectFit: "contain",
+               flexShrink: 0,
+            }}
          />
       );
    }
