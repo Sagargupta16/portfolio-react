@@ -7,6 +7,12 @@
    "timezone": "Asia/Kolkata",
    "intro": "Cloud consultant at AWS Professional Services. I build the AWS platforms that regulated companies migrate onto: Terraform, CI/CD, MLOps pipelines, and lately the agent tooling that makes that work faster.",
    "role_label": "DevOps/MLOps Consultant @ AWS",
+   "hero_taglines": [
+      "I'll make it happen.",
+      "You think it. I build it.",
+      "From idea to launch.",
+      "Built to work. Built to last."
+   ],
    "headline": "Shipping cloud at scale.",
    "availability": "Currently building cloud infrastructure at AWS",
    "contact": {

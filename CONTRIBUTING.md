@@ -67,6 +67,10 @@ Edit the relevant JSON record and run `pnpm validate:data`. Keep existing IDs wh
 
 The hero's latest-work line and the Stats section derive their values from the content. Update the source records instead of copying those values into components.
 
+The hero's rotating line comes from `hero_taglines` in [data/personal.json](data/personal.json). Keep at least one non-empty line. Full Motion rotates the lines every three seconds while the hero is visible; Reduced Motion shows the first line.
+
+Experience and education logos are mapped in [orgLogos.tsx](src/utils/orgLogos.tsx), with local images in `src/assets/logos/`. Updating this mapping updates both the cards and experience detail headers.
+
 ### Add or remove a project
 
 1. Add a record to one of `featured_projects`, `community_projects`, `collaborative_projects`, or `other_projects` in [data/projects.json](data/projects.json). Copy a neighboring record's shape and choose a numeric ID unused across all four groups. Dates use a full month and year, such as `"September 2026"`.

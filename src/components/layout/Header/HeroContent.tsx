@@ -8,6 +8,7 @@ import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import HeroSocial from "./HeroSocial";
+import HeroTagline from "./HeroTagline";
 import {
    HEADLINE_MASK_STYLE,
    heroContainer,
@@ -111,6 +112,8 @@ const HeroContent = () => {
                <span>{roleLabel}</span>
             </span>
          </motion.div>
+
+         <HeroTagline />
 
          {/* Heading: display face, name in accent, second line dimmed for
              hierarchy (both lines equally bright read flat). Each line slides

@@ -16,6 +16,7 @@ export const getGitHubUsername = (): string => personalData.contact.github;
 export const getImpact = (): ImpactStats => personalData.impact as ImpactStats;
 export const getIntro = (): string => personalData.intro;
 export const getRoleLabel = (): string => personalData.role_label;
+export const getHeroTaglines = (): string[] => personalData.hero_taglines;
 export const getHeadline = (): string => personalData.headline;
 export const getSiteConfig = (): SiteConfig =>
    (personalData.site ?? {}) as SiteConfig;
