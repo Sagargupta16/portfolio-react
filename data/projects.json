@@ -1,5 +1,5 @@
 {
-   "spotlight_project_id": 50,
+   "spotlight_project_id": 49,
    "featured_projects": [
       {
          "id": 49,
@@ -28,32 +28,6 @@
          "github": "https://github.com/aws-samples/sample-sagemaker-image-classification-mlops",
          "live": "",
          "organization": "aws-samples"
-      },
-      {
-         "id": 50,
-         "title": "Kinfolk",
-         "description": "Collaborative family graph where relatives each keep their own record, invite each other, and join matching people without either side losing their copy. A family is modelled as a directed acyclic graph rather than a tree: parentage hangs off a union row, so remarriages, half-siblings, single parents, and adoption are ordinary data instead of renderer special cases. Cross-tree identity is a consent-gated link, so merging is non-destructive and an unlink restores both original views.",
-         "date": "August 2026",
-         "tools_tech": [
-            "Next.js 16",
-            "TypeScript",
-            "Neon Postgres",
-            "Drizzle ORM",
-            "Auth.js v5",
-            "React Flow",
-            "ELK",
-            "Tailwind CSS 4"
-         ],
-         "features": [
-            "Family as a DAG: parentage hangs off a union row, so remarriages and adoption need no special cases",
-            "Consent-gated person links make cross-tree merging non-destructive and fully reversible",
-            "Union-find tree fusion with deterministic fused ids, so a combined graph is reproducible",
-            "Missing data is first-class: unknown is a stored value and approximate dates keep their own fields",
-            "Also a contact graph, where a friendship carries no generation and never reaches the layout engine",
-            "Contact values never render on cards or in their accessible labels"
-         ],
-         "github": "https://github.com/Sagargupta16/kinfolk",
-         "live": "https://sagargupta.online/kinfolk/"
       },
       {
          "id": 44,
@@ -377,6 +351,32 @@
       }
    ],
    "other_projects": [
+      {
+         "id": 50,
+         "title": "Kinfolk",
+         "description": "Collaborative family graph where relatives each keep their own record, invite each other, and join matching people without either side losing their copy. A family is modelled as a directed acyclic graph rather than a tree: parentage hangs off a union row, so remarriages, half-siblings, single parents, and adoption are ordinary data instead of renderer special cases. Cross-tree identity is a consent-gated link, so merging is non-destructive and an unlink restores both original views.",
+         "date": "August 2026",
+         "tools_tech": [
+            "Next.js 16",
+            "TypeScript",
+            "Neon Postgres",
+            "Drizzle ORM",
+            "Auth.js v5",
+            "React Flow",
+            "ELK",
+            "Tailwind CSS 4"
+         ],
+         "features": [
+            "Family as a DAG: parentage hangs off a union row, so remarriages and adoption need no special cases",
+            "Consent-gated person links make cross-tree merging non-destructive and fully reversible",
+            "Union-find tree fusion with deterministic fused ids, so a combined graph is reproducible",
+            "Missing data is first-class: unknown is a stored value and approximate dates keep their own fields",
+            "Also a contact graph, where a friendship carries no generation and never reaches the layout engine",
+            "Contact values never render on cards or in their accessible labels"
+         ],
+         "github": "https://github.com/Sagargupta16/kinfolk",
+         "live": "https://sagargupta.online/kinfolk/"
+      },
       {
          "id": 51,
          "title": "Orbit",
