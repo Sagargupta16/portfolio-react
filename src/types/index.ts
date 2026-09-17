@@ -39,9 +39,12 @@ export interface CodingPlatformStat {
    username: string;
    url: string;
    problems_solved?: string;
+   hard_solved?: string;
    contests?: string;
    best_rating?: string;
+   best_contest_rank?: string;
    badge?: string;
+   top_percentage?: string;
    problem_solving?: string;
    cpp?: string;
 }

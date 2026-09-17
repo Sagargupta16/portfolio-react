@@ -15,7 +15,7 @@ type LoopEase = "linear" | "easeOut" | "easeInOut";
 /* Competitive programming as a contest record, not an algorithms lecture.
    Four problem squares (Q1..Q4) turn Accepted one at a time, Q1/Q2 fast and
    Q3/Q4 slow like a real Weekly Contest. The rating dot then climbs the
-   rating curve, crosses the dashed Knight threshold (hairline and label snap
+   rating curve, crosses the dashed Guardian threshold (hairline and label snap
    bright, dot pulses) and a rank ring locks on the peak. Every animated node
    fades in the last tenth of the loop and resets while invisible. */
 
@@ -25,7 +25,7 @@ const LOOP = 5;
    0.00 to 0.08  resting state, rating dot fades in on the first vertex
    0.08 / 0.18 / 0.30 / 0.44  Q1..Q4 turn Accepted
    0.46 to 0.80  rating dot climbs vertex to vertex
-   0.71          dot crosses the Knight hairline, threshold snaps bright
+   0.71          dot crosses the Guardian hairline, threshold snaps bright
    0.80 to 0.90  rank ring fades in around the peak and holds
    0.90 to 0.98  every animated node fades out
    0.98 to 1.00  dot snaps back to the first vertex while invisible */
@@ -39,7 +39,7 @@ const ACCEPTED_POP = 0.03;
 const CLIMB_START = 0.46;
 const CLIMB_END = 0.8;
 /** The dot's y passes the hairline inside the fifth curve segment. */
-const KNIGHT_CROSS = 0.71;
+const GUARDIAN_CROSS = 0.71;
 const PULSE = 0.03;
 const SNAP = 0.01;
 const RING_IN = 0.06;
@@ -72,7 +72,7 @@ const CURVE: Point[] = [
 const CURVE_POINTS = CURVE.map((p) => `${p.x},${p.y}`).join(" ");
 
 const THRESHOLD_Y = 42;
-const THRESHOLD_X1 = 29;
+const THRESHOLD_X1 = 38;
 const THRESHOLD_X2 = 76;
 
 const DOT_SIZE = 5;
@@ -93,9 +93,9 @@ const DOT_OPACITY_TIMES = [0, DOT_IN, FADE_START, FADE_END, 1];
 const DOT_SCALE = [1, 1, 1.4, 1, 1];
 const DOT_SCALE_TIMES = [
    0,
-   KNIGHT_CROSS,
-   KNIGHT_CROSS + PULSE,
-   KNIGHT_CROSS + 2 * PULSE,
+   GUARDIAN_CROSS,
+   GUARDIAN_CROSS + PULSE,
+   GUARDIAN_CROSS + 2 * PULSE,
    1,
 ];
 
@@ -112,8 +112,8 @@ const THRESHOLD_OPACITY = [
 ];
 const THRESHOLD_TIMES = [
    0,
-   KNIGHT_CROSS,
-   KNIGHT_CROSS + SNAP,
+   GUARDIAN_CROSS,
+   GUARDIAN_CROSS + SNAP,
    FADE_START,
    FADE_END,
    1,
@@ -218,15 +218,15 @@ const RatingCurve = ({ color }: SortAnimProps) => (
    </svg>
 );
 
-/* Dashed Knight hairline and its label: rest at 35%, snap to full on cross. */
-const KnightThreshold = ({ color }: SortAnimProps) => (
+/* Dashed Guardian hairline and its label: rest at 35%, snap to full on cross. */
+const GuardianThreshold = ({ color }: SortAnimProps) => (
    <motion.div
       animate={{ opacity: THRESHOLD_OPACITY }}
       transition={loop(THRESHOLD_TIMES, "linear")}
       style={fullCanvas}
    >
       <span style={{ ...label, left: 4, top: THRESHOLD_Y - 3, color }}>
-         KNIGHT
+         GUARDIAN
       </span>
       <svg viewBox="0 0 80 80" width={80} height={80} style={fullCanvas}>
          <line
@@ -292,7 +292,7 @@ const SortAnim = ({ color }: SortAnimProps) => (
       ))}
 
       <RatingCurve color={color} />
-      <KnightThreshold color={color} />
+      <GuardianThreshold color={color} />
       <RankRing color={color} />
       <RatingDot color={color} />
    </div>
