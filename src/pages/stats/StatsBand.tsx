@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import {
    getAchievements,
    getCertifications,
+   getCodingPlatformStats,
    getLearningBadges,
 } from "@data/achievements";
 import { getExperience } from "@data/experience";
@@ -21,10 +22,11 @@ import AnimatedCounter from "@components/ui/AnimatedCounter";
 import useBreakpoint from "@hooks/useBreakpoint";
 
 /* The site's only numeric summary -- the hero deliberately carries no figures.
-   Coding-platform numbers are NOT here: they live with the platform cards below
-   (CodingProfiles), which show them per platform with profile links. Every value
-   is derived from data/*.json rather than written here, so the counts cannot
-   drift away from the underlying entries. */
+   The competitive-programming group reads the same coding_platform_stats entries
+   as the platform cards below (CodingProfiles), which repeat them per platform
+   with profile links, so the two surfaces cannot disagree. Every value is
+   derived from data/*.json rather than written here, so the counts cannot drift
+   away from the underlying entries. */
 
 interface Stat {
    value: string;
@@ -109,7 +111,7 @@ const StatGroup = ({
 const StatsBand = () => {
    const { isMobile } = useBreakpoint();
 
-   const { impact, delivery, openSource } = useMemo(() => {
+   const { impact, delivery, openSource, competitive } = useMemo(() => {
       const certs = getCertifications();
       const badges = getLearningBadges();
       const impactData = getImpact();
@@ -166,6 +168,18 @@ const StatsBand = () => {
          (d) => d.status === "accepted",
       ).length;
 
+      // Competitive programming: LeetCode and GeeksforGeeks are the two
+      // platforms that report a problem count, so the combined tile sums those
+      // and names each contribution in its note. HackerRank reports stars.
+      const platforms = getCodingPlatformStats();
+      const leetcode = platforms.leetcode;
+      const gfg = platforms.geeksforgeeks;
+      const solvedCount = (value?: string) =>
+         Number.parseInt(value ?? "", 10) || 0;
+      const solvedTotal =
+         solvedCount(leetcode?.problems_solved) +
+         solvedCount(gfg?.problems_solved);
+
       return {
          impact: [
             {
@@ -209,6 +223,28 @@ const StatsBand = () => {
                value: String(podium.length),
                label: "Podium finishes",
                note: `${place("1st")} first, ${place("2nd")} second, ${place("3rd")} third`,
+            },
+         ] satisfies Stat[],
+         competitive: [
+            {
+               value: leetcode?.best_rating ?? "",
+               label: "LeetCode rating",
+               note: `${leetcode?.badge} badge, top ${leetcode?.top_percentage} of contestants`,
+            },
+            {
+               value: `${solvedTotal}+`,
+               label: "Problems solved",
+               note: `${leetcode?.problems_solved} LeetCode, ${gfg?.problems_solved} GeeksforGeeks`,
+            },
+            {
+               value: leetcode?.contests ?? "",
+               label: "Contests played",
+               note: `Best finish: rank ${leetcode?.best_contest_rank}`,
+            },
+            {
+               value: leetcode?.hard_solved ?? "",
+               label: "Hard problems solved",
+               note: "The hardest LeetCode tier",
             },
          ] satisfies Stat[],
          openSource: [
@@ -260,6 +296,13 @@ const StatsBand = () => {
          <StatGroup
             heading="Open source"
             stats={openSource}
+            isMobile={isMobile}
+         />
+         {/* Competitive programming closes the band and leads into the
+             platform cards further down the section. */}
+         <StatGroup
+            heading="Competitive programming"
+            stats={competitive}
             isMobile={isMobile}
          />
       </div>
