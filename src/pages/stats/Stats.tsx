@@ -207,8 +207,8 @@ const Stats = () => {
                </BrowserMockup>
             </div>
 
-            {/* Coding profiles own every competitive-programming figure,
-                so StatsBand above does not repeat them. */}
+            {/* The platform cards break the competitive-programming figures
+                out per platform, each linking to the live profile. */}
             <CodingProfiles githubUsername={githubUsername} />
          </div>
       </PageSection>
