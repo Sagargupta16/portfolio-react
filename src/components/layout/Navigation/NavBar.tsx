@@ -7,6 +7,7 @@ import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
+import MakerMark from "@components/ui/MakerMark";
 import DesktopNav from "./DesktopNav";
 
 interface NavSection {
@@ -117,10 +118,6 @@ const NavBar = ({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: 15,
-                  fontWeight: 700,
-                  color: TEXT_PRIMARY,
-                  letterSpacing: "0.02em",
                   cursor: "pointer",
                   background: "rgba(255, 255, 255, 0.06)",
                   border: "1px solid rgba(255, 255, 255, 0.08)",
@@ -128,7 +125,7 @@ const NavBar = ({
                }}
                aria-label="Scroll to top"
             >
-               SG
+               <MakerMark size={36} />
             </button>
 
             {/* Desktop nav links + CTA. Contact is the pill, so the link list skips it;

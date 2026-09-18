@@ -5,6 +5,7 @@ import { getHeadline, getIntro, getName, getRoleLabel } from "@data/personal";
 import { CYAN, GREEN, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
+import MakerMark from "@components/ui/MakerMark";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import HeroSocial from "./HeroSocial";
@@ -74,26 +75,9 @@ const HeroContent = () => {
          initial="hidden"
          animate="visible"
       >
-         {/* Logo tile (akobir-style mark above the headline) */}
+         {/* Maker keeps the same footprint as the previous brand tile. */}
          <motion.div variants={heroLogo}>
-            <div
-               style={{
-                  width: "clamp(48px, 8vw, 64px)",
-                  height: "clamp(48px, 8vw, 64px)",
-                  borderRadius: 16,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 24,
-                  fontWeight: 800,
-                  letterSpacing: "-0.02em",
-                  color: "var(--color-bg-primary)",
-                  background: CYAN,
-               }}
-               aria-hidden="true"
-            >
-               SG
-            </div>
+            <MakerMark size="clamp(48px, 8vw, 64px)" animated />
          </motion.div>
 
          {/* Status badge */}

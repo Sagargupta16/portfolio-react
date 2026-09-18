@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import useMotionPreference from "@hooks/useMotionPreference";
-import AvatarMonogram from "./AvatarMonogram";
+import AvatarMark from "./AvatarMark";
 import {
    AVATAR_SIZE,
    CARD_FILL,
@@ -22,9 +22,9 @@ const SPIN = {
 };
 
 /**
- * SG monogram with the real stack orbiting it. The ring turns clockwise once
+ * Maker with the real stack orbiting it. The ring turns clockwise once
  * per ORBIT_PERIOD and every tile counter-rotates so its logo stays upright;
- * that is the only motion. Disc, initials and dashed track never move, and
+ * that is the only motion. Disc, mark and dashed track never move, and
  * the entrance comes from About.tsx's wrapper variant, not from here.
  */
 const DevAvatar = () => {
@@ -42,7 +42,7 @@ const DevAvatar = () => {
             margin: "0 auto",
          }}
       >
-         <AvatarMonogram />
+         <AvatarMark />
 
          {/* Dashed orbit track (same 0.06 hairline as the card borders) */}
          <svg
