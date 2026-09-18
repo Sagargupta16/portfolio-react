@@ -1,0 +1,56 @@
+.mark {
+   display: inline-flex;
+   flex-shrink: 0;
+   line-height: 0;
+   vertical-align: middle;
+}
+
+.eyes {
+   transform-box: fill-box;
+   transform-origin: center;
+}
+
+.wink {
+   opacity: 0;
+}
+
+.mark[data-animated="true"] .eyes {
+   animation: maker-blink 5.6s ease-in-out infinite;
+   animation-play-state: paused;
+}
+
+.mark[data-animated="true"][data-active="true"] .eyes {
+   animation-play-state: running;
+}
+
+/* A short closure, then a longer open hold; no layout changes or timers. */
+@keyframes maker-blink {
+   0%,
+   70%,
+   74%,
+   100% {
+      transform: scaleY(1);
+   }
+   72% {
+      transform: scaleY(0.12);
+   }
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .mark[data-animated="true"][data-active="true"]:hover .eyes {
+      animation: none;
+   }
+
+   .mark[data-animated="true"][data-active="true"]:hover .rightEye {
+      opacity: 0;
+   }
+
+   .mark[data-animated="true"][data-active="true"]:hover .wink {
+      opacity: 1;
+   }
+
+   .mark[data-animated="true"] .rightEye,
+   .mark[data-animated="true"] .wink {
+      transition: opacity 120ms ease-out;
+   }
+}

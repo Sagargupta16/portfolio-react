@@ -7,6 +7,7 @@ import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
 import useSectionNavigation from "@hooks/useSectionNavigation";
+import MakerMark from "@components/ui/MakerMark";
 import FooterSocial from "./FooterSocial";
 import FooterStatusBar from "./FooterStatusBar";
 
@@ -110,18 +111,15 @@ const FooterContent = () => {
                      width: 48,
                      height: 48,
                      borderRadius: 12,
-                     border: "none",
+                     border: "1px solid rgba(255, 255, 255, 0.08)",
                      cursor: "pointer",
                      display: "flex",
                      alignItems: "center",
                      justifyContent: "center",
-                     fontSize: 18,
-                     fontWeight: 800,
-                     color: "#0b1012",
-                     background: "#67e8f9",
+                     background: "rgba(255, 255, 255, 0.06)",
                   }}
                >
-                  SG
+                  <MakerMark size={40} />
                </motion.button>
                <p style={{ color: "rgba(244,246,247,0.8)", fontSize: 14 }}>
                   &copy; {CURRENT_YEAR} {name}. All rights reserved.
