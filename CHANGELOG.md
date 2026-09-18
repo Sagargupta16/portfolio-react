@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.10.0] - 2026-09-18
+
+### Added
+
+- **Maker, a personal brand mark.** A wave-crested character replaces the "SG" text tile in the hero, the nav scroll-to-top button and the footer brand button. One drawing in `src/assets/brand/maker.json` feeds both the React component and the icon generator, so the mark and the browser icons can never drift apart. The hero copy blinks slowly and winks on hover; every other placement is static. The artwork is decorative and the surrounding link or button keeps its own accessible name.
+- **Generated browser and app icons.** `pnpm brand:icons` renders the SVG favicon, the 16 and 32 px PNGs, the Apple touch icon, both Android icons and a multi-size ICO from the same drawing. Small favicons drop the inner crest so they stay legible, and app icons get a dark backing with safe padding.
+- **Maker on the About avatar.** The illustrated avatar now wears the mark instead of the old monogram.
+
+### Changed
+
+- Motion in the mark is gated three ways: it only runs while the hero is on screen, it stops when the browser tab is hidden, and Reduced mode freezes it. Two tests cover that gating and the accessible naming.
+
 ## [4.9.0] - 2026-09-06
 
 ### Added

@@ -71,6 +71,8 @@ The hero's rotating line comes from `hero_taglines` in [data/personal.json](data
 
 Experience and education logos are mapped in [orgLogos.tsx](src/utils/orgLogos.tsx), with local images in `src/assets/logos/`. Updating this mapping updates both the cards and experience detail headers.
 
+The personal Maker mark uses [maker.json](src/assets/brand/maker.json) for its shared drawing and colors. Render it with [MakerMark.tsx](src/components/ui/MakerMark.tsx); only the hero enables expressions. After editing the drawing, run `pnpm brand:icons` to refresh the browser and app icons. See the [brand notes](src/assets/brand/README.md) for sizes and motion behavior.
+
 ### Add or remove a project
 
 1. Add a record to one of `featured_projects`, `community_projects`, `collaborative_projects`, or `other_projects` in [data/projects.json](data/projects.json). Copy a neighboring record's shape and choose a numeric ID unused across all four groups. Dates use a full month and year, such as `"September 2026"`.
