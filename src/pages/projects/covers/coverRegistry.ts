@@ -41,6 +41,7 @@ const GateScene = lazy(() => import("./GateScene"));
 const TaxScene = lazy(() => import("./TaxScene"));
 const PluginScene = lazy(() => import("./PluginScene"));
 const GuideScene = lazy(() => import("./GuideScene"));
+const GovernanceScene = lazy(() => import("./GovernanceScene"));
 
 export type ProjectCover =
    | { kind: "image"; src: string }
@@ -53,6 +54,7 @@ export type ProjectCover =
 const COVER_BY_ID: Record<number, ProjectCover> = {
    // Featured
    49: { kind: "scene", Scene: MlopsScene }, // SageMaker Image Classification MLOps
+   52: { kind: "scene", Scene: GovernanceScene }, // AWS Organizations Governance on Control Tower
    50: { kind: "scene", Scene: GraphScene }, // Kinfolk (family DAG)
    44: { kind: "image", src: kalchar }, // Kalchar (kalchar.co.in)
    37: { kind: "image", src: gitscope }, // GitScope (Chrome Web Store shot)

@@ -4,7 +4,7 @@
       {
          "id": 49,
          "title": "SageMaker Image Classification MLOps",
-         "description": "Published by AWS under the aws-samples organization (MIT-0) - an end-to-end, production-shaped MLOps pipeline for image classification on Amazon SageMaker, declared entirely in Terraform across 89 files and 14 reusable modules. Event-driven ingestion, multi-architecture training behind hard clinical quality gates, human-approved governed deployment, and a closed drift-to-retrain loop. The worked example classifies medical images, but the architecture is domain-agnostic.",
+         "description": "Published by AWS under the aws-samples organization (MIT-0) - an end-to-end, production-shaped MLOps pipeline for image classification on Amazon SageMaker, declared entirely in Terraform across 85 files and 13 reusable modules. Event-driven ingestion, multi-architecture training behind hard clinical quality gates, human-approved governed deployment, and a closed drift-to-retrain loop. The worked example classifies medical images, but the architecture is domain-agnostic.",
          "date": "July 2026",
          "tools_tech": [
             "Terraform",
@@ -21,11 +21,38 @@
             "Terraform owns every persistent resource - endpoint, auto-scaling, monitors, alarms; Lambda orchestrates only, never mutates infrastructure",
             "Three architectures (VGG16, DenseNet121, EfficientNetV2M) trained in parallel with two-phase transfer learning, then ensembled",
             "Clinical quality gate as a hard pipeline condition - accuracy >= 0.85, recall >= 0.95, precision >= 0.80, AUC >= 0.90, or the model is never registered",
-            "Closed-loop retraining: Model Monitor drift alarm triggers EventBridge, which restarts training; human approval still gates every deployment",
-            "Responsible AI built in - SageMaker Clarify bias/explainability reports, Model Cards, Bedrock Guardrails, and A2I human review",
+            "Closed-loop retraining: an hourly PSI drift job and a daily fairness job raise alarms that trigger EventBridge, which restarts training; human approval still gates every deployment",
+            "Responsible AI built in - Fairlearn bias metrics as an in-pipeline gate, Grad-CAM and SHAP explainability, Model Cards, Bedrock Guardrails, and A2I human review",
             "Security scanning clean: 0 checkov failed checks and 0 bandit issues, every suppression documented with a reason"
          ],
          "github": "https://github.com/aws-samples/sample-sagemaker-image-classification-mlops",
+         "live": "",
+         "organization": "aws-samples"
+      },
+      {
+         "id": 52,
+         "title": "AWS Organizations Governance on Control Tower",
+         "description": "Published by AWS under the aws-samples organization (MIT-0), the second after the SageMaker MLOps sample - a Terraform governance layer for AWS Organizations on top of an existing Control Tower landing zone. It declares the OU hierarchy, all six Organizations policy types, Control Tower baselines and controls, and delegated administrators for 15 AWS services, all from the management account.",
+         "date": "September 2026",
+         "tools_tech": [
+            "Terraform",
+            "AWS Organizations",
+            "AWS Control Tower",
+            "Service Control Policies",
+            "Resource Control Policies",
+            "AWS Security Hub",
+            "Amazon GuardDuty",
+            "IAM Identity Center"
+         ],
+         "features": [
+            "A root deployment, not a module - it runs only in the management account and creates nothing in member accounts, with Macie enablement the one documented exception",
+            "All six Organizations policy types (SCP, RCP, tag, backup, AI opt-out, chat applications) as 21 policy documents, attachable to the root or any OU",
+            "OU hierarchy up to five levels deep, with Control Tower baselines registered parent before child",
+            "Control Tower controls enabled per OU, and Control Tower owned OUs targeted but never recreated",
+            "Delegated administrators for 15 services, including GuardDuty, Security Hub, Inspector, Macie, Detective, Firewall Manager, CloudTrail and IPAM",
+            "Five ready-made scenarios - minimal, standard, enterprise, regulated workload and data residency"
+         ],
+         "github": "https://github.com/aws-samples/sample-aws-terraform-org-governance",
          "live": "",
          "organization": "aws-samples"
       },
