@@ -728,6 +728,81 @@
    ],
    "community_projects": [
       {
+         "id": 53,
+         "title": "GitHub Stats Card Action",
+         "description": "A GitHub Action that renders an animated GitHub stats card as an SVG in your own repo, so your profile README never depends on a hosted widget. Five stat tiles, a contribution calendar, current and longest streak, and top languages in one self-hosted card, published on the GitHub Marketplace.",
+         "date": "September 2026",
+         "tools_tech": [
+            "Python 3.13",
+            "GitHub Actions",
+            "GitHub GraphQL API",
+            "SVG"
+         ],
+         "features": [
+            "Five stat tiles, a contribution calendar, current and longest streak, and top languages",
+            "Self-hosted: the SVG is committed to your own repo, no hosted widget",
+            "Inputs for username, token, output, accent, title, languages, and exclude-repos",
+            "Keeps the previous card when the GitHub API fails, so a bad run never blanks the README"
+         ],
+         "github": "https://github.com/Sagargupta16/github-stats-card-action",
+         "live": "https://github.com/marketplace/actions/self-hosted-github-stats-card"
+      },
+      {
+         "id": 54,
+         "title": "LeetCode Card Action",
+         "description": "A GitHub Action that renders an animated LeetCode card as an SVG in your own repo. Contest rating history is drawn as a line with the peak marked, next to the contest badge, current rating, top percentage, and problems solved by difficulty. Published on the GitHub Marketplace.",
+         "date": "September 2026",
+         "tools_tech": [
+            "Python 3.13",
+            "GitHub Actions",
+            "LeetCode GraphQL",
+            "SVG"
+         ],
+         "features": [
+            "Contest rating history as an animated line with the peak rating marked",
+            "Contest badge, current rating, and top percentage in one header row",
+            "Problems solved split by Easy, Medium, and Hard",
+            "Handles users with no rated contests or no badge"
+         ],
+         "github": "https://github.com/Sagargupta16/leetcode-card-action",
+         "live": "https://github.com/marketplace/actions/leetcode-card"
+      },
+      {
+         "id": 55,
+         "title": "OSS Contributions Card Action",
+         "description": "A GitHub Action that finds your merged and open pull requests to other people's repos through the GitHub GraphQL search, with no manual list to maintain, and renders them as animated SVG cards in your own repo: a summary card, a merged list, and an in-review list. Published on the GitHub Marketplace.",
+         "date": "September 2026",
+         "tools_tech": [
+            "Python 3.13",
+            "GitHub Actions",
+            "GitHub GraphQL API",
+            "SVG"
+         ],
+         "features": [
+            "Finds merged and open pull requests automatically through the GitHub GraphQL search",
+            "Three cards: a summary, a merged list, and an in-review list",
+            "exclude-owners and exclude-repos filters, with owner/repo or owner/* patterns",
+            "Self-hosted SVGs committed to your own repo, no hosted widget"
+         ],
+         "github": "https://github.com/Sagargupta16/oss-contributions-card-action",
+         "live": "https://github.com/marketplace/actions/oss-contributions-card"
+      },
+      {
+         "id": 56,
+         "title": "readme-kit",
+         "description": "A GitHub Action that turns one profile.yml into a matching set of self-hosted animated SVG cards for your GitHub profile README: hero, terminal, section headers, divider, footer, timeline, tiles, panels, stats, buttons, and project cards. One theme.accent colors the whole set. Published on the GitHub Marketplace.",
+         "date": "September 2026",
+         "tools_tech": ["Python 3.13", "GitHub Actions", "YAML", "SVG"],
+         "features": [
+            "One profile.yml drives every card, so the whole README stays visually consistent",
+            "Hero, terminal, section headers, divider, footer, timeline, tiles, panels, stats, buttons, and project cards",
+            "theme.accent sets one accent color across the full set",
+            "Config validation that names the bad key"
+         ],
+         "github": "https://github.com/Sagargupta16/readme-kit-action",
+         "live": "https://github.com/marketplace/actions/readme-kit"
+      },
+      {
          "id": 45,
          "title": "skillcheck",
          "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, client-extension awareness across 6 runtimes (Claude Code, Codex, Gemini CLI, Copilot, Cursor, OpenCode), structure and reference validation, SARIF output, and a drop-in GitHub Action.",
@@ -934,7 +1009,7 @@
       {
          "id": 42,
          "title": "Credly Badge README Action",
-         "description": "A GitHub Action that auto-syncs your Credly certifications and badges to your GitHub profile README - no more manual updates when you earn a new cert. Categorizes badges into Industry Certifications, Professional/Partner, and Knowledge/Learning with non-destructive HTML-marker updates.",
+         "description": "A GitHub Action that auto-syncs your Credly certifications and badges to your GitHub profile README - no more manual updates when you earn a new cert. Categorizes badges into Industry Certifications, Professional/Partner, and Knowledge/Learning with non-destructive HTML-marker updates. Since v1.1.0 an SVG card mode (output readme, svg, or both) draws every badge into one animated SVG card in two or three groups.",
          "date": "March 2026",
          "tools_tech": [
             "Python 3.13",
@@ -946,10 +1021,11 @@
             "Auto-fetch Credly badges via public API and sync weekly",
             "Categorized sections: Industry Certifications, Professional/Partner, Knowledge/Learning",
             "Non-destructive updates using <!-- CREDLY-BADGES:START/END --> markers",
-            "Configurable badge size, retry logic, and categorization keywords"
+            "Configurable badge size, retry logic, and categorization keywords",
+            "v1.1.0 SVG card mode: output readme | svg | both, all badges as one animated SVG card in two or three groups"
          ],
          "github": "https://github.com/Sagargupta16/credly-badge-readme-action",
-         "live": ""
+         "live": "https://github.com/marketplace/actions/credly-badge-readme-updater"
       }
    ],
    "open_source_contributions": [
