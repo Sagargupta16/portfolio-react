@@ -104,6 +104,10 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    33: { kind: "scene", Scene: DocsScene, variant: "agent-recipes" }, // Agent Recipes
    34: { kind: "scene", Scene: GateScene, variant: "git" }, // AI Git Hooks
    42: { kind: "scene", Scene: AutomationScene, variant: "badge" }, // Credly Badge Action
+   53: { kind: "scene", Scene: AutomationScene, variant: "card" }, // GitHub Stats Card Action
+   54: { kind: "scene", Scene: AutomationScene, variant: "card" }, // LeetCode Card Action
+   55: { kind: "scene", Scene: AutomationScene, variant: "card" }, // OSS Contributions Card Action
+   56: { kind: "scene", Scene: AutomationScene, variant: "kit" }, // readme-kit
 };
 
 export const getProjectCover = (

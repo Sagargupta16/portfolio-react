@@ -9,6 +9,8 @@ import {
 import type { PipelineProps, StageLabels } from "./automation/sceneTokens";
 import CarouselPipeline from "./automation/CarouselPipeline";
 import BadgePipeline from "./automation/BadgePipeline";
+import CardPipeline from "./automation/CardPipeline";
+import KitPipeline from "./automation/KitPipeline";
 
 interface CoverSceneProps {
    tint: string;
@@ -18,7 +20,7 @@ interface CoverSceneProps {
 /* Scheduled automation family: a cron clock fires a left-to-right pipeline
    that writes to a destination. Each variant owns its stages and output. */
 
-type AutomationVariant = "instagram" | "badge";
+type AutomationVariant = "instagram" | "badge" | "card" | "kit";
 
 interface VariantSpec {
    Pipeline: (props: PipelineProps) => React.JSX.Element;
@@ -34,6 +36,14 @@ const VARIANTS = {
    badge: {
       Pipeline: BadgePipeline,
       stages: ["BADGES.JSON", "CATEGORIZE", "README.MD"],
+   },
+   card: {
+      Pipeline: CardPipeline,
+      stages: ["GRAPHQL", "RENDER", "CARD.SVG"],
+   },
+   kit: {
+      Pipeline: KitPipeline,
+      stages: ["PROFILE.YML", "RENDER", "SVG CARDS"],
    },
 } satisfies Record<AutomationVariant, VariantSpec>;
 
