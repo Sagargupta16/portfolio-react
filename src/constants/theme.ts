@@ -27,7 +27,7 @@ export const TEXT_MUTED = "#8a97a0";
 export const GLASS_BORDER = "rgba(255, 255, 255, 0.08)";
 
 // ===== Fonts =====
-export const MONO_FONT = "JetBrains Mono, ui-monospace, monospace";
+export const MONO_FONT = "Geist Mono Variable, ui-monospace, monospace";
 
 // ===== Layout =====
 export const MAX_WIDTH = 1152;

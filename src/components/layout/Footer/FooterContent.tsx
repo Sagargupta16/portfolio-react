@@ -9,6 +9,7 @@ import useMotionPreference from "@hooks/useMotionPreference";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import MakerMark from "@components/ui/MakerMark";
 import FooterSocial from "./FooterSocial";
+import FooterEndNote from "./FooterEndNote";
 import FooterStatusBar from "./FooterStatusBar";
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -176,6 +177,9 @@ const FooterContent = () => {
                ))}
             </nav>
          </motion.div>
+
+         {/* End-of-page note, hold-to-copy email, live Web Vitals */}
+         <FooterEndNote />
 
          {/* Bottom row: status bar (clock, availability, stack, build stamp) */}
          <FooterStatusBar />

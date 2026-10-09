@@ -31,8 +31,8 @@ const Contact = () => {
    return (
       <PageSection
          id="contact"
-         title="Get In Touch"
-         subtitle="Let's work together"
+         title="Let's *talk*"
+         subtitle="Send a note or book a call"
          maxWidth={MAX_WIDTH_FORM}
       >
          <motion.div

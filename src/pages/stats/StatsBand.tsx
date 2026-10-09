@@ -255,7 +255,7 @@ const StatsBand = () => {
             },
             {
                value: formatStars(starsReached),
-               label: "Stars reached",
+               label: "GitHub stars",
                note: "Combined, projects merged into",
             },
             {

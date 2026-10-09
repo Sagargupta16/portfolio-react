@@ -2,6 +2,7 @@ import { motion, type Variants } from "motion/react";
 import { VIEWPORT_MARGIN } from "@utils/animations";
 import { EASING, MAX_WIDTH } from "@/constants/theme";
 import { CONTENT_SECTIONS } from "@/constants/sections";
+import AccentText from "./AccentText";
 import Mascot from "./Mascot";
 
 interface Props {
@@ -75,7 +76,7 @@ const SectionHeader = ({ sectionId, title, subtitle }: Props) => {
                   variants={titleReveal}
                   style={{ display: "block", paddingBottom: "0.1em" }}
                >
-                  {title}
+                  <AccentText text={title} />
                </motion.span>
             </h2>
             <motion.span

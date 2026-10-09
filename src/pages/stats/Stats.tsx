@@ -164,7 +164,7 @@ const Stats = () => {
       <PageSection
          id="stats"
          title="By the Numbers"
-         subtitle="Stats"
+         subtitle="Client work, open source, contests"
          maxWidth={MAX_WIDTH_WIDE}
       >
          <div style={{ maxWidth: MAX_WIDTH_WIDE, margin: "0 auto" }}>

@@ -450,3 +450,25 @@ html[data-motion="full"] .contribution-link:active {
       grid-column: 1 / -1;
    }
 }
+
+/* Scroll-driven reveal (CSS only, runs on the compositor): each cover opens
+   from an inset clip as it scrolls into view. Browsers without view()
+   timelines (Firefox today) simply show the cover; Reduced skips it. */
+@supports (animation-timeline: view()) {
+   html:not([data-motion="reduced"]) .project-cover {
+      animation: cover-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+   }
+}
+
+@keyframes cover-reveal {
+   from {
+      clip-path: inset(14% 8% 14% 8% round 16px);
+      opacity: 0.4;
+   }
+   to {
+      clip-path: inset(0 round 0);
+      opacity: 1;
+   }
+}

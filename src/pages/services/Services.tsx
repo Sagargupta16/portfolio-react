@@ -11,7 +11,11 @@ const Services = () => {
    const services = useMemo(() => getServices(), []);
 
    return (
-      <PageSection id="services" title="Services" subtitle="What I offer">
+      <PageSection
+         id="services"
+         title="Services"
+         subtitle="What I can help with"
+      >
          <motion.div
             className="service-grid"
             style={{

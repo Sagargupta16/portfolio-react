@@ -10,6 +10,7 @@ import ErrorBoundary from "@components/common/ErrorBoundary";
 import ScrollProgress from "@components/ui/ScrollProgress";
 import BackToTop from "@components/ui/BackToTop";
 import MotionPreferenceControl from "@components/ui/MotionPreferenceControl";
+import CommandPaletteHost from "@components/ui/CommandPalette/CommandPaletteHost";
 import { BreakpointProvider } from "@hooks/BreakpointProvider";
 import { MotionPreferenceProvider } from "@hooks/MotionPreferenceProvider";
 import { SectionNavigationProvider } from "@hooks/SectionNavigationProvider";
@@ -119,6 +120,7 @@ const AppContent = () => {
                   </ErrorBoundary>
                   <BackToTop />
                   <MotionPreferenceControl />
+                  <CommandPaletteHost />
                </div>
             </ErrorBoundary>
          </SectionNavigationProvider>

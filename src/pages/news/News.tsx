@@ -73,6 +73,17 @@ const shortDate = (date: string) => {
    return day ? `${name} ${Number(day)}` : name;
 };
 
+/** Stable 7-char "commit hash" per item (FNV-1a over date + text), so the
+    list reads like `git log --graph` and each row keeps its id across builds. */
+const shortHash = (item: NewsItem) => {
+   let h = 0x811c9dc5;
+   for (const ch of `${item.date}${item.text}`) {
+      h ^= ch.codePointAt(0) ?? 0;
+      h = Math.imul(h, 0x01000193);
+   }
+   return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
+};
+
 const groupByYear = (items: NewsItem[]) => {
    const groups: { year: string; items: NewsItem[] }[] = [];
    for (const item of items) {
@@ -93,6 +104,12 @@ const NewsRow = ({ item, isMobile }: { item: NewsItem; isMobile: boolean }) => {
    const lastWord = item.text.slice(split);
    const body = (
       <>
+         {/* Commit node on the graph rail (the rail is the ul's ::before). */}
+         <span
+            aria-hidden="true"
+            className={`news-node${major ? " news-node--major" : ""}${minor ? " news-node--minor" : ""}`}
+            style={{ color: TYPE_DOT[item.type] }}
+         />
          <span
             style={{
                fontFamily: MONO_FONT,
@@ -140,9 +157,11 @@ const NewsRow = ({ item, isMobile }: { item: NewsItem; isMobile: boolean }) => {
             </span>
             <span
                style={{
-                  display: "inline-flex",
+                  display: "flex",
+                  flexWrap: "wrap",
                   alignItems: "center",
-                  gap: 6,
+                  columnGap: 8,
+                  rowGap: 2,
                   marginTop: 6,
                   fontFamily: MONO_FONT,
                   fontSize: 10.5,
@@ -160,9 +179,20 @@ const NewsRow = ({ item, isMobile }: { item: NewsItem; isMobile: boolean }) => {
                      backgroundColor: TYPE_DOT[item.type],
                   }}
                />
-               {TYPE_LABEL[item.type]}
+               <span style={{ whiteSpace: "nowrap" }}>
+                  {TYPE_LABEL[item.type]}
+               </span>
+               <span
+                  style={{
+                     color: TEXT_MUTED,
+                     letterSpacing: "0.04em",
+                     textTransform: "none",
+                  }}
+               >
+                  {shortHash(item)}
+               </span>
                {major && (
-                  <span style={{ color: CYAN, marginLeft: 4 }}>
+                  <span style={{ color: CYAN, whiteSpace: "nowrap" }}>
                      · Highlight
                   </span>
                )}
@@ -174,9 +204,9 @@ const NewsRow = ({ item, isMobile }: { item: NewsItem; isMobile: boolean }) => {
    const rowStyle = {
       display: "grid",
       gridTemplateColumns: isMobile
-         ? "52px minmax(0, 1fr)"
-         : "72px minmax(0, 1fr)",
-      gap: isMobile ? 12 : 20,
+         ? "12px 52px minmax(0, 1fr)"
+         : "14px 64px minmax(0, 1fr)",
+      gap: isMobile ? 10 : 16,
       padding: isMobile ? "14px 12px" : "16px 20px",
       borderRadius: 12,
    } as const;
@@ -214,7 +244,7 @@ const News = () => {
       <PageSection
          id="news"
          title="News"
-         subtitle="What I've been shipping, earning and learning"
+         subtitle="Merged PRs, publications and badges, newest first"
          maxWidth={MAX_WIDTH_NARROW}
       >
          <motion.div id={listId} variants={staggerContainer}>
@@ -224,6 +254,7 @@ const News = () => {
                      {year}
                   </h3>
                   <ul
+                     className="news-graph"
                      style={{
                         display: "flex",
                         flexDirection: "column",

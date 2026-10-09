@@ -5,6 +5,7 @@ import { getHeadline, getIntro, getName, getRoleLabel } from "@data/personal";
 import { CYAN, GREEN, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
+import ProximityText from "@components/ui/ProximityText";
 import MakerMark from "@components/ui/MakerMark";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useSectionNavigation from "@hooks/useSectionNavigation";
@@ -106,8 +107,8 @@ const HeroContent = () => {
              hierarchy (both lines equally bright read flat). Each line slides
              up out of its own clipping wrapper; see HEADLINE_MASK_STYLE. */}
          <motion.h1
-            className="display-heading leading-[1.12] text-text-primary"
-            style={{ fontSize: "clamp(2.25rem, 1rem + 5.5vw, 4.5rem)" }}
+            className="display-heading leading-[1.06] text-text-primary"
+            style={{ fontSize: "clamp(2.25rem, 1rem + 4.6vw, 4.75rem)" }}
             variants={heroHeadline}
          >
             <span style={HEADLINE_MASK_STYLE}>
@@ -127,7 +128,7 @@ const HeroContent = () => {
                   className="block text-balance text-text-secondary"
                   variants={heroHeadlineLine}
                >
-                  {headline}
+                  <ProximityText text={headline} />
                </motion.span>
             </span>
          </motion.h1>
@@ -163,7 +164,7 @@ const HeroContent = () => {
                whileTap={CTA_TAP}
                transformTemplate={passThroughTransform}
             >
-               Explore Projects
+               See projects
                <ArrowDownRight size={16} aria-hidden="true" />
             </motion.button>
             <motion.button
@@ -175,7 +176,7 @@ const HeroContent = () => {
                aria-haspopup="dialog"
             >
                <FileText size={15} aria-hidden="true" />
-               View CV
+               Read CV
             </motion.button>
             <motion.a
                href={RESUME_URL}
@@ -185,7 +186,7 @@ const HeroContent = () => {
                transformTemplate={passThroughTransform}
             >
                <Download size={15} aria-hidden="true" />
-               Download CV
+               Download PDF
             </motion.a>
          </motion.div>
 

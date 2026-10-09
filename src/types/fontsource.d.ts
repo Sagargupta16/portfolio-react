@@ -2,4 +2,4 @@
 // requires type declarations even for side-effect imports, so declare them as
 // empty modules to allow `import "@fontsource-variable/inter";`.
 declare module "@fontsource-variable/inter";
-declare module "@fontsource-variable/jetbrains-mono";
+declare module "@fontsource-variable/geist-mono";
