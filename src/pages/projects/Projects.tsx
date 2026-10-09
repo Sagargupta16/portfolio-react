@@ -203,7 +203,11 @@ const Projects = () => {
    );
 
    return (
-      <PageSection id="projects" title="Projects" subtitle="Things I've built">
+      <PageSection
+         id="projects"
+         title="Things I've *built*"
+         subtitle="Projects"
+      >
          <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
             <motion.div
                className="project-toolbar"

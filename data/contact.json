@@ -6,7 +6,7 @@
          "title": "Email Me",
          "value": "sg85207@gmail.com",
          "link": "mailto:sg85207@gmail.com",
-         "message": "Send a Mail"
+         "message": "Email"
       },
       {
          "id": 2,
@@ -22,7 +22,7 @@
          "title": "Instagram",
          "value": "@sagar_sethh",
          "link": "https://www.instagram.com/sagar_sethh/",
-         "message": "Message Me"
+         "message": "Message"
       },
       {
          "id": 4,

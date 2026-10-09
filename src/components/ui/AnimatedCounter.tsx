@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef } from "react";
-import { animate, useInView } from "motion/react";
-import { EASING } from "@/constants/theme";
+import { useMemo, useRef } from "react";
+import { useInView } from "motion/react";
+import NumberFlow from "@number-flow/react";
 import useMotionPreference from "@hooks/useMotionPreference";
 
 interface Props {
@@ -10,7 +10,6 @@ interface Props {
 
 const AnimatedCounter = ({ value, duration = 2 }: Props) => {
    const ref = useRef<HTMLSpanElement>(null);
-   const numberRef = useRef<HTMLSpanElement>(null);
    const { reducedMotion } = useMotionPreference();
    const inView = useInView(ref, { once: true, amount: 0.5 });
 
@@ -32,22 +31,14 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
       return { numericValue: 0, decimals: 0, suffix: str };
    }, [value]);
 
-   // The count writes textContent straight from Motion's frameloop: no React
-   // state, so twelve tiles counting together cost zero commits. Reduced skips
-   // the effect and renders the final value below.
-   useEffect(() => {
-      const node = numberRef.current;
-      if (!inView || reducedMotion || !node) return;
-
-      const controls = animate(0, numericValue, {
-         duration,
-         ease: EASING.cinematic,
-         onUpdate: (latest) => {
-            node.textContent = latest.toFixed(decimals);
-         },
-      });
-      return () => controls.stop();
-   }, [inView, reducedMotion, numericValue, decimals, duration]);
+   // Digits roll into place (NumberFlow) once the tile is half in view: each
+   // digit spins on its own wheel instead of a counter ticking through every
+   // value. Reduced renders the final value with no animation.
+   const shown = inView || reducedMotion ? numericValue : 0;
+   const timing = {
+      duration: duration * 1000 * 0.6,
+      easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+   };
 
    // Short suffixes ("+", "k") read as part of the number; long ones
    // (" merged + 12 open") are annotations and shrink so they don't dominate.
@@ -58,9 +49,17 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
          ref={ref}
          className="font-mono text-3xl font-bold text-accent-cyan tabular-nums"
       >
-         <span ref={numberRef}>
-            {(reducedMotion ? numericValue : 0).toFixed(decimals)}
-         </span>
+         <NumberFlow
+            value={shown}
+            animated={!reducedMotion}
+            format={{
+               minimumFractionDigits: decimals,
+               maximumFractionDigits: decimals,
+               useGrouping: false,
+            }}
+            spinTiming={timing}
+            transformTiming={timing}
+         />
          {suffix && (
             <span
                className="text-accent-cyan/70"

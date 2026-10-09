@@ -16,7 +16,7 @@ const Education = () => {
       <PageSection
          id="education"
          title="Education"
-         subtitle="My academic journey"
+         subtitle="NIT Warangal (MCA), DAVV (BCA)"
          maxWidth={MAX_WIDTH_NARROW}
       >
          <motion.div variants={staggerContainer}>

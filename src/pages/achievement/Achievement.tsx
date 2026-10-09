@@ -30,7 +30,7 @@ const Achievement = () => {
       <PageSection
          id="achievements"
          title="Achievements"
-         subtitle="Milestones & certifications"
+         subtitle="Certifications, contests, hackathons"
       >
          <div
             style={{

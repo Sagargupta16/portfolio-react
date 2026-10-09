@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
+import { setPaletteOpen } from "@utils/paletteState";
 import {
    DURATION,
    EASING,
@@ -138,6 +139,16 @@ const NavBar = ({
                      onNavigate={onNavigate}
                   />
                   <button
+                     type="button"
+                     onClick={() => setPaletteOpen(true)}
+                     className="palette-trigger"
+                     aria-label="Open command palette"
+                     aria-keyshortcuts="Control+K Meta+K"
+                  >
+                     <Search size={14} aria-hidden="true" />
+                     <kbd>Ctrl K</kbd>
+                  </button>
+                  <button
                      onClick={() => onNavigate("contact")}
                      className="btn-pill"
                      style={{ fontSize: 13, minHeight: 44 }}
@@ -151,53 +162,63 @@ const NavBar = ({
             {/* Mobile hamburger. Motion's hover gesture ignores touch pointers,
                 so a tap never leaves the button stuck in its hover colour. */}
             {isMobile && (
-               <motion.button
-                  onClick={onToggleMenu}
-                  style={{
-                     position: "relative",
-                     width: 44,
-                     height: 44,
-                     borderRadius: 10,
-                     color: TEXT_SECONDARY,
-                     cursor: "pointer",
-                     background: "none",
-                     border: "none",
-                  }}
-                  whileHover={ICON_HOVER}
-                  whileFocus={ICON_HOVER}
-                  transition={COLOR_TRANSITION}
-                  aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                  aria-expanded={mobileMenuOpen}
-                  aria-controls="mobile-menu"
-               >
-                  <AnimatePresence mode="wait" initial={false}>
-                     {mobileMenuOpen ? (
-                        <motion.span
-                           key="close"
-                           style={ICON_STYLE}
-                           initial={ICON_ENTER}
-                           animate={ICON_REST}
-                           exit={ICON_EXIT}
-                           transition={ICON_TRANSITION}
-                           aria-hidden="true"
-                        >
-                           <X size={22} />
-                        </motion.span>
-                     ) : (
-                        <motion.span
-                           key="open"
-                           style={ICON_STYLE}
-                           initial={ICON_ENTER}
-                           animate={ICON_REST}
-                           exit={ICON_EXIT}
-                           transition={ICON_TRANSITION}
-                           aria-hidden="true"
-                        >
-                           <Menu size={22} />
-                        </motion.span>
-                     )}
-                  </AnimatePresence>
-               </motion.button>
+               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                  <button
+                     type="button"
+                     onClick={() => setPaletteOpen(true)}
+                     className="palette-trigger palette-trigger-icon"
+                     aria-label="Open command palette"
+                  >
+                     <Search size={18} aria-hidden="true" />
+                  </button>
+                  <motion.button
+                     onClick={onToggleMenu}
+                     style={{
+                        position: "relative",
+                        width: 44,
+                        height: 44,
+                        borderRadius: 10,
+                        color: TEXT_SECONDARY,
+                        cursor: "pointer",
+                        background: "none",
+                        border: "none",
+                     }}
+                     whileHover={ICON_HOVER}
+                     whileFocus={ICON_HOVER}
+                     transition={COLOR_TRANSITION}
+                     aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                     aria-expanded={mobileMenuOpen}
+                     aria-controls="mobile-menu"
+                  >
+                     <AnimatePresence mode="wait" initial={false}>
+                        {mobileMenuOpen ? (
+                           <motion.span
+                              key="close"
+                              style={ICON_STYLE}
+                              initial={ICON_ENTER}
+                              animate={ICON_REST}
+                              exit={ICON_EXIT}
+                              transition={ICON_TRANSITION}
+                              aria-hidden="true"
+                           >
+                              <X size={22} />
+                           </motion.span>
+                        ) : (
+                           <motion.span
+                              key="open"
+                              style={ICON_STYLE}
+                              initial={ICON_ENTER}
+                              animate={ICON_REST}
+                              exit={ICON_EXIT}
+                              transition={ICON_TRANSITION}
+                              aria-hidden="true"
+                           >
+                              <Menu size={22} />
+                           </motion.span>
+                        )}
+                     </AnimatePresence>
+                  </motion.button>
+               </div>
             )}
          </div>
       </motion.nav>

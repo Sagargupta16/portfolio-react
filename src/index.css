@@ -5,8 +5,8 @@
    No glassmorphism, no gradient text, no glow. */
 @theme {
    --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
-   --font-mono:
-      "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+   --font-accent: "Instrument Serif", Georgia, serif;
    /* Display face for the hero headline + section titles ONLY -- body stays
       Inter. This heading/body pairing is what keeps the big type from reading
       as a Tailwind default. */
@@ -97,11 +97,21 @@ html {
    scrollbar-gutter: stable;
 }
 
+html {
+   font-optical-sizing: auto;
+}
+
+p {
+   text-wrap: pretty;
+}
+
 body {
    font-family: var(--font-sans);
+   /* Inter: cv11 single-storey a, ss03 round quotes and commas. */
+   font-feature-settings: "cv11", "ss03", "calt";
    background-color: var(--color-bg-primary);
    color: var(--color-text-primary);
-   line-height: 1.7;
+   line-height: 1.65;
    /* clip, not hidden: hidden would turn body into a scroll container again
       (overflow-y auto) and re-break wheel scrolling. clip only clips. */
    overflow-x: clip;
@@ -265,8 +275,21 @@ html[data-motion="reduced"] .project-action:active {
 /* ===== Display Headings (Bricolage Grotesque) ===== */
 .display-heading {
    font-family: var(--font-display);
-   font-weight: 800;
-   letter-spacing: -0.03em;
+   font-weight: 720;
+   letter-spacing: -0.035em;
+   text-wrap: balance;
+}
+
+/* One italic serif word per headline, in the accent blue. Marked in data with
+   *asterisks* and rendered by AccentText. */
+.accent-serif {
+   font-family: var(--font-accent);
+   font-style: italic;
+   font-weight: 400;
+   font-size: 1.08em;
+   letter-spacing: -0.01em;
+   color: var(--color-accent-cyan);
+   padding-inline-end: 0.04em;
 }
 
 /* Signature script for the name only (intro, hero, footer). Script caps sit
@@ -292,10 +315,12 @@ html[data-motion="reduced"] .project-action:active {
    display: flex;
    align-items: baseline;
    gap: 12px;
-   margin-bottom: 12px;
+   margin-bottom: 14px;
    color: var(--color-text-secondary);
    font-family: var(--font-mono);
    font-size: 12px;
+   letter-spacing: 0.04em;
+   font-variant-numeric: tabular-nums slashed-zero;
 }
 
 .section-header-number {
@@ -313,9 +338,13 @@ html[data-motion="reduced"] .project-action:active {
 .section-header-heading h2 {
    min-width: 0;
    max-width: 90%;
-   overflow: hidden;
-   font-size: clamp(1.75rem, 3vw, 2.25rem);
-   line-height: 1.15;
+   /* clip (not hidden) keeps the title slide-up mask; the span carries 0.1em
+      of bottom padding so descenders stay inside it. */
+   overflow: clip;
+   font-size: clamp(1.875rem, 1.3rem + 2vw, 2.75rem);
+   font-weight: 680;
+   letter-spacing: -0.03em;
+   line-height: 1.05;
    text-wrap: balance;
 }
 
@@ -621,6 +650,249 @@ html[data-motion="reduced"] .sagar-face {
    background-repeat: no-repeat;
 }
 
+/* ===== Footer end note: end-of-scroll line, hold-to-copy, live vitals ===== */
+.footer-endnote {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 18px;
+   width: 100%;
+   padding: 40px 0 32px;
+   border-top: 1px solid rgb(255 255 255 / 0.08);
+   text-align: center;
+}
+
+.footer-endnote-line {
+   max-width: 22ch;
+   font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+   line-height: 1.15;
+   color: var(--color-text-primary);
+}
+
+.hold-copy {
+   display: inline-flex;
+   align-items: center;
+   gap: 10px;
+   min-height: 44px;
+   padding: 8px 18px 8px 12px;
+   border: 1px solid rgb(255 255 255 / 0.1);
+   border-radius: 999px;
+   background: var(--color-bg-card);
+   color: var(--color-text-primary);
+   font-family: var(--font-mono);
+   font-size: 12px;
+   letter-spacing: 0.02em;
+   cursor: pointer;
+   user-select: none;
+   -webkit-touch-callout: none;
+   touch-action: manipulation;
+   transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+}
+
+.hold-copy:hover {
+   border-color: var(--color-border-hover);
+}
+
+.hold-copy:active {
+   transform: scale(0.98);
+}
+
+.footer-vitals {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: center;
+   gap: 8px 14px;
+   margin-top: 6px;
+}
+
+.footer-vital {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   color: var(--color-text-muted);
+   font-family: var(--font-mono);
+   font-size: 11px;
+   font-variant-numeric: tabular-nums;
+}
+
+.footer-vital-value {
+   color: var(--color-text-primary);
+}
+
+.footer-vital-dot {
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+}
+
+/* ===== Command palette (cmdk), styled as a shell ===== */
+.palette-trigger {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   min-height: 36px;
+   padding: 0 10px;
+   border: 1px solid rgb(255 255 255 / 0.08);
+   border-radius: 10px;
+   background: rgb(255 255 255 / 0.03);
+   color: var(--color-text-secondary);
+   cursor: pointer;
+   transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+}
+
+.palette-trigger:hover {
+   color: var(--color-text-primary);
+   border-color: var(--color-border-hover);
+}
+
+.palette-trigger kbd {
+   font-family: var(--font-mono);
+   font-size: 11px;
+   letter-spacing: 0.04em;
+}
+
+.palette-trigger-icon {
+   width: 44px;
+   height: 44px;
+   justify-content: center;
+   padding: 0;
+   border-color: transparent;
+   background: none;
+}
+
+.palette-overlay {
+   position: fixed;
+   inset: 0;
+   z-index: 90;
+   background: rgb(5 8 9 / 0.6);
+   backdrop-filter: blur(6px);
+}
+
+.palette {
+   position: fixed;
+   top: min(18vh, 140px);
+   left: 50%;
+   z-index: 91;
+   width: min(640px, calc(100vw - 24px));
+   transform: translateX(-50%);
+   overflow: hidden;
+   border: 1px solid rgb(255 255 255 / 0.08);
+   border-radius: 16px;
+   background: var(--color-bg-card);
+   box-shadow: 0 24px 80px rgb(0 0 0 / 0.5);
+   animation: palette-in 0.18s ease-out;
+}
+
+@keyframes palette-in {
+   from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-6px) scale(0.98);
+   }
+}
+
+.palette-prompt {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   padding: 14px 16px;
+   border-bottom: 1px solid rgb(255 255 255 / 0.06);
+   color: var(--color-accent-cyan);
+   font-family: var(--font-mono);
+   font-size: 13px;
+}
+
+.palette-input {
+   flex: 1;
+   min-width: 0;
+   border: 0;
+   outline: 0;
+   background: none;
+   color: var(--color-text-primary);
+   font-family: var(--font-mono);
+   font-size: 16px;
+}
+
+.palette-input::placeholder {
+   color: var(--color-text-muted);
+}
+
+.palette-kbd {
+   padding: 2px 6px;
+   border: 1px solid rgb(255 255 255 / 0.1);
+   border-radius: 6px;
+   color: var(--color-text-muted);
+   font-family: var(--font-mono);
+   font-size: 10px;
+}
+
+.palette-list {
+   max-height: min(420px, 60vh);
+   overflow-y: auto;
+   overscroll-behavior: contain;
+   padding: 6px;
+}
+
+.palette-group [cmdk-group-heading] {
+   padding: 10px 10px 6px;
+   color: var(--color-text-muted);
+   font-family: var(--font-mono);
+   font-size: 10px;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+}
+
+.palette-item {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   min-height: 44px;
+   padding: 8px 10px;
+   border-radius: 10px;
+   cursor: pointer;
+}
+
+.palette-item[data-selected="true"] {
+   background: rgb(255 255 255 / 0.05);
+}
+
+.palette-item[data-selected="true"] .palette-command {
+   color: var(--color-accent-cyan);
+}
+
+.palette-icon {
+   display: inline-flex;
+   color: var(--color-text-muted);
+}
+
+.palette-command {
+   color: var(--color-text-primary);
+   font-family: var(--font-mono);
+   font-size: 13px;
+   white-space: nowrap;
+}
+
+.palette-hint {
+   overflow: hidden;
+   margin-left: auto;
+   color: var(--color-text-muted);
+   font-size: 12px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.palette-empty {
+   padding: 24px;
+   color: var(--color-text-muted);
+   font-family: var(--font-mono);
+   font-size: 13px;
+   text-align: center;
+}
+
 /* ===== News rows (flat, hairline on hover; linked rows lift slightly) ===== */
 .news-row {
    border: 1px solid transparent;
@@ -658,6 +930,58 @@ a.news-row:focus-visible .news-row-arrow {
 a.news-row--major:hover,
 a.news-row--major:focus-visible {
    border-color: rgb(var(--ch-white) / 0.12);
+}
+
+/* ===== News as a commit graph: one rail per year, a node per item ===== */
+.news-graph {
+   --rail-x: 26px;
+   position: relative;
+}
+
+.news-graph::before {
+   content: "";
+   position: absolute;
+   top: 22px;
+   bottom: 22px;
+   left: var(--rail-x);
+   width: 2px;
+   border-radius: 2px;
+   background: linear-gradient(
+      to bottom,
+      var(--color-accent-blue),
+      rgb(37 99 235 / 0.15)
+   );
+}
+
+@media (max-width: 640px) {
+   .news-graph {
+      --rail-x: 17px;
+   }
+}
+
+.news-node {
+   position: relative;
+   z-index: 1;
+   width: 10px;
+   height: 10px;
+   margin-top: 5px;
+   margin-left: 1px;
+   border: 2px solid var(--color-bg-primary);
+   border-radius: 50%;
+   background: currentcolor;
+   box-shadow: 0 0 0 1px currentcolor;
+}
+
+.news-node--major {
+   width: 12px;
+   height: 12px;
+   margin-left: 0;
+   background: var(--color-accent-cyan);
+   box-shadow: 0 0 0 2px var(--color-accent-blue);
+}
+
+.news-node--minor {
+   background: var(--color-bg-primary);
 }
 
 /* ===== Section Alternating Backgrounds (flattened -- one canvas) ===== */

@@ -41,7 +41,11 @@ const About = () => {
    );
 
    return (
-      <PageSection id="about" title="About Me" subtitle="Get to know me">
+      <PageSection
+         id="about"
+         title="About *me*"
+         subtitle="Cloud consultant, open-source contributor"
+      >
          <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
             <motion.div
                style={{
