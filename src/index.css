@@ -590,7 +590,7 @@ html[data-motion="reduced"] .sagar-face {
 
 /* ===== Mascot: mini Sagar perched on the active section's heading rule ===== */
 .mascot-perch {
-   --mascot-h: 88px;
+   --mascot-h: 104px;
    position: absolute;
    top: 50%;
    right: clamp(4px, 4%, 48px);
@@ -601,7 +601,7 @@ html[data-motion="reduced"] .sagar-face {
 
 @media (max-width: 640px) {
    .mascot-perch {
-      --mascot-h: 68px;
+      --mascot-h: 80px;
    }
 }
 

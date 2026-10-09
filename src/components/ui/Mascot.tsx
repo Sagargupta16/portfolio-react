@@ -4,7 +4,7 @@ import useMotionPreference from "@hooks/useMotionPreference";
 import { useMascotSection, watchMascotSection } from "@utils/mascotState";
 import frames from "@assets/brand/mascot-frames.webp";
 
-/* Mini Sagar (8-frame sprite made from his photos) perches on the heading
+/* Mini Sagar (8-frame comic-style sprite made from his photos) perches on the heading
    rule of whichever section is in view. When the section changes he crouches
    and leaps out of the old heading while the new one's copy drops in from
    above, squashes on landing, winks, and sits with his legs dangling over the
@@ -28,14 +28,14 @@ const LAST_FRAME = 7;
     standing poses, the ledge for the sitting ones, so every pose meets the
     rule. Measured from the sprite. */
 const GROUND: Record<Frame, number> = {
-   idle: 0.984,
-   wink: 0.984,
-   crouch: 0.986,
-   jump: 0.984,
-   land: 0.93,
-   wave: 0.958,
-   sit: 0.654,
-   sleep: 0.654,
+   idle: 0.99,
+   wink: 0.99,
+   crouch: 0.988,
+   jump: 0.99,
+   land: 0.904,
+   wave: 0.95,
+   sit: 0.576,
+   sleep: 0.578,
 };
 
 const SLEEP_AFTER = 20_000;
