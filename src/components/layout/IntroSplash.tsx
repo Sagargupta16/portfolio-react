@@ -64,7 +64,7 @@ const IntroSplash = () => {
                   className="intro-splash-name"
                   viewBox="0 0 1000 200"
                   preserveAspectRatio="xMidYMid meet"
-                  role="presentation"
+                  focusable="false"
                >
                   <text x="500" y="135" textAnchor="middle">
                      {name}
