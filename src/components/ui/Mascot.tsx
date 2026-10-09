@@ -28,14 +28,14 @@ const LAST_FRAME = 7;
     standing poses, the ledge for the sitting ones, so every pose meets the
     rule. Measured from the sprite. */
 const GROUND: Record<Frame, number> = {
-   idle: 0.99,
-   wink: 0.99,
-   crouch: 0.988,
-   jump: 0.99,
-   land: 0.904,
-   wave: 0.95,
-   sit: 0.576,
-   sleep: 0.578,
+   idle: 0.995,
+   wink: 0.995,
+   crouch: 0.995,
+   jump: 0.995,
+   land: 0.918,
+   wave: 0.952,
+   sit: 0.584,
+   sleep: 0.584,
 };
 
 const SLEEP_AFTER = 20_000;
