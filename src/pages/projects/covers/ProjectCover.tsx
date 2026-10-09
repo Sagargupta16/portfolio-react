@@ -34,8 +34,11 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
    useFreezeAnimations(frameRef);
    if (!cover) return null;
 
+   const isImage = cover.kind === "image";
    let media: ReactNode;
-   if (cover.kind === "image") {
+   if (isImage) {
+      // Screenshot framed like a device window on the accent gradient panel;
+      // it grows from its top edge on card hover (.project-cover-img--framed).
       media = (
          <img
             src={cover.src}
@@ -44,13 +47,19 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             decoding="async"
             width={960}
             height={600}
-            className="project-cover-img"
+            className="project-cover-img project-cover-img--framed"
             style={{
-               ...FILL,
-               width: "100%",
-               height: "100%",
+               position: "absolute",
+               top: "9%",
+               left: "7%",
+               width: "86%",
+               height: "91%",
                objectFit: "cover",
                objectPosition: "top",
+               borderRadius: "10px 10px 0 0",
+               border: "1px solid rgb(255 255 255 / 0.1)",
+               borderBottom: "none",
+               boxShadow: "0 12px 32px rgb(0 0 0 / 0.35)",
             }}
          />
       );
@@ -88,7 +97,10 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             position: "relative",
             overflow: "hidden",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
-            background: "#0c1216",
+            // Gradient panel only behind framed screenshots; scenes paint their own.
+            background: isImage
+               ? `linear-gradient(150deg, color-mix(in srgb, ${accent} 34%, #0c1216) 0%, #0c1216 78%)`
+               : "#0c1216",
          }}
       >
          {media}
@@ -98,8 +110,9 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             aria-hidden="true"
             style={{
                ...FILL,
-               background:
-                  "linear-gradient(180deg, transparent 55%, rgb(14 20 23 / 0.9) 100%)",
+               background: isImage
+                  ? "linear-gradient(180deg, transparent 75%, rgb(14 20 23 / 0.75) 100%)"
+                  : "linear-gradient(180deg, transparent 55%, rgb(14 20 23 / 0.9) 100%)",
                pointerEvents: "none",
             }}
          />

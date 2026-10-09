@@ -1,3 +1,6 @@
+import { useRef } from "react";
+import { motion } from "motion/react";
+import usePointerLook from "@hooks/usePointerLook";
 import MakerMark from "./MakerMark";
 import {
    AVATAR_SIZE,
@@ -7,10 +10,14 @@ import {
    MAKER_SIZE,
 } from "./devAvatarData";
 
-/** Static Maker disc; the surrounding stack ring supplies the motion. */
+/** Maker disc; the mark inside leans toward the pointer, the disc stays put. */
 const AvatarMark = () => {
+   const discRef = useRef<HTMLDivElement>(null);
+   const look = usePointerLook(discRef);
+
    return (
       <div
+         ref={discRef}
          style={{
             position: "absolute",
             inset: (AVATAR_SIZE - DISC_DIAMETER) / 2,
@@ -22,7 +29,9 @@ const AvatarMark = () => {
             justifyContent: "center",
          }}
       >
-         <MakerMark size={MAKER_SIZE} />
+         <motion.div style={{ x: look.x, y: look.y, rotate: look.rotate }}>
+            <MakerMark size={MAKER_SIZE} />
+         </motion.div>
       </div>
    );
 };

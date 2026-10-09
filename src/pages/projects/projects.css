@@ -84,6 +84,39 @@
    border-color: color-mix(in srgb, var(--project-accent) 30%, transparent);
 }
 
+/* Pointer light: a 1px border ring that brightens where the mouse is
+   (--mx/--my set by ProjectGrid). Border-only via mask, so no glow or blur. */
+@media (hover: hover) and (pointer: fine) {
+   .project-card {
+      position: relative;
+   }
+
+   .project-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      padding: 1px;
+      border-radius: inherit;
+      background: radial-gradient(
+         260px circle at var(--mx, -999px) var(--my, -999px),
+         color-mix(in srgb, var(--project-accent) 85%, white),
+         transparent 70%
+      );
+      mask:
+         linear-gradient(#000 0 0) content-box,
+         linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+   }
+
+   .project-card:hover::before {
+      opacity: 1;
+   }
+}
+
 .project-cover {
    aspect-ratio: 16 / 10;
    flex-shrink: 0;

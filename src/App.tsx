@@ -4,6 +4,7 @@ import Nav from "@components/layout/Navigation/Nav";
 import Hero from "@components/layout/Header/Hero";
 import Footer from "@components/layout/Footer/Footer";
 import AmbientBackground from "@components/layout/AmbientBackground";
+import IntroSplash from "@components/layout/IntroSplash";
 import DeferredSection from "@components/layout/DeferredSection";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import ScrollProgress from "@components/ui/ScrollProgress";
@@ -82,6 +83,7 @@ const AppContent = () => {
          <SectionNavigationProvider>
             <ErrorBoundary>
                <ScrollProgress />
+               <IntroSplash />
                <AmbientBackground />
                {/* Fixed at z-0 before the page wrapper in DOM order: above the
                 ambient glows (z -1), below every section (painted later). */}
