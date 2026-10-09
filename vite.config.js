@@ -2,14 +2,34 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "node:url";
-import { readFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 
 const pkg = JSON.parse(
    readFileSync(new URL("./package.json", import.meta.url), "utf8"),
 );
 
+// Publish data/*.json as static files (build/data/), so other tools can read the same
+// source of truth at /portfolio-react/data/<name>.json. contact.json stays private.
+const PRIVATE_DATA = new Set(["contact.json"]);
+function publishData() {
+   return {
+      name: "publish-data",
+      apply: "build",
+      closeBundle() {
+         const src = new URL("./data/", import.meta.url);
+         const out = new URL("./build/data/", import.meta.url);
+         mkdirSync(out, { recursive: true });
+         for (const file of readdirSync(src)) {
+            if (file.endsWith(".json") && !PRIVATE_DATA.has(file)) {
+               copyFileSync(new URL(file, src), new URL(file, out));
+            }
+         }
+      },
+   };
+}
+
 export default defineConfig(() => ({
-   plugins: [tailwindcss(), react()],
+   plugins: [tailwindcss(), react(), publishData()],
    base: "/portfolio-react/",
    // Build stamp shown in the footer status bar.
    define: {
