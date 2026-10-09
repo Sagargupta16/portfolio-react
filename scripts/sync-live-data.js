@@ -27,11 +27,24 @@ const ACHIEVEMENTS_PATH = resolve(__dirname, "../data/achievements.json");
 const GITHUB_USER = process.env.GITHUB_USER || "Sagargupta16";
 const LEETCODE_USER = process.env.LEETCODE_USER || "sagargupta1610";
 const TOKEN = process.env.GITHUB_TOKEN || "";
+const ME = GITHUB_USER.toLowerCase();
 // Own repos and the user's org: Q&A there is self-hosted, not community help.
-const SKIP_DISCUSSION_OWNERS = new Set([GITHUB_USER.toLowerCase(), "mca-nitw"]);
+const SKIP_DISCUSSION_OWNERS = new Set([ME, "mca-nitw"]);
+const STAR_DRIFT = 0.05;
 
 const changes = [];
 const note = (msg) => changes.push(msg);
+// API text is untrusted: drop control characters and cap the length before logging.
+const isControl = (ch) => {
+   const code = ch.codePointAt(0);
+   return code < 0x20 || code === 0x7f;
+};
+const clean = (value) =>
+   Array.from(String(value), (ch) => (isControl(ch) ? " " : ch))
+      .join("")
+      .slice(0, 300);
+const warn = (what, err) =>
+   console.warn(`skip ${clean(what)}: ${clean(err?.message ?? err)}`);
 
 const ghHeaders = {
    Accept: "application/vnd.github+json",
@@ -55,57 +68,72 @@ async function ghGraphql(query, variables) {
       body: JSON.stringify({ query, variables }),
    });
    const body = await res.json();
-   if (!res.ok || body.errors)
-      throw new Error(
-         `GraphQL -> ${res.status} ${JSON.stringify(body.errors ?? "")}`,
-      );
+   if (!res.ok || body.errors) throw new Error(`GraphQL -> ${res.status}`);
    return body.data;
 }
 
 // ---------- open-source PRs ----------
 
-async function syncPullRequests(prs) {
-   const stars = new Map();
-   for (const pr of prs) {
-      const m = /github\.com\/([^/]+)\/([^/]+)\/pull\/(\d+)/.exec(pr.url || "");
-      if (!m) continue;
-      const [, owner, repo, number] = m;
-      try {
-         const live = await ghRest(`/repos/${owner}/${repo}/pulls/${number}`);
-         const status = live.merged_at
-            ? "merged"
-            : live.state === "open"
-              ? "open"
-              : "closed";
-         const mergedAt = live.merged_at
-            ? live.merged_at.slice(0, 10)
-            : pr.merged_at;
-         if (status !== pr.status)
-            note(`PR ${owner}/${repo}#${number}: ${pr.status} -> ${status}`);
-         if (status === "merged" && mergedAt !== pr.merged_at)
-            note(`PR ${owner}/${repo}#${number}: merged_at -> ${mergedAt}`);
-         pr.status = status;
-         if (status === "merged") pr.merged_at = mergedAt;
+function liveStatus(pr) {
+   if (pr.merged_at) return "merged";
+   return pr.state === "open" ? "open" : "closed";
+}
 
-         const key = `${owner}/${repo}`.toLowerCase();
-         if (!stars.has(key))
-            stars.set(
-               key,
-               (await ghRest(`/repos/${owner}/${repo}`)).stargazers_count,
-            );
-         const s = stars.get(key);
-         // Only move stars by more than 5% so routine drift does not make noisy PRs.
-         if (
-            typeof pr.stars !== "number" ||
-            Math.abs(s - pr.stars) / Math.max(pr.stars, 1) > 0.05
-         ) {
-            note(`stars ${owner}/${repo}: ${pr.stars} -> ${s}`);
-            pr.stars = s;
+function applyPrState(entry, live, ref) {
+   const status = liveStatus(live);
+   if (status !== entry.status) note(`PR ${ref}: ${entry.status} -> ${status}`);
+   entry.status = status;
+   if (status !== "merged") return;
+   const mergedAt = live.merged_at.slice(0, 10);
+   if (mergedAt !== entry.merged_at)
+      note(`PR ${ref}: merged_at -> ${mergedAt}`);
+   entry.merged_at = mergedAt;
+}
+
+function applyStars(entry, stars, repo) {
+   const drift =
+      Math.abs(stars - entry.stars) / Math.max(Number(entry.stars) || 1, 1);
+   // Only move stars by more than 5% so routine drift does not make noisy PRs.
+   if (typeof entry.stars === "number" && drift <= STAR_DRIFT) return;
+   note(`stars ${repo}: ${entry.stars} -> ${stars}`);
+   entry.stars = stars;
+}
+
+async function syncPullRequests(prs) {
+   const parsed = prs
+      .map((entry) => ({
+         entry,
+         m: /github\.com\/([^/]+)\/([^/]+)\/pull\/(\d+)/.exec(entry.url || ""),
+      }))
+      .filter((x) => x.m);
+   const repos = [...new Set(parsed.map(({ m }) => `${m[1]}/${m[2]}`))];
+
+   const starsByRepo = new Map(
+      await Promise.all(
+         repos.map(async (repo) => {
+            try {
+               return [repo, (await ghRest(`/repos/${repo}`)).stargazers_count];
+            } catch (err) {
+               warn(`stars ${repo}`, err);
+               return [repo, null];
+            }
+         }),
+      ),
+   );
+
+   await Promise.all(
+      parsed.map(async ({ entry, m }) => {
+         const repo = `${m[1]}/${m[2]}`;
+         try {
+            const live = await ghRest(`/repos/${repo}/pulls/${m[3]}`);
+            applyPrState(entry, live, `${repo}#${m[3]}`);
+            const stars = starsByRepo.get(repo);
+            if (stars !== null) applyStars(entry, stars, repo);
+         } catch (err) {
+            warn(`PR ${entry.url}`, err);
          }
-      } catch (err) {
-         console.warn(`skip PR ${pr.url}: ${err.message}`);
-      }
-   }
+      }),
+   );
 }
 
 // ---------- discussions ----------
@@ -120,73 +148,76 @@ const SEARCH = `query($q:String!,$c:String){ search(type:DISCUSSION, query:$q, f
 const discussionNumber = (url) =>
    Number(/discussions\/(\d+)/.exec(url || "")?.[1]);
 const discussionKey = (repo, n) => `${repo.toLowerCase()}#${n}`;
+const answeredByMe = (d) => d?.answer?.author?.login?.toLowerCase() === ME;
 
-async function syncDiscussions(list) {
-   const me = GITHUB_USER.toLowerCase();
-   const known = new Map(
-      list.map((d) => [discussionKey(d.repo, discussionNumber(d.url)), d]),
+async function refreshKnownDiscussions(list) {
+   await Promise.all(
+      list.map(async (d) => {
+         const [owner, repo] = d.repo.split("/");
+         const n = discussionNumber(d.url);
+         try {
+            const data = await ghGraphql(DISCUSSION, { o: owner, r: repo, n });
+            if (
+               answeredByMe(data.repository?.discussion) &&
+               d.status !== "accepted"
+            ) {
+               note(`discussion ${d.repo}#${n}: ${d.status} -> accepted`);
+               d.status = "accepted";
+            }
+         } catch (err) {
+            warn(`discussion ${d.url}`, err);
+         }
+      }),
    );
+}
 
-   for (const d of list) {
-      const [owner, repo] = d.repo.split("/");
-      try {
-         const data = await ghGraphql(DISCUSSION, {
-            o: owner,
-            r: repo,
-            n: discussionNumber(d.url),
-         });
-         const answeredByMe =
-            data.repository?.discussion?.answer?.author?.login?.toLowerCase() ===
-            me;
-         if (answeredByMe && d.status !== "accepted") {
-            note(
-               `discussion ${d.repo}#${discussionNumber(d.url)}: ${d.status} -> accepted`,
-            );
-            d.status = "accepted";
-         }
-      } catch (err) {
-         console.warn(`skip discussion ${d.url}: ${err.message}`);
-      }
-   }
+// Paginate with recursion so each page waits for the previous cursor.
+async function searchCommented(cursor = null, found = []) {
+   const { search } = await ghGraphql(SEARCH, {
+      q: `commenter:${GITHUB_USER}`,
+      c: cursor,
+   });
+   found.push(...search.nodes.filter((n) => n?.repository));
+   return search.pageInfo.hasNextPage
+      ? searchCommented(search.pageInfo.endCursor, found)
+      : found;
+}
 
+function isNewAcceptedAnswer(node, known) {
+   const repo = node.repository.nameWithOwner;
+   const owner = repo.split("/")[0].toLowerCase();
+   const selfAsked = node.author?.login?.toLowerCase() === ME;
+   return (
+      answeredByMe(node) &&
+      !selfAsked &&
+      !SKIP_DISCUSSION_OWNERS.has(owner) &&
+      !known.has(discussionKey(repo, node.number))
+   );
+}
+
+async function addNewAcceptedDiscussions(list) {
+   const known = new Set(
+      list.map((d) => discussionKey(d.repo, discussionNumber(d.url))),
+   );
+   let nodes;
    try {
-      let cursor = null;
-      do {
-         const { search } = await ghGraphql(SEARCH, {
-            q: `commenter:${GITHUB_USER}`,
-            c: cursor,
-         });
-         for (const n of search.nodes) {
-            if (!n?.repository) continue;
-            const repo = n.repository.nameWithOwner;
-            const owner = repo.split("/")[0].toLowerCase();
-            const accepted = n.answer?.author?.login?.toLowerCase() === me;
-            const selfAsked = n.author?.login?.toLowerCase() === me;
-            if (!accepted || selfAsked || SKIP_DISCUSSION_OWNERS.has(owner))
-               continue;
-            if (known.has(discussionKey(repo, n.number))) continue;
-            const entry = {
-               repo,
-               title: n.title,
-               url: n.url,
-               status: "accepted",
-            };
-            // Keep accepted answers grouped ahead of the "helpful" ones.
-            const firstHelpful = list.findIndex((d) => d.status !== "accepted");
-            list.splice(
-               firstHelpful === -1 ? list.length : firstHelpful,
-               0,
-               entry,
-            );
-            known.set(discussionKey(repo, n.number), entry);
-            note(`discussion added: ${repo}#${n.number} (accepted)`);
-         }
-         cursor = search.pageInfo.hasNextPage
-            ? search.pageInfo.endCursor
-            : null;
-      } while (cursor);
+      nodes = await searchCommented();
    } catch (err) {
-      console.warn(`skip discussion search: ${err.message}`);
+      warn("discussion search", err);
+      return;
+   }
+   for (const node of nodes.filter((n) => isNewAcceptedAnswer(n, known))) {
+      const repo = node.repository.nameWithOwner;
+      // Keep accepted answers grouped ahead of the "helpful" ones.
+      const firstHelpful = list.findIndex((d) => d.status !== "accepted");
+      list.splice(firstHelpful === -1 ? list.length : firstHelpful, 0, {
+         repo,
+         title: node.title,
+         url: node.url,
+         status: "accepted",
+      });
+      known.add(discussionKey(repo, node.number));
+      note(`discussion added: ${repo}#${node.number} (accepted)`);
    }
 }
 
@@ -198,6 +229,31 @@ const LEETCODE = `query($u:String!){
   userContestRankingHistory(username:$u){ attended rating ranking } }`;
 
 const floorTo = (n, step) => `${Math.floor(n / step) * step}+`;
+
+function leetcodeFields(data, fallbackBadge) {
+   const solved = Object.fromEntries(
+      data.matchedUser.submitStatsGlobal.acSubmissionNum.map((x) => [
+         x.difficulty,
+         x.count,
+      ]),
+   );
+   const ranking = data.userContestRanking;
+   const attended = data.userContestRankingHistory.filter((x) => x.attended);
+   if (!attended.length || !solved.All)
+      throw new Error("empty profile response");
+   return {
+      problems_solved: floorTo(solved.All, 100),
+      hard_solved: floorTo(solved.Hard, 10),
+      contests: String(ranking.attendedContestsCount),
+      // LeetCode displays rating rounded down; keep the same convention.
+      best_rating: String(
+         Math.floor(Math.max(...attended.map((x) => x.rating))),
+      ),
+      best_contest_rank: String(Math.min(...attended.map((x) => x.ranking))),
+      badge: ranking.badge?.name || fallbackBadge,
+      top_percentage: `${ranking.topPercentage.toFixed(1)}%`,
+   };
+}
 
 async function syncLeetcode(lc) {
    try {
@@ -215,36 +271,13 @@ async function syncLeetcode(lc) {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const { data } = await res.json();
-      const solved = Object.fromEntries(
-         data.matchedUser.submitStatsGlobal.acSubmissionNum.map((x) => [
-            x.difficulty,
-            x.count,
-         ]),
-      );
-      const ranking = data.userContestRanking;
-      const attended = data.userContestRankingHistory.filter((x) => x.attended);
-      if (!attended.length || !solved.All)
-         throw new Error("empty profile response");
-      const next = {
-         problems_solved: floorTo(solved.All, 100),
-         hard_solved: floorTo(solved.Hard, 10),
-         contests: String(ranking.attendedContestsCount),
-         // LeetCode displays rating rounded down; keep the same convention.
-         best_rating: String(
-            Math.floor(Math.max(...attended.map((x) => x.rating))),
-         ),
-         best_contest_rank: String(Math.min(...attended.map((x) => x.ranking))),
-         badge: ranking.badge?.name || lc.badge,
-         top_percentage: `${ranking.topPercentage.toFixed(1)}%`,
-      };
-      for (const [k, v] of Object.entries(next)) {
-         if (lc[k] !== v) {
-            note(`leetcode ${k}: ${lc[k]} -> ${v}`);
-            lc[k] = v;
-         }
+      for (const [k, v] of Object.entries(leetcodeFields(data, lc.badge))) {
+         if (lc[k] === v) continue;
+         note(`leetcode ${k}: ${lc[k]} -> ${v}`);
+         lc[k] = v;
       }
    } catch (err) {
-      console.warn(`skip LeetCode: ${err.message}`);
+      warn("LeetCode", err);
    }
 }
 
@@ -255,9 +288,11 @@ const achievements = JSON.parse(readFileSync(ACHIEVEMENTS_PATH, "utf8"));
 const before = JSON.stringify([projects, achievements]);
 
 await syncPullRequests(projects.open_source_contributions || []);
-await syncDiscussions(projects.community_discussions || []);
-if (achievements.coding_platform_stats?.leetcode)
+await refreshKnownDiscussions(projects.community_discussions || []);
+await addNewAcceptedDiscussions(projects.community_discussions || []);
+if (achievements.coding_platform_stats?.leetcode) {
    await syncLeetcode(achievements.coding_platform_stats.leetcode);
+}
 
 if (JSON.stringify([projects, achievements]) === before) {
    console.log("No changes.");
@@ -272,5 +307,7 @@ if (JSON.stringify([projects, achievements]) === before) {
       JSON.stringify(achievements, null, 3) + "\n",
       "utf8",
    );
-   console.log(`${changes.length} change(s):\n- ${changes.join("\n- ")}`);
+   console.log(
+      `${changes.length} change(s):\n- ${changes.map(clean).join("\n- ")}`,
+   );
 }
