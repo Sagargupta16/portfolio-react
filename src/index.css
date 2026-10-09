@@ -304,6 +304,7 @@ html[data-motion="reduced"] .project-action:active {
 }
 
 .section-header-heading {
+   position: relative;
    display: flex;
    align-items: center;
    gap: clamp(16px, 3vw, 32px);
@@ -585,6 +586,39 @@ html[data-motion="reduced"] .project-action:active {
 
 html[data-motion="reduced"] .sagar-face {
    animation: none;
+}
+
+/* ===== Mascot: mini Sagar perched on the active section's heading rule ===== */
+.mascot-perch {
+   --mascot-h: 88px;
+   position: absolute;
+   top: 50%;
+   right: clamp(4px, 4%, 48px);
+   width: calc(var(--mascot-h) * 0.75);
+   height: 0;
+   pointer-events: none;
+}
+
+@media (max-width: 640px) {
+   .mascot-perch {
+      --mascot-h: 68px;
+   }
+}
+
+.mascot {
+   position: absolute;
+   inset: 0;
+   pointer-events: auto;
+   cursor: pointer;
+}
+
+.mascot-frame {
+   position: absolute;
+   left: 0;
+   width: 100%;
+   height: var(--mascot-h);
+   background-size: 800% 100%;
+   background-repeat: no-repeat;
 }
 
 /* ===== News rows (flat, hairline on hover; linked rows lift slightly) ===== */
