@@ -121,6 +121,13 @@ const FooterContent = () => {
                >
                   <MakerMark size={40} />
                </motion.button>
+               <p
+                  className="font-signature"
+                  aria-hidden="true"
+                  style={{ color: "#f4f6f7", fontSize: 30, lineHeight: 1 }}
+               >
+                  {name}
+               </p>
                <p style={{ color: "rgba(244,246,247,0.8)", fontSize: 14 }}>
                   &copy; {CURRENT_YEAR} {name}. All rights reserved.
                </p>

@@ -10,6 +10,7 @@ import useBreakpoint from "@hooks/useBreakpoint";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import HeroSocial from "./HeroSocial";
 import HeroTagline from "./HeroTagline";
+import { useIntroDone } from "@utils/introState";
 import {
    HEADLINE_MASK_STYLE,
    heroContainer,
@@ -66,6 +67,7 @@ const HeroContent = () => {
    const headline = useMemo(() => getHeadline(), []);
 
    const { navigateToSection } = useSectionNavigation();
+   const introDone = useIntroDone();
 
    return (
       <motion.div
@@ -73,7 +75,8 @@ const HeroContent = () => {
          className="relative z-10 flex flex-col items-center text-center px-6 pt-24 pb-24 md:pt-20 gap-5 md:gap-6 max-w-4xl mx-auto"
          variants={heroContainer}
          initial="hidden"
-         animate="visible"
+         // Held until the intro curtain starts lifting, so it plays in view.
+         animate={introDone ? "visible" : "hidden"}
       >
          {/* Maker keeps the same footprint as the previous brand tile. */}
          <motion.div variants={heroLogo}>
@@ -112,7 +115,11 @@ const HeroContent = () => {
                   className="block text-balance"
                   variants={heroHeadlineLine}
                >
-                  Hi, I&apos;m <span style={{ color: CYAN }}>{name}</span>.
+                  Hi, I&apos;m{" "}
+                  <span className="font-signature" style={{ color: CYAN }}>
+                     {name}
+                  </span>
+                  .
                </motion.span>
             </span>
             <span style={HEADLINE_MASK_STYLE}>
