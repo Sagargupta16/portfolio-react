@@ -119,7 +119,7 @@ const HeroContent = () => {
                   <span className="font-signature" style={{ color: CYAN }}>
                      {name}
                   </span>
-                  .
+                  {"."}
                </motion.span>
             </span>
             <span style={HEADLINE_MASK_STYLE}>

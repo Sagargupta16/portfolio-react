@@ -531,8 +531,8 @@ html[data-motion="reduced"] .project-action:active {
    overflow: visible;
 }
 
-/* Signature: the name is signed on in Yellowtail (intro only; the site keeps
-   Bricolage / Inter / JetBrains Mono). Paused until the font is ready. */
+/* Signature: the intro name is signed on in the Yellowtail script face and
+   stays paused until that font has loaded. */
 .intro-splash-name text {
    font-family: "Yellowtail", var(--font-display);
    font-size: 168px;
