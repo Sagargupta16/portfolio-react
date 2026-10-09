@@ -10,7 +10,6 @@ export const ORBIT_RADIUS = 124;
 export const TILE_SIZE = 40;
 export const TILE_RADIUS = 12;
 export const GLYPH_SIZE = 18;
-export const MAKER_SIZE = 112;
 
 /** One clockwise revolution of the stack ring, in seconds. */
 export const ORBIT_PERIOD = 40;

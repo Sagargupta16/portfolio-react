@@ -2,6 +2,7 @@ import { motion, type Variants } from "motion/react";
 import { VIEWPORT_MARGIN } from "@utils/animations";
 import { EASING, MAX_WIDTH } from "@/constants/theme";
 import { CONTENT_SECTIONS } from "@/constants/sections";
+import Mascot from "./Mascot";
 
 interface Props {
    sectionId: string;
@@ -83,6 +84,7 @@ const SectionHeader = ({ sectionId, title, subtitle }: Props) => {
                style={{ transformOrigin: "left" }}
                aria-hidden="true"
             />
+            <Mascot sectionId={sectionId} />
          </div>
       </motion.div>
    );
