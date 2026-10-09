@@ -88,6 +88,9 @@ const NewsRow = ({ item, isMobile }: { item: NewsItem; isMobile: boolean }) => {
    const major = item.impact === "major";
    const minor = item.impact === "minor";
    const textSize = isMobile ? 14 : 15;
+   const split = item.text.lastIndexOf(" ") + 1;
+   const leadText = item.text.slice(0, split);
+   const lastWord = item.text.slice(split);
    const body = (
       <>
          <span
@@ -112,19 +115,27 @@ const NewsRow = ({ item, isMobile }: { item: NewsItem; isMobile: boolean }) => {
                   lineHeight: 1.55,
                }}
             >
-               {item.text}
-               {item.link && (
-                  <ArrowUpRight
-                     size={14}
-                     aria-hidden="true"
-                     className="news-row-arrow"
-                     style={{
-                        display: "inline",
-                        marginLeft: 4,
-                        verticalAlign: "-2px",
-                        color: CYAN,
-                     }}
-                  />
+               {item.link ? (
+                  <>
+                     {leadText}
+                     {/* Last word and arrow wrap together, so the arrow never sits alone on a line. */}
+                     <span style={{ whiteSpace: "nowrap" }}>
+                        {lastWord}
+                        <ArrowUpRight
+                           size={14}
+                           aria-hidden="true"
+                           className="news-row-arrow"
+                           style={{
+                              display: "inline",
+                              marginLeft: 4,
+                              verticalAlign: "-2px",
+                              color: CYAN,
+                           }}
+                        />
+                     </span>
+                  </>
+               ) : (
+                  item.text
                )}
             </span>
             <span
@@ -216,7 +227,8 @@ const News = () => {
                      style={{
                         display: "flex",
                         flexDirection: "column",
-                        gap: 2,
+                        // Highlight cards need breathing room between borders.
+                        gap: isMobile ? 10 : 12,
                      }}
                   >
                      <AnimatePresence initial={false}>
