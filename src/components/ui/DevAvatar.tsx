@@ -22,10 +22,10 @@ const SPIN = {
 };
 
 /**
- * Maker with the real stack orbiting it. The ring turns clockwise once
- * per ORBIT_PERIOD and every tile counter-rotates so its logo stays upright;
- * besides the Maker mark leaning toward the pointer (AvatarMark), that is the
- * only motion. Disc and dashed track never move, and
+ * Illustrated portrait with the real stack orbiting it. The ring turns
+ * clockwise once per ORBIT_PERIOD and every tile counter-rotates so its logo
+ * stays upright; the face inside (SagarFace) looks toward the pointer and
+ * blinks. Disc and dashed track never move, and
  * the entrance comes from About.tsx's wrapper variant, not from here.
  */
 const DevAvatar = () => {

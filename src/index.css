@@ -568,6 +568,25 @@ html[data-motion="reduced"] .project-action:active {
    }
 }
 
+/* ===== About portrait (SagarFace): slow idle float ===== */
+.sagar-face {
+   animation: sagar-float 4.5s ease-in-out infinite;
+}
+
+@keyframes sagar-float {
+   0%,
+   100% {
+      transform: translateY(0);
+   }
+   50% {
+      transform: translateY(-3px);
+   }
+}
+
+html[data-motion="reduced"] .sagar-face {
+   animation: none;
+}
+
 /* ===== News rows (flat, hairline on hover; linked rows lift slightly) ===== */
 .news-row {
    border: 1px solid transparent;
