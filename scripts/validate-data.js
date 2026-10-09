@@ -125,6 +125,52 @@ const services = loadJson("data/services.json");
 const projects = loadJson("data/projects.json");
 const achievements = loadJson("data/achievements.json");
 const contact = loadJson("data/contact.json");
+const news = loadJson("data/news.json");
+
+const NEWS_TYPES = new Set([
+   "launch",
+   "oss",
+   "community",
+   "cert",
+   "award",
+   "work",
+   "education",
+]);
+if (requireArray(news, "news")) {
+   const seen = new Set();
+   news.forEach((item, index) => {
+      const path = `news[${index}]`;
+      if (!requireRecord(item, path)) return;
+      if (!/^\d{4}-\d{2}(-\d{2})?$/.test(item.date ?? "")) {
+         fail(`${path}.date`, "must use YYYY-MM or YYYY-MM-DD");
+      }
+      if (!NEWS_TYPES.has(item.type)) {
+         fail(`${path}.type`, `must be one of ${[...NEWS_TYPES].join(", ")}`);
+      }
+      requireString(item.text, `${path}.text`);
+      if (typeof item.text === "string" && item.text.length > 160) {
+         fail(`${path}.text`, "keep news lines under 160 characters");
+      }
+      if (item.link !== undefined) requireUrl(item.link, `${path}.link`);
+      if (
+         item.impact !== undefined &&
+         !["major", "minor"].includes(item.impact)
+      ) {
+         fail(`${path}.impact`, 'must be "major" or "minor" (omit for normal)');
+      }
+      const key = `${item.date}|${item.text}`;
+      if (seen.has(key)) fail(path, "duplicate news item");
+      seen.add(key);
+      // Newest first, compared by month so exact-day and month-only items can mix.
+      const prev = news[index - 1];
+      if (
+         prev &&
+         String(prev.date).slice(0, 7) < String(item.date).slice(0, 7)
+      ) {
+         fail(path, "news must be sorted newest first");
+      }
+   });
+}
 
 if (requireRecord(personal, "data/personal.json")) {
    for (const field of [

@@ -1,5 +1,6 @@
 export const CONTENT_SECTIONS = [
    { id: "about", label: "About", surface: "section-darker" },
+   { id: "news", label: "News", surface: "section-dark" },
    { id: "experience", label: "Experience", surface: "section-dark" },
    { id: "education", label: "Education", surface: "section-darker" },
    { id: "skills", label: "Skills", surface: "section-dark" },

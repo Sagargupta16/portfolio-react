@@ -41,6 +41,7 @@ const OMIT_BACKDROP = <></>;
 
 // DeferredSection renders these only near the viewport or on navigation.
 const About = lazy(() => import("@pages/about/About"));
+const News = lazy(() => import("@pages/news/News"));
 const Experience = lazy(() => import("@pages/experience/Experience"));
 const Skill = lazy(() => import("@pages/skill/Skill"));
 const Education = lazy(() => import("@pages/education/Education"));
@@ -52,6 +53,7 @@ const Stats = lazy(() => import("@pages/stats/Stats"));
 
 const SECTION_COMPONENTS = {
    about: About,
+   news: News,
    experience: Experience,
    education: Education,
    skills: Skill,

@@ -1,0 +1,340 @@
+[
+   {
+      "date": "2026-10",
+      "type": "launch",
+      "text": "Launched agent-brain: an open-source agent harness with a shared markdown memory for Claude Code, Codex and Kiro",
+      "link": "https://github.com/Sagargupta16/agent-brain"
+   },
+   {
+      "date": "2026-09-29",
+      "type": "community",
+      "text": "Accepted answer on community/community: List Artifacts REST API returns 500 Error",
+      "link": "https://github.com/orgs/community/discussions/209074",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-09",
+      "type": "launch",
+      "text": "Published a second AWS sample under aws-samples: Terraform governance for AWS Organizations on Control Tower",
+      "link": "https://github.com/aws-samples/sample-aws-terraform-org-governance",
+      "impact": "major"
+   },
+   {
+      "date": "2026-09",
+      "type": "launch",
+      "text": "Published 4 GitHub Actions on the Marketplace: GitHub Stats, LeetCode and OSS Contributions cards, plus readme-kit",
+      "link": "https://github.com/marketplace/actions/self-hosted-github-stats-card"
+   },
+   {
+      "date": "2026-08-29",
+      "type": "oss",
+      "text": "Merged into expressjs/multer (12K stars): Do not consume maxCount for files skipped by fileFilter",
+      "link": "https://github.com/expressjs/multer/pull/1426"
+   },
+   {
+      "date": "2026-07-13",
+      "type": "oss",
+      "text": "Merged into axios/axios (109K stars): Synthesize AxiosError message from AggregateError on dual-stack connection failures",
+      "link": "https://github.com/axios/axios/pull/11059",
+      "impact": "major"
+   },
+   {
+      "date": "2026-07-09",
+      "type": "oss",
+      "text": "Merged into lucide-icons/lucide (24K stars): Support kebab-case icon-node prop on Vue Icon component",
+      "link": "https://github.com/lucide-icons/lucide/pull/4512",
+      "impact": "major"
+   },
+   {
+      "date": "2026-07-08",
+      "type": "oss",
+      "text": "Merged into awslabs/agent-plugins: Quote CLAUDE_PLUGIN_ROOT in hook commands to support paths with spaces",
+      "link": "https://github.com/awslabs/agent-plugins/pull/212"
+   },
+   {
+      "date": "2026-07",
+      "type": "launch",
+      "text": "Published an AWS sample under aws-samples: an end-to-end SageMaker MLOps pipeline in Terraform",
+      "link": "https://github.com/aws-samples/sample-sagemaker-image-classification-mlops",
+      "impact": "major"
+   },
+   {
+      "date": "2026-07",
+      "type": "launch",
+      "text": "Released Ledger Sync: a self-hosted finance dashboard with an AI chatbot over your own statements",
+      "link": "https://sagargupta.online/ledger-sync/"
+   },
+   {
+      "date": "2026-07",
+      "type": "launch",
+      "text": "Published skillcheck on npm: a conformance suite for Agent Skills across 6 runtimes",
+      "link": "https://www.npmjs.com/package/@sagargupta1610/skillcheck"
+   },
+   {
+      "date": "2026-06",
+      "type": "launch",
+      "text": "Opened a Claude Code plugin marketplace with 16 curated plugins",
+      "link": "https://github.com/Sagargupta16/claude-skills"
+   },
+   {
+      "date": "2026-05",
+      "type": "launch",
+      "text": "Launched Kalchar: a production portfolio and commission site for a traditional folk artist",
+      "link": "https://kalchar.co.in/",
+      "impact": "major"
+   },
+   {
+      "date": "2026-04-30",
+      "type": "oss",
+      "text": "Merged into awslabs/agent-plugins: Fix: check file extension before defusedxml dependency",
+      "link": "https://github.com/awslabs/agent-plugins/pull/132"
+   },
+   {
+      "date": "2026-04",
+      "type": "launch",
+      "text": "Released Bedrock Multi-Model MCP: use any AWS Bedrock model from Claude Code or any MCP client",
+      "link": "https://github.com/Sagargupta16/bedrock-multi-model-mcp"
+   },
+   {
+      "date": "2026-03-28",
+      "type": "community",
+      "text": "Accepted answer on community/community: Best practices for handling persistent 202 responses from the contributor stats API",
+      "link": "https://github.com/orgs/community/discussions/190711",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-03-27",
+      "type": "community",
+      "text": "Accepted answer on community/community: Dependabot fixes not clearing",
+      "link": "https://github.com/orgs/community/discussions/190628",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-03-27",
+      "type": "community",
+      "text": "Accepted answer on community/community: Why aren't there any Claude models in my Copilot CLI?",
+      "link": "https://github.com/orgs/community/discussions/190641",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-03-24",
+      "type": "oss",
+      "text": "Merged into cloudposse/terraform-aws-tfstate-backend: Add S3 native locking docs, fix variable descriptions",
+      "link": "https://github.com/cloudposse/terraform-aws-tfstate-backend/pull/197",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-03-23",
+      "type": "oss",
+      "text": "Merged into apache/airflow (47K stars): Add template_fields support to SalesforceBulkOperator",
+      "link": "https://github.com/apache/airflow/pull/63109",
+      "impact": "major"
+   },
+   {
+      "date": "2026-03-16",
+      "type": "oss",
+      "text": "Merged into feast-dev/feast (7K stars): Add Claude Code agent skills for Feast",
+      "link": "https://github.com/feast-dev/feast/pull/6081"
+   },
+   {
+      "date": "2026-03-09",
+      "type": "oss",
+      "text": "Merged into awslabs/mcp (10K stars): Fix Kendra documentation menu to match source directory",
+      "link": "https://github.com/awslabs/mcp/pull/2607",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-03-06",
+      "type": "community",
+      "text": "Accepted answer on strands-agents/harness-sdk: AWS Lambda Layer Python installation issues",
+      "link": "https://github.com/strands-agents/harness-sdk/discussions/1467",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-03-04",
+      "type": "oss",
+      "text": "Merged into PrefectHQ/prefect (24K stars): Document that deployment steps are Python functions",
+      "link": "https://github.com/PrefectHQ/prefect/pull/20956",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-03",
+      "type": "launch",
+      "text": "Released GitScope: a Chrome extension and dashboard with deep GitHub profile insights",
+      "link": "https://chromewebstore.google.com/detail/gitscope/fndaanihifimmlnmkjdmjbbkbdajolff"
+   },
+   {
+      "date": "2026-03",
+      "type": "launch",
+      "text": "Released Claude Cost Optimizer: a Claude Code plugin that cuts costs 30-60%",
+      "link": "https://sagargupta.online/claude-cost-optimizer/"
+   },
+   {
+      "date": "2026-02",
+      "type": "launch",
+      "text": "Released Instagram Likes Leaderboard: find your biggest fans and ghost followers in the browser",
+      "link": "https://sagargupta.online/InstagramLikesLeaderboard/"
+   },
+   {
+      "date": "2026-01-31",
+      "type": "cert",
+      "text": "Earned AWS Certified Developer - Associate",
+      "link": "https://www.credly.com/badges/be7f9e0a-593a-4544-8dfd-f69f669ec57d",
+      "impact": "major"
+   },
+   {
+      "date": "2025-07-07",
+      "type": "cert",
+      "text": "Earned AWS Certified AI Practitioner",
+      "link": "https://www.credly.com/badges/e18d2154-e153-40b3-8f39-6684e561396e"
+   },
+   {
+      "date": "2025-07",
+      "type": "launch",
+      "text": "Built zero-downtime Blue-Green deployments on AWS with Terraform, ECS and CodePipeline",
+      "link": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform"
+   },
+   {
+      "date": "2025-06-28",
+      "type": "cert",
+      "text": "Earned AWS Certified Machine Learning Engineer - Associate",
+      "link": "https://www.credly.com/badges/d6dc337a-0af5-48f8-b64f-eb2a5925f07b",
+      "impact": "major"
+   },
+   {
+      "date": "2025-03",
+      "type": "launch",
+      "text": "Released SelfHub: an MCP server that acts as a personal memory hub for AI assistants",
+      "link": "https://github.com/Sagargupta16/SelfHub"
+   },
+   {
+      "date": "2025-03",
+      "type": "launch",
+      "text": "Released MCP Toolkit: drop-in auth, caching, rate limiting and logging for MCP servers",
+      "link": "https://github.com/Sagargupta16/mcp-toolkit"
+   },
+   {
+      "date": "2025-03",
+      "type": "launch",
+      "text": "Started Awesome MCP Servers: a curated list of Model Context Protocol servers and resources",
+      "link": "https://github.com/Sagargupta16/awesome-mcp-servers"
+   },
+   {
+      "date": "2024-09-10",
+      "type": "cert",
+      "text": "Earned HashiCorp Certified: Terraform Associate (003)",
+      "link": "https://www.credly.com/badges/8b0723a5-bac7-4262-b5b6-20337b2979a1",
+      "impact": "major"
+   },
+   {
+      "date": "2024-08",
+      "type": "work",
+      "text": "Moved up to Cloud Consultant (DevOps/MLOps) in AWS Professional Services",
+      "impact": "major"
+   },
+   {
+      "date": "2024-07-07",
+      "type": "cert",
+      "text": "Earned AWS Certified Solutions Architect - Associate",
+      "link": "https://www.credly.com/badges/591e74ef-f6a8-4b77-82dc-07e06fb8060e",
+      "impact": "major"
+   },
+   {
+      "date": "2024-07",
+      "type": "education",
+      "text": "Graduated MCA from NIT Warangal (CGPA 8.38)",
+      "impact": "major"
+   },
+   {
+      "date": "2024-05-02",
+      "type": "cert",
+      "text": "Earned AWS Certified Cloud Practitioner",
+      "link": "https://www.credly.com/badges/bf8ffb47-284c-4c45-adb8-3df4f807e404"
+   },
+   {
+      "date": "2024-03",
+      "type": "work",
+      "text": "Joined Amazon Web Services as Associate Professional Services, DevOps",
+      "impact": "major"
+   },
+   {
+      "date": "2024-03",
+      "type": "award",
+      "text": "4th Place: TriNIT Hackathon"
+   },
+   {
+      "date": "2023-12",
+      "type": "launch",
+      "text": "Built a LeetCode contest rating predictor: a neural network trained on 244K+ contest records",
+      "link": "https://leetcode-rating-predictor.onrender.com/"
+   },
+   {
+      "date": "2023-08",
+      "type": "community",
+      "text": "Elected Additional Secretary of CSEA, NIT Warangal"
+   },
+   {
+      "date": "2023-05",
+      "type": "work",
+      "text": "Software Developer Associate internship at Ikarus-3D, Mohali"
+   },
+   {
+      "date": "2023-03",
+      "type": "award",
+      "text": "1st Place: Coding Cauldron Online, Version '23",
+      "impact": "major"
+   },
+   {
+      "date": "2023-03",
+      "type": "award",
+      "text": "2nd Place: Manage the Damage, Version '23"
+   },
+   {
+      "date": "2022-12",
+      "type": "award",
+      "text": "1st Place: QFiesta, IGNOSI '22",
+      "impact": "major"
+   },
+   {
+      "date": "2022-12",
+      "type": "award",
+      "text": "2nd Place: Trial By Code, IGNOSI '22"
+   },
+   {
+      "date": "2022-10",
+      "type": "launch",
+      "text": "Launched the first version of this portfolio",
+      "link": "https://sagargupta.online/portfolio-react/",
+      "impact": "minor"
+   },
+   {
+      "date": "2022-09",
+      "type": "award",
+      "text": "Rank 1289: Google Kick Start '22, Round E"
+   },
+   {
+      "date": "2022-06",
+      "type": "award",
+      "text": "3rd Place: Logic Head, INFOTREK '22"
+   },
+   {
+      "date": "2022-05",
+      "type": "award",
+      "text": "Rank 1699: Google Kick Start '22, Round B"
+   },
+   {
+      "date": "2021-10",
+      "type": "award",
+      "text": "3rd Place: MOTHRA, Version '21"
+   },
+   {
+      "date": "2021-09",
+      "type": "education",
+      "text": "Started MCA at NIT Warangal"
+   },
+   {
+      "date": "2021-08",
+      "type": "education",
+      "text": "Completed BCA at DAVV Indore (CGPA 7.34)"
+   }
+]
