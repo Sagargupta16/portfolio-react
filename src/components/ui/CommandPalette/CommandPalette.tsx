@@ -27,6 +27,15 @@ const RESUME_URL =
 
 const close = () => setPaletteOpen(false);
 
+/** Exact hostname match (a substring check would accept evil.com/cal.com). */
+const hostOf = (url: string) => {
+   try {
+      return new URL(url).hostname;
+   } catch {
+      return "";
+   }
+};
+
 const openExternal = (url: string) => {
    globalThis.open(url, "_blank", "noopener,noreferrer");
    close();
@@ -62,7 +71,7 @@ const CommandPalette = ({ open }: { open: boolean }) => {
    const [copied, setCopied] = useState(false);
    const contacts = getContactOptions();
    const email = contacts.find((c) => c.link.startsWith("mailto:"))?.value;
-   const booking = contacts.find((c) => c.link.includes("cal.com"))?.link;
+   const booking = contacts.find((c) => hostOf(c.link) === "cal.com")?.link;
 
    const go = (id: string) => {
       close();

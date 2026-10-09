@@ -95,9 +95,6 @@ html {
    /* Always reserve the scrollbar gutter so opening a modal (which locks body
       scroll) doesn't shift the page wider. */
    scrollbar-gutter: stable;
-}
-
-html {
    font-optical-sizing: auto;
 }
 
