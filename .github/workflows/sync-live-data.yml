@@ -1,0 +1,76 @@
+name: Sync Live Data
+
+# Weekly refresh of facts that can be derived from public APIs (open-source PR status and
+# stars, accepted discussion answers, LeetCode stats). Opens or updates one PR for review
+# instead of pushing to main. A PR opened with GITHUB_TOKEN starts no other workflows, so
+# this job runs the data gates itself; merging the PR triggers the normal CI/CD deploy.
+
+on:
+   schedule:
+      - cron: "30 6 * * 1"
+   workflow_dispatch:
+
+permissions:
+   contents: write
+   pull-requests: write
+
+concurrency:
+   group: sync-live-data
+   cancel-in-progress: false
+
+jobs:
+   sync:
+      runs-on: ubuntu-latest
+      timeout-minutes: 10
+      env:
+         BRANCH: chore/sync-live-data
+      steps:
+         - name: Checkout code
+           uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+         - name: Setup pnpm
+           uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+           with:
+              version: 11.28.4
+
+         - name: Setup Node.js
+           uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+           with:
+              node-version: 24
+              cache: pnpm
+
+         - name: Install dependencies
+           run: pnpm install --frozen-lockfile
+
+         - name: Fetch live data
+           env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           run: node scripts/sync-live-data.js
+
+         - name: Format and validate
+           run: |
+              pnpm exec prettier --write data/projects.json data/achievements.json
+              pnpm validate:data
+
+         - name: Check for changes
+           id: changes
+           run: |
+              git diff --quiet -- data/ && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+         - name: Open or update the sync PR
+           if: steps.changes.outputs.changed == 'true'
+           env:
+              GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           run: |
+              git config user.name "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git switch -c "$BRANCH"
+              git add data/projects.json data/achievements.json
+              git commit -m "chore: sync live data [automated]"
+              # The bot branch is rebuilt from main each run; only this branch is force-pushed.
+              git push --force origin "$BRANCH"
+              if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
+                 gh pr create --base main --head "$BRANCH" \
+                    --title "chore: sync live data" \
+                    --body "Weekly refresh from public APIs (PR status and stars, accepted discussion answers, LeetCode stats). Data gates passed in the sync job. Review the diff, then merge to deploy."
+              fi
