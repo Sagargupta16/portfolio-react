@@ -1237,6 +1237,12 @@
       },
       {
          "repo": "community/community",
+         "title": "List Artifacts REST API returns 500 Error",
+         "url": "https://github.com/orgs/community/discussions/209074",
+         "status": "accepted"
+      },
+      {
+         "repo": "community/community",
          "title": "git filter-repo rewrote all branch histories - branches now show 5500+ commits ahead/behind main",
          "url": "https://github.com/orgs/community/discussions/190689",
          "status": "helpful"
