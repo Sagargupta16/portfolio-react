@@ -242,7 +242,7 @@
    {
       "date": "2024-07",
       "type": "education",
-      "text": "Graduated MCA from NIT Warangal (CGPA 8.38)",
+      "text": "Post-graduated: MCA from NIT Warangal, First Division with Distinction (CGPA 8.38)",
       "impact": "major"
    },
    {
@@ -330,11 +330,34 @@
    {
       "date": "2021-09",
       "type": "education",
-      "text": "Started MCA at NIT Warangal"
+      "text": "Started MCA (post-graduation) at NIT Warangal"
+   },
+   {
+      "date": "2021-09",
+      "type": "award",
+      "text": "Cleared NIMCET, the national MCA entrance for the NITs, with AIR 208",
+      "impact": "major"
    },
    {
       "date": "2021-08",
       "type": "education",
-      "text": "Completed BCA at DAVV Indore (CGPA 7.34)"
+      "text": "Graduated BCA from DAVV Indore (CGPA 7.34)"
+   },
+   {
+      "date": "2018-05",
+      "type": "education",
+      "text": "Started BCA at DAVV Indore"
+   },
+   {
+      "date": "2018-04",
+      "type": "education",
+      "text": "Passed Class XII at Happy Days School, Shivpuri",
+      "impact": "minor"
+   },
+   {
+      "date": "2016-04",
+      "type": "education",
+      "text": "Passed Class X at Kids Garden School, Shivpuri",
+      "impact": "minor"
    }
 ]
