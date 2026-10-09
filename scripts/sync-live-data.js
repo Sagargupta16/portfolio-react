@@ -23,6 +23,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECTS_PATH = resolve(__dirname, "../data/projects.json");
+const NEWS_PATH = resolve(__dirname, "../data/news.json");
 const ACHIEVEMENTS_PATH = resolve(__dirname, "../data/achievements.json");
 const GITHUB_USER = process.env.GITHUB_USER || "Sagargupta16";
 const LEETCODE_USER = process.env.LEETCODE_USER || "sagargupta1610";
@@ -79,11 +80,47 @@ function liveStatus(pr) {
    return pr.state === "open" ? "open" : "closed";
 }
 
+// ---------- news (data/news.json, newest first) ----------
+
+const news = JSON.parse(readFileSync(NEWS_PATH, "utf8"));
+
+/** Add one item unless its link is already in the news; keeps newest-first by month. */
+function addNews(item) {
+   if (item.link && news.some((n) => n.link === item.link)) return;
+   const at = news.findIndex(
+      (n) => n.date.slice(0, 7) <= item.date.slice(0, 7),
+   );
+   news.splice(at === -1 ? news.length : at, 0, item);
+   note(`news added: ${item.date} ${item.text.slice(0, 60)}`);
+}
+
+// Same tiers as the seeded history: docs PRs are minor, code into 20K+ star repos is major.
+function prImpact(entry) {
+   if (/\bdoc(s|ument)/i.test(entry.title)) return "minor";
+   return (entry.stars ?? 0) >= 20000 ? "major" : undefined;
+}
+
+function prNews(entry) {
+   const stars =
+      entry.stars >= 1000 ? ` (${Math.round(entry.stars / 1000)}K stars)` : "";
+   const impact = prImpact(entry);
+   return {
+      date: entry.merged_at,
+      type: "oss",
+      text: `Merged into ${entry.repo}${stars}: ${entry.title}`.slice(0, 159),
+      link: entry.url,
+      ...(impact ? { impact } : {}),
+   };
+}
+
 function applyPrState(entry, live, ref) {
    const status = liveStatus(live);
+   const newlyMerged = status === "merged" && entry.status !== "merged";
    if (status !== entry.status) note(`PR ${ref}: ${entry.status} -> ${status}`);
    entry.status = status;
    if (status !== "merged") return;
+   if (newlyMerged)
+      addNews(prNews({ ...entry, merged_at: live.merged_at.slice(0, 10) }));
    const mergedAt = live.merged_at.slice(0, 10);
    if (mergedAt !== entry.merged_at)
       note(`PR ${ref}: merged_at -> ${mergedAt}`);
@@ -143,7 +180,7 @@ const DISCUSSION = `query($o:String!,$r:String!,$n:Int!){repository(owner:$o,nam
 const SEARCH = `query($q:String!,$c:String){ search(type:DISCUSSION, query:$q, first:50, after:$c){
   pageInfo { hasNextPage endCursor }
   nodes { ... on Discussion { number title url author { login } repository { nameWithOwner }
-          answer { author { login } } } } } }`;
+          answer { author { login } createdAt } } } } }`;
 
 const discussionNumber = (url) =>
    Number(/discussions\/(\d+)/.exec(url || "")?.[1]);
@@ -217,6 +254,13 @@ async function addNewAcceptedDiscussions(list) {
          status: "accepted",
       });
       known.add(discussionKey(repo, node.number));
+      addNews({
+         date: node.answer.createdAt.slice(0, 10),
+         type: "community",
+         text: `Accepted answer on ${repo}: ${node.title}`.slice(0, 159),
+         link: node.url,
+         impact: "minor",
+      });
       note(`discussion added: ${repo}#${node.number} (accepted)`);
    }
 }
@@ -285,7 +329,7 @@ async function syncLeetcode(lc) {
 
 const projects = JSON.parse(readFileSync(PROJECTS_PATH, "utf8"));
 const achievements = JSON.parse(readFileSync(ACHIEVEMENTS_PATH, "utf8"));
-const before = JSON.stringify([projects, achievements]);
+const before = JSON.stringify([projects, achievements, news]);
 
 await syncPullRequests(projects.open_source_contributions || []);
 await refreshKnownDiscussions(projects.community_discussions || []);
@@ -294,9 +338,10 @@ if (achievements.coding_platform_stats?.leetcode) {
    await syncLeetcode(achievements.coding_platform_stats.leetcode);
 }
 
-if (JSON.stringify([projects, achievements]) === before) {
+if (JSON.stringify([projects, achievements, news]) === before) {
    console.log("No changes.");
 } else {
+   writeFileSync(NEWS_PATH, JSON.stringify(news, null, 3) + "\n", "utf8");
    writeFileSync(
       PROJECTS_PATH,
       JSON.stringify(projects, null, 3) + "\n",

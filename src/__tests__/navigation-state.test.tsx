@@ -1,11 +1,15 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import App from "../App";
+import { CONTENT_SECTIONS } from "@/constants/sections";
 
 // Keep the real shell, navigation, project filters and contact form. Stub only
 // unrelated sections and artwork; no request can send an email in these tests.
 vi.mock("@pages/about/About", () => ({
    default: () => <div>About section</div>,
+}));
+vi.mock("@pages/news/News", () => ({
+   default: () => <div>News section</div>,
 }));
 vi.mock("@pages/experience/Experience", () => ({
    default: () => <div>Experience section</div>,
@@ -117,7 +121,9 @@ describe("navigation and persistent UI state", () => {
             document.getElementById("contact"),
          ),
       );
-      expect(document.querySelectorAll("[data-section-ready]")).toHaveLength(9);
+      expect(document.querySelectorAll("[data-section-ready]")).toHaveLength(
+         CONTENT_SECTIONS.length,
+      );
       expect(
          vi.mocked(HTMLElement.prototype.scrollIntoView).mock.contexts,
       ).toContain(document.getElementById("contact"));

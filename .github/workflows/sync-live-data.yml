@@ -49,7 +49,7 @@ jobs:
 
          - name: Format and validate
            run: |
-              pnpm exec prettier --write data/projects.json data/achievements.json
+              pnpm exec prettier --write data/projects.json data/achievements.json data/news.json
               pnpm validate:data
 
          - name: Check for changes
@@ -65,7 +65,7 @@ jobs:
               git config user.name "github-actions[bot]"
               git config user.email "github-actions[bot]@users.noreply.github.com"
               git switch -c "$BRANCH"
-              git add data/projects.json data/achievements.json
+              git add data/projects.json data/achievements.json data/news.json
               git commit -m "chore: sync live data [automated]"
               # The bot branch is rebuilt from main each run; only this branch is force-pushed.
               git push --force origin "$BRANCH"

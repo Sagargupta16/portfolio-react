@@ -180,6 +180,20 @@ export interface CommunityDiscussion {
    status: "accepted" | "helpful";
 }
 
+export type NewsType =
+   "launch" | "oss" | "community" | "cert" | "award" | "work" | "education";
+
+/** One dated line in data/news.json, newest first. */
+export interface NewsItem {
+   /** YYYY-MM-DD when the exact day is known, otherwise YYYY-MM. */
+   date: string;
+   type: NewsType;
+   text: string;
+   link?: string;
+   /** "major" items are highlighted and lead the collapsed view; "minor" ones are toned down. Default normal. */
+   impact?: "major" | "minor";
+}
+
 /** Editable project content and showcase settings in data/projects.json. */
 export interface ProjectsFile {
    /** Featured project pinned above the date-sorted grid; null disables it. */
