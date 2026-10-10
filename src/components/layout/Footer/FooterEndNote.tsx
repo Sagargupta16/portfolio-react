@@ -3,6 +3,8 @@ import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { getContactOptions } from "@data/contact";
 import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import useMotionPreference from "@hooks/useMotionPreference";
+import useBreakpoint from "@hooks/useBreakpoint";
+import SlideToContact from "./SlideToContact";
 
 /* The end of the page, said plainly: an end-of-scroll line, a press-and-hold
    control that copies his email (a ring fills while held; letting go early
@@ -162,10 +164,12 @@ const HoldToCopy = ({ email }: { email: string }) => {
 };
 
 const FooterEndNote = () => {
-   const email =
-      getContactOptions().find((option) => option.link.startsWith("mailto:"))
-         ?.value ?? "";
+   const emailOption = getContactOptions().find((option) =>
+      option.link.startsWith("mailto:"),
+   );
+   const email = emailOption?.value ?? "";
    const vitals = useWebVitals();
+   const { isMobile } = useBreakpoint();
 
    return (
       <div className="footer-endnote">
@@ -173,7 +177,11 @@ const FooterEndNote = () => {
             You&apos;ve reached the bottom. Everything from here is an{" "}
             <em className="accent-serif">email</em>.
          </p>
-         {email && <HoldToCopy email={email} />}
+         {/* Phones slide to open the mail app; desktop holds to copy. */}
+         {email && isMobile && emailOption && (
+            <SlideToContact href={emailOption.link} />
+         )}
+         {email && !isMobile && <HoldToCopy email={email} />}
 
          <div className="footer-vitals" aria-label="Your visit, measured live">
             <span

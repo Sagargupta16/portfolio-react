@@ -25,6 +25,11 @@ import {
 import PageSection from "@components/layout/PageSection";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { parseProjectDate } from "@utils/projectMetadata";
+import {
+   projectSlug,
+   readProjectParam,
+   writeProjectParam,
+} from "@utils/projectLink";
 import { FILTERS } from "./projectConstants";
 import type { ProjectWithCategory } from "./projectConstants";
 import ProjectGrid from "./ProjectGrid";
@@ -81,6 +86,23 @@ const PILL_STYLE: CSSProperties = {
 const PILL_SPRING = { type: "spring", stiffness: 500, damping: 40 } as const;
 const TAP = { scale: 0.97 };
 
+/** The project a shared ?project=<slug> link points at, with its category. */
+const projectFromLink = (): ProjectWithCategory | null => {
+   const slug = readProjectParam();
+   if (!slug) return null;
+   const groups: [string, ReturnType<typeof getFeaturedProjects>][] = [
+      ["Featured", getFeaturedProjects()],
+      ["Community", getCommunityProjects()],
+      ["Collab", getCollaborativeProjects()],
+      ["Others", getOtherProjects()],
+   ];
+   for (const [category, projects] of groups) {
+      const match = projects.find((p) => projectSlug(p.title) === slug);
+      if (match) return { ...match, category };
+   }
+   return null;
+};
+
 const Projects = () => {
    const { reducedMotion } = useMotionPreference();
    const [activeFilter, setActiveFilter] = useState<string>("Featured");
@@ -89,8 +111,9 @@ const Projects = () => {
    // Flips on the first filter change: cards mounted afterwards enter with the
    // short swap rise instead of the taller first-scroll reveal.
    const [hasFiltered, setHasFiltered] = useState(false);
+   // A shared link opens straight into that project's details.
    const [selectedProject, setSelectedProject] =
-      useState<ProjectWithCategory | null>(null);
+      useState<ProjectWithCategory | null>(projectFromLink);
 
    const handleFilterChange = useCallback((filter: string) => {
       setActiveFilter(filter);
@@ -197,10 +220,15 @@ const Projects = () => {
       searchRef.current?.focus();
    };
 
-   const handleOpenProject = useCallback(
-      (project: ProjectWithCategory) => setSelectedProject(project),
-      [],
-   );
+   const handleOpenProject = useCallback((project: ProjectWithCategory) => {
+      setSelectedProject(project);
+      writeProjectParam(projectSlug(project.title));
+   }, []);
+
+   const handleCloseProject = useCallback(() => {
+      setSelectedProject(null);
+      writeProjectParam(null);
+   }, []);
 
    return (
       <PageSection
@@ -355,10 +383,7 @@ const Projects = () => {
             <OpenSourceBanner />
          </div>
 
-         <ProjectModal
-            project={selectedProject}
-            onClose={() => setSelectedProject(null)}
-         />
+         <ProjectModal project={selectedProject} onClose={handleCloseProject} />
       </PageSection>
    );
 };

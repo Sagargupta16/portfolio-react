@@ -698,3 +698,37 @@ html:not([data-motion="reduced"]) .compare-slider:active .compare-knob {
    color: var(--color-text-muted);
    padding-top: 2px;
 }
+
+/* Copy link in the project details header */
+.project-copy-link {
+   display: inline-flex;
+   align-items: center;
+   gap: 5px;
+   min-height: 24px;
+   padding: 2px 8px;
+   border: 1px solid rgb(255 255 255 / 0.1);
+   border-radius: 6px;
+   background: rgb(255 255 255 / 0.03);
+   color: var(--color-text-secondary);
+   font-family: var(--font-mono);
+   font-size: 11px;
+   cursor: pointer;
+   transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+}
+
+.project-copy-link:focus-visible {
+   color: var(--color-text-primary);
+}
+
+.project-copy-link:active {
+   transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .project-copy-link:hover {
+      color: var(--color-text-primary);
+      border-color: rgb(255 255 255 / 0.2);
+   }
+}

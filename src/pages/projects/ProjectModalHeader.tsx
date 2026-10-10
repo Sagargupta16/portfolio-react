@@ -1,7 +1,9 @@
-import { Calendar, Users, Star, FolderGit2 } from "lucide-react";
+import { useState } from "react";
+import { Calendar, Check, Link2, Users, Star, FolderGit2 } from "lucide-react";
 import ModalHeaderShell from "@components/ui/ModalHeaderShell";
 import { TEXT_PRIMARY, TEXT_MUTED, MONO_FONT } from "@/constants/theme";
 import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
+import { projectShareUrl, projectSlug } from "@utils/projectLink";
 import { EvidenceBadges } from "./ProjectCardHeader";
 
 interface ProjectModalHeaderProps {
@@ -10,6 +12,31 @@ interface ProjectModalHeaderProps {
    isMobile: boolean;
    onClose: () => void;
 }
+
+/** Copies a link that reopens exactly this project's details. */
+const CopyLinkButton = ({ title }: { title: string }) => {
+   const [copied, setCopied] = useState(false);
+   const copy = () => {
+      void navigator.clipboard
+         ?.writeText(projectShareUrl(projectSlug(title)))
+         .then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1600);
+         });
+   };
+   const Icon = copied ? Check : Link2;
+   return (
+      <button
+         type="button"
+         onClick={copy}
+         className="project-copy-link"
+         aria-live="polite"
+      >
+         <Icon size={11} aria-hidden="true" />
+         {copied ? "Link copied" : "Copy link"}
+      </button>
+   );
+};
 
 const ProjectModalHeader = ({
    project,
@@ -107,6 +134,7 @@ const ProjectModalHeader = ({
                {project.category}
             </span>
             <EvidenceBadges project={project} />
+            <CopyLinkButton title={project.title} />
          </div>
       </ModalHeaderShell>
    );
