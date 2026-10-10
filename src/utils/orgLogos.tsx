@@ -10,17 +10,22 @@ const LOGO_IMAGES: Record<string, { src: string; wide?: boolean }> = {
    "National Institute of Technology Warangal": { src: nitwLogo },
    "Devi Ahilya Vishwavidyalaya (DAVV)": { src: davvLogo },
    "Ikarus-3D": { src: ikarusLogo, wide: true },
-   "Happy Days School": { src: happyDaysLogo },
+   "Happy Days School": { src: happyDaysLogo, wide: true },
    "Kids Garden School": { src: kidsGardenLogo },
 };
 
 /**
- * Organization mark (crest, logo or monogram badge) for experience/education
- * cards, drawn `size` px tall. Returns null when no mark is registered --
+ * Organization mark (crest or logo) for experience/education cards, drawn
+ * `size` px tall; wide marks get up to 1.5x that width, capped at `maxWidth`
+ * so they stay inside a fixed tile. Returns null when no mark is registered --
  * callers keep their generic icon fallback.
  * Matching is prefix-based so "CSEA, NIT Warangal" also gets the NITW crest.
  */
-export const getOrgLogo = (name: string, size = 18): ReactNode => {
+export const getOrgLogo = (
+   name: string,
+   size = 18,
+   maxWidth = Infinity,
+): ReactNode => {
    if (name.includes("Amazon Web Services") || name.startsWith("AWS")) {
       return <FaAws size={size} color="#FF9900" aria-hidden="true" />;
    }
@@ -32,7 +37,7 @@ export const getOrgLogo = (name: string, size = 18): ReactNode => {
    );
    if (imageKey) {
       const image = LOGO_IMAGES[imageKey];
-      const width = image.wide ? size * 1.5 : size;
+      const width = Math.min(image.wide ? size * 1.5 : size, maxWidth);
       return (
          <img
             src={image.src}
