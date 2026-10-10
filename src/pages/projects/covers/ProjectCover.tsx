@@ -112,7 +112,7 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
                ...FILL,
                background: isImage
                   ? "linear-gradient(180deg, transparent 75%, rgb(14 20 23 / 0.75) 100%)"
-                  : "linear-gradient(180deg, transparent 55%, rgb(14 20 23 / 0.9) 100%)",
+                  : "linear-gradient(180deg, transparent 72%, rgb(14 20 23 / 0.85) 100%)",
                pointerEvents: "none",
             }}
          />

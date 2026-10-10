@@ -796,6 +796,12 @@ html[data-motion="reduced"] .sagar-face {
    z-index: 90;
    background: rgb(5 8 9 / 0.6);
    backdrop-filter: blur(6px);
+   /* Fades in with the panel instead of snapping on under it */
+   transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+
+   @starting-style {
+      opacity: 0;
+   }
 }
 
 .palette {

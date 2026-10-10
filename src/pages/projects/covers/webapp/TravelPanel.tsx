@@ -1,339 +1,325 @@
 import type { CSSProperties } from "react";
-import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
+import { Backdrop, Packet, Wires, type Hop } from "./StageParts";
 import {
-   CARD,
+   BORDER_BOX,
+   CLEAR,
+   INK,
    LABEL,
-   PANEL,
+   LABEL_ABOVE,
    WHITE_06,
-   WHITE_08,
-   WHITE_12,
+   WHITE_10,
    WHITE_14,
+   WHITE_18,
    WHITE_22,
-   WHITE_28,
-   WHITE_35,
+   WHITE_40,
    bar,
+   centredAt,
+   hCurve,
+   loop,
+   span,
    type PanelProps,
+   type Pt,
 } from "./shared";
 
-/* Tour Vibes: the Journals feed. Controls on top, two photo-first PostCards;
-   the left one loads out of its skeleton, an upload progress line runs and
-   the new journal slides in, a heart fills, then a tag filter refetches. */
+/* Tour Vibes: the New Journal form takes a photo (preview fills), the
+   FormData POST hands the image to Multer's diskStorage, and the created
+   post lands as the first PostCard in Journals, photo first, with its
+   MapPin location; then its Heart fills as it is liked. */
 
-const CYCLE = 5;
-const IMAGE_HEIGHT = 30;
+const CYCLE = 5.2;
+
+const FORM = { left: 8, right: 33, y: 30 };
+const GRID = { left: 60, right: 92, y: 42 };
+const MULTER_AT: Pt = { x: 47, y: 62 };
+
+const FORM_PAD = 7;
+const DROPZONE_H = 30;
+const DROPZONE_CENTRE = 1 + FORM_PAD + DROPZONE_H / 2;
+
+const CARD_H = 50;
+const PHOTO_H = 28;
+const CARD_GAP = 6;
+const OTHER_CARDS = ["north", "east", "south"];
+
+const UPLOAD: Hop = {
+   from: { x: FORM.right, y: FORM.y },
+   to: MULTER_AT,
+   depart: 0.16,
+   arrive: 0.34,
+};
+const CREATED: Hop = {
+   from: MULTER_AT,
+   to: { x: GRID.left, y: GRID.y },
+   depart: 0.44,
+   arrive: 0.58,
+};
+
+const ON_OFF = [0, 0, 1, 1, 0, 0];
+const HEART = 8;
 const HEART_PATH =
    "M12 21s-7-4.6-9.3-8.6C.6 9 2.6 4.5 6.7 4.5c2 0 3.6 1 4.6 2.6 1-1.6 2.6-2.6 4.6-2.6 4.1 0 6.1 4.5 4 7.9C19 16.4 12 21 12 21z";
 
-/* Beat boundaries as fractions of the cycle. */
-const T_LOAD = 0.16;
-const T_LOADED = 0.28;
-const T_UPLOAD = 0.4;
-const T_PRESSED = 0.43;
-const T_RELEASED = 0.46;
-const T_UPLOADED = 0.52;
-const T_LANDED = 0.6;
-const T_LIKE = 0.58;
-const T_LIKE_PEAK = 0.63;
-const T_LIKED = 0.68;
-const T_COUNT = 0.62;
-const T_FILTER = 0.76;
-const T_FILTERED = 0.82;
-const T_DIP = 0.78;
-const T_DIPPED = 0.84;
-const T_REFETCHED = 0.9;
-const T_RESET = 0.96;
+const photo = (tint: string, strength: string): string =>
+   `linear-gradient(160deg, ${tint}${strength}, ${tint}14)`;
 
-const EASE: Easing = "easeInOut";
-
-/* Infinite keyframe loop with one ease per segment: Motion runs opacity
-   through WAAPI, which would spread a single ease over the whole iteration
-   while transforms ease each segment, pulling the two tracks off the beats. */
-const loop = (
-   duration: number,
-   times: number[],
-   ease: Easing = EASE,
-): Transition => ({
-   duration,
-   repeat: Infinity,
-   times,
-   ease: times.slice(1).map(() => ease),
-});
-
-interface TagSpec {
-   width: number;
-   active?: number[];
-}
-
-/* Outline tag Badges; the active one moves from the second to the third. */
-const TAGS: TagSpec[] = [
-   { width: 18 },
-   { width: 24, active: [1, 1, 0, 0, 1] },
-   { width: 16, active: [0, 0, 1, 1, 0] },
-];
-
-const JOURNAL_CARD: CSSProperties = {
-   ...CARD,
-   borderRadius: 5,
-   position: "relative",
-   flex: 1,
-   minWidth: 0,
-   overflow: "hidden",
-};
-
-/* Search input, sort select and the New Journal button. */
-const ControlRow = ({ tint }: PanelProps) => (
-   <div
-      style={{
-         display: "flex",
-         alignItems: "center",
-         gap: 4,
-         height: 9,
-         flexShrink: 0,
-      }}
-   >
+/* MapPin teardrop plus the location name. */
+const Location = ({ tint }: PanelProps) => (
+   <span style={{ display: "flex", alignItems: "center", gap: 3 }}>
       <span
          style={{
-            position: "relative",
-            flex: 1,
-            maxWidth: "50%",
-            minWidth: 0,
-            height: 9,
-            borderRadius: 5,
-            background: WHITE_06,
-         }}
-      >
-         <span
-            style={{
-               position: "absolute",
-               left: 3,
-               top: 3,
-               width: 3,
-               height: 3,
-               borderRadius: "50%",
-               background: WHITE_35,
-            }}
-         />
-      </span>
-      <span style={{ ...LABEL, color: `${tint}b3` }}>NEWEST</span>
-      <span style={{ flex: 1 }} />
-      <motion.span
-         animate={{
-            scale: [1, 1, 0.9, 1, 1, 1],
-            opacity: [0.55, 0.55, 1, 1, 1, 0.55],
-         }}
-         transition={loop(CYCLE, [0, T_UPLOAD, T_PRESSED, T_RELEASED, 0.92, 1])}
-         style={{
-            ...LABEL,
-            padding: "1px 3px",
-            borderRadius: 3,
-            border: `1px solid ${tint}35`,
-            background: `${tint}0a`,
-            color: `${tint}cc`,
+            display: "block",
+            width: 5,
+            height: 5,
+            borderRadius: "50% 50% 50% 0",
+            background: tint,
+            transform: "rotate(-45deg)",
             flexShrink: 0,
          }}
-      >
-         NEW JOURNAL
-      </motion.span>
-   </div>
+      />
+      <span style={bar("50%", WHITE_14, 3)} />
+   </span>
 );
 
-const TagRow = ({ tint }: PanelProps) => (
-   <div style={{ display: "flex", gap: 3, height: 6, flexShrink: 0 }}>
-      {TAGS.map((tag) => (
+const tag = (width: number): CSSProperties => ({
+   display: "block",
+   width,
+   height: 7,
+   borderRadius: 4,
+   border: `1px solid ${WHITE_14}`,
+   boxSizing: BORDER_BOX,
+});
+
+/* PostForm: image dropzone, title, content, tags, location. */
+const JournalForm = ({ tint }: PanelProps) => (
+   <div style={span(FORM.left, FORM.right, FORM.y, DROPZONE_CENTRE)}>
+      <span style={LABEL_ABOVE}>NEW JOURNAL</span>
+      <div style={{ padding: FORM_PAD }}>
          <span
-            key={tag.width}
             style={{
                position: "relative",
                display: "block",
-               width: tag.width,
-               height: 6,
-               borderRadius: 3,
-               border: `1px solid ${WHITE_14}`,
-               boxSizing: "border-box",
+               height: DROPZONE_H,
+               borderRadius: 4,
+               border: `1px dashed ${WHITE_18}`,
+               boxSizing: BORDER_BOX,
+               overflow: "hidden",
             }}
          >
-            {tag.active && (
-               <motion.span
-                  animate={{ opacity: tag.active }}
-                  transition={loop(CYCLE, [
-                     0,
-                     T_FILTER,
-                     T_FILTERED,
-                     T_RESET,
-                     1,
-                  ])}
-                  style={{
-                     position: "absolute",
-                     inset: 0,
-                     borderRadius: 3,
-                     background: `${tint}40`,
-                  }}
-               />
-            )}
+            <motion.span
+               initial={{ opacity: 0 }}
+               animate={{ opacity: ON_OFF }}
+               transition={loop(CYCLE, [0, 0.04, 0.12, 0.9, 0.96, 1])}
+               style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: photo(tint, "8c"),
+               }}
+            />
          </span>
-      ))}
+         <span style={{ ...bar("72%", WHITE_22), marginTop: 6 }} />
+         <span style={{ ...bar("90%", WHITE_10, 3), marginTop: 5 }} />
+         <span style={{ ...bar("64%", WHITE_10, 3), marginTop: 3 }} />
+         <span style={{ display: "flex", gap: 3, marginTop: 5 }}>
+            <span style={tag(14)} />
+            <span style={tag(18)} />
+         </span>
+         <span style={{ display: "block", marginTop: 5 }}>
+            <Location tint={tint} />
+         </span>
+      </div>
    </div>
 );
 
-/* Multer upload: a progress line runs, then fades. */
-const ProgressLine = ({ tint }: PanelProps) => (
-   <motion.span
-      animate={{ scaleX: [0, 0, 1, 1, 0], opacity: [0, 1, 1, 0, 0] }}
-      transition={loop(CYCLE, [0, T_UPLOAD, T_UPLOADED, 0.56, 1])}
-      style={{
-         display: "block",
-         height: 1,
-         background: tint,
-         transformOrigin: "left",
-         flexShrink: 0,
-      }}
-   />
+/* Multer diskStorage into images/: the disk pulses as the file lands. */
+const MULTER_W = 20;
+const MULTER_H = 16;
+
+const MulterNode = ({ tint }: PanelProps) => (
+   <div style={{ ...centredAt(MULTER_AT), width: MULTER_W, height: MULTER_H }}>
+      <motion.span
+         initial={{ opacity: 0, scale: 1 }}
+         animate={{
+            opacity: [0, 0, 1, 0.5, 0, 0],
+            scale: [1, 1, 1.1, 1.45, 1.55, 1],
+         }}
+         transition={loop(CYCLE, [0, 0.34, 0.37, 0.41, 0.46, 1])}
+         style={{
+            position: "absolute",
+            inset: -1,
+            borderRadius: 5,
+            border: `1px solid ${tint}`,
+         }}
+      />
+      <span
+         style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 3,
+            padding: "0 4px",
+            borderRadius: 4,
+            border: `1px solid ${WHITE_18}`,
+            background: INK,
+            boxSizing: BORDER_BOX,
+         }}
+      >
+         <span style={bar("100%", WHITE_14, 2)} />
+         <span style={bar("70%", `${tint}99`, 2)} />
+      </span>
+      <span
+         style={{
+            ...LABEL,
+            left: "50%",
+            top: MULTER_H + 6,
+            translate: "-50% 0",
+         }}
+      >
+         MULTER
+      </span>
+   </div>
 );
 
-/* PostCard body: 16:9 image, title, MapPin meta line. */
-const JournalBody = ({ tint }: PanelProps) => (
+const POST_CARD: CSSProperties = {
+   position: "relative",
+   height: CARD_H,
+   borderRadius: 5,
+   border: `1px solid ${WHITE_10}`,
+   background: WHITE_06,
+   overflow: "hidden",
+   boxSizing: BORDER_BOX,
+};
+
+/* PostCard: aspect-video photo, title, MapPin line. */
+const CardBody = ({ tint, strength }: { tint: string; strength: string }) => (
    <>
       <span
          style={{
             display: "block",
-            height: IMAGE_HEIGHT,
-            background: `linear-gradient(180deg, ${tint}4d, ${tint}1a)`,
+            height: PHOTO_H,
+            background: photo(tint, strength),
          }}
       />
-      <span style={{ display: "block", padding: 3 }}>
-         <span style={bar("70%", WHITE_22)} />
-         <span
-            style={{
-               display: "flex",
-               alignItems: "center",
-               gap: 2,
-               marginTop: 2,
-            }}
-         >
-            <span
-               style={{
-                  display: "block",
-                  width: 4,
-                  height: 4,
-                  borderRadius: "50% 50% 50% 0",
-                  background: tint,
-                  transform: "rotate(-45deg)",
-                  flexShrink: 0,
-               }}
-            />
-            <span style={bar("45%", WHITE_12, 2)} />
+      <span style={{ display: "block", padding: "4px 5px 0" }}>
+         <span style={bar("70%", WHITE_22, 3)} />
+         <span style={{ display: "block", marginTop: 4 }}>
+            <Location tint={tint} />
          </span>
       </span>
    </>
 );
 
-const Heart = ({ fill }: { fill: string }) => (
-   <svg
+const HEART_SPOT: CSSProperties = {
+   position: "absolute",
+   right: 4,
+   bottom: 4,
+   width: HEART,
+   height: HEART,
+};
+
+/* Heart: outline at rest, filled tint once liked. */
+const Heart = ({ tint }: PanelProps) => (
+   <motion.svg
       viewBox="0 0 24 24"
-      width={6}
-      height={6}
-      style={{ position: "absolute", inset: 0 }}
+      width={HEART}
+      height={HEART}
+      initial={{ opacity: 0, scale: 0.6 }}
+      animate={{
+         opacity: [0, 0, 1, 1, 0, 0],
+         scale: [0.6, 0.6, 1.35, 1, 0.6, 0.6],
+      }}
+      transition={loop(CYCLE, [0, 0.7, 0.74, 0.78, 0.92, 1])}
+      style={HEART_SPOT}
    >
-      <path d={HEART_PATH} fill={fill} />
-   </svg>
+      <path d={HEART_PATH} fill={tint} />
+   </motion.svg>
 );
 
-/* LikeButton: heart scales and fills tint, the count block pops in. */
-const LikeMark = ({ tint }: PanelProps) => (
-   <span
+/* Journals grid; the created post lands in the empty first slot. */
+const JournalsGrid = ({ tint }: PanelProps) => (
+   <div
       style={{
          position: "absolute",
-         right: 3,
-         bottom: 3,
-         display: "flex",
-         alignItems: "center",
-         gap: 2,
+         left: `${GRID.left}%`,
+         right: `${100 - GRID.right}%`,
+         top: `${GRID.y}%`,
+         transform: `translateY(-${CARD_H / 2}px)`,
+         display: "grid",
+         gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+         gap: CARD_GAP,
       }}
    >
-      <motion.span
-         animate={{ scale: [1, 1, 1.4, 1, 1, 1] }}
-         transition={loop(CYCLE, [0, T_LIKE, T_LIKE_PEAK, T_LIKED, T_RESET, 1])}
-         style={{ position: "relative", display: "block", width: 6, height: 6 }}
-      >
-         <Heart fill={WHITE_28} />
-         <motion.span
-            animate={{ opacity: [0, 0, 1, 1, 0] }}
-            transition={loop(CYCLE, [0, T_LIKE, 0.64, T_RESET, 1])}
-            style={{ position: "absolute", inset: 0 }}
-         >
-            <Heart fill={tint} />
-         </motion.span>
-      </motion.span>
-      <motion.span
-         animate={{ scaleX: [0, 0, 1, 1, 0] }}
-         transition={loop(CYCLE, [0, T_COUNT, T_LIKED, T_RESET, 1])}
-         style={{ ...bar(4, WHITE_28, 2), transformOrigin: "left" }}
-      />
-   </span>
-);
-
-/* Left card: SkeletonCard resolves into the loaded PostCard. */
-const LoadedCard = ({ tint }: PanelProps) => (
-   <div style={JOURNAL_CARD}>
-      <motion.span
-         animate={{ opacity: [0.3, 0.3, 1, 1, 0.3] }}
-         transition={loop(CYCLE, [0, T_LOAD, T_LOADED, T_RESET, 1])}
-         style={{ display: "block" }}
-      >
-         <JournalBody tint={tint} />
-      </motion.span>
-      <motion.span
-         animate={{ opacity: [0.5, 0.5, 0, 0, 0.5] }}
-         transition={loop(CYCLE, [0, T_LOAD, T_LOADED, T_RESET, 1])}
+      <span style={LABEL_ABOVE}>JOURNALS</span>
+      <div
          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            height: IMAGE_HEIGHT,
-            background: WHITE_08,
+            ...POST_CARD,
+            border: `1px dashed ${WHITE_14}`,
+            background: CLEAR,
+            overflow: "visible",
          }}
-      />
-      <LikeMark tint={tint} />
+      >
+         <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: ON_OFF, y: [6, 6, 0, 0, 0, 6] }}
+            transition={loop(CYCLE, [0, 0.58, 0.66, 0.9, 0.96, 1])}
+            style={{
+               ...POST_CARD,
+               position: "absolute",
+               inset: -1,
+               height: "auto",
+            }}
+         >
+            <CardBody tint={tint} strength="b3" />
+            <svg
+               viewBox="0 0 24 24"
+               width={HEART}
+               height={HEART}
+               style={HEART_SPOT}
+            >
+               <path
+                  d={HEART_PATH}
+                  fill="none"
+                  stroke={WHITE_40}
+                  strokeWidth={2}
+               />
+            </svg>
+            <Heart tint={tint} />
+         </motion.div>
+      </div>
+      {OTHER_CARDS.map((id) => (
+         <div key={id} style={POST_CARD}>
+            <CardBody tint={tint} strength="40" />
+         </div>
+      ))}
    </div>
 );
 
-/* Right card: the freshly posted journal landing at the head of the feed. */
-const FreshCard = ({ tint }: PanelProps) => (
-   <motion.div
-      animate={{ y: [8, 8, 0, 0, 8], opacity: [0, 0, 1, 1, 0] }}
-      transition={loop(CYCLE, [0, T_UPLOADED, T_LANDED, T_RESET, 1])}
-      style={JOURNAL_CARD}
-   >
-      <JournalBody tint={tint} />
-   </motion.div>
-);
+const imageHead = (tint: string): CSSProperties => ({
+   left: -4.5,
+   top: -3.5,
+   width: 9,
+   height: 7,
+   borderRadius: 2,
+   background: photo(tint, "ff"),
+});
 
 const TravelPanel = ({ tint }: PanelProps) => (
-   <div style={{ ...PANEL, display: "flex", flexDirection: "column", gap: 3 }}>
-      <ControlRow tint={tint} />
-      <TagRow tint={tint} />
-      <ProgressLine tint={tint} />
-      <motion.div
-         animate={{ opacity: [1, 1, 0.55, 1, 1] }}
-         transition={loop(CYCLE, [0, T_DIP, T_DIPPED, T_REFETCHED, 1])}
-         style={{ display: "flex", gap: 6, alignItems: "flex-start" }}
-      >
-         <LoadedCard tint={tint} />
-         <FreshCard tint={tint} />
-      </motion.div>
-      <span
-         style={{
-            ...LABEL,
-            color: WHITE_35,
-            textAlign: "center",
-            marginTop: "auto",
-         }}
-      >
-         1 / 3
-      </span>
-   </div>
+   <>
+      <Backdrop tint={tint} focus={{ x: 74, y: 46 }} texture="contour" />
+      <Wires
+         paths={[
+            hCurve(UPLOAD.from, UPLOAD.to),
+            hCurve(CREATED.from, CREATED.to),
+         ]}
+      />
+      <JournalForm tint={tint} />
+      <MulterNode tint={tint} />
+      <JournalsGrid tint={tint} />
+      <Packet hop={UPLOAD} color={tint} cycle={CYCLE} head={imageHead(tint)} />
+      <Packet hop={CREATED} color={tint} cycle={CYCLE} />
+   </>
 );
 
 export default TravelPanel;

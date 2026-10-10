@@ -1,15 +1,9 @@
-import { motion } from "motion/react";
-import {
-   CENTER_XY,
-   CENTER_Y,
-   CYCLE,
-   WHITE_35,
-   caption,
-} from "./automation/sceneTokens";
-import type { PipelineProps, StageLabels } from "./automation/sceneTokens";
+import type { PipelineProps } from "./automation/sceneTokens";
 import CarouselPipeline from "./automation/CarouselPipeline";
 import BadgePipeline from "./automation/BadgePipeline";
-import CardPipeline from "./automation/CardPipeline";
+import GithubCardPipeline from "./automation/GithubCardPipeline";
+import LeetcodeCardPipeline from "./automation/LeetcodeCardPipeline";
+import OssCardPipeline from "./automation/OssCardPipeline";
 import KitPipeline from "./automation/KitPipeline";
 
 interface CoverSceneProps {
@@ -17,34 +11,27 @@ interface CoverSceneProps {
    variant?: string;
 }
 
-/* Scheduled automation family: a cron clock fires a left-to-right pipeline
-   that writes to a destination. Each variant owns its stages and output. */
+/* Automation family: GitHub Actions that fetch, render and publish on their
+   own. Every variant reads left to right (source, processing, the artifact
+   that lands) in one shared viewBox; each owns its trigger, so the cron
+   dial shows only on the scheduled ones and readme-kit runs on a push. */
 
-type AutomationVariant = "instagram" | "badge" | "card" | "kit";
+type AutomationVariant =
+   "instagram" | "badge" | "card-github" | "card-leetcode" | "card-oss" | "kit";
 
 interface VariantSpec {
    Pipeline: (props: PipelineProps) => React.JSX.Element;
-   stages: StageLabels;
+   /** Focal point of the one tint wash, where the artifact lands. */
+   focus: string;
 }
 
-/* One row per variant, so a pipeline can never exist without its captions. */
 const VARIANTS = {
-   instagram: {
-      Pipeline: CarouselPipeline,
-      stages: ["BEDROCK", "CAROUSEL", "COMPOSIO"],
-   },
-   badge: {
-      Pipeline: BadgePipeline,
-      stages: ["BADGES.JSON", "CATEGORIZE", "README.MD"],
-   },
-   card: {
-      Pipeline: CardPipeline,
-      stages: ["GRAPHQL", "RENDER", "CARD.SVG"],
-   },
-   kit: {
-      Pipeline: KitPipeline,
-      stages: ["PROFILE.YML", "RENDER", "SVG CARDS"],
-   },
+   instagram: { Pipeline: CarouselPipeline, focus: "74% 44%" },
+   badge: { Pipeline: BadgePipeline, focus: "72% 44%" },
+   "card-github": { Pipeline: GithubCardPipeline, focus: "60% 45%" },
+   "card-leetcode": { Pipeline: LeetcodeCardPipeline, focus: "56% 44%" },
+   "card-oss": { Pipeline: OssCardPipeline, focus: "62% 42%" },
+   kit: { Pipeline: KitPipeline, focus: "70% 44%" },
 } satisfies Record<AutomationVariant, VariantSpec>;
 
 const DEFAULT_VARIANT: AutomationVariant = "instagram";
@@ -69,117 +56,37 @@ const resolveVariant = (variant?: string): AutomationVariant => {
    return DEFAULT_VARIANT;
 };
 
-const HAND_BASE: React.CSSProperties = {
-   position: "absolute",
-   left: "50%",
-   top: "50%",
-   width: 2,
-   borderRadius: 2,
-   transformOrigin: "50% 100%",
-   transform: "translate(-50%, -100%)",
-};
-
-/* -- left: clock face, minute hand sweeps once per cycle -- */
-const ClockFace = ({ tint }: { tint: string }) => (
-   <div
-      style={{
-         position: "absolute",
-         left: "8%",
-         top: "50%",
-         transform: CENTER_Y,
-      }}
-   >
-      <div
-         style={{
-            width: 56,
-            height: 56,
-            borderRadius: "50%",
-            border: `1px solid ${tint}35`,
-            background: `${tint}06`,
-            position: "relative",
-         }}
-      >
-         {[0, 90, 180, 270].map((deg) => (
-            <div
-               key={deg}
-               style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  width: 2,
-                  height: 5,
-                  background: `${tint}40`,
-                  transform: `${CENTER_XY} rotate(${deg}deg) translateY(-23px)`,
-               }}
-            />
-         ))}
-         <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: CYCLE, repeat: Infinity, ease: "linear" }}
-            style={{ position: "absolute", inset: 0 }}
-         >
-            <div style={{ ...HAND_BASE, height: 19, background: tint }} />
-         </motion.div>
-         <div
-            style={{
-               position: "absolute",
-               inset: 0,
-               transform: "rotate(60deg)",
-            }}
-         >
-            <div style={{ ...HAND_BASE, height: 12, background: WHITE_35 }} />
-         </div>
-         <div
-            style={{
-               position: "absolute",
-               left: "50%",
-               top: "50%",
-               width: 4,
-               height: 4,
-               borderRadius: "50%",
-               background: tint,
-               transform: CENTER_XY,
-            }}
-         />
-      </div>
-      <div style={caption(tint)}>CRON</div>
-   </div>
-);
+const FILL: React.CSSProperties = { position: "absolute", inset: 0 };
 
 const AutomationScene = ({ tint, variant }: CoverSceneProps) => {
-   const { Pipeline, stages } = VARIANTS[resolveVariant(variant)];
+   const { Pipeline, focus } = VARIANTS[resolveVariant(variant)];
    return (
       <div
          aria-hidden="true"
          style={{
-            position: "absolute",
-            inset: 0,
+            ...FILL,
             overflow: "hidden",
             background: "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)",
          }}
       >
-         {/* tinted glow */}
+         {/* light: one faint wash where the artifact lands */}
          <div
             style={{
-               position: "absolute",
-               inset: 0,
-               background: `radial-gradient(circle at 20% 45%, ${tint}14 0%, transparent 55%)`,
+               ...FILL,
+               background: `radial-gradient(circle at ${focus}, ${tint}1f 0%, transparent 60%)`,
             }}
          />
-         {/* dot-grid detail layer */}
+         {/* back layer: a static dot lattice at 5% white */}
          <div
             style={{
-               position: "absolute",
-               inset: 0,
-               opacity: 0.06,
+               ...FILL,
+               opacity: 0.05,
                backgroundImage:
                   "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)",
-               backgroundSize: "22px 22px",
+               backgroundSize: "20px 20px",
             }}
          />
-
-         <ClockFace tint={tint} />
-         <Pipeline tint={tint} stages={stages} />
+         <Pipeline tint={tint} />
       </div>
    );
 };

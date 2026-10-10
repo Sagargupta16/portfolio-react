@@ -1,465 +1,259 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { Easing, Transition } from "motion/react";
 import { motion } from "motion/react";
-import { GREEN, MONO_FONT } from "@/constants/theme";
-
-interface CoverSceneProps {
-   tint: string;
-}
-
-/*
- * Claude Skills plugin marketplace -- install-and-unpack, not copy-and-sync.
- * marketplace.json registry row -> /plugin install -> plugins/<name>/ unpacks
- * into SKILL.md + commands + agents + hooks -> validate-plugins.sh PASSED.
- * One 5.4 s loop; every keyframe array ends at its start value. Transforms
- * reset between T_GONE and the wrap, while the element is fully transparent.
- */
-const CYCLE = 5.4;
-const at = (seconds: number): number => seconds / CYCLE;
-
-const T_SELECT = at(0.8); // registry row brightens, /PLUGIN chip is in
-const T_ARRIVE = at(1.8); // travelling dot reaches the plugin tile
-const T_UNPACK = 1.8; // seconds; component chips start popping in
-const T_PASSED = at(3.0); // validator ring scales in
-const T_FADE = at(4.2); // everything installed fades, highlight dims
-const T_GONE = at(5.0); // installed elements are transparent; transforms reset
-
-/** Times for an element shown at `shown`, faded out by T_GONE, then resting. */
-const fadeTimes = (...shown: number[]) => [0, ...shown, T_FADE, T_GONE, 1];
-
-const WHITE_BORDER = "1px solid rgba(255,255,255,0.10)";
-const WHITE_HAIRLINE = "1px solid rgba(255,255,255,0.06)";
-const WHITE_FILL = "rgba(255,255,255,0.03)";
-const WHITE_DIM = "rgba(255,255,255,0.35)";
-const WHITE_BAR = "rgba(255,255,255,0.14)";
-const WHITE_GLYPH = "rgba(255,255,255,0.5)";
-const WHITE_TEXT = "rgba(255,255,255,0.7)";
+import { Bar, Label, Panel, Pip, Shell, Trace, Wire } from "./kit/primitives";
+import {
+   DOTS,
+   FADE,
+   GREEN,
+   INK,
+   NON_SCALING,
+   W06,
+   W10,
+   W16,
+   W25,
+   W40,
+   W55,
+   W70,
+   clock,
+   curveD,
+   label,
+   layer,
+   lit,
+   loopProps,
+   ride,
+   route,
+   sCurve,
+} from "./kit/sceneTokens";
+import type { Loop, TintProps } from "./kit/sceneTokens";
 
 /*
- * Motion runs opacity through WAAPI, where a single ease string stretches over
- * the whole iteration and drags keyframes off their `times`; one ease per
- * segment keeps the WAAPI and JS tracks on the same storyboard clock.
+ * Claude Skills: the sagar-dev-skills marketplace.json lists the plugins; one
+ * row is picked and `/plugin install` carries it across; plugins/<name>/
+ * unpacks its tree (skills/SKILL.md, commands, agents, hooks/hooks.json) and
+ * the plugin turns on. The loop opens on the installed state, so the frozen
+ * Reduced frame is the finished plugin: it clears, replays, then holds.
  */
-const loop = (times: number[], ease: Easing = "easeInOut"): Transition => ({
-   duration: CYCLE,
-   repeat: Infinity,
-   times,
-   ease: times.slice(1).map(() => ease),
-});
 
-const label: CSSProperties = {
-   fontFamily: MONO_FONT,
-   fontSize: 7,
-   fontWeight: 700,
-   letterSpacing: 0.8,
-   textTransform: "uppercase",
-   lineHeight: 1,
-   whiteSpace: "nowrap",
-};
+const beat = clock(5.6);
+/* installed things fade out here at the top of every loop */
+const CLEAR = [0.04, 0.08];
+const LIT_UNTIL = 0.86;
 
-const fill: CSSProperties = { position: "absolute", inset: 0 };
-const row: CSSProperties = { display: "flex", alignItems: "center" };
-const panel: CSSProperties = {
-   position: "absolute",
-   border: WHITE_BORDER,
-   background: WHITE_FILL,
-};
-
-interface DotProps {
-   size: number;
-   color: string;
-   style?: CSSProperties;
-}
-
-const Dot = ({ size, color, style }: DotProps) => (
-   <span
-      style={{
-         ...style,
-         width: size,
-         height: size,
-         borderRadius: "50%",
-         background: color,
-         flexShrink: 0,
-      }}
-   />
-);
-
-const Bar = ({ width, color }: { width: number | string; color: string }) => (
-   <span style={{ width, height: 2, borderRadius: 2, background: color }} />
-);
-
-interface RegistryRowSpec {
-   width: string;
-   highlighted?: boolean;
-}
-
-const REGISTRY_ROWS: RegistryRowSpec[] = [
-   { width: "62%" },
-   { width: "48%" },
-   { width: "70%", highlighted: true },
-   { width: "40%" },
-   { width: "58%" },
-   { width: "66%" },
-   { width: "44%" },
+const PICKED = 85;
+const ROOT_Y = 36;
+const LINK = sCurve([126, PICKED], [172, ROOT_Y]);
+const LINK_ROUTE = route(LINK);
+const INSTALL: [number, number][] = [
+   [0.18, 0],
+   [0.32, 1],
 ];
 
-const RegistryRow = ({
-   width,
-   highlighted = false,
-   tint,
-}: RegistryRowSpec & { tint: string }) => (
-   <div
-      style={{
-         ...row,
-         position: "relative",
-         isolation: "isolate",
-         height: 12,
-         gap: 5,
-         padding: "0 4px",
-      }}
-   >
-      {highlighted && (
-         <motion.div
-            animate={{ opacity: [0.3, 1, 1, 0.3, 0.3] }}
-            transition={loop(fadeTimes(T_SELECT))}
-            style={{
-               ...fill,
-               zIndex: -1,
-               borderRadius: 3,
-               background: `${tint}26`,
-               opacity: 0.3,
-            }}
+/* spine with elbows, retraced so one stroke draws the whole tree in order */
+const TREE = "M184,48 V66 H198 H184 V94 H198 H184 V122 H198 H184 V150 H198";
+const TREE_FROM = 0.36;
+const TREE_TO = 0.64;
+/* fraction of TREE where each elbow is reached (spine steps 18 and 28, elbows 14) */
+const ELBOWS = [32, 88, 144, 200].map((d) => d / 200);
+const CHILD_Y = [66, 94, 122, 150];
+
+/* shown at rest, gone during CLEAR, back at `at` */
+const OUT_IN = [1, 1, 0, 0, 1, 1];
+const backAt = (at: number, ramp = 0.04) => [0, ...CLEAR, at, at + ramp, 1];
+const elbowAt = (e: number) => TREE_FROM + (TREE_TO - TREE_FROM) * e;
+
+/* each child row slides off the spine the moment the tree reaches its elbow;
+   its HTML name only fades, since x would replace the label's centring */
+const ROW_REVEALS: Loop[] = ELBOWS.map((e) =>
+   beat({
+      times: backAt(elbowAt(e)),
+      opacity: OUT_IN,
+      x: [0, 0, -8, -8, 0, 0],
+   }),
+);
+const NAME_REVEALS: Loop[] = ELBOWS.map((e) =>
+   beat({ times: backAt(elbowAt(e)), opacity: OUT_IN }),
+);
+
+const SELECT = beat({ times: backAt(0.12, 0.06), opacity: OUT_IN });
+const CARRY = beat(ride(LINK_ROUTE, INSTALL));
+const CARRIED = beat(lit(INSTALL, LIT_UNTIL));
+const LANDED = beat({
+   times: [0, 0.31, 0.32 + FADE, 0.38, 0.42, 1],
+   opacity: [0, 0, 1, 1, 0, 0],
+});
+const UNPACK = beat({
+   times: [0, TREE_FROM, TREE_TO, LIT_UNTIL, LIT_UNTIL + FADE, 1],
+   pathLength: [0, 0, 1, 1, 1, 0],
+   opacity: [0, 1, 1, 1, 0, 0],
+   ease: "linear",
+});
+const ENABLED = beat({
+   times: backAt(0.66),
+   opacity: OUT_IN,
+   scale: [1, 1, 0.4, 0.4, 1, 1],
+});
+
+/* marketplace.json plugins: [row top, name bar width] */
+const ROWS: [number, number][] = [
+   [49, 38],
+   [65, 50],
+   [81, 46],
+   [97, 32],
+   [113, 52],
+   [129, 42],
+   [145, 36],
+];
+
+const Marketplace = ({ tint }: TintProps) => (
+   <>
+      <Panel box={[26, 18, 100, 150]} rx={9} />
+      <Wire d="M26,40 H126" />
+      <motion.g {...loopProps(SELECT)}>
+         <Panel
+            box={[31, 77, 90, 16]}
+            rx={5}
+            fill={`${tint}1a`}
+            stroke={`${tint}59`}
          />
-      )}
-      <Dot size={3} color={highlighted ? tint : `${tint}55`} />
-      <Bar width={width} color={highlighted ? WHITE_DIM : WHITE_BAR} />
-   </div>
+      </motion.g>
+      {ROWS.map(([top, width]) => (
+         <g key={top}>
+            <circle cx={37} cy={top + 4} r={2} fill={`${tint}66`} />
+            <Bar
+               box={[45, top + 2.25, width, 3.5]}
+               fill={top + 4 === PICKED ? W40 : W16}
+            />
+            <Bar box={[101, top + 1, 16, 6]} fill={W10} />
+         </g>
+      ))}
+   </>
 );
 
-/** marketplace.json -- the registry every install resolves through. */
-const RegistryPanel = ({ tint }: { tint: string }) => (
-   <div
-      style={{
-         ...panel,
-         left: "8%",
-         top: "16%",
-         width: 92,
-         height: 150,
-         borderRadius: 6,
-         overflow: "hidden",
-      }}
-   >
-      <div
-         style={{
-            ...row,
-            height: 14,
-            padding: "0 7px",
-            borderBottom: WHITE_HAIRLINE,
-            background: WHITE_FILL,
-         }}
-      >
-         <span style={{ ...label, color: "rgba(255,255,255,0.45)" }}>
-            MARKETPLACE
-         </span>
-      </div>
-      <div
-         style={{
-            padding: "10px 7px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 4,
-         }}
-      >
-         {REGISTRY_ROWS.map((spec) => (
-            <RegistryRow key={spec.width} {...spec} tint={tint} />
-         ))}
-      </div>
-   </div>
-);
-
-/** `/plugin install <name>@sagar-dev-skills` -- the command that moves the dot. */
-const InstallChip = ({ tint }: { tint: string }) => (
-   <motion.div
-      animate={{ opacity: [0, 1, 1, 0, 0], y: [3, 0, 0, 0, 3] }}
-      transition={loop(fadeTimes(T_SELECT))}
-      style={{
-         ...label,
-         ...row,
-         position: "absolute",
-         left: "42%",
-         top: "30%",
-         height: 16,
-         padding: "0 8px",
-         borderRadius: 999,
-         border: `1px solid ${tint}55`,
-         background: `${tint}14`,
-         color: WHITE_TEXT,
-         opacity: 0,
-      }}
-   >
-      /PLUGIN
-   </motion.div>
-);
-
-/**
- * Hairline from the registry edge (8% + 92 px) to the tile edge (60%) plus one
- * travelling dot. The dot sits at the right end of a hairline-wide wrapper that
- * slides from x -100% to 0%, so it lands on the tile edge at any card width.
- */
-const Connector = ({ tint }: { tint: string }) => (
-   <div
-      style={{
-         position: "absolute",
-         left: "calc(8% + 92px)",
-         top: "45%",
-         width: "calc(52% - 92px)",
-         height: 1,
-         background: "rgba(255,255,255,0.12)",
-      }}
-   >
-      <motion.div
-         animate={{
-            x: ["-100%", "-100%", "-85%", "-15%", "0%", "0%", "-100%"],
-            opacity: [0, 0, 1, 1, 0, 0, 0],
-         }}
-         transition={loop(
-            [
-               0,
-               T_SELECT,
-               T_SELECT + at(0.15),
-               T_ARRIVE - at(0.15),
-               T_ARRIVE,
-               T_GONE,
-               1,
-            ],
-            "linear",
-         )}
-         style={{ ...fill, opacity: 0 }}
-      >
-         <Dot
-            size={4}
-            color={tint}
-            style={{ position: "absolute", right: 0, top: -1.5 }}
-         />
-      </motion.div>
-   </div>
-);
-
-/** commands/*.md -- slash-prefixed pill. */
-const CommandGlyph = () => (
-   <div style={{ ...row, gap: 3 }}>
-      <span
-         style={{
-            width: 1,
-            height: 8,
-            background: WHITE_GLYPH,
-            transform: "rotate(20deg)",
-         }}
+/* commands/*.md: a slash and a command pill */
+const Commands = () => (
+   <>
+      <Wire d="M207,99 L211,89" stroke={W40} />
+      <rect
+         x={215}
+         y={91}
+         width={26}
+         height={6}
+         rx={3}
+         fill="none"
+         stroke={W25}
+         vectorEffect={NON_SCALING}
       />
-      <span
-         style={{
-            width: 14,
-            height: 6,
-            borderRadius: 999,
-            border: "1px solid rgba(255,255,255,0.28)",
-         }}
-      />
-   </div>
+      <Bar box={[246, 92.25, 32, 3.5]} fill={W16} />
+   </>
 );
 
-/** agents/*.md -- one disc, one name bar. */
-const AgentGlyph = () => (
-   <div style={{ ...row, gap: 3 }}>
-      <Dot size={5} color={WHITE_GLYPH} />
-      <Bar width={10} color={WHITE_BAR} />
-   </div>
+/* agents/*.md: one avatar disc and a name */
+const Agents = () => (
+   <>
+      <circle cx={209} cy={122} r={3.4} fill={W40} />
+      <Bar box={[217, 120.25, 40, 3.5]} fill={W16} />
+   </>
 );
 
-/** hooks/*.sh -- shell prompt chevron and caret bar. */
-const HookGlyph = () => (
-   <div style={{ ...row, alignItems: "flex-end", gap: 3 }}>
-      <span
-         style={{
-            width: 5,
-            height: 5,
-            marginBottom: 1,
-            borderTop: `1.5px solid ${WHITE_GLYPH}`,
-            borderRight: `1.5px solid ${WHITE_GLYPH}`,
-            transform: "rotate(45deg)",
-         }}
-      />
-      <Bar width={6} color={WHITE_DIM} />
-   </div>
-);
-
-/** Pop-in timing for the i-th unpacked component (stagger 0.15 s). */
-const popTimes = (index: number): number[] => {
-   const start = at(T_UNPACK + index * 0.15);
-   return fadeTimes(start, start + at(0.2), start + at(0.3));
-};
-
-interface ChipProps {
+const Child = ({
+   index,
+   children,
+}: {
    index: number;
-   children: ReactNode;
-}
-
-const ComponentChip = ({ index, children }: ChipProps) => (
-   <motion.div
-      animate={{
-         opacity: [0, 0, 1, 1, 1, 0, 0],
-         scale: [0.6, 0.6, 1.06, 1, 1, 1, 0.6],
-      }}
-      transition={loop(popTimes(index))}
-      style={{
-         ...row,
-         justifyContent: "center",
-         height: 22,
-         borderRadius: 4,
-         border: WHITE_BORDER,
-         background: WHITE_FILL,
-         opacity: 0,
-      }}
-   >
+   children?: ReactNode;
+}) => (
+   <motion.g {...loopProps(ROW_REVEALS[index])}>
+      <Panel box={[198, CHILD_Y[index] - 10, 96, 20]} rx={6} />
       {children}
-   </motion.div>
+   </motion.g>
 );
 
-/** validate-plugins.sh verdict -- full-green ring and tick, the brightest green here. */
-const PassedBadge = () => (
-   <div style={{ ...row, position: "absolute", right: 8, bottom: 8, gap: 5 }}>
-      <motion.span
-         animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
-         transition={loop(fadeTimes(T_PASSED + at(0.15), T_PASSED + at(0.45)))}
-         style={{ ...label, color: WHITE_DIM, opacity: 0 }}
-      >
-         PASSED
-      </motion.span>
-      <motion.div
-         animate={{
-            opacity: [0, 0, 1, 1, 0, 0],
-            scale: [0.5, 0.5, 1, 1, 1, 0.5],
-         }}
-         transition={loop(fadeTimes(T_PASSED, T_PASSED + at(0.35)))}
-         style={{
-            position: "relative",
-            width: 13,
-            height: 13,
-            borderRadius: "50%",
-            border: `1px solid ${GREEN}`,
-            background: `${GREEN}10`,
-            opacity: 0,
-         }}
-      >
-         <div
-            style={{
-               position: "absolute",
-               left: 3,
-               top: 3.5,
-               width: 5,
-               height: 3,
-               borderLeft: `1.5px solid ${GREEN}`,
-               borderBottom: `1.5px solid ${GREEN}`,
-               transform: "rotate(-45deg)",
-            }}
+const PluginTree = ({ tint }: TintProps) => (
+   <>
+      <Wire d={curveD(LINK)} />
+      <Trace d={LINK_ROUTE.d} color={`${tint}80`} width={1.5} loop={CARRIED} />
+      {/* plugins/<name>/ root row */}
+      <Panel
+         box={[172, 24, 122, 24]}
+         rx={6}
+         fill={`${tint}0d`}
+         stroke={`${tint}40`}
+      />
+      <motion.g {...loopProps(LANDED)}>
+         <Panel
+            box={[172, 24, 122, 24]}
+            rx={6}
+            fill={`${tint}14`}
+            stroke={tint}
          />
+      </motion.g>
+      <Wire d="M180,30.5 H185 L187,32.5 H193 V41.5 H180 Z" stroke={W40} />
+      <Bar box={[199, 34.25, 60, 3.5]} fill={W40} />
+      <Wire d={TREE} stroke={W16} />
+      <Trace d={TREE} color={`${tint}99`} width={1.5} loop={UNPACK} />
+      {/* empty slots stay outlined while the plugin is cleared */}
+      {CHILD_Y.map((cy) => (
+         <Panel
+            key={cy}
+            box={[198, cy - 10, 96, 20]}
+            rx={6}
+            fill="none"
+            stroke={W06}
+         />
+      ))}
+      {/* skills/SKILL.md, commands, agents, hooks/hooks.json */}
+      <Child index={0} />
+      <Child index={1}>
+         <Commands />
+      </Child>
+      <Child index={2}>
+         <Agents />
+      </Child>
+      <Child index={3} />
+   </>
+);
+
+const Stage = ({ tint }: TintProps) => (
+   <>
+      <Marketplace tint={tint} />
+      <PluginTree tint={tint} />
+   </>
+);
+
+/* `/plugin install` chip riding the link; the wrapper spans the stage */
+const chip = (tint: string): CSSProperties => ({
+   ...label,
+   left: 0,
+   top: 0,
+   transform: "translate(-50%, -50%)",
+   padding: "2px 6px",
+   borderRadius: 999,
+   border: `1px solid ${tint}66`,
+   background: INK,
+   color: W70,
+});
+
+const PluginScene = ({ tint }: TintProps) => (
+   <Shell
+      tint={tint}
+      focus="72% 44%"
+      texture={DOTS}
+      stage={<Stage tint={tint} />}
+   >
+      <Pip at={[285, ROOT_Y]} color={GREEN} loop={ENABLED} />
+      <Label at={[207, CHILD_Y[0]]} color={W70} loop={NAME_REVEALS[0]}>
+         SKILL.MD
+      </Label>
+      <Label at={[207, CHILD_Y[3]]} color={W70} loop={NAME_REVEALS[3]}>
+         HOOKS.JSON
+      </Label>
+      <Label at={[36, 29]} color={W55}>
+         MARKETPLACE
+      </Label>
+      <motion.div style={layer} {...loopProps(CARRY)}>
+         <span style={chip(tint)}>/PLUGIN</span>
       </motion.div>
-   </div>
-);
-
-/** plugins/<name>/ -- the tile the install unpacks into. */
-const PluginTile = ({ tint }: { tint: string }) => (
-   <div
-      style={{
-         ...panel,
-         left: "60%",
-         top: "22%",
-         width: 104,
-         height: 116,
-         borderRadius: 8,
-      }}
-   >
-      <motion.div
-         animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
-         transition={loop(fadeTimes(T_ARRIVE, T_ARRIVE + at(0.2)))}
-         style={{
-            position: "absolute",
-            inset: -1,
-            borderRadius: 8,
-            border: `1px solid ${tint}55`,
-            opacity: 0,
-         }}
-      />
-      <div
-         style={{
-            ...row,
-            height: 12,
-            gap: 4,
-            padding: "0 7px",
-            borderBottom: WHITE_HAIRLINE,
-         }}
-      >
-         <Dot size={3} color={`${tint}88`} />
-         <Bar width={16} color={WHITE_BAR} />
-      </div>
-      <div
-         style={{
-            position: "absolute",
-            left: 7,
-            top: 24,
-            width: 90,
-            display: "grid",
-            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-            gap: 6,
-         }}
-      >
-         <ComponentChip index={0}>
-            <span style={{ ...label, color: WHITE_TEXT }}>SKILL.MD</span>
-         </ComponentChip>
-         <ComponentChip index={1}>
-            <CommandGlyph />
-         </ComponentChip>
-         <ComponentChip index={2}>
-            <AgentGlyph />
-         </ComponentChip>
-         <ComponentChip index={3}>
-            <HookGlyph />
-         </ComponentChip>
-      </div>
-      <PassedBadge />
-   </div>
-);
-
-/** Claude Skills marketplace: registry row -> /plugin -> unpacked tile -> PASSED. */
-const PluginScene = ({ tint }: CoverSceneProps) => (
-   <div
-      aria-hidden="true"
-      style={{
-         ...fill,
-         overflow: "hidden",
-         background: "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)",
-      }}
-   >
-      <div
-         style={{
-            ...fill,
-            background: `radial-gradient(circle at 72% 48%, ${tint}14 0%, transparent 55%)`,
-         }}
-      />
-      <div
-         style={{
-            ...fill,
-            opacity: 0.05,
-            backgroundImage:
-               "radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px)",
-            backgroundSize: "22px 22px",
-         }}
-      />
-
-      <RegistryPanel tint={tint} />
-      <InstallChip tint={tint} />
-      <Connector tint={tint} />
-      <PluginTile tint={tint} />
-   </div>
+   </Shell>
 );
 
 export default PluginScene;

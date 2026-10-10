@@ -1,6 +1,6 @@
 import GitVariant from "./gate/GitVariant";
 import MiddlewareVariant from "./gate/MiddlewareVariant";
-import type { TintProps } from "./gate/sceneTokens";
+import type { TintProps } from "./kit/sceneTokens";
 
 interface CoverSceneProps {
    tint: string;
@@ -8,12 +8,13 @@ interface CoverSceneProps {
 }
 
 /*
- * Gate family: a request enters an ordered gate chain and passes, is rejected
- * (amber) or short-circuits, with a green verdict at the end.
- *   middleware -- MCP Toolkit: client -> CORS / AUTH / RATE / CACHE -> handler.
- *   git        -- AI Git Hooks: staged diff -> AI review -> shield -> commit,
- *                 plus an always-on pre-push secret scan footer.
- * Each variant and the shared stage/signal primitives live in ./gate.
+ * Gate family: a call or a commit passes an ordered series of checks; amber
+ * marks a rejection, green a pass.
+ *   middleware -- MCP Toolkit: a tool call runs the with* onion, CORS / AUTH /
+ *                 RATE LIMIT / CACHE around the handler.
+ *   git        -- AI Git Hooks: pre-commit review, the AI-written message,
+ *                 the commit landing, then the pre-push scan.
+ * Variants live in ./gate and draw with the shared stage kit in ./kit.
  */
 
 const VARIANTS: Record<string, React.FC<TintProps>> = {

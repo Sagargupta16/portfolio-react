@@ -141,7 +141,7 @@ const AnnotationsLayer = () => {
                type="button"
                className={`annotation-pin${pin.note.id === openId ? " is-open" : ""}`}
                style={{ top: pin.top, left: pin.left }}
-               initial={reducedMotion ? false : { scale: 0, opacity: 0 }}
+               initial={reducedMotion ? false : { scale: 0.4, opacity: 0 }}
                animate={{ scale: 1, opacity: 1 }}
                transition={{
                   delay: reducedMotion ? 0 : index * 0.05,

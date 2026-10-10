@@ -1,359 +1,407 @@
-import type { Easing, Transition } from "motion/react";
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
+import { Backdrop, Packet, Wires, type Hop } from "./StageParts";
 import {
-   HAIRLINE,
+   BORDER_BOX,
+   CENTER_XY,
+   CENTER_Y,
+   EASE,
    LABEL,
-   PANEL,
+   LABEL_ABOVE,
    WHITE_06,
+   WHITE_08,
    WHITE_10,
-   WHITE_12,
    WHITE_14,
-   WHITE_18,
    WHITE_22,
    WHITE_28,
-   WHITE_35,
    WHITE_60,
-   WHITE_85,
    avatar,
    bar,
+   disc,
+   hCurve,
+   loop,
+   span,
    type PanelProps,
 } from "./shared";
 
-/* Orbit: the contacts DataTable. Rows enter, the NAME sort chevron flips and
-   rows swap places, then a row is checked and the 1 SELECTED badge appears. */
+/* Orbit, "the people in your orbit": circles on the left (Family, Friends,
+   Work, Network) with contacts riding them. One leaves its ring and lands
+   as a row of the Contacts DataTable (POST /api/contacts, then reload),
+   with its status badge and circle tag; the row is checked and the
+   selection badge appears. Frame 0 is the full table. */
 
-const CYCLE = 5;
-const ROW_HEIGHT = 13;
-const GAP = 3;
-const SWAP = 2 * (ROW_HEIGHT + GAP);
-const NAME_COLUMN = "30%";
-const LEAD = 21; // checkbox + avatar + gaps, so header labels sit over cells
+const CYCLE = 5.4;
 
-/* Beat boundaries as fractions of the cycle. */
-const T_SORT = 0.34;
-const T_SORTED = 0.44;
-const T_SELECT = 0.52;
-const T_SELECTED = 0.6;
-const T_FADE = 0.92;
-const T_GONE = 0.96;
+/* The orbit box is 30% wide and square, so on the 16:10 slot it is 48% of
+   the height: centre (23, 50), radius 15% of the width = 24% of the height. */
+const ORBIT_LEFT = 8;
+const ORBIT_W = 30;
+const ORBIT_CENTRE = { x: ORBIT_LEFT + ORBIT_W / 2, y: 50 };
+const DEPART_ANGLE = (35 * Math.PI) / 180;
 
-const EASE: Easing = "easeInOut";
+const TABLE = { left: 46, right: 92, y: 46 };
+const PAD = 6;
+const TOOLBAR_H = 10;
+const HEAD_H = 6;
+const ROW_H = 14;
+const ROW_GAP = 3;
+const NEW_ROW_CENTRE =
+   1 + PAD + TOOLBAR_H + 6 + HEAD_H + 4 + ROW_H + ROW_GAP + ROW_H / 2;
 
-/* Infinite keyframe loop with one ease per segment: Motion runs opacity
-   through WAAPI, which would spread a single ease over the whole iteration
-   while transforms ease each segment, pulling the two tracks off the beats. */
-const loop = (
-   duration: number,
-   times: number[],
-   ease: Easing = EASE,
-): Transition => ({
-   duration,
-   repeat: Infinity,
-   times,
-   ease: times.slice(1).map(() => ease),
-});
-
-type Status = "active" | "paused" | "pending";
-
-interface RowSpec {
-   id: string;
-   status: Status;
-   selected?: boolean;
-   times: number[];
-   opacity: number[];
-   y: number[];
-}
-
-const ROWS: RowSpec[] = [
-   {
-      id: "first",
-      status: "active",
-      times: [0, 0.04, 0.12, T_SORT, T_SORTED, T_FADE, T_GONE, 1],
-      opacity: [0, 0, 1, 1, 1, 1, 0, 0],
-      y: [6, 6, 0, 0, SWAP, SWAP, SWAP, 6],
+const JOIN: Hop = {
+   from: {
+      x: ORBIT_CENTRE.x + (ORBIT_W / 2) * Math.cos(DEPART_ANGLE),
+      y: ORBIT_CENTRE.y - ORBIT_W * 0.8 * Math.sin(DEPART_ANGLE),
    },
-   {
-      id: "second",
-      status: "paused",
-      times: [0, 0.076, 0.156, T_FADE, T_GONE, 1],
-      opacity: [0, 0, 1, 1, 0, 0],
-      y: [6, 6, 0, 0, 0, 6],
-   },
-   {
-      id: "third",
-      status: "pending",
-      selected: true,
-      times: [0, 0.112, 0.192, T_SORT, T_SORTED, T_FADE, T_GONE, 1],
-      opacity: [0, 0, 1, 1, 1, 1, 0, 0],
-      y: [6, 6, 0, 0, -SWAP, -SWAP, -SWAP, 6],
-   },
+   to: { x: TABLE.left, y: TABLE.y },
+   depart: 0.14,
+   arrive: 0.36,
+};
+
+const FILL_TIMES = [0, 0.05, 0.11, 0.36, 0.44, 1];
+const SELECT_TIMES = [0, 0.52, 0.58, 0.86, 0.92, 1];
+const ON_OFF = [0, 0, 1, 1, 0, 0];
+
+/* Rings sit at these insets of the orbit box; dots ride them at angles. */
+const RINGS = ["0%", "13%", "26%", "39%"];
+const RIDERS = [
+   { id: "network", ring: 0, angle: 150, strong: true },
+   { id: "network2", ring: 0, angle: 265, strong: false },
+   { id: "work", ring: 1, angle: 20, strong: false },
+   { id: "friends", ring: 2, angle: 200, strong: true },
+   { id: "family", ring: 3, angle: 95, strong: true },
 ];
 
-/* Active is the tint pill, Paused a dim one, Pending a faint tint pill with
-   a neutral dot: a state, not a warning, so no amber. */
-const statusStyles = (
-   tint: string,
-): Record<Status, { bg: string; dot?: string }> => ({
-   active: { bg: `${tint}30`, dot: tint },
-   paused: { bg: WHITE_10 },
-   pending: { bg: `${tint}18`, dot: WHITE_60 },
-});
+const riderAt = (ring: number, angle: number): CSSProperties => {
+   const radius = 50 - Number.parseFloat(RINGS[ring]);
+   const rad = (angle * Math.PI) / 180;
+   return {
+      position: "absolute",
+      left: `${50 + radius * Math.cos(rad)}%`,
+      top: `${50 - radius * Math.sin(rad)}%`,
+      transform: CENTER_XY,
+   };
+};
 
-const SELECT_TIMES = [0, T_SELECT, T_SELECTED, T_GONE, 1];
-const ADD_BUTTON_WIDTH = 22;
-const BADGE_RIGHT = ADD_BUTTON_WIDTH + 4; // button plus the toolbar gap
+const OrbitRings = ({ tint }: PanelProps) => (
+   <div
+      style={{
+         position: "absolute",
+         left: `${ORBIT_LEFT}%`,
+         top: `${ORBIT_CENTRE.y}%`,
+         width: `${ORBIT_W}%`,
+         aspectRatio: "1",
+         transform: CENTER_Y,
+      }}
+   >
+      {RINGS.map((inset, i) => (
+         <span
+            key={inset}
+            style={{
+               position: "absolute",
+               inset,
+               borderRadius: "50%",
+               border: `1px solid ${i === 0 ? WHITE_10 : WHITE_08}`,
+            }}
+         />
+      ))}
+      <motion.div
+         initial={{ rotate: 0 }}
+         animate={{ rotate: 360 }}
+         transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+         style={{ position: "absolute", inset: 0 }}
+      >
+         {RIDERS.map((r) => (
+            <span
+               key={r.id}
+               style={{
+                  ...riderAt(r.ring, r.angle),
+                  ...disc(5, r.strong ? `${tint}b3` : WHITE_28),
+               }}
+            />
+         ))}
+      </motion.div>
+      <motion.span
+         initial={{ opacity: 0.6 }}
+         animate={{ opacity: [0.6, 1, 0.6] }}
+         transition={{ duration: 2.7, repeat: Infinity, ease: [EASE, EASE] }}
+         style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: CENTER_XY,
+            ...disc(10, tint),
+         }}
+      />
+      <span
+         style={{
+            ...LABEL,
+            left: "50%",
+            top: "calc(100% + 6px)",
+            translate: "-50% 0",
+         }}
+      >
+         CIRCLES
+      </span>
+   </div>
+);
 
-/* Search pill, the "Add contact" button and the selection badge. The badge
-   is out of flow so its text can never push the button off a phone panel. */
+const ROW: CSSProperties = {
+   position: "relative",
+   display: "flex",
+   alignItems: "center",
+   gap: 4,
+   height: ROW_H,
+   borderBottom: `1px solid ${WHITE_06}`,
+};
+
+const CHECKBOX: CSSProperties = {
+   position: "relative",
+   display: "block",
+   width: 7,
+   height: 7,
+   borderRadius: 2,
+   border: `1px solid ${WHITE_22}`,
+   boxSizing: BORDER_BOX,
+   flexShrink: 0,
+};
+
+const STATUS_W = 18;
+const CIRCLE_W = 14;
+
+const STATUS_PILL: CSSProperties = {
+   position: "relative",
+   display: "block",
+   width: STATUS_W,
+   height: 7,
+   borderRadius: 4,
+   flexShrink: 0,
+};
+
+/* Name + email, StatusBadge (active / paused / pending) and the circle. */
+const RowCells = ({
+   tint,
+   status,
+   circle = WHITE_14,
+}: {
+   tint: string;
+   status: string;
+   circle?: string;
+}) => (
+   <>
+      <span style={avatar(tint, 10)} />
+      <span style={{ flex: 1, minWidth: 0 }}>
+         <span style={bar("62%", WHITE_28, 3)} />
+         <span style={{ ...bar("44%", WHITE_10, 2), marginTop: 3 }} />
+      </span>
+      <span style={{ ...STATUS_PILL, background: status }}>
+         <span
+            style={{
+               ...disc(4, WHITE_60),
+               position: "absolute",
+               left: 2,
+               top: 1.5,
+            }}
+         />
+      </span>
+      <span style={bar(CIRCLE_W, circle, 3)} />
+   </>
+);
+
+const LAYER: CSSProperties = {
+   position: "absolute",
+   inset: 0,
+   display: "flex",
+   alignItems: "center",
+   gap: 4,
+};
+
+/* The contact that just landed: cells fade in over a skeleton, then the
+   row is checked and tinted. */
+const NewRow = ({ tint }: PanelProps) => (
+   <div style={ROW}>
+      <motion.span
+         initial={{ opacity: 0 }}
+         animate={{ opacity: ON_OFF }}
+         transition={loop(CYCLE, SELECT_TIMES)}
+         style={{
+            position: "absolute",
+            inset: "0 -3px",
+            borderRadius: 4,
+            background: `${tint}14`,
+         }}
+      />
+      <span style={CHECKBOX}>
+         <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: ON_OFF }}
+            transition={loop(CYCLE, SELECT_TIMES)}
+            style={{
+               position: "absolute",
+               inset: 0,
+               borderRadius: 1,
+               background: tint,
+            }}
+         />
+      </span>
+      <span
+         style={{ position: "relative", flex: 1, minWidth: 0, height: ROW_H }}
+      >
+         <span style={LAYER}>
+            <span style={disc(10, WHITE_06)} />
+            <span style={bar("30%", WHITE_06, 3)} />
+         </span>
+         <motion.span
+            initial={{ opacity: 1 }}
+            animate={{ opacity: [1, 1, 0, 0, 1, 1] }}
+            transition={loop(CYCLE, FILL_TIMES)}
+            style={LAYER}
+         >
+            <RowCells tint={tint} status={`${tint}40`} circle={`${tint}b3`} />
+         </motion.span>
+      </span>
+   </div>
+);
+
+/* Search pill and the Add contact button. */
 const Toolbar = ({ tint }: PanelProps) => (
    <div
       style={{
-         position: "relative",
          display: "flex",
          alignItems: "center",
-         gap: 4,
-         height: 10,
+         height: TOOLBAR_H,
+         marginBottom: 6,
       }}
    >
       <span
          style={{
             flex: 1,
-            maxWidth: "60%",
-            height: 9,
-            borderRadius: 3,
-            border: HAIRLINE,
+            maxWidth: "52%",
+            height: TOOLBAR_H,
+            borderRadius: 4,
+            border: `1px solid ${WHITE_10}`,
             background: WHITE_06,
-            boxSizing: "border-box",
+            boxSizing: BORDER_BOX,
          }}
       />
-      <span style={{ flex: 1 }} />
       <span
          style={{
             position: "relative",
-            display: "block",
-            width: ADD_BUTTON_WIDTH,
-            height: 10,
-            borderRadius: 3,
+            width: 24,
+            height: TOOLBAR_H,
+            marginLeft: "auto",
+            borderRadius: 4,
             background: `${tint}e6`,
-            flexShrink: 0,
          }}
       >
          <span
             style={{
                position: "absolute",
-               left: 8.5,
+               left: 9,
                top: 4.5,
-               width: 5,
+               width: 6,
                height: 1,
-               background: WHITE_85,
+               background: WHITE_60,
             }}
          />
          <span
             style={{
                position: "absolute",
-               left: 10.5,
-               top: 2.5,
+               left: 11.5,
+               top: 2,
                width: 1,
-               height: 5,
-               background: WHITE_85,
+               height: 6,
+               background: WHITE_60,
             }}
          />
       </span>
-      <motion.span
-         animate={{ opacity: [0, 0, 1, 1, 0, 0], y: [2, 2, 0, 0, 0, 2] }}
-         transition={loop(CYCLE, [0, T_SELECT, T_SELECTED, T_FADE, T_GONE, 1])}
-         style={{
-            ...LABEL,
-            position: "absolute",
-            right: BADGE_RIGHT,
-            top: 0,
-            maxWidth: `calc(100% - ${BADGE_RIGHT}px)`,
-            overflow: "hidden",
-            boxSizing: "border-box",
-            padding: "1px 3px",
-            borderRadius: 3,
-            border: `1px solid ${tint}35`,
-            background: `${tint}0a`,
-            color: `${tint}cc`,
-         }}
-      >
-         1 SELECTED
-      </motion.span>
    </div>
 );
 
-const Chevron = ({ color }: { color: string }) => (
-   <span
+/* "N selected" Badge: shown as a tint pill with a check, no count. */
+const SelectedBadge = ({ tint }: PanelProps) => (
+   <motion.span
+      initial={{ opacity: 0, y: 2 }}
+      animate={{ opacity: ON_OFF, y: [2, 2, 0, 0, 0, 2] }}
+      transition={loop(CYCLE, [0, 0.56, 0.62, 0.86, 0.92, 1])}
       style={{
          position: "absolute",
-         inset: 0,
-         borderRight: `1px solid ${color}`,
-         borderBottom: `1px solid ${color}`,
-         transform: "rotate(45deg)",
-      }}
-   />
-);
-
-/* Column headers; the sort chevron flips and turns tint while rows swap. */
-const HeaderRow = ({ tint }: PanelProps) => (
-   <div
-      style={{
-         display: "flex",
-         alignItems: "center",
-         gap: 4,
-         height: 6,
-         paddingLeft: LEAD,
+         right: 1,
+         top: -14,
+         width: 20,
+         height: 9,
+         borderRadius: 5,
+         border: `1px solid ${tint}66`,
+         background: `${tint}1f`,
+         boxSizing: BORDER_BOX,
       }}
    >
       <span
          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 3,
-            width: NAME_COLUMN,
-            minWidth: 0,
+            position: "absolute",
+            left: 7,
+            top: 1,
+            width: 3,
+            height: 5,
+            borderRight: `1px solid ${tint}`,
+            borderBottom: `1px solid ${tint}`,
+            transform: "rotate(45deg)",
          }}
-      >
-         <span style={{ ...LABEL, color: WHITE_35 }}>NAME</span>
-         <motion.span
-            animate={{ rotate: [0, 0, 180, 180, 0] }}
-            transition={loop(CYCLE, [0, T_SORT, T_SORTED, T_GONE, 1])}
+      />
+   </motion.span>
+);
+
+const ContactsTable = ({ tint }: PanelProps) => (
+   <div style={span(TABLE.left, TABLE.right, TABLE.y, NEW_ROW_CENTRE)}>
+      <span style={LABEL_ABOVE}>CONTACTS</span>
+      <SelectedBadge tint={tint} />
+      <div style={{ padding: PAD }}>
+         <Toolbar tint={tint} />
+         <div
             style={{
-               position: "relative",
-               display: "block",
-               width: 3,
-               height: 3,
-               marginTop: -2,
-               flexShrink: 0,
+               display: "flex",
+               alignItems: "center",
+               gap: 4,
+               height: HEAD_H,
+               marginBottom: 4,
+               paddingLeft: 11,
             }}
          >
-            <Chevron color={WHITE_60} />
-            <motion.span
-               animate={{ opacity: [0, 0, 1, 1, 0] }}
-               transition={loop(CYCLE, [0, T_SORT, T_SORTED, T_FADE, 1])}
-               style={{ position: "absolute", inset: 0 }}
-            >
-               <Chevron color={tint} />
-            </motion.span>
-         </motion.span>
-      </span>
-      <span style={{ ...LABEL, color: WHITE_35 }}>STATUS</span>
-      <span style={bar(14, WHITE_18)} />
-      <span style={bar(20, WHITE_18)} />
+            <span style={bar("26%", WHITE_10, 3)} />
+            <span
+               style={{ ...bar(STATUS_W, WHITE_10, 3), marginLeft: "auto" }}
+            />
+            <span style={bar(CIRCLE_W, WHITE_10, 3)} />
+         </div>
+         <div
+            style={{ display: "flex", flexDirection: "column", gap: ROW_GAP }}
+         >
+            <div style={ROW}>
+               <span style={CHECKBOX} />
+               <RowCells tint={tint} status={`${tint}40`} />
+            </div>
+            <NewRow tint={tint} />
+            <div style={ROW}>
+               <span style={CHECKBOX} />
+               <RowCells tint={tint} status={WHITE_10} />
+            </div>
+            <div style={ROW}>
+               <span style={CHECKBOX} />
+               <RowCells tint={tint} status={`${tint}1f`} />
+            </div>
+         </div>
+      </div>
    </div>
 );
 
-const ContactRow = ({ tint, spec }: { tint: string; spec: RowSpec }) => {
-   const status = statusStyles(tint)[spec.status];
-   return (
-      <motion.div
-         animate={{ opacity: spec.opacity, y: spec.y }}
-         transition={loop(CYCLE, spec.times)}
-         style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-            height: ROW_HEIGHT,
-            borderBottom: `1px solid ${WHITE_06}`,
-         }}
-      >
-         {spec.selected && (
-            <motion.span
-               animate={{ opacity: [0, 0, 1, 1, 0] }}
-               transition={loop(CYCLE, SELECT_TIMES)}
-               style={{
-                  position: "absolute",
-                  inset: "0 -2px",
-                  borderRadius: 3,
-                  background: `${tint}0c`,
-               }}
-            />
-         )}
-         <span
-            style={{
-               position: "relative",
-               display: "block",
-               width: 5,
-               height: 5,
-               borderRadius: 1,
-               border: `1px solid ${WHITE_22}`,
-               boxSizing: "border-box",
-               flexShrink: 0,
-            }}
-         >
-            {spec.selected && (
-               <motion.span
-                  animate={{ scale: [0, 0, 1, 1, 0] }}
-                  transition={loop(CYCLE, SELECT_TIMES)}
-                  style={{ position: "absolute", inset: 0, background: tint }}
-               />
-            )}
-         </span>
-         <span style={avatar(tint)} />
-         <span
-            style={{
-               display: "flex",
-               flexDirection: "column",
-               gap: 2,
-               width: NAME_COLUMN,
-               minWidth: 0,
-            }}
-         >
-            <span style={bar("100%", WHITE_28)} />
-            <span style={bar("70%", WHITE_12, 2)} />
-         </span>
-         <span
-            style={{
-               position: "relative",
-               display: "block",
-               width: 16,
-               height: 5,
-               borderRadius: 9999,
-               background: status.bg,
-               flexShrink: 0,
-            }}
-         >
-            {status.dot && (
-               <span
-                  style={{
-                     position: "absolute",
-                     left: 3,
-                     top: 1,
-                     width: 3,
-                     height: 3,
-                     borderRadius: "50%",
-                     background: status.dot,
-                  }}
-               />
-            )}
-         </span>
-         <span style={bar(10, WHITE_14)} />
-         <span
-            style={{
-               display: "block",
-               width: 4,
-               height: 4,
-               borderRadius: 1,
-               border: `1px solid ${WHITE_22}`,
-               flexShrink: 0,
-            }}
-         />
-         <span style={{ ...bar("100%", WHITE_10), flex: 1, maxWidth: 14 }} />
-      </motion.div>
-   );
-};
-
 const ContactsPanel = ({ tint }: PanelProps) => (
-   <div
-      style={{ ...PANEL, display: "flex", flexDirection: "column", gap: GAP }}
-   >
-      <Toolbar tint={tint} />
-      <HeaderRow tint={tint} />
-      {ROWS.map((spec) => (
-         <ContactRow key={spec.id} tint={tint} spec={spec} />
-      ))}
-   </div>
+   <>
+      <Backdrop tint={tint} focus={{ x: 30, y: 48 }} texture="grid" drift />
+      <Wires paths={[hCurve(JOIN.from, JOIN.to)]} />
+      <OrbitRings tint={tint} />
+      <ContactsTable tint={tint} />
+      <Packet hop={JOIN} color={tint} cycle={CYCLE} />
+   </>
 );
 
 export default ContactsPanel;

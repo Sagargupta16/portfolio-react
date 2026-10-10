@@ -1,182 +1,268 @@
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
-import { GREEN } from "@/constants/theme";
+import { AMBER } from "@/constants/theme";
 import {
    INK,
    MEET,
    NON_SCALING,
+   NONE,
    VIEW_BOX,
+   WHITE_03,
    WHITE_04,
-   WHITE_06,
+   WHITE_05,
    WHITE_08,
-   WHITE_12,
-   WHITE_28,
+   WHITE_20,
    WHITE_70,
+   beats,
+   clock,
    eases,
    labelStyle,
    loop,
    svgStyle,
+   washStyle,
    type Ease,
 } from "./shared";
 
 /*
- * Flappy Bird Game Unity: a Rigidbody2D bird glides right at constant speed
- * (CameraFollow makes the world scroll past), Space calls AddForce for an
- * impulse-then-gravity arc, every ObstacleScript post bobs vertically and
- * flips velocity on its own switchTime, and any OnCollisionEnter2D reloads
- * the scene, which is the loop reset.
+ * Flappy Bird Game Unity: Bird.cs sets a constant rightward velocity and
+ * CameraFollow pins the camera to it, so the world slides past a bird that
+ * only moves up and down. Space calls AddForce for a sharp rise, gravity
+ * pulls it back. Every post is a lone ObstacleScript, hung from the sky or
+ * planted in the ground; Switch runs at t = 0 and then every switchTime, so
+ * each post sinks and returns at its own speed. The third rise meets a post,
+ * OnCollisionEnter2D fires and LoadScene restarts the run.
  */
 
 const CYCLE = 4.5;
-const GROUND_Y = 78;
-const SKY_BANDS = [18, 32];
-const DIRT: [number, number][] = [
-   [14, 86],
-   [37, 92],
-   [58, 84],
-   [83, 90],
-   [109, 85],
-   [131, 93],
-   [150, 88],
-];
+const t = clock(CYCLE);
+const at = beats(CYCLE);
+const GROUND_Y = 80;
 
-/* Single unpaired posts: hung from the sky or planted in the ground. */
-interface Post {
-   hung: boolean;
-   h: number;
-   /** switchTime: seconds per full up/down bob, different per post. */
-   bob: number;
-   delay: number;
-}
-const POSTS: Post[] = [
-   { hung: true, h: 30, bob: 1.6, delay: 0.26 },
-   { hung: false, h: 24, bob: 2.25, delay: 1.16 },
-   { hung: true, h: 22, bob: 2.0, delay: 2.06 },
-   { hung: false, h: 34, bob: 2.8, delay: 2.96 },
-   { hung: true, h: 38, bob: 2.2, delay: 3.86 },
-];
-const POST_W = 8;
-const OVERRUN = 10;
-const BOB = 7;
-const SWEEP_X = [170, -20];
-const BOB_Y = [0, -BOB, 0, BOB, 0];
-const BOB_EASE = eases(BOB_Y.length - 1, "linear");
-const postRect = (p: Post) =>
-   p.hung
-      ? { y: -OVERRUN, height: p.h + OVERRUN }
-      : { y: GROUND_Y - p.h, height: p.h + OVERRUN + 2 };
-
-/* Bird.cs: fast rise on AddForce, accelerating fall under gravity. */
-const BIRD = { x: 42, y: 41.5, w: 12, h: 9 };
-const BIRD_TIMES = [0, 0.18, 0.24, 0.42, 0.6, 0.66, 0.84, 0.92, 0.95, 1];
-const BIRD_Y = [0, 7, -11, -4, 8, -12, -3, 9, 0, 0];
-const BIRD_ROT = [0, 14, -18, -4, 16, -20, -6, 18, 0, 0];
+/* Bird: fixed on screen; the world scrolls at its speed. */
+const BIRD = { x: 48, y: 46, w: 12, h: 9 };
+const WORLD_SPEED = 190 / CYCLE;
+const FLAPS = [0.6, 1.8, 3];
+const HIT_AT = 3.25;
+const BIRD_TIMES = [0, 0.6, 0.9, 1.8, 2.1, 3, HIT_AT, 3.7, 3.72, CYCLE].map(t);
+const BIRD_Y = [0, 6, -8, 6, -9, 5, -10, -10, 0, 0];
+const BIRD_ROT = [0, 12, -16, 14, -18, 12, -20, -20, 0, 0];
 const BIRD_EASE: Ease[] = [
    "easeIn",
    "easeOut",
    "easeIn",
-   "easeIn",
    "easeOut",
    "easeIn",
-   "easeIn",
+   "easeOut",
+   "linear",
    "linear",
    "linear",
 ];
-const FLAP_TIMES = [0, 0.17, 0.21, 0.3, 0.59, 0.63, 0.72, 1];
-const FLAP_OPACITY = [0, 0, 0.55, 0, 0, 0.55, 0, 0];
-/* OnCollisionEnter2D -> LoadScene: the dark reload covers the snap home. */
-const RELOAD_TIMES = [0, 0.89, 0.92, 0.96, 1];
-const RELOAD_OPACITY = [0, 0, 0.85, 0.85, 0];
+const birdMotion = (delay = 0) => ({
+   duration: CYCLE,
+   repeat: Infinity,
+   times: BIRD_TIMES,
+   ease: BIRD_EASE,
+   delay,
+});
+/* The path the bird just flew, already scrolled left at world speed. */
+const TRAIL = [7, 12, 17].map((dx, i) => ({
+   dx,
+   delay: dx / WORLD_SPEED,
+   alpha: 0.5 - i * 0.15,
+}));
+
+/*
+ * ObstacleScript posts. `pass` is when the post crosses the bird; switchTime
+ * makes each bob period (2 x switchTime) a divisor of the cycle, so every
+ * post meets the bird at the same height on every loop.
+ */
+interface Post {
+   id: string;
+   hung: boolean;
+   h: number;
+   pass: number;
+   switchTime: number;
+   sink: number;
+}
+const POSTS: Post[] = [
+   { id: "a", hung: false, h: 22, pass: 0.75, switchTime: 0.75, sink: 5 },
+   { id: "b", hung: true, h: 24, pass: 1.65, switchTime: 1.125, sink: 7 },
+   { id: "c", hung: false, h: 26, pass: 2.55, switchTime: 0.75, sink: 4 },
+   { id: "d", hung: true, h: 28.5, pass: 3.3, switchTime: 2.25, sink: 6 },
+   { id: "e", hung: true, h: 34, pass: 4.2, switchTime: 1.125, sink: 5 },
+];
+const POST_W = 8;
+const ENTER = 170;
+const EXIT = -20;
+const SPAN = ENTER - EXIT;
+/* Left edge sweep, wrapping from EXIT back to ENTER off screen. */
+const sweep = (p: Post) => {
+   const atPass = BIRD.x - POST_W / 2;
+   const start =
+      EXIT + ((((atPass + WORLD_SPEED * p.pass - EXIT) % SPAN) + SPAN) % SPAN);
+   const wrap = t((start - EXIT) / WORLD_SPEED);
+   return {
+      x: [start, EXIT, ENTER, start],
+      times: [0, wrap, Math.min(wrap + 0.0005, 1), 1],
+   };
+};
+const postRect = (p: Post) =>
+   p.hung
+      ? { y: -10, height: p.h + 10 }
+      : { y: GROUND_Y - p.h, height: p.h + 10 };
+const SINK_TIMES = [0, 0.5, 1];
+const SINK_EASE = eases(2, "linear");
+
+/* AddForce flashes on each Space press; LoadScene darkens the restart. */
+const FLAP_TIMES = [
+   0,
+   ...FLAPS.flatMap((s) => [t(s - 0.02), t(s + 0.03), t(s + 0.3)]),
+   1,
+];
+const FLAP_OPACITY = [0, ...FLAPS.flatMap(() => [0, 1, 0]), 0];
+const RING_TIMES = at(HIT_AT - 0.02, HIT_AT + 0.08, HIT_AT + 0.45);
+const RELOAD_TIMES = at(3.4, 3.5, 4.1);
+const RELOAD_OPACITY = [0, 0, 0.82, 0.82, 0];
+
+/* Distant hills, the one static back layer. */
+const HILLS_D =
+   "M0 66C14 60 26 60 40 64S66 70 80 64 106 57 120 62 146 69 160 63";
+const hairline = {
+   fill: NONE,
+   strokeWidth: 1,
+   vectorEffect: NON_SCALING,
+} as const;
+
+const Backdrop = () => (
+   <>
+      <line x1={0} y1={14} x2={160} y2={14} stroke={WHITE_04} {...hairline} />
+      <path d={HILLS_D} stroke={WHITE_05} {...hairline} />
+   </>
+);
 
 const Ground = () => (
    <>
-      {SKY_BANDS.map((y) => (
-         <line
-            key={y}
-            x1={0}
-            y1={y}
-            x2={160}
-            y2={y}
-            stroke={WHITE_04}
-            strokeWidth={1}
-            vectorEffect={NON_SCALING}
-         />
-      ))}
+      <rect x={0} y={GROUND_Y} width={160} height={20} fill={INK} />
+      <rect x={0} y={GROUND_Y} width={160} height={20} fill={WHITE_03} />
       <line
          x1={0}
          y1={GROUND_Y}
          x2={160}
          y2={GROUND_Y}
-         stroke={`${GREEN}aa`}
-         strokeWidth={1}
-         vectorEffect={NON_SCALING}
+         stroke={WHITE_20}
+         {...hairline}
       />
-      <rect x={0} y={GROUND_Y + 1} width={160} height={2} fill={WHITE_08} />
-      {DIRT.map(([x, y]) => (
-         <rect
-            key={`${x}:${y}`}
-            x={x}
-            y={y}
-            width={2}
-            height={2}
-            fill={WHITE_12}
-         />
-      ))}
+      <line
+         x1={0}
+         y1={GROUND_Y + 2.5}
+         x2={160}
+         y2={GROUND_Y + 2.5}
+         stroke={WHITE_08}
+         {...hairline}
+      />
    </>
 );
 
-/* ObstacleScript: sweep past the camera, bob with a hard velocity flip. */
-const Posts = () => (
-   <>
-      {POSTS.map((p) => (
-         <motion.rect
-            key={p.delay}
+/* One ObstacleScript post: scrolls with the world, sinks on switchTime. */
+const PostShape = ({ post }: { post: Post }) => {
+   const s = sweep(post);
+   const rect = postRect(post);
+   return (
+      <motion.g
+         initial={{ x: s.x[0], y: 0 }}
+         animate={{ x: s.x, y: [0, post.sink, 0] }}
+         transition={{
+            x: loop(CYCLE, s.times, "linear"),
+            y: {
+               duration: post.switchTime * 2,
+               repeat: Infinity,
+               times: SINK_TIMES,
+               ease: SINK_EASE,
+            },
+         }}
+      >
+         <rect
             x={0}
-            {...postRect(p)}
+            {...rect}
             width={POST_W}
-            rx={2.5}
-            fill={WHITE_06}
-            stroke={WHITE_28}
+            rx={2}
+            fill={WHITE_04}
+            stroke={WHITE_20}
             strokeWidth={1}
             vectorEffect={NON_SCALING}
-            initial={{ x: SWEEP_X[0], y: 0 }}
-            animate={{ x: SWEEP_X, y: BOB_Y }}
-            transition={{
-               x: {
-                  duration: CYCLE,
-                  repeat: Infinity,
-                  ease: "linear",
-                  delay: p.delay,
-               },
-               y: { duration: p.bob, repeat: Infinity, ease: BOB_EASE },
-            }}
          />
-      ))}
-   </>
-);
+         <line
+            x1={POST_W * 0.35}
+            y1={rect.y + 2}
+            x2={POST_W * 0.35}
+            y2={rect.y + rect.height - 2}
+            stroke={WHITE_08}
+            {...hairline}
+         />
+      </motion.g>
+   );
+};
 
 const Bird = ({ tint }: { tint: string }) => (
    <motion.g
       initial={{ y: 0, rotate: 0 }}
       animate={{ y: BIRD_Y, rotate: BIRD_ROT }}
-      transition={{
-         duration: CYCLE,
-         repeat: Infinity,
-         times: BIRD_TIMES,
-         ease: BIRD_EASE,
-      }}
+      transition={birdMotion()}
    >
       <rect
-         x={BIRD.x}
-         y={BIRD.y}
+         x={BIRD.x - BIRD.w / 2}
+         y={BIRD.y - BIRD.h / 2}
          width={BIRD.w}
          height={BIRD.h}
          rx={4}
          fill={tint}
       />
-      <circle cx={BIRD.x + 9} cy={BIRD.y + 3.2} r={1.7} fill={WHITE_70} />
-      <circle cx={BIRD.x + 9.5} cy={BIRD.y + 3.2} r={0.8} fill={INK} />
+      <path
+         d={`M${BIRD.x + 5.6} ${BIRD.y - 0.4}L${BIRD.x + 8} ${BIRD.y + 0.8}L${BIRD.x + 5.6} ${BIRD.y + 2}Z`}
+         fill={WHITE_70}
+      />
+      <circle cx={BIRD.x + 3} cy={BIRD.y - 1.4} r={1.7} fill={WHITE_70} />
+      <circle cx={BIRD.x + 3.5} cy={BIRD.y - 1.4} r={0.8} fill={INK} />
    </motion.g>
 );
+
+const Trail = ({ tint }: { tint: string }) => (
+   <>
+      {TRAIL.map((dot) => (
+         <motion.circle
+            key={dot.dx}
+            cx={BIRD.x - BIRD.w / 2 - dot.dx + 6}
+            cy={BIRD.y}
+            r={0.9}
+            fill={tint}
+            opacity={dot.alpha}
+            initial={{ y: 0 }}
+            animate={{ y: BIRD_Y }}
+            transition={birdMotion(dot.delay)}
+         />
+      ))}
+   </>
+);
+
+/* OnCollisionEnter2D: the bird's head meets post d's foot. */
+const HitRing = () => (
+   <motion.circle
+      cx={BIRD.x + 2}
+      cy={BIRD.y - 15}
+      r={3.5}
+      stroke={AMBER}
+      {...hairline}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: [0, 0, 0.9, 0, 0], scale: [0.5, 0.5, 1, 1.8, 1.8] }}
+      transition={loop(CYCLE, RING_TIMES)}
+   />
+);
+
+const flapLabel: CSSProperties = {
+   ...labelStyle,
+   left: `${((BIRD.x - 8) / 160) * 100}%`,
+   top: "62%",
+};
 
 const Reload = () => (
    <motion.div
@@ -188,8 +274,8 @@ const Reload = () => (
       <span
          style={{
             ...labelStyle,
-            left: "32%",
-            top: "45%",
+            left: "50%",
+            top: "46%",
             transform: "translate(-50%, -50%)",
             color: WHITE_70,
          }}
@@ -201,25 +287,24 @@ const Reload = () => (
 
 const Flappy = ({ tint }: { tint: string }) => (
    <>
+      <div style={washStyle(tint, "30% 46%")} />
       <svg viewBox={VIEW_BOX} preserveAspectRatio={MEET} style={svgStyle}>
+         <Backdrop />
+         {POSTS.map((post) => (
+            <PostShape key={post.id} post={post} />
+         ))}
          <Ground />
-         <Posts />
+         <Trail tint={tint} />
          <Bird tint={tint} />
+         <HitRing />
       </svg>
-      <span style={{ ...labelStyle, left: "5%", top: "4%" }}>RIGIDBODY2D</span>
-      <motion.span
-         initial={{ opacity: 0.2 }}
-         animate={{ opacity: [0.2, 0.45, 0.2] }}
-         transition={{ duration: 2, repeat: Infinity, ease: eases(2) }}
-         style={{ ...labelStyle, left: "60%", top: "8%" }}
-      >
-         SWITCHTIME
-      </motion.span>
+      <span style={{ ...labelStyle, left: "8%", top: "8%" }}>RIGIDBODY2D</span>
+      <span style={{ ...labelStyle, right: "8%", top: "8%" }}>SWITCHTIME</span>
       <motion.span
          initial={{ opacity: 0 }}
          animate={{ opacity: FLAP_OPACITY }}
-         transition={loop(CYCLE, FLAP_TIMES, "linear")}
-         style={{ ...labelStyle, left: "37%", top: "36%", color: tint }}
+         transition={loop(CYCLE, FLAP_TIMES)}
+         style={{ ...flapLabel, color: tint }}
       >
          ADDFORCE
       </motion.span>

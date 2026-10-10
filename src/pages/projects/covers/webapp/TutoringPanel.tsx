@@ -1,319 +1,319 @@
-import type { CSSProperties, ReactNode } from "react";
-import type { Easing, Transition } from "motion/react";
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { GREEN } from "@/constants/theme";
+import { Backdrop, Packet, Wires, type Hop } from "./StageParts";
 import {
-   CARD,
+   BORDER_BOX,
+   INK,
    LABEL,
-   PANEL,
+   LABEL_ABOVE,
+   WHITE_06,
+   WHITE_10,
    WHITE_14,
    WHITE_18,
    WHITE_28,
-   WHITE_35,
+   WHITE_60,
    avatar,
    bar,
+   centredAt,
+   hCurve,
+   loop,
+   span,
    type PanelProps,
+   type Pt,
 } from "./shared";
 
-/* Lingua Connect: filter tutors, book a priced slot, join the video room.
-   A filter toggles on, one tutor card drops out, a slot row slides in with
-   BOOK, BOOK crossfades to JOIN after checkout, and the ROOM tile mounts. */
+/* Lingua Connect: the Tutor page. A Language option in FILTERS switches
+   on, the tutor cards that fail checkLanguage dim, Book on the matching
+   tutor's slot sends a packet through the STRIPE checkout session, and the
+   class (createClass with its videoId) lands in Upcoming Classes, where
+   JOIN lights. */
 
-const CYCLE = 5.2;
-const FILTER_WIDTHS = [18, 24, 14];
-const STARS = [0, 1, 2, 3, 4];
+const CYCLE = 5.4;
 
-/* Beat boundaries as fractions of the cycle. */
-const T_FILTER = 0.115;
-const T_DIM = 0.27;
-const T_SLOT = 0.35;
-const T_PRESS = 0.423;
-const T_PRESSED = 0.46;
-const T_BOOKED = 0.5;
-const T_JOIN = 0.54;
-const T_ROOM = 0.654;
-const T_ROOM_IN = 0.73;
-const T_RESET = 0.846;
+const CARD_PAD = 6;
+const CARD_H = 20;
+const CARD_GAP = 5;
+const MATCH_CENTRE = 1 + CARD_PAD + CARD_H + CARD_GAP + CARD_H / 2;
 
-const EASE: Easing = "easeInOut";
+const FILTERS = { left: 8, right: 26, y: 37 };
+const TUTORS = { left: 33, right: 58, y: 46 };
+const UPCOMING = { left: 76, right: 92, y: 50 };
+const STRIPE_AT: Pt = { x: 67, y: 66 };
 
-/* Infinite keyframe loop with one ease per segment: Motion runs opacity
-   through WAAPI, which would spread a single ease over the whole iteration
-   while transforms ease each segment, pulling the two tracks off the beats. */
-const loop = (
-   duration: number,
-   times: number[],
-   ease: Easing = EASE,
-): Transition => ({
-   duration,
-   repeat: Infinity,
-   times,
-   ease: times.slice(1).map(() => ease),
-});
-
-/* Cards sit at 22% of the panel on desktop but never higher than 7 px, so
-   the slot row under them still clears the ~35 px phone-slot clip. */
-const CARDS_TOP = "max(7px, 22%)";
-const CARD_HEIGHT = 18;
-const SLOT_TOP = `calc(${CARDS_TOP} + ${CARD_HEIGHT + 2}px)`;
-const SLOT_HEIGHT = 8;
-
-const TUTOR_CARD: CSSProperties = {
-   ...CARD,
-   position: "absolute",
-   top: CARDS_TOP,
-   width: "46%",
-   height: CARD_HEIGHT,
-   padding: "2px 3px",
-   boxSizing: "border-box",
+const BOOK: Hop = {
+   from: { x: TUTORS.right, y: TUTORS.y },
+   to: STRIPE_AT,
+   depart: 0.28,
+   arrive: 0.44,
+};
+const CLASS: Hop = {
+   from: STRIPE_AT,
+   to: { x: UPCOMING.left, y: UPCOMING.y },
+   depart: 0.52,
+   arrive: 0.66,
 };
 
-/* Solid language chip on a tutor card. */
-const chip = (tint: string): CSSProperties => bar(12, `${tint}55`, 2);
+const ON_OFF = [0, 0, 1, 1, 0, 0];
+const DIMMED = [1, 1, 0.28, 0.28, 1, 1];
+const OPTION_TIMES = [0, 0.06, 0.12, 0.9, 0.97, 1];
+const DIM_TIMES = [0, 0.12, 0.22, 0.9, 0.97, 1];
+const MATCH_TIMES = [0, 0.16, 0.24, 0.9, 0.97, 1];
+const PAID_TIMES = [0, 0.44, 0.47, 0.5, 0.56, 1];
+const LAND_TIMES = [0, 0.66, 0.74, 0.9, 0.97, 1];
+const JOIN_TIMES = [0, 0.76, 0.82, 0.9, 0.97, 1];
 
-const PILL_LABEL: CSSProperties = {
-   ...LABEL,
-   position: "absolute",
-   inset: 0,
-   display: "flex",
-   alignItems: "center",
-   justifyContent: "center",
+const GROUPS = ["language", "experience", "price"];
+const OPTIONS = ["first", "second", "third"];
+
+const OPTION: CSSProperties = {
+   position: "relative",
+   display: "block",
+   width: 10,
+   height: 6,
    borderRadius: 3,
+   background: WHITE_14,
 };
 
-/* Language / Experience / Price toggles; the first one switches on. */
-const FilterPills = ({ tint }: PanelProps) => (
-   <div
-      style={{ position: "absolute", left: 0, top: 0, display: "flex", gap: 3 }}
-   >
-      {FILTER_WIDTHS.map((w) => (
-         <span
-            key={w}
-            style={{
-               display: "block",
-               width: w,
-               height: 5,
-               borderRadius: 3,
-               background: WHITE_14,
-            }}
-         />
-      ))}
-      <motion.span
-         animate={{ opacity: [0, 1, 1, 0] }}
-         transition={loop(CYCLE, [0, T_FILTER, T_RESET, 1])}
-         style={{
-            position: "absolute",
-            left: -1,
-            top: -1,
-            width: FILTER_WIDTHS[0],
-            height: 5,
-            borderRadius: 3,
-            border: `1px solid ${tint}90`,
-            background: `${tint}25`,
-         }}
-      />
+const COLUMN: CSSProperties = {
+   display: "flex",
+   flexDirection: "column",
+};
+
+/* Language / Experience / Price groups; Language's first option toggles on. */
+const FiltersPanel = ({ tint }: PanelProps) => (
+   <div style={span(FILTERS.left, FILTERS.right, FILTERS.y)}>
+      <span style={LABEL_ABOVE}>FILTERS</span>
+      <div style={{ ...COLUMN, gap: 8, padding: 7 }}>
+         {GROUPS.map((group, g) => (
+            <div key={group}>
+               <span style={bar("70%", WHITE_10, 3)} />
+               <div style={{ display: "flex", gap: 3, marginTop: 5 }}>
+                  {OPTIONS.map((option, o) => (
+                     <span key={option} style={OPTION}>
+                        {g === 0 && o === 0 && (
+                           <motion.span
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: ON_OFF }}
+                              transition={loop(CYCLE, OPTION_TIMES)}
+                              style={{
+                                 position: "absolute",
+                                 inset: 0,
+                                 borderRadius: 3,
+                                 background: tint,
+                              }}
+                           />
+                        )}
+                     </span>
+                  ))}
+               </div>
+            </div>
+         ))}
+      </div>
    </div>
 );
 
-const TutorCard = ({ tint, chip }: { tint: string; chip: ReactNode }) => (
-   <>
-      <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-         <span style={avatar(tint)} />
-         <span style={bar("60%", WHITE_18)} />
-      </div>
-      <div
-         style={{ display: "flex", alignItems: "center", gap: 3, marginTop: 2 }}
-      >
-         {chip}
-         <span style={{ display: "flex", gap: 1, marginLeft: 2 }}>
-            {STARS.map((s) => (
-               <span
-                  key={s}
-                  style={{
-                     display: "block",
-                     width: 2,
-                     height: 2,
-                     borderRadius: "50%",
-                     background: `${tint}90`,
-                  }}
-               />
-            ))}
+const TUTOR_CARD: CSSProperties = {
+   position: "relative",
+   display: "flex",
+   alignItems: "center",
+   gap: 5,
+   height: CARD_H,
+   padding: "0 5px",
+   borderRadius: 5,
+   border: `1px solid ${WHITE_06}`,
+   boxSizing: BORDER_BOX,
+};
+
+/* tutor-card: avatar, name, language chips and the rating row. */
+const TutorCard = ({ tint }: PanelProps) => (
+   <div style={TUTOR_CARD}>
+      <span style={avatar(tint, 10)} />
+      <span style={{ flex: 1, minWidth: 0 }}>
+         <span style={bar("64%", WHITE_18)} />
+         <span style={{ display: "flex", gap: 3, marginTop: 4 }}>
+            <span style={bar(8, `${tint}70`, 3)} />
+            <span style={bar(8, `${tint}40`, 3)} />
+            <span
+               style={{
+                  ...bar(12, WHITE_10, 3),
+                  flex: "0 1 12px",
+                  minWidth: 0,
+                  marginLeft: "auto",
+               }}
+            />
          </span>
-      </div>
-   </>
+      </span>
+   </div>
 );
 
-/* Card A matches the filter (chip brightens); card B is filtered out. */
-const TutorCards = ({ tint }: PanelProps) => (
-   <>
-      <div style={{ ...TUTOR_CARD, left: 0 }}>
-         <TutorCard
-            tint={tint}
-            chip={
-               <motion.span
-                  animate={{ opacity: [0.5, 0.5, 1, 1, 0.5] }}
-                  transition={loop(CYCLE, [0, T_FILTER, T_DIM, T_RESET, 1])}
-                  style={chip(tint)}
-               />
-            }
-         />
+const Dimmed = ({ tint, count }: { tint: string; count: number }) => (
+   <motion.div
+      initial={{ opacity: 1 }}
+      animate={{ opacity: DIMMED }}
+      transition={loop(CYCLE, DIM_TIMES)}
+      style={{ ...COLUMN, gap: CARD_GAP }}
+   >
+      {Array.from({ length: count }, (_, i) => `dim${i}`).map((id) => (
+         <TutorCard key={id} tint={tint} />
+      ))}
+   </motion.div>
+);
+
+/* The cards that fail checkLanguage dim; the match gets a tint ring. */
+const TutorList = ({ tint }: PanelProps) => (
+   <div style={span(TUTORS.left, TUTORS.right, TUTORS.y, MATCH_CENTRE)}>
+      <span style={LABEL_ABOVE}>TUTOR</span>
+      <div style={{ ...COLUMN, gap: CARD_GAP, padding: CARD_PAD }}>
+         <Dimmed tint={tint} count={1} />
+         <div style={{ position: "relative" }}>
+            <motion.span
+               initial={{ opacity: 0 }}
+               animate={{ opacity: ON_OFF }}
+               transition={loop(CYCLE, MATCH_TIMES)}
+               style={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: 5,
+                  border: `1px solid ${tint}`,
+                  background: `${tint}12`,
+               }}
+            />
+            <TutorCard tint={tint} />
+         </div>
+         <Dimmed tint={tint} count={2} />
+      </div>
+   </div>
+);
+
+const STRIPE_RING = 13;
+
+/* Stripe checkout: the session ring flashes green as the payment clears. */
+const StripeNode = () => (
+   <div
+      style={{
+         ...centredAt(STRIPE_AT),
+         width: STRIPE_RING,
+         height: STRIPE_RING,
+      }}
+   >
+      <span
+         style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: "50%",
+            border: `1px solid ${WHITE_28}`,
+            background: INK,
+         }}
+      />
+      <motion.span
+         initial={{ opacity: 0, scale: 1 }}
+         animate={{
+            opacity: [0, 0, 1, 0.6, 0, 0],
+            scale: [1, 1, 1.15, 1.5, 1.6, 1],
+         }}
+         transition={loop(CYCLE, PAID_TIMES)}
+         style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: "50%",
+            border: `1px solid ${GREEN}`,
+         }}
+      />
+      <span
+         style={{
+            ...LABEL,
+            left: "50%",
+            top: STRIPE_RING + 6,
+            translate: "-50% 0",
+         }}
+      >
+         STRIPE
+      </span>
+   </div>
+);
+
+const JOIN_PILL: CSSProperties = {
+   ...LABEL,
+   position: "relative",
+   display: "inline-flex",
+   alignItems: "center",
+   justifyContent: "center",
+   alignSelf: "flex-start",
+   width: 32,
+   height: 12,
+   marginTop: 6,
+   borderRadius: 6,
+   border: `1px solid ${WHITE_14}`,
+   color: WHITE_60,
+   boxSizing: BORDER_BOX,
+};
+
+const UPCOMING_PAD = 6;
+
+/* Upcoming Classes: empty until the booked class slides in; its Join
+   button turns green once the class is live. */
+const UpcomingPanel = ({ tint }: PanelProps) => (
+   <div style={span(UPCOMING.left, UPCOMING.right, UPCOMING.y)}>
+      <div
+         style={{
+            ...COLUMN,
+            justifyContent: "center",
+            height: 54,
+            padding: UPCOMING_PAD,
+            boxSizing: BORDER_BOX,
+         }}
+      >
+         <span style={bar("60%", WHITE_06)} />
       </div>
       <motion.div
-         animate={{ opacity: [0.85, 0.85, 0.25, 0.25, 0.85] }}
-         transition={loop(CYCLE, [0, T_FILTER, T_DIM, T_RESET, 1])}
-         style={{ ...TUTOR_CARD, left: "54%" }}
+         initial={{ opacity: 0, y: 6 }}
+         animate={{ opacity: ON_OFF, y: [6, 6, 0, 0, 0, 6] }}
+         transition={loop(CYCLE, LAND_TIMES)}
+         style={{ ...COLUMN, position: "absolute", inset: UPCOMING_PAD }}
       >
-         <TutorCard tint={tint} chip={<span style={chip(tint)} />} />
+         <span style={bar("62%", `${tint}b3`, 5)} />
+         <span style={{ ...bar("84%", WHITE_14, 3), marginTop: 4 }} />
+         <span style={{ ...bar("56%", WHITE_10, 3), marginTop: 3 }} />
+         <span style={JOIN_PILL}>
+            <motion.span
+               initial={{ opacity: 0 }}
+               animate={{ opacity: ON_OFF }}
+               transition={loop(CYCLE, JOIN_TIMES)}
+               style={{
+                  position: "absolute",
+                  inset: -1,
+                  borderRadius: 6,
+                  border: `1px solid ${GREEN}`,
+                  background: `${GREEN}33`,
+               }}
+            />
+            <span style={{ position: "relative" }}>JOIN</span>
+         </span>
       </motion.div>
-   </>
-);
-
-/* Available Slots row: date, time, duration, price, then BOOK -> JOIN. */
-const SlotRow = ({ tint }: PanelProps) => (
-   <motion.div
-      animate={{ y: [6, 6, 0, 0, 6], opacity: [0, 0, 1, 1, 0] }}
-      transition={loop(CYCLE, [0, T_DIM, T_SLOT, T_RESET, 1])}
-      style={{
-         position: "absolute",
-         left: 0,
-         right: 0,
-         top: SLOT_TOP,
-         display: "flex",
-         alignItems: "center",
-         gap: 4,
-      }}
-   >
-      <span
-         style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 3,
-            width: "60%",
-            height: SLOT_HEIGHT,
-            padding: "0 4px",
-            boxSizing: "border-box",
-            borderRadius: 5,
-            border: `1px solid ${tint}40`,
-         }}
-      >
-         <span style={bar(6, WHITE_28, 2)} />
-         <span style={bar(6, WHITE_28, 2)} />
-         <span style={bar(8, WHITE_28, 2)} />
-         <span style={{ ...bar(10, WHITE_28, 2), marginLeft: "auto" }} />
-      </span>
-      <span
-         style={{
-            position: "relative",
-            width: 24,
-            height: SLOT_HEIGHT,
-            flexShrink: 0,
-         }}
-      >
-         <motion.span
-            animate={{
-               scale: [1, 1, 0.9, 1, 1, 1, 1],
-               opacity: [1, 1, 1, 1, 0, 0, 1],
-            }}
-            transition={loop(CYCLE, [
-               0,
-               T_PRESS,
-               T_PRESSED,
-               T_BOOKED,
-               T_JOIN,
-               T_RESET,
-               1,
-            ])}
-            style={{
-               ...PILL_LABEL,
-               border: `1px solid ${tint}35`,
-               background: `${tint}0a`,
-               color: `${tint}cc`,
-            }}
-         >
-            BOOK
-         </motion.span>
-         <motion.span
-            animate={{ opacity: [0, 0, 1, 1, 0] }}
-            transition={loop(CYCLE, [0, T_BOOKED, T_JOIN, T_RESET, 1])}
-            style={{
-               ...PILL_LABEL,
-               border: `1px solid ${GREEN}`,
-               background: `${GREEN}26`,
-               color: GREEN,
-            }}
-         >
-            JOIN
-         </motion.span>
-      </span>
-   </motion.div>
-);
-
-/* /room/:videoId mounting: tile with live dot and PiP thumbnail. */
-const RoomTile = ({ tint }: PanelProps) => (
-   <motion.div
-      animate={{ y: [4, 4, 0, 0, 4], opacity: [0, 0, 1, 1, 0] }}
-      transition={loop(CYCLE, [0, T_ROOM, T_ROOM_IN, T_RESET, 1])}
-      style={{
-         position: "absolute",
-         right: 0,
-         top: 0,
-         display: "flex",
-         flexDirection: "column",
-         alignItems: "center",
-         gap: 2,
-      }}
-   >
-      <span
-         style={{
-            position: "relative",
-            display: "block",
-            width: 26,
-            height: 16,
-            borderRadius: 3,
-            border: `1px solid ${WHITE_14}`,
-            background: `${tint}0a`,
-         }}
-      >
-         <motion.span
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{
-               duration: 1.6,
-               repeat: Infinity,
-               ease: [EASE, EASE],
-            }}
-            style={{
-               position: "absolute",
-               left: 2,
-               top: 2,
-               width: 3,
-               height: 3,
-               borderRadius: "50%",
-               background: GREEN,
-            }}
-         />
-         <span
-            style={{
-               position: "absolute",
-               right: 2,
-               bottom: 2,
-               width: 6,
-               height: 4,
-               borderRadius: 1,
-               background: WHITE_18,
-            }}
-         />
-      </span>
-      <span style={{ ...LABEL, color: WHITE_35 }}>ROOM</span>
-   </motion.div>
+   </div>
 );
 
 const TutoringPanel = ({ tint }: PanelProps) => (
-   <div style={PANEL}>
-      <FilterPills tint={tint} />
-      <TutorCards tint={tint} />
-      <SlotRow tint={tint} />
-      <RoomTile tint={tint} />
-   </div>
+   <>
+      <Backdrop tint={tint} focus={{ x: 62, y: 52 }} texture="dots" />
+      <Wires
+         paths={[
+            hCurve(
+               { x: FILTERS.right, y: FILTERS.y },
+               { x: TUTORS.left, y: TUTORS.y },
+            ),
+            hCurve(BOOK.from, BOOK.to),
+            hCurve(CLASS.from, CLASS.to),
+         ]}
+      />
+      <FiltersPanel tint={tint} />
+      <TutorList tint={tint} />
+      <StripeNode />
+      <UpcomingPanel tint={tint} />
+      <Packet hop={BOOK} color={tint} cycle={CYCLE} />
+      <Packet hop={CLASS} color={tint} cycle={CYCLE} />
+   </>
 );
 
 export default TutoringPanel;

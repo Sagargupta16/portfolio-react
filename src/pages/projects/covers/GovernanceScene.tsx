@@ -1,343 +1,318 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
-import { MONO_FONT } from "@/constants/theme";
-
-interface CoverSceneProps {
-   tint: string;
-}
+import {
+   GREEN,
+   HAIRLINE,
+   LABEL_LIT,
+   NON_SCALING,
+   WHITE_18,
+   appear,
+   boxAt,
+   curveV,
+   label,
+   labelAt,
+   loop,
+   panel,
+   pctX,
+   pctY,
+   sweep,
+   tintPanel,
+} from "./infra/tokens";
+import type { Point, TintProps } from "./infra/tokens";
+import { FadeLayer, Stage, StageSvg, Wires } from "./infra/primitives";
 
 /*
- * AWS Organizations governance on a Control Tower landing zone.
- * The management account sits above the org root and three OUs, with two
- * child OUs under Workloads. An SCP drops from the management account to the
- * root and on to Workloads; once it attaches, both child OUs light up in turn
- * (inheritance is an Organizations behaviour, the policy itself attaches
- * once). An RCP then lands on Sandbox, a control switches on in each child
- * OU (green dot), and the dashed delegated-admin designation fades in toward
- * the Security OU, where Control Tower keeps the Audit account.
- *
- * Coordinates are viewBox units (0..100 x, 0..62.5 y) so the tree keeps its
- * shape at every card width; motion is opacity plus x/y translate only.
+ * Terraform org governance on a Control Tower landing zone, read top down,
+ * laid out like the repo's own topology figure: the management account above
+ * the organization root, OUs inside it.
+ * 1. An SCP document is created once in the management account, and its two
+ *    attachments draw to the Infrastructure and Workloads OUs, which light.
+ * 2. Their level 2 OUs inherit (an Organizations behaviour; nothing is
+ *    attached to them).
+ * 3. An RCP attaches to the root itself, so the whole tree is bounded.
+ * 4. Control Tower baselines register parent before child: green on level 1,
+ *    then on level 2. Security and Sandbox are dashed: Control Tower owns
+ *    them, so they are targeted but never recreated.
+ * 5. Delegated administration designates the account in the Security OU; it
+ *    deploys nothing into it.
+ * One 6 s loop, 12 animated nodes, all of it fading out together.
  */
 
 const CYCLE = 6;
-const GREEN = "#22c55e";
-const NON_SCALING = "non-scaling-stroke";
-const WHITE_10 = "rgba(255,255,255,0.10)";
-const WHITE_03 = "rgba(255,255,255,0.03)";
 
-/* one easing per keyframe segment so WAAPI opacity and frameloop transforms share beats */
-const loop = (times: number[], delay = 0) => ({
-   duration: CYCLE,
-   repeat: Infinity,
-   delay,
-   times,
-   ease: times.slice(1).map(() => "easeInOut" as const),
-});
+/* Stage anchors, 160 x 100 units. Workloads is the focal point. */
+const MGMT: Point = [80, 12];
+const SCP: Point = [66, 28];
+const RCP: Point = [94, 28];
+const SECURITY: Point = [28, 51];
+const INFRA: Point = [62, 51];
+const WORKLOADS: Point = [102, 51];
+const SANDBOX: Point = [134, 51];
+/* level 2: Network and Shared Services (examples/enterprise), Production and
+   Non-Production (examples/standard) */
+const NETWORK: Point = [52, 75];
+const SHARED: Point = [72, 75];
+const PROD: Point = [92, 75];
+const NON_PROD: Point = [112, 75];
+const ROOT = { x: 12, y: 37, width: 136, height: 57, rx: 4 };
 
-interface Node {
-   x: number;
-   y: number;
-   w: number;
-}
+const OU = { w: 34, h: 18 };
+const CHILD = { w: 28, h: 14 };
+const SEC = { w: 38, h: 20 };
+const ACCOUNT = { w: 11, h: 8 };
 
-const NODE_H = 5;
-const MGMT: Node = { x: 50, y: 7, w: 16 };
-const ROOT: Node = { x: 50, y: 20, w: 9 };
-const SECURITY: Node = { x: 20, y: 34, w: 14 };
-const WORKLOADS: Node = { x: 50, y: 34, w: 14 };
-const SANDBOX: Node = { x: 80, y: 34, w: 14 };
-const PROD: Node = { x: 40, y: 49, w: 11 };
-const DEV: Node = { x: 60, y: 49, w: 11 };
-
-const top = (n: Node) => n.y - NODE_H / 2;
-const bottom = (n: Node) => n.y + NODE_H / 2;
-
-/* elbow connector from a parent's bottom edge to a child's top edge */
-const edge = (from: Node, to: Node) => {
-   const midY = (bottom(from) + top(to)) / 2;
-   return `M ${from.x} ${bottom(from)} V ${midY} H ${to.x} V ${top(to)}`;
-};
-
-const EDGES = [
-   edge(MGMT, ROOT),
-   edge(ROOT, SECURITY),
-   edge(ROOT, WORKLOADS),
-   edge(ROOT, SANDBOX),
-   edge(WORKLOADS, PROD),
-   edge(WORKLOADS, DEV),
+const SCP_TO_INFRA = curveV(SCP, INFRA);
+const SCP_TO_WORKLOADS = curveV(SCP, WORKLOADS);
+const RCP_TO_ROOT = curveV(RCP, [124, ROOT.y]);
+const DELEGATE = `M ${MGMT[0]} ${MGMT[1]} C 40 ${MGMT[1]} ${SECURITY[0]} 26 ${SECURITY[0]} ${SECURITY[1]}`;
+const TREE = [
+   curveV(MGMT, SCP),
+   curveV(MGMT, RCP),
+   curveV(INFRA, NETWORK),
+   curveV(INFRA, SHARED),
+   curveV(WORKLOADS, PROD),
+   curveV(WORKLOADS, NON_PROD),
 ];
 
-const LABELS = {
-   mgmt: "MGMT",
-   scp: "SCP",
-   rcp: "RCP",
-   delegated: "DELEGATED",
-};
+/* ---------------- policy attachments ---------------- */
 
-const hairline = (stroke: string, width = 0.9) => ({
-   stroke,
-   strokeWidth: width,
-   vectorEffect: NON_SCALING,
-});
-
-const rectOf = (n: Node) => ({
-   x: n.x - n.w / 2,
-   y: top(n),
-   width: n.w,
-   height: NODE_H,
-   rx: 1,
-});
-
-const chipText: CSSProperties = {
-   fontFamily: MONO_FONT,
-   fontWeight: 700,
-   letterSpacing: "0.12em",
-};
-
-/* A static OU box in neutral chrome. */
-const Box = ({ node }: { node: Node }) => (
-   <rect {...rectOf(node)} {...hairline(WHITE_10)} fill={WHITE_03} />
-);
-
-/* Tint overlay that lights a box on its beat and fades before the loop restarts. */
-const Lit = ({
-   node,
+/* A uniform-stage draw (no vector-effect), hidden while it resets. */
+const Attachment = ({
+   d,
    tint,
-   times,
-   opacity,
+   at,
 }: {
-   node: Node;
+   d: string;
    tint: string;
-   times: number[];
-   opacity: number[];
+   at: number;
 }) => (
-   <motion.rect
-      {...rectOf(node)}
-      {...hairline(tint, 1.1)}
-      fill={`${tint}22`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity }}
-      transition={loop(times)}
+   <motion.path
+      d={d}
+      fill="none"
+      stroke={tint}
+      strokeWidth={0.75}
+      initial={{ pathLength: 0, opacity: 0 }}
+      animate={{ pathLength: [0, 0, 1, 1], opacity: [0, 0, 1, 1, 0, 0] }}
+      transition={{
+         pathLength: loop(CYCLE, [0, at, at + 0.12, 1]),
+         opacity: loop(CYCLE, [0, at - 0.005, at + 0.005, 0.92, 0.97, 1]),
+      }}
    />
 );
 
-/* A policy document travelling down the tree, then holding at its attach point. */
+const DELEGATE_FADE = appear(0.72);
+const ROOT_LIT = appear(0.49);
+
+const Wiring = ({ tint }: TintProps) => (
+   <StageSvg>
+      {/* the organization root, holding the OU tree */}
+      <rect
+         {...ROOT}
+         fill="none"
+         stroke={HAIRLINE}
+         vectorEffect={NON_SCALING}
+      />
+      <motion.rect
+         {...ROOT}
+         fill={`${tint}0a`}
+         stroke={`${tint}99`}
+         vectorEffect={NON_SCALING}
+         initial={{ opacity: 0 }}
+         animate={{ opacity: ROOT_LIT.opacity }}
+         transition={loop(CYCLE, ROOT_LIT.times)}
+      />
+      <Wires paths={TREE} />
+      <Attachment d={SCP_TO_INFRA} tint={tint} at={0.08} />
+      <Attachment d={SCP_TO_WORKLOADS} tint={tint} at={0.1} />
+      <Attachment d={RCP_TO_ROOT} tint={tint} at={0.38} />
+      {/* delegated admin designation: px dashes flowing, so non-scaling */}
+      <motion.path
+         d={DELEGATE}
+         fill="none"
+         stroke={tint}
+         strokeDasharray="4 4"
+         vectorEffect={NON_SCALING}
+         initial={{ strokeDashoffset: 0, opacity: 0 }}
+         animate={{
+            strokeDashoffset: [0, -96],
+            opacity: DELEGATE_FADE.opacity,
+         }}
+         transition={{
+            strokeDashoffset: sweep(CYCLE),
+            opacity: loop(CYCLE, DELEGATE_FADE.times),
+         }}
+      />
+   </StageSvg>
+);
+
+/* ---------------- management account and policy documents ---------------- */
+
+const chipText: CSSProperties = { ...label, letterSpacing: "0.1em" };
+
 const PolicyChip = ({
+   at,
    text,
    tint,
-   xs,
-   ys,
-   times,
-   opacity,
+   start,
 }: {
+   at: Point;
    text: string;
    tint: string;
-   xs: number[];
-   ys: number[];
-   times: number[];
-   opacity: number[];
-}) => (
-   <motion.g
-      initial={{ x: xs[0], y: ys[0], opacity: 0 }}
-      animate={{ x: xs, y: ys, opacity }}
-      transition={loop(times)}
-   >
-      <rect
-         x={-4.5}
-         y={-1.9}
-         width={9}
-         height={3.8}
-         rx={0.9}
-         fill="#0b1012"
-         {...hairline(tint, 1)}
-      />
-      <text
-         x={0}
-         y={0.75}
-         textAnchor="middle"
-         fontSize={2.1}
-         fill={`${tint}ee`}
-         style={chipText}
+   start: number;
+}) => {
+   const pop = appear(start);
+   return (
+      <motion.div
+         initial={{ opacity: 0, scale: 0.6 }}
+         animate={{ opacity: pop.opacity, scale: [0.6, 0.6, 1, 1, 1, 0.6] }}
+         transition={loop(CYCLE, pop.times)}
+         style={{
+            ...boxAt(at, 27, 13),
+            ...tintPanel(tint, 4),
+            display: "grid",
+            placeItems: "center",
+         }}
       >
-         {text}
-      </text>
-   </motion.g>
+         <span style={{ ...chipText, color: `${tint}ee` }}>{text}</span>
+      </motion.div>
+   );
+};
+
+const Management = ({ tint }: TintProps) => (
+   <div
+      style={{
+         ...boxAt(MGMT, 84, 19),
+         ...tintPanel(tint, 7),
+         display: "grid",
+         placeItems: "center",
+      }}
+   >
+      <span style={{ ...chipText, color: `${tint}dd` }}>MANAGEMENT</span>
+   </div>
 );
 
-/* A control switching on inside a child OU. */
-const ControlDot = ({ node, delay }: { node: Node; delay: number }) => (
-   <motion.circle
-      cx={node.x + node.w / 2 - 1.8}
-      cy={node.y}
-      r={0.9}
-      fill={GREEN}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [0, 0, 1, 1, 0] }}
-      transition={loop([0, 0.55, 0.62, 0.92, 1], delay)}
+/* ---------------- OU tree ---------------- */
+
+const ctOwned: CSSProperties = {
+   ...panel(4),
+   border: `1px dashed ${WHITE_18}`,
+};
+
+const OuBox = ({
+   at,
+   size,
+   owned = false,
+}: {
+   at: Point;
+   size: { w: number; h: number };
+   owned?: boolean;
+}) => (
+   <div
+      style={{ ...boxAt(at, size.w, size.h), ...(owned ? ctOwned : panel(4)) }}
    />
 );
 
-/* SCP: management account -> root -> Workloads, attached from ~30% to the fade. */
-const SCP_TIMES = [0, 0.05, 0.15, 0.25, 0.92, 1];
-const SCP_X = [
-   MGMT.x + 6,
-   MGMT.x + 6,
-   ROOT.x + 6,
-   WORKLOADS.x + 9,
-   WORKLOADS.x + 9,
-   WORKLOADS.x + 9,
-];
-const SCP_Y = [MGMT.y, MGMT.y, ROOT.y, WORKLOADS.y, WORKLOADS.y, WORKLOADS.y];
-const SCP_OPACITY = [0, 1, 1, 1, 1, 0];
+const litBox = (at: Point, size: { w: number; h: number }, tint: string) => (
+   <div
+      style={{
+         ...boxAt(at, size.w, size.h),
+         borderRadius: 4,
+         border: `1px solid ${tint}a6`,
+         background: `${tint}26`,
+      }}
+   />
+);
 
-/* RCP: follows a beat later and attaches to Sandbox. */
-const RCP_TIMES = [0, 0.3, 0.4, 0.5, 0.92, 1];
-const RCP_X = [
-   MGMT.x + 6,
-   MGMT.x + 6,
-   ROOT.x + 6,
-   SANDBOX.x - 3,
-   SANDBOX.x - 3,
-   SANDBOX.x - 3,
-];
-const RCP_Y = [
-   MGMT.y,
-   MGMT.y,
-   ROOT.y,
-   SANDBOX.y + 5,
-   SANDBOX.y + 5,
-   SANDBOX.y + 5,
-];
+/* 4 px status dot in a box's top right corner. */
+const cornerDot = ([x, y]: Point, size: { w: number; h: number }) => (
+   <div
+      style={{
+         position: "absolute",
+         left: `calc(${pctX(x)} + ${size.w / 2 - 7}px)`,
+         top: `calc(${pctY(y)} - ${size.h / 2 - 3}px)`,
+         width: 4,
+         height: 4,
+         borderRadius: "50%",
+         background: GREEN,
+      }}
+   />
+);
 
-const LIT_WORKLOADS = {
-   times: [0, 0.24, 0.3, 0.92, 1],
-   opacity: [0, 0, 1, 1, 0],
-};
-const LIT_PROD = { times: [0, 0.32, 0.38, 0.92, 1], opacity: [0, 0, 1, 1, 0] };
-const LIT_DEV = { times: [0, 0.38, 0.44, 0.92, 1], opacity: [0, 0, 1, 1, 0] };
-const LIT_SANDBOX = {
-   times: [0, 0.49, 0.55, 0.92, 1],
-   opacity: [0, 0, 1, 1, 0],
-};
-const DELEGATE = { times: [0, 0.68, 0.76, 0.92, 1], opacity: [0, 0, 1, 1, 0] };
+/* One node per beat: every overlay in a beat shares its opacity. */
+const Beat = ({ at, children }: { at: number; children: ReactNode }) => (
+   <FadeLayer cycle={CYCLE} fade={appear(at)}>
+      {children}
+   </FadeLayer>
+);
 
-const DELEGATE_PATH = `M ${MGMT.x - MGMT.w / 2} ${MGMT.y} H ${SECURITY.x} V ${top(SECURITY)}`;
-
-const label: CSSProperties = {
-   position: "absolute",
-   fontFamily: MONO_FONT,
-   fontSize: 7,
-   fontWeight: 700,
-   letterSpacing: "0.14em",
-   textTransform: "uppercase",
-   whiteSpace: "nowrap",
-};
-
-export default function GovernanceScene({ tint }: CoverSceneProps) {
-   return (
+const Tree = ({ tint }: TintProps) => (
+   <>
+      <OuBox at={SECURITY} size={SEC} owned />
+      <OuBox at={INFRA} size={OU} />
+      <OuBox at={WORKLOADS} size={OU} />
+      <OuBox at={SANDBOX} size={OU} owned />
+      <OuBox at={NETWORK} size={CHILD} />
+      <OuBox at={SHARED} size={CHILD} />
+      <OuBox at={PROD} size={CHILD} />
+      <OuBox at={NON_PROD} size={CHILD} />
+      {/* the member account in Security that delegation designates */}
       <div
-         aria-hidden="true"
          style={{
-            position: "absolute",
-            inset: 0,
-            overflow: "hidden",
-            background: "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)",
+            ...boxAt(SECURITY, ACCOUNT.w, ACCOUNT.h),
+            borderRadius: 2,
+            border: `1px solid ${WHITE_18}`,
          }}
-      >
+      />
+      <span style={labelAt(SECURITY, SEC.h / 2 + 6)}>DELEGATED</span>
+
+      {/* SCP attached: both targets light */}
+      <Beat at={0.21}>
+         {litBox(INFRA, OU, tint)}
+         {litBox(WORKLOADS, OU, tint)}
+      </Beat>
+      {/* inherited, never attached */}
+      <Beat at={0.27}>
+         {litBox(NETWORK, CHILD, tint)}
+         {litBox(SHARED, CHILD, tint)}
+         {litBox(PROD, CHILD, tint)}
+         {litBox(NON_PROD, CHILD, tint)}
+      </Beat>
+      {/* Control Tower baselines: parent before child */}
+      <Beat at={0.56}>
+         {cornerDot(INFRA, OU)}
+         {cornerDot(WORKLOADS, OU)}
+      </Beat>
+      <Beat at={0.64}>
+         {cornerDot(NETWORK, CHILD)}
+         {cornerDot(SHARED, CHILD)}
+         {cornerDot(PROD, CHILD)}
+         {cornerDot(NON_PROD, CHILD)}
+      </Beat>
+      {/* the delegated administrator account lights with its label */}
+      <Beat at={0.78}>
          <div
             style={{
-               position: "absolute",
-               inset: 0,
-               background: `radial-gradient(circle at 50% 30%, ${tint}14 0%, transparent 60%)`,
+               ...boxAt(SECURITY, ACCOUNT.w, ACCOUNT.h),
+               borderRadius: 2,
+               border: `1px solid ${tint}`,
+               background: `${tint}66`,
             }}
          />
-         <svg
-            viewBox="0 0 100 62.5"
-            style={{
-               position: "absolute",
-               inset: 0,
-               width: "100%",
-               height: "100%",
-            }}
-         >
-            {EDGES.map((d) => (
-               <path
-                  key={d}
-                  d={d}
-                  fill="none"
-                  {...hairline("rgba(255,255,255,0.14)")}
-               />
-            ))}
-            <motion.path
-               d={DELEGATE_PATH}
-               fill="none"
-               {...hairline(`${tint}aa`)}
-               strokeDasharray="1.6 1.4"
-               initial={{ opacity: 0 }}
-               animate={{ opacity: DELEGATE.opacity }}
-               transition={loop(DELEGATE.times)}
-            />
-
-            <rect
-               {...rectOf(MGMT)}
-               {...hairline(`${tint}80`)}
-               fill={`${tint}18`}
-            />
-            {[ROOT, SECURITY, WORKLOADS, SANDBOX, PROD, DEV].map((n) => (
-               <Box key={`${n.x}-${n.y}`} node={n} />
-            ))}
-
-            <Lit node={WORKLOADS} tint={tint} {...LIT_WORKLOADS} />
-            <Lit node={PROD} tint={tint} {...LIT_PROD} />
-            <Lit node={DEV} tint={tint} {...LIT_DEV} />
-            <Lit node={SANDBOX} tint={tint} {...LIT_SANDBOX} />
-
-            <ControlDot node={PROD} delay={0} />
-            <ControlDot node={DEV} delay={0.2} />
-
-            <PolicyChip
-               text={LABELS.scp}
-               tint={tint}
-               xs={SCP_X}
-               ys={SCP_Y}
-               times={SCP_TIMES}
-               opacity={SCP_OPACITY}
-            />
-            <PolicyChip
-               text={LABELS.rcp}
-               tint={tint}
-               xs={RCP_X}
-               ys={RCP_Y}
-               times={RCP_TIMES}
-               opacity={SCP_OPACITY}
-            />
-         </svg>
-
-         <span
-            style={{
-               ...label,
-               left: "50%",
-               top: `${(MGMT.y / 62.5) * 100}%`,
-               transform: "translate(-50%, -50%)",
-               color: `${tint}dd`,
-            }}
-         >
-            {LABELS.mgmt}
+         <span style={labelAt(SECURITY, SEC.h / 2 + 6, LABEL_LIT)}>
+            DELEGATED
          </span>
-         <motion.span
-            style={{
-               ...label,
-               left: `${SECURITY.x - SECURITY.w / 2}%`,
-               top: `${((MGMT.y + 4.2) / 62.5) * 100}%`,
-               color: `${tint}bb`,
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: DELEGATE.opacity }}
-            transition={loop(DELEGATE.times)}
-         >
-            {LABELS.delegated}
-         </motion.span>
-      </div>
+      </Beat>
+   </>
+);
+
+export default function GovernanceScene({ tint }: Readonly<TintProps>) {
+   return (
+      <Stage tint={tint} focus={WORKLOADS} backdrop="grid">
+         <Wiring tint={tint} />
+         <Management tint={tint} />
+         <PolicyChip at={SCP} text="SCP" tint={tint} start={0.04} />
+         <PolicyChip at={RCP} text="RCP" tint={tint} start={0.34} />
+         <Tree tint={tint} />
+      </Stage>
    );
 }

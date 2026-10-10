@@ -1,529 +1,414 @@
-import type { CSSProperties } from "react";
 import { motion } from "motion/react";
-import { MONO_FONT } from "@/constants/theme";
-
-interface CoverSceneProps {
-   tint: string;
-}
-
-/*
- * SageMaker MLOps circuit, read left to right along the top and back along
- * the bottom: an S3 object lands -> three architectures train in parallel ->
- * their outputs converge into one ensemble -> the Clinical Quality Gate fills
- * its bar -> the ensemble registers as pending and a reviewer approves it ->
- * the approved version drops into the live endpoint -> Model Monitor compares
- * the prediction curve against its baseline -> the curve drifts, the alarm
- * flashes, and a retrain edge draws back to S3 exactly as the next batch
- * leaves it. One 6 s loop, 12 animated nodes, transform and opacity only.
- */
-
-const CYCLE = 6;
-
-const GREEN = "#22c55e";
-const AMBER = "#f59e0b";
-const BASE_DARK = "#0b1012";
-const HAIRLINE = "rgba(255,255,255,0.08)";
-const PANEL_BORDER = "1px solid rgba(255,255,255,0.12)";
-const PANEL_FILL = "rgba(255,255,255,0.03)";
-const GLYPH = "rgba(255,255,255,0.35)";
-const LABEL_COLOR = "rgba(255,255,255,0.45)";
-const LABEL_DIM = "rgba(255,255,255,0.25)";
-const LABEL_LIT = "rgba(255,255,255,0.9)";
-const APPROVED = "APPROVED";
-
-/* Stage anchors as percentages of the scene. */
-const X_S3 = 8;
-const X_TRAIN = 26;
-const X_ENSEMBLE = 46;
-const X_GATE = 64;
-const X_REGISTRY = 80;
-const X_MONITOR = 56;
-const X_DRIFT = 40;
-const Y_PIPELINE = 32;
-const Y_SERVE = 72;
-const TRAIN_ROWS = [18, 32, 46];
-
-const label: CSSProperties = {
-   fontFamily: MONO_FONT,
-   fontSize: 7,
-   fontWeight: 700,
-   lineHeight: 1,
-   letterSpacing: "0.12em",
-   textTransform: "uppercase",
-   textAlign: "center",
-   whiteSpace: "nowrap",
-   color: LABEL_COLOR,
-};
-
-/* px box centred on a percent anchor, so shapes keep px sizes at any width. */
-const box = (x: number, y: number, w: number, h: number, dy = 0) => ({
-   position: "absolute" as const,
-   left: `calc(${x}% - ${w / 2}px)`,
-   top: `calc(${y}% - ${h / 2 - dy}px)`,
-   width: w,
-   height: h,
-});
-
-/* px rect inside a box. */
-const rect = (left: number, top: number, w: number, h: number) => ({
-   position: "absolute" as const,
-   left,
-   top,
-   width: w,
-   height: h,
-});
-
-const dot = (left: number, top: number, size: number, background: string) => ({
-   ...rect(left, top, size, size),
-   borderRadius: "50%",
-   background,
-});
-
-/* Label spanning the top edge of its box. */
-const caption = (width: number, color = LABEL_COLOR) => ({
-   ...label,
-   ...rect(0, 0, width, 7),
-   color,
-});
-
-const panel: CSSProperties = {
-   borderRadius: 3,
-   border: PANEL_BORDER,
-   background: PANEL_FILL,
-};
-
-const tinted = (tint: string): CSSProperties => ({
-   borderRadius: 4,
-   border: `1px solid ${tint}4d`,
-   background: `${tint}0f`,
-});
-
-const line = { fill: "none", vectorEffect: "non-scaling-stroke" as const };
-
-const EASE = "easeInOut" as const;
-
-/* Motion runs opacity loops through WAAPI, where a single ease is applied
- * across the whole iteration and the `times` offsets land at eased moments.
- * A per-segment ease array puts the easing on each keyframe instead, so the
- * WAAPI (opacity) and JS (transform, pathLength) loops share one schedule. */
-const loop = (times: number[], delay = 0) => ({
-   duration: CYCLE,
-   repeat: Infinity,
-   delay,
-   times,
-   ease: times.slice(1).map(() => EASE),
-});
-
-/* Hold-then-move keyframes: every stop is entered twice so it holds. */
-const held = (...stops: number[]) => stops.flatMap((s) => [s, s]);
-
-/* Hairline rail between two stages. */
-const Rail = ({ from, to, top }: { from: number; to: number; top: number }) => (
-   <div
-      style={{
-         position: "absolute",
-         left: `${from}%`,
-         width: `${to - from}%`,
-         top: `${top}%`,
-         height: 1,
-         background: HAIRLINE,
-      }}
-   />
-);
+import {
+   GREEN,
+   LABEL_LIT,
+   NON_SCALING,
+   WHITE_18,
+   boxAt,
+   curveH,
+   dotStyle,
+   label,
+   labelAt,
+   loop,
+   panel,
+   pctX,
+   pctY,
+   sweep,
+   tintPanel,
+} from "./infra/tokens";
+import type { TintProps } from "./infra/tokens";
+import { Packet, Stage, StageSvg, Wires } from "./infra/primitives";
+import Serving from "./mlops/Serving";
+import {
+   ALARM,
+   CYCLE,
+   ENDPOINT,
+   ENSEMBLE,
+   GATE,
+   MONITOR,
+   REGISTRY,
+   S3,
+   TRAIN_ROWS,
+   TRAIN_X,
+   trainer,
+} from "./mlops/layout";
 
 /*
- * A 4 px dot travelling between stages. The wrapper is a 1% x 1% anchor, so
- * x/y keyframes written in scene percent become percent-of-self transforms
- * and nothing animates left/top.
+ * SageMaker image classification MLOps, one 6 s loop read clockwise.
+ * Top rail: data flows out of the S3 bucket into three trainers
+ * (TrainVgg16Model, TrainDenseNet121Model, TrainEfficientNetModel) running in
+ * parallel, fans back into CreateEnsembleModel, and waits inside the Clinical
+ * Quality Gate while four metrics rise past their thresholds. It registers as
+ * PendingManualApproval, holds, and turns APPROVED.
+ * Right edge: the auto deploy drops it onto the endpoint, where a canary
+ * slice of the new fleet takes traffic before the full shift.
+ * Bottom rail: captured predictions reach the hourly PSI drift job, the score
+ * curve slides off its baseline, the prediction drift alarm fires, and the
+ * drift triggers retraining edge draws back to the bucket, retracting into
+ * it as the next run starts. 12 animated nodes.
  */
-const pct = (v: number) => `${v * 100}%`;
 
-interface MoverProps {
-   left: number;
-   top: number;
-   color: string;
-   move: { x: number[]; y?: number[]; times: number[] };
-   fade: { opacity: number[]; times: number[] };
-   delay?: number;
-}
-
-const Mover = ({ left, top, color, move, fade, delay = 0 }: MoverProps) => (
-   <motion.div
-      initial={{ x: "0%", y: "0%", opacity: 0 }}
-      animate={{
-         x: move.x.map(pct),
-         y: (move.y ?? move.x.map(() => 0)).map(pct),
-         opacity: fade.opacity,
-      }}
-      transition={{
-         x: loop(move.times, delay),
-         y: loop(move.times, delay),
-         opacity: loop(fade.times, delay),
-      }}
-      style={{
-         position: "absolute",
-         left: `${left}%`,
-         top: `${top}%`,
-         width: "1%",
-         height: "1%",
-      }}
-   >
-      <div style={dot(-2, -2, 4, color)} />
-   </motion.div>
-);
-
-/* Beats 1 and 2: S3 -> trainer chip -> ensemble, one dot per architecture. */
-const INGEST_MOVE = {
-   x: held(0, X_TRAIN - X_S3, X_ENSEMBLE - X_S3),
-   times: [0, 0.02, 0.16, 0.22, 0.31, 1],
-};
-const INGEST_FADE = {
-   opacity: held(0, 1, 0),
-   times: [0, 0.03, 0.06, 0.32, 0.35, 1],
-};
-const INGEST_STAGGER = 0.12;
-
-/* Beats 3 and 4: ensemble -> gate -> registry, one continuous dot. */
-const THROUGH_MOVE = {
-   x: held(0, X_GATE - X_ENSEMBLE, X_REGISTRY - X_ENSEMBLE),
-   times: [0, 0.36, 0.44, 0.54, 0.6, 1],
-};
-const THROUGH_FADE = {
-   opacity: held(0, 1, 0, 1, 0),
-   times: [0, 0.36, 0.38, 0.42, 0.44, 0.54, 0.56, 0.58, 0.6, 1],
-};
-
-/* Beat 4: the approved version drops into the endpoint. */
-const DEPLOY_MOVE = {
-   x: held(0, 0),
-   y: held(0, Y_SERVE - Y_PIPELINE),
-   times: [0, 0.68, 0.75, 1],
-};
-const DEPLOY_FADE = {
-   opacity: held(0, 1, 0),
-   times: [0, 0.68, 0.7, 0.74, 0.76, 1],
-};
-
-/* Beat 5: a captured prediction leaves the endpoint for Model Monitor. */
-const PREDICT_MOVE = {
-   x: held(0, X_MONITOR - X_REGISTRY),
-   times: [0, 0.76, 0.84, 1],
-};
-const PREDICT_FADE = {
-   opacity: held(0, 1, 0),
-   times: [0, 0.76, 0.78, 0.81, 0.83, 1],
-};
-
-/* Fan-out from S3 to the trainers, fan-in from the trainers to the ensemble. */
-const FAN_PATHS = TRAIN_ROWS.flatMap((row) => [
-   `M ${X_S3} ${Y_PIPELINE} L ${X_TRAIN} ${row}`,
-   `M ${X_TRAIN} ${row} L ${X_ENSEMBLE} ${Y_PIPELINE}`,
+const FAN_PATHS = TRAIN_ROWS.flatMap((y) => [
+   curveH(S3, trainer(y)),
+   curveH(trainer(y), ENSEMBLE),
 ]);
+const RAILS = [
+   `M ${ENSEMBLE[0]} ${ENSEMBLE[1]} H ${REGISTRY[0]}`,
+   `M ${REGISTRY[0]} ${REGISTRY[1]} V ${ENDPOINT[1]}`,
+   `M ${ENDPOINT[0]} ${ENDPOINT[1]} H ${ALARM[0]}`,
+];
+const DROP = ENDPOINT[1] - REGISTRY[1];
+const CAPTURE = MONITOR[0] - ENDPOINT[0];
+const RETRAIN = `M ${ALARM[0]} ${ALARM[1]} C 30 ${ALARM[1]} ${S3[0]} 64 ${S3[0]} ${S3[1]}`;
 
-/*
- * Beat 6: drift alarm -> StartPipelineExecution, back at the S3 tile. The
- * arc stops at the tile's bottom edge: half its 18 px height as a percent of
- * the 212.5 px desktop slot. On phones the overrun hides under the tile.
- */
-const S3_EDGE = 4.2;
-const ARC_PATH = `M ${X_DRIFT} ${Y_SERVE} L ${X_S3 + 6} ${Y_SERVE} Q ${X_S3} ${Y_SERVE} ${X_S3} ${Y_SERVE - 6} L ${X_S3} ${Y_PIPELINE + S3_EDGE}`;
-const RETRAIN_TIMES = [0, 0.02, 0.12, 0.13, 0.86, 0.87, 1];
-const RETRAIN_LENGTH = [1, 1, 1, 0, 0, 0, 1];
-const RETRAIN_OPACITY = [1, 1, 0, 0, 0, 1, 1];
+/* ---------------- wiring ---------------- */
 
-const Wiring = ({ tint }: { tint: string }) => (
-   <svg
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-   >
-      {FAN_PATHS.map((d) => (
-         <path key={d} d={d} {...line} stroke={HAIRLINE} />
-      ))}
-      <path d={ARC_PATH} {...line} stroke={`${tint}40`} strokeDasharray="2 2" />
+const FLOW_FADE = {
+   opacity: [0, 0, 1, 1, 0, 0],
+   times: [0, 0.02, 0.06, 0.28, 0.33, 1],
+};
+
+/* Draws from the alarm once it fires (0.9 to 0.99), then retracts into the
+   bucket while the next run starts; pathOffset + pathLength stays 1 while it
+   retracts. */
+const RETRAIN_TIMES = [0, 0.08, 0.86, 0.9, 0.99, 1];
+const RETRAIN_LENGTH = [1, 0, 0, 0, 1, 1];
+const RETRAIN_OFFSET = [0, 1, 1, 0, 0, 0];
+
+const Wiring = ({ tint }: TintProps) => (
+   <StageSvg>
+      <Wires paths={[...FAN_PATHS, ...RAILS]} />
+      <Wires paths={[RETRAIN]} stroke={`${tint}40`} dash="3 4" />
+      {/* training data in flight on every fan edge: px dashes, so non-scaling */}
       <motion.path
-         d={ARC_PATH}
-         {...line}
+         d={FAN_PATHS.join(" ")}
+         fill="none"
          stroke={tint}
-         strokeWidth={1.5}
-         strokeLinecap="round"
-         initial={{ pathLength: 1, opacity: 1 }}
-         animate={{ pathLength: RETRAIN_LENGTH, opacity: RETRAIN_OPACITY }}
-         transition={loop(RETRAIN_TIMES)}
+         strokeDasharray="3 7"
+         vectorEffect={NON_SCALING}
+         initial={{ strokeDashoffset: 0, opacity: 0 }}
+         animate={{ strokeDashoffset: [0, -160], opacity: FLOW_FADE.opacity }}
+         transition={{
+            strokeDashoffset: sweep(CYCLE),
+            opacity: loop(CYCLE, FLOW_FADE.times),
+         }}
       />
-   </svg>
+      {/* RetrainingReason=drift_detected: a uniform-stage draw, no vector-effect */}
+      <motion.path
+         d={RETRAIN}
+         fill="none"
+         stroke={tint}
+         strokeWidth={0.8}
+         initial={{ pathLength: 1, pathOffset: 0 }}
+         animate={{ pathLength: RETRAIN_LENGTH, pathOffset: RETRAIN_OFFSET }}
+         transition={loop(CYCLE, RETRAIN_TIMES)}
+      />
+   </StageSvg>
 );
 
-const Ingest = ({ tint }: { tint: string }) => (
+/* ---------------- packets ---------------- */
+
+const Packets = ({ tint }: TintProps) => (
    <>
-      {/* S3 bucket: the .batch_complete object that starts the pipeline;
-          opaque so the wiring underneath ends at its edges */}
-      <div
-         style={{
-            ...box(X_S3, Y_PIPELINE, 24, 18),
-            borderRadius: 4,
-            border: `1px solid ${tint}55`,
-            background: `linear-gradient(${tint}14, ${tint}14), ${BASE_DARK}`,
+      {/* ensemble -> gate (held out of sight inside it) -> registry */}
+      <Packet
+         from={ENSEMBLE}
+         color={tint}
+         dir="right"
+         cycle={CYCLE}
+         track={{
+            x: [
+               0,
+               0,
+               GATE[0] - ENSEMBLE[0],
+               GATE[0] - ENSEMBLE[0],
+               REGISTRY[0] - ENSEMBLE[0],
+               REGISTRY[0] - ENSEMBLE[0],
+            ],
+            times: [0, 0.3, 0.4, 0.52, 0.62, 1],
          }}
-      >
-         <div style={{ ...rect(3, 4, 18, 1), background: `${tint}66` }} />
-      </div>
-      {/* three architectures training in parallel */}
-      {TRAIN_ROWS.map((row) => (
-         <div
-            key={row}
-            style={{
-               ...box(X_TRAIN, row, 30, 12),
-               ...tinted(tint),
-               borderRadius: 3,
-            }}
-         />
-      ))}
-      {TRAIN_ROWS.map((row, i) => (
-         <Mover
-            key={row}
-            left={X_S3}
-            top={Y_PIPELINE}
-            color={tint}
-            move={{ ...INGEST_MOVE, y: held(0, row - Y_PIPELINE, 0) }}
-            fade={INGEST_FADE}
-            delay={i * INGEST_STAGGER}
-         />
-      ))}
+         fade={{
+            opacity: [0, 0, 1, 1, 0, 0],
+            times: [0, 0.3, 0.32, 0.61, 0.63, 1],
+         }}
+      />
+      {/* approved package -> endpoint */}
+      <Packet
+         from={REGISTRY}
+         color={tint}
+         dir="down"
+         cycle={CYCLE}
+         track={{ y: [0, 0, DROP, DROP], times: [0, 0.68, 0.75, 1] }}
+         fade={{
+            opacity: [0, 0, 1, 1, 0, 0],
+            times: [0, 0.68, 0.7, 0.74, 0.76, 1],
+         }}
+      />
+      {/* data capture -> drift job */}
+      <Packet
+         from={ENDPOINT}
+         color={tint}
+         dir="left"
+         cycle={CYCLE}
+         track={{ x: [0, 0, CAPTURE, CAPTURE], times: [0, 0.79, 0.86, 1] }}
+         fade={{
+            opacity: [0, 0, 1, 1, 0, 0],
+            times: [0, 0.78, 0.8, 0.85, 0.87, 1],
+         }}
+      />
    </>
 );
 
-const ENSEMBLE_TIMES = [0, 0.32, 0.35, 0.38, 1];
-const ENSEMBLE_SCALE = [1, 1, 1.3, 1, 1];
+/* ---------------- top rail ---------------- */
 
-const Ensemble = ({ tint }: { tint: string }) => (
-   <>
-      {/* CreateEnsembleModel: three outputs become one weighted model */}
-      <motion.div
-         animate={{ scale: ENSEMBLE_SCALE }}
-         transition={loop(ENSEMBLE_TIMES)}
-         style={{
-            ...box(X_ENSEMBLE, Y_PIPELINE, 10, 10),
-            borderRadius: "50%",
-            background: tint,
-         }}
-      />
-      {/* untracked and lowered so it clears the gate and the third chip on phones */}
-      <span
-         style={{
-            ...label,
-            letterSpacing: 0,
-            ...box(X_ENSEMBLE, Y_PIPELINE, 48, 7, 15),
-         }}
+const Bucket = ({ tint }: TintProps) => (
+   <div style={{ ...boxAt(S3, 29, 23), ...tintPanel(tint, 6) }}>
+      <svg
+         width={29}
+         height={23}
+         viewBox="0 0 22 18"
+         style={{ position: "absolute", left: -1, top: -1 }}
       >
-         ENSEMBLE
-      </span>
-   </>
-);
-
-const GAUGE_TIMES = [0, 0.44, 0.54, 0.88, 0.9, 0.91, 1];
-const GAUGE_SCALE = [0, 0, 1, 1, 1, 0, 0];
-const GAUGE_OPACITY = [1, 1, 1, 1, 0, 0, 1];
-
-const Gate = ({ tint }: { tint: string }) => (
-   <div style={{ ...box(X_GATE, Y_PIPELINE, 28, 22), ...tinted(tint) }}>
-      <span style={{ ...caption(26), top: 4 }}>GATE</span>
-      {/* the bar every ensemble metric has to clear; the tick is the threshold */}
-      <div
-         style={{
-            ...rect(4, 14, 18, 3),
-            borderRadius: 1.5,
-            background: "rgba(255,255,255,0.10)",
-         }}
-      >
-         <motion.div
-            initial={{ scaleX: 0, opacity: 1 }}
-            animate={{ scaleX: GAUGE_SCALE, opacity: GAUGE_OPACITY }}
-            transition={loop(GAUGE_TIMES)}
-            style={{
-               position: "absolute",
-               inset: 0,
-               borderRadius: 1.5,
-               background: GREEN,
-               transformOrigin: "left center",
-            }}
+         <ellipse
+            cx={11}
+            cy={5.5}
+            rx={6}
+            ry={1.8}
+            fill="none"
+            stroke={`${tint}cc`}
          />
-         <div
-            style={{
-               ...rect(16, -1, 1, 5),
-               background: "rgba(255,255,255,0.4)",
-            }}
+         <path
+            d="M 5 5.5 L 6.5 12.5 Q 11 14.6 15.5 12.5 L 17 5.5"
+            fill="none"
+            stroke={`${tint}88`}
          />
-      </div>
+      </svg>
    </div>
 );
 
-/* The dot lands at 0.60; the gap before 0.65 is PendingManualApproval. */
-const APPROVE_TIMES = [0, 0.65, 0.68, 0.9, 0.94, 1];
-const APPROVE_OPACITY = [0, 0, 1, 1, 0, 0];
+const TRAIN_SCALE = { scaleX: [0, 0, 1, 1], times: [0, 0.05, 0.3, 1] };
+const TRAIN_FADE = { opacity: [0, 1, 1, 0, 0], times: [0, 0.05, 0.9, 0.94, 1] };
 
-const Registry = ({ tint }: { tint: string }) => (
-   <div style={box(X_REGISTRY, Y_PIPELINE, 52, 52)}>
-      {/* stacked model package versions; the front one is PendingManualApproval */}
-      <div style={{ ...rect(19, 16.5, 20, 13), ...panel, opacity: 0.5 }} />
-      <div style={{ ...rect(16, 19.5, 20, 13), ...panel }} />
-      <div style={{ ...dot(20, 24.5, 3, tint), opacity: 0.35 }} />
-      {/* the clinical reviewer who flips the status to Approved */}
-      <div style={dot(42, 22, 3, GLYPH)} />
-      <div
-         style={{
-            ...rect(40, 26.5, 7, 3.5),
-            borderRadius: "3.5px 3.5px 0 0",
-            background: GLYPH,
+/* Three parallel training jobs; one node fills all three progress bars. */
+const Trainers = ({ tint }: TintProps) => (
+   <>
+      {TRAIN_ROWS.map((y) => (
+         <div key={y} style={{ ...boxAt(trainer(y), 29, 10), ...panel(5) }} />
+      ))}
+      <motion.div
+         initial={{ scaleX: 0, opacity: 0 }}
+         animate={{ scaleX: TRAIN_SCALE.scaleX, opacity: TRAIN_FADE.opacity }}
+         transition={{
+            scaleX: loop(CYCLE, TRAIN_SCALE.times),
+            opacity: loop(CYCLE, TRAIN_FADE.times),
          }}
-      />
-      <span style={caption(52, LABEL_DIM)}>{APPROVED}</span>
-      {/* one animated node lights the LED and the label together */}
+         style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: `calc(${pctX(TRAIN_X)} - 9.5px)`,
+            width: 19,
+            transformOrigin: "left center",
+         }}
+      >
+         {TRAIN_ROWS.map((y) => (
+            <div
+               key={y}
+               style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  top: `calc(${pctY(y)} - 1.5px)`,
+                  height: 3,
+                  borderRadius: 1.5,
+                  background: tint,
+               }}
+            />
+         ))}
+      </motion.div>
+   </>
+);
+
+const Ensemble = ({ tint }: TintProps) => (
+   <div
+      style={{
+         ...boxAt(ENSEMBLE, 16, 16),
+         ...tintPanel(tint, 8),
+         display: "grid",
+         placeItems: "center",
+      }}
+   >
+      <div style={dotStyle(7, tint)} />
+   </div>
+);
+
+/* accuracy, recall, precision, AUC: final bar height and its threshold tick */
+const METRICS = [
+   { key: "accuracy", bar: 20, tick: 16 },
+   { key: "recall", bar: 25, tick: 22 },
+   { key: "precision", bar: 17, tick: 13 },
+   { key: "auc", bar: 22, tick: 18 },
+];
+const METRIC_ROW = {
+   position: "absolute" as const,
+   left: 0,
+   right: 0,
+   bottom: 8,
+   height: 26,
+   display: "flex",
+   justifyContent: "center",
+   alignItems: "flex-end",
+   gap: 4,
+};
+const BARS = { scaleY: [0, 0, 1, 1, 0], times: [0, 0.4, 0.5, 0.93, 1] };
+const PASS = {
+   opacity: [0, 0, 1, 1, 0, 0],
+   times: [0, 0.5, 0.53, 0.9, 0.94, 1],
+};
+
+/* Clinical Quality Gate: every metric has to clear its tick, or Fail. */
+const Gate = ({ tint }: TintProps) => (
+   <div style={{ ...boxAt(GATE, 40, 44), ...tintPanel(tint, 8) }}>
+      <motion.div
+         initial={{ scaleY: 0 }}
+         animate={{ scaleY: BARS.scaleY }}
+         transition={loop(CYCLE, BARS.times)}
+         style={{ ...METRIC_ROW, transformOrigin: "bottom center" }}
+      >
+         {METRICS.map(({ key, bar }) => (
+            <div
+               key={key}
+               style={{
+                  width: 4,
+                  height: bar,
+                  borderRadius: 1.5,
+                  background: `${tint}cc`,
+               }}
+            />
+         ))}
+      </motion.div>
+      <div style={METRIC_ROW}>
+         {METRICS.map(({ key, tick }) => (
+            <div
+               key={key}
+               style={{ position: "relative", width: 4, height: 26 }}
+            >
+               <div
+                  style={{
+                     position: "absolute",
+                     left: -1.5,
+                     bottom: tick,
+                     width: 7,
+                     height: 1,
+                     background: "rgba(255,255,255,0.55)",
+                  }}
+               />
+            </div>
+         ))}
+      </div>
       <motion.div
          initial={{ opacity: 0 }}
-         animate={{ opacity: APPROVE_OPACITY }}
-         transition={loop(APPROVE_TIMES)}
-         style={{ position: "absolute", inset: 0 }}
+         animate={{ opacity: PASS.opacity }}
+         transition={loop(CYCLE, PASS.times)}
+         style={{
+            position: "absolute",
+            inset: -1,
+            borderRadius: 8,
+            border: `1px solid ${GREEN}b3`,
+         }}
       >
-         <div style={dot(20, 24.5, 3, GREEN)} />
-         <span style={caption(52, LABEL_LIT)}>{APPROVED}</span>
+         <div
+            style={{
+               ...dotStyle(5, GREEN),
+               position: "absolute",
+               top: 5,
+               right: 5,
+            }}
+         />
       </motion.div>
    </div>
 );
 
-const Endpoint = () => (
-   <div
-      style={{ ...box(X_REGISTRY, Y_SERVE, 34, 14), ...panel, borderRadius: 7 }}
-   >
-      {/* live endpoint: updated in place by auto deploy, never torn down */}
-      <div style={dot(5, 4.5, 3, GREEN)} />
+const APPROVED = "APPROVED";
+const APPROVE = {
+   opacity: [0, 0, 1, 1, 0, 0],
+   times: [0, 0.65, 0.68, 0.9, 0.94, 1],
+};
+const CARD_LINE = {
+   position: "absolute" as const,
+   height: 1,
+   background: WHITE_18,
+};
+
+/* Model Registry: two package versions; the newest waits as
+   PendingManualApproval until a reviewer approves it. */
+const Registry = ({ tint }: TintProps) => (
+   <>
       <div
          style={{
-            ...rect(12, 5.5, 14, 1),
-            background: "rgba(255,255,255,0.18)",
+            ...boxAt(REGISTRY, 29, 20),
+            ...panel(5),
+            transform: "translate(4px, -4px)",
+            opacity: 0.55,
          }}
       />
-   </div>
+      <div style={{ ...boxAt(REGISTRY, 29, 20), ...panel(5) }}>
+         <div
+            style={{
+               ...dotStyle(4, `${tint}66`),
+               position: "absolute",
+               left: 5,
+               top: 7,
+            }}
+         />
+         <div style={{ ...CARD_LINE, left: 13, top: 6, width: 10 }} />
+         <div style={{ ...CARD_LINE, left: 13, top: 11, width: 7 }} />
+      </div>
+      <span style={labelAt(REGISTRY, -26)}>{APPROVED}</span>
+      {/* one node lights the status LED and the label together */}
+      <motion.div
+         initial={{ opacity: 0 }}
+         animate={{ opacity: APPROVE.opacity }}
+         transition={loop(CYCLE, APPROVE.times)}
+         style={boxAt(REGISTRY, 29, 20)}
+      >
+         <div
+            style={{
+               ...dotStyle(4, GREEN),
+               position: "absolute",
+               left: 6,
+               top: 8,
+            }}
+         />
+         <span
+            style={{
+               ...label,
+               position: "absolute",
+               left: "50%",
+               top: -16,
+               transform: "translateX(-50%)",
+               color: LABEL_LIT,
+            }}
+         >
+            {APPROVED}
+         </span>
+      </motion.div>
+   </>
 );
 
-const CURVE = "M 0 11.5 C 6 11.5 8.5 0.5 12 0.5 C 15.5 0.5 18 11.5 24 11.5";
-const CURVE_TIMES = [0, 0.77, 0.88, 0.97, 1];
-const CURVE_X = [0, 0, 6, 6, 0];
-
-const Monitor = ({ tint }: { tint: string }) => (
-   <svg
-      viewBox="0 0 24 12"
-      style={{ ...box(X_MONITOR, Y_SERVE, 24, 12, -5.5), overflow: "visible" }}
-   >
-      <path d={CURVE} fill="none" stroke="rgba(255,255,255,0.2)" />
-      {/* live prediction score distribution sliding off its baseline */}
-      <motion.path
-         d={CURVE}
-         fill="none"
-         stroke={tint}
-         strokeWidth={1.2}
-         initial={{ x: 0 }}
-         animate={{ x: CURVE_X }}
-         transition={loop(CURVE_TIMES)}
-      />
-   </svg>
-);
-
-const DRIFT_TIMES = [0, 0.85, 0.87, 0.89, 0.91, 0.94, 1];
-const DRIFT_OPACITY = [0, 0, 1, 0.3, 1, 0, 0];
-
-const DriftAlarm = () => (
-   <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: DRIFT_OPACITY }}
-      transition={loop(DRIFT_TIMES)}
-      style={box(X_DRIFT, Y_SERVE, 40, 28)}
-   >
-      {/* CloudWatch prediction_drift alarm entering ALARM */}
-      <span style={caption(40)}>DRIFT</span>
-      <div style={dot(18, 12, 4, AMBER)} />
-   </motion.div>
-);
-
-const MlopsScene = ({ tint }: CoverSceneProps) => (
-   <div
-      aria-hidden="true"
-      style={{
-         position: "absolute",
-         inset: 0,
-         overflow: "hidden",
-         background: `radial-gradient(ellipse at ${X_GATE}% ${Y_PIPELINE}%, ${tint}14 0%, transparent 55%), linear-gradient(160deg, #0e1a24 0%, ${BASE_DARK} 60%)`,
-      }}
-   >
-      {/* dot lattice for depth */}
-      <div
-         style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-               "radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px)",
-            backgroundSize: "19px 19px",
-         }}
-      />
-      {/* terraform hexagon: every resource in the loop is declared */}
-      <div
-         style={{
-            position: "absolute",
-            left: "4%",
-            bottom: "6%",
-            width: 22,
-            height: 25,
-            background: `${tint}14`,
-            clipPath:
-               "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-         }}
-      />
-
+const MlopsScene = ({ tint }: TintProps) => (
+   <Stage tint={tint} focus={GATE} backdrop="dots">
       <Wiring tint={tint} />
-      <Rail from={X_ENSEMBLE} to={X_REGISTRY} top={Y_PIPELINE} />
-      <Rail from={X_DRIFT} to={X_REGISTRY} top={Y_SERVE} />
-      {/* registry -> endpoint, from the package's bottom edge to the pill's top */}
-      <div
-         style={{
-            position: "absolute",
-            left: `calc(${X_REGISTRY}% - 0.5px)`,
-            top: `calc(${Y_PIPELINE}% + 7px)`,
-            height: `calc(${Y_SERVE - Y_PIPELINE}% - 14px)`,
-            width: 1,
-            background: HAIRLINE,
-         }}
-      />
-
-      <Ingest tint={tint} />
+      <Packets tint={tint} />
+      <Bucket tint={tint} />
+      <Trainers tint={tint} />
       <Ensemble tint={tint} />
-      <Mover
-         left={X_ENSEMBLE}
-         top={Y_PIPELINE}
-         color={tint}
-         move={THROUGH_MOVE}
-         fade={THROUGH_FADE}
-      />
+      <span style={labelAt(ENSEMBLE, 12)}>ENSEMBLE</span>
       <Gate tint={tint} />
+      <span style={labelAt(GATE, -36)}>QUALITY GATE</span>
       <Registry tint={tint} />
-      <Mover
-         left={X_REGISTRY}
-         top={Y_PIPELINE}
-         color={GREEN}
-         move={DEPLOY_MOVE}
-         fade={DEPLOY_FADE}
-      />
-      <Endpoint />
-      <Mover
-         left={X_REGISTRY}
-         top={Y_SERVE}
-         color={tint}
-         move={PREDICT_MOVE}
-         fade={PREDICT_FADE}
-      />
-      <Monitor tint={tint} />
-      <DriftAlarm />
-   </div>
+      <Serving tint={tint} />
+   </Stage>
 );
 
 export default MlopsScene;
