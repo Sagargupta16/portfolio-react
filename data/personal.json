@@ -20,7 +20,7 @@
    },
    "about": {
       "greeting": "👋 Hi, my name is Sagar Gupta.",
-      "current_role": "💼 Cloud consultant at AWS Professional Services. DevOps work for State Street and DTCC, and now the sole DevOps consultant on RWS's greenfield migration: 50+ workloads into 135+ AWS accounts.",
+      "current_role": "💼 Cloud consultant at AWS Professional Services. DevOps work for State Street and DTCC, and now DevOps and IaC lead on RWS's data-centre exit and new landing zone: 4,000+ resources as code, per-account setup cut ~90% (3+ days to under 4 hours), and network onboarding automated from a ticket per VPC to minutes.",
       "specialization": "🚀 Two samples published by AWS under aws-samples (a SageMaker MLOps pipeline and an Organizations governance layer), an architecture pattern on AWS Prescriptive Guidance, and merged PRs in Apache Airflow, Feast, awslabs/mcp, axios and multer.",
       "education": "🎓 MCA from NIT Warangal (CGPA 8.38, NIMCET AIR 208). Five active AWS certifications.",
       "competitive_programming": "🏆 LeetCode Guardian (2165 peak rating, top 1.1% of contestants), 1800+ problems across LeetCode and GeeksforGeeks, 107 contests. Google Kick Start '22 Top 5%."
@@ -28,8 +28,8 @@
    "impact": {
       "clients_served": "3",
       "clients_note": "State Street, DTCC, RWS",
-      "workloads_migrated": "50+",
-      "aws_accounts": "135+",
+      "terraform_resources": "4,000+",
+      "terraform_workspaces": "20+",
       "security_controls": "1000+"
    },
    "languages": [

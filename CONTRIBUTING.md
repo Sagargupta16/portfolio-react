@@ -77,9 +77,10 @@ The personal Maker mark uses [maker.json](src/assets/brand/maker.json) for its s
 
 1. Add a record to one of `featured_projects`, `community_projects`, `collaborative_projects`, or `other_projects` in [data/projects.json](data/projects.json). Copy a neighboring record's shape and choose a numeric ID unused across all four groups. Dates use a full month and year, such as `"September 2026"`.
 2. Add the same ID to `COVER_BY_ID` in [coverRegistry.ts](src/pages/projects/covers/coverRegistry.ts). Every project requires exactly one registered cover. For example, an entry inside that object can be `1000: { kind: "scene", Scene: WebAppScene, variant: "directory" },` when the new record has ID `1000`.
-3. For a screenshot cover, place a 960x600 WebP image in [src/assets/projects/](src/assets/projects), import it in the registry, and use `{ kind: "image", src: importedImage }`. For a scene cover, reuse an existing scene and supported variant. Scene implementations live beside the registry.
-4. Run `pnpm validate:data`, then check the project in its category and the All filter. Open its detail modal and verify its source/demo links.
-5. When removing a project, remove both its JSON record and its cover registration. Remove an image import or asset only when no remaining cover uses it.
+3. For a screenshot cover, place a 960x600 WebP image in [src/assets/projects/](src/assets/projects), import it in the registry, and use `{ kind: "image", src: importedImage }`. For a scene cover, reuse an existing scene and supported variant. Scene implementations live beside the registry. Use a screenshot when the project has a deployed UI; otherwise use a scene that shows the repo's real mechanism with its own nouns (shared drawing parts are in `covers/kit/`).
+4. Featured projects can add an optional `case_study` object (`problem`, `built`, `decisions` as 2 to 4 short phrases, `outcome`) that renders as the At a glance brief; write it only from the entry's own text and the repo's README. Experience projects accept the same field.
+5. Run `pnpm validate:data`, then check the project in its category and the All filter. Open its detail modal and verify its source/demo links.
+6. When removing a project, remove both its JSON record and its cover registration. Remove an image import or asset only when no remaining cover uses it.
 
 The validator reports `missing project id` for a JSON record without a cover and `orphan project id` for a cover without a record. Keep registry keys as numeric literals, matching the existing entries.
 

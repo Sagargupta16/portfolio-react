@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-39%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.10.0-2563eb)
+![Version](https://img.shields.io/badge/version-4.15.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -45,20 +45,20 @@ Section links support reloads and browser history. Navigation loads the content 
 
 ## Sections
 
-| Section          | Features                                                                                                                                                        |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                     |
-| **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                        |
-| **News**         | Dated milestones drawn as a commit graph with stable hashes                                                                                                     |
-| **Experience**   | Timeline with explicit detail controls, engagement briefs (problem, built, decisions, outcome), internal contributions, and responsibilities                    |
-| **Education**    | Academic timeline with CGPA counters and accessible achievement disclosures                                                                                     |
-| **Skills**       | Brand-icon rows under dashed category rules (96 skills, official brand colors)                                                                                  |
-| **Projects**     | Filterable cards with evidence badges and covers; detail sheet with an at-a-glance brief and live demos (pipeline beams, terraform terminal, blue/green slider) |
-| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                            |
-| **Services**     | Responsive bento grid with optional decorative scenes                                                                                                           |
-| **Stats**        | Derived impact/open-source counters, 3D contribution calendar, and coding profiles                                                                              |
-| **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, and a vCard download                                                         |
-| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, and a machine view (`llms.txt`, `index.md`) generated at build       |
+| Section          | Features                                                                                                                                                                                                                |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                                                                             |
+| **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                |
+| **News**         | Dated milestones drawn as a commit graph with stable hashes                                                                                                                                                             |
+| **Experience**   | Timeline with explicit detail controls, engagement briefs (problem, built, decisions, outcome), internal contributions, and responsibilities                                                                            |
+| **Education**    | Academic timeline with CGPA counters and accessible achievement disclosures                                                                                                                                             |
+| **Skills**       | Brand-icon rows under dashed category rules (96 skills, official brand colors)                                                                                                                                          |
+| **Projects**     | Filterable cards with evidence badges; live screenshots for deployed apps and repo-accurate animated scenes for the rest; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`)        |
+| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                    |
+| **Services**     | Responsive bento grid with optional decorative scenes                                                                                                                                                                   |
+| **Stats**        | Derived impact/open-source counters, 3D contribution calendar, and coding profiles                                                                                                                                      |
+| **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                       |
+| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build |
 
 ---
 
@@ -149,7 +149,7 @@ src/
 │   ├── education/
 │   ├── skill/
 │   ├── projects/                      # Projects.tsx, filters, cards, and detail modal
-│   │   └── covers/                    # Cover registry + 15 lazy scene families
+│   │   └── covers/                    # Cover registry, lazy scene families, shared kit/
 │   ├── achievement/
 │   ├── services/
 │   │   └── animations/                # 7 service card animations on an 80x80 canvas
