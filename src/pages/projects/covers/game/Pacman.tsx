@@ -123,7 +123,7 @@ const legs = GHOST_TRACK.slice(1).map(
 );
 const LAP = legs.reduce((sum, leg) => sum + leg, 0);
 const GHOST_TIMES = legs.reduce(
-   (times, leg) => [...times, times[times.length - 1] + leg / LAP],
+   (times, leg) => [...times, (times.at(-1) ?? 0) + leg / LAP],
    [0],
 );
 const GHOST_X = GHOST_TRACK.map((p) => p.x);

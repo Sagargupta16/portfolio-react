@@ -190,7 +190,7 @@ export const packetTrack = (legs: readonly Leg[]): Track => {
       times.push(t);
    };
    for (const leg of legs) {
-      if (leg.from > times[times.length - 1]) push(leg.curve[0], 1, leg.from);
+      if (leg.from > (times.at(-1) ?? 0)) push(leg.curve[0], 1, leg.from);
       for (let i = 1; i <= SAMPLES; i += 1) {
          const f = i / SAMPLES;
          push(
@@ -200,7 +200,7 @@ export const packetTrack = (legs: readonly Leg[]): Track => {
          );
       }
    }
-   push(points[points.length - 1], 0, times[times.length - 1] + FADE);
+   push(points.at(-1) ?? start, 0, (times.at(-1) ?? 0) + FADE);
    push(start, 0, 1);
    return {
       x: points.map((p) => px(p.x)),

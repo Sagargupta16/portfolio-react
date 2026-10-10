@@ -32,8 +32,11 @@ const POINTS: Point[] = HISTORY.map((r, i) => [
    CHART.y1 - (CHART.y1 - CHART.y0) * r,
 ]);
 const [PEAK_X, PEAK_Y] = POINTS[PEAK_INDEX];
-const [LAST_X, LAST_Y] = POINTS[POINTS.length - 1];
-const LINE = `M${POINTS.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(" L")}`;
+const [LAST_X, LAST_Y] = POINTS.at(-1) ?? POINTS[0];
+const LINE_POINTS = POINTS.map(
+   ([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`,
+).join(" L");
+const LINE = `M${LINE_POINTS}`;
 const AREA = `${LINE} L${CHART.x1} ${CHART.y1} L${CHART.x0} ${CHART.y1} Z`;
 const GRID_YS = [CHART.y0, (CHART.y0 + CHART.y1) / 2, CHART.y1];
 

@@ -305,7 +305,7 @@ const StableDot = () => (
    />
 );
 
-export default function Pipeline({ tint }: TintProps) {
+export default function Pipeline({ tint }: Readonly<TintProps>) {
    return (
       <Stage tint={tint} focus={PUBLISH} backdrop="grid" drift>
          <Wiring tint={tint} />

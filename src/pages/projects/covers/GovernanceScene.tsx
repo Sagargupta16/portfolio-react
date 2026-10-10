@@ -305,7 +305,7 @@ const Tree = ({ tint }: TintProps) => (
    </>
 );
 
-export default function GovernanceScene({ tint }: TintProps) {
+export default function GovernanceScene({ tint }: Readonly<TintProps>) {
    return (
       <Stage tint={tint} focus={WORKLOADS} backdrop="grid">
          <Wiring tint={tint} />

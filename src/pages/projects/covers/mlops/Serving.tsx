@@ -120,7 +120,7 @@ const Alarm = () => (
    </>
 );
 
-export default function Serving({ tint }: TintProps) {
+export default function Serving({ tint }: Readonly<TintProps>) {
    return (
       <>
          <Endpoint tint={tint} />

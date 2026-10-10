@@ -316,7 +316,7 @@ const CanaryLabel = ({ tint }: TintProps) => (
    </span>
 );
 
-export default function BlueGreen({ tint }: TintProps) {
+export default function BlueGreen({ tint }: Readonly<TintProps>) {
    return (
       <Stage tint={tint} focus={[104, ALB[1]]} backdrop="grid" drift>
          <StageSvg>

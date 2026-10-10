@@ -291,7 +291,7 @@ export const FADE = 0.025;
 export const ride = (r: Route, stops: readonly Stop[]): Keys => {
    const path = sampleStops(stops);
    const first = path[0];
-   const last = path[path.length - 1];
+   const last = path.at(-1) ?? first;
    const frames = [
       { t: 0, s: first.s, o: 0 },
       { t: first.t - FADE, s: first.s, o: 0 },
@@ -323,7 +323,7 @@ export const comet = (stops: readonly Stop[], len = 0.1): Keys => {
       return { t: p.t, length: run, offset: p.s > from ? p.s - run : p.s };
    });
    const home = path[0].s;
-   const last = path[path.length - 1];
+   const last = path.at(-1) ?? path[0];
    /* the closing frames shrink the dash into the head, not its tail */
    const frames = [
       { t: 0, length: 0, offset: home, o: 0 },
