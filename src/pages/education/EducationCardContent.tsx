@@ -13,7 +13,7 @@ const EducationCardContent = ({
    item,
    isMobile,
 }: EducationCardContentProps) => {
-   const ml = isMobile ? 0 : 38;
+   const ml = isMobile ? 0 : 50;
 
    return (
       <>
