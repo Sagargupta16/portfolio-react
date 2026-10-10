@@ -412,6 +412,63 @@ function buildVcard({ personal, contact }) {
    return lines.map(fold).join("\r\n") + "\r\n";
 }
 
+const xmlEscape = (text) =>
+   String(text)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+
+// News dates are "YYYY-MM" or "YYYY-MM-DD"; a month-only item counts as the 1st.
+const rfc822 = (date) => {
+   const [y, m = "01", d = "01"] = date.split("-");
+   return new Date(Date.UTC(Number(y), Number(m) - 1, Number(d))).toUTCString();
+};
+
+// Same FNV-1a over date + text the News section uses for its commit hashes,
+// so each item keeps one stable guid across builds.
+const newsHash = (item) => {
+   let h = 0x811c9dc5;
+   for (const ch of `${item.date}${item.text}`) {
+      h ^= ch.codePointAt(0) ?? 0;
+      h = Math.imul(h, 0x01000193);
+   }
+   return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
+};
+
+function buildRss({ personal, news }) {
+   const items = [...news]
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .slice(0, 40)
+      .map((item) => {
+         const text = clean(item.text);
+         const link = item.link || `${SITE}#news`;
+         return [
+            "    <item>",
+            `      <title>${xmlEscape(text)}</title>`,
+            `      <link>${xmlEscape(link)}</link>`,
+            `      <guid isPermaLink="false">news-${newsHash(item)}</guid>`,
+            `      <pubDate>${rfc822(item.date)}</pubDate>`,
+            `      <category>${xmlEscape(item.type)}</category>`,
+            "    </item>",
+         ].join("\n");
+      });
+   return [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+      "  <channel>",
+      `    <title>${xmlEscape(clean(personal.name))}: news</title>`,
+      `    <link>${SITE}#news</link>`,
+      `    <atom:link href="${SITE}rss.xml" rel="self" type="application/rss+xml" />`,
+      `    <description>${xmlEscape(clean(personal.intro))}</description>`,
+      "    <language>en</language>",
+      ...items,
+      "  </channel>",
+      "</rss>",
+      "",
+   ].join("\n");
+}
+
 export function buildMachineFiles(rootDir) {
    const today = new Date().toISOString().slice(0, 10);
    const data = { ...loadData(rootDir), today };
@@ -419,5 +476,6 @@ export function buildMachineFiles(rootDir) {
       ["llms.txt", buildLlmsTxt(data)],
       ["index.md", buildMarkdown(data)],
       ["sagar-gupta.vcf", buildVcard(data)],
+      ["rss.xml", buildRss(data)],
    ]);
 }

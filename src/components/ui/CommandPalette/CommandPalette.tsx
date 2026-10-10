@@ -211,6 +211,13 @@ const CommandPalette = ({ open }: { open: boolean }) => {
                   onSelect={() => openExternal(siteFile("index.md"))}
                />
                <Row
+                  value="rss feed news subscribe xml"
+                  command="curl rss.xml"
+                  hint="News as an RSS feed"
+                  icon={<FileText size={14} />}
+                  onSelect={() => openExternal(siteFile("rss.xml"))}
+               />
+               <Row
                   value="save contact card vcard vcf phone"
                   command="save contact.vcf"
                   hint="Add me to your contacts"

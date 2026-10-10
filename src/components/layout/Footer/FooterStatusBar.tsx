@@ -9,6 +9,7 @@ import {
 import { staggerItem } from "@utils/animations";
 import { MONO_FONT } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
+import { describeGap, offsetMinutes } from "@utils/timeGap";
 
 /* The footer's last row is a status bar: local time where he works, the
    availability line from personal.json, the stack the site is built with and
@@ -25,6 +26,7 @@ const LIVE_GREEN = "#22c55e";
 const MACHINE_LINKS = [
    { file: "index.md", label: "This page as Markdown" },
    { file: "llms.txt", label: "llms.txt, the index for AI agents" },
+   { file: "rss.xml", label: "RSS feed of the news timeline" },
 ];
 
 const chipStyle: React.CSSProperties = {
@@ -96,6 +98,46 @@ const LocalClock = ({ timeZone }: { timeZone: string }) => {
    );
 };
 
+/** The visitor's own time and how far his clock is from it, so a client in
+    London or New York reads the gap without doing the math. Hidden when
+    both clocks agree. */
+const VisitorGap = ({ timeZone }: { timeZone: string }) => {
+   const [visitorZone] = useState(
+      () => Intl.DateTimeFormat().resolvedOptions().timeZone,
+   );
+   const [now, setNow] = useState(() => new Date());
+
+   useEffect(() => {
+      const id = window.setInterval(() => setNow(new Date()), 30_000);
+      return () => window.clearInterval(id);
+   }, []);
+
+   const gap = describeGap(
+      offsetMinutes(timeZone, now),
+      offsetMinutes(visitorZone, now),
+   );
+   if (!gap) return null;
+   const theirs = new Intl.DateTimeFormat(undefined, {
+      timeZone: visitorZone,
+      hour: "2-digit",
+      minute: "2-digit",
+   }).format(now);
+
+   return (
+      <span
+         style={{
+            ...labelStyle,
+            textTransform: "none",
+            letterSpacing: 0,
+            fontSize: 11,
+            fontVariantNumeric: "tabular-nums",
+         }}
+      >
+         {theirs} your time {"·"} {gap} of you
+      </span>
+   );
+};
+
 const FooterStatusBar = () => {
    const { isMobile } = useBreakpoint();
    const techStack = getSiteConfig().tech_stack || [];
@@ -143,6 +185,7 @@ const FooterStatusBar = () => {
             />
             <span style={labelStyle}>{city}</span>
             <LocalClock timeZone={timeZone} />
+            <VisitorGap timeZone={timeZone} />
             {!isMobile && (
                <span
                   style={{

@@ -42,6 +42,7 @@ const MACHINE_TYPES = new Map([
    ["llms.txt", "text/plain; charset=utf-8"],
    ["index.md", "text/markdown; charset=utf-8"],
    ["sagar-gupta.vcf", "text/vcard; charset=utf-8"],
+   ["rss.xml", "application/rss+xml; charset=utf-8"],
 ]);
 function machineView() {
    const root = fileURLToPath(new URL(".", import.meta.url));
