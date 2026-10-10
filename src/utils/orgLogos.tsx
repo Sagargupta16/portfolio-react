@@ -1,23 +1,23 @@
 import type { ReactNode } from "react";
 import { FaAws } from "react-icons/fa";
-import nitwLogo from "@assets/logos/nitw.webp";
-import davvLogo from "@assets/logos/davv.webp";
+import nitwLogo from "@assets/logos/nitw.svg";
+import davvLogo from "@assets/logos/davv.svg";
 import ikarusLogo from "@assets/logos/ikarus3d.webp";
-import happyDaysLogo from "@assets/logos/happy-days-school.webp";
-import kidsGardenLogo from "@assets/logos/kids-garden-school.webp";
+import happyDaysLogo from "@assets/logos/happy-days-school.svg";
+import kidsGardenLogo from "@assets/logos/kids-garden-school.svg";
 
 const LOGO_IMAGES: Record<string, { src: string; wide?: boolean }> = {
    "National Institute of Technology Warangal": { src: nitwLogo },
    "Devi Ahilya Vishwavidyalaya (DAVV)": { src: davvLogo },
    "Ikarus-3D": { src: ikarusLogo, wide: true },
-   "Happy Days School": { src: happyDaysLogo, wide: true },
+   "Happy Days School": { src: happyDaysLogo },
    "Kids Garden School": { src: kidsGardenLogo },
 };
 
 /**
- * Real organization mark for experience/education cards.
- * Returns null when no official mark is available -- callers keep their
- * generic icon fallback so schools and small orgs still render fine.
+ * Organization mark (crest, logo or monogram badge) for experience/education
+ * cards, drawn `size` px tall. Returns null when no mark is registered --
+ * callers keep their generic icon fallback.
  * Matching is prefix-based so "CSEA, NIT Warangal" also gets the NITW crest.
  */
 export const getOrgLogo = (name: string, size = 18): ReactNode => {
