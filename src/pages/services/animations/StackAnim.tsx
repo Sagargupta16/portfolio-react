@@ -54,10 +54,10 @@ const LIVE_DOT_SIZE = 3;
 const BOX_SIZING = "border-box";
 
 /*
- * Static frames, canvas px (root is 80 x 80). Everything sits inside canvas
- * y 13-67: ServiceCard's mobile strip is 100 px tall with overflow hidden and
- * shows only that band of the 1.8x-scaled canvas, so frames, labels and every
- * animated payoff must live there to stay legible on phones.
+ * Static frames, canvas px (root is 80 x 80). The composition spans y 13-69.
+ * The phone strip in ServiceCard is sized to show the whole canvas at
+ * ART_SCALE_COMPACT (1.5x) and the desktop column fits it at 1.8x, so nothing
+ * is clipped at either size and the 6 px labels render at 9 px or more.
  */
 const BROWSER: Rect = { left: 2, top: 13, width: 36, height: 18 };
 const BROWSER_CHROME = 5;
@@ -67,12 +67,12 @@ const PHONE: Rect = { left: 62, top: 13, width: 14, height: 20 };
 const PHONE_NOTCH: Rect = { left: 67, top: 15, width: 4, height: 1 };
 const PHONE_ROW: Rect = { left: 65, top: 22, width: 8, height: 3 };
 
-const API: Rect = { left: 24, top: 36, width: 32, height: 12 };
+const API: Rect = { left: 22, top: 36, width: 36, height: 12 };
 
-const TABLE: Rect = { left: 24, top: 52, width: 32, height: 15 };
-const TABLE_HEADER = 5;
-const TABLE_ROW_TOPS = [59, 62];
-const TABLE_NEW_ROW: Rect = { left: 27, top: 65, width: 26, height: 1 };
+const TABLE: Rect = { left: 22, top: 52, width: 36, height: 17 };
+const TABLE_HEADER = 7;
+const TABLE_ROW_TOPS = [61, 64];
+const TABLE_NEW_ROW: Rect = { left: 25, top: 67, width: 30, height: 1 };
 
 /*
  * Waypoints (dot centres). Dots meet the FASTAPI box at its top and bottom
@@ -174,11 +174,11 @@ const Wires = () => (
    >
       <line x1={37} y1={31} x2={40} y2={36} />
       <line x1={40} y1={48} x2={40} y2={52} />
-      <line x1={56} y1={42} x2={65} y2={33} />
+      <line x1={58} y1={42} x2={65} y2={33} />
    </svg>
 );
 
-const BrowserFrame = ({ color }: StackAnimProps) => (
+const BrowserFrame = ({ color }: Readonly<StackAnimProps>) => (
    <div style={frameStyle(BROWSER, color, 4)}>
       <div
          style={{
@@ -198,7 +198,7 @@ const BrowserFrame = ({ color }: StackAnimProps) => (
    </div>
 );
 
-const PhoneFrame = ({ color }: StackAnimProps) => (
+const PhoneFrame = ({ color }: Readonly<StackAnimProps>) => (
    <>
       <div style={frameStyle(PHONE, color, 3)} />
       <div
@@ -212,7 +212,7 @@ const PhoneFrame = ({ color }: StackAnimProps) => (
    </>
 );
 
-const ApiBox = ({ color }: StackAnimProps) => (
+const ApiBox = ({ color }: Readonly<StackAnimProps>) => (
    <div
       style={{
          ...frameStyle(API, color, 4),
@@ -236,7 +236,7 @@ const ApiBox = ({ color }: StackAnimProps) => (
    </div>
 );
 
-const PostgresTable = ({ color }: StackAnimProps) => (
+const PostgresTable = ({ color }: Readonly<StackAnimProps>) => (
    <>
       <div style={frameStyle(TABLE, color, 3)}>
          <div
@@ -252,7 +252,7 @@ const PostgresTable = ({ color }: StackAnimProps) => (
          >
             <span
                style={{
-                  fontSize: 5,
+                  fontSize: 6,
                   lineHeight: 1,
                   fontFamily: MONO_FONT,
                   fontWeight: 700,
@@ -280,7 +280,7 @@ const PostgresTable = ({ color }: StackAnimProps) => (
    </>
 );
 
-const EmptyRow = ({ rect }: { rect: Rect }) => (
+const EmptyRow = ({ rect }: Readonly<{ rect: Rect }>) => (
    <div
       style={{
          position: "absolute",
@@ -297,7 +297,11 @@ interface CommittedRowProps {
    appearAt: number;
 }
 
-const CommittedRow = ({ rect, fill, appearAt }: CommittedRowProps) => {
+const CommittedRow = ({
+   rect,
+   fill,
+   appearAt,
+}: Readonly<CommittedRowProps>) => {
    const times = [0, appearAt, appearAt + ROW_GROW, FADE_START, FADE_END, 1];
    return (
       <motion.div
@@ -324,7 +328,7 @@ interface TravelDotProps {
    hop: Hop;
 }
 
-const TravelDot = ({ color, hop }: TravelDotProps) => (
+const TravelDot = ({ color, hop }: Readonly<TravelDotProps>) => (
    <motion.div
       animate={{
          x: hop.path.map((p) => p.x),
@@ -373,7 +377,7 @@ const LiveDot = () => (
    />
 );
 
-const StackAnim = ({ color }: StackAnimProps) => (
+const StackAnim = ({ color }: Readonly<StackAnimProps>) => (
    <div style={{ width: 80, height: 80, position: "relative" }}>
       <Wires />
 

@@ -1,15 +1,15 @@
 import { motion } from "motion/react";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
 
-interface ArchitectureAnimProps {
+interface GovernanceAnimProps {
    color: string;
 }
 
-type ColorProps = ArchitectureAnimProps;
+type ColorProps = Readonly<GovernanceAnimProps>;
 type Ease = "easeInOut" | "linear";
 
 /*
- * Cloud Consulting: landing-zone guardrail sweep.
+ * Landing Zones & Cloud Governance: guardrail sweep across an OU tree.
  *   Workload chips land into accounts under an Organizations OU tree, an SCP
  *   guardrail sweeps the account row, each account lights up compliant as the
  *   rail tip passes, one finding flashes amber and is remediated, then the
@@ -150,7 +150,7 @@ const STATUS_DOT: React.CSSProperties = {
 const MONO: React.CSSProperties = {
    position: "absolute",
    fontFamily: MONO_FONT,
-   fontSize: 5.5,
+   fontSize: 6,
    fontWeight: 700,
    letterSpacing: 0.5,
    lineHeight: 1,
@@ -203,7 +203,7 @@ interface ChipProps extends ColorProps {
 /* one workload travelling from off-canvas into its account slot; it spawns
    behind the root clip, so the fade-in runs until the landing settle begins
    and is seen on the canvas rather than finishing off-screen */
-const WorkloadChip = ({ color, slot, start, dock }: ChipProps) => {
+const WorkloadChip = ({ color, slot, start, dock }: Readonly<ChipProps>) => {
    const dockX = ACCOUNT_X[slot];
    const dx = CHIP_START_X - dockX;
    const dy = CHIP_START_Y - ACCOUNT_CY;
@@ -289,7 +289,7 @@ const AccountOverlay = ({
    fadeOut,
    border,
    dot,
-}: OverlayProps) => (
+}: Readonly<OverlayProps>) => (
    <motion.div
       animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
       transition={loop([
@@ -310,7 +310,7 @@ const AccountOverlay = ({
    </motion.div>
 );
 
-const ArchitectureAnim = ({ color }: ArchitectureAnimProps) => (
+const GovernanceAnim = ({ color }: ColorProps) => (
    <div
       style={{
          width: 80,
@@ -361,4 +361,4 @@ const ArchitectureAnim = ({ color }: ArchitectureAnimProps) => (
    </div>
 );
 
-export default ArchitectureAnim;
+export default GovernanceAnim;

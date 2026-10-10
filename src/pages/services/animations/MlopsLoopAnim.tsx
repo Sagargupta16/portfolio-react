@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
 
-interface NeuralNetAnimProps {
+interface MlopsLoopAnimProps {
    color: string;
 }
 
@@ -26,9 +26,8 @@ const TICK = "rgba(255,255,255,0.45)";
 const LABEL_COLOR = "rgba(255,255,255,0.5)";
 
 /*
- * Stage anchors in the 80 x 80 canvas. The composition spans y 13..65 so it
- * stays inside the band the phone strip shows (about y 12..68 once the 100 px
- * strip clips the 144 px scaled canvas).
+ * Stage anchors in the 80 x 80 canvas. The composition spans y 13..65; the
+ * phone strip shows the whole canvas, so the band is a layout choice only.
  */
 const Y_RAIL = 22;
 const STACK = { x: 6, y: 13, w: 20, h: 21 };
@@ -114,7 +113,7 @@ interface MoverProps {
    fade: { opacity: number[]; times: number[] };
 }
 
-const Mover = ({ left, top, color, move, fade }: MoverProps) => (
+const Mover = ({ left, top, color, move, fade }: Readonly<MoverProps>) => (
    <motion.div
       initial={{ x: 0, y: 0, opacity: 0 }}
       animate={{
@@ -135,7 +134,7 @@ const Mover = ({ left, top, color, move, fade }: MoverProps) => (
 const STACK_TIMES = [0, 0.07, 0.15, 0.96, 1];
 const STACK_OPACITY = [0.4, 1, 0.6, 0.6, 0.4];
 
-const TrainerStack = ({ color }: { color: string }) => (
+const TrainerStack = ({ color }: Readonly<{ color: string }>) => (
    <motion.div
       initial={{ opacity: 0.4 }}
       animate={{ opacity: STACK_OPACITY }}
@@ -166,7 +165,7 @@ const BAR_TIMES = [0, 0.28, 0.4, 0.95, 0.96, 0.99, 1];
 const BAR_SCALE = [0, 0, 1, 1, 1, 0, 0];
 const BAR_OPACITY = [1, 1, 1, 1, 0, 0, 1];
 
-const Gate = ({ color }: { color: string }) => (
+const Gate = ({ color }: Readonly<{ color: string }>) => (
    <div style={{ ...rect(GATE.x, GATE.y, GATE.w, GATE.h), ...tinted(color) }}>
       <span style={caption(GATE.w - 2, 2)}>GATE</span>
       {/* every ensemble metric has to clear the tick before registration */}
@@ -234,7 +233,7 @@ const CURVE = "M 0 11.5 C 6 11.5 8.5 0.5 12 0.5 C 15.5 0.5 18 11.5 24 11.5";
 const CURVE_TIMES = [0, 0.66, 0.8, 0.95, 1];
 const CURVE_X = [0, 0, 6, 6, 0];
 
-const Monitor = ({ color }: { color: string }) => (
+const Monitor = ({ color }: Readonly<{ color: string }>) => (
    <svg
       viewBox={`0 0 ${MONITOR.w} ${MONITOR.h}`}
       style={{
@@ -280,7 +279,7 @@ const ARC_LENGTH = [0, 0, 1, 1, 0];
 const ARC_FADE_TIMES = [0, 0.84, 0.85, 0.95, 0.98, 1];
 const ARC_OPACITY = held(0, 1, 0);
 
-const RetrainArc = ({ color }: { color: string }) => (
+const RetrainArc = ({ color }: Readonly<{ color: string }>) => (
    <svg
       viewBox="0 0 80 80"
       style={{ ...rect(0, 0, 80, 80), overflow: "visible" }}
@@ -306,7 +305,7 @@ const RetrainArc = ({ color }: { color: string }) => (
    </svg>
 );
 
-const NeuralNetAnim = ({ color }: NeuralNetAnimProps) => (
+const MlopsLoopAnim = ({ color }: Readonly<MlopsLoopAnimProps>) => (
    <div style={{ width: 80, height: 80, position: "relative" }}>
       {/* rail from the trainer stack to the endpoint */}
       <div
@@ -338,4 +337,4 @@ const NeuralNetAnim = ({ color }: NeuralNetAnimProps) => (
    </div>
 );
 
-export default NeuralNetAnim;
+export default MlopsLoopAnim;
