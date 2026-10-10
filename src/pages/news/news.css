@@ -1,0 +1,282 @@
+/* ===== News: type chips over a compact commit graph, one line per item ===== */
+
+/* --- Filter chips (wrap on desktop, one swipeable row on phones) --- */
+.news-filters {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 8px;
+}
+
+.news-chip {
+   position: relative;
+   display: inline-flex;
+   flex: none;
+   align-items: center;
+   gap: 6px;
+   min-height: 36px;
+   padding: 0 12px;
+   border: 1px solid rgb(var(--ch-white) / 0.06);
+   border-radius: 10px;
+   background: rgb(var(--ch-white) / 0.03);
+   color: var(--color-text-secondary);
+   font-family: var(--font-mono);
+   font-size: 12px;
+   font-weight: 500;
+   white-space: nowrap;
+   cursor: pointer;
+   transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+}
+
+/* Everything but the sliding pill sits above it. */
+.news-chip > :not(.news-chip-pill) {
+   position: relative;
+}
+
+.news-chip-pill {
+   position: absolute;
+   inset: -1px;
+   border-radius: inherit;
+   background: var(--color-accent-blue);
+}
+
+.news-chip[aria-pressed="true"] {
+   color: #fff;
+}
+
+.news-chip-count {
+   font-variant-numeric: tabular-nums;
+   opacity: 0.65;
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .news-chip[aria-pressed="false"]:hover {
+      border-color: rgb(var(--ch-white) / 0.14);
+      color: var(--color-text-primary);
+   }
+}
+
+/* --- Rows --- */
+.news-list {
+   position: relative;
+}
+
+/* Padding, not margin: a year popped out of flow during a filter swap keeps its box. */
+.news-year {
+   padding-top: 20px;
+}
+
+.news-year .dashed-rule {
+   margin-bottom: 4px;
+}
+
+.news-graph {
+   --row-h: 38px;
+   --rail-x: 16px; /* row border 1 + padding 10 + half the 12px node - half the rail */
+   position: relative;
+   display: flex;
+   flex-direction: column;
+}
+
+.news-graph::before {
+   content: "";
+   position: absolute;
+   top: calc(var(--row-h) / 2);
+   bottom: calc(var(--row-h) / 2);
+   left: var(--rail-x);
+   width: 2px;
+   border-radius: 2px;
+   background: linear-gradient(
+      to bottom,
+      var(--color-accent-blue),
+      rgb(37 99 235 / 0.15)
+   );
+}
+
+.news-row {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   min-height: var(--row-h);
+   padding: 0 10px;
+   border: 1px solid transparent;
+   border-radius: 8px;
+   color: inherit;
+   text-decoration: none;
+   transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
+}
+
+a.news-row:focus-visible {
+   background: var(--color-bg-card);
+   border-color: rgb(var(--ch-white) / 0.06);
+   transform: translateX(2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   a.news-row:hover {
+      background: var(--color-bg-card);
+      border-color: rgb(var(--ch-white) / 0.06);
+      transform: translateX(2px);
+   }
+
+   a.news-row:hover .news-row-arrow {
+      transform: translate(2px, -2px);
+   }
+}
+
+a.news-row:focus-visible .news-row-arrow {
+   transform: translate(2px, -2px);
+}
+
+/* Commit node: filled by default, larger for major items, hollow for minor ones.
+   The background-coloured ring cuts the rail around each node. */
+.news-node {
+   position: relative;
+   z-index: 1;
+   display: grid;
+   flex: none;
+   place-items: center;
+   width: 12px;
+   height: 12px;
+}
+
+.news-node::before {
+   content: "";
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background: var(--news-tone);
+   box-shadow: 0 0 0 3px var(--color-bg-primary);
+}
+
+.news-row--major .news-node::before {
+   width: 12px;
+   height: 12px;
+}
+
+.news-row--minor .news-node::before {
+   background: var(--color-bg-primary);
+   box-shadow:
+      inset 0 0 0 1.5px var(--news-tone),
+      0 0 0 3px var(--color-bg-primary);
+}
+
+.news-date {
+   flex: none;
+   width: 52px;
+   color: var(--color-text-muted);
+   font-family: var(--font-mono);
+   font-size: 12px;
+   font-variant-numeric: tabular-nums;
+   white-space: nowrap;
+}
+
+.news-icon {
+   flex: none;
+   color: var(--news-tone);
+}
+
+.news-chip[aria-pressed="true"] .news-icon {
+   color: currentcolor;
+}
+
+.news-text {
+   flex: 0 1 auto;
+   min-width: 0;
+   overflow: hidden;
+   color: color-mix(
+      in srgb,
+      var(--color-text-primary) 72%,
+      var(--color-text-secondary)
+   );
+   font-size: 14.5px;
+   line-height: 1.4;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.news-row--major .news-text {
+   color: var(--color-text-primary);
+   font-weight: 500;
+}
+
+.news-row--minor .news-text {
+   color: var(--color-text-secondary);
+}
+
+.news-row-arrow {
+   flex: none;
+   margin-left: -6px;
+   color: var(--color-accent-cyan);
+   transition: transform 0.2s ease;
+}
+
+/* The hash closes the line in low-contrast mono, like `git log --oneline`. */
+.news-hash {
+   flex: none;
+   margin-left: auto;
+   padding-left: 4px;
+   color: var(--color-text-muted);
+   font-family: var(--font-mono);
+   font-size: 11px;
+   letter-spacing: 0.02em;
+   opacity: 0.6;
+}
+
+.news-more {
+   display: flex;
+   justify-content: center;
+   margin-top: 28px;
+}
+
+@media (max-width: 767px) {
+   .news-filters {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      margin-inline: -16px;
+      padding: 6px 16px; /* room for the 2px + 3px focus ring inside the scroller */
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+   }
+
+   .news-filters::-webkit-scrollbar {
+      display: none;
+   }
+
+   .news-chip {
+      min-height: 44px;
+   }
+
+   .news-graph {
+      --row-h: 44px;
+      --rail-x: 12px; /* border 1 + padding 6 + 6 - 1 */
+   }
+
+   .news-row {
+      gap: 8px;
+      padding: 0 6px;
+   }
+
+   .news-date {
+      width: 44px;
+      font-size: 11.5px;
+   }
+
+   .news-text {
+      font-size: 13.5px;
+   }
+
+   .news-row-arrow {
+      margin-left: -4px;
+   }
+
+   .news-hash {
+      font-size: 10px;
+   }
+}

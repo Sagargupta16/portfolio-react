@@ -1,307 +1,170 @@
 import { useId, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
+import { AnimatePresence, motion, type Transition } from "motion/react";
 import { getNews } from "@data/news";
-import { staggerContainer, staggerItem } from "@utils/animations";
-import {
-   BLUE,
-   CYAN,
-   MAX_WIDTH_NARROW,
-   MONO_FONT,
-   PURPLE,
-   TEXT_MUTED,
-   TEXT_PRIMARY,
-   TEXT_SECONDARY,
-} from "@/constants/theme";
-import useBreakpoint from "@hooks/useBreakpoint";
+import { EASING, MAX_WIDTH_NARROW, MONO_FONT } from "@/constants/theme";
+import useMotionPreference from "@hooks/useMotionPreference";
 import PageSection from "@components/layout/PageSection";
 import type { NewsItem, NewsType } from "@/types";
+import NewsFilters from "./NewsFilters";
+import NewsRow from "./NewsRow";
+import {
+   COLLAPSED_COUNT,
+   NEWS_TYPE_ORDER,
+   NEWS_UI,
+   type NewsFilter,
+} from "./newsTypes";
+import useScrollAnchor from "./useScrollAnchor";
+import "./news.css";
 
-// Collapsed view: the newest few items, topped up with the latest highlights.
-const RECENT_COUNT = 3;
-const COLLAPSED_LIMIT = 10;
+const SECTION_ID = "news";
 
-const collapsedItems = (news: NewsItem[]) => {
-   const keep = new Set(news.slice(0, RECENT_COUNT));
-   for (const item of news) {
-      if (keep.size >= COLLAPSED_LIMIT) break;
-      if (item.impact === "major") keep.add(item);
-   }
-   return news.filter((item) => keep.has(item));
+// Filter swaps stay quick: rows fade, the rest slide into place, and the
+// entering rows stagger by at most MAX_STAGGER in total.
+const STAGGER = 0.03;
+const MAX_STAGGER = 0.18;
+const LAYOUT: Transition = { duration: 0.2, ease: EASING.brisk };
+const EXIT: Transition = { duration: 0.12, ease: EASING.brisk };
+const HIDDEN = { opacity: 0, y: -4 };
+const SHOWN = { opacity: 1, y: 0 };
+const EXIT_STATE = { opacity: 0, transition: EXIT };
+const FADED = { opacity: 0 };
+const OPAQUE = { opacity: 1 };
+
+const enterTransition = (delay: number): Transition => ({
+   duration: 0.18,
+   ease: EASING.brisk,
+   delay,
+   layout: LAYOUT,
+});
+
+const YEAR_TRANSITION = enterTransition(0);
+
+const countByType = (news: NewsItem[]) => {
+   const counts = Object.fromEntries(
+      NEWS_TYPE_ORDER.map((type) => [type, 0]),
+   ) as Record<NewsType, number>;
+   for (const item of news) counts[item.type] += 1;
+   return counts;
 };
 
-const TYPE_LABEL: Record<NewsType, string> = {
-   launch: "Launch",
-   oss: "Open source",
-   community: "Community",
-   cert: "Certified",
-   award: "Award",
-   work: "Career",
-   education: "Education",
-};
-
-// One accent family: tag dots vary only in blue shade.
-const TYPE_DOT: Record<NewsType, string> = {
-   launch: BLUE,
-   oss: CYAN,
-   community: PURPLE,
-   cert: CYAN,
-   award: BLUE,
-   work: PURPLE,
-   education: TEXT_MUTED,
-};
-
-const MONTHS = [
-   "Jan",
-   "Feb",
-   "Mar",
-   "Apr",
-   "May",
-   "Jun",
-   "Jul",
-   "Aug",
-   "Sep",
-   "Oct",
-   "Nov",
-   "Dec",
-];
-
-/** "2026-09-29" -> "Sep 29", "2026-09" -> "Sep" (the year sits in the group rule). */
-const shortDate = (date: string) => {
-   const [, month, day] = date.split("-");
-   const name = MONTHS[Number(month) - 1];
-   return day ? `${name} ${Number(day)}` : name;
-};
-
-/** Stable 7-char "commit hash" per item (FNV-1a over date + text), so the
-    list reads like `git log --graph` and each row keeps its id across builds. */
-const shortHash = (item: NewsItem) => {
-   let h = 0x811c9dc5;
-   for (const ch of `${item.date}${item.text}`) {
-      h ^= ch.codePointAt(0) ?? 0;
-      h = Math.imul(h, 0x01000193);
-   }
-   return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
-};
-
+/** Year groups that keep each item's position in the visible list. */
 const groupByYear = (items: NewsItem[]) => {
-   const groups: { year: string; items: NewsItem[] }[] = [];
-   for (const item of items) {
+   const groups: { year: string; rows: { item: NewsItem; index: number }[] }[] =
+      [];
+   for (const [index, item] of items.entries()) {
       const year = item.date.slice(0, 4);
       const last = groups.at(-1);
-      if (last?.year === year) last.items.push(item);
-      else groups.push({ year, items: [item] });
+      if (last?.year === year) last.rows.push({ item, index });
+      else groups.push({ year, rows: [{ item, index }] });
    }
    return groups;
 };
 
-const NewsRow = ({ item, isMobile }: { item: NewsItem; isMobile: boolean }) => {
-   const major = item.impact === "major";
-   const minor = item.impact === "minor";
-   const textSize = isMobile ? 14 : 15;
-   const split = item.text.lastIndexOf(" ") + 1;
-   const leadText = item.text.slice(0, split);
-   const lastWord = item.text.slice(split);
-   const body = (
-      <>
-         {/* Commit node on the graph rail (the rail is the ul's ::before). */}
-         <span
-            aria-hidden="true"
-            className={`news-node${major ? " news-node--major" : ""}${minor ? " news-node--minor" : ""}`}
-            style={{ color: TYPE_DOT[item.type] }}
-         />
-         <span
-            style={{
-               fontFamily: MONO_FONT,
-               fontSize: 12,
-               color: TEXT_MUTED,
-               fontVariantNumeric: "tabular-nums",
-               whiteSpace: "nowrap",
-               paddingTop: 2,
-            }}
-         >
-            <time dateTime={item.date}>{shortDate(item.date)}</time>
-         </span>
-         <span style={{ minWidth: 0 }}>
-            <span
-               style={{
-                  display: "block",
-                  color: minor ? TEXT_SECONDARY : TEXT_PRIMARY,
-                  fontSize: minor ? textSize - 1 : textSize + (major ? 1 : 0),
-                  fontWeight: major ? 600 : 400,
-                  lineHeight: 1.55,
-               }}
-            >
-               {item.link ? (
-                  <>
-                     {leadText}
-                     {/* Last word and arrow wrap together, so the arrow never sits alone on a line. */}
-                     <span style={{ whiteSpace: "nowrap" }}>
-                        {lastWord}
-                        <ArrowUpRight
-                           size={14}
-                           aria-hidden="true"
-                           className="news-row-arrow"
-                           style={{
-                              display: "inline",
-                              marginLeft: 4,
-                              verticalAlign: "-2px",
-                              color: CYAN,
-                           }}
-                        />
-                     </span>
-                  </>
-               ) : (
-                  item.text
-               )}
-            </span>
-            <span
-               style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  columnGap: 8,
-                  rowGap: 2,
-                  marginTop: 6,
-                  fontFamily: MONO_FONT,
-                  fontSize: 10.5,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  color: TEXT_SECONDARY,
-               }}
-            >
-               <span
-                  aria-hidden="true"
-                  style={{
-                     width: 6,
-                     height: 6,
-                     borderRadius: "50%",
-                     backgroundColor: TYPE_DOT[item.type],
-                  }}
-               />
-               <span style={{ whiteSpace: "nowrap" }}>
-                  {TYPE_LABEL[item.type]}
-               </span>
-               <span
-                  style={{
-                     color: TEXT_MUTED,
-                     letterSpacing: "0.04em",
-                     textTransform: "none",
-                  }}
-               >
-                  {shortHash(item)}
-               </span>
-               {major && (
-                  <span style={{ color: CYAN, whiteSpace: "nowrap" }}>
-                     · Highlight
-                  </span>
-               )}
-            </span>
-         </span>
-      </>
-   );
-
-   const rowStyle = {
-      display: "grid",
-      gridTemplateColumns: isMobile
-         ? "12px 52px minmax(0, 1fr)"
-         : "14px 64px minmax(0, 1fr)",
-      gap: isMobile ? 10 : 16,
-      padding: isMobile ? "14px 12px" : "16px 20px",
-      borderRadius: 12,
-   } as const;
-
-   const className = `news-row${major ? " news-row--major" : ""}`;
-   return item.link ? (
-      <a
-         href={item.link}
-         target="_blank"
-         rel="noopener noreferrer"
-         className={className}
-         style={rowStyle}
-      >
-         {body}
-      </a>
-   ) : (
-      <div className={`${className} news-row--static`} style={rowStyle}>
-         {body}
-      </div>
-   );
-};
-
 const News = () => {
    const news = useMemo(() => getNews(), []);
-   const { isMobile } = useBreakpoint();
+   const { reducedMotion } = useMotionPreference();
+   const [filter, setFilter] = useState<NewsFilter>("all");
    const [expanded, setExpanded] = useState(false);
    const listId = useId();
 
-   const collapsed = useMemo(() => collapsedItems(news), [news]);
-   const visible = expanded ? news : collapsed;
+   const counts = useMemo(() => countByType(news), [news]);
+   const filtered = useMemo(
+      () =>
+         filter === "all" ? news : news.filter((item) => item.type === filter),
+      [news, filter],
+   );
+   const visible = expanded ? filtered : filtered.slice(0, COLLAPSED_COUNT);
    const groups = groupByYear(visible);
-   const hidden = news.length - collapsed.length;
+
+   // Collapsing pulls the content below the list upwards; hold the pressed
+   // control in place so the visitor stays with the list.
+   const holdScroll = useScrollAnchor(SECTION_ID);
+   const selectFilter = (next: NewsFilter, chip: HTMLElement) => {
+      if (expanded) holdScroll(chip);
+      setFilter(next);
+      setExpanded(false);
+   };
+   const toggleExpanded = (button: HTMLElement) => {
+      if (expanded) holdScroll(button);
+      setExpanded(!expanded);
+   };
+
+   // Rows revealed by "Show all" stagger from the first new row, not from the top.
+   const staggerFrom = expanded ? COLLAPSED_COUNT : 0;
+   const rowTransition = (index: number) =>
+      enterTransition(
+         Math.min(Math.max(index - staggerFrom, 0) * STAGGER, MAX_STAGGER),
+      );
+   // Reduced: rows and years mount and unmount as they are, nothing tweens.
+   const rowEnter = reducedMotion ? false : HIDDEN;
+   const yearEnter = reducedMotion ? false : FADED;
+   const exit = reducedMotion ? undefined : EXIT_STATE;
+   const layout = reducedMotion ? false : "position";
 
    return (
       <PageSection
-         id="news"
+         id={SECTION_ID}
          title="News"
          subtitle="Merged PRs, publications and badges, newest first"
          maxWidth={MAX_WIDTH_NARROW}
       >
-         <motion.div id={listId} variants={staggerContainer}>
-            {groups.map(({ year, items }) => (
-               <section key={year} aria-label={year} style={{ marginTop: 28 }}>
-                  <h3 className="dashed-rule" style={{ marginBottom: 8 }}>
-                     {year}
-                  </h3>
-                  <ul
-                     className="news-graph"
-                     style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        // Highlight cards need breathing room between borders.
-                        gap: isMobile ? 10 : 12,
-                     }}
-                  >
-                     <AnimatePresence initial={false}>
-                        {items.map((item) => (
-                           <motion.li
-                              key={`${item.date}-${item.text}`}
-                              variants={staggerItem}
-                              initial={expanded ? "hidden" : false}
-                              animate="visible"
-                              exit={{
-                                 opacity: 0,
-                                 y: -6,
-                                 transition: { duration: 0.15 },
-                              }}
-                              layout="position"
-                           >
-                              <NewsRow item={item} isMobile={isMobile} />
-                           </motion.li>
-                        ))}
-                     </AnimatePresence>
-                  </ul>
-               </section>
-            ))}
-         </motion.div>
+         <NewsFilters
+            active={filter}
+            counts={counts}
+            total={news.length}
+            controls={listId}
+            onSelect={selectFilter}
+         />
 
-         {hidden > 0 && (
-            <div
-               style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: 32,
-               }}
-            >
+         <div id={listId} className="news-list">
+            <AnimatePresence initial={false} mode="popLayout">
+               {groups.map(({ year, rows }) => (
+                  <motion.section
+                     key={year}
+                     aria-label={year}
+                     className="news-year"
+                     layout={layout}
+                     initial={yearEnter}
+                     animate={OPAQUE}
+                     exit={exit}
+                     transition={YEAR_TRANSITION}
+                  >
+                     <h3 className="dashed-rule">{year}</h3>
+                     <ul className="news-graph">
+                        <AnimatePresence initial={false} mode="popLayout">
+                           {rows.map(({ item, index }) => (
+                              <motion.li
+                                 key={`${item.date}-${item.text}`}
+                                 layout={layout}
+                                 initial={rowEnter}
+                                 animate={SHOWN}
+                                 exit={exit}
+                                 transition={rowTransition(index)}
+                              >
+                                 <NewsRow item={item} />
+                              </motion.li>
+                           ))}
+                        </AnimatePresence>
+                     </ul>
+                  </motion.section>
+               ))}
+            </AnimatePresence>
+         </div>
+
+         {filtered.length > COLLAPSED_COUNT && (
+            // Not layout-animated: the scroll anchor measures where it lands.
+            <div className="news-more">
                <button
                   type="button"
                   className="btn-outline"
                   aria-expanded={expanded}
                   aria-controls={listId}
-                  onClick={() => setExpanded((open) => !open)}
+                  onClick={(event) => toggleExpanded(event.currentTarget)}
                   style={{ fontFamily: MONO_FONT, fontSize: 13 }}
                >
-                  {expanded ? "Show less" : `Show all ${news.length}`}
+                  {expanded
+                     ? NEWS_UI.showLess
+                     : `${NEWS_UI.showAll} ${filtered.length}`}
                </button>
             </div>
          )}
