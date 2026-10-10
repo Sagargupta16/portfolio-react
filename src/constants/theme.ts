@@ -70,7 +70,7 @@ export const DURATION = {
 
 // ===== Shared inline style objects =====
 
-/** Chrome header bar -- used by TerminalCard, ActivityFeed, BrowserMockup */
+/** Chrome header bar -- used by TerminalCard, ActivityFeed */
 export const CHROME_BAR_STYLE: React.CSSProperties = {
    background: "rgb(var(--ch-bg-sec) / 0.8)",
    borderBottom: "1px solid rgb(var(--ch-white) / 0.06)",

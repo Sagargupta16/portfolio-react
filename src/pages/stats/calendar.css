@@ -1,0 +1,258 @@
+/* ===== Stats: GitHub contribution heatmap (ContributionCalendar.tsx) =====
+   Lives inside the GitHub card. Cells size to fill the card on desktop; on
+   phones they keep a tappable minimum and the grid scrolls inside the card
+   while the day labels, facts line and legend stay put. */
+
+.cal {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   min-width: 0;
+}
+
+/* --- Grid: day labels stay fixed, months and cells scroll together --- */
+.cal-body {
+   --gap: 3px;
+   --labels-w: 30px;
+   --month-h: 14px;
+   --month-gap: 6px;
+   container-type: inline-size;
+   display: flex;
+   min-width: 0;
+}
+
+/* Fill the card width, but never below 11px a cell; the 1px spare keeps
+   sub-pixel rounding from tipping a full-width grid into a scroll. */
+.cal-days,
+.cal-months,
+.cal-grid {
+   --cell: max(
+      11px,
+      calc(
+         (100cqi - var(--labels-w) - (var(--weeks) - 1) * var(--gap) - 1px) /
+            var(--weeks)
+      )
+   );
+}
+
+.cal-days,
+.cal-months,
+.cal-foot {
+   color: var(--color-text-secondary);
+   font-family: var(--font-mono);
+   font-size: 10px;
+   line-height: 1;
+}
+
+.cal-days {
+   display: grid;
+   flex: none;
+   grid-template-rows: repeat(7, var(--cell));
+   row-gap: var(--gap);
+   width: var(--labels-w);
+   padding-top: calc(var(--month-h) + var(--month-gap));
+}
+
+.cal-days span {
+   align-self: center;
+}
+
+.cal-scroller {
+   --fade-start: 0px;
+   --fade-end: 0px;
+   flex: 1;
+   min-width: 0;
+   overflow-x: auto;
+   overscroll-behavior-x: contain;
+   scrollbar-width: none;
+   mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 var(--fade-start),
+      #000 calc(100% - var(--fade-end)),
+      transparent
+   );
+}
+
+.cal-scroller::-webkit-scrollbar {
+   display: none;
+}
+
+.cal-scroller[data-fade-start] {
+   --fade-start: 28px;
+}
+
+.cal-scroller[data-fade-end] {
+   --fade-end: 28px;
+}
+
+.cal-months {
+   display: grid;
+   grid-template-columns: repeat(var(--weeks), var(--cell));
+   column-gap: var(--gap);
+   width: max-content;
+   height: var(--month-h);
+   margin-bottom: var(--month-gap);
+   line-height: var(--month-h);
+}
+
+.cal-months span {
+   grid-row: 1;
+   grid-column-end: span 3;
+   white-space: nowrap;
+}
+
+.cal-grid {
+   display: grid;
+   grid-auto-flow: column;
+   grid-template-rows: repeat(7, var(--cell));
+   grid-auto-columns: var(--cell);
+   gap: var(--gap);
+   width: max-content;
+}
+
+.cal-cell,
+.cal-swatch {
+   border-radius: 3px;
+   background: rgb(var(--ch-white) / 0.05);
+}
+
+/* GitHub dark-theme greens: green is reserved for these cells and live dots. */
+:is(.cal-cell, .cal-swatch)[data-level="1"] {
+   background: #0e4429;
+}
+
+:is(.cal-cell, .cal-swatch)[data-level="2"] {
+   background: #006d32;
+}
+
+:is(.cal-cell, .cal-swatch)[data-level="3"] {
+   background: #26a641;
+}
+
+:is(.cal-cell, .cal-swatch)[data-level="4"] {
+   background: #39d353;
+}
+
+.cal-cell[data-today] {
+   outline: 1px solid rgb(var(--ch-white) / 0.55);
+   outline-offset: -1px;
+}
+
+.cal-cell[data-active] {
+   outline: 1px solid rgb(var(--ch-white) / 0.9);
+   outline-offset: -1px;
+}
+
+.cal-grid[data-loading] {
+   animation: cal-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes cal-pulse {
+   50% {
+      opacity: 0.45;
+   }
+}
+
+/* Diagonal wave: each cell waits for its column plus its row, so the reveal
+   sweeps from the oldest Sunday to today in about a second. Reduced gets the
+   static mode, so the grid renders with no wave at all. */
+.cal-grid[data-reveal="pending"] .cal-cell {
+   opacity: 0;
+}
+
+.cal-grid[data-reveal="wave"] .cal-cell {
+   animation: cal-cell-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+   animation-delay: calc((var(--col) + var(--row)) * 12ms);
+}
+
+@keyframes cal-cell-in {
+   from {
+      opacity: 0;
+      transform: scale(0.6);
+   }
+   to {
+      opacity: 1;
+      transform: scale(1);
+   }
+}
+
+/* --- Facts line, legend and tooltip --- */
+.cal-foot {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-between;
+   gap: 10px 20px;
+}
+
+.cal-facts {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 6px 20px;
+   font-size: 11px;
+}
+
+.cal-facts > div {
+   display: flex;
+   align-items: baseline;
+   gap: 6px;
+}
+
+.cal-facts dd {
+   color: var(--color-text-primary);
+   font-variant-numeric: tabular-nums;
+   white-space: nowrap;
+}
+
+.cal-fact-skeleton {
+   display: inline-block;
+   width: 72px;
+   height: 11px;
+   border-radius: 4px;
+   vertical-align: top;
+}
+
+.cal-legend {
+   display: flex;
+   align-items: center;
+   gap: 4px;
+   margin-left: auto;
+}
+
+.cal-legend > span:first-child {
+   margin-right: 4px;
+}
+
+.cal-legend > span:last-child {
+   margin-left: 4px;
+}
+
+.cal-swatch {
+   width: 11px;
+   height: 11px;
+}
+
+.cal-tip {
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 2;
+   padding: 6px 10px;
+   border: 1px solid rgb(var(--ch-white) / 0.1);
+   border-radius: 8px;
+   background: #182024;
+   color: var(--color-text-primary);
+   font-size: 12px;
+   line-height: 1.3;
+   white-space: nowrap;
+   pointer-events: none;
+   animation: cal-tip-in 0.16s ease-out both;
+}
+
+@keyframes cal-tip-in {
+   from {
+      opacity: 0;
+   }
+}

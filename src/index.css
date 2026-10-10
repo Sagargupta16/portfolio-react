@@ -1395,34 +1395,6 @@ html[data-motion="reduced"] .sagar-face {
    border-radius: 8px;
 }
 
-/* ===== GitHub Calendar Override ===== */
-.react-activity-calendar {
-   margin: 0 auto;
-}
-
-.react-activity-calendar text {
-   fill: var(--color-text-muted) !important;
-   font-size: 0.75rem;
-}
-
-/* Calendar cell wave-in animation */
-@keyframes cell-pop-in {
-   from {
-      opacity: 0;
-      transform: scale(0);
-   }
-   to {
-      opacity: 1;
-      transform: scale(1);
-   }
-}
-
-.calendar-reveal .react-activity-calendar rect[rx] {
-   --col: 0;
-   animation: cell-pop-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-   animation-delay: calc(var(--col) * 8ms + 0.6s);
-}
-
 /* ===== Footer teal fade (akobir bottom-of-page glow) ===== */
 .footer-fade {
    background: linear-gradient(
