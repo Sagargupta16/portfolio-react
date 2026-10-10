@@ -29,7 +29,7 @@
          "Self-service VPC route tables in 15 minutes",
          "Firewall access by tag in about a minute",
          "AWS IPAM at about 94% lower projected cost",
-         "Direct Connect and VPN, one link live in a day"
+         "Direct Connect and VPN landing on the hubs"
       ]
    },
    {
@@ -39,7 +39,7 @@
          "SageMaker pipelines behind hard quality gates",
          "Drift and fairness alarms trigger retraining",
          "Blue-green endpoints with automatic rollback",
-         "Bedrock RAG pipelines and Guardrails",
+         "Bedrock Guardrails and A2I human review",
          "Pipeline published by AWS on aws-samples"
       ]
    },
