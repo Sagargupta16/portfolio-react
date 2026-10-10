@@ -1,5 +1,7 @@
 import { Pin, Users, Star } from "lucide-react";
 import { AMBER } from "@/constants/theme";
+import { getEvidence } from "@utils/projectEvidence";
+import type { Project } from "@/types";
 import type { ProjectWithCategory } from "./projectConstants";
 
 interface ProjectCardHeaderProps {
@@ -8,6 +10,34 @@ interface ProjectCardHeaderProps {
    isCollab: boolean;
    spotlight: boolean;
 }
+
+interface EvidenceBadgesProps {
+   project: Pick<Project, "organization" | "live" | "github">;
+   className?: string;
+}
+
+/** Small proof pills (Published by AWS / Live / Open source) with a status dot. */
+export const EvidenceBadges = ({ project, className }: EvidenceBadgesProps) => {
+   const badges = getEvidence(project);
+   if (badges.length === 0) return null;
+
+   return (
+      <ul
+         className={`evidence-badges${className ? ` ${className}` : ""}`}
+         aria-label="Project evidence"
+      >
+         {badges.map((b) => (
+            <li
+               key={b.kind}
+               className={`evidence-badge evidence-badge--${b.kind}`}
+            >
+               <span className="evidence-dot" aria-hidden="true" />
+               {b.label}
+            </li>
+         ))}
+      </ul>
+   );
+};
 
 const ProjectCardHeader = ({
    data,
@@ -28,6 +58,7 @@ const ProjectCardHeader = ({
          <span>{data.date}</span>
       </div>
       <h3 className="project-card-title">{data.title}</h3>
+      <EvidenceBadges project={data} className="project-card-evidence" />
       {(isCollab || isFeatured) && data.team && (
          <span className="project-card-team">
             <Users size={14} aria-hidden="true" />

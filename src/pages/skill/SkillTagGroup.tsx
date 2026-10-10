@@ -135,6 +135,7 @@ const SkillTagGroup = ({ items, small = false }: SkillTagGroupProps) => {
                         size={size.icon}
                         color={icon.color}
                         style={{ flexShrink: 0 }}
+                        aria-hidden="true"
                      />
                   )}
                   {skill}

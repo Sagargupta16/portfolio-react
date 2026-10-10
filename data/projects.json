@@ -4,7 +4,7 @@
       {
          "id": 49,
          "title": "SageMaker Image Classification MLOps",
-         "description": "Published by AWS under the aws-samples organization (MIT-0) - an end-to-end, production-shaped MLOps pipeline for image classification on Amazon SageMaker, declared entirely in Terraform across 85 files and 13 reusable modules. Event-driven ingestion, multi-architecture training behind hard clinical quality gates, human-approved governed deployment, and a closed drift-to-retrain loop. The worked example classifies medical images, but the architecture is domain-agnostic.",
+         "description": "Published by AWS under the aws-samples organization (MIT-0) - an end-to-end, production-shaped MLOps pipeline for image classification on Amazon SageMaker, declared entirely in Terraform across 86 files and 13 reusable modules. Event-driven ingestion, multi-architecture training behind hard clinical quality gates, human-approved governed deployment, and a closed drift-to-retrain loop. The worked example classifies medical images, but the architecture is domain-agnostic.",
          "date": "July 2026",
          "tools_tech": [
             "Terraform",
@@ -25,6 +25,17 @@
             "Responsible AI built in - Fairlearn bias metrics as an in-pipeline gate, Grad-CAM and SHAP explainability, Model Cards, Bedrock Guardrails, and A2I human review",
             "Security scanning clean: 0 checkov failed checks and 0 bandit issues, every suppression documented with a reason"
          ],
+         "case_study": {
+            "problem": "Taking an image classifier to production on SageMaker means wiring data validation, training, quality gates, governed deployment and drift monitoring into one lifecycle.",
+            "built": "Wrote the whole pipeline in Terraform, 86 files across 4 stacks and 13 reusable modules, published by AWS under aws-samples (MIT-0).",
+            "decisions": [
+               "Terraform owns every persistent resource; Lambda only orchestrates",
+               "Clinical quality gate is a hard pipeline condition, or nothing is registered",
+               "Every model registers as PendingManualApproval, so a person approves each deployment",
+               "Blue/green canary rollout that rolls back on error and latency alarms"
+            ],
+            "outcome": "Drift and fairness alarms restart training on their own, a reviewer still approves every rollout, and scans report 0 checkov failed checks and 0 bandit issues."
+         },
          "github": "https://github.com/aws-samples/sample-sagemaker-image-classification-mlops",
          "live": "",
          "organization": "aws-samples"
@@ -52,6 +63,17 @@
             "Delegated administrators for 15 services, including GuardDuty, Security Hub, Inspector, Macie, Detective, Firewall Manager, CloudTrail and IPAM",
             "Five ready-made scenarios - minimal, standard, enterprise, regulated workload and data residency"
          ],
+         "case_study": {
+            "problem": "Teams on an existing Control Tower landing zone still need their OUs, all six Organizations policy types, controls and delegated administrators managed as code.",
+            "built": "Wrote a Terraform root deployment for the management account, published by AWS under aws-samples, covering OUs, 21 policy documents, Control Tower controls and 15 delegated admins.",
+            "decisions": [
+               "A root deployment, not a module, run only from the management account",
+               "Creates nothing in member accounts; Macie enablement is the one documented exception",
+               "Control Tower owned OUs are targeted but never recreated",
+               "Four classes of bad input are rejected at terraform plan, not apply"
+            ],
+            "outcome": "Pick one of five scenarios, from minimal to data residency, set account IDs, and apply OU, policy, control and delegation changes from the management account."
+         },
          "github": "https://github.com/aws-samples/sample-aws-terraform-org-governance",
          "live": "",
          "organization": "aws-samples"
@@ -77,6 +99,17 @@
             "Neon Postgres catalog via Drizzle, R2 image variants pipeline, WhatsApp order handoff",
             "Static/SSG public pages + server-rendered admin on Vercel, Motion + Lenis animations"
          ],
+         "case_study": {
+            "problem": "A traditional folk artist needed one site to show Madhubani, Pichwai, Lippan and Gond work, list events and workshops, and take custom orders.",
+            "built": "Built the production site at kalchar.co.in, from the public gallery and order flows to a server-rendered admin panel.",
+            "decisions": [
+               "Static/SSG public pages, server-rendered admin and auth on Vercel",
+               "Every catalog read goes through one data seam over Neon Postgres",
+               "Admin login with Auth.js and Google, gated by a maintainer allowlist in the DB",
+               "Artwork image variants served from Cloudflare R2"
+            ],
+            "outcome": "Allowlisted maintainers manage artworks, events and the artist profile from the admin panel, and buyers hand off orders over WhatsApp."
+         },
          "github": "https://github.com/Sagargupta16/kalchar",
          "live": "https://kalchar.co.in/"
       },
@@ -100,13 +133,24 @@
             "Profile comparison with 17 head-to-head stats, leaderboard across who you follow",
             "Personal dashboard with traffic data (views, clones, referrers) via GitHub OAuth"
          ],
+         "case_study": {
+            "problem": "A GitHub profile page leaves out streaks, PR merge rate, language breakdown and head-to-head comparison with the people you follow.",
+            "built": "Built a Manifest V3 Chrome extension that injects a stats panel into GitHub profiles, plus a React web dashboard and a Cloudflare Worker for OAuth.",
+            "decisions": [
+               "Vanilla JS extension with zero runtime dependencies, bundled by esbuild",
+               "A Cloudflare Worker keeps the OAuth client secret server-side",
+               "Traffic analytics is a separate permission upgrade from basic sign-in",
+               "Local caching of 5 to 10 minutes to avoid redundant calls and rate limits"
+            ],
+            "outcome": "Published on the Chrome Web Store, it adds a 9-stat panel to every GitHub profile you visit, and signed-in users see views, clones and referrers per repo."
+         },
          "github": "https://github.com/Sagargupta16/GitScope",
          "live": "https://chromewebstore.google.com/detail/gitscope/fndaanihifimmlnmkjdmjbbkbdajolff"
       },
       {
          "id": 15,
          "title": "Ledger Sync",
-         "description": "A self-hosted personal finance dashboard (v2.19.0) with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, 50/30/20 budgeting, bill calendar, GST analysis, subscription tracking, year-in-review, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
+         "description": "A self-hosted personal finance dashboard (v2.28.0) with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, 50/30/20 budgeting, bill calendar, GST analysis, subscription tracking, year-in-review, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
          "date": "July 2026",
          "tools_tech": [
             "TypeScript",
@@ -124,13 +168,24 @@
             "FIRE calculator (Lean/Barista/Standard/Fat), Coast FIRE, retirement corpus, India FY tax estimator",
             "Financial Health Score, Sankey cash flow, anomaly detection, recurring transaction detection"
          ],
+         "case_study": {
+            "problem": "People want useful analysis of their own finances, including Indian fiscal-year tax planning, without granting direct bank access or paying a recurring subscription.",
+            "built": "Built a self-hosted React 19 and FastAPI finance workspace with statement import, 26 protected workspace pages, and an AI assistant.",
+            "decisions": [
+               "Statements are parsed in the browser; only validated JSON rows reach the API",
+               "Deterministic SHA-256 transaction IDs with occurrence counters keep re-imports idempotent",
+               "Ledger commit and analytics refresh are separate, so analytics can retry alone",
+               "The assistant fetches data through 15 read-only, user-scoped tools, not one large prompt"
+            ],
+            "outcome": "Upload an Excel or CSV statement, then explore budgets, India FY tax estimates, FIRE plans and an 8-metric Financial Health Score, or ask the assistant."
+         },
          "github": "https://github.com/Sagargupta16/ledger-sync",
          "live": "https://sagargupta.online/ledger-sync/"
       },
       {
          "id": 2,
          "title": "LeetCode Rating Predictor",
-         "description": "Full-stack LeetCode contest rating predictor using a Dense neural network trained on 244K+ contest records, featuring a FastAPI backend with LeetCode GraphQL integration and a React glassmorphism frontend.",
+         "description": "Full-stack LeetCode contest rating predictor using a Dense neural network trained on 121K+ contest records, featuring a FastAPI backend with LeetCode GraphQL integration and a React glassmorphism frontend.",
          "date": "December 2023",
          "tools_tech": [
             "Python",
@@ -141,11 +196,22 @@
             "GraphQL"
          ],
          "features": [
-            "Dense neural network trained on 244K+ contest records",
+            "Dense neural network trained on 121K+ contest records",
             "Automated data pipeline via LeetCode GraphQL API",
             "Glassmorphism React frontend with live contest selection",
             "34 backend tests + 11 frontend tests, Docker + Render deploy"
          ],
+         "case_study": {
+            "problem": "LeetCode contestants want an estimate of how a given contest rank will change their rating.",
+            "built": "Built a FastAPI backend that pulls ranks through LeetCode GraphQL and a React frontend, around a Dense neural network trained on past contest records.",
+            "decisions": [
+               "Replaced an LSTM with a Dense network because the input is tabular",
+               "Serves with NumPy on exported weights; TensorFlow is needed only to retrain",
+               "All LeetCode data goes through GraphQL, since the REST ranking API is blocked",
+               "A golden test pins model output so a re-export cannot silently change predictions"
+            ],
+            "outcome": "Test MAE is 7.84 rating points, and serving without TensorFlow shrank the runtime environment to ~65 MB instead of ~1.8 GB."
+         },
          "github": "https://github.com/Sagargupta16/LeetCode_Rating_Predictor",
          "live": "https://leetcode-rating-predictor.onrender.com/"
       },
@@ -168,6 +234,17 @@
             "Containerized app on ECS EC2 container instances behind an ALB with a prod listener (:80) and a test listener (:8080)",
             "KMS encryption, IAM least-privilege, multi-environment (dev/test/prod)"
          ],
+         "case_study": {
+            "problem": "Shipping a container to production without downtime needs blue/green routing, a promotion path from test to prod, and rollback, wired the same way in every environment.",
+            "built": "Wrote the Terraform that provisions the network, ECR, CI/CD pipelines and three isolated ECS environments for dev, test and prod in one terraform apply.",
+            "decisions": [
+               "Build once and promote the same artifact: test, manual approval, then prod",
+               "CodeDeploy canary sends 30% of traffic for 1 minute, with automatic rollback",
+               "Separate ECS cluster, ALB and Auto Scaling group per environment",
+               "One KMS key encrypts artifacts end to end; pipeline IAM has no wildcards"
+            ],
+            "outcome": "A push to main builds once, passes an 80% test coverage gate, deploys to test, and reaches prod after approval with zero downtime."
+         },
          "github": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform",
          "live": ""
       },
@@ -189,6 +266,17 @@
             "Multi-step scan with pause/resume and progress bars",
             "Desktop console + Android Eruda browser support, no sign-up needed"
          ],
+         "case_study": {
+            "problem": "Instagram shows a like count on each post, but not who your most frequent likers are or who does not follow you back.",
+            "built": "Built a Preact and TypeScript bundle that runs in the browser console on your own profile and scans posts, likers and follow lists.",
+            "decisions": [
+               "No server: requests go straight from your browser using your own session",
+               "One sequential requester, random 2 to 3 second gaps, capped at 250 requests",
+               "Auth, challenge or rate-limit responses stop the run with no retry",
+               "Completed scans cached locally for 24 hours, scoped to the account"
+            ],
+            "outcome": "Paste one script and get a likes leaderboard, a stats dashboard and an optional follower comparison, with CSV and JSON exports and no sign-up."
+         },
          "github": "https://github.com/Sagargupta16/InstagramLikesLeaderboard",
          "live": "https://sagargupta.online/InstagramLikesLeaderboard/"
       },
@@ -211,6 +299,17 @@
             "Data-driven content via JSON files",
             "GitHub activity calendar integration"
          ],
+         "case_study": {
+            "problem": "A portfolio has to stay current across projects, experience and certifications without editing components every time something changes.",
+            "built": "Built this site in React 19, TypeScript, Vite 8 and Tailwind CSS v4, with every section driven by JSON files under the data folder.",
+            "decisions": [
+               "JSON content checked by a validator: required fields, unique IDs, cover parity",
+               "Sections load near the viewport instead of in the initial bundle",
+               "Persisted Full/Reduced motion toggle, with Full as the default",
+               "Certifications synced weekly from Credly and validated before the bot commits"
+            ],
+            "outcome": "Most updates are a JSON edit, and CI deploys to GitHub Pages only after formatting, lint, types, data validation and the test suite pass."
+         },
          "github": "https://github.com/Sagargupta16/portfolio-react",
          "live": "https://sagargupta.online/portfolio-react/"
       },
@@ -226,6 +325,16 @@
             "Cross-AI memory persistence - access from any MCP client",
             "Simple setup via config file path"
          ],
+         "case_study": {
+            "problem": "What you tell one AI assistant does not carry over to the next conversation or to a different MCP client.",
+            "built": "Built a TypeScript MCP server with 9 tools for storing, searching and grouping memories, backed by MongoDB, for Claude Desktop and VS Code Copilot.",
+            "decisions": [
+               "stdio transport, so Claude Desktop and VS Code launch it from their config",
+               "Separate MCP, service and storage layers over MongoDB via Mongoose",
+               "Contexts group related memories and load them on activation"
+            ],
+            "outcome": "Any MCP client can store, search and recall the same memories, and they persist across server restarts in MongoDB."
+         },
          "github": "https://github.com/Sagargupta16/SelfHub",
          "live": ""
       }
@@ -709,21 +818,6 @@
          ],
          "github": "https://github.com/Sagargupta16/FlappyBird-Game__UnityEngine",
          "live": ""
-      },
-      {
-         "id": 6,
-         "title": "Music Web Player",
-         "description": "A modern music player with glassmorphism UI, built with vanilla HTML, CSS, and JavaScript. Features shuffle/repeat modes, rotating album art, and a seekable progress bar.",
-         "date": "May 2022",
-         "tools_tech": ["HTML5", "CSS3", "JavaScript"],
-         "features": [
-            "Glassmorphism UI design",
-            "Shuffle and repeat playback modes",
-            "Rotating album art animation",
-            "Interactive seekable progress bar"
-         ],
-         "github": "https://github.com/Sagargupta16/Music-Web-App",
-         "live": "https://sagargupta.online/Music-Web-App/"
       }
    ],
    "community_projects": [
@@ -805,7 +899,7 @@
       {
          "id": 45,
          "title": "skillcheck",
-         "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, client-extension awareness across 6 runtimes (Claude Code, Codex, Gemini CLI, Copilot, Cursor, OpenCode), structure and reference validation, SARIF output, and a drop-in GitHub Action.",
+         "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, a 19-field client-extension registry across 3 runtimes (Claude Code, Copilot, Cursor), structure and reference validation, SARIF output, and a drop-in GitHub Action.",
          "date": "July 2026",
          "tools_tech": [
             "TypeScript",
@@ -816,7 +910,7 @@
          ],
          "features": [
             "36 lint rules with message-for-message parity against the reference validator",
-            "Client-extension awareness: knows which frontmatter fields each of 6 runtimes accepts",
+            "Client-extension awareness: knows which frontmatter fields each of 3 modeled runtimes accepts",
             "Structure + relative-reference validation, trigger-test scaffolding",
             "SARIF output for code scanning and a drop-in GitHub Action"
          ],
@@ -877,7 +971,7 @@
             "cost-mode skill with 3 intensity levels (lite / standard / strict)",
             "Web-based Repo Analyzer with cost grade (A+ to F) and recommendations",
             "Cost Calculator and shields.io badge checker",
-            "11 deep-dive guides, stack-specific CLAUDE.md templates, 40+ agent support via skills.sh"
+            "12 deep-dive guides, stack-specific CLAUDE.md templates, 40+ agent support via skills.sh"
          ],
          "github": "https://github.com/Sagargupta16/claude-cost-optimizer",
          "live": "https://sagargupta.online/claude-cost-optimizer/"
@@ -952,12 +1046,12 @@
             "Community-maintained with open contribution PRs"
          ],
          "github": "https://github.com/Sagargupta16/awesome-mcp-servers",
-         "live": ""
+         "live": "https://sagargupta.online/awesome-mcp-servers/"
       },
       {
          "id": 32,
          "title": "Deploy Guide",
-         "description": "Step-by-step deployment guides for every platform - 37 guides, 12 platforms, 14 frameworks, 6 databases. Covers GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare Pages, AWS ECS, DigitalOcean, and more.",
+         "description": "Step-by-step deployment guides for every platform - 38 guides, 13 platforms, 14 frameworks, 6 databases. Covers GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare Pages, AWS ECS, DigitalOcean, and more.",
          "date": "March 2025",
          "tools_tech": [
             "DevOps",
@@ -968,7 +1062,7 @@
             "Cloudflare"
          ],
          "features": [
-            "12 platform guides (GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare, AWS ECS, AWS Amplify, DigitalOcean, Coolify, Hetzner)",
+            "13 platform guides (GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare Pages, Cloudflare Workers, AWS ECS, AWS Amplify, DigitalOcean, Coolify, Hetzner)",
             "14 framework guides (React, Next.js, Astro, SvelteKit, Angular, Express, NestJS, FastAPI, Flask, Django, Rails, Go, MERN, FARM)",
             "6 database guides with free-tier notes",
             "Copy-paste configurations, CI/CD templates, custom domain walkthroughs"

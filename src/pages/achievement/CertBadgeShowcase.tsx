@@ -4,6 +4,7 @@ import { fadeInUp } from "@utils/animations";
 import type { Certification } from "@/types";
 import { CYAN } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
+import { isCertActive, sortActiveFirst } from "@utils/certStatus";
 import CertBadge from "./CertBadge";
 
 interface CertBadgeShowcaseProps {
@@ -13,6 +14,10 @@ interface CertBadgeShowcaseProps {
 const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
    const { isMobile } = useBreakpoint();
    const badgeSize = isMobile ? 90 : 120;
+   // Expired badges stay visible (with their Expired tag) but go last, and the
+   // heading count only covers the active ones.
+   const ordered = sortActiveFirst(certifications);
+   const activeCount = certifications.filter((c) => isCertActive(c)).length;
 
    return (
       <div>
@@ -25,7 +30,9 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
          >
             <ShieldCheck size={22} style={{ color: CYAN }} aria-hidden="true" />
             <h3>Industry Certifications</h3>
-            <span className="subsection-count">{certifications.length}</span>
+            <span className="subsection-count" title={`${activeCount} active`}>
+               {activeCount}
+            </span>
          </motion.div>
 
          <div
@@ -37,7 +44,7 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
                paddingBottom: 16,
             }}
          >
-            {certifications.map((cert, i) => (
+            {ordered.map((cert, i) => (
                <CertBadge
                   key={cert.badgeId}
                   name={cert.name}

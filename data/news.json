@@ -67,7 +67,7 @@
    {
       "date": "2026-07",
       "type": "launch",
-      "text": "Published skillcheck on npm: a conformance suite for Agent Skills across 6 runtimes",
+      "text": "Published skillcheck on npm: a conformance suite for Agent Skills with 36 rules and a 3-runtime extension registry",
       "link": "https://www.npmjs.com/package/@sagargupta1610/skillcheck"
    },
    {
@@ -139,7 +139,7 @@
    {
       "date": "2026-03-09",
       "type": "oss",
-      "text": "Merged into awslabs/mcp (10K stars): Fix Kendra documentation menu to match source directory",
+      "text": "Merged into awslabs/mcp (9.7K stars): Fix Kendra documentation menu to match source directory",
       "link": "https://github.com/awslabs/mcp/pull/2607",
       "impact": "minor"
    },
@@ -265,7 +265,7 @@
    {
       "date": "2023-12",
       "type": "launch",
-      "text": "Built a LeetCode contest rating predictor: a neural network trained on 244K+ contest records",
+      "text": "Built a LeetCode contest rating predictor: a neural network trained on 121K+ contest records",
       "link": "https://leetcode-rating-predictor.onrender.com/"
    },
    {

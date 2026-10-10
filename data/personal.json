@@ -13,7 +13,7 @@
       "Published under aws-samples.",
       "Terraform, CI/CD and MLOps, end to end."
    ],
-   "headline": "I build AWS platforms for *regulated* companies.",
+   "headline": "I build *secure* AWS platforms that scale.",
    "availability": "Now: leading a greenfield AWS migration at RWS",
    "contact": {
       "github": "Sagargupta16"
@@ -21,9 +21,9 @@
    "about": {
       "greeting": "👋 Hi, my name is Sagar Gupta.",
       "current_role": "💼 Cloud consultant at AWS Professional Services. DevOps work for State Street and DTCC, and now the sole DevOps consultant on RWS's greenfield migration: 50+ workloads into 135+ AWS accounts.",
-      "specialization": "🚀 Two samples published by AWS under aws-samples (a SageMaker MLOps pipeline and an Organizations governance layer), architecture patterns on AWS Prescriptive Guidance, and merged PRs in Apache Airflow, Feast, awslabs/mcp, axios and multer.",
+      "specialization": "🚀 Two samples published by AWS under aws-samples (a SageMaker MLOps pipeline and an Organizations governance layer), an architecture pattern on AWS Prescriptive Guidance, and merged PRs in Apache Airflow, Feast, awslabs/mcp, axios and multer.",
       "education": "🎓 MCA from NIT Warangal (CGPA 8.38, NIMCET AIR 208). Five active AWS certifications.",
-      "competitive_programming": "🏆 LeetCode Guardian (2165 peak rating, top 1.1% of contestants), 1700+ problems across LeetCode and GeeksforGeeks, 107 contests. Google Kick Start '22 Top 5%."
+      "competitive_programming": "🏆 LeetCode Guardian (2165 peak rating, top 1.1% of contestants), 1800+ problems across LeetCode and GeeksforGeeks, 107 contests. Google Kick Start '22 Top 5%."
    },
    "impact": {
       "clients_served": "3",
@@ -54,12 +54,6 @@
          "name": "Instagram",
          "link": "https://www.instagram.com/sagar_sethh/",
          "icon": "FiInstagram"
-      },
-      {
-         "id": 4,
-         "name": "Twitter",
-         "link": "https://x.com/Sagargupta1610/",
-         "icon": "SiX"
       }
    ],
    "site": {

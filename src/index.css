@@ -470,11 +470,17 @@ html[data-motion="reduced"] .project-action:active {
       border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.glass-card:hover,
 .glass-card:focus-visible,
 .glass-card:has(:focus-visible) {
    border-color: rgb(var(--ch-white) / 0.14);
    background: var(--color-bg-card-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .glass-card:hover {
+      border-color: rgb(var(--ch-white) / 0.14);
+      background: var(--color-bg-card-hover);
+   }
 }
 
 /* ===== Project cards ===== */
@@ -483,9 +489,14 @@ html[data-motion="reduced"] .project-action:active {
    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.project-card:hover .project-cover-img,
 .project-card:has(:focus-visible) .project-cover-img {
    transform: scale(1.045);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .project-card:hover .project-cover-img {
+      transform: scale(1.045);
+   }
 }
 
 /* Framed screenshots grow from their top edge, like a window rising out of the panel. */
@@ -493,9 +504,14 @@ html[data-motion="reduced"] .project-action:active {
    transform-origin: top center;
 }
 
-.project-card:hover .project-cover-img--framed,
 .project-card:has(:focus-visible) .project-cover-img--framed {
    transform: scale(1.03);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .project-card:hover .project-cover-img--framed {
+      transform: scale(1.03);
+   }
 }
 
 .line-clamp-3 {
@@ -753,6 +769,18 @@ html[data-motion="reduced"] .sagar-face {
    letter-spacing: 0.04em;
 }
 
+.annotations-trigger {
+   font-family: var(--font-mono);
+   font-size: 11px;
+   letter-spacing: 0.02em;
+}
+
+.annotations-trigger.is-on {
+   color: var(--color-text-primary);
+   border-color: var(--color-accent-cyan);
+   background: rgb(96 165 250 / 0.12);
+}
+
 .palette-trigger-icon {
    width: 44px;
    height: 44px;
@@ -901,16 +929,28 @@ html[data-motion="reduced"] .sagar-face {
       transform 0.2s ease;
 }
 
-a.news-row:hover,
 a.news-row:focus-visible {
    background: var(--color-bg-card);
    border-color: rgb(var(--ch-white) / 0.06);
    transform: translateX(2px);
 }
 
-a.news-row:hover .news-row-arrow,
+@media (hover: hover) and (pointer: fine) {
+   a.news-row:hover {
+      background: var(--color-bg-card);
+      border-color: rgb(var(--ch-white) / 0.06);
+      transform: translateX(2px);
+   }
+}
+
 a.news-row:focus-visible .news-row-arrow {
    transform: translate(2px, -2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   a.news-row:hover .news-row-arrow {
+      transform: translate(2px, -2px);
+   }
 }
 
 .news-row-arrow {
@@ -1001,10 +1041,16 @@ a.news-row--major:focus-visible {
       transform 0.25s ease;
 }
 
-.btn-primary:hover,
 .btn-primary:focus-visible {
    background: #1d4ed8;
    transform: translateY(-1px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+   }
 }
 
 .btn-outline {
@@ -1021,11 +1067,18 @@ a.news-row--major:focus-visible {
       transform 0.25s ease;
 }
 
-.btn-outline:hover,
 .btn-outline:focus-visible {
    background: rgb(var(--ch-white) / 0.14);
    border-color: rgb(var(--ch-white) / 0.12);
    transform: translateY(-1px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .btn-outline:hover {
+      background: rgb(var(--ch-white) / 0.14);
+      border-color: rgb(var(--ch-white) / 0.12);
+      transform: translateY(-1px);
+   }
 }
 
 /* White pill CTA (nav "Contact Me", akobir-style) */
@@ -1042,10 +1095,16 @@ a.news-row--major:focus-visible {
       transform 0.25s ease;
 }
 
-.btn-pill:hover,
 .btn-pill:focus-visible {
    background: #e2e8f0;
    transform: translateY(-1px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .btn-pill:hover {
+      background: #e2e8f0;
+      transform: translateY(-1px);
+   }
 }
 
 /* ===== Text actions and disclosures ===== */
@@ -1264,7 +1323,8 @@ a.news-row--major:focus-visible {
    border-radius: 10px;
    padding: 14px 18px;
    color: var(--color-text-primary);
-   font-size: 0.9375rem;
+   /* 16px: anything smaller makes iOS Safari zoom the page on focus */
+   font-size: 1rem;
    transition:
       background 0.3s ease,
       border-color 0.3s ease;
@@ -1460,4 +1520,371 @@ a.news-row--major:focus-visible {
       color: #333 !important;
       background: #f9f9f9 !important;
    }
+}
+
+/* gloss tooltips */
+/* Jargon trigger: reads as body text with a dotted underline, inherits the
+   surrounding type, and brightens the underline while its card is open. */
+.gloss-term {
+   appearance: none;
+   margin: 0;
+   padding: 0;
+   border: 0;
+   border-radius: 2px;
+   background: none;
+   color: inherit;
+   font: inherit;
+   letter-spacing: inherit;
+   text-align: inherit;
+   cursor: help;
+   text-decoration-line: underline;
+   text-decoration-style: dotted;
+   text-decoration-color: rgb(var(--ch-white) / 0.35);
+   text-decoration-thickness: 1px;
+   text-underline-offset: 3px;
+   transition:
+      text-decoration-color 0.16s ease-out,
+      color 0.16s ease-out;
+}
+
+.gloss-term:hover,
+.gloss-term[aria-expanded="true"] {
+   color: var(--color-accent-cyan);
+   text-decoration-color: currentColor;
+}
+/* end gloss tooltips */
+
+/* ===== sheet handle ===== */
+/* Bottom-sheet grab handle (ModalShell on phones). The element is the 20px
+   touch strip; the pill is drawn by ::before. touch-action: none lets the
+   pointer start a drag instead of a page scroll. */
+.sheet-handle {
+   position: relative;
+   flex-shrink: 0;
+   height: 20px;
+   cursor: grab;
+   touch-action: none;
+}
+
+.sheet-handle:active {
+   cursor: grabbing;
+}
+
+.sheet-handle::before {
+   content: "";
+   position: absolute;
+   top: 8px;
+   left: 50%;
+   width: 36px;
+   height: 4px;
+   margin-left: -18px;
+   border-radius: 999px;
+   background: rgb(var(--ch-white) / 0.24);
+}
+/* end sheet handle */
+
+/* case study brief: problem, built, decisions, outcome, inspect */
+.case-brief {
+   display: grid;
+   gap: 0;
+   border: 1px solid rgb(255 255 255 / 0.07);
+   border-radius: 12px;
+   background: rgb(255 255 255 / 0.02);
+   overflow: hidden;
+}
+
+.case-brief-row {
+   display: grid;
+   grid-template-columns: 128px minmax(0, 1fr);
+   gap: 12px;
+   padding: 10px 14px;
+   border-top: 1px solid rgb(255 255 255 / 0.05);
+}
+
+.case-brief-row:first-child {
+   border-top: 0;
+}
+
+.case-brief dt {
+   display: flex;
+   align-items: center;
+   gap: 6px;
+   align-self: start;
+   padding-top: 2px;
+   font-family: var(--font-mono);
+   font-size: 10px;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+   color: var(--color-text-muted);
+}
+
+.case-brief dt span {
+   display: inline-flex;
+   color: var(--brief-accent);
+}
+
+.case-brief dd {
+   min-width: 0;
+   overflow-wrap: anywhere;
+   margin: 0;
+   font-size: 13px;
+   line-height: 1.6;
+   color: var(--color-text-secondary);
+}
+
+.case-brief dd ul {
+   display: grid;
+   gap: 4px;
+   padding-left: 14px;
+   list-style: disc;
+}
+
+.case-brief dd li::marker {
+   color: var(--brief-accent);
+}
+
+.case-brief-row.is-outcome {
+   background: color-mix(in srgb, var(--brief-accent) 7%, transparent);
+   box-shadow: inset 2px 0 0 var(--brief-accent);
+}
+
+.case-brief-row.is-outcome dd {
+   color: var(--color-text-primary);
+}
+
+@media (max-width: 639px) {
+   .case-brief-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+   }
+}
+/* end case study brief */
+
+/* CV web view: the parsed resume set as a white sheet, like the PDF */
+.cv-view-toggle {
+   display: inline-flex;
+   padding: 2px;
+   border: 1px solid rgb(255 255 255 / 0.08);
+   border-radius: 9px;
+   background: rgb(255 255 255 / 0.03);
+}
+
+.cv-view-toggle button {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   min-height: 32px;
+   padding: 0 10px;
+   border: 0;
+   border-radius: 7px;
+   background: transparent;
+   color: var(--color-text-secondary);
+   font-size: 12px;
+   font-weight: 600;
+   cursor: pointer;
+   transition:
+      background 0.2s ease,
+      color 0.2s ease;
+}
+
+.cv-view-toggle button[aria-pressed="true"] {
+   background: rgb(255 255 255 / 0.1);
+   color: var(--color-text-primary);
+}
+
+.cv-sheet {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 36px 44px 40px;
+   border-radius: 6px;
+   background: #fff;
+   box-shadow: 0 8px 32px rgb(0 0 0 / 0.5);
+   color: #111;
+   font-family: Carlito, Calibri, "Segoe UI", var(--font-sans), sans-serif;
+   font-size: 13.5px;
+   line-height: 1.45;
+   text-align: left;
+}
+
+.cv-sheet a {
+   color: #1d4ed8;
+   text-decoration: none;
+}
+
+.cv-sheet a:hover {
+   text-decoration: underline;
+}
+
+.cv-sheet svg {
+   display: inline-block;
+   width: 0.95em;
+   height: 0.95em;
+   margin-right: 3px;
+   vertical-align: -0.12em;
+}
+
+.cv-sheet .cv-star {
+   width: 0.8em;
+   height: 0.8em;
+   margin: 0 0 0 1px;
+}
+
+.cv-head {
+   text-align: center;
+}
+
+.cv-name {
+   font-size: 26px;
+   font-weight: 700;
+   line-height: 1.15;
+   letter-spacing: 0;
+}
+
+.cv-tagline {
+   margin-top: 4px;
+   white-space: pre-wrap;
+}
+
+.cv-links {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 2px 14px;
+   margin-top: 4px;
+}
+
+.cv-section {
+   margin-top: 14px;
+}
+
+.cv-section h4 {
+   margin-bottom: 6px;
+   padding-bottom: 2px;
+   border-bottom: 1px solid #111;
+   font-size: 15px;
+   font-weight: 700;
+   font-variant: small-caps;
+   letter-spacing: 0.02em;
+}
+
+.cv-entry + .cv-entry {
+   margin-top: 8px;
+}
+
+.cv-entry-head {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr) auto;
+   column-gap: 16px;
+}
+
+.cv-entry-title {
+   font-weight: 700;
+}
+
+.cv-entry-date,
+.cv-entry-meta {
+   text-align: right;
+   font-size: 12.5px;
+}
+
+.cv-entry-sub {
+   font-size: 12.5px;
+   font-style: italic;
+}
+
+.cv-entry-meta {
+   font-style: normal;
+}
+
+.cv-bullets,
+.cv-list {
+   margin-top: 3px;
+   padding-left: 18px;
+   list-style: disc;
+}
+
+.cv-bullets li,
+.cv-list li {
+   margin-top: 2px;
+   text-align: justify;
+   overflow-wrap: anywhere;
+}
+
+.cv-list li {
+   text-align: left;
+}
+
+.cv-list li > span {
+   margin-right: 8px;
+}
+
+.cv-aside {
+   float: right;
+   font-size: 12.5px;
+}
+
+.cv-rows p + p {
+   margin-top: 2px;
+}
+
+.cv-para {
+   text-align: justify;
+}
+
+.cv-para + .cv-entry,
+.cv-entry + .cv-para {
+   margin-top: 8px;
+}
+
+@media (max-width: 639px) {
+   .cv-sheet {
+      padding: 22px 16px 26px;
+      font-size: 13px;
+   }
+
+   .cv-name {
+      font-size: 22px;
+   }
+
+   .cv-entry-head {
+      grid-template-columns: minmax(0, 1fr);
+   }
+
+   .cv-entry-date,
+   .cv-entry-meta {
+      order: 2;
+      text-align: left;
+      color: #444;
+   }
+
+   /* One column: role under the company, then dates and place */
+   .cv-entry-sub {
+      order: 1;
+   }
+
+   .cv-bullets li,
+   .cv-para {
+      text-align: left;
+   }
+
+   .cv-aside {
+      float: none;
+      display: block;
+   }
+}
+/* end CV web view */
+
+/* Press feedback for touch: hover is gated to fine pointers, so taps need
+   their own response. Motion's whileTap still wins on the hero CTAs. */
+:is(
+   .btn-primary,
+   .btn-outline,
+   .btn-pill,
+   .palette-trigger,
+   .annotation-icon-btn,
+   .annotations-banner-btn,
+   .cv-view-toggle button
+):active {
+   transform: scale(0.97);
+   transition-duration: 0.1s;
 }

@@ -1,14 +1,18 @@
 import { motion, AnimatePresence } from "motion/react";
+import { UserPlus } from "lucide-react";
 import Toast from "@components/ui/Toast";
 import { getContactOptions } from "@data/contact";
-import { rotateInUp, staggerContainer } from "@utils/animations";
-import { MAX_WIDTH_FORM } from "@/constants/theme";
+import { rotateInUp, staggerContainer, staggerItem } from "@utils/animations";
+import { MAX_WIDTH_FORM, TEXT_MUTED } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import ContactCard from "./ContactCard";
 import ContactForm from "./ContactForm";
 import SendConfirmation from "./SendConfirmation";
 import useContactForm from "./useContactForm";
+
+// Generated at the site root by the build, so it follows the deploy base path.
+const VCARD_HREF = `${import.meta.env.BASE_URL}sagar-gupta.vcf`;
 
 const Contact = () => {
    const { isMobile } = useBreakpoint();
@@ -57,6 +61,51 @@ const Contact = () => {
                      isMobile={isMobile}
                   />
                ))}
+
+               {/* One tap drops a vCard into the phone's contacts app */}
+               <motion.div
+                  variants={staggerItem}
+                  style={{
+                     display: "flex",
+                     flexDirection: "column",
+                     alignItems: isMobile ? "stretch" : "flex-start",
+                     gap: 6,
+                     marginTop: 4,
+                  }}
+               >
+                  <a
+                     href={VCARD_HREF}
+                     download="sagar-gupta.vcf"
+                     className="btn-outline"
+                     aria-describedby="contact-vcard-hint"
+                     style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                        minHeight: 44,
+                        padding: "8px 16px",
+                        fontSize: 14,
+                        textDecoration: "none",
+                     }}
+                  >
+                     <UserPlus
+                        aria-hidden="true"
+                        style={{ width: 16, height: 16 }}
+                     />
+                     Save contact card
+                  </a>
+                  <p
+                     id="contact-vcard-hint"
+                     style={{
+                        fontSize: 12,
+                        color: TEXT_MUTED,
+                        textAlign: isMobile ? "center" : "left",
+                     }}
+                  >
+                     Adds me to your phone&apos;s contacts
+                  </p>
+               </motion.div>
             </motion.div>
 
             {/* Contact Form - Right Column */}

@@ -2,6 +2,7 @@ import { Calendar, Users, Star, FolderGit2 } from "lucide-react";
 import ModalHeaderShell from "@components/ui/ModalHeaderShell";
 import { TEXT_PRIMARY, TEXT_MUTED, MONO_FONT } from "@/constants/theme";
 import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
+import { EvidenceBadges } from "./ProjectCardHeader";
 
 interface ProjectModalHeaderProps {
    project: ProjectWithCategory;
@@ -105,6 +106,7 @@ const ProjectModalHeader = ({
             >
                {project.category}
             </span>
+            <EvidenceBadges project={project} />
          </div>
       </ModalHeaderShell>
    );

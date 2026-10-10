@@ -17,6 +17,7 @@ import {
    getCommunityProjects,
 } from "@data/projects";
 import { staggerContainer, staggerItem } from "@utils/animations";
+import { isCertActive } from "@utils/certStatus";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import useBreakpoint from "@hooks/useBreakpoint";
@@ -35,6 +36,11 @@ interface Stat {
 }
 
 const BIG_REPO_STARS = 10_000;
+
+// Credly issuer names are long ("Amazon Web Services Training and
+// Certification", "AWS Worldwide Field Enablement"); the tiles need one word.
+const shortIssuer = (issuer: string) =>
+   /amazon web services|^aws\b/i.test(issuer) ? "AWS" : issuer.split(" ")[0];
 
 /** 234448 -> "234k+", 442 -> "442". AnimatedCounter keeps "k+" as suffix. */
 const formatStars = (n: number): string =>
@@ -112,8 +118,19 @@ const StatsBand = () => {
    const { isMobile } = useBreakpoint();
 
    const { impact, delivery, openSource, competitive } = useMemo(() => {
-      const certs = getCertifications();
+      // Expired certifications drop out of the count, and both notes name the
+      // issuers that are actually there (a lapsed cert stops adding its issuer).
+      const certs = getCertifications().filter((c) => isCertActive(c));
+      const certIssuers = [...new Set(certs.map((c) => shortIssuer(c.issuer)))];
       const badges = getLearningBadges();
+      const badgeIssuers = new Map<string, number>();
+      for (const badge of badges) {
+         const issuer = shortIssuer(badge.issuer);
+         badgeIssuers.set(issuer, (badgeIssuers.get(issuer) ?? 0) + 1);
+      }
+      const badgeNote = [...badgeIssuers]
+         .map(([issuer, count]) => `${count} ${issuer}`)
+         .join(", ");
       const impactData = getImpact();
 
       // Talks and published patterns are tagged by `type` on the experience
@@ -211,13 +228,13 @@ const StatsBand = () => {
             },
             {
                value: String(certs.length),
-               label: "Certifications",
-               note: "AWS + HashiCorp",
+               label: "Active certifications",
+               note: certIssuers.join(" + "),
             },
             {
                value: String(badges.length),
-               label: "AWS badges",
-               note: "Knowledge & learning",
+               label: "Learning badges",
+               note: badgeNote,
             },
             {
                value: String(podium.length),

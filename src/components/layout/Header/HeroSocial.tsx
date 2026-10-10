@@ -72,7 +72,7 @@ const HeroSocial = () => {
                   transition={TILE_TRANSITION}
                   aria-label={`Visit ${profile.name} profile (opens in a new tab)`}
                >
-                  <IconComponent size={18} />
+                  <IconComponent size={18} aria-hidden="true" />
                </motion.a>
             );
          })}

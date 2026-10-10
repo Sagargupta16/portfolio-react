@@ -472,3 +472,229 @@ html[data-motion="full"] .contribution-link:active {
       opacity: 1;
    }
 }
+
+/* ===== Evidence badges (Published by AWS / Live / Open source) ===== */
+.evidence-badges {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 6px;
+   min-width: 0;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.project-card-evidence {
+   margin: -4px 0 12px;
+}
+
+.evidence-badge {
+   --evidence-tint: var(--color-text-secondary);
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 2px 8px;
+   border: 1px solid color-mix(in srgb, var(--evidence-tint) 22%, transparent);
+   border-radius: 999px;
+   background: color-mix(in srgb, var(--evidence-tint) 6%, transparent);
+   color: color-mix(
+      in srgb,
+      var(--evidence-tint) 70%,
+      var(--color-text-secondary)
+   );
+   font-family: var(--font-mono);
+   font-size: 11px;
+   line-height: 1.5;
+   white-space: nowrap;
+}
+
+.evidence-badge--aws {
+   --evidence-tint: #ff9900;
+}
+
+.evidence-badge--live {
+   --evidence-tint: #22c55e;
+}
+
+.evidence-dot {
+   position: relative;
+   width: 6px;
+   height: 6px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: var(--evidence-tint);
+}
+
+.evidence-badge--source .evidence-dot {
+   background: transparent;
+   box-shadow: inset 0 0 0 1px var(--evidence-tint);
+}
+
+/* Live dot: a ring that expands and fades, like a status beacon. */
+html:not([data-motion="reduced"]) .evidence-badge--live .evidence-dot::after {
+   content: "";
+   position: absolute;
+   inset: 0;
+   border-radius: 50%;
+   border: 1px solid var(--evidence-tint);
+   animation: evidence-pulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes evidence-pulse {
+   from {
+      transform: scale(1);
+      opacity: 0.8;
+   }
+   to {
+      transform: scale(2.6);
+      opacity: 0;
+   }
+}
+
+/* ===== Case-study demos (project modal, "How it works") ===== */
+.terminal-tab {
+   min-height: 32px;
+   padding: 4px 10px;
+   border: 1px solid transparent;
+   border-radius: 6px;
+   cursor: pointer;
+   transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+}
+
+.terminal-tab:focus-visible {
+   outline: 2px solid var(--color-accent-cyan);
+   outline-offset: 1px;
+}
+
+/* Intentional horizontal scroll: long terraform commands stay on one line. */
+.terminal-body {
+   overflow-x: auto;
+   overscroll-behavior-x: contain;
+   scrollbar-width: thin;
+}
+
+.terminal-caret {
+   display: inline-block;
+   width: 0.55em;
+   height: 1.1em;
+   margin-left: 2px;
+   vertical-align: text-bottom;
+   background: currentColor;
+   opacity: 0.8;
+}
+
+html:not([data-motion="reduced"]) .terminal-caret {
+   animation: terminal-caret 1s steps(1) infinite;
+}
+
+@keyframes terminal-caret {
+   50% {
+      opacity: 0;
+   }
+}
+
+.compare-slider {
+   --pos: 50%;
+   position: relative;
+   display: grid;
+   overflow: hidden;
+   border: 1px solid var(--color-border);
+   border-radius: 14px;
+   touch-action: pan-y;
+   user-select: none;
+   cursor: ew-resize;
+}
+
+.compare-layer {
+   grid-area: 1 / 1;
+   min-width: 0;
+}
+
+.compare-layer--top {
+   clip-path: inset(0 0 0 var(--pos));
+}
+
+.compare-panel {
+   height: 100%;
+   padding: 16px;
+}
+
+.compare-handle {
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: var(--pos);
+   width: 44px;
+   transform: translateX(-50%);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   outline: none;
+}
+
+.compare-handle::before {
+   content: "";
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 50%;
+   width: 2px;
+   transform: translateX(-50%);
+   background: var(--compare-accent);
+}
+
+.compare-knob {
+   position: relative;
+   display: grid;
+   place-items: center;
+   width: 44px;
+   height: 44px;
+   border: 2px solid var(--compare-accent);
+   border-radius: 50%;
+   background: #0e1417;
+   color: var(--compare-accent);
+   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.compare-handle:focus-visible .compare-knob {
+   outline: 2px solid var(--color-text-primary);
+   outline-offset: 2px;
+}
+
+html:not([data-motion="reduced"]) .compare-slider:active .compare-knob {
+   transform: scale(1.08);
+}
+
+@media (max-width: 767px) {
+   .compare-panel {
+      padding: 14px 12px;
+   }
+}
+
+.compare-captions {
+   display: grid;
+   gap: 8px;
+   margin-top: 12px;
+   font-size: 12px;
+   line-height: 1.6;
+   color: var(--color-text-secondary);
+}
+
+.compare-captions div {
+   display: grid;
+   grid-template-columns: 52px 1fr;
+   gap: 8px;
+}
+
+.compare-captions dt {
+   font-family: var(--font-mono);
+   font-size: 10px;
+   letter-spacing: 0.06em;
+   text-transform: uppercase;
+   color: var(--color-text-muted);
+   padding-top: 2px;
+}

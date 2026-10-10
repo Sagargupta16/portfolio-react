@@ -57,6 +57,16 @@ const requireStringRecord = (value, path) => {
    }
 };
 
+// Optional engineering brief on projects and engagements.
+const checkCaseStudy = (value, path) => {
+   if (value === undefined) return;
+   if (!requireRecord(value, path)) return;
+   for (const field of ["problem", "built", "outcome"]) {
+      requireString(value[field], `${path}.${field}`);
+   }
+   requireStringArray(value.decisions, `${path}.decisions`);
+};
+
 const requireUnique = (items, key, path) => {
    const seen = new Set();
    for (const [index, item] of items.entries()) {
@@ -281,6 +291,7 @@ if (requireRecord(experience, "experience")) {
                requireStringArray(project?.skills, `${projectPath}.skills`);
                if (project?.link)
                   requireUrl(project.link, `${projectPath}.link`);
+               checkCaseStudy(project?.case_study, `${projectPath}.case_study`);
             }
          }
          for (const field of [
@@ -401,6 +412,7 @@ if (requireRecord(projects, "projects")) {
          if (project?.live && project.live !== "#") {
             requireUrl(project.live, `${path}.live`);
          }
+         checkCaseStudy(project?.case_study, `${path}.case_study`);
       }
    }
    requireUnique(allProjects, "id", "projects.all_categories");

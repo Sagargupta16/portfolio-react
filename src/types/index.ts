@@ -83,6 +83,14 @@ export interface Education {
    skills: string[];
 }
 
+/** Scannable engineering brief shown at the top of a project or engagement. */
+export interface CaseStudy {
+   problem: string;
+   built: string;
+   decisions: string[];
+   outcome: string;
+}
+
 // ===== Experience =====
 export interface ExperienceProject {
    name: string;
@@ -93,6 +101,7 @@ export interface ExperienceProject {
    link?: string;
    /** Short label for the link, defaults to "Source" when omitted. */
    linkLabel?: string;
+   case_study?: CaseStudy;
 }
 
 export interface InternalContribution {
@@ -159,6 +168,7 @@ export interface Project {
    team?: string;
    organization?: string;
    contributors?: string[];
+   case_study?: CaseStudy;
 }
 
 export interface OpenSourceContribution {

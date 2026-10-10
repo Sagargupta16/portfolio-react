@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 // Fetch the latest resume PDF from the latex-resume release, then render each
 // page to a high-resolution WebP so the in-site CV viewer shows crisp,
-// zoomable images with zero client-side PDF machinery. Outputs (gitignored):
+// zoomable images with zero client-side PDF machinery. The .tex sources at the
+// same release tag are parsed into cv.json for the viewer's web (HTML) view.
+// Outputs (gitignored):
 //   public/resume.pdf              -- for the open-in-new-tab action
 //   public/resume-pages/page-N.webp
 //   public/resume-pages/manifest.json  { pages, width, height }
+//   public/resume-pages/cv.json        { version, header, sections }
 // CI runs this before `vite build`; locally run `pnpm fetch:resume`.
 
 import { createWriteStream } from "node:fs";
@@ -13,9 +16,9 @@ import { pipeline } from "node:stream/promises";
 import path from "node:path";
 import { pdf } from "pdf-to-img";
 import sharp from "sharp";
+import { parseResume, RESUME_FILES } from "./resume-tex.js";
 
-const RESUME_URL =
-   "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
+const REPO = "Sagargupta16/latex-resume";
 const PUBLIC_DIR = path.resolve(import.meta.dirname, "../public");
 const PDF_OUT = path.join(PUBLIC_DIR, "resume.pdf");
 const PAGES_DIR = path.join(PUBLIC_DIR, "resume-pages");
@@ -24,7 +27,37 @@ const PAGES_DIR = path.join(PUBLIC_DIR, "resume-pages");
 // sharp on retina displays even at the viewer's 150% zoom.
 const RENDER_SCALE = 4;
 
-console.log("Fetching latest resume PDF...");
+// Pin the PDF and the .tex sources to one release tag so the web view and the
+// page images can never come from different builds. Falls back to the
+// "latest" PDF and main-branch sources if the API is unreachable.
+// The tag ends up in URLs and logs, so accept only vMAJOR.MINOR.PATCH and
+// rebuild it from the parsed numbers rather than passing the API string on.
+const toReleaseTag = (name) => {
+   const m = /^v(\d{1,4})\.(\d{1,4})\.(\d{1,4})$/.exec(String(name));
+   return m ? `v${Number(m[1])}.${Number(m[2])}.${Number(m[3])}` : null;
+};
+
+const latestTag = async () => {
+   const headers = { Accept: "application/vnd.github+json" };
+   if (process.env.GITHUB_TOKEN)
+      headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+   try {
+      const r = await fetch(
+         `https://api.github.com/repos/${REPO}/releases/latest`,
+         { headers, signal: AbortSignal.timeout(15_000) },
+      );
+      return r.ok ? toReleaseTag((await r.json()).tag_name) : null;
+   } catch {
+      return null;
+   }
+};
+
+const tag = await latestTag();
+const RESUME_URL = tag
+   ? `https://github.com/${REPO}/releases/download/${tag}/resume.pdf`
+   : `https://github.com/${REPO}/releases/latest/download/resume.pdf`;
+
+console.log(`Fetching resume PDF (${tag ?? "latest"})...`);
 const res = await fetch(RESUME_URL, {
    redirect: "follow",
    signal: AbortSignal.timeout(30_000),
@@ -70,3 +103,29 @@ await writeFile(
    JSON.stringify({ pages: pageNum, width, height }) + "\n",
 );
 console.log(`Done: ${pageNum} page(s), ${width}x${height}`);
+
+// Web view. A failure here never blocks the deploy: without cv.json the
+// viewer simply opens on the page images.
+console.log("Parsing resume sources for the web view...");
+try {
+   const ref = tag ?? "main";
+   const sources = await Promise.all(
+      RESUME_FILES.map(async (file) => {
+         const r = await fetch(
+            `https://raw.githubusercontent.com/${REPO}/${ref}/${file}`,
+            { signal: AbortSignal.timeout(15_000) },
+         );
+         if (!r.ok) throw new Error(`${file}: HTTP ${r.status}`);
+         return [file, await r.text()];
+      }),
+   );
+   const cv = parseResume(Object.fromEntries(sources));
+   if (cv.sections.length === 0) throw new Error("no sections parsed");
+   await writeFile(
+      path.join(PAGES_DIR, "cv.json"),
+      JSON.stringify({ version: tag, ...cv }) + "\n",
+   );
+   console.log(`  cv.json: ${cv.sections.length} sections (${ref})`);
+} catch (error) {
+   console.warn(`  Skipped the web view: ${error.message}`);
+}

@@ -19,6 +19,16 @@
                   "4": "Driving architecture decisions and defining migration roadmap for 50+ application workloads into 135+ AWS accounts. Delivering recommendations on cost optimization, HA, and DR to customer stakeholders.",
                   "5": "Used Kiro for AI-driven requirement analysis, architecture documentation, and implementation specs."
                },
+               "case_study": {
+                  "problem": "A greenfield AWS migration has to land 50+ application workloads in 135+ AWS accounts with governance and security controls in place from day one.",
+                  "built": "Leading the migration as the sole DevOps consultant, designing the AWS Organizations OU structure, SCPs, tag policies, and Terraform plus GitHub Actions CI/CD.",
+                  "decisions": [
+                     "Preventative SCPs, tag compliance guardrails, Config rules and Security Hub standards org-wide",
+                     "Transit Gateway hub-and-spoke with centralized VPC design and egress inspection",
+                     "Hybrid connectivity over VPN/Direct Connect with Route 53 DNS resolution"
+                  ],
+                  "outcome": "Terraform and GitHub Actions provisioning is cutting infrastructure setup time ~90% (3+ days per account to under 4 hours) versus manual provisioning."
+               },
                "skills": [
                   "AWS",
                   "AWS Organizations",
@@ -46,6 +56,16 @@
                   "2": "Used Amazon Q to accelerate code analysis and migration assessments, transforming infrastructure patterns to align with cloud-native principles.",
                   "3": "Partnered with client engineering teams on secure infrastructure practices and knowledge transfer."
                },
+               "case_study": {
+                  "problem": "A financial services client had legacy infrastructure that needed modernizing to enhance security and scalability.",
+                  "built": "Refactored and created critical Terraform infrastructure code, and used Amazon Q to accelerate code analysis and migration assessments.",
+                  "decisions": [
+                     "Amazon Q for code analysis and migration assessments",
+                     "Infrastructure patterns transformed to align with cloud-native principles",
+                     "Secure infrastructure practices shared with client engineering teams"
+                  ],
+                  "outcome": "Critical Terraform infrastructure code was modernized for security and scalability, aligned with cloud-native principles, with knowledge transfer to client engineering teams."
+               },
                "skills": [
                   "AWS",
                   "Terraform",
@@ -62,7 +82,17 @@
                   "1": "Architected end-to-end MLOps pipeline on SageMaker, automating data processing, multi-model training, and ensemble model creation for medical image classification.",
                   "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection - enabling zero-downtime model updates with automatic rollback.",
                   "3": "Provisioned entire infrastructure with Terraform and built CI/CD via CodePipeline and CodeBuild, deploying CloudFront frontend and API Gateway + Lambda inference API.",
-                  "4": "Generalized and published by AWS as an official sample under the aws-samples organization (MIT-0) - 85 Terraform files across 4 stacks and 13 reusable modules, with clinical quality gates, closed-loop drift retraining, and responsible-AI safeguards (Fairlearn bias gates, Model Cards, Bedrock Guardrails, A2I review)."
+                  "4": "Generalized and published by AWS as an official sample under the aws-samples organization (MIT-0) - 86 Terraform files across 4 stacks and 13 reusable modules, with clinical quality gates, closed-loop drift retraining, and responsible-AI safeguards (Fairlearn bias gates, Model Cards, Bedrock Guardrails, A2I review)."
+               },
+               "case_study": {
+                  "problem": "Medical image classification needed an automated path from data processing and multi-model training to production endpoints that update without downtime.",
+                  "built": "Architected an end-to-end SageMaker MLOps pipeline, provisioned the entire infrastructure with Terraform, and built CI/CD with CodePipeline and CodeBuild.",
+                  "decisions": [
+                     "Multi-model training combined into an ensemble model",
+                     "Blue-green endpoint deployment with auto-scaling and drift detection",
+                     "CloudFront frontend with an API Gateway and Lambda inference API"
+                  ],
+                  "outcome": "The endpoints support zero-downtime model updates with automatic rollback, and the work was generalized and published by AWS as an official sample under aws-samples (MIT-0)."
                },
                "skills": [
                   "AWS",
@@ -87,6 +117,17 @@
                   "2": "Architected 1000+ preventative security controls (AWS Config rules and Security Hub standards) aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
                   "3": "Delivered POCs showcasing use-cases of various AWS services through Terraform, and implemented evidence and federated architecture patterns.",
                   "4": "Collaborated across Landing Zone, Compliance, Security, and Migrations workstreams. Achieved 10/10 CSAT score and 3 consecutive 5/5 Pulse ratings from customer."
+               },
+               "case_study": {
+                  "problem": "Application teams on the client's cloud platform needed tested Terraform building blocks and preventative security controls aligned with CCMv4.0.",
+                  "built": "Built a Terraform module library covering 38+ AWS services with automated testing, and architected 1000+ preventative security controls.",
+                  "decisions": [
+                     "Automated module testing with tftest and PyTest",
+                     "Controls as AWS Config rules and Security Hub standards",
+                     "Self-service capabilities behind governance guardrails",
+                     "Evidence and federated architecture patterns"
+                  ],
+                  "outcome": "Application teams adopted the module library across the client's cloud platform, and the customer gave a 10/10 CSAT score and 3 consecutive 5/5 Pulse ratings."
                },
                "skills": [
                   "AWS",
@@ -181,6 +222,16 @@
                   "3": "Automated Docker image building and deployment process through integration of AWS CodeBuild, CodeDeploy, and Amazon ECR, streamlining application delivery workflow.",
                   "4": "Established comprehensive monitoring solution using AWS X-Ray and CloudWatch for distributed tracing and full observability of application performance."
                },
+               "case_study": {
+                  "problem": "An on-premises web application needed to move to AWS with high availability, zero-downtime updates and less maintenance overhead.",
+                  "built": "Migrated the application to AWS ECS, with Terraform for the VPC, ALB and ECS clusters and a CI/CD pipeline on AWS CodePipeline.",
+                  "decisions": [
+                     "Blue-green deployment strategy for zero-downtime updates",
+                     "Docker builds and deploys automated through CodeBuild, CodeDeploy and Amazon ECR",
+                     "X-Ray and CloudWatch for distributed tracing and observability"
+                  ],
+                  "outcome": "The application moved to a high-availability ECS architecture with zero-downtime blue-green updates and reduced maintenance overhead."
+               },
                "skills": [
                   "AWS",
                   "ECS",
@@ -225,6 +276,17 @@
                   "3": "Standardized codebase with multi-language linting (pylint, flake8, Black, ESLint, Stylelint) and unit testing (Pytest, Jest).",
                   "4": "Deployed SonarQube on AWS EC2 with RDS integration for continuous code quality analysis.",
                   "5": "Provisioned Forem platform using Ansible for streamlined infrastructure automation."
+               },
+               "case_study": {
+                  "problem": "A web application needed containerized deployment on AWS, an automated CI/CD pipeline and consistent code quality checks.",
+                  "built": "Containerized the application with Docker, deployed it to AWS on ECR and ECS, and built a GitHub Actions CI/CD pipeline.",
+                  "decisions": [
+                     "GitHub Actions automating linting, testing, building and deployment",
+                     "Multi-language linting (pylint, flake8, Black, ESLint, Stylelint) plus Pytest and Jest",
+                     "SonarQube on EC2 with RDS for continuous code quality analysis",
+                     "Ansible to provision the Forem platform"
+                  ],
+                  "outcome": "Linting, testing, building and deployment ran automatically in CI/CD, and SonarQube ran continuous code quality analysis on the codebase."
                },
                "skills": [
                   "AWS",

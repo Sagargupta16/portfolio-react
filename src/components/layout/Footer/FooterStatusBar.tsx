@@ -21,6 +21,12 @@ const CHIP_BG = "rgba(255, 255, 255, 0.06)";
 const CHIP_BORDER = "1px solid rgba(255, 255, 255, 0.08)";
 const LIVE_GREEN = "#22c55e";
 
+// Generated at build from data/*.json (scripts/machine-view.js).
+const MACHINE_LINKS = [
+   { file: "index.md", label: "This page as Markdown" },
+   { file: "llms.txt", label: "llms.txt, the index for AI agents" },
+];
+
 const chipStyle: React.CSSProperties = {
    fontSize: 10,
    color: VALUE_COLOR,
@@ -169,18 +175,37 @@ const FooterStatusBar = () => {
             ))}
          </div>
 
-         {/* Right: build stamp */}
+         {/* Right: build stamp, plus the machine-readable copies of the page */}
          <div
+            className="footer-build"
             style={{
                display: "flex",
                alignItems: "center",
                gap: 8,
+               flexWrap: "wrap",
                justifyContent: isMobile ? "center" : "flex-end",
             }}
          >
             <span style={labelStyle}>Build</span>
             <span style={chipStyle}>v{import.meta.env.APP_VERSION}</span>
             <span style={chipStyle}>{import.meta.env.BUILD_DATE}</span>
+            {MACHINE_LINKS.map(({ file, label }) => (
+               <a
+                  key={file}
+                  href={`${import.meta.env.BASE_URL}${file}`}
+                  className="footer-machine-link"
+                  style={{
+                     ...chipStyle,
+                     display: "inline-flex",
+                     alignItems: "center",
+                     minHeight: 24,
+                     textDecoration: "none",
+                  }}
+                  aria-label={`${file}, ${label}`}
+               >
+                  {file}
+               </a>
+            ))}
          </div>
       </motion.div>
    );

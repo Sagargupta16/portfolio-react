@@ -79,7 +79,7 @@ const FooterSocial = () => {
                   transition={TILE_TRANSITION}
                   aria-label={`Visit ${profile.name} profile (opens in a new tab)`}
                >
-                  <IconComponent size={16} />
+                  <IconComponent size={16} aria-hidden="true" />
                </motion.a>
             );
          })}

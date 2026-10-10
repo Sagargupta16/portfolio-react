@@ -1,7 +1,8 @@
 import { memo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, ScanEye, Search, X } from "lucide-react";
 import { setPaletteOpen } from "@utils/paletteState";
+import { toggleAnnotations, useAnnotationsOn } from "@utils/annotationsState";
 import {
    DURATION,
    EASING,
@@ -67,6 +68,7 @@ const NavBar = ({
    // The mount slide keeps its slow entrance; every later y change (hide on
    // scroll down, show on scroll up) uses the quicker slide.
    const [entered, setEntered] = useState(false);
+   const annotationsOn = useAnnotationsOn();
 
    return (
       <motion.nav
@@ -140,6 +142,16 @@ const NavBar = ({
                   />
                   <button
                      type="button"
+                     onClick={toggleAnnotations}
+                     className={`palette-trigger annotations-trigger${annotationsOn ? " is-on" : ""}`}
+                     aria-pressed={annotationsOn}
+                     title="How this site is built"
+                  >
+                     <ScanEye size={14} aria-hidden="true" />
+                     <span>How it&apos;s built</span>
+                  </button>
+                  <button
+                     type="button"
                      onClick={() => setPaletteOpen(true)}
                      className="palette-trigger"
                      aria-label="Open command palette"
@@ -163,6 +175,15 @@ const NavBar = ({
                 so a tap never leaves the button stuck in its hover colour. */}
             {isMobile && (
                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                  <button
+                     type="button"
+                     onClick={toggleAnnotations}
+                     className={`palette-trigger palette-trigger-icon annotations-trigger${annotationsOn ? " is-on" : ""}`}
+                     aria-pressed={annotationsOn}
+                     aria-label="How this site is built"
+                  >
+                     <ScanEye size={18} aria-hidden="true" />
+                  </button>
                   <button
                      type="button"
                      onClick={() => setPaletteOpen(true)}

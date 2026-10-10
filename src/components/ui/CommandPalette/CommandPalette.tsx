@@ -5,9 +5,12 @@ import {
    Calendar,
    Copy,
    FileDown,
+   FileText,
    FolderGit2,
    Hash,
+   ScanEye,
    Sparkles,
+   UserPlus,
 } from "lucide-react";
 import { NAV_SECTIONS } from "@/constants/sections";
 import { getContactOptions } from "@data/contact";
@@ -16,6 +19,7 @@ import { getFeaturedProjects } from "@data/projects";
 import useMotionPreference from "@hooks/useMotionPreference";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import { setPaletteOpen } from "@utils/paletteState";
+import { toggleAnnotations, useAnnotationsOn } from "@utils/annotationsState";
 
 /* Cmd/Ctrl+K palette, styled as a shell: every row reads as the command you
    would type (cd about, open cv, git clone ...) with a plain description.
@@ -26,6 +30,9 @@ const RESUME_URL =
    "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
 
 const close = () => setPaletteOpen(false);
+
+// Build-time files from scripts/machine-view.js, served beside index.html.
+const siteFile = (file: string) => `${import.meta.env.BASE_URL}${file}`;
 
 /** Exact hostname match (a substring check would accept evil.com/cal.com). */
 const hostOf = (url: string) => {
@@ -69,6 +76,7 @@ const CommandPalette = ({ open }: { open: boolean }) => {
    const { navigateToSection } = useSectionNavigation();
    const { preference, setPreference } = useMotionPreference();
    const [copied, setCopied] = useState(false);
+   const annotationsOn = useAnnotationsOn();
    const contacts = getContactOptions();
    const email = contacts.find((c) => c.link.startsWith("mailto:"))?.value;
    const booking = contacts.find((c) => hostOf(c.link) === "cal.com")?.link;
@@ -92,6 +100,10 @@ const CommandPalette = ({ open }: { open: boolean }) => {
             <Command.Input
                placeholder="type a command or search"
                className="palette-input"
+               autoCapitalize="none"
+               autoCorrect="off"
+               spellCheck={false}
+               enterKeyHint="go"
             />
             <kbd className="palette-kbd">esc</kbd>
          </div>
@@ -164,6 +176,47 @@ const CommandPalette = ({ open }: { open: boolean }) => {
                      setPreference(
                         preference === "reduced" ? "full" : "reduced",
                      );
+                     close();
+                  }}
+               />
+            </Command.Group>
+
+            <Command.Group heading="Under the hood" className="palette-group">
+               <Row
+                  value="notes annotations how it is built behind the scenes"
+                  command={`notes --${annotationsOn ? "off" : "on"}`}
+                  hint={
+                     annotationsOn
+                        ? "Hide the build notes"
+                        : "Pin how-it's-built notes on the page"
+                  }
+                  icon={<ScanEye size={14} />}
+                  onSelect={() => {
+                     toggleAnnotations();
+                     close();
+                  }}
+               />
+               <Row
+                  value="cat llms txt ai agents machine readable"
+                  command="cat llms.txt"
+                  hint="The index for AI agents"
+                  icon={<FileText size={14} />}
+                  onSelect={() => openExternal(siteFile("llms.txt"))}
+               />
+               <Row
+                  value="open markdown md plain text version"
+                  command="open index.md"
+                  hint="This whole page as Markdown"
+                  icon={<FileText size={14} />}
+                  onSelect={() => openExternal(siteFile("index.md"))}
+               />
+               <Row
+                  value="save contact card vcard vcf phone"
+                  command="save contact.vcf"
+                  hint="Add me to your contacts"
+                  icon={<UserPlus size={14} />}
+                  onSelect={() => {
+                     globalThis.location.assign(siteFile("sagar-gupta.vcf"));
                      close();
                   }}
                />

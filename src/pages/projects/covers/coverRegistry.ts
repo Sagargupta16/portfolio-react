@@ -13,7 +13,6 @@ import noobathon from "@assets/projects/noobathon.webp";
 import financialDashboard from "@assets/projects/financial-dashboard.webp";
 import aiCodeTranslator from "@assets/projects/ai-code-translator.webp";
 import contactManager from "@assets/projects/contact-manager.webp";
-import musicWebApp from "@assets/projects/music-web-app.webp";
 import claudeCostOptimizer from "@assets/projects/claude-cost-optimizer.webp";
 import kalchar from "@assets/projects/kalchar.webp";
 import sagas from "@assets/projects/sagas.webp";
@@ -89,7 +88,6 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    16: { kind: "scene", Scene: GameScene, variant: "minesweeper" },
    17: { kind: "scene", Scene: GameScene, variant: "snake" },
    18: { kind: "scene", Scene: GameScene, variant: "flappy" },
-   6: { kind: "image", src: musicWebApp },
 
    // Community
    45: { kind: "scene", Scene: DocsScene, variant: "lint" }, // skillcheck (npm CLI)
