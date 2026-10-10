@@ -36,6 +36,7 @@ const ME = GITHUB_USER.toLowerCase();
 // Own repos and the user's org: Q&A there is self-hosted, not community help.
 const SKIP_DISCUSSION_OWNERS = new Set([ME, "mca-nitw"]);
 const STAR_DRIFT = 0.05;
+const LANGUAGE_DRIFT = 2; // percentage points
 
 const changes = [];
 const note = (msg) => changes.push(msg);
@@ -409,6 +410,28 @@ function topLanguages(repos) {
       }));
 }
 
+/** Relative move above STAR_DRIFT (5%), or no previous number at all. */
+const drifted = (before, after) =>
+   typeof before !== "number" ||
+   Math.abs(after - before) / Math.max(before, 1) > STAR_DRIFT;
+
+/** Top languages reordered, or any share moved by LANGUAGE_DRIFT points. */
+const languagesMoved = (before = [], after = []) =>
+   before.map((l) => l.name).join() !== after.map((l) => l.name).join() ||
+   after.some(
+      (l, i) =>
+         Math.abs(l.percent - (before[i]?.percent ?? 0)) >= LANGUAGE_DRIFT,
+   );
+
+function githubStatsMoved(gh, fields) {
+   return (
+      drifted(gh.contributions, fields.contributions) ||
+      drifted(gh.pull_requests, fields.pull_requests) ||
+      gh.longest_streak !== fields.longest_streak ||
+      languagesMoved(gh.languages, fields.languages)
+   );
+}
+
 async function syncGithubStats(gh) {
    try {
       const { user } = await ghGraphql(GH_STATS, { u: GITHUB_USER, c: null });
@@ -422,7 +445,9 @@ async function syncGithubStats(gh) {
          longest_streak: longestStreak(days),
          languages: topLanguages(await ownedRepos(user.repositories)),
       };
-      // The date moves only with the numbers, so a quiet week opens no PR.
+      // Contributions tick up daily; like stars, only a real move rewrites the
+      // card, so most weeks open no PR. The date moves only with the numbers.
+      if (!githubStatsMoved(gh, fields)) return;
       if (applyFields(gh, fields, "github")) {
          gh.fetched = new Date().toISOString().slice(0, 10);
       }
