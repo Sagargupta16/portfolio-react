@@ -8,6 +8,7 @@
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
          "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
+         "scene": "consulting-loop",
          "projects": [
             {
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
@@ -217,6 +218,7 @@
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
          "summary": "Underwent extensive hands-on DevOps and Cloud training, delivered multiple proof-of-concepts, and contributed to a production ECS migration project using Terraform and CI/CD pipelines.",
+         "scene": "aws-intern",
          "projects": [
             {
                "name": "ECS Application Deployment with Terraform",
@@ -271,6 +273,7 @@
          "company": "Ikarus-3D",
          "location": "Mohali, India",
          "summary": "Containerized and deployed production applications on AWS, building CI/CD pipelines and establishing code quality infrastructure.",
+         "scene": "ikarus-devops",
          "projects": [
             {
                "name": "Web Application Containerization and Deployment",

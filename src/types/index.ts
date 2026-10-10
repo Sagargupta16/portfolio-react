@@ -106,7 +106,13 @@ export interface CaseStudy {
 // ===== Experience =====
 /** Animated scene keys, one per entry in pages/experience/scenes/sceneRegistry.ts. */
 export type EngagementSceneKey =
-   "landing-zone" | "security-controls" | "tf-modernize" | "mlops-loop";
+   | "landing-zone"
+   | "security-controls"
+   | "tf-modernize"
+   | "mlops-loop"
+   | "consulting-loop"
+   | "aws-intern"
+   | "ikarus-devops";
 
 export interface ExperienceProject {
    name: string;
@@ -118,7 +124,7 @@ export interface ExperienceProject {
    /** Short label for the link, defaults to "Source" when omitted. */
    linkLabel?: string;
    case_study?: CaseStudy;
-   /** Animated scene showing what was built; the role's first one also plays on its timeline card. */
+   /** Animated scene of what was built, as a banner on its details card. */
    scene?: EngagementSceneKey;
 }
 
@@ -137,6 +143,8 @@ export interface ProfessionalExperience {
    location: string;
    summary: string;
    projects?: ExperienceProject[];
+   /** Animated scene of the role as a whole, on its collapsed timeline card. */
+   scene?: EngagementSceneKey;
    internal_contributions?: InternalContribution[];
    internal_achievements?: InternalContribution[];
 }

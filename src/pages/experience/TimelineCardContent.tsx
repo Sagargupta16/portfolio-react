@@ -25,11 +25,8 @@ const TimelineCardContent = ({
       ("internal_contributions" in item &&
          (item.internal_contributions?.length ?? 0) > 0);
 
-   // The role's lead engagement scene, so the work shows before any click.
-   const leadScene =
-      "projects" in item
-         ? item.projects?.find((project) => project.scene)?.scene
-         : undefined;
+   // The role's own scene, so the work shows before any click.
+   const roleScene = "scene" in item ? item.scene : undefined;
    const header = (
       <CompanyHeader
          item={item}
@@ -41,10 +38,10 @@ const TimelineCardContent = ({
 
    const content = (
       <>
-         {leadScene ? (
+         {roleScene ? (
             <TimelineCardScene
                header={header}
-               scene={leadScene}
+               scene={roleScene}
                tint={accentColor}
                isMobile={isMobile}
             />

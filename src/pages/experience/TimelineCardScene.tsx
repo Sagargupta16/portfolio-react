@@ -39,7 +39,7 @@ const STRIP: CSSProperties = {
    maxHeight: 140,
 };
 
-/** The role's lead engagement scene on its collapsed timeline card. */
+/** The role's scene on its collapsed timeline card. */
 const TimelineCardScene = ({
    header,
    scene,
