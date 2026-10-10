@@ -13,23 +13,23 @@
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
                "date": "Feb 2026 - Present",
                "description": {
-                  "1": "Built the AWS foundation for RWS's Chalfont data-centre exit and its Lot 1 landing zone as code, starting from a flat estate with no infrastructure as code: Organizations OUs with Control Tower baselines, SCPs and tag policies, least-privilege account baselines, Identity Center, and backup and patching in every workload account. 4,400+ resources across 22 HCP Terraform workspaces, 0 errored.",
-                  "2": "Designed two Transit Gateway network hubs (Frankfurt and Stockholm) with Network Firewall inspection, VPN and Direct Connect, and automated network onboarding: a hub reconciler gives each new workload its own route table within 15 minutes, and tag-driven firewall access takes effect in about a minute, with no network-team ticket.",
-                  "3": "Solved production blockers by root cause: traced a 16-day apply outage through 8 ruled-out hypotheses to a never-applied account baseline, proved with packet captures why the east-west firewall silently dropped inspected traffic, and fixed firewall return-traffic drops that stalled EKS node groups (a node group that failed twice went active in under 3 minutes).",
-                  "4": "Reversed a cost-based rejection of AWS IPAM with measured sandbox billing (prefix delegation cut the 200k-IP projection by about 94%); RWS approved it and the 14-pool IPAM went live in September 2026.",
-                  "5": "Cut delivery time: automated account provisioning with Terraform and CI/CD cut per-account infrastructure setup ~90% (3+ days to under 4 hours) versus manual provisioning; the Lot 1 foundation (accounts, Identity Center, Terraform Cloud with OIDC, modules, core network) stood up in about four weeks, ahead of schedule; a private-EKS blocker was fixed the next day with a self-hosted Terraform agent; a Meraki vMX hybrid link was built and applied in a single day. 13 reusable Terraform modules replaced copied code across the estate.",
-                  "6": "Used Kiro and Claude Code to compress delivery: requirement analysis, implementation specs, and 52 design documents and runbooks with 133 architecture figures."
+                  "1": "Accounts were created by a legacy pipeline and the landing zone had no infrastructure as code. I built it in Terraform: Organizations OUs with Control Tower baselines, SCPs and tag policies, and an account baseline that gives every account OIDC deploy roles and a security baseline (IMDSv2, EBS encryption, public-access blocks, no default VPC). 4,000+ resources across 20+ Terraform Cloud workspaces with none failing, and per-account setup cut ~90% (3+ days to under 4 hours).",
+                  "2": "Every new VPC, route and firewall rule needed a network-team ticket. I built two Transit Gateway hubs in separate AWS Regions with Network Firewall inspection, VPN and Direct Connect, plus self-service onboarding: each new workload gets its own route table within 15 minutes and firewall access by tag in about a minute.",
+                  "3": "Backup, patching and access were set up account by account. I moved them into code: AWS Backup with a delegated-admin vault and SSM Patch Manager in every workload account, and IAM Identity Center permission sets with least-privilege deploy roles.",
+                  "4": "AWS IPAM had been ruled out on cost. I measured real billing in a sandbox, showed that prefix delegation cut the projected cost by about 94%, and the customer approved it; a multi-level IP pool tree is now live.",
+                  "5": "Every production change goes through the customer's change control and is applied by their engineers. I mirrored the estate in a sandbox so each change runs there first through the same least-privilege role, and brought console-made changes into Terraform without a single diff.",
+                  "6": "Faster delivery: a second landing zone foundation stood up in about four weeks, ahead of schedule; a blocker on a private Kubernetes endpoint was fixed the next day with a self-hosted Terraform agent; a hybrid network link went live in one day; reusable Terraform modules replaced copied code. Kiro and Claude Code drove the specs and 50+ design documents with 130+ architecture figures."
                },
                "case_study": {
-                  "problem": "RWS had to exit a data centre and stand up a second landing zone at the same time, on a flat AWS estate with no infrastructure as code and a network-team ticket for every new VPC.",
-                  "built": "The whole foundation as HCP Terraform code: org guardrails, account baselines, Identity Center, both Transit Gateway hubs, IPAM, and self-service network onboarding.",
+                  "problem": "The customer needed a landing zone built as code for two migration programmes at once: accounts came from a legacy pipeline, nothing was in Terraform, and every VPC and firewall rule was a network-team ticket.",
+                  "built": "Terraform automation for the whole foundation: guardrails, account baselines, Identity Center, backup and patching, two Transit Gateway hubs, IPAM, and self-service network onboarding.",
                   "decisions": [
-                     "A separate Stockholm hub with its own TGW ASN, sharing one module library",
+                     "A separate network hub per programme, sharing one module library",
                      "Tag-driven firewall access through hub-owned prefix lists and one writer",
-                     "AWS IPAM with prefix delegation, enforced by a CreateVpc-only SCP",
+                     "AWS IPAM with prefix delegation, enforced by a narrow SCP",
                      "Every change applied in a sandbox mirror first, same least-privilege role"
                   ],
-                  "outcome": "Per-account setup went from 3+ days to under 4 hours (~90% faster), migration waves landed on a stable coded foundation (4,400+ resources, 0 errored), and new workload networks onboard in minutes."
+                  "outcome": "Per-account setup went from 3+ days to under 4 hours (~90% faster), migrations landed on a fully coded foundation (4,000+ resources, none failing), and new workload networks onboard in minutes."
                },
                "skills": [
                   "AWS",
@@ -115,20 +115,20 @@
                "name": "DevOps Consultant - State Street",
                "date": "Oct 2024 - Aug 2025",
                "description": {
-                  "1": "Built Terraform for about 10 AWS services with automated tests (tftest, PyTest) on the Federated Landing Zone team, part of the path that opened 38+ services to application teams.",
+                  "1": "Built Terraform for about 10 AWS services with automated tests (tftest, PyTest) on the landing zone team, part of the path that opened 38+ services to application teams.",
                   "2": "Designed Amazon Detective enablement: delegated admin moved from the Control Tower management account to the Audit account through an AFT customization, organization-wide auto-enable in Terraform, and GuardDuty findings cut from 6-hour to 15-minute notifications.",
                   "3": "Worked on EBS consumer-service design, compute service enablement and EC2 patching reviews, and on the security solution behind 1,000+ preventative controls aligned with CCMv4.0.",
-                  "4": "Collaborated across Landing Zone, Compliance, Security and Migrations workstreams. The landing zone went live for all of State Street on 2025-10-02 (team result); the project closed with a 10/10 CSAT."
+                  "4": "Collaborated across Landing Zone, Compliance, Security and Migrations workstreams. The landing zone went live across the firm in 2025 (team result); the project closed with a 10/10 CSAT."
                },
                "case_study": {
-                  "problem": "A regulated bank exiting its data centres needed a Federated Landing Zone that could receive applications under CCMv4.0 compliance.",
-                  "built": "Terraform and test frameworks for about 10 services, plus the Amazon Detective enablement design, on the Federated Landing Zone team.",
+                  "problem": "A regulated bank exiting its data centres needed a landing zone that could receive applications under CCMv4.0 compliance.",
+                  "built": "Terraform and test frameworks for about 10 services, plus the Amazon Detective enablement design, on the landing zone team.",
                   "decisions": [
                      "Detective delegated admin in the Audit account through an AFT customization",
                      "Organization-wide auto-enable for member accounts in Terraform",
                      "Automated module testing with tftest and PyTest"
                   ],
-                  "outcome": "The landing zone went live for all of State Street on 2025-10-02 with 1,000+ preventative and 300+ detective controls (team result), and the project closed with a 10/10 CSAT."
+                  "outcome": "The landing zone went live across the firm in 2025 with 1,000+ preventative and 300+ detective controls (team result), and the project closed with a 10/10 CSAT."
                },
                "skills": [
                   "AWS",

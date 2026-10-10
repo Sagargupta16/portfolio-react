@@ -7,12 +7,12 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 ### Changed
 
 - **AWS experience rewritten around impact.** Built from the engagement write-up: what was built, which problems were solved, and how much time it saved, with team results marked as such.
-   - **RWS:** DevOps and IaC lead for two programmes (Chalfont data-centre exit to Frankfurt, Lot 1 / Wingman in Stockholm). The foundation as code from a flat estate (4,400+ resources, 22 workspaces, 0 errored); two Transit Gateway hubs with automated onboarding (route table within 15 minutes, firewall access by tag in about a minute); root-caused production blockers (a 16-day apply outage, silent firewall drops, EKS return-traffic drops); AWS IPAM approved after measured billing; per-account setup cut ~90% (3+ days to under 4 hours); Lot 1 foundation in about four weeks. New case-study brief.
+   - **RWS:** DevOps and IaC lead for a data-centre exit and a second landing zone. The foundation built as Terraform from a legacy-pipeline estate (4,000+ resources, 20+ workspaces, none failing); two Transit Gateway hubs with self-service onboarding (route table within 15 minutes, firewall access by tag in about a minute); backup, patching and Identity Center moved into code; IPAM approved after measured billing (about 94% lower projected cost); a sandbox mirror for every change; per-account setup cut ~90% (3+ days to under 4 hours). Written without customer-internal programme names, Regions, vendor products or exact internal counts. New case-study brief.
    - **Removed:** "sole DevOps consultant" (a second DevOps consultant joined) and "50+ workloads into 135+ accounts".
    - **State Street:** about 10 services in Terraform, the Amazon Detective enablement design, and the 1,000+ preventative controls marked as team work; the unsupported "3 consecutive 5/5 Pulse ratings" is gone.
    - **DTCC:** ends Nov 2025 (last billable week), not Dec.
    - The Amplify APG pattern is listed as co-authored.
-- **Impact numbers.** `personal.impact` swaps `workloads_migrated` / `aws_accounts` for `terraform_resources` / `terraform_workspaces`; the Stats tile reads "Resources under Terraform: 4,400+, 22 workspaces, 0 errored (RWS)", and the security-controls tile now says it is a team result. Validator, types, Stats and the machine view follow the rename.
+- **Impact numbers.** `personal.impact` swaps `workloads_migrated` / `aws_accounts` for `terraform_resources` / `terraform_workspaces`; the Stats tile reads "Resources under Terraform: 4,000+, across 20+ workspaces, none failing", and the security-controls tile now says it is a team result. Validator, types, Stats and the machine view follow the rename.
 
 ### Documentation
 

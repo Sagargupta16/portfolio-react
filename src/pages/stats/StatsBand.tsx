@@ -207,7 +207,7 @@ const StatsBand = () => {
             {
                value: impactData.terraform_resources,
                label: "Resources under Terraform",
-               note: `${impactData.terraform_workspaces} workspaces, 0 errored (RWS)`,
+               note: `Across ${impactData.terraform_workspaces} workspaces, none failing`,
             },
             {
                value: impactData.security_controls,
