@@ -32,14 +32,18 @@ const Nav = () => {
    useMotionValueEvent(scrollY, "change", (y) => {
       const previous = scrollY.getPrevious() ?? y;
       setScrolled(y > SCROLLED_AFTER);
-      // A scroll the nav itself started never hides the bar. Lenis carries the
-      // userData of that scroll until it settles or the user takes over, and
-      // its last frame is reported after it has settled and dropped the
+      // A scroll started through section navigation (nav links, Back to top,
+      // the command palette) shows the bar and never hides it; skipping those
+      // frames instead left the bar hidden after Back to top. Lenis carries
+      // the userData of that scroll until it settles or the user takes over,
+      // and its last frame is reported after it has settled and dropped the
       // userData, so a settled Lenis is skipped too (that frame decides
       // nothing: the direction was already set by the frames before it).
-      const navScroll = lenis?.userData.source === NAV_SCROLL.source;
-      const lenisSettled = lenis?.isScrolling === false;
-      if (navScroll || lenisSettled) return;
+      if (lenis?.userData.source === NAV_SCROLL.source) {
+         setHidden(false);
+         return;
+      }
+      if (lenis?.isScrolling === false) return;
       setHidden(y > HIDE_AFTER && y > previous);
    });
 
