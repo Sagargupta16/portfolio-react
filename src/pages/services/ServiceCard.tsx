@@ -12,7 +12,7 @@ import {
    TEXT_SECONDARY,
 } from "@/constants/theme";
 import GlassCard from "@components/ui/GlassCard";
-import { iconMap, ACCENT_COLORS } from "./servicesConstants";
+import { iconMap, ACCENT_COLORS, ART_STRIP_HEIGHT } from "./servicesConstants";
 import ServiceAnimation from "./ServiceAnimation";
 
 interface ServiceCardProps {
@@ -68,7 +68,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             <div
                style={{
                   width: isMobile ? "100%" : 150,
-                  minHeight: isMobile ? 100 : "auto",
+                  minHeight: isMobile ? ART_STRIP_HEIGHT : "auto",
                   flexShrink: 0,
                   display: "flex",
                   alignItems: "center",

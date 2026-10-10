@@ -28,7 +28,7 @@ const BOX: React.CSSProperties = {
 
 const label: React.CSSProperties = {
    fontFamily: MONO_FONT,
-   fontSize: 5,
+   fontSize: 6,
    fontWeight: 700,
    letterSpacing: 0.5,
    lineHeight: 1,
@@ -110,7 +110,7 @@ const loop = (times: number[], ease: Easing = EASE): Transition => ({
 });
 
 /* .tf module tile: two static code hairlines and a plan bar that fills. */
-const TfModule = ({ color }: PipelineAnimProps) => (
+const TfModule = ({ color }: Readonly<PipelineAnimProps>) => (
    <div
       style={{
          ...BOX,
@@ -147,7 +147,7 @@ const TfModule = ({ color }: PipelineAnimProps) => (
 );
 
 /* tftest gate: white-alpha square, green overlay fades in, check pops. */
-const Gate = ({ color }: PipelineAnimProps) => (
+const Gate = ({ color }: Readonly<PipelineAnimProps>) => (
    <>
       <span
          style={{
@@ -244,7 +244,7 @@ const TargetGroup = ({
    task,
    led,
    pulse = false,
-}: TargetGroupProps) => (
+}: Readonly<TargetGroupProps>) => (
    <div
       style={{
          ...BOX,
@@ -282,7 +282,7 @@ const TargetGroup = ({
    </div>
 );
 
-const PipelineAnim = ({ color }: PipelineAnimProps) => (
+const PipelineAnim = ({ color }: Readonly<PipelineAnimProps>) => (
    <div style={{ width: 80, height: 80, position: "relative" }}>
       <TfModule color={color} />
 

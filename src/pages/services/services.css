@@ -13,8 +13,10 @@
    opacity: 0.5;
 }
 
+/* Six cards, three even rows: every row takes the tallest card's height. */
 @media (min-width: 1024px) {
    .service-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
    }
 }
