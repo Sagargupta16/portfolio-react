@@ -66,6 +66,8 @@ const CompareSlider = ({
    };
 
    const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+      // A second finger must not steal the drag from the first.
+      if (draggingRef.current) return;
       touchedRef.current = true;
       draggingRef.current = true;
       e.currentTarget.setPointerCapture(e.pointerId);

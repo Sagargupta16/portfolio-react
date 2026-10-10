@@ -1,301 +1,301 @@
-import type { CSSProperties } from "react";
+import { useId, type CSSProperties } from "react";
 import { motion } from "motion/react";
 import { AMBER, MONO_FONT } from "@/constants/theme";
 import {
+   INK,
    MEET,
    NON_SCALING,
    NONE,
+   ROUND,
    VIEW_BOX,
-   WHITE_06,
-   WHITE_20,
+   WHITE_05,
+   WHITE_10,
+   WHITE_16,
+   WHITE_85,
+   beats,
    clock,
    labelStyle,
    loop,
    svgStyle,
+   washStyle,
 } from "./shared";
 
 /*
- * Snake Game Unity: InvokeRepeating("Move") steps the head one cell per
- * tick and rotates the tail list; a FoodPrefab hit bumps ScoreScript and
- * instantiates a tailPrefab; SpawnFood drops a fresh square on its own
- * timer; touching a border destroys the snake, GameOverScript shows, and
- * Restart reloads the scene with the score back at zero.
+ * Snake Game Unity: InvokeRepeating("Move") translates the head one cell
+ * per tick and moves the last tail square to where the head was; a
+ * FoodPrefab hit adds one to ScoreScript and the next Move instantiates a
+ * tailPrefab in that spot instead. SpawnFood drops a new square on its own
+ * timer without clearing the old ones, so food piles up. Running into the
+ * border destroys only the head, leaves the tail behind and calls
+ * GameOverScript.Setup; the HUD keeps its two speed sliders on top.
  */
 
-const CYCLE = 5;
+const CYCLE = 6;
 const t = clock(CYCLE);
+const at = beats(CYCLE);
 
-/* Arena: 10 x 5 cells of 12 units inside the thick border. */
-const CELL = 12;
-const COLS = 10;
-const ROWS = 5;
-const ARENA = { x: 20, y: 26, w: CELL * COLS, h: CELL * ROWS };
-const SQUARE = 10;
-const PAD = (CELL - SQUARE) / 2;
-const FOOD = 7;
-const FOOD_PAD = (CELL - FOOD) / 2;
+/* Arena: 32 x 14 cells of 4 units inside the thick border colliders. */
+const CELL = 4;
+const COLS = 32;
+const ROWS = 14;
+const ARENA = { x: 16, y: 26, w: CELL * COLS, h: CELL * ROWS };
+const BORDER = 1.6;
+const HEAD = 3.4;
+const SEGMENT = 2.4;
+const FOOD = 2.4;
 const cellX = (col: number) => ARENA.x + CELL * col;
 const cellY = (row: number) => ARENA.y + CELL * row;
 
-/* Head trail including the resting body; index BODY - 1 is the head. */
+/* Head trail: index TAIL is the head at tick 0; the last cell is the border. */
 const TRAIL: [number, number][] = [
-   [0, 2],
-   [1, 2],
-   [2, 2],
-   [3, 2],
-   [4, 2],
-   [5, 2],
-   [6, 2],
-   [7, 2],
-   [7, 3],
-   [7, 4],
-   [8, 4],
-   [9, 4],
+   [11, 9],
+   [12, 9],
+   [13, 9],
+   ...Array.from({ length: 9 }, (_, i): [number, number] => [14 + i, 9]),
+   ...Array.from({ length: 9 }, (_, i): [number, number] => [22, 8 - i]),
+   [22, -1],
 ];
-const BODY = 4;
-const MOVES = TRAIL.length - BODY;
-const SEGMENTS = BODY + 1;
-const SEGMENT_ALPHA = ["", "cc", "99", "66", "44"];
+const TAIL = 3;
+const MOVES = TRAIL.length - 1 - TAIL;
 
-/* Ticks: InvokeRepeating cadence, hold then snap. */
-const TICK = 0.28;
-const MOVE_START = 0.4;
+/* Ticks: hold each cell, snap on the InvokeRepeating beat. */
+const TICK = 0.17;
+const MOVE_START = 0.15;
 const SNAP = 0.04;
-const tickAt = (k: number) => MOVE_START + TICK * (k - 1);
+const tickAt = (k: number) => MOVE_START + TICK * k;
 const EAT_TICK = 4;
 const EAT_AT = tickAt(EAT_TICK);
 const GROW_AT = tickAt(EAT_TICK + 1);
-const HIT_AT = tickAt(MOVES + 1);
-const VANISH = 0.15;
-const FADE = 0.2;
-const FLASH = 0.3;
-const GAME_OVER_IN = 2.75;
-const SNAP_BACK = 3.3;
-const GAME_OVER_OUT = 3.9;
-const FOOD2_IN = 2.0;
-const FOOD2_OUT = 4.1;
-const SCORE_RESET = 4.1;
-const FOOD1_BACK = 4.2;
-const SNAKE_BACK = 4.4;
+const HIT_AT = tickAt(MOVES);
+const SPAWN_AT = 2;
+const OVER_IN = 3.4;
+const CLEAR = 4.9;
+const CLEARED = 5.2;
+const HOME = 5.35;
+const BACK_IN = 5.5;
+const BACK = 5.9;
 
-const FOOD1_CELL = TRAIL[BODY - 1 + EAT_TICK];
-const FOOD2_CELL: [number, number] = [1, 0];
-
-/* Hold each cell until the next tick, then snap; return home while hidden. */
-const stepped = (points: number[]) => {
-   const values = [points[0]];
+/* Slot i (0 = head) sits on TRAIL[TAIL + k - i] after tick k. */
+const stepped = (slot: number, axis: 0 | 1, inset: number) => {
+   const cellAt = (k: number) => {
+      const cell = TRAIL[Math.max(0, TAIL + k - slot)];
+      return (axis === 0 ? cellX(cell[0]) : cellY(cell[1])) + inset;
+   };
+   const values = [cellAt(0)];
    const times = [0];
    for (let k = 1; k <= MOVES; k += 1) {
-      values.push(points[k - 1], points[k]);
+      values.push(cellAt(k - 1), cellAt(k));
       times.push(t(tickAt(k) - SNAP), t(tickAt(k)));
    }
-   values.push(points[MOVES], points[0], points[0]);
-   times.push(t(SNAP_BACK - SNAP), t(SNAP_BACK), 1);
+   values.push(cellAt(MOVES), cellAt(0), cellAt(0));
+   times.push(t(HOME - 0.02), t(HOME), 1);
    return { values, times };
 };
-const segmentPath = (index: number) => {
-   const cells = Array.from(
-      { length: MOVES + 1 },
-      (_, k) => TRAIL[Math.max(0, BODY - 1 + k - index)],
-   );
-   const xs = stepped(cells.map(([col]) => cellX(col) + PAD));
-   const ys = stepped(cells.map(([, row]) => cellY(row) + PAD));
-   return { x: xs.values, y: ys.values, times: xs.times };
+const slotPath = (slot: number) => {
+   const inset = slot === 0 ? (CELL - HEAD) / 2 : (CELL - SEGMENT) / 2;
+   const x = stepped(slot, 0, inset);
+   const y = stepped(slot, 1, inset);
+   return { x: x.values, y: y.values, times: x.times };
 };
-const SEGMENT_INDICES = Array.from({ length: SEGMENTS }, (_, i) => i);
-const SEGMENT_PATHS = SEGMENT_INDICES.map(segmentPath);
-const BODY_OPACITY = [1, 1, 0, 0, 1, 1];
-const BODY_OPACITY_TIMES = [
-   0,
-   t(HIT_AT),
-   t(HIT_AT + VANISH),
-   t(SNAKE_BACK),
-   t(SNAKE_BACK + FADE),
-   1,
-];
-/* The tailPrefab instantiated on the tick after eating. */
+const SLOTS = [0, 1, 2, 3, 4].map((slot) => ({
+   id: `slot${slot}`,
+   slot,
+   path: slotPath(slot),
+}));
+const SLOT_ALPHA = ["", "d9", "b3", "8c", "66"];
+const HEAD_OPACITY = [1, 1, 0, 0, 1, 1];
+const HEAD_TIMES = at(HIT_AT, HIT_AT + 0.1, BACK_IN, BACK);
+const TAIL_OPACITY = [1, 1, 0, 0, 1, 1];
+const TAIL_TIMES = at(CLEAR, CLEARED, BACK_IN, BACK);
+/* The tailPrefab instantiated on the tick after the eat. */
 const GROWN_OPACITY = [0, 0, 1, 1, 0, 0];
-const GROWN_OPACITY_TIMES = [
-   0,
-   t(GROW_AT),
-   t(GROW_AT + VANISH),
-   t(HIT_AT),
-   t(HIT_AT + VANISH),
-   1,
-];
+const GROWN_TIMES = at(GROW_AT - 0.01, GROW_AT, CLEAR, CLEARED);
 
-const FOOD1_TIMES = [
-   0,
-   t(EAT_AT),
-   t(EAT_AT + VANISH),
-   t(FOOD1_BACK),
-   t(FOOD1_BACK + FADE),
-   1,
-];
-const FOOD1_OPACITY = [0.85, 0.85, 0, 0, 0.85, 0.85];
-const FOOD1_SCALE = [1, 1, 0, 0.6, 1, 1];
-const FOOD2_TIMES = [
-   0,
-   t(FOOD2_IN),
-   t(FOOD2_IN + FADE),
-   t(FOOD2_OUT),
-   t(FOOD2_OUT + FADE),
-   1,
-];
-const FOOD2_OPACITY = [0, 0, 0.85, 0.85, 0, 0];
-const FOOD2_SCALE = [0.6, 0.6, 1, 1, 0.6, 0.6];
+/* FoodPrefab: one eaten, one left from an older spawn, one fresh spawn. */
+const EATEN: [number, number] = TRAIL[TAIL + EAT_TICK];
+const LEFTOVER: [number, number] = [27, 11];
+const SPAWNED: [number, number] = [6, 3];
+const EATEN_TIMES = at(EAT_AT, EAT_AT + 0.08, BACK_IN, BACK);
+const EATEN_OPACITY = [1, 1, 0, 0, 1, 1];
+const SPAWN_TIMES = at(SPAWN_AT, SPAWN_AT + 0.15, CLEAR, CLEARED);
+const SPAWN_OPACITY = [0, 0, 1, 1, 0, 0];
+const RIPPLE_TIMES = at(SPAWN_AT, SPAWN_AT + 0.05, SPAWN_AT + 0.6);
 
-const FLASH_TIMES = [0, t(HIT_AT), t(HIT_AT + 0.1), t(HIT_AT + FLASH), 1];
-const GAME_OVER_TIMES = [
-   0,
-   t(GAME_OVER_IN),
-   t(GAME_OVER_IN + FADE),
-   t(GAME_OVER_OUT),
-   t(GAME_OVER_OUT + FLASH),
-   1,
-];
+const FLASH_TIMES = at(HIT_AT, HIT_AT + 0.08, HIT_AT + 0.5);
+const OVER_TIMES = at(OVER_IN, OVER_IN + 0.25, CLEAR, CLEARED);
 const DIGIT_H = 9;
-const SCORE_TIMES = [
-   0,
-   t(EAT_AT + 0.05),
-   t(EAT_AT + FADE),
-   t(SCORE_RESET),
-   t(SCORE_RESET + VANISH),
-   1,
-];
+const SCORE_TIMES = at(EAT_AT, EAT_AT + 0.15, BACK_IN, BACK);
 const SCORE_Y = [0, 0, -DIGIT_H, -DIGIT_H, 0, 0];
 
-const GRID_COLS = Array.from({ length: COLS - 1 }, (_, i) => cellX(i + 1));
-const GRID_ROWS = Array.from({ length: ROWS - 1 }, (_, i) => cellY(i + 1));
-const hudLabel: CSSProperties = { ...labelStyle, position: "static" };
+const hairline = {
+   fill: NONE,
+   strokeWidth: 1,
+   vectorEffect: NON_SCALING,
+} as const;
 
-const Arena = ({ tint }: { tint: string }) => (
-   <>
-      {GRID_COLS.map((x) => (
-         <line
-            key={x}
-            x1={x}
-            y1={ARENA.y}
-            x2={x}
-            y2={ARENA.y + ARENA.h}
-            stroke={WHITE_06}
-            strokeWidth={1}
-            vectorEffect={NON_SCALING}
+const Arena = ({ tint }: { tint: string }) => {
+   const latticeId = `snakelattice${useId().replaceAll(/\W/g, "")}`;
+   return (
+      <>
+         <defs>
+            <pattern
+               id={latticeId}
+               x={ARENA.x}
+               y={ARENA.y}
+               width={CELL}
+               height={CELL}
+               patternUnits="userSpaceOnUse"
+            >
+               <circle cx={CELL / 2} cy={CELL / 2} r={0.25} fill={WHITE_05} />
+            </pattern>
+         </defs>
+         <rect
+            x={ARENA.x}
+            y={ARENA.y}
+            width={ARENA.w}
+            height={ARENA.h}
+            fill={`url(#${latticeId})`}
          />
-      ))}
-      {GRID_ROWS.map((y) => (
-         <line
-            key={y}
-            x1={ARENA.x}
-            y1={y}
-            x2={ARENA.x + ARENA.w}
-            y2={y}
-            stroke={WHITE_06}
-            strokeWidth={1}
-            vectorEffect={NON_SCALING}
+         <rect
+            x={ARENA.x - BORDER / 2}
+            y={ARENA.y - BORDER / 2}
+            width={ARENA.w + BORDER}
+            height={ARENA.h + BORDER}
+            rx={1.2}
+            fill={NONE}
+            stroke={`${tint}66`}
+            strokeWidth={BORDER}
          />
-      ))}
-      <rect
-         x={ARENA.x}
-         y={ARENA.y}
-         width={ARENA.w}
-         height={ARENA.h}
-         rx={2}
-         fill={NONE}
-         stroke={`${tint}99`}
-         strokeWidth={2}
-      />
-      {/* The border collider lights amber on OnTriggerEnter2D. */}
-      <motion.rect
-         x={ARENA.x}
-         y={ARENA.y}
-         width={ARENA.w}
-         height={ARENA.h}
-         rx={2}
-         fill={NONE}
-         stroke={AMBER}
-         strokeWidth={2}
-         initial={{ opacity: 0 }}
-         animate={{ opacity: [0, 0, 1, 0, 0] }}
-         transition={loop(CYCLE, FLASH_TIMES, "linear")}
-      />
-   </>
-);
+         {/* The border collider flares on OnTriggerEnter2D. */}
+         <motion.rect
+            x={ARENA.x - BORDER / 2}
+            y={ARENA.y - BORDER / 2}
+            width={ARENA.w + BORDER}
+            height={ARENA.h + BORDER}
+            rx={1.2}
+            fill={NONE}
+            stroke={AMBER}
+            strokeWidth={BORDER}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0, 1, 0, 0] }}
+            transition={loop(CYCLE, FLASH_TIMES)}
+         />
+      </>
+   );
+};
 
 const Food = ({
    cell,
    opacity,
-   scale,
    times,
 }: {
    cell: [number, number];
-   opacity: number[];
-   scale: number[];
-   times: number[];
-}) => (
-   <motion.rect
-      x={cellX(cell[0]) + FOOD_PAD}
-      y={cellY(cell[1]) + FOOD_PAD}
-      width={FOOD}
-      height={FOOD}
-      rx={1}
-      fill="#fff"
-      initial={{ opacity: opacity[0], scale: scale[0] }}
-      animate={{ opacity, scale }}
-      transition={loop(CYCLE, times)}
+   opacity?: number[];
+   times?: number[];
+}) => {
+   const props = {
+      x: cellX(cell[0]) + (CELL - FOOD) / 2,
+      y: cellY(cell[1]) + (CELL - FOOD) / 2,
+      width: FOOD,
+      height: FOOD,
+      rx: 0.4,
+      fill: WHITE_85,
+   };
+   if (!opacity || !times) return <rect {...props} />;
+   return (
+      <motion.rect
+         {...props}
+         initial={{ opacity: opacity[0] }}
+         animate={{ opacity }}
+         transition={loop(CYCLE, times)}
+      />
+   );
+};
+
+/* SpawnFood's Instantiate: a hairline ripple where the new square lands. */
+const SpawnRipple = () => (
+   <motion.circle
+      cx={cellX(SPAWNED[0]) + CELL / 2}
+      cy={cellY(SPAWNED[1]) + CELL / 2}
+      r={3.2}
+      stroke={WHITE_85}
+      {...hairline}
+      initial={{ opacity: 0, scale: 0.4 }}
+      animate={{
+         opacity: [0, 0, 0.8, 0, 0],
+         scale: [0.4, 0.4, 0.5, 1.6, 1.6],
+      }}
+      transition={loop(CYCLE, RIPPLE_TIMES)}
    />
 );
 
-const Segment = ({ index, tint }: { index: number; tint: string }) => {
-   const path = SEGMENT_PATHS[index];
-   const grown = index === BODY;
-   const opacity = grown ? GROWN_OPACITY : BODY_OPACITY;
-   const opacityTimes = grown ? GROWN_OPACITY_TIMES : BODY_OPACITY_TIMES;
+const Slot = ({
+   slot,
+   path,
+   tint,
+}: {
+   slot: number;
+   path: ReturnType<typeof slotPath>;
+   tint: string;
+}) => {
+   const size = slot === 0 ? HEAD : SEGMENT;
+   let opacity = TAIL_OPACITY;
+   let opacityTimes = TAIL_TIMES;
+   if (slot === 0) {
+      opacity = HEAD_OPACITY;
+      opacityTimes = HEAD_TIMES;
+   } else if (slot === TAIL + 1) {
+      opacity = GROWN_OPACITY;
+      opacityTimes = GROWN_TIMES;
+   }
    return (
       <motion.rect
-         width={SQUARE}
-         height={SQUARE}
-         rx={1.5}
-         fill={`${tint}${SEGMENT_ALPHA[index]}`}
+         width={size}
+         height={size}
+         rx={slot === 0 ? 0.6 : 0.4}
+         fill={`${tint}${SLOT_ALPHA[slot]}`}
          initial={{ x: path.x[0], y: path.y[0], opacity: opacity[0] }}
          animate={{ x: path.x, y: path.y, opacity }}
          transition={{
-            ...loop(CYCLE, path.times, "linear"),
+            x: loop(CYCLE, path.times, "linear"),
+            y: loop(CYCLE, path.times, "linear"),
             opacity: loop(CYCLE, opacityTimes, "linear"),
          }}
       />
    );
 };
 
-/* The two live sliders from the real HUD. */
-const Slider = ({ tint, knob }: { tint: string; knob: string }) => (
-   <div style={{ position: "relative", width: 26, height: 3, marginTop: 3 }}>
-      <div
-         style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 1,
-            height: 1,
-            background: WHITE_20,
-         }}
+/* The real HUD's two sliders: green left of the knob, yellow right of it. */
+const SLIDER_Y = 17;
+const SLIDER_W = 26;
+const KNOB = 0.59;
+const Slider = ({ x, tint }: { x: number; tint: string }) => (
+   <>
+      <line
+         x1={x}
+         y1={SLIDER_Y}
+         x2={x + SLIDER_W}
+         y2={SLIDER_Y}
+         stroke={WHITE_16}
+         strokeLinecap={ROUND}
+         {...hairline}
       />
-      <div
-         style={{
-            position: "absolute",
-            left: knob,
-            top: 0,
-            width: 3,
-            height: 3,
-            marginLeft: -1.5,
-            borderRadius: "50%",
-            background: tint,
-         }}
+      <line
+         x1={x}
+         y1={SLIDER_Y}
+         x2={x + SLIDER_W * KNOB}
+         y2={SLIDER_Y}
+         stroke={`${tint}b3`}
+         strokeLinecap={ROUND}
+         {...hairline}
       />
-   </div>
+      <circle cx={x + SLIDER_W * KNOB} cy={SLIDER_Y} r={1.3} fill={tint} />
+   </>
 );
 
-/* ScoreScript.scoreValue rolls 0 to 1 on the eat, back to 0 on Restart. */
+const hudLabel: CSSProperties = { ...labelStyle, position: "static" };
+
+/* ScoreScript: " Score " + scoreValue, rolling 3 to 4 on the eat. */
 const Score = ({ tint }: { tint: string }) => (
    <div
       style={{
@@ -309,8 +309,9 @@ const Score = ({ tint }: { tint: string }) => (
       }}
    >
       <span style={hudLabel}>SCORE</span>
-      <div
+      <span
          style={{
+            display: "block",
             height: DIGIT_H,
             overflow: "hidden",
             fontFamily: MONO_FONT,
@@ -320,90 +321,59 @@ const Score = ({ tint }: { tint: string }) => (
             color: tint,
          }}
       >
-         <motion.div
+         <motion.span
             initial={{ y: 0 }}
             animate={{ y: SCORE_Y }}
-            transition={loop(CYCLE, SCORE_TIMES, "linear")}
+            transition={loop(CYCLE, SCORE_TIMES)}
+            style={{ display: "block" }}
          >
-            <div>0</div>
-            <div>1</div>
-         </motion.div>
-      </div>
+            <span style={{ display: "block" }}>3</span>
+            <span style={{ display: "block" }}>4</span>
+         </motion.span>
+      </span>
    </div>
-);
-
-const Hud = ({ tint }: { tint: string }) => (
-   <>
-      <div
-         style={{
-            position: "absolute",
-            left: "6%",
-            top: "7%",
-            display: "flex",
-            flexDirection: "column",
-         }}
-      >
-         <span style={hudLabel}>FOOD 6.00</span>
-         <Slider tint={tint} knob="55%" />
-      </div>
-      <Score tint={tint} />
-      <div
-         style={{
-            position: "absolute",
-            right: "6%",
-            top: "7%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-         }}
-      >
-         <span style={hudLabel}>SPEED 5.00</span>
-         <Slider tint={tint} knob="45%" />
-      </div>
-   </>
 );
 
 const GameOver = () => (
-   <div
+   <motion.span
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
+      transition={loop(CYCLE, OVER_TIMES)}
       style={{
-         position: "absolute",
+         ...labelStyle,
          left: "50%",
-         top: "56%",
+         top: "55%",
          transform: "translate(-50%, -50%)",
+         padding: "3px 7px",
+         borderRadius: 6,
+         border: `1px solid ${WHITE_10}`,
+         background: `${INK}e6`,
+         color: AMBER,
+         fontSize: 8,
       }}
    >
-      <motion.span
-         initial={{ opacity: 0 }}
-         animate={{ opacity: [0, 0, 0.9, 0.9, 0, 0] }}
-         transition={loop(CYCLE, GAME_OVER_TIMES, "linear")}
-         style={{ ...hudLabel, display: "block", color: AMBER, fontSize: 8 }}
-      >
-         GAME OVER
-      </motion.span>
-   </div>
+      GAME OVER
+   </motion.span>
 );
 
 const Snake = ({ tint }: { tint: string }) => (
    <>
+      <div style={washStyle(tint, "66% 36%")} />
       <svg viewBox={VIEW_BOX} preserveAspectRatio={MEET} style={svgStyle}>
+         <Slider x={12.8} tint={tint} />
+         <Slider x={147.2 - SLIDER_W} tint={tint} />
          <Arena tint={tint} />
-         <Food
-            cell={FOOD1_CELL}
-            opacity={FOOD1_OPACITY}
-            scale={FOOD1_SCALE}
-            times={FOOD1_TIMES}
-         />
-         <Food
-            cell={FOOD2_CELL}
-            opacity={FOOD2_OPACITY}
-            scale={FOOD2_SCALE}
-            times={FOOD2_TIMES}
-         />
-         {SEGMENT_INDICES.map((i) => (
-            <Segment key={i} index={i} tint={tint} />
+         <Food cell={LEFTOVER} />
+         <Food cell={EATEN} opacity={EATEN_OPACITY} times={EATEN_TIMES} />
+         <Food cell={SPAWNED} opacity={SPAWN_OPACITY} times={SPAWN_TIMES} />
+         <SpawnRipple />
+         {SLOTS.map((s) => (
+            <Slot key={s.id} slot={s.slot} path={s.path} tint={tint} />
          ))}
       </svg>
-      <Hud tint={tint} />
+      <span style={{ ...labelStyle, left: "8%", top: "8%" }}>SPAWNFOOD</span>
+      <Score tint={tint} />
+      <span style={{ ...labelStyle, right: "8%", top: "8%" }}>SNAKE SPEED</span>
       <GameOver />
    </>
 );

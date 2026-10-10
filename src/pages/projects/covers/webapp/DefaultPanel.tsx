@@ -1,37 +1,46 @@
-import type { Easing } from "motion/react";
 import { motion } from "motion/react";
-import { PANEL, WHITE_03, WHITE_08, type PanelProps } from "./shared";
+import { Backdrop } from "./StageParts";
+import { EASE, WHITE_03, WHITE_10, span, type PanelProps } from "./shared";
 
-/* Fallback for an unknown variant: three skeleton rows breathing. */
+/* Fallback for an unknown variant: one panel, three skeleton rows breathing. */
 
 const ROWS = [0, 1, 2];
 
-/* One ease per keyframe segment, so the WAAPI opacity track breathes on the
-   same curve the JS track would. */
-const EASE: Easing = "easeInOut";
-
 const DefaultPanel = ({ tint }: PanelProps) => (
-   <div style={{ ...PANEL, display: "flex", flexDirection: "column", gap: 4 }}>
-      {ROWS.map((row) => (
-         <motion.div
-            key={row}
-            animate={{ opacity: [0.25, 0.7, 0.25] }}
-            transition={{
-               duration: 2.6,
-               repeat: Infinity,
-               delay: row * 0.4,
-               ease: [EASE, EASE],
-            }}
+   <>
+      <Backdrop tint={tint} focus={{ x: 50, y: 44 }} texture="dots" />
+      <div style={span(30, 70, 44)}>
+         <div
             style={{
-               height: 8,
-               borderRadius: 3,
-               border: `1px solid ${WHITE_08}`,
-               background: row === 0 ? `${tint}0c` : WHITE_03,
-               flexShrink: 0,
+               display: "flex",
+               flexDirection: "column",
+               gap: 4,
+               padding: 6,
             }}
-         />
-      ))}
-   </div>
+         >
+            {ROWS.map((row) => (
+               <motion.span
+                  key={row}
+                  initial={{ opacity: 0.25 }}
+                  animate={{ opacity: [0.25, 0.7, 0.25] }}
+                  transition={{
+                     duration: 2.6,
+                     repeat: Infinity,
+                     delay: row * 0.4,
+                     ease: [EASE, EASE],
+                  }}
+                  style={{
+                     display: "block",
+                     height: 8,
+                     borderRadius: 3,
+                     border: `1px solid ${WHITE_10}`,
+                     background: row === 0 ? `${tint}0c` : WHITE_03,
+                  }}
+               />
+            ))}
+         </div>
+      </div>
+   </>
 );
 
 export default DefaultPanel;

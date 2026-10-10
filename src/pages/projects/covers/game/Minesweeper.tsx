@@ -1,473 +1,374 @@
-import type { CSSProperties } from "react";
+import { useId, type CSSProperties } from "react";
 import { motion } from "motion/react";
-import { AMBER, GREEN, MONO_FONT } from "@/constants/theme";
+import { AMBER, MONO_FONT } from "@/constants/theme";
 import {
    INK,
    MEET,
    NON_SCALING,
    NONE,
-   SHADOW_55,
    VIEW_BOX,
+   WHITE_03,
    WHITE_04,
-   WHITE_08,
+   WHITE_10,
    WHITE_12,
-   WHITE_28,
+   WHITE_16,
+   WHITE_45,
    WHITE_70,
-   WHITE_85,
+   beats,
    clock,
    labelStyle,
    loop,
    svgStyle,
+   washStyle,
 } from "./shared";
+import {
+   ALL_D,
+   BOARD_X,
+   BOARD_Y,
+   CLICK,
+   CLICK_AT,
+   CLOSED,
+   CYCLE,
+   FADE,
+   HIT,
+   LCD,
+   LINK_AT,
+   MINE_AT,
+   MINES,
+   NUMBERED,
+   PANEL_AT,
+   PITCH,
+   RESET,
+   RESET_END,
+   RESTART_AT,
+   RINGS,
+   SCORE_X,
+   TILE,
+   TIME_X,
+   centre,
+   ringAt,
+   tileX,
+   tileY,
+   tilesD,
+   type Cell,
+} from "./minesweeperBoard";
+import MinesweeperHud from "./MinesweeperHud";
 
 /*
- * Minesweeper Game Unity: SCORE and TIME LCDs flank a smiley above a
- * bevelled board. Clicking a covered Element resets the per-move
- * TimerScript, FFuncover floods outward and halts at the digit rim while
- * ScoreScript counts every opened cell; a mine click runs uncoverMines and
- * Game Over, then RestartButton reloads the scene.
+ * Minesweeper Game Unity on its real PlayField: w = 10, h = 13, mines at
+ * Random.value < 0.15 (medium). A click on a covered Element runs FFuncover,
+ * which floods out four ways and stops on numbered cells while ScoreScript
+ * counts every uncover (rim cells reached twice count twice, so 36 opened
+ * cells score 038). TimerScript snaps back to 060 on each safe click; the
+ * mine click runs uncoverMines, freezes the timer and GameOverScript.Setup
+ * shows the score until RestartButton reloads the scene.
  */
 
-const CYCLE = 6;
 const t = clock(CYCLE);
+const at = beats(CYCLE);
 
-/* Board: 6 x 5 tiles of 10 units on an 11.5 pitch, centred at x = 80. */
-const COLS = 6;
-const ROWS = 5;
-const TILE = 10;
-const PITCH = 11.5;
-const BOARD_X = 80 - (COLS * PITCH - (PITCH - TILE)) / 2;
-const BOARD_Y = 32;
-const tileX = (col: number) => BOARD_X + PITCH * col;
-const tileY = (row: number) => BOARD_Y + PITCH * row;
-const tileCentre = (col: number, row: number) => ({
-   x: tileX(col) + TILE / 2,
-   y: tileY(row) + TILE / 2,
-});
+const coverTimes = (openAt: number) =>
+   at(openAt, openAt + FADE, RESET, RESET_END);
+const COVER_OPACITY = [1, 1, 0, 0, 1, 1];
 
-interface Cell {
-   col: number;
-   row: number;
-}
-interface Digit extends Cell {
-   n: number;
-}
+/* Task(1) then GameOverScript.Setup: a hairline from the mine to the panel. */
+const PANEL = { left: 60, top: 28, width: 31, height: 40 };
+const HIT_CENTRE = centre(HIT);
+const PANEL_EDGE = {
+   x: (PANEL.left / 100) * 160,
+   y: PANEL.top + PANEL.height / 2,
+};
+const LINK_D = `M${HIT_CENTRE.x + 2.6} ${HIT_CENTRE.y}C${HIT_CENTRE.x + 12} ${HIT_CENTRE.y} ${PANEL_EDGE.x - 10} ${PANEL_EDGE.y} ${PANEL_EDGE.x} ${PANEL_EDGE.y}`;
+const LINK_LENGTH_TIMES = at(LINK_AT, LINK_AT + 0.45, 5.6, 5.65);
+const LINK_LENGTH = [0, 0, 1, 1, 0, 0];
+const LINK_FADE_TIMES = at(RESET, RESET_END, 5.7, 5.8);
+const LINK_OPACITY = [1, 1, 0, 0, 1, 1];
+const PANEL_TIMES = at(PANEL_AT, PANEL_AT + 0.3, RESET, RESET + 0.3);
+const PANEL_OPACITY = [0.22, 0.22, 1, 1, 0.22, 0.22];
 
-const CLICK: Cell = { col: 1, row: 1 };
-const HIT_MINE: Cell = { col: 4, row: 3 };
-const OTHER_MINES: Cell[] = [
-   { col: 4, row: 1 },
-   { col: 0, row: 4 },
-];
-const ZEROS: Cell[] = [
-   { col: 0, row: 0 },
-   { col: 1, row: 0 },
-   { col: 2, row: 0 },
-   { col: 0, row: 1 },
-   { col: 1, row: 1 },
-   { col: 2, row: 1 },
-   { col: 0, row: 2 },
-   { col: 1, row: 2 },
-   { col: 2, row: 2 },
-   { col: 2, row: 3 },
-   { col: 2, row: 4 },
-];
-/* adjacentMines > 0: the rim where FFuncover halts. */
-const DIGITS: Digit[] = [
-   { col: 3, row: 0, n: 1 },
-   { col: 3, row: 1, n: 1 },
-   { col: 3, row: 2, n: 2 },
-   { col: 3, row: 3, n: 1 },
-   { col: 3, row: 4, n: 1 },
-   { col: 1, row: 3, n: 1 },
-   { col: 1, row: 4, n: 1 },
-   { col: 0, row: 3, n: 1 },
-];
-const OPENED: Cell[] = [...ZEROS, ...DIGITS];
-const MINES: Cell[] = [HIT_MINE, ...OTHER_MINES];
-const cellKey = (c: Cell) => `${c.col}:${c.row}`;
-const isListed = (list: Cell[], c: Cell) =>
-   list.some((o) => o.col === c.col && o.row === c.row);
-const ALL_CELLS: Cell[] = Array.from({ length: COLS * ROWS }, (_, i) => ({
-   col: i % COLS,
-   row: Math.floor(i / COLS),
-}));
-const CLOSED: Cell[] = ALL_CELLS.filter(
-   (c) => !isListed(OPENED, c) && !isListed(MINES, c),
-);
-/* Flood radiates by Manhattan distance from the click; the far rim merges. */
-const RING_COUNT = 5;
-const ringOf = (c: Cell) =>
-   Math.min(
-      Math.abs(c.col - CLICK.col) + Math.abs(c.row - CLICK.row),
-      RING_COUNT - 1,
-   );
-const RING_INDICES = Array.from({ length: RING_COUNT }, (_, d) => d);
-const RINGS: Cell[][] = RING_INDICES.map((d) =>
-   OPENED.filter((c) => ringOf(c) === d),
-);
-
-/* Storyboard clock, seconds. */
-const CLICK_AT = 1.0;
-const FLOOD_STEP = 0.12;
-const FADE = 0.15;
-const SCORE_TICKS = [1.1, 1.4, 1.7];
-const ROLL = 0.1;
-const MINE_AT = 4.2;
-const MINES_AT = 4.35;
-const GAME_OVER_IN = 4.3;
-const GAME_OVER_OUT = 5.0;
-const RESET_AT = 5.1;
-const RESET_END = 5.5;
-
-/* Cursor: home corner, click tile, mine tile, home. */
-const HOME = { x: 135, y: 85 };
-const CLICK_TILE = tileCentre(CLICK.col, CLICK.row);
-const MINE_TILE = tileCentre(HIT_MINE.col, HIT_MINE.row);
-const MOVE_TIMES = [0, t(0.9), t(2.4), t(3.6), t(5.2), t(5.8), 1];
+/* Cursor: click, guess the mine, press RESTART, park. */
+const HOME = { x: 140, y: 84 };
+const RESTART = {
+   x: ((PANEL.left + PANEL.width / 2) / 100) * 160,
+   y: PANEL.top + PANEL.height * 0.76,
+};
+const CLICK_CENTRE = centre(CLICK);
 const CURSOR_PATH = [
    HOME,
-   CLICK_TILE,
-   CLICK_TILE,
-   MINE_TILE,
-   MINE_TILE,
+   HOME,
+   CLICK_CENTRE,
+   CLICK_CENTRE,
+   HIT_CENTRE,
+   HIT_CENTRE,
+   RESTART,
+   RESTART,
    HOME,
    HOME,
 ];
-const CURSOR_X = CURSOR_PATH.map((p) => p.x);
-const CURSOR_Y = CURSOR_PATH.map((p) => p.y);
+const CURSOR_TIMES = [0, 0.2, 0.9, 2.6, 3.6, 4.6, 5.1, 5.3, 5.9, 6].map(t);
 const PRESS_TIMES = [
    0,
-   t(0.9),
-   t(CLICK_AT),
-   t(1.1),
-   t(MINE_AT),
-   t(4.3),
-   t(4.4),
-   1,
-];
-const PRESS_SCALE = [1, 1, 0.7, 1, 1, 0.7, 1, 1];
+   0.95,
+   CLICK_AT,
+   1.1,
+   MINE_AT - 0.05,
+   MINE_AT,
+   MINE_AT + 0.1,
+   RESTART_AT - 0.05,
+   RESTART_AT,
+   RESTART_AT + 0.1,
+   6,
+].map(t);
+const PRESS_SCALE = [1, 1, 0.7, 1, 1, 0.7, 1, 1, 0.7, 1, 1];
 
-/* HUD. */
-const LCD_W = 34;
-const LCD_H = 12;
-const SCORE_ROWS = ["000", "005", "012", "019"];
-const SCORE_TIMES = [
-   0,
-   ...SCORE_TICKS.flatMap((s) => [t(s), t(s + ROLL)]),
-   t(RESET_AT),
-   t(RESET_AT + FADE),
-   1,
-];
-const SCORE_Y = [
-   0,
-   ...SCORE_TICKS.flatMap((_, i) => [-LCD_H * i, -LCD_H * (i + 1)]),
-   -LCD_H * SCORE_TICKS.length,
-   0,
-   0,
-];
-/* timeReset snaps the bar full on the safe click; isTimer stops at the loss. */
-const TIMER_TIMES = [
-   0,
-   t(0.9),
-   t(CLICK_AT),
-   t(MINE_AT),
-   t(GAME_OVER_OUT),
-   t(RESET_AT + 0.05),
-   1,
-];
-const TIMER_SCALE = [0.85, 0.7, 1, 0.55, 0.55, 1, 0.85];
-const SMILEY = 12;
-const SMILEY_TIMES = [
-   0,
-   t(MINE_AT),
-   t(MINE_AT + FADE),
-   t(RESET_AT),
-   t(RESET_AT + 0.3),
-   1,
-];
-const GAME_OVER_TIMES = [
-   0,
-   t(GAME_OVER_IN),
-   t(GAME_OVER_IN + 0.2),
-   t(GAME_OVER_OUT),
-   t(GAME_OVER_OUT + 0.3),
-   1,
-];
+const fill = (color: string) => ({ fill: color, stroke: NONE });
+const hairline = {
+   fill: NONE,
+   strokeWidth: 1,
+   vectorEffect: NON_SCALING,
+} as const;
 
-const hudLabel: CSSProperties = { ...labelStyle, position: "static" };
-const lcdBox = (tint: string): CSSProperties => ({
-   width: LCD_W,
-   height: LCD_H,
-   borderRadius: 2,
-   border: `1px solid ${tint}55`,
-   background: "rgba(0,0,0,0.45)",
-   overflow: "hidden",
-   fontFamily: MONO_FONT,
-   fontSize: 8,
-   fontWeight: 700,
-   letterSpacing: 1,
-   lineHeight: `${LCD_H}px`,
-   textAlign: "center",
-   color: tint,
-});
-const ring = (color: string): CSSProperties => ({
-   position: "absolute",
-   inset: 0,
-   borderRadius: "50%",
-   border: `1px solid ${color}`,
-});
-const eye = (side: "left" | "right"): CSSProperties => ({
-   position: "absolute",
-   top: 4,
-   [side]: 3,
-   width: 2,
-   height: 2,
-   borderRadius: "50%",
-   background: WHITE_85,
-});
+const Backdrop = () => {
+   const patternId = `mslattice${useId().replaceAll(/\W/g, "")}`;
+   return (
+      <>
+         <defs>
+            <pattern
+               id={patternId}
+               width={PITCH}
+               height={PITCH}
+               patternUnits="userSpaceOnUse"
+            >
+               <circle cx={PITCH / 2} cy={PITCH / 2} r={0.22} fill={WHITE_04} />
+            </pattern>
+         </defs>
+         <rect width={160} height={100} fill={`url(#${patternId})`} />
+      </>
+   );
+};
 
-/* Opened look plus the digits and mines that covers hide until revealed. */
-const Base = ({ tint }: { tint: string }) => (
+/* Bevelled frame, sunken HUD strip and the opened-floor tiles. */
+const Frame = () => (
    <>
-      {ALL_CELLS.map((c) => (
-         <rect
-            key={cellKey(c)}
-            x={tileX(c.col)}
-            y={tileY(c.row)}
-            width={TILE}
-            height={TILE}
-            rx={1}
-            fill={WHITE_04}
-            stroke={WHITE_08}
-            strokeWidth={0.5}
-         />
-      ))}
-      {DIGITS.map((d) => {
-         const p = tileCentre(d.col, d.row);
+      <rect
+         x={25.8}
+         y={12.5}
+         width={49.8}
+         height={75.6}
+         rx={2.4}
+         {...hairline}
+         fill={WHITE_03}
+         stroke={WHITE_10}
+      />
+      <rect
+         x={BOARD_X - 0.6}
+         y={14.3}
+         width={46.6}
+         height={10.4}
+         rx={1.6}
+         fill={NONE}
+         stroke={WHITE_10}
+         strokeWidth={1}
+         vectorEffect={NON_SCALING}
+      />
+      <rect
+         x={BOARD_X - 0.6}
+         y={BOARD_Y - 0.6}
+         width={46.6}
+         height={60.4}
+         rx={1.6}
+         fill={NONE}
+         stroke={WHITE_10}
+         strokeWidth={1}
+         vectorEffect={NON_SCALING}
+      />
+      <path d={ALL_D} {...fill(WHITE_03)} />
+   </>
+);
+
+/* What the covers hide: adjacentMines digits and the mine sprites. */
+const Revealed = ({ tint }: { tint: string }) => (
+   <>
+      <rect
+         x={tileX(HIT)}
+         y={tileY(HIT)}
+         width={TILE}
+         height={TILE}
+         rx={0.7}
+         fill={`${AMBER}40`}
+      />
+      {NUMBERED.map((c) => {
+         const p = centre(c);
          return (
             <text
-               key={cellKey(d)}
+               key={`${c.col}:${c.row}`}
                x={p.x}
                y={p.y}
                fontFamily={MONO_FONT}
-               fontSize={6}
+               fontSize={3}
                fontWeight={700}
                textAnchor="middle"
                dominantBaseline="central"
-               fill={d.n === 2 ? tint : WHITE_85}
+               fill={c.mark === "1" ? WHITE_70 : tint}
             >
-               {d.n}
+               {c.mark}
             </text>
          );
       })}
-      {MINES.map((m) => {
-         const p = tileCentre(m.col, m.row);
-         return <circle key={cellKey(m)} cx={p.x} cy={p.y} r={2} fill={tint} />;
+      {MINES.map((c) => {
+         const p = centre(c);
+         return (
+            <g key={`${c.col}:${c.row}`} transform={`translate(${p.x} ${p.y})`}>
+               <path
+                  d="M-1.5 0H1.5M0 -1.5V1.5M-1.05 -1.05L1.05 1.05M-1.05 1.05L1.05 -1.05"
+                  stroke={tint}
+                  {...hairline}
+               />
+               <circle r={0.9} fill={tint} />
+            </g>
+         );
       })}
    </>
 );
 
-/*
- * Win98 raised tile: light top/left edge, dark bottom/right edge. The ink
- * backing keeps the digit or mine underneath hidden until the cover lifts.
- */
-const Cover = ({ cell }: { cell: Cell }) => {
-   const x = tileX(cell.col);
-   const y = tileY(cell.row);
-   const far = TILE - 0.5;
+const CoverPaths = ({ cells }: { cells: Cell[] }) => {
+   const d = tilesD(cells);
    return (
-      <g>
-         <rect x={x} y={y} width={TILE} height={TILE} fill={INK} />
-         <rect x={x} y={y} width={TILE} height={TILE} fill={WHITE_12} />
-         <path
-            d={`M${x + 0.5},${y + far} V${y + 0.5} H${x + far}`}
-            stroke={WHITE_28}
-            strokeWidth={1}
-            fill={NONE}
-         />
-         <path
-            d={`M${x + far},${y + 0.5} V${y + far} H${x + 0.5}`}
-            stroke={SHADOW_55}
-            strokeWidth={1}
-            fill={NONE}
-         />
-      </g>
+      <>
+         <path d={d} {...fill(INK)} />
+         <path d={d} {...fill(WHITE_12)} />
+      </>
    );
 };
 
-/* A set of covers that lifts together at `openAt` and returns on reset. */
+/* A set of covers that lifts together at `openAt`, back on RestartButton. */
 const Covers = ({ cells, openAt }: { cells: Cell[]; openAt: number }) => (
    <motion.g
       initial={{ opacity: 1 }}
-      animate={{ opacity: [1, 1, 0, 0, 1, 1] }}
-      transition={loop(
-         CYCLE,
-         [0, t(openAt), t(openAt + FADE), t(RESET_AT), t(RESET_END), 1],
-         "linear",
-      )}
+      animate={{ opacity: COVER_OPACITY }}
+      transition={loop(CYCLE, coverTimes(openAt), "linear")}
    >
-      {cells.map((c) => (
-         <Cover key={cellKey(c)} cell={c} />
-      ))}
+      <CoverPaths cells={cells} />
    </motion.g>
+);
+
+const Link = ({ tint }: { tint: string }) => (
+   <motion.path
+      d={LINK_D}
+      fill={NONE}
+      stroke={`${tint}99`}
+      strokeWidth={0.5}
+      initial={{ pathLength: 0, opacity: 1 }}
+      animate={{ pathLength: LINK_LENGTH, opacity: LINK_OPACITY }}
+      transition={{
+         pathLength: loop(CYCLE, LINK_LENGTH_TIMES),
+         opacity: loop(CYCLE, LINK_FADE_TIMES),
+      }}
+   />
 );
 
 const Cursor = () => (
    <motion.g
       initial={{ x: HOME.x, y: HOME.y, scale: 1 }}
-      animate={{ x: CURSOR_X, y: CURSOR_Y, scale: PRESS_SCALE }}
+      animate={{
+         x: CURSOR_PATH.map((p) => p.x),
+         y: CURSOR_PATH.map((p) => p.y),
+         scale: PRESS_SCALE,
+      }}
       transition={{
-         x: loop(CYCLE, MOVE_TIMES),
-         y: loop(CYCLE, MOVE_TIMES),
+         x: loop(CYCLE, CURSOR_TIMES),
+         y: loop(CYCLE, CURSOR_TIMES),
          scale: loop(CYCLE, PRESS_TIMES, "linear"),
       }}
    >
-      <circle
-         r={3.5}
-         fill={NONE}
-         stroke={WHITE_70}
-         strokeWidth={1}
-         vectorEffect={NON_SCALING}
-      />
-      <circle r={0.8} fill={WHITE_70} />
+      <circle r={2.6} stroke={WHITE_70} {...hairline} />
+      <circle r={0.6} fill={WHITE_70} />
    </motion.g>
 );
 
-/* ScoreScript: {0:000}, one count per opened cell. */
-const ScoreLcd = ({ tint }: { tint: string }) => (
-   <div
-      style={{
-         position: "absolute",
-         left: "8%",
-         top: "3%",
-         display: "flex",
-         flexDirection: "column",
-         gap: 2,
-      }}
-   >
-      <span style={hudLabel}>SCORE</span>
-      <div style={lcdBox(tint)}>
-         <motion.div
-            initial={{ y: 0 }}
-            animate={{ y: SCORE_Y }}
-            transition={loop(CYCLE, SCORE_TIMES, "linear")}
-         >
-            {SCORE_ROWS.map((row) => (
-               <div key={row}>{row}</div>
-            ))}
-         </motion.div>
-      </div>
-   </div>
-);
+const panelText: CSSProperties = {
+   ...labelStyle,
+   left: "50%",
+   transform: "translate(-50%, -50%)",
+};
 
-/* TimerScript: a per-move countdown, refilled by every safe click. */
-const TimeLcd = ({ tint }: { tint: string }) => (
-   <div
+/* GameOverScript: hidden in play, Setup(score) lights it after the mine. */
+const GameOverPanel = ({ tint }: { tint: string }) => (
+   <motion.div
+      initial={{ opacity: PANEL_OPACITY[0] }}
+      animate={{ opacity: PANEL_OPACITY }}
+      transition={loop(CYCLE, PANEL_TIMES)}
       style={{
          position: "absolute",
-         right: "8%",
-         top: "3%",
-         display: "flex",
-         flexDirection: "column",
-         alignItems: "flex-end",
-         gap: 2,
+         left: `${PANEL.left}%`,
+         top: `${PANEL.top}%`,
+         width: `${PANEL.width}%`,
+         height: `${PANEL.height}%`,
+         borderRadius: 7,
+         border: `1px solid ${WHITE_10}`,
+         background: WHITE_03,
       }}
    >
-      <span style={hudLabel}>TIME</span>
-      <div style={lcdBox(tint)}>060</div>
-      <motion.div
-         initial={{ scaleX: TIMER_SCALE[0] }}
-         animate={{ scaleX: TIMER_SCALE }}
-         transition={loop(CYCLE, TIMER_TIMES, "linear")}
+      <span style={{ ...panelText, top: "20%", color: AMBER }}>GAME OVER</span>
+      <span
          style={{
-            width: LCD_W + 2,
-            height: 2,
-            borderRadius: 1,
-            background: tint,
-            originX: 0,
-         }}
-      />
-   </div>
-);
-
-const Smiley = () => (
-   <div
-      style={{
-         position: "absolute",
-         left: "50%",
-         top: "4%",
-         width: SMILEY,
-         height: SMILEY,
-         marginLeft: -SMILEY / 2,
-      }}
-   >
-      <div style={ring(GREEN)} />
-      <motion.div
-         initial={{ opacity: 0 }}
-         animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
-         transition={loop(CYCLE, SMILEY_TIMES, "linear")}
-         style={ring(AMBER)}
-      />
-      <span style={eye("left")} />
-      <span style={eye("right")} />
-   </div>
-);
-
-const GameOver = () => (
-   <div
-      style={{
-         position: "absolute",
-         left: "50%",
-         top: "60%",
-         transform: "translate(-50%, -50%)",
-      }}
-   >
-      <motion.span
-         initial={{ opacity: 0 }}
-         animate={{ opacity: [0, 0, 0.95, 0.95, 0, 0] }}
-         transition={loop(CYCLE, GAME_OVER_TIMES, "linear")}
-         style={{
-            ...hudLabel,
-            display: "block",
-            padding: "2px 5px",
-            borderRadius: 3,
-            background: `${INK}e0`,
-            border: `1px solid ${AMBER}66`,
-            color: AMBER,
-            fontSize: 8,
+            ...panelText,
+            top: "46%",
+            fontSize: 9,
+            letterSpacing: 2,
+            color: tint,
          }}
       >
-         GAME OVER
-      </motion.span>
-   </div>
+         038
+      </span>
+      <span
+         style={{
+            ...panelText,
+            top: "76%",
+            padding: "2px 6px",
+            borderRadius: 4,
+            border: `1px solid ${WHITE_16}`,
+            color: WHITE_45,
+         }}
+      >
+         RESTART
+      </span>
+   </motion.div>
 );
 
 const Minesweeper = ({ tint }: { tint: string }) => (
    <>
+      <div style={washStyle(tint, "32% 46%")} />
       <svg viewBox={VIEW_BOX} preserveAspectRatio={MEET} style={svgStyle}>
-         <Base tint={tint} />
+         <Backdrop />
+         <Frame />
+         <Revealed tint={tint} />
          <g>
-            {CLOSED.map((c) => (
-               <Cover key={cellKey(c)} cell={c} />
-            ))}
+            <CoverPaths cells={CLOSED} />
          </g>
-         {RING_INDICES.map((d) => (
-            <Covers
-               key={d}
-               cells={RINGS[d]}
-               openAt={CLICK_AT + FLOOD_STEP * d}
-            />
+         {RINGS.map((r) => (
+            <Covers key={r.id} cells={r.cells} openAt={ringAt(r.ring)} />
          ))}
-         <Covers cells={[HIT_MINE]} openAt={MINE_AT} />
-         <Covers cells={OTHER_MINES} openAt={MINES_AT} />
+         <Covers cells={MINES} openAt={MINE_AT} />
+         <MinesweeperHud tint={tint} />
+         <Link tint={tint} />
          <Cursor />
       </svg>
-      <ScoreLcd tint={tint} />
-      <Smiley />
-      <TimeLcd tint={tint} />
-      <span style={{ ...labelStyle, left: "5%", bottom: "4%" }}>PLAYFIELD</span>
-      <GameOver />
+      <span
+         style={{ ...labelStyle, left: `${(SCORE_X / 160) * 100}%`, top: "8%" }}
+      >
+         SCORE
+      </span>
+      <span
+         style={{
+            ...labelStyle,
+            right: `${100 - ((TIME_X + LCD.w) / 160) * 100}%`,
+            top: "8%",
+         }}
+      >
+         TIME
+      </span>
+      <GameOverPanel tint={tint} />
    </>
 );
 

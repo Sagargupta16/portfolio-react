@@ -1,204 +1,199 @@
 import { motion } from "motion/react";
-import { Dot, Label, Rider, Shapes, Shell } from "./primitives";
+import {
+   Bar,
+   Label,
+   Packet,
+   Panel,
+   Pip,
+   Shell,
+   Trace,
+   Wire,
+} from "../kit/primitives";
 import {
    AMBER,
    GREEN,
-   LINEAR,
-   WHITE_03,
-   WHITE_12,
-   WHITE_15,
-   WHITE_25,
-   WHITE_50,
-   layer,
+   GRID,
+   W06,
+   W16,
+   W25,
+   clock,
+   comet,
+   line,
    loopProps,
-   pctX,
-   pctY,
-} from "./sceneTokens";
-import type {
-   Box,
-   Keyframes,
-   Line,
-   Loop,
-   Rect,
-   Statics,
-   TintProps,
-} from "./sceneTokens";
+   passAt,
+   ride,
+   route,
+} from "../kit/sceneTokens";
+import type { Box, Pt, Stop, TintProps } from "../kit/sceneTokens";
 
-/* MCP Toolkit: a tool call leaves the client, runs the ordered withCors /
-   withAuth / withRateLimit / withCache gates and lands on the handler; the
-   next dies at AUTH (amber) and the last short-circuits on a cache hit.
-   Every keyframe array ends where it starts. */
+/*
+ * MCP Toolkit: every with* call wraps the server's tool registration, so a
+ * call runs an onion, outermost first: withCors, withAuth, withRateLimit,
+ * withCache, then the tool handler at the core.
+ *   call 1 passes every layer, spends a token-bucket token, runs the handler,
+ *          and its response is cached on the way out (cache.set)
+ *   call 2 spends a token and returns from CACHE without reaching the handler
+ *   call 3 carries a bad key and dies at AUTH (AuthError) before the rate
+ *          limiter, so it costs no token
+ * The bucket refills and the entry expires while the loop resets.
+ */
 
-const MW_CYCLE = 5.6;
-const RAIL = 92;
-const DOT_Y = 76;
-const CLIENT = 36;
-const AUTH = 128;
-const CACHE = 218;
-const HANDLER = 269;
-const GATE_W = 34;
+const beat = clock(5.6);
+const RAIL_Y = 92;
+const RAIL_X0 = 52;
+const CORE_X = 212;
+/* the rail ends just inside the handler, where the call is served */
+const RAIL_X1 = CORE_X + 4;
+const W02 = "rgba(255,255,255,0.02)";
 
-const GATES = [
-   { name: "CORS", cx: 83 },
-   { name: "AUTH", cx: AUTH },
-   { name: "RATE", cx: 173 },
-   { name: "CACHE", cx: CACHE },
+const RAIL = route(line([RAIL_X0, RAIL_Y], [RAIL_X1, RAIL_Y]));
+/* rail fraction at stage x */
+const at = (x: number) => (x - RAIL_X0) / (RAIL_X1 - RAIL_X0);
+
+interface Layer {
+   name: string;
+   box: Box;
+   rx: number;
+}
+
+/* nested from the outside in; left walls 36 units apart, common centre y */
+const LAYERS: Layer[] = [
+   { name: "CORS", box: [64, 17, 230, 150], rx: 12 },
+   { name: "AUTH", box: [100, 33, 186, 118], rx: 11 },
+   { name: "RATE LIMIT", box: [136, 49, 142, 86], rx: 10 },
+   { name: "CACHE", box: [172, 66, 98, 52], rx: 9 },
+];
+const AUTH_WALL = 100;
+const RATE_WALL = 136;
+const CACHE_WALL = 172;
+const CORE: Box = [CORE_X, 76, 52, 32];
+
+const CALL: Stop[] = [
+   [0.04, 0],
+   [0.19, 1],
+   [0.24, 1],
+   [0.38, 0],
+];
+const HIT_X = at(184);
+const CACHED: Stop[] = [
+   [0.44, 0],
+   [0.54, HIT_X],
+   [0.57, HIT_X],
+   [0.66, 0],
+];
+const DENIED: Stop[] = [
+   [0.72, 0],
+   [0.79, at(AUTH_WALL - 5)],
 ];
 
-const gateBox = (cx: number): Box => [cx - GATE_W / 2, 69, GATE_W, 46];
-const HANDLER_BOX: Box = [249, 69, 40, 46];
+/* derived beats: where each packet crosses the layer it changes */
+const SPEND_1 = passAt(CALL[0], CALL[1], at(RATE_WALL));
+const SPEND_2 = passAt(CACHED[0], CACHED[1], at(RATE_WALL));
+const CACHE_SET = passAt(CALL[2], CALL[3], at(CACHE_WALL));
 
-const pulse = (loop: Keyframes): Loop => ({ ...loop, duration: MW_CYCLE });
-const travel = (loop: Keyframes): Loop => ({ ...pulse(loop), ease: LINEAR });
+const token = (spent: number, refill: number) =>
+   beat({
+      times: [0, spent, spent + 0.02, refill, refill + 0.04, 1],
+      opacity: [1, 1, 0.12, 0.12, 1, 1],
+   });
 
-/* Requests ride one track from the client to the handler; x is the fraction
-   of that track, so a stop at AUTH or CACHE lands on the panel at any width. */
-const along = (...xs: number[]) =>
-   xs.map((x) => `${(((x - CLIENT) / (HANDLER - CLIENT)) * 100).toFixed(2)}%`);
-
-const PASS = travel({
-   x: along(CLIENT, CLIENT, HANDLER, HANDLER, CLIENT),
-   opacity: [0, 1, 1, 0, 0],
-   times: [0, 0.02, 0.3, 0.36, 1],
-});
-/* response back to the client; CACHE blinks as it passes (cache.set) */
-const REPLY = travel({
-   x: along(HANDLER, HANDLER, 236, 70, CLIENT, HANDLER),
+const HANDLER = beat({
+   times: [0, 0.185, 0.2, 0.24, 0.28, 1],
    opacity: [0, 0, 1, 1, 0, 0],
-   times: [0, 0.36, 0.38, 0.48, 0.5, 1],
 });
-/* AuthError: the dot stops at AUTH and hands over to its amber twin */
-const REJECT_X = along(CLIENT, CLIENT, CLIENT, AUTH, AUTH, AUTH, CLIENT);
-const REJECT = travel({
-   x: REJECT_X,
-   opacity: [0, 0, 1, 1, 0, 0, 0],
-   times: [0, 0.49, 0.5, 0.6, 0.64, 0.66, 1],
+const ENTRY = beat({
+   times: [0, CACHE_SET, CACHE_SET + 0.03, 0.54, 0.56, 0.6, 0.88, 0.92, 1],
+   opacity: [0, 0, 0.7, 0.7, 1, 0.7, 0.7, 0, 0],
 });
-const REJECT_AMBER = travel({
-   x: REJECT_X,
-   opacity: [0, 0, 0, 0, 1, 0, 0],
-   times: [0, 0.49, 0.5, 0.6, 0.63, 0.67, 1],
+const HIT = beat({
+   times: [0, 0.54, 0.56, 0.63, 1],
+   opacity: [0, 0, 1, 0, 0],
+   scale: [1, 1, 1.5, 1, 1],
 });
-/* cache hit: reaches CACHE and reverses without touching the handler */
-const HIT = travel({
-   x: along(CLIENT, CLIENT, CLIENT, CACHE, CLIENT, CLIENT, CLIENT),
-   opacity: [0, 0, 1, 1, 1, 0, 0],
-   times: [0, 0.73, 0.74, 0.84, 0.92, 0.93, 1],
-});
-const AUTH_FLASH = pulse({
+const AUTH_ERROR = beat({
+   times: [0, 0.785, 0.805, 0.87, 1],
    opacity: [0, 0, 1, 0, 0],
    scale: [1, 1, 1.6, 1, 1],
-   times: [0, 0.6, 0.64, 0.68, 1],
-});
-/* CACHE panel and its dot light together: a small blink for cache.set, a
-   full flash for the hit; only the dot grows */
-const HIT_TIMES = [0, 0.39, 0.41, 0.43, 0.84, 0.87, 0.9, 1];
-const HIT_FLASH = pulse({
-   opacity: [0, 0, 0.8, 0, 0, 1, 0, 0],
-   times: HIT_TIMES,
-});
-const HIT_GROW = pulse({ scale: [1, 1, 1, 1, 1, 1.6, 1, 1], times: HIT_TIMES });
-const LAND_TIMES = [0, 0.3, 0.33, 0.36, 1];
-const LAND = pulse({
-   scale: [1, 1, 1.6, 1, 1],
-   opacity: [0.5, 0.5, 1, 0.5, 0.5],
-   times: LAND_TIMES,
-});
-const LAND_FILL = pulse({ opacity: [0, 0, 1, 0, 0], times: LAND_TIMES });
-/* createLogger ticker: one line per request, all cleared at cycle end */
-const log = (at: number) =>
-   pulse({ opacity: [0, 0, 0.6, 0.6, 0], times: [0, at, at + 0.04, 0.92, 1] });
-
-/* [x, w, fade-in time] */
-const LOG_BARS: [number, number, number][] = [
-   [26, 40, 0.32],
-   [77, 28, 0.62],
-   [115, 34, 0.86],
-];
-
-/* client, four gates with dim status dots, handler with its tool list */
-const statics = (tint: string): Statics => ({
-   lines: [
-      [CLIENT, RAIL, 294, RAIL],
-      ...GATES.map((g): Line => [g.cx, DOT_Y, g.cx, DOT_Y, WHITE_25, 3]),
-      [257, 81, 281, 81, WHITE_15, 2],
-      [257, 89, 281, 89, WHITE_15, 2],
-      [257, 97, 281, 97, WHITE_15, 2],
-   ],
-   rects: [
-      [6, 83, 30, 18, WHITE_03, 4, WHITE_12],
-      ...GATES.map((g): Rect => [...gateBox(g.cx), WHITE_03, 5, WHITE_12]),
-      [...HANDLER_BOX, `${tint}0a`, 6, `${tint}55`],
-   ],
 });
 
-const Stage = ({ tint }: TintProps) => (
+const FLIGHTS = [CALL, CACHED, DENIED].map((stops) => ({
+   key: stops[0][0],
+   dot: beat(ride(RAIL, stops)),
+   trail: beat(comet(stops, 0.16)),
+}));
+
+const Bucket = ({ tint }: TintProps) => (
    <>
-      <Shapes {...statics(tint)} />
-      <motion.g {...loopProps(LAND_FILL)}>
-         <Shapes rects={[[...HANDLER_BOX, `${tint}22`, 6]]} />
-      </motion.g>
+      <Wire d="M147,104 V129 H161 V104" stroke={W16} />
+      <circle cx={154} cy={124} r={2.4} fill={tint} />
+      <motion.circle
+         cx={154}
+         cy={117}
+         r={2.4}
+         fill={tint}
+         {...loopProps(token(SPEND_2, 0.92))}
+      />
+      <motion.circle
+         cx={154}
+         cy={110}
+         r={2.4}
+         fill={tint}
+         {...loopProps(token(SPEND_1, 0.89))}
+      />
    </>
 );
 
-/* CACHE panel overlay in slot percentages; radius matches the SVG rx of 5 */
-const cacheFill = (tint: string): React.CSSProperties => {
-   const [x, y, w, h] = gateBox(CACHE);
-   return {
-      position: "absolute",
-      left: pctX(x),
-      top: pctY(y),
-      width: pctX(w),
-      height: pctY(h),
-      borderRadius: "15% / 11%",
-      background: `${tint}22`,
-   };
-};
-
-const logBar = (x: number, w: number): React.CSSProperties => ({
-   position: "absolute",
-   left: pctX(x),
-   top: pctY(160),
-   width: pctX(w),
-   height: 2,
-   borderRadius: 1,
-   background: WHITE_25,
-});
-
-const Signals = ({ tint }: TintProps) => (
+const Stage = ({ tint }: TintProps) => (
    <>
-      <Dot x={AUTH} y={DOT_Y} size={3} color={AMBER} loop={AUTH_FLASH} />
-      <motion.div style={layer} {...loopProps(HIT_FLASH)}>
-         <div style={cacheFill(tint)} />
-         <Dot x={CACHE} y={DOT_Y} size={3} color={GREEN} loop={HIT_GROW} />
-      </motion.div>
-      <Dot x={HANDLER} y={106} size={3} color={GREEN} loop={LAND} />
-      <div
-         style={{
-            position: "absolute",
-            left: pctX(CLIENT),
-            width: pctX(HANDLER - CLIENT),
-            top: pctY(RAIL),
-         }}
-      >
-         <Rider size={4} color={tint} loop={PASS} />
-         <Rider size={3} color={`${tint}aa`} loop={REPLY} />
-         <Rider size={4} color={tint} loop={REJECT} />
-         <Rider size={4} color={AMBER} loop={REJECT_AMBER} />
-         <Rider size={4} color={tint} loop={HIT} />
-      </div>
-      {LOG_BARS.map(([x, w, at]) => (
-         <motion.div key={x} style={logBar(x, w)} {...loopProps(log(at))} />
+      {LAYERS.map(({ name, box, rx }) => (
+         <Panel key={name} box={box} rx={rx} fill={W02} />
+      ))}
+      <Panel box={CORE} rx={7} fill={`${tint}10`} stroke={`${tint}59`} />
+      <motion.g {...loopProps(HANDLER)}>
+         <Panel box={CORE} rx={7} fill={`${tint}26`} stroke={tint} />
+      </motion.g>
+      <Bar box={[220, 83, 34, 4]} fill={W25} />
+      <Bar box={[220, 99, 24, 4]} fill={W16} />
+      {/* client, the rail into the onion */}
+      <Panel box={[26, 80, 26, 24]} rx={5} />
+      <circle cx={39} cy={RAIL_Y} r={2.6} fill={tint} />
+      <Wire d={RAIL.d} />
+      <Bucket tint={tint} />
+      {/* LRU slot inside CACHE: empty until the first response is stored */}
+      <Bar box={[178, 104, 26, 5]} fill={W06} />
+      <motion.g {...loopProps(ENTRY)}>
+         <Bar box={[178, 104, 26, 5]} fill={tint} />
+      </motion.g>
+      {FLIGHTS.map((f) => (
+         <Trace
+            key={f.key}
+            d={RAIL.d}
+            color={`${tint}99`}
+            width={2.6}
+            loop={f.trail}
+         />
       ))}
    </>
 );
 
+/* each package name sits in its layer's top band, a staircase into the core */
+const tab = ([x, y]: Box): Pt => [x + 7, y + 8.5];
+
 const MiddlewareVariant = ({ tint }: TintProps) => (
-   <Shell tint={tint} glow="47% 46%" stage={<Stage tint={tint} />}>
-      <Signals tint={tint} />
-      {GATES.map((g) => (
-         <Label key={g.name} left={pctX(g.cx)} top="51%" color={WHITE_50}>
-            {g.name}
+   <Shell
+      tint={tint}
+      focus="74% 46%"
+      texture={GRID}
+      stage={<Stage tint={tint} />}
+   >
+      {FLIGHTS.map((f) => (
+         <Packet key={f.key} color={tint} loop={f.dot} />
+      ))}
+      <Pip at={[208, 106.5]} size={5} color={GREEN} loop={HIT} />
+      <Pip at={[AUTH_WALL, RAIL_Y]} size={6} color={AMBER} loop={AUTH_ERROR} />
+      {LAYERS.map(({ name, box }) => (
+         <Label key={name} at={tab(box)}>
+            {name}
          </Label>
       ))}
    </Shell>

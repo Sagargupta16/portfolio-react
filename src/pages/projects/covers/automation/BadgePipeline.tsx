@@ -1,296 +1,299 @@
 import { motion } from "motion/react";
-import type { Easing } from "motion/react";
 import {
-   CENTER_Y,
    CYCLE,
-   WHITE_03,
-   WHITE_10,
+   NON_SCALING,
+   WHITE_14,
+   WHITE_22,
    WHITE_35,
-   WHITE_50,
-   caption,
-   secs,
+   curve,
+   curvePoints,
+   loop,
+   travelStamps,
 } from "./sceneTokens";
-import type { PipelineProps } from "./sceneTokens";
+import type { PipelineProps, Point } from "./sceneTokens";
 import {
-   Hairline,
-   PulseRing,
-   STAGE_WIDTH,
-   StageBox,
-   SuccessDot,
-   TravelDot,
+   CronGlyph,
+   Label,
+   Packet,
+   Panel,
+   Pop,
+   Rule,
+   SceneSvg,
+   Wire,
 } from "./primitives";
 
-/* Credly Badge README Action: cron -> badges.json -> categorize into three
-   rows -> splice between the START/END markers of README.md. */
+/* Credly Badge README Action (update-credly-badges.py): the weekly cron
+   fetches badges.json, categorize_badges splits it on the cert and partner
+   keywords, and each group lands as its own centred row, under its section
+   heading, between the CREDLY-BADGES START and END markers of README.md. */
 
-/* One ease per keyframe segment, so the WAAPI opacity track and the frameloop
-   transform tracks share one schedule; see perSegment in primitives.tsx. */
-const perSegment = (times: number[], ease: Easing = "easeInOut"): Easing[] =>
-   times.slice(1).map(() => ease);
+const JSON_PANEL = { x: 136, y: 260, w: 290, h: 380 };
+const HEADER_Y = JSON_PANEL.y + 46;
+const ENTRY_TOP = JSON_PANEL.y + 110;
+const ENTRY_PITCH = 56;
+const ENTRY_WIDTHS = [150, 118, 166, 104, 136];
 
-const CATEGORIZE_LEFT_PCT = 52;
-const README_RIGHT = "8%";
-const README_WIDTH = 58;
-const SORT_START = 2.6;
-const SORT_STAGGER = 0.2;
-const SORT_TRAVEL = 0.6;
-const ROW_COUNTS = [5, 3, 4];
-const ROW_TOPS = [15, 25, 35];
-const MARKER_TOPS = ["18%", "84%"];
+const FORK: Point = [560, JSON_PANEL.y + JSON_PANEL.h / 2];
+const README = { x: 840, y: 120, w: 624, h: 680 };
+const README_MID = README.x + README.w / 2;
+const MARKER_YS = [README.y + 126, README.y + 560];
 
-/* The main hairline stops at the categorize box. The fan wrapper then spans
-   from that box's right edge to the README panel's left edge, so both ends
-   meet their boxes at any card width instead of only near 343 px. */
-const HAIRLINE_RIGHT = `calc(${100 - CATEGORIZE_LEFT_PCT}% - ${STAGE_WIDTH}px)`;
-const FAN_LEFT = `calc(${CATEGORIZE_LEFT_PCT}% + ${STAGE_WIDTH}px)`;
-const FAN_RIGHT = `calc(${README_RIGHT} + ${README_WIDTH}px)`;
-const FAN_TOP = "42%";
-const FAN_HEIGHT = "16%";
-/* Lane end heights inside the fan wrapper: top, middle and bottom row. */
-const FAN_TARGETS = [0, 50, 100];
-
-interface SortLane {
-   dy: -1 | 0 | 1;
-   top: string;
-   height: string;
+interface BadgeRow {
+   /** Category in the action's own words, for the key. */
+   id: string;
+   y: number;
+   r: number;
+   /** Badge centres, laid out centred like the README's div rows. */
+   cxs: number[];
+   /** Industry certifications are drawn large and solid. */
+   lead: boolean;
 }
 
-/* Lane tracks inside the fan wrapper; every dot leaves from its middle. */
-const SORT_LANES: SortLane[] = [
-   { dy: -1, top: "0%", height: "50%" },
-   { dy: 0, top: "50%", height: "0%" },
-   { dy: 1, top: "50%", height: "50%" },
+const centred = (count: number, r: number): number[] => {
+   const pitch = r * 2 + 22;
+   const first = README_MID - (pitch * (count - 1)) / 2;
+   return Array.from({ length: count }, (_, i) => first + i * pitch);
+};
+
+const ROWS: BadgeRow[] = [
+   { id: "certifications", y: 350, r: 36, cxs: centred(4, 36), lead: true },
+   { id: "professional", y: 482, r: 26, cxs: centred(3, 26), lead: false },
+   { id: "knowledge", y: 600, r: 26, cxs: centred(5, 26), lead: false },
 ];
+/* Section heading line above each row, as the README prints them. */
+const HEADING_GAP = 30;
 
-/* Fetched payload inside the first stage. */
-const PAYLOAD_TIMES = secs(0, 0.8, 1.3, 5.4, 5.8, CYCLE);
-const PayloadDots = () => (
-   <motion.div
-      animate={{ opacity: [0, 0, 1, 1, 0, 0], y: [-3, -3, 0, 0, -3, -3] }}
-      transition={{
-         duration: CYCLE,
-         repeat: Infinity,
-         ease: perSegment(PAYLOAD_TIMES),
-         times: PAYLOAD_TIMES,
-      }}
-      style={{ display: "flex", flexDirection: "column", gap: 3 }}
-   >
-      {[0, 1, 2].map((i) => (
-         <div
-            key={i}
-            style={{
-               width: 3,
-               height: 3,
-               borderRadius: "50%",
-               background: WHITE_50,
-            }}
-         />
-      ))}
-   </motion.div>
+/* Beats, cycle seconds: one packet per category, each landing its row. */
+const PACKET_AT = 1;
+const PACKET_STAGGER = 0.26;
+const PACKET_TIME = 0.95;
+const MARKERS_AT = 3.05;
+const RESET = 5.3;
+
+const departs = (row: number) => PACKET_AT + row * PACKET_STAGGER;
+const arrives = (row: number) => departs(row) + PACKET_TIME;
+
+/* Pointy-top hexagon, the Credly badge silhouette. */
+const hexagon = (cx: number, cy: number, r: number): string =>
+   [-90, -30, 30, 90, 150, 210]
+      .map((deg) => {
+         const a = (deg * Math.PI) / 180;
+         return `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`;
+      })
+      .join(" ");
+
+/* Route of one category: panel edge, through the fork, out its lane. */
+const lane = (y: number): [Point, Point] => [FORK, [README.x, y]];
+const route = (y: number): Point[] => [
+   [JSON_PANEL.x + JSON_PANEL.w, FORK[1]],
+   ...curvePoints(...lane(y), 5),
+];
+/* When each packet crosses the fork, from the same distance-spaced clock. */
+const FORK_HITS = ROWS.map(
+   (row, i) => travelStamps(route(row.y), departs(i), arrives(i))[1],
 );
 
-/* Static three-way split glyph inside the categorize stage. */
-const ForkGlyph = () => (
-   <svg width="16" height="12" viewBox="0 0 16 12" style={{ display: "block" }}>
-      <path
-         d="M0,6 L6,6 M6,6 L16,1 M6,6 L16,6 M6,6 L16,11"
-         stroke={WHITE_35}
-         strokeWidth="1"
-         fill="none"
+/* Fetched badges.json entries, one hexagon and name each. */
+const Entries = ({ tint }: { tint: string }) => (
+   <motion.g
+      animate={{ opacity: [0, 0, 1, 1, 0, 0], y: [18, 18, 0, 0, 0, 18] }}
+      transition={loop(0, 0.3, 0.75, RESET, RESET + 0.35, CYCLE)}
+   >
+      {ENTRY_WIDTHS.map((w, i) => {
+         const y = ENTRY_TOP + i * ENTRY_PITCH;
+         return (
+            <g key={w}>
+               <polygon
+                  points={hexagon(JSON_PANEL.x + 56, y, 16)}
+                  fill="none"
+                  stroke={`${tint}99`}
+                  strokeWidth={1}
+                  vectorEffect={NON_SCALING}
+               />
+               <Rule x={JSON_PANEL.x + 92} y={y} w={w} color={WHITE_35} />
+            </g>
+         );
+      })}
+   </motion.g>
+);
+
+/* The categorize step: a diamond that rings as each packet passes. */
+const Fork = ({ tint }: { tint: string }) => (
+   <>
+      <rect
+         x={FORK[0] - 15}
+         y={FORK[1] - 15}
+         width={30}
+         height={30}
+         rx={4}
+         transform={`rotate(45 ${FORK[0]} ${FORK[1]})`}
+         fill={`${tint}26`}
+         stroke={`${tint}b3`}
+         strokeWidth={1}
+         vectorEffect={NON_SCALING}
       />
-   </svg>
+      <motion.circle
+         cx={FORK[0]}
+         cy={FORK[1]}
+         r={30}
+         fill="none"
+         stroke={tint}
+         strokeWidth={1}
+         vectorEffect={NON_SCALING}
+         animate={{
+            opacity: [0, 0, 0.9, 0, 0.9, 0, 0.9, 0, 0],
+            scale: [0.6, 0.6, 1, 1.5, 1, 1.5, 1, 1.5, 0.6],
+         }}
+         transition={loop(
+            0,
+            FORK_HITS[0],
+            FORK_HITS[0] + 0.05,
+            FORK_HITS[1],
+            FORK_HITS[1] + 0.05,
+            FORK_HITS[2],
+            FORK_HITS[2] + 0.05,
+            FORK_HITS[2] + 0.3,
+            CYCLE,
+         )}
+      />
+   </>
 );
 
-/* Three hairlines from the wrapper's left middle to its right-edge rows. */
-const FanLines = ({ tint }: { tint: string }) => (
-   <svg
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      style={{
-         position: "absolute",
-         inset: 0,
-         width: "100%",
-         height: "100%",
-         overflow: "visible",
-      }}
-   >
-      {FAN_TARGETS.map((y) => (
-         <path
-            key={y}
-            d={`M0,50 L100,${y}`}
-            stroke={`${tint}4d`}
-            strokeWidth="1"
-            fill="none"
-            vectorEffect="non-scaling-stroke"
-         />
-      ))}
-   </svg>
-);
-
-/* Fan lines plus the three sort dots, anchored to the boxes they connect. */
-const SortFan = ({ tint }: { tint: string }) => (
-   <div
-      style={{
-         position: "absolute",
-         left: FAN_LEFT,
-         right: FAN_RIGHT,
-         top: FAN_TOP,
-         height: FAN_HEIGHT,
-      }}
-   >
-      <FanLines tint={tint} />
-      {SORT_LANES.map((lane, i) => (
-         <TravelDot
-            key={lane.dy}
-            tint={tint}
-            left="0%"
-            width="100%"
-            top={lane.top}
-            height={lane.height}
-            dy={lane.dy}
-            from={SORT_START + i * SORT_STAGGER}
-            to={SORT_START + i * SORT_STAGGER + SORT_TRAVEL}
-            size={4}
-         />
-      ))}
-   </div>
-);
-
-/* Dashed START/END markers that flash once after the splice. */
-const MARKER_TIMES = secs(0, 4.6, 4.85, 5.1, CYCLE);
-const Markers = ({ tint }: { tint: string }) => (
-   <motion.div
-      animate={{ opacity: [0.5, 0.5, 1, 0.5, 0.5] }}
-      transition={{
-         duration: CYCLE,
-         repeat: Infinity,
-         ease: perSegment(MARKER_TIMES),
-         times: MARKER_TIMES,
-      }}
-      style={{ position: "absolute", inset: 0 }}
-   >
-      {MARKER_TOPS.map((top) => (
-         <div
-            key={top}
-            style={{
-               position: "absolute",
-               left: 6,
-               right: 6,
-               top,
-               borderTop: `1px dashed ${tint}e6`,
-            }}
-         />
-      ))}
-   </motion.div>
-);
-
-/* One badge row revealing left to right as its sort dot arrives. */
-const BadgeRow = ({
+/* One category row sliding in between the markers as its packet lands. */
+const Row = ({
    tint,
-   count,
-   top,
-   at,
+   row,
+   index,
 }: {
    tint: string;
-   count: number;
-   top: number;
-   at: number;
+   row: BadgeRow;
+   index: number;
 }) => {
-   const times = secs(0, at, at + 0.35, 5.4, 5.7, 5.75, CYCLE);
+   const at = arrives(index);
    return (
-      <motion.div
-         animate={{
-            scaleX: [0, 0, 1, 1, 1, 0, 0],
-            opacity: [1, 1, 1, 1, 0, 0, 1],
-         }}
-         transition={{
-            duration: CYCLE,
-            repeat: Infinity,
-            ease: perSegment(times),
-            times,
-         }}
-         style={{
-            position: "absolute",
-            left: 8,
-            top,
-            display: "flex",
-            gap: 3,
-            originX: 0,
-         }}
+      <motion.g
+         animate={{ opacity: [0, 0, 1, 1, 0, 0], x: [-36, -36, 0, 0, 0, -36] }}
+         transition={loop(0, at - 0.05, at + 0.3, RESET, RESET + 0.35, CYCLE)}
       >
-         {Array.from({ length: count }, (_, i) => (
-            <div
-               key={i}
-               style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: "50%",
-                  border: `1px solid ${tint}59`,
-                  background: `${tint}1a`,
-               }}
+         {row.cxs.map((cx) => (
+            <polygon
+               key={cx}
+               points={hexagon(cx, row.y, row.r)}
+               fill={row.lead ? `${tint}40` : `${tint}1f`}
+               stroke={row.lead ? `${tint}cc` : `${tint}73`}
+               strokeWidth={1}
+               vectorEffect={NON_SCALING}
             />
          ))}
-      </motion.div>
+      </motion.g>
    );
 };
 
-const ReadmePanel = ({ tint, text }: { tint: string; text: string }) => (
-   <div
-      style={{
-         position: "absolute",
-         right: README_RIGHT,
-         top: "50%",
-         transform: CENTER_Y,
-      }}
-   >
-      <div
-         style={{
-            position: "relative",
-            width: README_WIDTH,
-            height: 54,
-            borderRadius: 6,
-            border: `1px solid ${WHITE_10}`,
-            background: WHITE_03,
-            overflow: "hidden",
-         }}
+/* README.md: a heading, the two dashed markers, a heading per section,
+   text below the badge block. */
+const Readme = ({ tint }: { tint: string }) => (
+   <>
+      <Panel {...README} />
+      <Rule x={README.x + 40} y={README.y + 60} w={200} color={WHITE_35} />
+      <Rule x={README.x + 40} y={README.y + 620} w={320} color={WHITE_14} />
+      {ROWS.map((row) => (
+         <Rule
+            key={row.id}
+            x={README_MID - 60}
+            y={row.y - row.r - HEADING_GAP}
+            w={120}
+            color={WHITE_22}
+         />
+      ))}
+      <motion.g
+         animate={{ opacity: [0.4, 0.4, 1, 0.4, 0.4] }}
+         transition={loop(
+            0,
+            MARKERS_AT,
+            MARKERS_AT + 0.25,
+            MARKERS_AT + 0.8,
+            CYCLE,
+         )}
       >
-         <Markers tint={tint} />
-         {ROW_COUNTS.map((count, r) => (
-            <BadgeRow
-               key={count}
-               tint={tint}
-               count={count}
-               top={ROW_TOPS[r]}
-               at={SORT_START + SORT_TRAVEL + r * SORT_STAGGER}
+         {MARKER_YS.map((y) => (
+            <line
+               key={y}
+               x1={README.x + 36}
+               x2={README.x + README.w - 36}
+               y1={y}
+               y2={y}
+               stroke={tint}
+               strokeWidth={1}
+               strokeDasharray="5 4"
+               vectorEffect={NON_SCALING}
             />
          ))}
-      </div>
-      <div style={caption(tint)}>{text}</div>
-   </div>
-);
-
-const BadgePipeline = ({ tint, stages }: PipelineProps) => (
-   <>
-      <Hairline tint={tint} left="24%" right={HAIRLINE_RIGHT} />
-      <StageBox tint={tint} left="34%" text={stages[0]}>
-         <PayloadDots />
-      </StageBox>
-      <StageBox tint={tint} left={`${CATEGORIZE_LEFT_PCT}%`} text={stages[1]}>
-         <ForkGlyph />
-         <PulseRing tint={tint} at={2} />
-      </StageBox>
-      <TravelDot
-         tint={tint}
-         left="24%"
-         width="30%"
-         top="50%"
-         from={0.1}
-         to={2.1}
-      />
-      <SortFan tint={tint} />
-      <ReadmePanel tint={tint} text={stages[2]} />
-      <SuccessDot at={4.6} />
+      </motion.g>
    </>
 );
+
+const BadgePipeline = ({ tint }: PipelineProps) => {
+   const caption = `${tint}b3`;
+   return (
+      <>
+         <SceneSvg>
+            <Wire
+               d={`M${JSON_PANEL.x + JSON_PANEL.w} ${FORK[1]} L${FORK[0]} ${FORK[1]}`}
+               color={`${tint}40`}
+            />
+            {ROWS.map((row) => (
+               <Wire
+                  key={row.id}
+                  d={curve(...lane(row.y))}
+                  color={`${tint}33`}
+               />
+            ))}
+            <Panel {...JSON_PANEL} />
+            <Rule x={JSON_PANEL.x + 76} y={HEADER_Y} w={120} color={WHITE_22} />
+            <Entries tint={tint} />
+            <Fork tint={tint} />
+            <Readme tint={tint} />
+            {ROWS.map((row, i) => (
+               <Row key={row.id} tint={tint} row={row} index={i} />
+            ))}
+         </SceneSvg>
+         <CronGlyph tint={tint} x={JSON_PANEL.x + 44} y={HEADER_Y} />
+         {ROWS.map((row, i) => (
+            <Packet
+               key={row.id}
+               tint={tint}
+               points={route(row.y)}
+               from={departs(i)}
+               to={arrives(i)}
+            />
+         ))}
+         <Pop
+            x={README.x + README.w - 48}
+            y={README.y + 60}
+            at={MARKERS_AT + 0.1}
+            until={RESET}
+         />
+         <Label
+            x={JSON_PANEL.x}
+            y={JSON_PANEL.y - 40}
+            text="BADGES.JSON"
+            color={caption}
+         />
+         <Label
+            x={FORK[0] + 20}
+            y={FORK[1] - 100}
+            text="CATEGORIZE"
+            color={caption}
+            align="center"
+         />
+         <Label
+            x={README.x}
+            y={README.y - 40}
+            text="README.MD"
+            color={caption}
+         />
+      </>
+   );
+};
 
 export default BadgePipeline;
