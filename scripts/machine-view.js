@@ -78,9 +78,18 @@ function loadData(rootDir) {
    const email = options
       .find((o) => o.link?.startsWith("mailto:"))
       ?.link.slice("mailto:".length);
-   const booking = options.find((o) => o.link?.includes("cal.com"))?.link;
+   // Exact host match: a substring check would accept evil.example/cal.com.
+   const booking = options.find((o) => hostOf(o.link) === "cal.com")?.link;
    return { ...data, contact: { email, booking } };
 }
+
+const hostOf = (url) => {
+   try {
+      return new URL(url).hostname;
+   } catch {
+      return "";
+   }
+};
 
 const socialLink = (personal, name) =>
    personal.social_profiles?.find((p) => p.name === name)?.link;

@@ -30,6 +30,13 @@ const RENDER_SCALE = 4;
 // Pin the PDF and the .tex sources to one release tag so the web view and the
 // page images can never come from different builds. Falls back to the
 // "latest" PDF and main-branch sources if the API is unreachable.
+// The tag ends up in URLs and logs, so accept only vMAJOR.MINOR.PATCH and
+// rebuild it from the parsed numbers rather than passing the API string on.
+const toReleaseTag = (name) => {
+   const m = /^v(\d{1,4})\.(\d{1,4})\.(\d{1,4})$/.exec(String(name));
+   return m ? `v${Number(m[1])}.${Number(m[2])}.${Number(m[3])}` : null;
+};
+
 const latestTag = async () => {
    const headers = { Accept: "application/vnd.github+json" };
    if (process.env.GITHUB_TOKEN)
@@ -39,7 +46,7 @@ const latestTag = async () => {
          `https://api.github.com/repos/${REPO}/releases/latest`,
          { headers, signal: AbortSignal.timeout(15_000) },
       );
-      return r.ok ? (await r.json()).tag_name : null;
+      return r.ok ? toReleaseTag((await r.json()).tag_name) : null;
    } catch {
       return null;
    }
