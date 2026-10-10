@@ -2,6 +2,31 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.17.0] - 2026-10-10
+
+### Added
+
+- **Experience scenes.** Every role card plays its own animated scene of what that role did: the Cloud Consultant card shows the consulting loop (customer need, design, code, plan gate, ship, handover, sign-off), the AWS internship shows training, certification, a proof of concept and an ECS migration through a Terraform plan gate, and the Ikarus-3D card shows lint, test and quality gates, image build, registry, ECS deploy and server provisioning. Inside the details modal each engagement gets a banner scene: the RWS Terraform landing zone with Transit Gateway onboarding, State Street's security controls across accounts, DTCC's Terraform modernization to plan and apply, and the SageMaker train, gate, deploy and drift loop. Scenes mount near the viewport and freeze in Reduced. Optional `scene` keys on roles and engagements in `experience.json` are checked against the scene registry.
+- **Stats highlights.** A Highlights group leads the section: 10/10 CSAT (State Street), ~90% faster account setup (RWS, 3+ days to under 4 hours), AWS samples published and 5x TFC Ambassador, each checked by the validator against the data behind it.
+- **GitHub and LeetCode cards.** The GitHub card shows last-year contributions, pull requests, longest streak and a top-languages bar, computed the way the profile README card computes them. The LeetCode card adds a rating curve over every attended contest that draws in on view, with a peak marker, and a solved-by-difficulty bar.
+- **Cloud Networking service** with a Transit Gateway hub-and-spoke inspection scene.
+- **News filters.** Type chips (All plus each type, with counts) above the list; filtering animates the rows.
+
+### Changed
+
+- **Services: 7 cards become 6**, each with bullets backed by real numbers: Landing Zones & Cloud Governance, Infrastructure as Code & CI/CD, Cloud Networking, MLOps & GenAI on AWS, AI Agents & Developer Tooling, Full-Stack Product Builds. The MCP and AI-DLC scenes merge into one agent, tool, hook, commit scene; Competitive Programming and the separate Cloud Consulting card are gone.
+- **News is a compact commit log**: one 38 px line per item on desktop with a type icon, a blue shade per type and the hash at the end; phones wrap the full text instead of clipping it. The collapsed view shows the 6 newest for the active filter.
+- **Education logos are sharp SVGs**: redrawn NIT Warangal and DAVV crests, the Happy Days School vector logo from the school's own planner, and a vector trace of the Kids Garden School (Shivpuri) emblem, shown at 30 px in a 40 px near-white tile.
+- **LeetCode rating rounds the way LeetCode displays it**: 2165.70 shows as 2166 (was floored to 2165), across the card, the history and the About copy; the resume moved to 2166 in the same change.
+- **The weekly live-data sync** also refreshes the GitHub stats, the LeetCode rating history and the difficulty split. GitHub numbers only rewrite the data on a real move (contributions or PRs over 5%, a new longest streak, or a language shift), so most weeks still open no PR.
+
+### Fixed
+
+- **"Show less" in News keeps you where you were.** Collapsing the list (or changing filter while expanded) keeps the button where it was on screen instead of leaving the visitor near the bottom of the page.
+- **Service scene labels are readable on phones** (9 px or more, was about 6 px); accent colours are all in the blue family; the 6 cards fill an even grid.
+- **Counters render "4,000+" and "~90%" correctly**; "4,000+" used to show as a big "4" with a small ",000+".
+- **The Kids Garden School logo** came from a different school's site (Siwan, Bihar).
+
 ## [4.16.0] - 2026-10-10
 
 ### Changed
