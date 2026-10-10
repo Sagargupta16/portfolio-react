@@ -36,7 +36,7 @@ Section links support reloads and browser history. Navigation loads the content 
 | **Smooth Scroll** | Lenis (ReactLenis)                                                                 |
 | **Icons**         | Lucide React, React Icons                                                          |
 | **Contact**       | EmailJS                                                                            |
-| **GitHub**        | react-github-calendar                                                              |
+| **GitHub**        | Custom contribution heatmap (live API, no library)                                 |
 | **Testing**       | Vitest 5, React Testing Library                                                    |
 | **Code Quality**  | ESLint 10, typescript-eslint, jsx-a11y-x, Prettier                                 |
 | **Deployment**    | GitHub Actions, GitHub Pages                                                       |
@@ -55,7 +55,7 @@ Section links support reloads and browser history. Navigation loads the content 
 | **Projects**     | Filterable cards with evidence badges; live screenshots for deployed apps and repo-accurate animated scenes for the rest; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`)        |
 | **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                    |
 | **Services**     | Six fact-based offerings in an even bento grid, each with a scene that shows the real mechanism (labels 9 px+ on phones)                                                                                                |
-| **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub and LeetCode cards (languages, rating curve, difficulty split) refreshed weekly                                                                  |
+| **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                                               |
 | **News**         | Dated milestones as a one-line commit graph with stable hashes, filterable by type                                                                                                                                      |
 | **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                       |
 | **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build |
@@ -128,7 +128,6 @@ src/
 │   │   ├── DeferredSection.tsx        # Stable anchors + lazy loading/error boundaries
 │   │   └── PageSection.tsx            # Shared section heading and content layout
 │   └── ui/
-│       ├── BrowserMockup.tsx          # 3D tilted browser window (CSS perspective)
 │       ├── CharacterReveal.tsx        # Spring char-by-char animation (word-wrapped)
 │       ├── DevAvatar.tsx              # About avatar: monogram + orbit of real stack glyphs
 │       ├── GlassCard.tsx              # Flat card with optional pointer tilt
