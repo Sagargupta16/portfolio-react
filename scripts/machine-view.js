@@ -186,9 +186,9 @@ function buildMarkdown(d) {
    for (const line of Object.values(personal.about ?? {})) {
       out.push(`- ${stripLeadToken(line)}`);
    }
-   out.push("");
 
    out.push(
+      "",
       "## Impact",
       "",
       ...impactLines(personal.impact),

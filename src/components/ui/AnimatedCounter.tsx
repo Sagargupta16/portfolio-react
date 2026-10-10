@@ -10,6 +10,45 @@ interface Props {
    compact?: boolean;
 }
 
+const isDigit = (ch: string | undefined) =>
+   ch !== undefined && ch >= "0" && ch <= "9";
+
+/**
+ * Split a display value into an optional prefix (e.g. "~"), the number
+ * (thousands separators and one decimal point allowed, e.g. "4,000" or
+ * "9.5") and a trailing suffix (e.g. "+", "k", "/10"). A single left-to-right
+ * scan, so no input can make it backtrack. decimals drives toFixed so values
+ * like a CGPA of 9.5 animate and land correctly; separators are kept.
+ */
+const parseCounterValue = (str: string) => {
+   let start = 0;
+   while (start < str.length && !isDigit(str[start])) start++;
+   if (start === str.length) {
+      return {
+         prefix: "",
+         numericValue: 0,
+         decimals: 0,
+         grouped: false,
+         suffix: str,
+      };
+   }
+   let end = start;
+   while (isDigit(str[end]) || str[end] === ",") end++;
+   if (str[end] === "." && isDigit(str[end + 1])) {
+      end++;
+      while (isDigit(str[end])) end++;
+   }
+   const num = str.slice(start, end);
+   const dot = num.indexOf(".");
+   return {
+      prefix: str.slice(0, start),
+      numericValue: Number.parseFloat(num.replaceAll(",", "")),
+      decimals: dot === -1 ? 0 : num.length - dot - 1,
+      grouped: num.includes(","),
+      suffix: str.slice(end),
+   };
+};
+
 const AnimatedCounter = ({
    value,
    duration = 2,
@@ -24,28 +63,10 @@ const AnimatedCounter = ({
    // (e.g. "+", "k", "/10"). decimals drives toFixed so values like a CGPA of
    // 9.5 animate and land correctly instead of being truncated to an integer;
    // a value written with separators keeps them.
-   const { prefix, numericValue, decimals, grouped, suffix } = useMemo(() => {
-      const str = String(value);
-      const match = /^(\D*?)(\d[\d,]*(?:\.\d+)?)(.*)$/s.exec(str);
-      if (match) {
-         const num = match[2];
-         const dot = num.indexOf(".");
-         return {
-            prefix: match[1],
-            numericValue: Number.parseFloat(num.replaceAll(",", "")),
-            decimals: dot === -1 ? 0 : num.length - dot - 1,
-            grouped: num.includes(","),
-            suffix: match[3],
-         };
-      }
-      return {
-         prefix: "",
-         numericValue: 0,
-         decimals: 0,
-         grouped: false,
-         suffix: str,
-      };
-   }, [value]);
+   const { prefix, numericValue, decimals, grouped, suffix } = useMemo(
+      () => parseCounterValue(String(value)),
+      [value],
+   );
 
    // Digits roll into place (NumberFlow) once the tile is half in view: each
    // digit spins on its own wheel instead of a counter ticking through every
