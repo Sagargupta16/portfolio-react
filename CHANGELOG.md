@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.15.1] - 2026-10-10
+
+### Changed
+
+- **The nav bar stays fixed at the top.** It no longer slides away while scrolling down. That hide-on-scroll left the bar hidden after Back to top (scrolls started through section navigation were skipped by the hide logic), and an always-visible bar keeps the section links one tap away. The bar still fades in on load and turns solid past 50 px. The hide state, its keyboard-focus and Reduced-mode exceptions, and the Lenis `source: "nav"` tag it relied on are removed.
+
+### Added
+
+- **Three upstream PRs in Open Source.** terraform-aws-modules/terraform-aws-atlantis #446 (merged 2026-10-08) and hashicorp/terraform-provider-aws #50225 and #50226 (open). The weekly live-data sync only refreshes PRs already listed, so new ones have to be added by hand.
+
 ## [4.15.0] - 2026-10-10
 
 ### Changed

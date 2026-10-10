@@ -113,7 +113,6 @@ export const SectionNavigationProvider = ({
          // Lenis honors the anchor's scroll-margin-top, just like native scroll.
          lenis.scrollTo(target, {
             immediate: request.immediate,
-            userData: { source: "nav" },
             onComplete: focusTarget,
          });
       } else {

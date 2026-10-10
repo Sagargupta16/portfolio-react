@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, ScanEye, Search, X } from "lucide-react";
 import { setPaletteOpen } from "@utils/paletteState";
@@ -19,9 +19,6 @@ interface NavSection {
 
 interface NavBarProps {
    scrolled: boolean;
-   hidden: boolean;
-   /** Keyboard focus inside the bar brings a hidden bar back. */
-   onFocusChange: (focused: boolean) => void;
    isMobile: boolean;
    sections: NavSection[];
    activeSection: string;
@@ -30,13 +27,10 @@ interface NavBarProps {
    onToggleMenu: () => void;
 }
 
-// 64px bar plus its hairline: fully clear of the viewport when hidden.
-const HIDDEN_Y = -72;
 const ENTRANCE_TRANSITION = {
    duration: DURATION.slow,
    ease: "easeOut" as const,
 };
-const SLIDE_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 const COLOR_TRANSITION = { color: { duration: 0.2, ease: EASING.brisk } };
 const ICON_HOVER = { color: TEXT_PRIMARY };
 
@@ -56,8 +50,6 @@ const ICON_STYLE: React.CSSProperties = {
 
 const NavBar = ({
    scrolled,
-   hidden,
-   onFocusChange,
    isMobile,
    sections,
    activeSection,
@@ -65,18 +57,10 @@ const NavBar = ({
    onNavigate,
    onToggleMenu,
 }: NavBarProps) => {
-   // The mount slide keeps its slow entrance; every later y change (hide on
-   // scroll down, show on scroll up) uses the quicker slide.
-   const [entered, setEntered] = useState(false);
    const annotationsOn = useAnnotationsOn();
 
    return (
       <motion.nav
-         onFocusCapture={() => onFocusChange(true)}
-         onBlurCapture={(e: React.FocusEvent<HTMLElement>) => {
-            if (!e.currentTarget.contains(e.relatedTarget))
-               onFocusChange(false);
-         }}
          layoutRoot
          style={{
             position: "fixed",
@@ -94,9 +78,8 @@ const NavBar = ({
             transition: "background-color 0.3s, border-color 0.3s",
          }}
          initial={{ y: -80, opacity: 0 }}
-         animate={{ y: hidden ? HIDDEN_Y : 0, opacity: 1 }}
-         transition={entered ? SLIDE_TRANSITION : ENTRANCE_TRANSITION}
-         onAnimationComplete={() => setEntered(true)}
+         animate={{ y: 0, opacity: 1 }}
+         transition={ENTRANCE_TRANSITION}
          aria-label="Primary"
       >
          <div

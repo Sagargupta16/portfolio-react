@@ -72,6 +72,15 @@ describe("navigation and persistent UI state", () => {
       fireEvent.change(message, {
          target: { value: "Keep this unsent draft." },
       });
+      // Navigation focuses the section when its scroll completes; let that
+      // land first, or on a slow runner it arrives after the toggle is focused.
+      await waitFor(
+         () =>
+            expect(document.activeElement).toBe(
+               document.getElementById("contact"),
+            ),
+         { timeout: 5000 },
+      );
 
       for (const mode of ["reduced", "full"]) {
          const toggle = screen.getByRole("button", { name: /^Motion mode:/ });
