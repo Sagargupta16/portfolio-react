@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { getSkills } from "@data/skills";
 import {
    SiPython,
    SiJavascript,
@@ -47,6 +48,30 @@ import {
    SiUnity,
    SiVercel,
    SiGooglechrome,
+   SiPytest,
+   SiPacker,
+   SiApacheairflow,
+   SiPrefect,
+   SiKeras,
+   SiOllama,
+   SiJsonwebtokens,
+   SiSqlalchemy,
+   SiDrizzle,
+   SiMongoose,
+   SiNeon,
+   SiShadcnui,
+   SiReactrouter,
+   SiPreact,
+   SiVuedotjs,
+   SiChartdotjs,
+   SiAxios,
+   SiLucide,
+   SiCloudflareworkers,
+   SiCloudflare,
+   SiRender,
+   SiGithubpages,
+   SiPnpm,
+   SiEsbuild,
 } from "react-icons/si";
 import { FaJava, FaAws } from "react-icons/fa";
 import { TbBrandCSharp, TbBrandVscode, TbApi } from "react-icons/tb";
@@ -75,6 +100,22 @@ import {
    Cloud,
    GitFork,
    Gamepad2,
+   GitPullRequest,
+   FlaskConical,
+   ShieldCheck,
+   ScanSearch,
+   Shield,
+   Bird,
+   CloudUpload,
+   MessageSquareText,
+   ChartLine,
+   Scale,
+   BrainCircuit,
+   Radio,
+   KeyRound,
+   Upload,
+   Waypoints,
+   Rocket,
 } from "lucide-react";
 
 interface IconProps {
@@ -122,6 +163,13 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    Motion: { Icon: SiFramer, color: "#F5F5F5" },
    Redux: { Icon: SiRedux, color: "#764ABC" },
    MUI: { Icon: SiMui, color: "#007FFF" },
+   "shadcn/ui": { Icon: SiShadcnui, color: "#FFFFFF" },
+   "React Router": { Icon: SiReactrouter, color: "#F44250" },
+   Preact: { Icon: SiPreact, color: "#9B6BE0" },
+   Vue: { Icon: SiVuedotjs, color: "#4FC08D" },
+   "Chart.js": { Icon: SiChartdotjs, color: "#FF6384" },
+   Axios: { Icon: SiAxios, color: "#8C6BF0" },
+   Lucide: { Icon: SiLucide, color: "#F56565" },
 
    // Backend & databases
    "Node.js": { Icon: SiNodedotjs, color: "#5FA04E" },
@@ -134,8 +182,16 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    MySQL: { Icon: SiMysql, color: "#4479A1" },
    Redis: { Icon: SiRedis, color: "#FF4438" },
    SQLite: { Icon: SiSqlite, color: "#6BB3DE" },
+   WebSockets: { Icon: Radio, color: BLUE },
+   JWT: { Icon: SiJsonwebtokens, color: "#FB015B" },
+   OAuth: { Icon: KeyRound, color: BLUE },
+   Multer: { Icon: Upload, color: BLUE },
+   SQLAlchemy: { Icon: SiSqlalchemy, color: "#E2533A" },
+   "Drizzle ORM": { Icon: SiDrizzle, color: "#C5F74F" },
+   Mongoose: { Icon: SiMongoose, color: "#E35B5B" },
+   Neon: { Icon: SiNeon, color: "#00E599" },
 
-   // Cloud & DevOps
+   // DevOps & IaC
    Terraform: { Icon: SiTerraform, color: "#844FBA" },
    Docker: { Icon: SiDocker, color: "#2496ED" },
    Ansible: { Icon: SiAnsible, color: "#EE4444" },
@@ -145,14 +201,19 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    GitOps: { Icon: GitFork, color: BLUE },
    "Blue-Green Deployment": { Icon: ArrowLeftRight, color: BLUE },
    Linux: { Icon: SiLinux, color: "#FCC624" },
-   "AWS CDK": { Icon: FaAws, color: AWS_ORANGE },
-   "AWS Step Functions": { Icon: FaAws, color: AWS_ORANGE },
    "Infrastructure as Code": { Icon: FileCode2, color: BLUE },
+   "HCP Terraform": { Icon: SiTerraform, color: "#844FBA" },
+   Atlantis: { Icon: GitPullRequest, color: BLUE },
+   tftest: { Icon: FlaskConical, color: BLUE },
+   PyTest: { Icon: SiPytest, color: "#0A9EDC" },
+   Packer: { Icon: SiPacker, color: "#02A8EF" },
+   "Policy-as-Code": { Icon: ShieldCheck, color: BLUE },
+   Checkov: { Icon: ScanSearch, color: BLUE },
+   DevSecOps: { Icon: Shield, color: BLUE },
+   "Canary Deployments": { Icon: Bird, color: BLUE },
+   "Cloud Migration": { Icon: CloudUpload, color: BLUE },
 
    // AI / ML
-   "AWS SageMaker": { Icon: FaAws, color: AWS_ORANGE },
-   "AWS Bedrock": { Icon: FaAws, color: AWS_ORANGE },
-   "Amazon Q": { Icon: FaAws, color: AWS_ORANGE },
    TensorFlow: { Icon: SiTensorflow, color: "#FF6F00" },
    PyTorch: { Icon: SiPytorch, color: "#EE4C2C" },
    "Scikit-learn": { Icon: SiScikitlearn, color: "#F7931E" },
@@ -165,8 +226,15 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    "RAG Pipelines": { Icon: Layers, color: BLUE },
    "Feast (Feature Store)": { Icon: Database, color: BLUE },
    LLMOps: { Icon: Bot, color: BLUE },
+   "Prompt Engineering": { Icon: MessageSquareText, color: BLUE },
+   "Apache Airflow": { Icon: SiApacheairflow, color: "#017CEE" },
+   Prefect: { Icon: SiPrefect, color: "#FFFFFF" },
+   Keras: { Icon: SiKeras, color: "#D00000" },
+   Matplotlib: { Icon: ChartLine, color: BLUE },
+   "SHAP / Fairlearn": { Icon: Scale, color: BLUE },
+   Ollama: { Icon: SiOllama, color: "#FFFFFF" },
 
-   // Tools & platforms
+   // AI developer tools, then tools & platforms
    "Claude Code": { Icon: SiAnthropic, color: "#D97757" },
    Kiro: { Icon: Bot, color: BLUE },
    "Cursor AI": { Icon: MousePointer2, color: BLUE },
@@ -178,13 +246,22 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    Figma: { Icon: SiFigma, color: "#F24E1E" },
    "MCP Protocol": { Icon: Plug, color: BLUE },
    "AI Agent Frameworks": { Icon: Bot, color: BLUE },
+   "Anthropic SDK": { Icon: SiAnthropic, color: "#D97757" },
+   "OpenAI API": { Icon: BrainCircuit, color: BLUE },
    SonarQube: { Icon: SiSonarqubeserver, color: "#4E9BCD" },
    Unity: { Icon: SiUnity, color: "#FFFFFF" },
    Vercel: { Icon: SiVercel, color: "#FFFFFF" },
    "Chrome Extensions": { Icon: SiGooglechrome, color: "#4285F4" },
+   "Cloudflare Workers": { Icon: SiCloudflareworkers, color: "#F38020" },
+   "Cloudflare R2": { Icon: SiCloudflare, color: "#F38020" },
+   Render: { Icon: SiRender, color: "#FFFFFF" },
+   "GitHub Pages": { Icon: SiGithubpages, color: "#FFFFFF" },
+   pnpm: { Icon: SiPnpm, color: "#F69220" },
+   esbuild: { Icon: SiEsbuild, color: "#FFCF00" },
 
    // CS fundamentals
    "Data Structures & Algorithms": { Icon: Binary, color: BLUE },
+   "System Design": { Icon: Waypoints, color: BLUE },
    "Object-Oriented Programming": { Icon: Boxes, color: BLUE },
    "Computer Networks": { Icon: Network, color: BLUE },
    "Operating Systems": { Icon: Cpu, color: BLUE },
@@ -200,6 +277,7 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    Adaptability: { Icon: Shuffle, color: BLUE },
 
    // Areas of interest
+   "Forward Deployed Engineering": { Icon: Rocket, color: BLUE },
    "Full-Stack Development": { Icon: Layers, color: BLUE },
    "AI/ML Engineering": { Icon: Brain, color: BLUE },
    "DevOps & Cloud": { Icon: Cloud, color: BLUE },
@@ -208,7 +286,16 @@ const SKILL_ICONS: Record<string, SkillIcon> = {
    "Game Development": { Icon: Gamepad2, color: BLUE },
 };
 
-/** Grouped AWS service strings ("AWS (EC2, ...)") all take the AWS glyph. */
+const AWS_ICON: SkillIcon = { Icon: FaAws, color: AWS_ORANGE };
+
+/*
+ * The AWS category lists services by their short names ("EC2", "Config"), so
+ * membership comes from the data rather than a name prefix. Simple Icons no
+ * longer ships per-service AWS marks; every service takes the AWS glyph.
+ */
+const AWS_SERVICES = new Set(getSkills().aws);
+
+/** AWS services and any "AWS ..." name (the avatar's bare "AWS") take the AWS glyph. */
 export const getSkillIcon = (name: string): SkillIcon | undefined =>
    SKILL_ICONS[name] ??
-   (name.startsWith("AWS") ? { Icon: FaAws, color: AWS_ORANGE } : undefined);
+   (AWS_SERVICES.has(name) || name.startsWith("AWS") ? AWS_ICON : undefined);

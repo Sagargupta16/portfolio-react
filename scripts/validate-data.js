@@ -336,11 +336,13 @@ if (requireRecord(experience, "experience")) {
 }
 
 const PRIMARY_SKILL_CATEGORIES = [
+   "aws",
+   "devops",
+   "ai_ml",
+   "ai_tools",
    "languages",
    "frontend",
    "backend",
-   "cloud_devops",
-   "ai_ml",
    "tools_platforms",
 ];
 const HERO_STACK_PATH = "skills.hero_stack";

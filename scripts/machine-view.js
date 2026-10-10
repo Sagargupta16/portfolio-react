@@ -34,8 +34,10 @@ const stripLeadToken = (text) => clean(String(text).replace(/^\S+\s/, ""));
 
 // Labels the site uses where the key alone reads badly.
 const LABELS = {
-   cloud_devops: "Cloud & DevOps",
+   aws: "AWS",
+   devops: "DevOps & IaC",
    ai_ml: "AI / Machine Learning",
+   ai_tools: "AI developer tools",
    backend: "Backend & Databases",
    tools_platforms: "Tools & Platforms",
    cs_fundamentals: "CS fundamentals",

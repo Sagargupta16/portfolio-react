@@ -1359,6 +1359,67 @@ a.news-row--major:focus-visible {
    }
 }
 
+/* ===== Nav "More" menu (NavMoreMenu.tsx) ===== */
+.nav-more-item {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+   width: 100%;
+   padding: 10px 12px;
+   border: none;
+   border-radius: 10px;
+   background: transparent;
+   text-align: left;
+   cursor: pointer;
+   transition:
+      background-color 0.15s ease,
+      transform 0.12s ease;
+}
+
+.nav-more-item__label {
+   font-size: 14px;
+   font-weight: 600;
+}
+
+.nav-more-item__blurb {
+   font-size: 12px;
+   line-height: 1.4;
+}
+
+.nav-more-item.is-active {
+   background: rgb(var(--ch-white) / 0.06);
+}
+
+.nav-more-item:active {
+   transform: scale(0.98);
+}
+
+.nav-more-item:focus-visible {
+   outline: 2px solid var(--color-accent-blue);
+   outline-offset: -2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .nav-more-item:hover {
+      background: rgb(var(--ch-white) / 0.05);
+   }
+}
+
+/* Skill rails (SkillRail.tsx) reuse the badge rail. Every other rail runs the
+   opposite way so stacked rows pass each other; the block padding leaves room
+   for the chip hover lift inside the clip. */
+.skill-rail {
+   padding-block: 4px;
+}
+
+.skill-rail__group {
+   align-items: center;
+}
+
+.skill-rail--reverse .badge-rail__track {
+   animation-direction: reverse;
+}
+
 /* ===== Form Input ===== */
 .form-input {
    width: 100%;

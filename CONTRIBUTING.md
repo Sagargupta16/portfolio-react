@@ -94,7 +94,7 @@ Set the value to `null` or remove the setting to disable the spotlight. If you r
 
 ### Add a skill or change its icon
 
-Add the skill name to its category in [data/skills.json](data/skills.json). To give it an icon, add the exact name to `SKILL_ICONS` in [src/utils/skillIcons.ts](src/utils/skillIcons.ts). A skill without a registered icon still renders as text.
+Add the skill name to its category in [data/skills.json](data/skills.json). To give it an icon, add the exact name to `SKILL_ICONS` in [src/utils/skillIcons.ts](src/utils/skillIcons.ts). A skill without a registered icon still renders as text. AWS services go in the `aws` category by their short name ("EC2", "Config") and take the AWS glyph automatically. Each primary category renders as a moving rail; give a long category a second rail with `rails: 2` in `CATEGORY_CONFIG` ([src/pages/skill/Skill.tsx](src/pages/skill/Skill.tsx)).
 
 The `hero_stack` list in the same JSON file controls the floating hero artwork. Each listed name must also appear in a primary skill category; validation checks that the list contains 10 to 14 unique entries.
 

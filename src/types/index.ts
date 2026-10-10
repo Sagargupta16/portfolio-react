@@ -218,11 +218,13 @@ export interface ProjectsFile {
 
 // ===== Skills =====
 export interface SkillsData {
+   aws: string[];
+   devops: string[];
+   ai_ml: string[];
+   ai_tools: string[];
    languages: string[];
    frontend: string[];
    backend: string[];
-   cloud_devops: string[];
-   ai_ml: string[];
    tools_platforms: string[];
    cs_fundamentals: string[];
    soft_skills: string[];

@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.16.0] - 2026-10-10
+
+### Changed
+
+- **Desktop nav: four links and a More menu.** About, Experience, Skills and Projects stay as direct links; Education, Awards, Services, Stats and News sit under "More", each with a one-line description. The menu opens on click or mouse hover, closes on Escape, an outside press, a pick or focus leaving, and the active pill moves onto "More" while one of its sections is in view. The phone menu still lists every section.
+- **News moved down the page**, after Stats and before Contact. The hero's LATEST line already shows the newest item at the top.
+- **Skills are moving rails**, like the learning-badge rail: one slow marquee per category, alternating direction row to row, paused on hover, at a constant 40 px/s whatever the row length (the loop length is measured, not guessed). Short categories repeat inside each copy so the seam never shows. Screen readers get each list once; Reduced mode keeps the wrapped, static chips.
+- **Skills regrouped.** Every AWS service now sits in one AWS group (two rails) instead of five bundled "AWS (...)" strings spread over two categories. New groups: DevOps & IaC and AI Developer Tools. `cloud_devops` is now `devops`; `aws` and `ai_tools` are new keys.
+
+### Added
+
+- **58 skills backed by projects, experience, the resume and upstream contributions:** Control Tower, IAM Identity Center, IAM, Config, KMS, Transit Gateway, VPC IPAM, API Gateway, ECR, EBS, Route 53, Direct Connect, Site-to-Site VPN, RCPs, Tag Policies, DynamoDB; HCP Terraform, Atlantis, tftest, PyTest, Packer, Policy-as-Code, Checkov, DevSecOps, Canary Deployments, Cloud Migration; Prompt Engineering, Apache Airflow, Prefect, Keras, Matplotlib, SHAP / Fairlearn, Ollama; Anthropic SDK, OpenAI API; WebSockets, JWT, OAuth, Multer, SQLAlchemy, Drizzle ORM, Mongoose, Neon; shadcn/ui, React Router, Preact, Vue, Chart.js, Axios, Lucide; Cloudflare Workers, Cloudflare R2, Render, GitHub Pages, pnpm, esbuild; System Design. 96 skills become 150 primary plus 20 secondary.
+- **Forward Deployed Engineering** in Areas of Interest.
+
 ## [4.15.1] - 2026-10-10
 
 ### Changed
