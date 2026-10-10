@@ -150,8 +150,8 @@ export interface SiteConfig {
 export interface ImpactStats {
    clients_served: string;
    clients_note: string;
-   workloads_migrated: string;
-   aws_accounts: string;
+   terraform_resources: string;
+   terraform_workspaces: string;
    security_controls: string;
 }
 

@@ -2,6 +2,104 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.15.0] - 2026-10-10
+
+### Changed
+
+- **AWS experience rewritten from the engagement write-up.** Only facts the write-up marks verified (git, HCP Terraform state, mail from others) are used, and team results say so.
+   - **RWS:** DevOps and IaC lead for two programmes (Chalfont data-centre exit to Frankfurt, Lot 1 / Wingman in Stockholm); 281 of 549 PRs across 37 repos, 251 of 252 merged by RWS engineers; 22 HCP Terraform workspaces and 4,400+ resources with 0 errored; two Transit Gateway hubs, tag-driven firewall access (onboarding in about 15 minutes), AWS IPAM; 13 first-version modules. New case-study brief.
+   - **Removed claims the write-up does not support:** "sole DevOps consultant" (a second DevOps consultant joined), "50+ workloads into 135+ accounts" and "~90% faster setup".
+   - **State Street:** about 10 services in Terraform, the Amazon Detective enablement design, and the 1,000+ preventative controls marked as team work; the unsupported "3 consecutive 5/5 Pulse ratings" is gone.
+   - **DTCC:** ends Nov 2025 (last billable week), not Dec.
+   - The Amplify APG pattern is listed as co-authored.
+- **Impact numbers.** `personal.impact` swaps `workloads_migrated` / `aws_accounts` for `terraform_resources` / `terraform_workspaces`; the Stats tile reads "Resources under Terraform: 4,400+, 22 workspaces, 0 errored (RWS)", and the security-controls tile now says it is a team result. Validator, types, Stats and the machine view follow the rename.
+
+### Documentation
+
+- Changelog caught up for 4.11.0 to 4.14.0 (PRs #230 to #246, which merged without entries).
+
+## [4.14.0] - 2026-10-10
+
+### Added
+
+- **Every project cover rebuilt (#246).** All 32 animated scene covers were redrawn after reading each repo, so each one shows that project's real mechanism in its own nouns: Organizations policies attaching to OUs, the real CodeDeploy canary between two target groups, the GitHub Actions job graph from `main.yml`, PR rows moving from in review to merged, the real Pac-Man maze and Minesweeper board, the LSTM window over Close prices. Three depth layers, curved hairline connectors, 4 to 6 s loops with at most 12 animated nodes. Scenes are sized for 343 to 370 px cards and the scene bottom fade starts at 72% instead of 55%. `DocsScene` split into `covers/docs/`, a shared drawing kit in `covers/kit/`, and the three card actions get their own variants (`card-github`, `card-leetcode`, `card-oss`).
+- **Shareable project links (#245).** Opening a project writes `?project=<slug>` to the address bar; a link like `?project=sagemaker-image-classification-mlops#projects` opens that project's details, and the details header has a Copy link button.
+- **Visitor time gap (#245).** The footer status bar shows the visitor's own time and the gap to his ("4h 30m ahead of you"), hidden when both clocks agree; daylight saving comes from Intl.
+- **RSS feed (#245).** `rss.xml` (40 newest news items, stable guids from the News hash) is generated at build and linked from the footer, the page head and Ctrl+K.
+- **Slide to contact (#245).** On phones the footer end note is a slide-to-email track; it stays a real `mailto:` link. Desktop keeps press-and-hold copy.
+- **Bust glint (#245).** On hover or tap the About bust catches a glint across the sunglasses and throws three spark ticks.
+
+### Fixed
+
+- Annotation pins pop from scale 0.4 instead of 0, the compare slider ignores a second finger mid-drag, and the Ctrl+K backdrop fades in with the panel (#246, from a motion review).
+- Kinfolk cover rows no longer read as stripes; twelve new Sonar findings in the cover scenes cleared (#246).
+
+## [4.13.0] - 2026-10-10
+
+### Added
+
+- **Case-study briefs (#244).** Featured projects and experience engagements open with Problem, What I built, Key decisions, Outcome and Inspect (links moved to the top). New optional `case_study` field, validated, drafted only from each entry's own text and the repos' READMEs.
+- **Project demos (#244).** Lazy per-project demos in the details: an animated SageMaker pipeline (49), a terraform terminal using the governance repo's real commands (52), and a blue/green before/after slider (13).
+- **Evidence badges (#244).** Published by AWS, Live, or Open source on cards and in details, derived from existing fields.
+- **CV web view (#244).** Read CV opens the CV as HTML: the deploy step parses the latex-resume `.tex` at the same release tag as the PDF into `cv.json`; Web and PDF tabs and Download PDF. The phone number is left out of the web view.
+- **How it's built notes (#244).** A nav toggle (and `notes --on` in Ctrl+K) pins numbered notes on the live page; each claim is checkable in the repo.
+- **Jargon tooltips (#244).** 17 cloud terms get a tap or hover definition in About and project descriptions.
+- **Machine view (#244).** `llms.txt`, `index.md` (the whole site as Markdown) and a vCard are generated at build from `data/*.json`, with footer chips, Ctrl+K commands and a Save contact card button.
+- **Swipe to close (#244).** Detail sheets on phones get a grab handle and drag-down dismiss with the backdrop fading along.
+
+### Changed
+
+- Headline "I build _secure_ AWS platforms that scale." and a smaller hero heading (60 px desktop, 32 px phone) (#244).
+- Data re-measured against live sources: 1800+ problems solved (LeetCode 1324 + GfG 521), GfG 500+, 5 active AWS certifications in meta and Stats (the expired Terraform Associate sorts last and is not counted), correct LeetCode handle in JSON-LD, 86 Terraform files, deploy-guide 38 guides and 13 platforms, skillcheck 3 runtimes, Rating Predictor 121K records, Ledger Sync v2.28.0. X profile removed, Music-Web-App dropped (archived) (#244).
+- Analytics inject after `load` and idle; a `<noscript>` summary links the machine-readable copies (#244).
+
+### Fixed
+
+- 50 decorative react-icons marked `aria-hidden`, the hold-to-copy name matches its visible text, GfG green raised to 6:1 contrast, contact inputs at 16 px so iOS does not zoom, hover looks gated to fine pointers so taps do not stick, press feedback on buttons (#244).
+- Release-tag validation in `prepare-resume.js` and an exact hostname check for the booking link (CodeQL and Sonar findings) (#244).
+
+## [4.12.0] - 2026-10-09
+
+### Added
+
+- **Weekly live data sync (#235).** `scripts/sync-live-data.js` refreshes PR states, stars, accepted discussion answers and LeetCode stats every Monday and opens one review PR; `data/*.json` (except `contact.json`) is published at `/portfolio-react/data/<name>.json`.
+- **News section (#237, #241).** A dated, newest-first feed with impact tiers, validated in `validate-data.js` and extended by the weekly sync; education milestones added (59 items, 2016 to 2026).
+- **Intro splash and signature (#238, #240).** The name is drawn in Yellowtail on every load and hands off to the hero; any input skips it; never on deep links or in Reduced. The hero and footer show the name in script.
+- **Pointer-aware avatar and card light (#238).** The avatar leans toward the pointer and cards get a pointer-following border light (fine pointers only).
+- **Cartoon bust and mascot (#242).** The About disc shows a cartoon bust made from his photos; an 8-frame mascot hops between section headings, waves on tap and dozes when idle.
+- **Command palette (#243).** Ctrl/Cmd+K opens a shell-styled palette (cmdk, lazy chunk) for sections, email, CV, booking, motion and projects.
+- **News as a commit graph, rolling stats digits, scroll-driven cover reveal, live Web Vitals footer (#243).**
+
+### Changed
+
+- **Type and copy (#243).** Bricolage and Inter optical-size builds, Geist Mono labels, Instrument Serif accent words, larger section titles, tighter copy with facts from `data/*.json`, verb-plus-object CTAs.
+- Accepted community answer on community/community#209074 added (#234).
+
+### Fixed
+
+- Redundant `role="presentation"` on the intro SVG removed (#239).
+
+### Security
+
+- sharp 0.35.5 for the librsvg CVE-2026-96889 advisory (#236).
+
+## [4.11.1] - 2026-10-06
+
+### Changed
+
+- Monthly dependency update, including @eslint-react/eslint-plugin 5.24.4 and pnpm 11.28.4 (#233).
+
+## [4.11.0] - 2026-09-25
+
+### Added
+
+- **Second AWS sample (#230).** AWS Organizations Governance on Control Tower (id 52) as a featured project and a 2026 publication, every number counted from the sample's Terraform, with a new `GovernanceScene` cover.
+- **Four card actions (#232).** GitHub Stats Card, LeetCode Card, OSS Contributions Card and readme-kit join community projects with Marketplace links; Credly Badge README Action notes its SVG card mode.
+
+### Fixed
+
+- SageMaker sample drift: file and module counts recounted from the live tree, Fairlearn and PSI drift jobs replace the retired services (#230); its publication is dated 2026 (#231).
+
 ## [4.10.0] - 2026-09-18
 
 ### Added

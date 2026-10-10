@@ -205,14 +205,14 @@ const StatsBand = () => {
                note: impactData.clients_note,
             },
             {
-               value: impactData.workloads_migrated,
-               label: "Workloads migrated",
-               note: `Into ${impactData.aws_accounts} AWS accounts`,
+               value: impactData.terraform_resources,
+               label: "Resources under Terraform",
+               note: `${impactData.terraform_workspaces} workspaces, 0 errored (RWS)`,
             },
             {
                value: impactData.security_controls,
                label: "Security controls",
-               note: "CCM v4.0 aligned",
+               note: "State Street landing zone, team result",
             },
             {
                value: String(speakingCount),

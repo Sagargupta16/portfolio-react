@@ -13,21 +13,23 @@
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
                "date": "Feb 2026 - Present",
                "description": {
-                  "1": "Leading greenfield AWS migration as the sole DevOps consultant - onboarding 50+ application workloads into 135+ AWS accounts, designing AWS Organizations OU structure, SCPs, tag policies, and Terraform + GitHub Actions CI/CD, cutting infrastructure setup time ~90% (3+ days per account to under 4 hours) versus manual provisioning.",
-                  "2": "Implemented governance and infrastructure security controls - preventative SCPs, tag compliance guardrails, Config rules, and Security Hub standards across the org - enforcing least-privilege access and CCMv4-aligned regulatory posture from day one.",
-                  "3": "Architecting the multi-account networking foundation - Transit Gateway hub-and-spoke, centralized VPC design, hybrid connectivity (VPN/Direct Connect), Route 53 DNS resolution, and egress control via centralized inspection.",
-                  "4": "Driving architecture decisions and defining migration roadmap for 50+ application workloads into 135+ AWS accounts. Delivering recommendations on cost optimization, HA, and DR to customer stakeholders.",
-                  "5": "Used Kiro for AI-driven requirement analysis, architecture documentation, and implementation specs."
+                  "1": "DevOps and IaC lead for two programmes at once: the Chalfont data-centre exit to AWS Frankfurt and the Lot 1 / Wingman landing zone in Stockholm. Authored 281 of 549 pull requests (51%) across 37 repositories; RWS engineers reviewed and merged 251 of my 252 merged PRs.",
+                  "2": "Built the foundation as code in HCP Terraform with OIDC: AWS Organizations OUs with Control Tower baselines, SCPs, tag policies and cost allocation, a least-privilege account baseline in 18 accounts, and IAM Identity Center (13 permission sets, 65 assignments). The estate runs 22 workspaces and 4,400+ resources with 0 errored.",
+                  "3": "Designed and built two Transit Gateway network hubs with Network Firewall inspection, Site-to-Site VPN and Direct Connect, plus a tag-driven, event-based firewall access model: a new workload network is onboarded in about 15 minutes with no network-team ticket.",
+                  "4": "Reversed a cost-based rejection of AWS IPAM with measured sandbox billing (prefix delegation cut the 200k-IP projection by about 94%); RWS approved it and the 14-pool IPAM went live in September 2026.",
+                  "5": "Wrote the first version of 13 reusable Terraform modules (23 of the org's 32 releases, called 78 times by deployment repos), applied every change in a sandbox mirror first through the same least-privilege role, and supported migration cutovers as technical coordinator.",
+                  "6": "Used Kiro and Claude Code for requirement analysis, architecture documentation and implementation specs: 52 design documents and runbooks with 133 architecture figures."
                },
                "case_study": {
-                  "problem": "A greenfield AWS migration has to land 50+ application workloads in 135+ AWS accounts with governance and security controls in place from day one.",
-                  "built": "Leading the migration as the sole DevOps consultant, designing the AWS Organizations OU structure, SCPs, tag policies, and Terraform plus GitHub Actions CI/CD.",
+                  "problem": "RWS had to exit a data centre and stand up a second, separate landing zone at the same time, on a flat AWS estate with no infrastructure as code, where RWS engineers merge and apply every change.",
+                  "built": "Led DevOps and IaC: org governance, account baselines, Identity Center and both Transit Gateway network hubs as HCP Terraform code, 281 of the 549 PRs across 37 repos.",
                   "decisions": [
-                     "Preventative SCPs, tag compliance guardrails, Config rules and Security Hub standards org-wide",
-                     "Transit Gateway hub-and-spoke with centralized VPC design and egress inspection",
-                     "Hybrid connectivity over VPN/Direct Connect with Route 53 DNS resolution"
+                     "A separate Stockholm hub with its own TGW ASN, sharing one module library",
+                     "Tag-driven firewall access through hub-owned prefix lists and one writer",
+                     "AWS IPAM with prefix delegation, enforced by a CreateVpc-only SCP",
+                     "Every change applied in a sandbox mirror first, same least-privilege role"
                   ],
-                  "outcome": "Terraform and GitHub Actions provisioning is cutting infrastructure setup time ~90% (3+ days per account to under 4 hours) versus manual provisioning."
+                  "outcome": "22 workspaces and 4,400+ resources with 0 errored, 251 of 252 PRs merged by RWS engineers, and new workload networks onboarded in about 15 minutes."
                },
                "skills": [
                   "AWS",
@@ -50,7 +52,7 @@
             },
             {
                "name": "DevOps Consultant - DTCC",
-               "date": "Aug 2025 - Dec 2025",
+               "date": "Aug 2025 - Nov 2025",
                "description": {
                   "1": "Refactored and created critical Terraform infrastructure code to enhance security and scalability, solving complex legacy modernization challenges in financial services.",
                   "2": "Used Amazon Q to accelerate code analysis and migration assessments, transforming infrastructure patterns to align with cloud-native principles.",
@@ -113,21 +115,20 @@
                "name": "DevOps Consultant - State Street",
                "date": "Oct 2024 - Aug 2025",
                "description": {
-                  "1": "Built Terraform module library covering 38+ AWS services with automated testing (tftest, PyTest), adopted across the client's cloud platform by application teams.",
-                  "2": "Architected 1000+ preventative security controls (AWS Config rules and Security Hub standards) aligned with CCMv4.0 compliance requirements, designing self-service capabilities with governance guardrails.",
-                  "3": "Delivered POCs showcasing use-cases of various AWS services through Terraform, and implemented evidence and federated architecture patterns.",
-                  "4": "Collaborated across Landing Zone, Compliance, Security, and Migrations workstreams. Achieved 10/10 CSAT score and 3 consecutive 5/5 Pulse ratings from customer."
+                  "1": "Built Terraform for about 10 AWS services with automated tests (tftest, PyTest) on the Federated Landing Zone team, part of the path that opened 38+ services to application teams.",
+                  "2": "Designed Amazon Detective enablement: delegated admin moved from the Control Tower management account to the Audit account through an AFT customization, organization-wide auto-enable in Terraform, and GuardDuty findings cut from 6-hour to 15-minute notifications.",
+                  "3": "Worked on EBS consumer-service design, compute service enablement and EC2 patching reviews, and on the security solution behind 1,000+ preventative controls aligned with CCMv4.0.",
+                  "4": "Collaborated across Landing Zone, Compliance, Security and Migrations workstreams. The landing zone went live for all of State Street on 2025-10-02 (team result); the project closed with a 10/10 CSAT."
                },
                "case_study": {
-                  "problem": "Application teams on the client's cloud platform needed tested Terraform building blocks and preventative security controls aligned with CCMv4.0.",
-                  "built": "Built a Terraform module library covering 38+ AWS services with automated testing, and architected 1000+ preventative security controls.",
+                  "problem": "A regulated bank exiting its data centres needed a Federated Landing Zone that could receive applications under CCMv4.0 compliance.",
+                  "built": "Terraform and test frameworks for about 10 services, plus the Amazon Detective enablement design, on the Federated Landing Zone team.",
                   "decisions": [
-                     "Automated module testing with tftest and PyTest",
-                     "Controls as AWS Config rules and Security Hub standards",
-                     "Self-service capabilities behind governance guardrails",
-                     "Evidence and federated architecture patterns"
+                     "Detective delegated admin in the Audit account through an AFT customization",
+                     "Organization-wide auto-enable for member accounts in Terraform",
+                     "Automated module testing with tftest and PyTest"
                   ],
-                  "outcome": "Application teams adopted the module library across the client's cloud platform, and the customer gave a 10/10 CSAT score and 3 consecutive 5/5 Pulse ratings."
+                  "outcome": "The landing zone went live for all of State Street on 2025-10-02 with 1,000+ preventative and 300+ detective controls (team result), and the project closed with a 10/10 CSAT."
                },
                "skills": [
                   "AWS",
@@ -156,7 +157,7 @@
                "year": "2026"
             },
             {
-               "title": "APG Pattern: Secure PR Previews and Approval-Gated Releases for Amplify Gen 2 with GitHub (Published)",
+               "title": "APG Pattern (co-author): Secure PR Previews and Approval-Gated Releases for Amplify Gen 2 with GitHub Actions",
                "type": "publication",
                "year": "2025"
             },

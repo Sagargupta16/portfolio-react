@@ -236,8 +236,8 @@ if (requireRecord(personal, "data/personal.json")) {
       for (const field of [
          "clients_served",
          "clients_note",
-         "workloads_migrated",
-         "aws_accounts",
+         "terraform_resources",
+         "terraform_workspaces",
          "security_controls",
       ]) {
          requireString(personal.impact[field], `personal.impact.${field}`);
