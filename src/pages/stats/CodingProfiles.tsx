@@ -45,9 +45,10 @@ const PLATFORM_CONFIG: Record<
    },
 };
 
-// Desktop: GitHub over the two compact cards on the left, LeetCode's taller
-// chart card on the right. Phones stack them, compact cards two-up.
-const AREAS_DESKTOP = '"github leetcode" "compact leetcode"';
+// Desktop: GitHub spans the row so its year heatmap gets the full width, then
+// LeetCode's chart card beside the two compact cards stacked. Phones stack
+// everything, compact cards two-up.
+const AREAS_DESKTOP = '"github github" "leetcode compact"';
 const AREAS_MOBILE = '"github" "leetcode" "compact"';
 
 interface CodingProfilesProps {
@@ -115,7 +116,9 @@ const CodingProfiles = ({ githubUsername }: Readonly<CodingProfilesProps>) => {
                style={{
                   gridArea: "compact",
                   display: "grid",
-                  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                  gridTemplateColumns: isMobile
+                     ? "repeat(2, minmax(0, 1fr))"
+                     : "minmax(0, 1fr)",
                   gap: 12,
                }}
             >

@@ -1,6 +1,7 @@
 import { FaGithub } from "react-icons/fa6";
 import type { CodingPlatformStat } from "@/types";
 import { MONO_FONT, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
+import ContributionCalendar from "./ContributionCalendar";
 import SplitBar from "./SplitBar";
 import { LANGUAGE_SHADES } from "./statsTokens";
 import { Metrics, WideProfileCard } from "./WideProfileCard";
@@ -13,7 +14,9 @@ interface GitHubCardProps {
 }
 
 /** GitHub numbers as the profile README's stats card computes them, from the
- *  weekly sync (coding_platform_stats.github). */
+ *  weekly sync (coding_platform_stats.github), over a live heatmap of the same
+ *  year. The synced figures stay the headline even if the live total differs
+ *  by a few. */
 const GitHubCard = ({ username, stats }: Readonly<GitHubCardProps>) => {
    const languages = stats?.languages ?? [];
 
@@ -58,6 +61,7 @@ const GitHubCard = ({ username, stats }: Readonly<GitHubCardProps>) => {
                </span>
             </div>
          )}
+         <ContributionCalendar username={username} />
          {languages.length > 0 && (
             <SplitBar
                heading="Top languages by code size"
