@@ -3,7 +3,6 @@ import {
    bucketLevels,
    buildCalendar,
    describeCalendar,
-   formatBusiest,
    formatDayTip,
    parseContributions,
    summarize,
@@ -47,12 +46,6 @@ describe("contribution calendar helpers", () => {
       expect(summarize(gap).currentStreak).toBe(1);
    });
 
-   it("finds the busiest day, first one on a tie", () => {
-      const { busiest } = summarize(days("2026-03-03", [5, 1926, 7, 1926]));
-      expect(busiest).toEqual({ date: "2026-03-04", count: 1926 });
-      expect(busiest && formatBusiest(busiest)).toBe("1,926 on Mar 4");
-   });
-
    it("buckets levels by quartile of the active days", () => {
       expect(bucketLevels([0, 1, 2, 3, 4, 5, 6, 7, 8])).toEqual([
          0, 1, 1, 2, 2, 3, 3, 4, 4,
@@ -64,13 +57,13 @@ describe("contribution calendar helpers", () => {
    });
 
    it("handles empty data", () => {
-      expect(summarize([])).toEqual({ currentStreak: 0, busiest: null });
+      expect(summarize([])).toEqual({ currentStreak: 0 });
       expect(bucketLevels([])).toEqual([]);
       const model = buildCalendar([]);
       expect(model.cells).toEqual([]);
       expect(model.weeks).toBe(0);
       expect(model.months).toEqual([]);
-      expect(summarize(days("2026-01-01", [0, 0])).busiest).toBeNull();
+      expect(summarize(days("2026-01-01", [0, 0])).currentStreak).toBe(0);
    });
 
    it("lays days out in Sunday-first week columns with month labels", () => {
@@ -93,15 +86,10 @@ describe("contribution calendar helpers", () => {
       expect(formatDayTip({ date: "2026-09-29", count: 0 })).toBe(
          "No contributions on Sep 29, 2026",
       );
-      expect(
-         describeCalendar({
-            currentStreak: 1,
-            busiest: { date: "2026-03-05", count: 54 },
-         }),
-      ).toBe(
-         "Daily GitHub contributions over the last year. Current streak 1 day, busiest day 54 on Mar 5.",
+      expect(describeCalendar({ currentStreak: 1 })).toBe(
+         "Daily GitHub contributions over the last year. Current streak 1 day.",
       );
-      expect(describeCalendar({ currentStreak: 0, busiest: null })).toBe(
+      expect(describeCalendar({ currentStreak: 0 })).toBe(
          "Daily GitHub contributions over the last year. Current streak 0 days.",
       );
    });

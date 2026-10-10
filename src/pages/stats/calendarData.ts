@@ -2,7 +2,7 @@
    The day counts come live from the public contributions API (the same source
    the old react-github-calendar widget used). The card headline keeps the
    weekly-synced totals, so the heatmap adds only what the sync does not carry:
-   the grid itself, the current streak and the busiest day. */
+   the grid itself and the current streak. */
 
 export interface ContributionDay {
    /** ISO calendar date, YYYY-MM-DD. */
@@ -28,7 +28,6 @@ export interface MonthLabel {
 
 export interface CalendarSummary {
    currentStreak: number;
-   busiest: ContributionDay | null;
 }
 
 export interface CalendarModel {
@@ -43,7 +42,6 @@ export interface CalendarModel {
 export const CALENDAR_COPY = {
    label: "Daily GitHub contributions over the last year",
    current: "Current streak",
-   busiest: "Busiest day",
    less: "Less",
    more: "More",
    loading: "Loading GitHub contributions",
@@ -70,11 +68,6 @@ const DATE_FORMAT = new Intl.DateTimeFormat(LOCALE, {
    month: "short",
    day: "numeric",
    year: "numeric",
-   timeZone: "UTC",
-});
-const SHORT_DATE_FORMAT = new Intl.DateTimeFormat(LOCALE, {
-   month: "short",
-   day: "numeric",
    timeZone: "UTC",
 });
 const MONTH_FORMAT = new Intl.DateTimeFormat(LOCALE, {
@@ -107,10 +100,6 @@ export const formatDayTip = ({ date, count }: ContributionDay): string => {
    return `${what} on ${when}`;
 };
 
-/** "1,926 on Mar 5". */
-export const formatBusiest = ({ date, count }: ContributionDay): string =>
-   `${formatCount(count)} on ${SHORT_DATE_FORMAT.format(toUtc(date))}`;
-
 /** Five levels by quartile of the active days, so one huge day (an import, a
  *  bulk migration) does not flatten every other day into the palest green. */
 export const bucketLevels = (counts: readonly number[]): Level[] => {
@@ -139,24 +128,12 @@ const currentStreak = (days: readonly ContributionDay[]): number => {
    return streak;
 };
 
-/** The busiest day, the first one on a tie; null when nothing was committed. */
-const busiestDay = (
-   days: readonly ContributionDay[],
-): ContributionDay | null => {
-   let busiest: ContributionDay | null = null;
-   for (const day of days) {
-      if (day.count > (busiest?.count ?? 0)) busiest = day;
-   }
-   return busiest;
-};
-
 /** What the heatmap adds to the synced headline numbers. The streak follows
  *  calendar dates, so a missing date breaks it. */
 export const summarize = (
    days: readonly ContributionDay[],
 ): CalendarSummary => ({
    currentStreak: currentStreak(days),
-   busiest: busiestDay(days),
 });
 
 /** A month is labelled over the first column whose first day falls in it,
@@ -208,16 +185,8 @@ export const buildCalendar = (
 /** Screen-reader summary for the grid, which is drawn as one image. */
 export const describeCalendar = ({
    currentStreak: current,
-   busiest,
-}: CalendarSummary): string => {
-   const parts = [`${CALENDAR_COPY.current} ${formatDays(current)}`];
-   if (busiest) {
-      parts.push(
-         `${CALENDAR_COPY.busiest.toLowerCase()} ${formatBusiest(busiest)}`,
-      );
-   }
-   return `${CALENDAR_COPY.label}. ${parts.join(", ")}.`;
-};
+}: CalendarSummary): string =>
+   `${CALENDAR_COPY.label}. ${CALENDAR_COPY.current} ${formatDays(current)}.`;
 
 const isDay = (value: unknown): value is ContributionDay => {
    const day = value as Partial<ContributionDay> | null;

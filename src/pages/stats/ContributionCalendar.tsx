@@ -14,7 +14,6 @@ import {
    LEVELS,
    buildCalendar,
    describeCalendar,
-   formatBusiest,
    formatDayTip,
    formatDays,
    loadContributions,
@@ -73,22 +72,13 @@ interface Fact {
    value?: string;
 }
 
-/** Placeholders while loading; the busiest day drops out of an empty year. */
-const factsFor = (summary?: CalendarSummary): Fact[] => {
-   const facts: Fact[] = [
-      {
-         label: CALENDAR_COPY.current,
-         value: summary && formatDays(summary.currentStreak),
-      },
-   ];
-   if (!summary || summary.busiest) {
-      facts.push({
-         label: CALENDAR_COPY.busiest,
-         value: summary?.busiest ? formatBusiest(summary.busiest) : undefined,
-      });
-   }
-   return facts;
-};
+/** A placeholder while loading, then the current streak. */
+const factsFor = (summary?: CalendarSummary): Fact[] => [
+   {
+      label: CALENDAR_COPY.current,
+      value: summary && formatDays(summary.currentStreak),
+   },
+];
 
 interface ContributionCalendarProps {
    username: string;
