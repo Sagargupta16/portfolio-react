@@ -4,9 +4,9 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ## [4.15.1] - 2026-10-10
 
-### Fixed
+### Changed
 
-- **Back to top brings the nav bar back.** The bar hides while scrolling down, and scrolls started through section navigation (Back to top, footer links, the command palette) were skipped by the hide logic, so the bar stayed hidden at the top of the page. Those scrolls now show the bar.
+- **The nav bar stays fixed at the top.** It no longer slides away while scrolling down. That hide-on-scroll left the bar hidden after Back to top (scrolls started through section navigation were skipped by the hide logic), and an always-visible bar keeps the section links one tap away. The bar still fades in on load and turns solid past 50 px. The hide state, its keyboard-focus and Reduced-mode exceptions, and the Lenis `source: "nav"` tag it relied on are removed.
 
 ### Added
 
