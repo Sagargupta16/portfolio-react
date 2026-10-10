@@ -20,6 +20,8 @@ interface EducationCardHeaderProps {
 // greens and blues readable on the near-black canvas.
 const LOGO_TILE = 40;
 const LOGO_SIZE = 30;
+// Wide marks (the Happy Days lockup) shrink to fit inside the tile.
+const LOGO_MAX_WIDTH = LOGO_TILE - 4;
 
 const InstitutionRow = ({ institution }: { institution: string }) => (
    <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
@@ -36,7 +38,7 @@ const InstitutionRow = ({ institution }: { institution: string }) => (
             flexShrink: 0,
          }}
       >
-         {getOrgLogo(institution, LOGO_SIZE) ?? (
+         {getOrgLogo(institution, LOGO_SIZE, LOGO_MAX_WIDTH) ?? (
             <GraduationCap style={{ width: 20, height: 20, color: PURPLE }} />
          )}
       </div>
