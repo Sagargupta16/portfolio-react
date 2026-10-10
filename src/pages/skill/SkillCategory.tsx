@@ -4,6 +4,7 @@ import { VIEWPORT_MARGIN } from "@utils/animations";
 import { CYAN, DURATION, EASING } from "@/constants/theme";
 import useMotionPreference from "@hooks/useMotionPreference";
 import SkillTagGroup from "./SkillTagGroup";
+import SkillRail from "./SkillRail";
 
 /** A lucide glyph, typed loosely so the section owns no lucide types. */
 export type CategoryGlyph = ComponentType<{
@@ -17,10 +18,14 @@ interface SkillCategoryProps {
    glyph: CategoryGlyph;
    /** Position in its list: offsets the breathing so rows never pulse in unison. */
    index: number;
-   /** Compact secondary rendering: h4 and the small chips. */
+   /** Compact secondary rendering: h4 and the small chips, never a rail. */
    small?: boolean;
-   /** Let the glyph breathe once in view. Primary rows only: six loops is the section's budget. */
+   /** Let the glyph breathe once in view. Primary rows only. */
    breathe?: boolean;
+   /** Render as moving rails; the list splits evenly across `rails` rows. */
+   rails?: number;
+   /** Rails above this category in the section, so directions keep alternating. */
+   railOffset?: number;
 }
 
 // The rule lands first; the chips wave in behind it (see SkillTagGroup).
@@ -65,11 +70,25 @@ const LABEL_STYLE: CSSProperties = {
    alignItems: "center",
    gap: 8,
 };
+const RAILS_STYLE: CSSProperties = {
+   display: "flex",
+   flexDirection: "column",
+   gap: 10,
+};
+
+/** Split a list into `count` rows of near-equal length, order kept. */
+const splitRows = (items: string[], count: number): string[][] => {
+   const size = Math.ceil(items.length / count);
+   return Array.from({ length: count }, (_, row) =>
+      items.slice(row * size, (row + 1) * size),
+   ).filter((row) => row.length > 0);
+};
 
 /**
  * One category of the Skills section with its own in-view trigger: the dashed
- * rule (glyph + label) rises, then the chips wave in. In Reduced the glyph
- * stays still; the reveal opacity still fades while its transform snaps.
+ * rule (glyph + label) rises, then the chips arrive, as moving rails in Full
+ * mode or a wrapped group. Reduced always gets the wrapped group: every chip
+ * at rest, nothing clipped, and the glyph stays still.
  */
 const SkillCategory = ({
    label,
@@ -78,10 +97,13 @@ const SkillCategory = ({
    index,
    small = false,
    breathe = false,
+   rails = 0,
+   railOffset = 0,
 }: SkillCategoryProps) => {
    const { preference, reducedMotion } = useMotionPreference();
    const Heading = small ? motion.h4 : motion.h3;
    const breathing = breathe && !reducedMotion ? breathVariants : undefined;
+   const asRails = rails > 0 && !small && !reducedMotion;
 
    return (
       <motion.div
@@ -91,7 +113,7 @@ const SkillCategory = ({
       >
          <Heading
             className="dashed-rule dashed-rule--centered"
-            style={{ marginBottom: 28 }}
+            style={{ marginBottom: asRails ? 20 : 28 }}
             variants={ruleVariants}
          >
             <span style={LABEL_STYLE}>
@@ -107,7 +129,19 @@ const SkillCategory = ({
                {label}
             </span>
          </Heading>
-         <SkillTagGroup items={items} small={small} />
+         {asRails ? (
+            <div style={RAILS_STYLE}>
+               {splitRows(items, rails).map((row, rowIndex) => (
+                  <SkillRail
+                     key={row[0]}
+                     items={row}
+                     reverse={(railOffset + rowIndex) % 2 === 1}
+                  />
+               ))}
+            </div>
+         ) : (
+            <SkillTagGroup items={items} small={small} />
+         )}
       </motion.div>
    );
 };
