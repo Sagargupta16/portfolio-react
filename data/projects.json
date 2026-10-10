@@ -1308,6 +1308,28 @@
          "title": "Accept skill-type results in search_documentation",
          "url": "https://github.com/awslabs/mcp/pull/4076",
          "status": "closed"
+      },
+      {
+         "repo": "terraform-aws-modules/terraform-aws-atlantis",
+         "stars": 557,
+         "title": "Pass service.security_group_egress_rules through to the ECS service security group",
+         "url": "https://github.com/terraform-aws-modules/terraform-aws-atlantis/pull/446",
+         "merged_at": "2026-10-08",
+         "status": "merged"
+      },
+      {
+         "repo": "hashicorp/terraform-provider-aws",
+         "stars": 11088,
+         "title": "Update integration_http_method and passthrough_behavior in place on aws_api_gateway_integration",
+         "url": "https://github.com/hashicorp/terraform-provider-aws/pull/50225",
+         "status": "open"
+      },
+      {
+         "repo": "hashicorp/terraform-provider-aws",
+         "stars": 11088,
+         "title": "Replace aws_api_gateway_domain_name when endpoint types change to or from PRIVATE",
+         "url": "https://github.com/hashicorp/terraform-provider-aws/pull/50226",
+         "status": "open"
       }
    ],
    "community_discussions": [

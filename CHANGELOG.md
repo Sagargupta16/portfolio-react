@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.15.1] - 2026-10-10
+
+### Fixed
+
+- **Back to top brings the nav bar back.** The bar hides while scrolling down, and scrolls started through section navigation (Back to top, footer links, the command palette) were skipped by the hide logic, so the bar stayed hidden at the top of the page. Those scrolls now show the bar.
+
+### Added
+
+- **Three upstream PRs in Open Source.** terraform-aws-modules/terraform-aws-atlantis #446 (merged 2026-10-08) and hashicorp/terraform-provider-aws #50225 and #50226 (open). The weekly live-data sync only refreshes PRs already listed, so new ones have to be added by hand.
+
 ## [4.15.0] - 2026-10-10
 
 ### Changed
