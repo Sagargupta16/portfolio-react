@@ -4,6 +4,7 @@ import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import Disclosure from "@components/ui/Disclosure";
 import CompanyHeader from "./CompanyHeader";
+import TimelineCardScene from "./TimelineCardScene";
 
 interface TimelineCardContentProps {
    item: ProfessionalExperience | PositionOfResponsibility;
@@ -24,14 +25,32 @@ const TimelineCardContent = ({
       ("internal_contributions" in item &&
          (item.internal_contributions?.length ?? 0) > 0);
 
+   // The role's lead engagement scene, so the work shows before any click.
+   const leadScene =
+      "projects" in item
+         ? item.projects?.find((project) => project.scene)?.scene
+         : undefined;
+   const header = (
+      <CompanyHeader
+         item={item}
+         accentColor={accentColor}
+         isMobile={isMobile}
+         marginLeft={ml}
+      />
+   );
+
    const content = (
       <>
-         <CompanyHeader
-            item={item}
-            accentColor={accentColor}
-            isMobile={isMobile}
-            marginLeft={ml}
-         />
+         {leadScene ? (
+            <TimelineCardScene
+               header={header}
+               scene={leadScene}
+               tint={accentColor}
+               isMobile={isMobile}
+            />
+         ) : (
+            header
+         )}
          {"description" in item && (
             <div style={{ marginLeft: ml, marginTop: 12 }}>
                <Disclosure label="Responsibilities" accentColor={accentColor}>

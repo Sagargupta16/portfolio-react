@@ -266,6 +266,32 @@ if (Array.isArray(education)) {
    }
 }
 
+// Engagement scene keys, read from the registry so data and code cannot drift.
+const SCENE_REGISTRY = "src/pages/experience/scenes/sceneRegistry.ts";
+const sceneKeys = (() => {
+   try {
+      const source = readFileSync(resolve(ROOT, SCENE_REGISTRY), "utf8");
+      return new Set(
+         [...source.matchAll(/^[ \t]+"([a-z-]+)":[ \t]*lazy\(/gm)].map(
+            (match) => match[1],
+         ),
+      );
+   } catch (error) {
+      fail(SCENE_REGISTRY, error.message);
+      return new Set();
+   }
+})();
+
+const checkScene = (value, path) => {
+   if (value === undefined) return;
+   if (!sceneKeys.has(value)) {
+      fail(
+         path,
+         `unknown scene ${JSON.stringify(value)}; registered: ${[...sceneKeys].join(", ")}`,
+      );
+   }
+};
+
 if (requireRecord(experience, "experience")) {
    validateEntityArray(
       experience.professional_experience,
@@ -292,6 +318,7 @@ if (requireRecord(experience, "experience")) {
                if (project?.link)
                   requireUrl(project.link, `${projectPath}.link`);
                checkCaseStudy(project?.case_study, `${projectPath}.case_study`);
+               checkScene(project?.scene, `${projectPath}.scene`);
             }
          }
          for (const field of [

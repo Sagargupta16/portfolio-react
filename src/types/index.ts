@@ -92,6 +92,10 @@ export interface CaseStudy {
 }
 
 // ===== Experience =====
+/** Animated scene keys, one per entry in pages/experience/scenes/sceneRegistry.ts. */
+export type EngagementSceneKey =
+   "landing-zone" | "security-controls" | "tf-modernize" | "mlops-loop";
+
 export interface ExperienceProject {
    name: string;
    date?: string;
@@ -102,6 +106,8 @@ export interface ExperienceProject {
    /** Short label for the link, defaults to "Source" when omitted. */
    linkLabel?: string;
    case_study?: CaseStudy;
+   /** Animated scene showing what was built; the role's first one also plays on its timeline card. */
+   scene?: EngagementSceneKey;
 }
 
 export interface InternalContribution {
