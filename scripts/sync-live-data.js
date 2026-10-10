@@ -279,10 +279,9 @@ const LEETCODE = `query($u:String!){
 
 const floorTo = (n, step) => `${Math.floor(n / step) * step}+`;
 // LeetCode's own profile page rounds to the nearest point (Math.round, so
-// 2165.70 shows as 2166, as the profile README card does). The portfolio
-// floors to match the resume and FACTS.md (2165); switch this one line, the
-// resume and FACTS.md together if that changes.
-const displayRating = (rating) => Math.floor(rating);
+// 2165.70 shows as 2166). The portfolio, the profile README card, the resume
+// and FACTS.md all follow it; change them together if this ever changes.
+const displayRating = (rating) => Math.round(rating);
 
 function leetcodeFields(data, fallbackBadge) {
    const solved = Object.fromEntries(
