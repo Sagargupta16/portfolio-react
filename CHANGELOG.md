@@ -6,9 +6,9 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ### Changed
 
-- **AWS experience rewritten from the engagement write-up.** Only facts the write-up marks verified (git, HCP Terraform state, mail from others) are used, and team results say so.
-   - **RWS:** DevOps and IaC lead for two programmes (Chalfont data-centre exit to Frankfurt, Lot 1 / Wingman in Stockholm); 281 of 549 PRs across 37 repos, 251 of 252 merged by RWS engineers; 22 HCP Terraform workspaces and 4,400+ resources with 0 errored; two Transit Gateway hubs, tag-driven firewall access (onboarding in about 15 minutes), AWS IPAM; 13 first-version modules. New case-study brief.
-   - **Removed claims the write-up does not support:** "sole DevOps consultant" (a second DevOps consultant joined), "50+ workloads into 135+ accounts" and "~90% faster setup".
+- **AWS experience rewritten around impact.** Built from the engagement write-up: what was built, which problems were solved, and how much time it saved, with team results marked as such.
+   - **RWS:** DevOps and IaC lead for two programmes (Chalfont data-centre exit to Frankfurt, Lot 1 / Wingman in Stockholm). The foundation as code from a flat estate (4,400+ resources, 22 workspaces, 0 errored); two Transit Gateway hubs with automated onboarding (route table within 15 minutes, firewall access by tag in about a minute); root-caused production blockers (a 16-day apply outage, silent firewall drops, EKS return-traffic drops); AWS IPAM approved after measured billing; per-account setup cut ~90% (3+ days to under 4 hours); Lot 1 foundation in about four weeks. New case-study brief.
+   - **Removed:** "sole DevOps consultant" (a second DevOps consultant joined) and "50+ workloads into 135+ accounts".
    - **State Street:** about 10 services in Terraform, the Amazon Detective enablement design, and the 1,000+ preventative controls marked as team work; the unsupported "3 consecutive 5/5 Pulse ratings" is gone.
    - **DTCC:** ends Nov 2025 (last billable week), not Dec.
    - The Amplify APG pattern is listed as co-authored.

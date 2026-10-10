@@ -13,23 +13,23 @@
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
                "date": "Feb 2026 - Present",
                "description": {
-                  "1": "DevOps and IaC lead for two programmes at once: the Chalfont data-centre exit to AWS Frankfurt and the Lot 1 / Wingman landing zone in Stockholm. Authored 281 of 549 pull requests (51%) across 37 repositories; RWS engineers reviewed and merged 251 of my 252 merged PRs.",
-                  "2": "Built the foundation as code in HCP Terraform with OIDC: AWS Organizations OUs with Control Tower baselines, SCPs, tag policies and cost allocation, a least-privilege account baseline in 18 accounts, and IAM Identity Center (13 permission sets, 65 assignments). The estate runs 22 workspaces and 4,400+ resources with 0 errored.",
-                  "3": "Designed and built two Transit Gateway network hubs with Network Firewall inspection, Site-to-Site VPN and Direct Connect, plus a tag-driven, event-based firewall access model: a new workload network is onboarded in about 15 minutes with no network-team ticket.",
+                  "1": "Built the AWS foundation for RWS's Chalfont data-centre exit and its Lot 1 landing zone as code, starting from a flat estate with no infrastructure as code: Organizations OUs with Control Tower baselines, SCPs and tag policies, least-privilege account baselines, Identity Center, and backup and patching in every workload account. 4,400+ resources across 22 HCP Terraform workspaces, 0 errored.",
+                  "2": "Designed two Transit Gateway network hubs (Frankfurt and Stockholm) with Network Firewall inspection, VPN and Direct Connect, and automated network onboarding: a hub reconciler gives each new workload its own route table within 15 minutes, and tag-driven firewall access takes effect in about a minute, with no network-team ticket.",
+                  "3": "Solved production blockers by root cause: traced a 16-day apply outage through 8 ruled-out hypotheses to a never-applied account baseline, proved with packet captures why the east-west firewall silently dropped inspected traffic, and fixed firewall return-traffic drops that stalled EKS node groups (a node group that failed twice went active in under 3 minutes).",
                   "4": "Reversed a cost-based rejection of AWS IPAM with measured sandbox billing (prefix delegation cut the 200k-IP projection by about 94%); RWS approved it and the 14-pool IPAM went live in September 2026.",
-                  "5": "Wrote the first version of 13 reusable Terraform modules (23 of the org's 32 releases, called 78 times by deployment repos), applied every change in a sandbox mirror first through the same least-privilege role, and supported migration cutovers as technical coordinator.",
-                  "6": "Used Kiro and Claude Code for requirement analysis, architecture documentation and implementation specs: 52 design documents and runbooks with 133 architecture figures."
+                  "5": "Cut delivery time: automated account provisioning with Terraform and CI/CD cut per-account infrastructure setup ~90% (3+ days to under 4 hours) versus manual provisioning; the Lot 1 foundation (accounts, Identity Center, Terraform Cloud with OIDC, modules, core network) stood up in about four weeks, ahead of schedule; a private-EKS blocker was fixed the next day with a self-hosted Terraform agent; a Meraki vMX hybrid link was built and applied in a single day. 13 reusable Terraform modules replaced copied code across the estate.",
+                  "6": "Used Kiro and Claude Code to compress delivery: requirement analysis, implementation specs, and 52 design documents and runbooks with 133 architecture figures."
                },
                "case_study": {
-                  "problem": "RWS had to exit a data centre and stand up a second, separate landing zone at the same time, on a flat AWS estate with no infrastructure as code, where RWS engineers merge and apply every change.",
-                  "built": "Led DevOps and IaC: org governance, account baselines, Identity Center and both Transit Gateway network hubs as HCP Terraform code, 281 of the 549 PRs across 37 repos.",
+                  "problem": "RWS had to exit a data centre and stand up a second landing zone at the same time, on a flat AWS estate with no infrastructure as code and a network-team ticket for every new VPC.",
+                  "built": "The whole foundation as HCP Terraform code: org guardrails, account baselines, Identity Center, both Transit Gateway hubs, IPAM, and self-service network onboarding.",
                   "decisions": [
                      "A separate Stockholm hub with its own TGW ASN, sharing one module library",
                      "Tag-driven firewall access through hub-owned prefix lists and one writer",
                      "AWS IPAM with prefix delegation, enforced by a CreateVpc-only SCP",
                      "Every change applied in a sandbox mirror first, same least-privilege role"
                   ],
-                  "outcome": "22 workspaces and 4,400+ resources with 0 errored, 251 of 252 PRs merged by RWS engineers, and new workload networks onboarded in about 15 minutes."
+                  "outcome": "Per-account setup went from 3+ days to under 4 hours (~90% faster), migration waves landed on a stable coded foundation (4,400+ resources, 0 errored), and new workload networks onboard in minutes."
                },
                "skills": [
                   "AWS",
