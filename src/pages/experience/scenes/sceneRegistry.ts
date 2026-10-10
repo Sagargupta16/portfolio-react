@@ -18,4 +18,6 @@ export const ENGAGEMENT_SCENES: Record<EngagementSceneKey, EngagementScene> = {
    "tf-modernize": lazy(() => import("./TfModernizeScene")),
    "mlops-loop": lazy(() => import("./MlopsLoopScene")),
    "consulting-loop": lazy(() => import("./ConsultingLoopScene")),
+   "aws-intern": lazy(() => import("./AwsInternScene")),
+   "ikarus-devops": lazy(() => import("./IkarusDevopsScene")),
 };

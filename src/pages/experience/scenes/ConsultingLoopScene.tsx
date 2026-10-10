@@ -17,7 +17,6 @@ import {
    W40,
    curveD,
    label,
-   layer,
    line,
    lit,
    ride,
@@ -29,7 +28,7 @@ import type {
    Pt,
    TintProps,
 } from "@pages/projects/covers/kit/sceneTokens";
-import { Dashed, Draw, Frame } from "./SceneFrame";
+import { Dashed, Draw, Frame, Gate, Layer } from "./SceneFrame";
 import { END, boxAt, play, timeline } from "./sceneParts";
 
 /*
@@ -250,16 +249,9 @@ const docGlyph = (tint: string): CSSProperties => ({
    gap: 2,
 });
 
-const gate = (open: boolean): CSSProperties => ({
-   ...boxAt(GATE, 14, 8),
-   borderRadius: 2,
-   border: `1px solid ${open ? GREEN : W25}`,
-   background: open ? `${GREEN}33` : INK,
-});
-
 /* The requirements card rides from the customer into the design panel. */
 const Need = ({ tint }: Readonly<TintProps>) => (
-   <motion.div style={layer} {...play(NEED)}>
+   <Layer loop={NEED}>
       <div style={needCard(tint)}>
          <span style={{ ...label, position: "static", color: tint }}>NEED</span>
          <motion.span
@@ -270,7 +262,7 @@ const Need = ({ tint }: Readonly<TintProps>) => (
             <span style={requirement(tint, "70%")} />
          </motion.span>
       </div>
-   </motion.div>
+   </Layer>
 );
 
 const Front = ({ tint }: Readonly<TintProps>) => (
@@ -278,19 +270,16 @@ const Front = ({ tint }: Readonly<TintProps>) => (
       <Label at={[92, 32]}>DESIGN</Label>
       <Label at={[202, 32]}>CODE</Label>
       <Label at={[219, 122]}>SHIP</Label>
-      <div style={gate(false)} />
-      <motion.div style={layer} {...play(PLANNED)}>
-         <div style={gate(true)} />
-      </motion.div>
+      <Gate at={GATE} loop={PLANNED} />
       <Packet color={tint} loop={TO_CODE} />
       <Packet color={tint} loop={SHIPPED} />
       {/* the handover: docs travelling back to the customer */}
-      <motion.div style={layer} {...play(HANDED)}>
+      <Layer loop={HANDED}>
          <span style={docGlyph(tint)}>
             <span style={requirement(tint, "100%")} />
             <span style={requirement(tint, "60%")} />
          </span>
-      </motion.div>
+      </Layer>
       <Need tint={tint} />
    </>
 );

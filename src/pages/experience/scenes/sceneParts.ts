@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { MotionStyle } from "motion/react";
 import {
+   INK,
    clock,
    label,
    line,
@@ -114,4 +115,13 @@ export const chip = (tint: string, [x, y]: Pt): MotionStyle => ({
    border: `1px solid ${tint}80`,
    background: `${tint}1a`,
    color: tint,
+});
+
+/* A container image glyph (ribbed box), centred on stage point (0, 0) so a
+   Layer with ride() keys carries it. */
+export const containerGlyph = (tint: string): CSSProperties => ({
+   ...boxAt([0, 0], 15, 10),
+   borderRadius: 2,
+   border: `1px solid ${tint}`,
+   background: `repeating-linear-gradient(90deg, ${tint}66 0 1px, ${INK} 1px 4px)`,
 });

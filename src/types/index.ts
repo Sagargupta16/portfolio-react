@@ -98,7 +98,9 @@ export type EngagementSceneKey =
    | "security-controls"
    | "tf-modernize"
    | "mlops-loop"
-   | "consulting-loop";
+   | "consulting-loop"
+   | "aws-intern"
+   | "ikarus-devops";
 
 export interface ExperienceProject {
    name: string;

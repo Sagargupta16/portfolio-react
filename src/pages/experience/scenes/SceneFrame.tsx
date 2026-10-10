@@ -1,15 +1,19 @@
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import { motion } from "motion/react";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { Trace } from "@pages/projects/covers/kit/primitives";
 import {
+   GREEN,
+   INK,
    NON_SCALING,
    STAGE_H,
    STAGE_W,
    W16,
+   W25,
    layer,
 } from "@pages/projects/covers/kit/sceneTokens";
-import type { Box } from "@pages/projects/covers/kit/sceneTokens";
-import { BASE_GRADIENT } from "./sceneParts";
+import type { Box, Loop, Pt } from "@pages/projects/covers/kit/sceneTokens";
+import { BASE_GRADIENT, boxAt, play } from "./sceneParts";
 
 /*
  * Shell for the engagement scenes. The covers kit draws on a 320 x 200 stage
@@ -121,4 +125,35 @@ export const Slot = ({
       strokeDasharray="2 2"
       vectorEffect={NON_SCALING}
    />
+);
+
+/*
+ * A stage-sized HTML layer on one loop: an overlay that fades as one node,
+ * or, with ride() keys, a fixed-px glyph centred on stage point (0, 0) that
+ * travels a route (the kit Packet, for any glyph).
+ */
+export const Layer = ({
+   loop,
+   children,
+}: Readonly<{ loop: Loop; children: ReactNode }>) => (
+   <motion.div style={layer} {...play(loop)}>
+      {children}
+   </motion.div>
+);
+
+const gateStyle = (at: Pt, open: boolean): CSSProperties => ({
+   ...boxAt(at, 14, 8),
+   borderRadius: 2,
+   border: `1px solid ${open ? GREEN : W25}`,
+   background: open ? `${GREEN}33` : INK,
+});
+
+/* A pipeline gate (plan, lint, test, quality) that turns green on `loop`. */
+export const Gate = ({ at, loop }: Readonly<{ at: Pt; loop: Loop }>) => (
+   <>
+      <div style={gateStyle(at, false)} />
+      <Layer loop={loop}>
+         <div style={gateStyle(at, true)} />
+      </Layer>
+   </>
 );
