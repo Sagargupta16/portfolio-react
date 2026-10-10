@@ -6,29 +6,45 @@ import useMotionPreference from "@hooks/useMotionPreference";
 interface Props {
    value: string | number;
    duration?: number;
+   /** One step smaller, for counters set three across on a phone. */
+   compact?: boolean;
 }
 
-const AnimatedCounter = ({ value, duration = 2 }: Props) => {
+const AnimatedCounter = ({
+   value,
+   duration = 2,
+   compact = false,
+}: Readonly<Props>) => {
    const ref = useRef<HTMLSpanElement>(null);
    const { reducedMotion } = useMotionPreference();
    const inView = useInView(ref, { once: true, amount: 0.5 });
 
-   // Parse a leading number (incl. one decimal point, e.g. "9.5") + trailing
-   // suffix (e.g. "+", "k"). decimals drives toFixed so values like a CGPA of
-   // 9.5 animate and land correctly instead of being truncated to an integer.
-   const { numericValue, decimals, suffix } = useMemo(() => {
+   // Parse an optional prefix (e.g. "~"), the number (thousands separators and
+   // one decimal point allowed, e.g. "4,000" or "9.5") and a trailing suffix
+   // (e.g. "+", "k", "/10"). decimals drives toFixed so values like a CGPA of
+   // 9.5 animate and land correctly instead of being truncated to an integer;
+   // a value written with separators keeps them.
+   const { prefix, numericValue, decimals, grouped, suffix } = useMemo(() => {
       const str = String(value);
-      const match = /^(\d+(?:\.\d+)?)(.*)$/s.exec(str);
+      const match = /^(\D*?)(\d[\d,]*(?:\.\d+)?)(.*)$/s.exec(str);
       if (match) {
-         const num = match[1];
+         const num = match[2];
          const dot = num.indexOf(".");
          return {
-            numericValue: Number.parseFloat(num),
+            prefix: match[1],
+            numericValue: Number.parseFloat(num.replaceAll(",", "")),
             decimals: dot === -1 ? 0 : num.length - dot - 1,
-            suffix: match[2],
+            grouped: num.includes(","),
+            suffix: match[3],
          };
       }
-      return { numericValue: 0, decimals: 0, suffix: str };
+      return {
+         prefix: "",
+         numericValue: 0,
+         decimals: 0,
+         grouped: false,
+         suffix: str,
+      };
    }, [value]);
 
    // Digits roll into place (NumberFlow) once the tile is half in view: each
@@ -47,15 +63,17 @@ const AnimatedCounter = ({ value, duration = 2 }: Props) => {
    return (
       <span
          ref={ref}
-         className="font-mono text-3xl font-bold text-accent-cyan tabular-nums"
+         className={`font-mono ${compact ? "text-2xl" : "text-3xl"} font-bold text-accent-cyan tabular-nums`}
       >
+         {prefix && <span className="text-accent-cyan/70">{prefix}</span>}
          <NumberFlow
             value={shown}
             animated={!reducedMotion}
+            locales="en-US"
             format={{
                minimumFractionDigits: decimals,
                maximumFractionDigits: decimals,
-               useGrouping: false,
+               useGrouping: grouped,
             }}
             spinTiming={timing}
             transformTiming={timing}

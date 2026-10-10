@@ -490,6 +490,108 @@ if (requireRecord(projects, "projects")) {
    }
 }
 
+// Highlights restate counts kept elsewhere in data/. derived_from names the
+// count a value must equal, derived the way the profile README derives it,
+// so the tile cannot drift from the entries behind it.
+const HIGHLIGHT_COUNTS = {
+   aws_samples: () =>
+      String(
+         allProjects.filter((p) => p?.organization === "aws-samples").length,
+      ),
+   tfc_ambassador: () => {
+      const titles = (experience?.professional_experience ?? []).flatMap(
+         (job) => (job?.internal_achievements ?? []).map((a) => a?.title),
+      );
+      const count = titles
+         .map((title) => /^(\d+)x TFC Ambassador\b/.exec(title ?? "")?.[1])
+         .find(Boolean);
+      return count ? `${count}x` : "(no Nx TFC Ambassador entry)";
+   },
+};
+
+const checkHighlight = (item, path) => {
+   if (!requireRecord(item, path)) return;
+   requireString(item.value, `${path}.value`);
+   requireString(item.label, `${path}.label`);
+   if (item.note !== undefined) requireString(item.note, `${path}.note`);
+   if (item.derived_from === undefined) return;
+   const derive = HIGHLIGHT_COUNTS[item.derived_from];
+   if (!derive) {
+      fail(
+         `${path}.derived_from`,
+         `must be one of ${Object.keys(HIGHLIGHT_COUNTS).join(", ")}`,
+      );
+   } else if (derive() !== item.value) {
+      fail(`${path}.value`, `must equal the derived count ${derive()}`);
+   }
+};
+
+if (personal && requireArray(personal.highlights, "personal.highlights")) {
+   for (const [index, item] of personal.highlights.entries()) {
+      checkHighlight(item, `personal.highlights[${index}]`);
+   }
+}
+
+const isCount = (value) => Number.isInteger(value) && value >= 0;
+
+// LeetCode chart data: exact solved counts and one [date, rating] pair per
+// attended contest. The peak of the series is the rating the tiles show.
+const checkSolvedSplit = (solved, path) => {
+   if (solved === undefined || !requireRecord(solved, path)) return;
+   for (const level of ["easy", "medium", "hard"]) {
+      if (!isCount(solved[level])) fail(`${path}.${level}`, "must be a count");
+   }
+};
+
+const isRatingPair = (pair) =>
+   Array.isArray(pair) &&
+   pair.length === 2 &&
+   /^\d{4}-\d{2}-\d{2}$/.test(String(pair[0])) &&
+   isCount(pair[1]);
+
+const checkRatingHistory = (stats, path) => {
+   const history = stats.rating_history;
+   if (
+      history === undefined ||
+      !requireArray(history, `${path}.rating_history`)
+   ) {
+      return;
+   }
+   if (!history.every(isRatingPair)) {
+      fail(`${path}.rating_history`, "must hold [YYYY-MM-DD, rating] pairs");
+      return;
+   }
+   if (history.some(([date], i) => i > 0 && date < history[i - 1][0])) {
+      fail(`${path}.rating_history`, "must be sorted oldest first");
+   }
+   const peak = Math.max(...history.map(([, rating]) => rating));
+   if (history.length > 0 && String(peak) !== stats.best_rating) {
+      fail(`${path}.best_rating`, `must equal the history peak ${peak}`);
+   }
+};
+
+const checkLeetcodeSeries = (stats, path) => {
+   checkSolvedSplit(stats.solved_by_difficulty, `${path}.solved_by_difficulty`);
+   checkRatingHistory(stats, path);
+};
+
+// GitHub numbers from the weekly sync, as the profile README's card shows them.
+const checkGithubStats = (stats, path) => {
+   if (stats.fetched === undefined) return;
+   requireIsoDate(stats.fetched, `${path}.fetched`);
+   for (const field of ["contributions", "pull_requests", "longest_streak"]) {
+      if (!isCount(stats[field])) fail(`${path}.${field}`, "must be a count");
+   }
+   if (!requireArray(stats.languages, `${path}.languages`)) return;
+   for (const [index, language] of stats.languages.entries()) {
+      requireString(language?.name, `${path}.languages[${index}].name`);
+      const percent = language?.percent;
+      if (typeof percent !== "number" || percent < 0 || percent > 100) {
+         fail(`${path}.languages[${index}].percent`, "must be 0-100");
+      }
+   }
+};
+
 if (requireRecord(achievements, "achievements")) {
    const certifications = achievements.certifications;
    const badges = achievements.learning_badges;
@@ -562,6 +664,16 @@ if (requireRecord(achievements, "achievements")) {
             stats?.url,
             `achievements.coding_platform_stats.${platform}.url`,
          );
+      }
+      const { leetcode, github } = achievements.coding_platform_stats;
+      if (isRecord(leetcode)) {
+         checkLeetcodeSeries(
+            leetcode,
+            "achievements.coding_platform_stats.leetcode",
+         );
+      }
+      if (isRecord(github)) {
+         checkGithubStats(github, "achievements.coding_platform_stats.github");
       }
    }
 }

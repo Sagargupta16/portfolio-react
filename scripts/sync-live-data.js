@@ -7,7 +7,11 @@
  *   projects.json  community_discussions      "accepted" when the user's answer is accepted,
  *                                             plus newly accepted answers (GitHub GraphQL)
  *   achievements.json  coding_platform_stats.leetcode  solved, hard, contests, best rating,
- *                                             best rank, badge, top % (LeetCode GraphQL)
+ *                                             best rank, badge, top %, solved by difficulty,
+ *                                             rating per attended contest (LeetCode GraphQL)
+ *   achievements.json  coding_platform_stats.github    contributions, pull requests and longest
+ *                                             streak over the last year, top languages
+ *                                             (GitHub GraphQL)
  *
  * Writes only when something changed and prints a one-line summary per change.
  * A source that fails (rate limit, LeetCode blocking a CI IP) is skipped, never zeroed.
@@ -270,9 +274,14 @@ async function addNewAcceptedDiscussions(list) {
 const LEETCODE = `query($u:String!){
   matchedUser(username:$u){ submitStatsGlobal { acSubmissionNum { difficulty count } } }
   userContestRanking(username:$u){ attendedContestsCount topPercentage badge { name } }
-  userContestRankingHistory(username:$u){ attended rating ranking } }`;
+  userContestRankingHistory(username:$u){ attended rating ranking contest { startTime } } }`;
 
 const floorTo = (n, step) => `${Math.floor(n / step) * step}+`;
+// LeetCode's own profile page rounds to the nearest point (Math.round, so
+// 2165.70 shows as 2166, as the profile README card does). The portfolio
+// floors to match the resume and FACTS.md (2165); switch this one line, the
+// resume and FACTS.md together if that changes.
+const displayRating = (rating) => Math.floor(rating);
 
 function leetcodeFields(data, fallbackBadge) {
    const solved = Object.fromEntries(
@@ -285,18 +294,44 @@ function leetcodeFields(data, fallbackBadge) {
    const attended = data.userContestRankingHistory.filter((x) => x.attended);
    if (!attended.length || !solved.All)
       throw new Error("empty profile response");
+   // One [date, rating] pair per attended contest, oldest first: the day it
+   // started and the rating after it. Pairs keep the stored series to one
+   // line per contest; the chart is all it feeds.
+   const history = attended.map((x) => [
+      new Date(x.contest.startTime * 1000).toISOString().slice(0, 10),
+      displayRating(x.rating),
+   ]);
    return {
       problems_solved: floorTo(solved.All, 100),
       hard_solved: floorTo(solved.Hard, 10),
       contests: String(ranking.attendedContestsCount),
-      // LeetCode displays rating rounded down; keep the same convention.
-      best_rating: String(
-         Math.floor(Math.max(...attended.map((x) => x.rating))),
-      ),
+      best_rating: String(Math.max(...history.map(([, rating]) => rating))),
       best_contest_rank: String(Math.min(...attended.map((x) => x.ranking))),
       badge: ranking.badge?.name || fallbackBadge,
       top_percentage: `${ranking.topPercentage.toFixed(1)}%`,
+      solved_by_difficulty: {
+         easy: solved.Easy,
+         medium: solved.Medium,
+         hard: solved.Hard,
+      },
+      rating_history: history,
    };
+}
+
+/** Short form of a value for the change summary: arrays print their length. */
+const describe = (value) =>
+   Array.isArray(value) ? `${value.length} entries` : JSON.stringify(value);
+
+/** Copy fields onto target, noting each one that actually changed. */
+function applyFields(target, fields, label) {
+   let changed = false;
+   for (const [k, v] of Object.entries(fields)) {
+      if (JSON.stringify(target[k]) === JSON.stringify(v)) continue;
+      note(`${label} ${k}: ${describe(target[k])} -> ${describe(v)}`);
+      target[k] = v;
+      changed = true;
+   }
+   return changed;
 }
 
 async function syncLeetcode(lc) {
@@ -315,13 +350,84 @@ async function syncLeetcode(lc) {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const { data } = await res.json();
-      for (const [k, v] of Object.entries(leetcodeFields(data, lc.badge))) {
-         if (lc[k] === v) continue;
-         note(`leetcode ${k}: ${lc[k]} -> ${v}`);
-         lc[k] = v;
-      }
+      applyFields(lc, leetcodeFields(data, lc.badge), "leetcode");
    } catch (err) {
       warn("LeetCode", err);
+   }
+}
+
+// ---------- GitHub profile stats ----------
+
+// Computed the way the profile README's card computes them
+// (community/github-stats-card-action, github_stats_card.py), so the two
+// surfaces agree: languages by code size across the public, non-fork repos
+// the user owns; contributions, PRs and streaks from the last year's
+// contribution calendar.
+const GH_REPOS = `repositories(ownerAffiliations:OWNER,isFork:false,privacy:PUBLIC,first:100,after:$c){
+  pageInfo { hasNextPage endCursor }
+  nodes { languages(first:10,orderBy:{field:SIZE,direction:DESC}){ edges { size node { name } } } } }`;
+const GH_STATS = `query($u:String!,$c:String){ user(login:$u){ ${GH_REPOS}
+  contributionsCollection { totalPullRequestContributions
+    contributionCalendar { totalContributions weeks { contributionDays { contributionCount } } } } } }`;
+const GH_REPO_PAGE = `query($u:String!,$c:String){ user(login:$u){ ${GH_REPOS} } }`;
+const TOP_LANGUAGES = 6;
+
+async function ownedRepos(page, found = []) {
+   found.push(...page.nodes);
+   if (!page.pageInfo.hasNextPage) return found;
+   const { user } = await ghGraphql(GH_REPO_PAGE, {
+      u: GITHUB_USER,
+      c: page.pageInfo.endCursor,
+   });
+   return ownedRepos(user.repositories, found);
+}
+
+function longestStreak(days) {
+   let longest = 0;
+   let run = 0;
+   for (const count of days) {
+      run = count ? run + 1 : 0;
+      longest = Math.max(longest, run);
+   }
+   return longest;
+}
+
+function topLanguages(repos) {
+   const sizes = new Map();
+   for (const repo of repos) {
+      for (const { size, node } of repo.languages.edges) {
+         sizes.set(node.name, (sizes.get(node.name) ?? 0) + size);
+      }
+   }
+   const total = [...sizes.values()].reduce((a, b) => a + b, 0) || 1;
+   return [...sizes]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, TOP_LANGUAGES)
+      .map(([name, size]) => ({
+         name,
+         percent: Math.round((size * 1000) / total) / 10,
+      }));
+}
+
+async function syncGithubStats(gh) {
+   try {
+      const { user } = await ghGraphql(GH_STATS, { u: GITHUB_USER, c: null });
+      const cc = user.contributionsCollection;
+      const days = cc.contributionCalendar.weeks.flatMap((w) =>
+         w.contributionDays.map((d) => d.contributionCount),
+      );
+      const fields = {
+         contributions: cc.contributionCalendar.totalContributions,
+         pull_requests: cc.totalPullRequestContributions,
+         longest_streak: longestStreak(days),
+         languages: topLanguages(await ownedRepos(user.repositories)),
+      };
+      // The date moves only with the numbers, so a quiet week opens no PR.
+      if (applyFields(gh, fields, "github")) {
+         gh.fetched = new Date().toISOString().slice(0, 10);
+      }
+   } catch (err) {
+      warn("GitHub stats", err);
    }
 }
 
@@ -336,6 +442,9 @@ await refreshKnownDiscussions(projects.community_discussions || []);
 await addNewAcceptedDiscussions(projects.community_discussions || []);
 if (achievements.coding_platform_stats?.leetcode) {
    await syncLeetcode(achievements.coding_platform_stats.leetcode);
+}
+if (achievements.coding_platform_stats?.github) {
+   await syncGithubStats(achievements.coding_platform_stats.github);
 }
 
 if (JSON.stringify([projects, achievements, news]) === before) {

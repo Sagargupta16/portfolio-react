@@ -1,4 +1,9 @@
-import type { ImpactStats, SiteConfig, SocialProfile } from "@/types";
+import type {
+   Highlight,
+   ImpactStats,
+   SiteConfig,
+   SocialProfile,
+} from "@/types";
 import personalData from "../../data/personal.json";
 
 export const getName = (): string => personalData.name;
@@ -14,6 +19,8 @@ export const getSocialProfiles = (): SocialProfile[] =>
    personalData.social_profiles;
 export const getGitHubUsername = (): string => personalData.contact.github;
 export const getImpact = (): ImpactStats => personalData.impact as ImpactStats;
+export const getHighlights = (): Highlight[] =>
+   personalData.highlights as Highlight[];
 export const getIntro = (): string => personalData.intro;
 export const getRoleLabel = (): string => personalData.role_label;
 export const getHeroTaglines = (): string[] => personalData.hero_taglines;
