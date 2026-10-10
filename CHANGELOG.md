@@ -13,7 +13,7 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ### Added
 
-- **Skills backed by projects, experience, the resume and upstream contributions:** ECR, EBS, Route 53, Direct Connect, Site-to-Site VPN, RCPs, Tag Policies, DynamoDB; HCP Terraform, Atlantis, tftest, PyTest, Packer, Policy-as-Code, Checkov, DevSecOps, Canary Deployments, Cloud Migration; Prompt Engineering, Apache Airflow, Prefect, Keras, Matplotlib, SHAP / Fairlearn, Ollama; Anthropic SDK, OpenAI API; WebSockets, JWT, OAuth, Multer, SQLAlchemy, Drizzle ORM, Mongoose, Neon; shadcn/ui, React Router, Preact, Vue, Chart.js, Axios, Lucide; Cloudflare Workers, Cloudflare R2, Render, GitHub Pages, pnpm, esbuild; System Design. 96 skills become 150 primary plus 20 secondary.
+- **58 skills backed by projects, experience, the resume and upstream contributions:** Control Tower, IAM Identity Center, IAM, Config, KMS, Transit Gateway, VPC IPAM, API Gateway, ECR, EBS, Route 53, Direct Connect, Site-to-Site VPN, RCPs, Tag Policies, DynamoDB; HCP Terraform, Atlantis, tftest, PyTest, Packer, Policy-as-Code, Checkov, DevSecOps, Canary Deployments, Cloud Migration; Prompt Engineering, Apache Airflow, Prefect, Keras, Matplotlib, SHAP / Fairlearn, Ollama; Anthropic SDK, OpenAI API; WebSockets, JWT, OAuth, Multer, SQLAlchemy, Drizzle ORM, Mongoose, Neon; shadcn/ui, React Router, Preact, Vue, Chart.js, Axios, Lucide; Cloudflare Workers, Cloudflare R2, Render, GitHub Pages, pnpm, esbuild; System Design. 96 skills become 150 primary plus 20 secondary.
 - **Forward Deployed Engineering** in Areas of Interest.
 
 ## [4.15.1] - 2026-10-10
