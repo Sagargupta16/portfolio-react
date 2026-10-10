@@ -1,6 +1,8 @@
 import { memo } from "react";
 import { motion } from "motion/react";
 import { EASING, TEXT_PRIMARY } from "@/constants/theme";
+import { NAV_MORE_BLURBS, NAV_PRIMARY_IDS } from "@/constants/sections";
+import NavMoreMenu from "./NavMoreMenu";
 
 interface NavSection {
    id: string;
@@ -19,8 +21,8 @@ const LABEL_TRANSITION = {
    color: { duration: 0.2, ease: EASING.brisk },
    scale: { duration: 0.15, ease: EASING.brisk },
 };
-// One shared pill travels between labels as the scroll-spy moves; the labels
-// themselves only change colour.
+// One shared pill travels between labels (and onto "More" when a section
+// inside it is active) as the scroll-spy moves; labels only change colour.
 const PILL_TRANSITION = {
    type: "spring",
    stiffness: 500,
@@ -32,12 +34,44 @@ const PILL_STYLE: React.CSSProperties = {
    borderRadius: 8,
    backgroundColor: "rgba(255, 255, 255, 0.08)",
 };
+const LABEL_STYLE: React.CSSProperties = {
+   position: "relative",
+   alignItems: "center",
+   padding: "6px 12px",
+   minHeight: 44,
+   fontSize: 13,
+   fontWeight: 500,
+   borderRadius: 8,
+   cursor: "pointer",
+   border: "none",
+   background: "none",
+   color: TEXT_INACTIVE,
+};
+
+const Pill = () => (
+   <motion.span
+      layoutId="nav-active"
+      transition={PILL_TRANSITION}
+      style={PILL_STYLE}
+      aria-hidden="true"
+   />
+);
 
 const DesktopNav = ({
    sections,
    activeSection,
    onNavigate,
 }: DesktopNavProps) => {
+   const primary = sections.filter(({ id }) =>
+      (NAV_PRIMARY_IDS as readonly string[]).includes(id),
+   );
+   const more = sections
+      .filter(({ id }) => !(NAV_PRIMARY_IDS as readonly string[]).includes(id))
+      .map((section) => ({
+         ...section,
+         blurb: NAV_MORE_BLURBS[section.id as keyof typeof NAV_MORE_BLURBS],
+      }));
+
    return (
       <div
          style={{
@@ -46,7 +80,7 @@ const DesktopNav = ({
             display: "flex",
          }}
       >
-         {sections.map((section) => {
+         {primary.map((section) => {
             const isActive = activeSection === section.id;
             return (
                <motion.button
@@ -57,33 +91,25 @@ const DesktopNav = ({
                   whileFocus={LABEL_HOVER}
                   animate={{ color: isActive ? TEXT_PRIMARY : TEXT_INACTIVE }}
                   transition={LABEL_TRANSITION}
-                  style={{
-                     position: "relative",
-                     padding: "6px 12px",
-                     minHeight: 44,
-                     fontSize: 13,
-                     fontWeight: 500,
-                     borderRadius: 8,
-                     cursor: "pointer",
-                     border: "none",
-                     background: "none",
-                     color: TEXT_INACTIVE,
-                  }}
+                  style={LABEL_STYLE}
                   aria-current={isActive ? "location" : undefined}
                   aria-label={`Navigate to ${section.label}`}
                >
-                  {isActive && (
-                     <motion.span
-                        layoutId="nav-active"
-                        transition={PILL_TRANSITION}
-                        style={PILL_STYLE}
-                        aria-hidden="true"
-                     />
-                  )}
+                  {isActive && <Pill />}
                   <span style={{ position: "relative" }}>{section.label}</span>
                </motion.button>
             );
          })}
+         {more.length > 0 && (
+            <NavMoreMenu
+               sections={more}
+               activeSection={activeSection}
+               onNavigate={onNavigate}
+               pill={<Pill />}
+               labelStyle={LABEL_STYLE}
+               inactiveColor={TEXT_INACTIVE}
+            />
+         )}
       </div>
    );
 };

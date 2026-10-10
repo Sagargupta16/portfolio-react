@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-39%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.15.1-2563eb)
+![Version](https://img.shields.io/badge/version-4.16.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -49,14 +49,14 @@ Section links support reloads and browser history. Navigation loads the content 
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                                                                             |
 | **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                |
-| **News**         | Dated milestones drawn as a commit graph with stable hashes                                                                                                                                                             |
 | **Experience**   | Timeline with explicit detail controls, engagement briefs (problem, built, decisions, outcome), internal contributions, and responsibilities                                                                            |
 | **Education**    | Academic timeline with CGPA counters and accessible achievement disclosures                                                                                                                                             |
-| **Skills**       | Brand-icon rows under dashed category rules (96 skills, official brand colors)                                                                                                                                          |
+| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (150 skills; static chips in Reduced)                                                                                               |
 | **Projects**     | Filterable cards with evidence badges; live screenshots for deployed apps and repo-accurate animated scenes for the rest; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`)        |
 | **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                    |
 | **Services**     | Responsive bento grid with optional decorative scenes                                                                                                                                                                   |
 | **Stats**        | Derived impact/open-source counters, 3D contribution calendar, and coding profiles                                                                                                                                      |
+| **News**         | Dated milestones drawn as a commit graph with stable hashes                                                                                                                                                             |
 | **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                       |
 | **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build |
 
@@ -123,7 +123,7 @@ src/
 │   ├── layout/
 │   │   ├── AmbientBackground.tsx      # Aurora glows + dot lattice + light beams
 │   │   ├── Header/                    # Hero (split into sub-components)
-│   │   ├── Navigation/                # Nav + DesktopNav + MobileMenu
+│   │   ├── Navigation/                # Nav + DesktopNav (+ More menu) + MobileMenu
 │   │   ├── Footer/                    # Footer + SITE/SOCIAL columns
 │   │   ├── DeferredSection.tsx        # Stable anchors + lazy loading/error boundaries
 │   │   └── PageSection.tsx            # Shared section heading and content layout
@@ -178,7 +178,7 @@ All portfolio content lives in JSON files under `data/` at the project root:
 | `personal.json`     | Name, intro, bio, impact, languages, social profiles, site copy                                |
 | `education.json`    | Degrees, institutions, CGPA                                                                    |
 | `experience.json`   | Professional experience + positions of responsibility                                          |
-| `skills.json`       | Categorized skills (6 primary + 3 secondary categories)                                        |
+| `skills.json`       | Categorized skills (8 primary incl. AWS + 3 secondary)                                         |
 | `services.json`     | Service offerings                                                                              |
 | `projects.json`     | Featured, collaborative, community, other projects, open source PRs, and community discussions |
 | `achievements.json` | Certifications, badges, competitions, coding stats (auto-synced)                               |
