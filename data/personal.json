@@ -32,6 +32,30 @@
       "terraform_workspaces": "20+",
       "security_controls": "1000+"
    },
+   "highlights": [
+      {
+         "value": "10/10",
+         "label": "Client CSAT",
+         "note": "State Street, at project close"
+      },
+      {
+         "value": "~90%",
+         "label": "Faster account setup",
+         "note": "RWS: 3+ days to under 4 hours"
+      },
+      {
+         "value": "2",
+         "label": "AWS samples",
+         "note": "Published by AWS under aws-samples",
+         "derived_from": "aws_samples"
+      },
+      {
+         "value": "5x",
+         "label": "TFC Ambassador",
+         "note": "AI/ML, NGDE, CloudOps, Agentic AI, Serverless",
+         "derived_from": "tfc_ambassador"
+      }
+   ],
    "languages": [
       { "name": "English", "level": "Professional Working" },
       { "name": "Hindi", "level": "Native" }

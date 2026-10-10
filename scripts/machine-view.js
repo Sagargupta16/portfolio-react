@@ -47,6 +47,7 @@ const LABELS = {
    leetcode: "LeetCode",
    geeksforgeeks: "GeeksforGeeks",
    hackerrank: "HackerRank",
+   github: "GitHub",
 };
 const titleCase = (key) => {
    if (LABELS[key]) return LABELS[key];
@@ -65,6 +66,33 @@ const impactLines = (impact = {}) =>
                : "";
          return `- ${titleCase(key)}: ${clean(value)}${note}`;
       });
+
+// personal.highlights as "Label: value (note)" lines.
+const highlightLines = (highlights = []) =>
+   highlights.map((h) => {
+      const note = h.note ? ` (${clean(h.note)})` : "";
+      return `- ${clean(h.label)}: ${clean(h.value)}${note}`;
+   });
+
+// One coding-platform field as text. The chart series print as a summary
+// (counts per difficulty, first and last rated contest) instead of raw data.
+const platformFact = ([key, value]) => {
+   const label = key.replaceAll("_", " ");
+   if (key === "rating_history") {
+      const [firstDate, firstRating] = value[0] ?? [];
+      const [lastDate, lastRating] = value.at(-1) ?? [];
+      return `${label} ${firstRating} (${firstDate}) to ${lastRating} (${lastDate})`;
+   }
+   let text = clean(value);
+   if (key === "languages") {
+      text = value.map((l) => `${clean(l.name)} ${l.percent}%`).join(", ");
+   } else if (value !== null && typeof value === "object") {
+      text = Object.entries(value)
+         .map(([k, v]) => `${k} ${clean(v)}`)
+         .join(", ");
+   }
+   return `${label} ${text}`;
+};
 
 const sortedValues = (record) =>
    Object.keys(record ?? {})
@@ -160,7 +188,13 @@ function buildMarkdown(d) {
    }
    out.push("");
 
-   out.push("## Impact", "", ...impactLines(personal.impact), "");
+   out.push(
+      "## Impact",
+      "",
+      ...impactLines(personal.impact),
+      ...highlightLines(personal.highlights),
+      "",
+   );
 
    out.push("## Experience", "");
    for (const job of experience.professional_experience ?? []) {
@@ -269,7 +303,7 @@ function buildMarkdown(d) {
    )) {
       const facts = Object.entries(stats)
          .filter(([key]) => key !== "url" && key !== "username")
-         .map(([key, value]) => `${key.replaceAll("_", " ")} ${clean(value)}`)
+         .map(platformFact)
          .join(", ");
       out.push(`- ${link(titleCase(platform), stats.url)}: ${facts}`);
    }
@@ -327,6 +361,7 @@ function buildLlmsTxt(d) {
    const mergedRepos = [...new Set(merged.map((p) => clean(p.repo)))];
    const facts = [
       ...impactLines(personal.impact),
+      ...highlightLines(personal.highlights),
       awsSamples.length > 0 &&
          `- Published by AWS (aws-samples): ${awsSamples.map((p) => clean(p.title)).join(", ")}`,
       merged.length > 0 &&

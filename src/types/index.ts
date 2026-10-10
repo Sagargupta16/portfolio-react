@@ -47,6 +47,18 @@ export interface CodingPlatformStat {
    top_percentage?: string;
    problem_solving?: string;
    cpp?: string;
+   /** LeetCode: exact accepted counts per difficulty. */
+   solved_by_difficulty?: { easy: number; medium: number; hard: number };
+   /** LeetCode: [contest date YYYY-MM-DD, rating after it], oldest first, attended contests only. */
+   rating_history?: [string, number][];
+   /** GitHub, over the last year of the contribution calendar. */
+   contributions?: number;
+   pull_requests?: number;
+   longest_streak?: number;
+   /** GitHub: share of code size across owned public non-fork repos, largest first. */
+   languages?: { name: string; percent: number }[];
+   /** GitHub: day the numbers above were last refreshed (YYYY-MM-DD). */
+   fetched?: string;
 }
 
 export type CodingPlatformStats = Record<string, CodingPlatformStat>;
@@ -145,6 +157,15 @@ export interface SocialProfile {
 
 export interface SiteConfig {
    tech_stack?: string[];
+}
+
+/** A headline result for the Stats band. `derived_from` names a count kept
+ *  elsewhere in data/ that validate-data.js checks `value` against. */
+export interface Highlight {
+   value: string;
+   label: string;
+   note?: string;
+   derived_from?: "aws_samples" | "tfc_ambassador";
 }
 
 export interface ImpactStats {

@@ -1,7 +1,8 @@
 name: Sync Live Data
 
 # Weekly refresh of facts that can be derived from public APIs (open-source PR status and
-# stars, accepted discussion answers, LeetCode stats). Opens or updates one PR for review
+# stars, accepted discussion answers, LeetCode stats and rating history, GitHub contribution
+# and language stats). Opens or updates one PR for review
 # instead of pushing to main. A PR opened with GITHUB_TOKEN starts no other workflows, so
 # this job runs the data gates itself; merging the PR triggers the normal CI/CD deploy.
 
@@ -72,5 +73,5 @@ jobs:
               if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
                  gh pr create --base main --head "$BRANCH" \
                     --title "chore: sync live data" \
-                    --body "Weekly refresh from public APIs (PR status and stars, accepted discussion answers, LeetCode stats). Data gates passed in the sync job. Review the diff, then merge to deploy."
+                    --body "Weekly refresh from public APIs (PR status and stars, accepted discussion answers, LeetCode stats and rating history, GitHub contribution and language stats). Data gates passed in the sync job. Review the diff, then merge to deploy."
               fi

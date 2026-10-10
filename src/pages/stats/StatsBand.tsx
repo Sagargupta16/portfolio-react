@@ -7,7 +7,7 @@ import {
    getLearningBadges,
 } from "@data/achievements";
 import { getExperience } from "@data/experience";
-import { getImpact } from "@data/personal";
+import { getHighlights, getImpact } from "@data/personal";
 import {
    getCommunityDiscussions,
    getOpenSourceContributions,
@@ -23,11 +23,13 @@ import AnimatedCounter from "@components/ui/AnimatedCounter";
 import useBreakpoint from "@hooks/useBreakpoint";
 
 /* The site's only numeric summary -- the hero deliberately carries no figures.
-   The competitive-programming group reads the same coding_platform_stats entries
-   as the platform cards below (CodingProfiles), which repeat them per platform
-   with profile links, so the two surfaces cannot disagree. Every value is
-   derived from data/*.json rather than written here, so the counts cannot drift
-   away from the underlying entries. */
+   Highlights lead: the strongest sourced results, kept in personal.json
+   highlights (validate-data.js checks the counts among them against the
+   entries they restate). The competitive-programming group reads the same
+   coding_platform_stats entries as the platform cards below (CodingProfiles),
+   which repeat them per platform with profile links, so the two surfaces
+   cannot disagree. Every value is derived from data/*.json rather than
+   written here, so the counts cannot drift away from the underlying entries. */
 
 interface Stat {
    value: string;
@@ -298,8 +300,13 @@ const StatsBand = () => {
             marginBottom: isMobile ? 48 : 64,
          }}
       >
-         {/* Consulting impact leads: it is the work clients and recruiters
-             are actually assessing. */}
+         {/* Highlights, then consulting impact: the work clients and
+             recruiters are actually assessing comes first. */}
+         <StatGroup
+            heading="Highlights"
+            stats={getHighlights()}
+            isMobile={isMobile}
+         />
          <StatGroup
             heading="Consulting impact"
             stats={impact}
