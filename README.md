@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-39%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.16.0-2563eb)
+![Version](https://img.shields.io/badge/version-4.17.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -36,7 +36,7 @@ Section links support reloads and browser history. Navigation loads the content 
 | **Smooth Scroll** | Lenis (ReactLenis)                                                                 |
 | **Icons**         | Lucide React, React Icons                                                          |
 | **Contact**       | EmailJS                                                                            |
-| **GitHub**        | react-github-calendar                                                              |
+| **GitHub**        | Custom contribution heatmap (live API, no library)                                 |
 | **Testing**       | Vitest 5, React Testing Library                                                    |
 | **Code Quality**  | ESLint 10, typescript-eslint, jsx-a11y-x, Prettier                                 |
 | **Deployment**    | GitHub Actions, GitHub Pages                                                       |
@@ -49,14 +49,14 @@ Section links support reloads and browser history. Navigation loads the content 
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                                                                             |
 | **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                |
-| **Experience**   | Timeline with explicit detail controls, engagement briefs (problem, built, decisions, outcome), internal contributions, and responsibilities                                                                            |
-| **Education**    | Academic timeline with CGPA counters and accessible achievement disclosures                                                                                                                                             |
+| **Experience**   | Timeline of roles, each with an animated scene of what that role did; details modal with case-study briefs and a scene per engagement                                                                                   |
+| **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                      |
 | **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (150 skills; static chips in Reduced)                                                                                               |
 | **Projects**     | Filterable cards with evidence badges; live screenshots for deployed apps and repo-accurate animated scenes for the rest; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`)        |
 | **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                    |
-| **Services**     | Responsive bento grid with optional decorative scenes                                                                                                                                                                   |
-| **Stats**        | Derived impact/open-source counters, 3D contribution calendar, and coding profiles                                                                                                                                      |
-| **News**         | Dated milestones drawn as a commit graph with stable hashes                                                                                                                                                             |
+| **Services**     | Six fact-based offerings in an even bento grid, each with a scene that shows the real mechanism (labels 9 px+ on phones)                                                                                                |
+| **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                                               |
+| **News**         | Dated milestones as a one-line commit graph with stable hashes, filterable by type                                                                                                                                      |
 | **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                       |
 | **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build |
 
@@ -128,7 +128,6 @@ src/
 │   │   ├── DeferredSection.tsx        # Stable anchors + lazy loading/error boundaries
 │   │   └── PageSection.tsx            # Shared section heading and content layout
 │   └── ui/
-│       ├── BrowserMockup.tsx          # 3D tilted browser window (CSS perspective)
 │       ├── CharacterReveal.tsx        # Spring char-by-char animation (word-wrapped)
 │       ├── DevAvatar.tsx              # About avatar: monogram + orbit of real stack glyphs
 │       ├── GlassCard.tsx              # Flat card with optional pointer tilt
@@ -152,7 +151,7 @@ src/
 │   │   └── covers/                    # Cover registry, lazy scene families, shared kit/
 │   ├── achievement/
 │   ├── services/
-│   │   └── animations/                # 7 service card animations on an 80x80 canvas
+│   │   └── animations/                # 6 service card animations on an 80x80 canvas
 │   ├── stats/                         # Stats.tsx, impact figures, and coding profiles
 │   └── contact/
 ├── types/

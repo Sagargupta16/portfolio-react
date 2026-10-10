@@ -1,79 +1,68 @@
 [
    {
       "id": 1,
-      "title": "Full-Stack Development",
+      "title": "Landing Zones & Cloud Governance",
       "list": [
-         "Frontend & Backend Engineering",
-         "API Design & Integration",
-         "Database Architecture",
-         "Responsive Web Applications",
-         "Real-time Features & WebSockets"
+         "Organizations, Control Tower, Identity Center",
+         "SCP, RCP and tag policy guardrails as code",
+         "Security Hub, GuardDuty and Detective",
+         "Per-account setup: 3+ days to under 4 hours",
+         "Data-centre exit landing zone, 10/10 CSAT"
       ]
    },
    {
       "id": 2,
-      "title": "Cloud & DevOps",
+      "title": "Infrastructure as Code & CI/CD",
       "list": [
-         "Cloud Infrastructure Design",
-         "Infrastructure as Code",
-         "CI/CD Pipeline Automation",
-         "Containerization & Orchestration",
-         "Blue-Green & Zero-Downtime Deployments"
+         "Terraform modules tested with tftest, PyTest",
+         "4,000+ resources across 20+ workspaces",
+         "GitHub Actions, CodePipeline, OIDC roles",
+         "Blue-green and canary with auto rollback",
+         "Every change rehearsed in a sandbox mirror"
       ]
    },
    {
       "id": 3,
-      "title": "AI/ML & MLOps",
+      "title": "Cloud Networking",
       "list": [
-         "End-to-End ML Pipelines",
-         "Model Training & Deployment",
-         "LLM Integration & RAG Systems",
-         "MLOps Automation & Monitoring",
-         "Data Analysis & Visualization"
+         "Transit Gateway hubs with firewall inspection",
+         "Self-service VPC route tables in 15 minutes",
+         "Firewall access by tag in about a minute",
+         "AWS IPAM at about 94% lower projected cost",
+         "Direct Connect and VPN landing on the hubs"
       ]
    },
    {
       "id": 4,
-      "title": "AI Agents & Tooling",
+      "title": "MLOps & GenAI on AWS",
       "list": [
-         "MCP Server Development",
-         "Agent Skills & Workflow Design",
-         "AI-Powered Developer Tools",
-         "Automation & Productivity Systems",
-         "Open Source Community Building"
-      ]
-   },
-   {
-      "id": 7,
-      "title": "AI-Driven Development (AI-DLC)",
-      "list": [
-         "AI-first project setup: CLAUDE.md, skills, hooks, subagents",
-         "MCP integrations wired into the dev workflow",
-         "Spec-to-ship pipelines with Claude Code, Kiro, Amazon Q",
-         "Agent-executable runbooks and guardrails",
-         "Team enablement for AI pair-programming"
+         "SageMaker pipelines behind hard quality gates",
+         "Drift and fairness alarms trigger retraining",
+         "Blue-green endpoints with automatic rollback",
+         "Bedrock Guardrails and A2I human review",
+         "Pipeline published by AWS on aws-samples"
       ]
    },
    {
       "id": 5,
-      "title": "Cloud Consulting",
+      "title": "AI Agents & Developer Tooling",
       "list": [
-         "Cloud Migration Strategy",
-         "Architecture Design & Review",
-         "Security & Compliance Hardening",
-         "Cost Optimization",
-         "Performance Tuning"
+         "MCP servers for Bedrock, tax filing, memory",
+         "A 16-plugin Claude Code marketplace",
+         "AI-DLC: CLAUDE.md, skills, hooks, subagents",
+         "Kiro and Claude Code specs, 50+ design docs",
+         "skillcheck: Agent Skills conformance on npm"
       ]
    },
    {
       "id": 6,
-      "title": "Competitive Programming",
+      "title": "Full-Stack Product Builds",
       "list": [
-         "Algorithm Design & Analysis",
-         "Dynamic Programming",
-         "1800+ Problems Solved",
-         "LeetCode Guardian Rating",
-         "Contest Strategy & Mentoring"
+         "React 19 and Next.js 16 frontends",
+         "FastAPI and Node.js APIs with WebSockets",
+         "Postgres on Neon with Drizzle or SQLAlchemy",
+         "In-app AI assistants on read-only tools",
+         "Live on Vercel, Render and GitHub Pages"
       ]
    }
 ]

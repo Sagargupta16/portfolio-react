@@ -1,13 +1,11 @@
 import { motion } from "motion/react";
-import { ArrowUpRight, Trophy, Code, Star } from "lucide-react";
-import { FaGithub } from "react-icons/fa6";
+import { ArrowUpRight, Code, Star } from "lucide-react";
 import { getCodingPlatformStats } from "@data/achievements";
 import type { CodingPlatformStat } from "@/types";
 import { staggerContainer, fadeInUp } from "@utils/animations";
 import {
    MONO_FONT,
    PURPLE,
-   AMBER,
    TEXT_PRIMARY,
    TEXT_MUTED,
    DURATION,
@@ -15,25 +13,21 @@ import {
 } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
+import GitHubCard from "./GitHubCard";
+import LeetCodeCard from "./LeetCodeCard";
 
+// GitHub and LeetCode carry numbers and charts in their own cards; the
+// platforms that report a single figure keep the compact link card.
 const PLATFORM_CONFIG: Record<
    string,
    {
       label: string;
       color: string;
-      icon: typeof Trophy;
+      icon: typeof Code;
       highlight: (stats: CodingPlatformStat) => string;
       subtitle: (stats: CodingPlatformStat) => string;
    }
 > = {
-   leetcode: {
-      label: "LeetCode",
-      color: AMBER,
-      icon: Trophy,
-      highlight: (s) => `${s.best_rating ?? ""} ${s.badge ?? ""}`.trim(),
-      subtitle: (s) =>
-         `${s.problems_solved ?? "?"} solved | ${s.contests ?? "?"} contests`,
-   },
    geeksforgeeks: {
       label: "GeeksforGeeks",
       // Brighter than the GfG brand green: #2f8d46 is 4.44:1 at 11px here.
@@ -51,16 +45,22 @@ const PLATFORM_CONFIG: Record<
    },
 };
 
+// Desktop: GitHub spans the row so its year heatmap gets the full width, then
+// LeetCode's chart card beside the two compact cards stacked. Phones stack
+// everything, compact cards two-up.
+const AREAS_DESKTOP = '"github github" "leetcode compact"';
+const AREAS_MOBILE = '"github" "leetcode" "compact"';
+
 interface CodingProfilesProps {
    githubUsername: string;
 }
 
-const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
+const CodingProfiles = ({ githubUsername }: Readonly<CodingProfilesProps>) => {
    const { isMobile } = useBreakpoint();
    const { reducedMotion } = useMotionPreference();
    const lift = reducedMotion ? undefined : { y: -4 };
    const stats = getCodingPlatformStats();
-   const entries = Object.entries(stats).filter(
+   const compact = Object.entries(stats).filter(
       ([key]) => key in PLATFORM_CONFIG,
    );
 
@@ -74,10 +74,9 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
       alignItems: "center",
       justifyContent: "center",
       gap: 8,
-      // Fixed aspect ratio keeps cards visually consistent across viewports
-      aspectRatio: "4 / 3",
-      // Long mono strings (the GitHub username) must shrink inside the grid
-      // track instead of widening it on small phones.
+      minHeight: 140,
+      // Long mono strings must shrink inside the grid track instead of
+      // widening it on small phones.
       minWidth: 0,
       overflow: "hidden",
    };
@@ -104,115 +103,85 @@ const CodingProfiles = ({ githubUsername }: CodingProfilesProps) => {
             style={{
                display: "grid",
                gridTemplateColumns: isMobile
-                  ? "repeat(2, minmax(0, 1fr))"
-                  : "repeat(auto-fit, minmax(160px, 1fr))",
+                  ? "minmax(0, 1fr)"
+                  : "repeat(2, minmax(0, 1fr))",
+               gridTemplateAreas: isMobile ? AREAS_MOBILE : AREAS_DESKTOP,
                gap: 12,
             }}
          >
-            {/* GitHub profile card */}
-            <motion.a
-               href={`https://github.com/${githubUsername}`}
-               target="_blank"
-               rel="noopener noreferrer"
-               className="glass-card"
-               variants={fadeInUp}
-               whileHover={lift}
-               whileFocus={lift}
-               transition={{ duration: DURATION.quick, ease: EASING.brisk }}
-               style={cardStyle}
+            <GitHubCard username={githubUsername} stats={stats.github} />
+            {stats.leetcode && <LeetCodeCard stats={stats.leetcode} />}
+
+            <div
+               style={{
+                  gridArea: "compact",
+                  display: "grid",
+                  gridTemplateColumns: isMobile
+                     ? "repeat(2, minmax(0, 1fr))"
+                     : "minmax(0, 1fr)",
+                  gap: 12,
+               }}
             >
-               <FaGithub size={20} style={{ color: TEXT_PRIMARY }} />
-               <span
-                  style={{
-                     fontSize: 12,
-                     fontWeight: 600,
-                     color: TEXT_PRIMARY,
-                     textTransform: "uppercase",
-                     letterSpacing: "0.04em",
-                  }}
-               >
-                  GitHub
-               </span>
-               <span style={highlightStyle}>{githubUsername}</span>
-               <span style={{ fontSize: 11, color: TEXT_MUTED }}>
-                  Open Source Contributions
-               </span>
-               <span
-                  style={{
-                     display: "inline-flex",
-                     alignItems: "center",
-                     gap: 4,
-                     fontSize: 11,
-                     color: TEXT_PRIMARY,
-                     marginTop: 4,
-                  }}
-               >
-                  View Profile
-                  <ArrowUpRight
-                     size={14}
-                     className="action-arrow action-arrow--external"
-                     aria-hidden="true"
-                  />
-               </span>
-            </motion.a>
-
-            {/* Coding platform cards */}
-            {entries.map(([key, s]) => {
-               const config = PLATFORM_CONFIG[key];
-               if (!config) return null;
-
-               return (
-                  <motion.a
-                     key={key}
-                     href={s.url}
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     className="glass-card"
-                     variants={fadeInUp}
-                     whileHover={lift}
-                     whileFocus={lift}
-                     transition={{
-                        duration: DURATION.quick,
-                        ease: EASING.brisk,
-                     }}
-                     style={cardStyle}
-                  >
-                     <config.icon size={20} style={{ color: config.color }} />
-                     <span
-                        style={{
-                           fontSize: 12,
-                           fontWeight: 600,
-                           color: config.color,
-                           textTransform: "uppercase",
-                           letterSpacing: "0.04em",
+               {compact.map(([key, s]) => {
+                  const config = PLATFORM_CONFIG[key];
+                  return (
+                     <motion.a
+                        key={key}
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="glass-card"
+                        variants={fadeInUp}
+                        whileHover={lift}
+                        whileFocus={lift}
+                        transition={{
+                           duration: DURATION.quick,
+                           ease: EASING.brisk,
                         }}
+                        style={cardStyle}
                      >
-                        {config.label}
-                     </span>
-                     <span style={highlightStyle}>{config.highlight(s)}</span>
-                     <span style={{ fontSize: 11, color: TEXT_MUTED }}>
-                        {config.subtitle(s)}
-                     </span>
-                     <span
-                        style={{
-                           display: "inline-flex",
-                           alignItems: "center",
-                           gap: 4,
-                           fontSize: 11,
-                           color: config.color,
-                           marginTop: 4,
-                        }}
-                     >
-                        View
-                        <ArrowUpRight
-                           size={14}
-                           className="action-arrow action-arrow--external"
-                           aria-hidden="true"
+                        <config.icon
+                           size={20}
+                           style={{ color: config.color }}
                         />
-                     </span>
-                  </motion.a>
-               );
-            })}
+                        <span
+                           style={{
+                              fontSize: 12,
+                              fontWeight: 600,
+                              color: config.color,
+                              textTransform: "uppercase",
+                              letterSpacing: "0.04em",
+                           }}
+                        >
+                           {config.label}
+                        </span>
+                        <span style={highlightStyle}>
+                           {config.highlight(s)}
+                        </span>
+                        <span style={{ fontSize: 11, color: TEXT_MUTED }}>
+                           {config.subtitle(s)}
+                        </span>
+                        <span
+                           style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 4,
+                              fontSize: 11,
+                              color: config.color,
+                              marginTop: 4,
+                           }}
+                        >
+                           View
+                           <ArrowUpRight
+                              size={14}
+                              className="action-arrow action-arrow--external"
+                              aria-hidden="true"
+                           />
+                        </span>
+                     </motion.a>
+                  );
+               })}
+            </div>
          </motion.div>
       </div>
    );

@@ -16,23 +16,30 @@ interface EducationCardHeaderProps {
    marginLeft: number;
 }
 
+// Crests are full colour, so the tile is near-white to keep their reds,
+// greens and blues readable on the near-black canvas.
+const LOGO_TILE = 40;
+const LOGO_SIZE = 30;
+// Wide marks (the Happy Days lockup) shrink to fit inside the tile.
+const LOGO_MAX_WIDTH = LOGO_TILE - 4;
+
 const InstitutionRow = ({ institution }: { institution: string }) => (
    <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
       <div
          style={{
-            width: 28,
-            height: 28,
-            borderRadius: 10,
-            background: "rgba(56,189,248,0.1)",
-            border: "1px solid rgba(56,189,248,0.15)",
+            width: LOGO_TILE,
+            height: LOGO_TILE,
+            borderRadius: 12,
+            background: "rgba(255,255,255,0.92)",
+            border: "1px solid rgba(255,255,255,0.12)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
          }}
       >
-         {getOrgLogo(institution, 16) ?? (
-            <GraduationCap style={{ width: 14, height: 14, color: PURPLE }} />
+         {getOrgLogo(institution, LOGO_SIZE, LOGO_MAX_WIDTH) ?? (
+            <GraduationCap style={{ width: 20, height: 20, color: PURPLE }} />
          )}
       </div>
       <h3

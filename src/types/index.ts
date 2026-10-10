@@ -47,6 +47,18 @@ export interface CodingPlatformStat {
    top_percentage?: string;
    problem_solving?: string;
    cpp?: string;
+   /** LeetCode: exact accepted counts per difficulty. */
+   solved_by_difficulty?: { easy: number; medium: number; hard: number };
+   /** LeetCode: [contest date YYYY-MM-DD, rating after it], oldest first, attended contests only. */
+   rating_history?: [string, number][];
+   /** GitHub, over the last year of the contribution calendar. */
+   contributions?: number;
+   pull_requests?: number;
+   longest_streak?: number;
+   /** GitHub: share of code size across owned public non-fork repos, largest first. */
+   languages?: { name: string; percent: number }[];
+   /** GitHub: day the numbers above were last refreshed (YYYY-MM-DD). */
+   fetched?: string;
 }
 
 export type CodingPlatformStats = Record<string, CodingPlatformStat>;
@@ -92,6 +104,16 @@ export interface CaseStudy {
 }
 
 // ===== Experience =====
+/** Animated scene keys, one per entry in pages/experience/scenes/sceneRegistry.ts. */
+export type EngagementSceneKey =
+   | "landing-zone"
+   | "security-controls"
+   | "tf-modernize"
+   | "mlops-loop"
+   | "consulting-loop"
+   | "aws-intern"
+   | "ikarus-devops";
+
 export interface ExperienceProject {
    name: string;
    date?: string;
@@ -102,6 +124,8 @@ export interface ExperienceProject {
    /** Short label for the link, defaults to "Source" when omitted. */
    linkLabel?: string;
    case_study?: CaseStudy;
+   /** Animated scene of what was built, as a banner on its details card. */
+   scene?: EngagementSceneKey;
 }
 
 export interface InternalContribution {
@@ -119,6 +143,8 @@ export interface ProfessionalExperience {
    location: string;
    summary: string;
    projects?: ExperienceProject[];
+   /** Animated scene of the role as a whole, on its collapsed timeline card. */
+   scene?: EngagementSceneKey;
    internal_contributions?: InternalContribution[];
    internal_achievements?: InternalContribution[];
 }
@@ -145,6 +171,15 @@ export interface SocialProfile {
 
 export interface SiteConfig {
    tech_stack?: string[];
+}
+
+/** A headline result for the Stats band. `derived_from` names a count kept
+ *  elsewhere in data/ that validate-data.js checks `value` against. */
+export interface Highlight {
+   value: string;
+   label: string;
+   note?: string;
+   derived_from?: "aws_samples" | "tfc_ambassador";
 }
 
 export interface ImpactStats {

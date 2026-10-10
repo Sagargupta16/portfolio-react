@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { FolderGit2 } from "lucide-react";
 import TechTag from "@components/ui/TechTag";
@@ -13,11 +14,26 @@ import {
 } from "@/constants/theme";
 import type { ExperienceProject } from "@/types";
 import ProjectSourceLink from "./ProjectSourceLink";
+import EngagementScene from "./scenes/EngagementScene";
 
 interface ModalProjectCardProps {
    project: ExperienceProject;
    index: number;
 }
+
+// The card's 16 px padding, bled through so the banner spans its full width.
+const CARD_PAD = 16;
+
+// 16:9 on phones; the height cap turns it into 2:1 at the 720 px modal width.
+// The explicit width keeps that cap from shrinking the banner sideways.
+const BANNER: CSSProperties = {
+   width: `calc(100% + ${CARD_PAD * 2}px)`,
+   margin: `-${CARD_PAD}px -${CARD_PAD}px 14px`,
+   aspectRatio: "16 / 9",
+   maxHeight: 336,
+   borderRadius: "11px 11px 0 0",
+   borderBottom: "1px solid rgba(255,255,255,0.06)",
+};
 
 const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
    <motion.div
@@ -30,12 +46,20 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
       }}
       style={{
          marginBottom: 20,
-         padding: "16px 16px",
+         padding: CARD_PAD,
          borderRadius: 12,
          background: "rgba(255,255,255,0.02)",
          border: "1px solid rgba(255,255,255,0.05)",
       }}
    >
+      {project.scene && (
+         <EngagementScene
+            scene={project.scene}
+            tint={CYAN}
+            style={BANNER}
+            fade
+         />
+      )}
       <div
          style={{
             display: "flex",

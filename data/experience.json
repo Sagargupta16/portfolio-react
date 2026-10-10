@@ -8,10 +8,12 @@
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
          "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
+         "scene": "consulting-loop",
          "projects": [
             {
                "name": "Lead DevOps Consultant - RWS (Ongoing)",
                "date": "Feb 2026 - Present",
+               "scene": "landing-zone",
                "description": {
                   "1": "Accounts were created by a legacy pipeline and the landing zone had no infrastructure as code. I built it in Terraform: Organizations OUs with Control Tower baselines, SCPs and tag policies, and an account baseline that gives every account OIDC deploy roles and a security baseline (IMDSv2, EBS encryption, public-access blocks, no default VPC). 4,000+ resources across 20+ Terraform Cloud workspaces with none failing, and per-account setup cut ~90% (3+ days to under 4 hours).",
                   "2": "Every new VPC, route and firewall rule needed a network-team ticket. I built two Transit Gateway hubs in separate AWS Regions with Network Firewall inspection, VPN and Direct Connect, plus self-service onboarding: each new workload gets its own route table within 15 minutes and firewall access by tag in about a minute.",
@@ -53,6 +55,7 @@
             {
                "name": "DevOps Consultant - DTCC",
                "date": "Aug 2025 - Nov 2025",
+               "scene": "tf-modernize",
                "description": {
                   "1": "Refactored and created critical Terraform infrastructure code to enhance security and scalability, solving complex legacy modernization challenges in financial services.",
                   "2": "Used Amazon Q to accelerate code analysis and migration assessments, transforming infrastructure patterns to align with cloud-native principles.",
@@ -80,6 +83,7 @@
             {
                "name": "Medical Image Classification MLOps Pipeline (SME Program)",
                "date": "Jun 2025 - Aug 2025",
+               "scene": "mlops-loop",
                "description": {
                   "1": "Architected end-to-end MLOps pipeline on SageMaker, automating data processing, multi-model training, and ensemble model creation for medical image classification.",
                   "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection - enabling zero-downtime model updates with automatic rollback.",
@@ -114,6 +118,7 @@
             {
                "name": "DevOps Consultant - State Street",
                "date": "Oct 2024 - Aug 2025",
+               "scene": "security-controls",
                "description": {
                   "1": "Built Terraform for about 10 AWS services with automated tests (tftest, PyTest) on the landing zone team, part of the path that opened 38+ services to application teams.",
                   "2": "Designed Amazon Detective enablement: delegated admin moved from the Control Tower management account to the Audit account through an AFT customization, organization-wide auto-enable in Terraform, and GuardDuty findings cut from 6-hour to 15-minute notifications.",
@@ -213,6 +218,7 @@
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
          "summary": "Underwent extensive hands-on DevOps and Cloud training, delivered multiple proof-of-concepts, and contributed to a production ECS migration project using Terraform and CI/CD pipelines.",
+         "scene": "aws-intern",
          "projects": [
             {
                "name": "ECS Application Deployment with Terraform",
@@ -267,6 +273,7 @@
          "company": "Ikarus-3D",
          "location": "Mohali, India",
          "summary": "Containerized and deployed production applications on AWS, building CI/CD pipelines and establishing code quality infrastructure.",
+         "scene": "ikarus-devops",
          "projects": [
             {
                "name": "Web Application Containerization and Deployment",
