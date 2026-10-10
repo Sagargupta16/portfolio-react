@@ -1,8 +1,10 @@
-import type { ComponentType, ReactNode } from "react";
+import { Suspense, type ComponentType, type ReactNode } from "react";
 import { motion } from "motion/react";
-import { ExternalLink, Sparkles, Check } from "lucide-react";
+import { ExternalLink, Sparkles, Check, Play } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import TechTag from "@components/ui/TechTag";
+import GlossText from "@components/ui/GlossText";
+import CaseStudyBrief from "@components/ui/CaseStudyBrief";
 import { hasProjectUrl } from "@utils/projectMetadata";
 import {
    TEXT_SECONDARY,
@@ -11,6 +13,7 @@ import {
    EASING,
 } from "@/constants/theme";
 import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
+import { getProjectDemo } from "./demos/demoRegistry";
 
 interface ProjectModalBodyProps {
    project: ProjectWithCategory;
@@ -92,6 +95,33 @@ const ProjectModalBody = ({
    const contributors = project.contributors ?? [];
    const hasGithub = hasProjectUrl(project.github);
    const hasLive = hasProjectUrl(project.live);
+   const demo = getProjectDemo(project.id);
+   const brief = project.case_study;
+
+   // Source and demo sit at the top, inside the brief when there is one, so
+   // the "where can I inspect this" answer never needs a scroll.
+   const links = (hasGithub || hasLive) && (
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+         {hasLive && (
+            <ModalLink
+               href={project.live}
+               ariaLabel={`View ${project.title} live demo`}
+               icon={ExternalLink}
+               label="Live Demo"
+               kind="primary"
+            />
+         )}
+         {hasGithub && (
+            <ModalLink
+               href={project.github}
+               ariaLabel={`View ${project.title} on GitHub`}
+               icon={FaGithub}
+               label="View Source"
+               kind="outline"
+            />
+         )}
+      </div>
+   );
 
    return (
       <div
@@ -111,8 +141,20 @@ const ProjectModalBody = ({
                lineHeight: 1.7,
             }}
          >
-            {project.description}
+            <GlossText text={project.description} />
          </motion.p>
+
+         {brief ? (
+            <Section delay={0.21} label="At a glance">
+               <CaseStudyBrief
+                  brief={brief}
+                  accent={colors.accent}
+                  inspect={links || undefined}
+               />
+            </Section>
+         ) : (
+            links && <motion.div {...fadeInUpProps(0.21)}>{links}</motion.div>
+         )}
 
          {/* Tech stack */}
          {project.tools_tech.length > 0 && (
@@ -127,6 +169,36 @@ const ProjectModalBody = ({
                      />
                   ))}
                </div>
+            </Section>
+         )}
+
+         {/* Case-study demo (lazy chunk per project) */}
+         {demo && (
+            <Section
+               delay={0.27}
+               label={
+                  <span
+                     style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                     }}
+                  >
+                     <Play size={12} style={{ color: colors.accent }} />
+                     {demo.label}
+                  </span>
+               }
+            >
+               <Suspense
+                  fallback={
+                     <div
+                        className="skeleton"
+                        style={{ height: isMobile ? 260 : 220 }}
+                     />
+                  }
+               >
+                  <demo.Demo accent={colors.accent} isMobile={isMobile} />
+               </Suspense>
             </Section>
          )}
 
@@ -204,40 +276,6 @@ const ProjectModalBody = ({
                   ))}
                </div>
             </Section>
-         )}
-
-         {/* Links */}
-         {(hasGithub || hasLive) && (
-            <motion.div
-               {...fadeInUpProps(0.42)}
-               style={{
-                  display: "flex",
-                  gap: 8,
-                  flexWrap: "wrap",
-                  paddingTop: 4,
-                  borderTop: "1px solid rgba(255,255,255,0.06)",
-                  marginTop: 4,
-               }}
-            >
-               {hasLive && (
-                  <ModalLink
-                     href={project.live}
-                     ariaLabel={`View ${project.title} live demo`}
-                     icon={ExternalLink}
-                     label="Live Demo"
-                     kind="primary"
-                  />
-               )}
-               {hasGithub && (
-                  <ModalLink
-                     href={project.github}
-                     ariaLabel={`View ${project.title} on GitHub`}
-                     icon={FaGithub}
-                     label="View Source"
-                     kind="outline"
-                  />
-               )}
-            </motion.div>
          )}
       </div>
    );

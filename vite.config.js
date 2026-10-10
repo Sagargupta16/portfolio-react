@@ -2,7 +2,15 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "node:url";
-import { copyFileSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import {
+   copyFileSync,
+   mkdirSync,
+   readdirSync,
+   readFileSync,
+   writeFileSync,
+} from "node:fs";
+import { buildMachineFiles } from "./scripts/machine-view.js";
 
 const pkg = JSON.parse(
    readFileSync(new URL("./package.json", import.meta.url), "utf8"),
@@ -28,8 +36,46 @@ function publishData() {
    };
 }
 
+// Machine view (llms.txt, index.md, vCard) generated from data/*.json. Written
+// into build/ on build; in dev, served fresh per request so data edits show live.
+const MACHINE_TYPES = new Map([
+   ["llms.txt", "text/plain; charset=utf-8"],
+   ["index.md", "text/markdown; charset=utf-8"],
+   ["sagar-gupta.vcf", "text/vcard; charset=utf-8"],
+]);
+function machineView() {
+   const root = fileURLToPath(new URL(".", import.meta.url));
+   let config;
+   return {
+      name: "machine-view",
+      configResolved(resolved) {
+         config = resolved;
+      },
+      closeBundle() {
+         if (config.command !== "build") return;
+         const out = resolve(config.root, config.build.outDir);
+         for (const [file, body] of buildMachineFiles(root)) {
+            writeFileSync(resolve(out, file), body);
+         }
+      },
+      configureServer(server) {
+         // Registered directly (not a returned post hook) so it runs before
+         // the SPA fallback rewrites these paths to index.html.
+         server.middlewares.use((req, res, next) => {
+            const path = req.url?.split("?")[0] ?? "";
+            const file = path.slice(config.base.length);
+            if (!path.startsWith(config.base) || !MACHINE_TYPES.has(file)) {
+               return next();
+            }
+            res.setHeader("Content-Type", MACHINE_TYPES.get(file));
+            res.end(buildMachineFiles(root).get(file));
+         });
+      },
+   };
+}
+
 export default defineConfig(() => ({
-   plugins: [tailwindcss(), react(), publishData()],
+   plugins: [tailwindcss(), react(), publishData(), machineView()],
    base: "/portfolio-react/",
    // Build stamp shown in the footer status bar.
    define: {

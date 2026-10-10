@@ -11,7 +11,7 @@
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178c6)
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
-![Tests](https://img.shields.io/badge/tests-22%20passing-22c55e)
+![Tests](https://img.shields.io/badge/tests-39%20passing-22c55e)
 ![Version](https://img.shields.io/badge/version-4.10.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
@@ -28,35 +28,37 @@ Section links support reloads and browser history. Navigation loads the content 
 
 ## Tech Stack
 
-| Category          | Technologies                                               |
-| ----------------- | ---------------------------------------------------------- |
-| **Core**          | React 19, TypeScript 7, Vite 8 (Rolldown), Tailwind CSS v4 |
-| **Animations**    | Motion (Framer Motion)                                     |
-| **Fonts**         | Inter Variable, JetBrains Mono (self-hosted)               |
-| **Smooth Scroll** | Lenis (ReactLenis)                                         |
-| **Icons**         | Lucide React, React Icons                                  |
-| **Contact**       | EmailJS                                                    |
-| **GitHub**        | react-github-calendar                                      |
-| **Testing**       | Vitest 5, React Testing Library                            |
-| **Code Quality**  | ESLint 10, typescript-eslint, jsx-a11y-x, Prettier         |
-| **Deployment**    | GitHub Actions, GitHub Pages                               |
+| Category          | Technologies                                                                       |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| **Core**          | React 19, TypeScript 7, Vite 8 (Rolldown), Tailwind CSS v4                         |
+| **Animations**    | Motion (Framer Motion)                                                             |
+| **Fonts**         | Bricolage Grotesque, Inter, Geist Mono, Instrument Serif, Yellowtail (self-hosted) |
+| **Smooth Scroll** | Lenis (ReactLenis)                                                                 |
+| **Icons**         | Lucide React, React Icons                                                          |
+| **Contact**       | EmailJS                                                                            |
+| **GitHub**        | react-github-calendar                                                              |
+| **Testing**       | Vitest 5, React Testing Library                                                    |
+| **Code Quality**  | ESLint 10, typescript-eslint, jsx-a11y-x, Prettier                                 |
+| **Deployment**    | GitHub Actions, GitHub Pages                                                       |
 
 ---
 
 ## Sections
 
-| Section          | Features                                                                                               |
-| ---------------- | ------------------------------------------------------------------------------------------------------ |
-| **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution            |
-| **About**        | Character reveal, highlight cards, quick-facts band                                                    |
-| **Experience**   | Timeline with explicit detail controls, project evidence, internal contributions, and responsibilities |
-| **Education**    | Academic timeline with CGPA counters and accessible achievement disclosures                            |
-| **Skills**       | Brand-icon rows under dashed category rules (96 skills, official brand colors)                         |
-| **Projects**     | Filterable card grid with screenshots/static-or-animated covers, detail modal, and OSS banner          |
-| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                   |
-| **Services**     | Responsive bento grid with optional decorative scenes                                                  |
-| **Stats**        | Derived impact/open-source counters, 3D contribution calendar, and coding profiles                     |
-| **Contact**      | Bounded EmailJS form with inline validation, error toast, and persistent confirmation                  |
+| Section          | Features                                                                                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                     |
+| **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                        |
+| **News**         | Dated milestones drawn as a commit graph with stable hashes                                                                                                     |
+| **Experience**   | Timeline with explicit detail controls, engagement briefs (problem, built, decisions, outcome), internal contributions, and responsibilities                    |
+| **Education**    | Academic timeline with CGPA counters and accessible achievement disclosures                                                                                     |
+| **Skills**       | Brand-icon rows under dashed category rules (96 skills, official brand colors)                                                                                  |
+| **Projects**     | Filterable cards with evidence badges and covers; detail sheet with an at-a-glance brief and live demos (pipeline beams, terraform terminal, blue/green slider) |
+| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                            |
+| **Services**     | Responsive bento grid with optional decorative scenes                                                                                                           |
+| **Stats**        | Derived impact/open-source counters, 3D contribution calendar, and coding profiles                                                                              |
+| **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, and a vCard download                                                         |
+| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, and a machine view (`llms.txt`, `index.md`) generated at build       |
 
 ---
 
@@ -89,7 +91,7 @@ For a file map, editing recipes, and contribution checks, read the [contributor 
 | `pnpm dev`           | Start development server                       |
 | `pnpm build`         | Validate data and build to `/build`            |
 | `pnpm preview`       | Preview production build                       |
-| `pnpm test`          | Run 22 focused Vitest tests                    |
+| `pnpm test`          | Run 39 focused Vitest tests                    |
 | `pnpm validate:data` | Validate JSON schemas and cross-file rules     |
 | `pnpm lint`          | ESLint app and scripts (zero warnings)         |
 | `pnpm lint:fix`      | ESLint with auto-fix                           |
@@ -141,13 +143,13 @@ src/
 │   ├── projects.ts
 │   └── ...
 ├── hooks/                             # Breakpoint, focus, section-navigation, and motion providers
-├── pages/                             # 9 page sections (each split into sub-files)
+├── pages/                             # 10 page sections (each split into sub-files)
 │   ├── about/
 │   ├── experience/
 │   ├── education/
 │   ├── skill/
 │   ├── projects/                      # Projects.tsx, filters, cards, and detail modal
-│   │   └── covers/                    # Cover registry + 14 lazy scene families
+│   │   └── covers/                    # Cover registry + 15 lazy scene families
 │   ├── achievement/
 │   ├── services/
 │   │   └── animations/                # 7 service card animations on an 80x80 canvas
@@ -211,7 +213,7 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 3. Lint application code and Node scripts with zero warnings
 4. Run strict TypeScript checking
 5. Validate JSON schemas and cross-file invariants
-6. Run all 22 focused tests
+6. Run all 39 focused tests
 7. Fail on high-severity dependency advisories
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts

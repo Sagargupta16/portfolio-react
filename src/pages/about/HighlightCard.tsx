@@ -2,6 +2,7 @@ import { motion, type Variants } from "motion/react";
 import { Briefcase, GraduationCap, Rocket, Trophy } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import useMotionPreference from "@hooks/useMotionPreference";
+import GlossText from "@components/ui/GlossText";
 import {
    CYAN,
    PURPLE,
@@ -112,7 +113,7 @@ const HighlightCard = ({ text, index, isMobile }: HighlightCardProps) => {
                margin: 0,
             }}
          >
-            {cleanText}
+            <GlossText text={cleanText} />
          </p>
       </motion.div>
    );

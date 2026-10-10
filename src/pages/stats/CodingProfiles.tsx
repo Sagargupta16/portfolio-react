@@ -36,7 +36,8 @@ const PLATFORM_CONFIG: Record<
    },
    geeksforgeeks: {
       label: "GeeksforGeeks",
-      color: "#2f8d46",
+      // Brighter than the GfG brand green: #2f8d46 is 4.44:1 at 11px here.
+      color: "#34a853",
       icon: Code,
       highlight: (s) => s.problems_solved ?? "",
       subtitle: () => "Problems Solved",

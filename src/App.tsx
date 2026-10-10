@@ -11,6 +11,7 @@ import ScrollProgress from "@components/ui/ScrollProgress";
 import BackToTop from "@components/ui/BackToTop";
 import MotionPreferenceControl from "@components/ui/MotionPreferenceControl";
 import CommandPaletteHost from "@components/ui/CommandPalette/CommandPaletteHost";
+import AnnotationsHost from "@components/ui/Annotations/AnnotationsHost";
 import { BreakpointProvider } from "@hooks/BreakpointProvider";
 import { MotionPreferenceProvider } from "@hooks/MotionPreferenceProvider";
 import { SectionNavigationProvider } from "@hooks/SectionNavigationProvider";
@@ -121,6 +122,7 @@ const AppContent = () => {
                   <BackToTop />
                   <MotionPreferenceControl />
                   <CommandPaletteHost />
+                  <AnnotationsHost />
                </div>
             </ErrorBoundary>
          </SectionNavigationProvider>

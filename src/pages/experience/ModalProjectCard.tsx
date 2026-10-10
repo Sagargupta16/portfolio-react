@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
 import { FolderGit2 } from "lucide-react";
 import TechTag from "@components/ui/TechTag";
+import CaseStudyBrief from "@components/ui/CaseStudyBrief";
+import Disclosure from "@components/ui/Disclosure";
 import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
@@ -68,42 +70,92 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
             </span>
          )}
       </div>
-      <ul
-         style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 4,
-            marginBottom: 8,
-         }}
-      >
-         {Object.entries(project.description)
-            .sort(([a], [b]) => a.localeCompare(b))
-            .map(([, text]) => (
-               <li
-                  key={text}
-                  style={{
-                     color: TEXT_SECONDARY,
-                     fontSize: 12,
-                     lineHeight: 1.7,
-                     display: "flex",
-                     alignItems: "flex-start",
-                     gap: 8,
-                  }}
-               >
-                  <span
+      {/* With a brief, the four answers lead and the full bullet list folds
+          away; without one, the bullets show as before. */}
+      {project.case_study ? (
+         <>
+            <div style={{ marginBottom: 10 }}>
+               <CaseStudyBrief brief={project.case_study} accent={CYAN} />
+            </div>
+            <div style={{ marginBottom: 8 }}>
+               <Disclosure label="Full details" accentColor={CYAN}>
+                  <ul
                      style={{
-                        width: 5,
-                        height: 5,
-                        borderRadius: "50%",
-                        background: `${CYAN}80`,
-                        marginTop: 8,
-                        flexShrink: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 4,
+                        marginBottom: 8,
                      }}
-                  />
-                  {text}
-               </li>
-            ))}
-      </ul>
+                  >
+                     {Object.entries(project.description)
+                        .sort(([a], [b]) => a.localeCompare(b))
+                        .map(([, text]) => (
+                           <li
+                              key={text}
+                              style={{
+                                 color: TEXT_SECONDARY,
+                                 fontSize: 12,
+                                 lineHeight: 1.7,
+                                 display: "flex",
+                                 alignItems: "flex-start",
+                                 gap: 8,
+                              }}
+                           >
+                              <span
+                                 style={{
+                                    width: 5,
+                                    height: 5,
+                                    borderRadius: "50%",
+                                    background: `${CYAN}80`,
+                                    marginTop: 8,
+                                    flexShrink: 0,
+                                 }}
+                              />
+                              {text}
+                           </li>
+                        ))}
+                  </ul>
+               </Disclosure>
+            </div>
+         </>
+      ) : (
+         <ul
+            style={{
+               display: "flex",
+               flexDirection: "column",
+               gap: 4,
+               marginBottom: 8,
+            }}
+         >
+            {Object.entries(project.description)
+               .sort(([a], [b]) => a.localeCompare(b))
+               .map(([, text]) => (
+                  <li
+                     key={text}
+                     style={{
+                        color: TEXT_SECONDARY,
+                        fontSize: 12,
+                        lineHeight: 1.7,
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 8,
+                     }}
+                  >
+                     <span
+                        style={{
+                           width: 5,
+                           height: 5,
+                           borderRadius: "50%",
+                           background: `${CYAN}80`,
+                           marginTop: 8,
+                           flexShrink: 0,
+                        }}
+                     />
+                     {text}
+                  </li>
+               ))}
+         </ul>
+      )}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
          {project.skills.map((s) => (
             <TechTag key={s} label={s} accent={CYAN} size={10} />

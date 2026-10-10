@@ -108,7 +108,7 @@ const HeroContent = () => {
              up out of its own clipping wrapper; see HEADLINE_MASK_STYLE. */}
          <motion.h1
             className="display-heading leading-[1.06] text-text-primary"
-            style={{ fontSize: "clamp(2.25rem, 1rem + 4.6vw, 4.75rem)" }}
+            style={{ fontSize: "clamp(2rem, 0.9rem + 3.5vw, 3.75rem)" }}
             variants={heroHeadline}
          >
             <span style={HEADLINE_MASK_STYLE}>

@@ -278,6 +278,8 @@ const Projects = () => {
                      ref={searchRef}
                      type="text"
                      inputMode="search"
+                     enterKeyHint="search"
+                     name="project-search"
                      value={query}
                      onChange={(event) => {
                         setQuery(event.target.value);
