@@ -8,6 +8,7 @@
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
          "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
+         "scene": "consulting-loop",
          "projects": [
             {
                "name": "Lead DevOps Consultant - RWS (Ongoing)",

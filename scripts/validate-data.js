@@ -303,6 +303,7 @@ if (requireRecord(experience, "experience")) {
       const contributionTypes = new Set(["talk", "publication", "program"]);
       for (const [index, job] of professional.entries()) {
          const jobPath = `experience.professional_experience[${index}]`;
+         checkScene(job.scene, `${jobPath}.scene`);
          if (
             job.projects !== undefined &&
             requireArray(job.projects, `${jobPath}.projects`)
