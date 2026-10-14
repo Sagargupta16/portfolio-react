@@ -62,7 +62,9 @@ const experience: ProfessionalExperience = {
 describe("accessible interactions", () => {
    it("renders the concise role without a duplicate employer suffix", () => {
       render(<QuickFacts isMobile={false} />);
-      expect(screen.getByText("ProServe (Cloud Consultant) - DevOps/MLOps @ AWS")).toBeTruthy();
+      expect(
+         screen.getByText("ProServe (Cloud Consultant) - DevOps/MLOps @ AWS"),
+      ).toBeTruthy();
       expect(screen.queryByText(/AWS @ AWS/)).toBeNull();
    });
 

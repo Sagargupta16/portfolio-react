@@ -30,6 +30,11 @@ jobs:
          - name: Fetch Credly badges
            run: node scripts/sync-credly.js
 
+         # sync-credly.js writes plain JSON.stringify output; without this the CI
+         # format check fails on main after every badge sync (2026-10-13).
+         - name: Format generated data
+           run: npx -y prettier@3 --write data/achievements.json
+
          - name: Validate generated data
            run: node scripts/validate-data.js
 
