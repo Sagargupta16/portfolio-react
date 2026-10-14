@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.17.1] - 2026-10-14
+
+### Changed
+
+- Current AWS title is now "ProServe (Cloud Consultant) - DevOps/MLOps" everywhere it is stated: experience entry, hero role label, Quick Facts, intro splash, personal title, the 2024-08 promotion news item, page title and meta/Open Graph/Twitter tags, JSON-LD jobTitle and the web manifest. Engagement roles (RWS, State Street, DTCC) are unchanged.
+
 ## [4.17.0] - 2026-10-10
 
 ### Added
