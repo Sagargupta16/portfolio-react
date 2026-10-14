@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.17.2] - 2026-10-14
+
+### Removed
+
+- AI Code Translator (project 24) and its cover image: the repository was a near-verbatim fork of mckaywrigley/ai-code-translator (94 to 100% identical files), not original work, and is being deleted.
+
 ## [4.17.1] - 2026-10-14
 
 ### Changed
