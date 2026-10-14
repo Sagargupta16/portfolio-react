@@ -11,7 +11,6 @@ import codeArena from "@assets/projects/code-arena.webp";
 import leetcodeAmongUs from "@assets/projects/leetcode-among-us.webp";
 import noobathon from "@assets/projects/noobathon.webp";
 import financialDashboard from "@assets/projects/financial-dashboard.webp";
-import aiCodeTranslator from "@assets/projects/ai-code-translator.webp";
 import contactManager from "@assets/projects/contact-manager.webp";
 import claudeCostOptimizer from "@assets/projects/claude-cost-optimizer.webp";
 import kalchar from "@assets/projects/kalchar.webp";
@@ -79,7 +78,6 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    40: { kind: "scene", Scene: AutomationScene, variant: "instagram" }, // Instagram Autopilot
    19: { kind: "image", src: financialDashboard },
    7: { kind: "scene", Scene: InfraScene, variant: "pipeline" }, // AWS DevOps Infrastructure (GitHub Actions -> ECR -> ECS)
-   24: { kind: "image", src: aiCodeTranslator },
    14: { kind: "scene", Scene: MlScene }, // Stock Market Prediction
    11: { kind: "scene", Scene: WebAppScene, variant: "social" }, // Brainstorm Verse
    26: { kind: "scene", Scene: AuthScene }, // Authentication System

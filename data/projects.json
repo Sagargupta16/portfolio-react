@@ -624,27 +624,6 @@
          "live": ""
       },
       {
-         "id": 24,
-         "title": "AI Code Translator",
-         "description": "An AI-powered code translation tool that converts code between 50+ programming languages using OpenAI's API. Features CodeMirror syntax highlighting and real-time streaming translation. Originally forked from mckaywrigley/ai-code-translator.",
-         "date": "January 2025",
-         "tools_tech": [
-            "Next.js",
-            "TypeScript",
-            "OpenAI API",
-            "CodeMirror",
-            "Tailwind CSS"
-         ],
-         "features": [
-            "Translate between 50+ programming languages",
-            "Syntax highlighting with CodeMirror",
-            "Real-time streaming translation",
-            "Clean responsive UI with Tailwind CSS"
-         ],
-         "github": "https://github.com/Sagargupta16/ai-code-translator",
-         "live": "https://ai-code-translator-delta-six.vercel.app"
-      },
-      {
          "id": 14,
          "title": "Stock Market Prediction",
          "description": "An LSTM neural network that predicts stock prices for major tech companies (AAPL, MSFT, AMZN, TSLA) using historical market data from Yahoo Finance with moving averages and technical analysis visualizations.",
