@@ -17,15 +17,24 @@ concurrency:
 jobs:
    sync:
       runs-on: ubuntu-latest
-      timeout-minutes: 5
+      timeout-minutes: 10
       steps:
          - name: Checkout code
            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+         - name: Setup pnpm
+           uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+           with:
+              version: 11.28.4
 
          - name: Setup Node.js
            uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
            with:
               node-version: 24
+              cache: pnpm
+
+         - name: Install dependencies
+           run: pnpm install --frozen-lockfile
 
          - name: Fetch Credly badges
            run: node scripts/sync-credly.js
@@ -33,7 +42,7 @@ jobs:
          # sync-credly.js writes plain JSON.stringify output; without this the CI
          # format check fails on main after every badge sync (2026-10-13).
          - name: Format generated data
-           run: npx -y prettier@3 --write data/achievements.json
+           run: pnpm exec prettier --write data/achievements.json
 
          - name: Validate generated data
            run: node scripts/validate-data.js
