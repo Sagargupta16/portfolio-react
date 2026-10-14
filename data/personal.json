@@ -1,12 +1,12 @@
 {
    "name": "Sagar Gupta",
-   "title": "Cloud Consultant, Professional Services (DevOps/MLOps) at AWS",
-   "role": "Cloud Consultant",
+   "title": "ProServe (Cloud Consultant) - DevOps/MLOps at AWS",
+   "role": "ProServe (Cloud Consultant) - DevOps/MLOps",
    "employer": "AWS",
    "location": "Hyderabad, India",
    "timezone": "Asia/Kolkata",
    "intro": "Cloud consultant at AWS Professional Services. Terraform, CI/CD, security guardrails and SageMaker MLOps pipelines, plus the MCP servers and Claude Code skills I build to do that work faster.",
-   "role_label": "DevOps/MLOps Consultant @ AWS",
+   "role_label": "ProServe (Cloud Consultant) - DevOps/MLOps @ AWS",
    "hero_taglines": [
       "Guardrails on from day one.",
       "DevOps for financial institutions.",
