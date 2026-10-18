@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.18.1] - 2026-10-18
+
+### Fixed
+
+- AWS Organizations Governance sample: "six Organizations policy types", not "all six" (the AWS Organizations user guide now lists 13 types), and 20 policy documents, not 21 (counted from the repo's `policies/` folder). The project card, its case study and the terminal demo all changed.
+- SageMaker MLOps sample: the Lambda functions do change the endpoint (they create endpoint configurations and call UpdateEndpoint to roll approved models out), so "never mutates infrastructure" is gone. A2I review is marked optional on the experience entry and the MLOps service card, since the sample ships it off by default.
+
 ## [4.18.0] - 2026-10-18
 
 ### Added

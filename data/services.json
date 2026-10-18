@@ -39,7 +39,7 @@
          "SageMaker pipelines behind hard quality gates",
          "Drift and fairness alarms trigger retraining",
          "Blue-green endpoints with automatic rollback",
-         "Bedrock Guardrails and A2I human review",
+         "Bedrock Guardrails and optional A2I review",
          "Pipeline published by AWS on aws-samples"
       ]
    },

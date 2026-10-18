@@ -73,7 +73,7 @@ const SCRIPTS: Script[] = [
          },
          {
             kind: "note",
-            text: "# 6 policy types as 21 policy documents",
+            text: "# 6 policy types as 20 policy documents",
          },
          {
             kind: "note",
