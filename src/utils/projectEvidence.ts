@@ -1,4 +1,4 @@
-import type { Project } from "@/types";
+import type { Project, ProjectStatus } from "@/types";
 import { hasProjectUrl } from "@utils/projectMetadata";
 
 export type EvidenceKind = "aws" | "live" | "source";
@@ -29,4 +29,10 @@ export const getEvidence = (
    }
 
    return badges.slice(0, MAX_BADGES);
+};
+
+export const STATUS_LABEL: Record<ProjectStatus, string> = {
+   active: "Active",
+   beta: "Beta",
+   complete: "Complete",
 };

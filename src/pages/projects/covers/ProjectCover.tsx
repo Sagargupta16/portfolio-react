@@ -22,9 +22,8 @@ const FILL: CSSProperties = { position: "absolute", inset: 0 };
 
 /**
  * 16:10 media slot at the top of a project card.
- * Deployed projects show a live screenshot; undeployed ones render an
- * animated scene that is mounted only near the viewport. Both zoom subtly
- * on card hover via the .project-cover-img class.
+ * Every project renders an animated scene that is mounted only near the
+ * viewport. It zooms subtly on card hover via the .project-cover-img class.
  */
 const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
    const cover = getProjectCover(projectId, title);
@@ -34,36 +33,8 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
    useFreezeAnimations(frameRef);
    if (!cover) return null;
 
-   const isImage = cover.kind === "image";
    let media: ReactNode;
-   if (isImage) {
-      // Screenshot framed like a device window on the accent gradient panel;
-      // it grows from its top edge on card hover (.project-cover-img--framed).
-      media = (
-         <img
-            src={cover.src}
-            alt={`${title} screenshot`}
-            loading="lazy"
-            decoding="async"
-            width={960}
-            height={600}
-            className="project-cover-img project-cover-img--framed"
-            style={{
-               position: "absolute",
-               top: "9%",
-               left: "7%",
-               width: "86%",
-               height: "91%",
-               objectFit: "cover",
-               objectPosition: "top",
-               borderRadius: "10px 10px 0 0",
-               border: "1px solid rgb(255 255 255 / 0.1)",
-               borderBottom: "none",
-               boxShadow: "0 12px 32px rgb(0 0 0 / 0.35)",
-            }}
-         />
-      );
-   } else if (nearViewport) {
+   if (nearViewport) {
       media = (
          <div
             className="project-cover-img"
@@ -97,10 +68,7 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             position: "relative",
             overflow: "hidden",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
-            // Gradient panel only behind framed screenshots; scenes paint their own.
-            background: isImage
-               ? `linear-gradient(150deg, color-mix(in srgb, ${accent} 34%, #0c1216) 0%, #0c1216 78%)`
-               : "#0c1216",
+            background: "#0c1216",
          }}
       >
          {media}
@@ -110,9 +78,8 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             aria-hidden="true"
             style={{
                ...FILL,
-               background: isImage
-                  ? "linear-gradient(180deg, transparent 75%, rgb(14 20 23 / 0.75) 100%)"
-                  : "linear-gradient(180deg, transparent 72%, rgb(14 20 23 / 0.85) 100%)",
+               background:
+                  "linear-gradient(180deg, transparent 72%, rgb(14 20 23 / 0.85) 100%)",
                pointerEvents: "none",
             }}
          />

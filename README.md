@@ -20,7 +20,7 @@
 
 ## About
 
-A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Project cards carry live screenshots of deployed sites and animated SVG cover scenes for everything else. Built as a single-page scroll application with strict TypeScript, sections loaded near the viewport, data validation, and a persisted Full/Reduced motion preference.
+A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Every project card carries an animated SVG cover scene that shows how that project actually works. Built as a single-page scroll application with strict TypeScript, sections loaded near the viewport, data validation, and a persisted Full/Reduced motion preference.
 
 Section links support reloads and browser history. Navigation loads the content before scrolling to its destination, while motion changes preserve form drafts, project filters, and keyboard focus.
 
@@ -45,20 +45,20 @@ Section links support reloads and browser history. Navigation loads the content 
 
 ## Sections
 
-| Section          | Features                                                                                                                                                                                                                |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                                                                             |
-| **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                |
-| **Experience**   | Timeline of roles, each with an animated scene of what that role did; details modal with case-study briefs and a scene per engagement                                                                                   |
-| **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                      |
-| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (150 skills; static chips in Reduced)                                                                                               |
-| **Projects**     | Filterable cards with evidence badges; live screenshots for deployed apps and repo-accurate animated scenes for the rest; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`)        |
-| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                    |
-| **Services**     | Six fact-based offerings in an even bento grid, each with a scene that shows the real mechanism (labels 9 px+ on phones)                                                                                                |
-| **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                                               |
-| **News**         | Dated milestones as a one-line commit graph with stable hashes, filterable by type                                                                                                                                      |
-| **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                       |
-| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build |
+| Section          | Features                                                                                                                                                                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                                                                                                       |
+| **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                                          |
+| **Experience**   | Timeline of roles, each with an animated scene of what that role did; details modal with case-study briefs and a scene per engagement                                                                                                             |
+| **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                                                |
+| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (150 skills; static chips in Reduced)                                                                                                                         |
+| **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; repo-accurate animated cover scenes for every project; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
+| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                              |
+| **Services**     | Six fact-based offerings in an even bento grid, each with a scene that shows the real mechanism (labels 9 px+ on phones)                                                                                                                          |
+| **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                                                                         |
+| **News**         | Dated milestones as a one-line commit graph with stable hashes, filterable by type                                                                                                                                                                |
+| **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                                                 |
+| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build                           |
 
 ---
 
@@ -117,7 +117,6 @@ data/                                  # JSON content files (edit these to custo
 └── contact.json
 src/
 ├── __tests__/                         # Navigation, real form/filter, accessibility, utility, and data tests
-├── assets/projects/                   # 960x600 webp covers captured from live sites
 ├── components/
 │   ├── common/                        # ErrorBoundary
 │   ├── layout/
@@ -185,6 +184,8 @@ All portfolio content lives in JSON files under `data/` at the project root:
 
 Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. Existing text and metadata can usually be updated in JSON alone. Adding or removing a project also requires a matching cover registration; follow the [project editing recipe](CONTRIBUTING.md#add-or-remove-a-project).
 
+Each project sets a `status` (`active`, `beta` or `complete`) by hand. For active and beta projects, `scripts/sync-live-data.js` keeps `version` current every week: it takes the higher of the latest release tag and the root manifest version.
+
 Certifications are automatically synced from Credly via a weekly GitHub Actions workflow (`sync-credly.yml`) and validated before the bot can commit them.
 
 ---
@@ -223,12 +224,12 @@ Pull requests run every code/data gate and a production build without depending 
 
 ## More Projects
 
-| Project                                                                                | Description                                                            |
-| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [claude-cost-optimizer](https://github.com/Sagargupta16/claude-cost-optimizer)         | Save 30-60% on Claude Code costs - proven strategies and benchmarks    |
-| [Financial Dashboard](https://github.com/Sagargupta16/Financial-Dashboard)             | Modern React financial dashboard with analytics and data visualization |
-| [InstagramLikesLeaderboard](https://github.com/Sagargupta16/InstagramLikesLeaderboard) | Browser tool showing who likes your Instagram posts the most           |
-| [LeetCode Rating Predictor](https://github.com/Sagargupta16/LeetCode_Rating_Predictor) | Full-stack ML-powered LeetCode contest rating predictor                |
+| Project                                                                                | Description                                                             |
+| -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [claude-cost-optimizer](https://github.com/Sagargupta16/claude-cost-optimizer)         | Claude Code cost strategies, benchmarks and the claude-rate CLI         |
+| [Ledger Sync](https://github.com/Sagargupta16/ledger-sync)                             | Self-hosted personal finance dashboard built from Excel bank statements |
+| [InstagramLikesLeaderboard](https://github.com/Sagargupta16/InstagramLikesLeaderboard) | Browser tool showing who likes your Instagram posts the most            |
+| [LeetCode Rating Predictor](https://github.com/Sagargupta16/LeetCode_Rating_Predictor) | Full-stack ML-powered LeetCode contest rating predictor                 |
 
 ---
 

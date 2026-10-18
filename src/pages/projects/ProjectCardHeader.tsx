@@ -1,6 +1,6 @@
 import { Pin, Users, Star } from "lucide-react";
 import { AMBER } from "@/constants/theme";
-import { getEvidence } from "@utils/projectEvidence";
+import { getEvidence, STATUS_LABEL } from "@utils/projectEvidence";
 import type { Project } from "@/types";
 import type { ProjectWithCategory } from "./projectConstants";
 
@@ -12,20 +12,37 @@ interface ProjectCardHeaderProps {
 }
 
 interface EvidenceBadgesProps {
-   project: Pick<Project, "organization" | "live" | "github">;
+   project: Pick<
+      Project,
+      "organization" | "live" | "github" | "status" | "version"
+   >;
    className?: string;
 }
 
-/** Small proof pills (Published by AWS / Live / Open source) with a status dot. */
+/**
+ * Small pills: the project status (Active / Beta / Complete, with its
+ * version), then proof (Published by AWS / Live / Open source).
+ */
 export const EvidenceBadges = ({ project, className }: EvidenceBadgesProps) => {
    const badges = getEvidence(project);
-   if (badges.length === 0) return null;
 
    return (
       <ul
          className={`evidence-badges${className ? ` ${className}` : ""}`}
-         aria-label="Project evidence"
+         aria-label="Project status and evidence"
       >
+         <li
+            className={`evidence-badge evidence-badge--status-${project.status}`}
+         >
+            <span className="evidence-dot" aria-hidden="true" />
+            {STATUS_LABEL[project.status]}
+            {project.version && (
+               <>
+                  {" "}
+                  <span className="evidence-version">v{project.version}</span>
+               </>
+            )}
+         </li>
          {badges.map((b) => (
             <li
                key={b.kind}

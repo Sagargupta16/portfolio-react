@@ -2,6 +2,48 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.18.0] - 2026-10-18
+
+### Added
+
+- Four community projects, each with its own animated cover scene showing the repo's real mechanism:
+   - **orrery** (57, `DiagramScene`): YAML spec to an auto-laid-out diagram with official cloud icons, packets on the edges and numbered steps.
+   - **svg-forge** (58, `ForgeScene`): the Claude Code plugin's generate, validate and contact-sheet loop for animated SVGs.
+   - **agent-brain** (59, `BrainScene`): three agent hosts sharing one markdown memory where facts are corrected or withdrawn, never overwritten. The October news item now has a project card to match.
+   - **Shared Workflows** (60, `WorkflowScene`): 11 repos calling one library of seven reusable GitHub Actions workflows with a one-line `uses:` reference.
+
+- **Project status and version.** Every project record has a hand-set `status` (`active`, `beta` or `complete`) that shows as the first chip on its card and in its detail view: Active is a solid blue dot, Beta a sky ring, Complete a muted ring. Active and beta projects also show their version, which `sync-live-data.js` refreshes weekly from the higher of the latest release tag and the root manifest (`package.json`, `pyproject.toml` or the Claude plugin manifest). The validator rejects any other status and any version that is not bare semver. Breakdown: 27 active, 1 beta (MCP Toolkit), 20 complete.
+
+### Changed
+
+- **Project copy refreshed against each repo** (59 edits across 31 projects, every number re-measured from the repo). Highlights:
+   - Ledger Sync now lists Neon PostgreSQL.
+   - Code Arena runs code through Judge0 CE and is frontend-only.
+   - LeetCode Among Us and Placemento are on TypeScript and Express 5 (Among Us also dropped MongoDB).
+   - Lingua Connect's video calls are removed.
+   - Instagram Autopilot now publishes animated SVG Reels.
+   - The SageMaker sample drops the outdated "0 bandit issues" claim and adds region Shapley explanations and the upload quarantine Lambda.
+   - Claude Cost Optimizer drops its unsourced savings range and adds the claude-rate CLI.
+   - Version-in-description mentions moved to the status chip.
+- **Every cover is now an animated scene.** The remaining screenshot covers became scenes built from each repo's own code and real UI:
+   - Ledger Sync (`LedgerScene`): a messy statement is parsed into the ledger, the SHA256 check drops a duplicate row, and the cash flow Sankey refreshes.
+   - Kalchar (`GalleryScene`): the work filter steps through Madhubani, Pichwai, Lippan and Gond plates.
+   - GitScope (`ExtensionScene`): the extension injects its insights panel into a GitHub profile sidebar.
+   - LeetCode Rating Predictor (`PredictorScene`): weekly and biweekly ranks run through the Dense network into the rating change.
+   - Instagram Likes Leaderboard (`LeaderboardScene`): a console scan walks the posts and re-ranks the likers.
+   - Personal Portfolio (`PortfolioScene`): validated data flows into the page, sections lazy-load, and the Ctrl+K palette opens.
+   - Code Arena (`ArenaScene`): the code is submitted to Judge0, tests pass, and the live board reorders.
+   - LeetCode Among Us (`AmongUsScene`): batched GraphQL fetches fill the table, then it re-sorts on the Contests tab.
+   - Noobathon (`StudyHubScene`): Study HUB's courses, year and subject drill down to notes, tutorials and papers.
+   - Sagas (`LibraryScene`): a chapter goes from draft to final, lands on its shelf, and enters RSS.
+   - Claude Cost Optimizer (`CostScene`): CLAUDE.md trimming, MCP pruning, cost mode and Haiku routing each shrink the per-turn bill.
+- The image cover path is gone: the `image` cover kind, the framed screenshot panel and its CSS, and `src/assets/projects/`. README, CONTRIBUTING and the "How it's built" note now describe scenes only.
+
+### Removed
+
+- Financial Dashboard (project 19) and its screenshot: it was the prototype that became Ledger Sync, and the repository is now archived. The README's More Projects table lists Ledger Sync in its place.
+- Contact Manager (48) and Authentication System (26), with `AuthScene`: 2022 MERN apps superseded by Orbit (personal CRM) and mern-template (JWT auth, OTP, rate limiting). Both repositories are archived; Contact Manager's Pages site keeps serving.
+
 ## [4.17.2] - 2026-10-14
 
 ### Removed

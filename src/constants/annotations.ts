@@ -44,7 +44,7 @@ export const ANNOTATIONS: Annotation[] = [
       id: "projects",
       selector: ".project-grid",
       title: "Covers without a scroll listener",
-      body: "Covers are live screenshots or scenes drawn in code. They reveal with CSS scroll-driven animation (animation-timeline: view()), with no JavaScript watching the scroll.",
+      body: "Every cover is a scene drawn in code, no screenshots. They reveal with CSS scroll-driven animation (animation-timeline: view()), with no JavaScript watching the scroll.",
    },
    {
       id: "contributions",

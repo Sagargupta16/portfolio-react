@@ -191,11 +191,17 @@ export interface ImpactStats {
 }
 
 // ===== Projects =====
+/** Hand-set: shipping or in production, early or partial, or finished. */
+export type ProjectStatus = "active" | "beta" | "complete";
+
 export interface Project {
    id: number;
    title: string;
    description: string;
    date: string;
+   status: ProjectStatus;
+   /** Latest release or manifest version, kept current by sync-live-data. */
+   version?: string;
    tools_tech: string[];
    features: string[];
    github: string;

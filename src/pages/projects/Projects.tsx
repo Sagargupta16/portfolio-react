@@ -345,7 +345,7 @@ const Projects = () => {
                </span>
             </div>
 
-            {/* Card grid with live screenshots / animated covers */}
+            {/* Card grid with animated covers */}
             {filteredProjects.length ? (
                <ProjectGrid
                   projects={filteredProjects}

@@ -517,6 +517,28 @@ html[data-motion="full"] .contribution-link:active {
    --evidence-tint: #22c55e;
 }
 
+/* Status: Active is a solid blue dot, Beta a sky ring, Complete muted. */
+.evidence-badge--status-active {
+   --evidence-tint: #60a5fa;
+}
+
+.evidence-badge--status-beta {
+   --evidence-tint: #38bdf8;
+}
+
+.evidence-badge--status-beta .evidence-dot,
+.evidence-badge--status-complete .evidence-dot {
+   background: transparent;
+   box-shadow: inset 0 0 0 1px var(--evidence-tint);
+}
+
+.evidence-version {
+   padding-left: 6px;
+   border-left: 1px solid
+      color-mix(in srgb, var(--evidence-tint) 30%, transparent);
+   opacity: 0.85;
+}
+
 .evidence-dot {
    position: relative;
    width: 6px;
