@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.18.0] - 2026-10-18
+
+### Added
+
+- Four community projects, each with its own animated cover scene showing the repo's real mechanism:
+   - **orrery** (57, `DiagramScene`): YAML spec to an auto-laid-out diagram with official cloud icons, packets on the edges and numbered steps.
+   - **svg-forge** (58, `ForgeScene`): the Claude Code plugin's generate, validate and contact-sheet loop for animated SVGs.
+   - **agent-brain** (59, `BrainScene`): three agent hosts sharing one markdown memory where facts are corrected or withdrawn, never overwritten. The October news item now has a project card to match.
+   - **Shared Workflows** (60, `WorkflowScene`): 11 repos calling one library of seven reusable GitHub Actions workflows with a one-line `uses:` reference.
+
 ## [4.17.2] - 2026-10-14
 
 ### Removed

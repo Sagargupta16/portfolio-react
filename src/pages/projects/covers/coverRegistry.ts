@@ -40,6 +40,10 @@ const TaxScene = lazy(() => import("./TaxScene"));
 const PluginScene = lazy(() => import("./PluginScene"));
 const GuideScene = lazy(() => import("./GuideScene"));
 const GovernanceScene = lazy(() => import("./GovernanceScene"));
+const DiagramScene = lazy(() => import("./DiagramScene"));
+const ForgeScene = lazy(() => import("./ForgeScene"));
+const BrainScene = lazy(() => import("./BrainScene"));
+const WorkflowScene = lazy(() => import("./WorkflowScene"));
 
 export type ProjectCover =
    | { kind: "image"; src: string }
@@ -88,6 +92,10 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    18: { kind: "scene", Scene: GameScene, variant: "flappy" },
 
    // Community
+   57: { kind: "scene", Scene: DiagramScene }, // orrery
+   58: { kind: "scene", Scene: ForgeScene }, // svg-forge
+   59: { kind: "scene", Scene: BrainScene }, // agent-brain
+   60: { kind: "scene", Scene: WorkflowScene }, // Shared Workflows
    45: { kind: "scene", Scene: DocsScene, variant: "lint" }, // skillcheck (npm CLI)
    47: { kind: "scene", Scene: TaxScene }, // ITR Agent
    38: { kind: "scene", Scene: PluginScene }, // Claude Skills

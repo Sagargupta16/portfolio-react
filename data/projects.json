@@ -801,6 +801,86 @@
    ],
    "community_projects": [
       {
+         "id": 57,
+         "title": "orrery",
+         "description": "Animated architecture and system design diagrams from one YAML spec, with 16,682 official icons from AWS, Azure, Google Cloud, Kubernetes, GitHub and IBM. The Eclipse Layout Kernel places nested boundaries and routes edges, packets travel every edge and numbered steps play in order, and one spec renders to SVG, PNG, editable draw.io, a React component and an HTML viewer. Ships as an Agent Skill and Claude Code plugin.",
+         "date": "October 2026",
+         "tools_tech": [
+            "TypeScript",
+            "ELK",
+            "SVG",
+            "draw.io",
+            "Claude Code",
+            "Agent Skills"
+         ],
+         "features": [
+            "AWS groups follow the AWS Architecture Icons deck; Azure and Google Cloud groups follow their own guides",
+            "Automatic layout with right-angle edges, fan-in trunks and the node order you wrote",
+            "Validator whose every error names the fix, such as a misspelled icon or key",
+            "orrery review scores a diagram at the width readers see it, and three reviewer agents only keep patches that raise the score"
+         ],
+         "github": "https://github.com/Sagargupta16/orrery",
+         "live": ""
+      },
+      {
+         "id": 58,
+         "title": "svg-forge",
+         "description": "A Claude Code plugin for designing animated SVGs that render everywhere they are shown: self-contained files for GitHub READMEs and img tags, and React plus Motion scenes for web apps. It packages the rules and gotchas from building animated README cards and project cover scenes into three skills, a designer agent, a generator, and a validator.",
+         "date": "October 2026",
+         "tools_tech": ["Python", "SVG", "SMIL", "Motion", "Claude Code"],
+         "features": [
+            "animated-svg, motion-scene and svg-audit skills, plus an svg-designer agent that builds and iterates end to end",
+            "Generator with 14 kinds (hero, tiles, chart, flow, timeline, calendar and more) in 15 theme presets",
+            "Validator rules SV001 to SV023 for GitHub image proxy safety, accessibility and WCAG contrast on both GitHub themes",
+            "Renders an animation's timeline as a PNG contact sheet so an agent can see timing and the loop seam"
+         ],
+         "github": "https://github.com/Sagargupta16/svg-forge",
+         "live": ""
+      },
+      {
+         "id": 59,
+         "title": "agent-brain",
+         "description": "An agent harness plus a shared markdown brain that Claude Code, Codex and Kiro all read and write. Each fact is one markdown file with its source; facts get corrected or withdrawn with history, never silently overwritten, and recall runs over BM25 through a stdio MCP server. Ships with 15 skills, 7 subagents, safety hooks, always-on rules, and 27 public lessons from real failures.",
+         "date": "October 2026",
+         "tools_tech": [
+            "Python",
+            "MCP",
+            "BM25",
+            "Claude Code",
+            "Codex",
+            "Kiro"
+         ],
+         "features": [
+            "One memory for every agent: brain mcp serves recall, remember, correct and forget",
+            "Corrections keep history: the old page is marked corrected with a pointer to the new one",
+            "Hooks block destructive shell commands, --no-verify and force-push to main",
+            "Installer for one or all hosts with a dry run, and it never overwrites a file it did not write"
+         ],
+         "github": "https://github.com/Sagargupta16/agent-brain",
+         "live": ""
+      },
+      {
+         "id": 60,
+         "title": "Shared Workflows",
+         "description": "Seven reusable GitHub Actions workflows that 11 of my repos call with a one-line uses: reference instead of copying CI. Node and Python CI, GitHub Pages deploys, Docker builds with a Trivy scan, dependency and filesystem security scans, Terraform checks with Checkov, and tag-triggered releases.",
+         "date": "May 2026",
+         "tools_tech": [
+            "GitHub Actions",
+            "Trivy",
+            "Checkov",
+            "Terraform",
+            "Docker"
+         ],
+         "features": [
+            "Node CI that auto-detects pnpm, npm or yarn; Python CI on uv, Ruff and pytest",
+            "Docker buildx and Terraform checks with SARIF output for code scanning",
+            "GitHub Pages deploy and tag-triggered release with a changelog",
+            "One fix in the library reaches every calling repo, from ledger-sync to Blue Green AWS Terraform"
+         ],
+         "github": "https://github.com/Sagargupta16/shared-workflows",
+         "live": ""
+      },
+      {
          "id": 53,
          "title": "GitHub Stats Card Action",
          "description": "A GitHub Action that renders an animated GitHub stats card as an SVG in your own repo, so your profile README never depends on a hosted widget. Five stat tiles, a contribution calendar, current and longest streak, and top languages in one self-hosted card, published on the GitHub Marketplace.",
