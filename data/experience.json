@@ -6,7 +6,7 @@
          "title": "ProServe (Cloud Consultant) - DevOps/MLOps",
          "position": "Full-time",
          "company": "Amazon Web Services",
-         "location": "Hyderabad, India",
+         "location": "Bengaluru, India",
          "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
          "scene": "consulting-loop",
          "projects": [
@@ -162,13 +162,13 @@
                "year": "2026"
             },
             {
-               "title": "APG Pattern (co-author): Secure PR Previews and Approval-Gated Releases for Amplify Gen 2 with GitHub Actions",
+               "title": "APG Pattern (co-author, submitted, not yet published): Secure PR Previews and Approval-Gated Releases for Amplify Gen 2 with GitHub",
                "type": "publication",
                "year": "2025"
             },
             {
-               "title": "3 APG Patterns Peer Reviewed",
-               "type": "publication",
+               "title": "Peer reviewer for AWS Prescriptive Guidance patterns",
+               "type": "program",
                "year": "2025-2026"
             },
             {

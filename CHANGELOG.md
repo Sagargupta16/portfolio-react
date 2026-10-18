@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.18.2] - 2026-10-18
+
+### Fixed
+
+Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/FACTS.md`) and live data.
+
+- **APG pattern.** The Amplify Gen 2 pattern is not on any of the 464 live AWS Prescriptive Guidance pattern pages, so the About line and the AWS experience entry now say co-authored and submitted, not yet published. The title matches the resume ("with GitHub").
+- **APG peer reviews.** "3 APG Patterns Peer Reviewed" disagreed with the resume and has no public record, so the count is gone: the entry reads "Peer reviewer for AWS Prescriptive Guidance patterns" and is typed as a program, not a publication. The Stats tile it fed now counts 5 talks, samples and patterns, and its note says "Authored or presented at AWS" instead of "Published org-wide at AWS".
+- **Location.** Bengaluru, not Hyderabad, on the profile, the current AWS role and the JSON-LD address. The 2024 AWS internship stays Hyderabad.
+- **Kick Start.** "Google Kick Start '22 Top 5%" became "Rank 1289 in Google Kick Start '22 Round E": the certificate shows the rank only.
+- **LeetCode Rating Predictor.** The case study no longer quotes the retired 7.84 test MAE (a random record split that leaks users). It now gives the repo's backtest: fixing the participant-count train/serve skew cut MAE from 38.76 to 12.46 on 57 contests.
+- **Claude Cost Optimizer news item.** Dropped "cuts costs 30-60%": the repo's README quotes no typical saving.
+- **Star counts.** Every open source entry re-measured on 2026-10-18 (Airflow 47,203, lucide 25,125, Prefect 24,036, awslabs/mcp 9,791, Feast 7,337, agent-plugins 924, and the rest). News items for lucide (25K) and awslabs/mcp (9.8K) match.
+- **LeetCode split.** Medium solved is 684 (live GraphQL); rating 2165.70 still shows as 2166, equal to the peak.
+
 ## [4.18.1] - 2026-10-18
 
 ### Fixed

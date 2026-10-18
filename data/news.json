@@ -48,7 +48,7 @@
    {
       "date": "2026-07-09",
       "type": "oss",
-      "text": "Merged into lucide-icons/lucide (24K stars): Support kebab-case icon-node prop on Vue Icon component",
+      "text": "Merged into lucide-icons/lucide (25K stars): Support kebab-case icon-node prop on Vue Icon component",
       "link": "https://github.com/lucide-icons/lucide/pull/4512",
       "impact": "major"
    },
@@ -146,7 +146,7 @@
    {
       "date": "2026-03-09",
       "type": "oss",
-      "text": "Merged into awslabs/mcp (9.7K stars): Fix Kendra documentation menu to match source directory",
+      "text": "Merged into awslabs/mcp (9.8K stars): Fix Kendra documentation menu to match source directory",
       "link": "https://github.com/awslabs/mcp/pull/2607",
       "impact": "minor"
    },
@@ -173,7 +173,7 @@
    {
       "date": "2026-03",
       "type": "launch",
-      "text": "Released Claude Cost Optimizer: a Claude Code plugin that cuts costs 30-60%",
+      "text": "Released Claude Cost Optimizer: a Claude Code plugin for cutting Claude Code costs",
       "link": "https://sagargupta.online/claude-cost-optimizer/"
    },
    {

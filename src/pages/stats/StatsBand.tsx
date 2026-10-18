@@ -219,7 +219,7 @@ const StatsBand = () => {
             {
                value: String(speakingCount),
                label: "Talks & patterns",
-               note: "Published org-wide at AWS",
+               note: "Authored or presented at AWS",
             },
          ] satisfies Stat[],
          delivery: [
