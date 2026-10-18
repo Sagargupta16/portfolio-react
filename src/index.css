@@ -499,21 +499,6 @@ html[data-motion="reduced"] .project-action:active {
    }
 }
 
-/* Framed screenshots grow from their top edge, like a window rising out of the panel. */
-.project-cover-img--framed {
-   transform-origin: top center;
-}
-
-.project-card:has(:focus-visible) .project-cover-img--framed {
-   transform: scale(1.03);
-}
-
-@media (hover: hover) and (pointer: fine) {
-   .project-card:hover .project-cover-img--framed {
-      transform: scale(1.03);
-   }
-}
-
 .line-clamp-3 {
    display: -webkit-box;
    -webkit-line-clamp: 3;

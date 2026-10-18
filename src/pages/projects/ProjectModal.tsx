@@ -65,7 +65,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   isMobile={isMobile}
                   onClose={onClose}
                />
-               {/* Same cover media as the card: live screenshot or animated scene */}
+               {/* Same animated cover scene as the card */}
                <ProjectCover
                   projectId={project.id}
                   title={project.title}

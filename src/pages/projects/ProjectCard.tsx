@@ -120,7 +120,7 @@ const ProjectCard = ({
          whileHover={lift}
          whileFocus={lift}
       >
-         {/* Media: live screenshot or animated scene */}
+         {/* Media: animated cover scene */}
          <ProjectCover
             projectId={data.id}
             title={data.title}

@@ -283,7 +283,7 @@
       {
          "id": 3,
          "title": "Personal Portfolio",
-         "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with live screenshots and animated SVG covers, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
+         "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with an animated SVG cover scene for every project, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
          "date": "October 2022",
          "tools_tech": [
             "React 19",
@@ -579,27 +579,6 @@
          ],
          "github": "https://github.com/Sagargupta16/instagram-autopilot",
          "live": ""
-      },
-      {
-         "id": 19,
-         "title": "Financial Dashboard",
-         "description": "The original Excel-upload financial dashboard that evolved into Ledger Sync. Built with React + TypeScript, featuring Chart.js visualizations, 50/30/20 budgeting, tax planning, and lifestyle analytics. Now superseded - see Ledger Sync for the production-ready successor.",
-         "date": "February 2026",
-         "tools_tech": [
-            "TypeScript",
-            "React 19",
-            "Tailwind CSS",
-            "Chart.js",
-            "Vite"
-         ],
-         "features": [
-            "Drag-and-drop Excel upload (Money Manager backup format)",
-            "Investment Performance Tracker (P&L, brokerage, returns)",
-            "Tax Planning (80C, HRA, slab breakdown), Family & Housing Manager",
-            "Lifestyle Optimizer - credit card analytics, cashback, commute cost"
-         ],
-         "github": "https://github.com/Sagargupta16/Financial-Dashboard",
-         "live": "https://sagargupta.online/Financial-Dashboard/"
       },
       {
          "id": 7,
