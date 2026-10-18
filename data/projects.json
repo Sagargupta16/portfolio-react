@@ -19,7 +19,7 @@
             "Amazon Bedrock"
          ],
          "features": [
-            "Terraform owns every persistent resource - endpoint, auto-scaling, monitors, alarms; Lambda orchestrates only, never mutates infrastructure",
+            "Terraform owns every persistent resource - endpoint, auto-scaling, monitors, alarms; Lambda only orchestrates, rolling approved models onto the endpoint",
             "Three architectures (VGG16, DenseNet121, EfficientNetV2M) trained in parallel with two-phase transfer learning, then ensembled",
             "Clinical quality gate as a hard pipeline condition - accuracy >= 0.85, recall >= 0.95, precision >= 0.80, AUC >= 0.90, or the model is never registered",
             "Closed-loop retraining: an hourly PSI drift job and a daily fairness job raise alarms that trigger EventBridge, which restarts training; human approval still gates every deployment",
@@ -45,7 +45,7 @@
       {
          "id": 52,
          "title": "AWS Organizations Governance on Control Tower",
-         "description": "Published by AWS under the aws-samples organization (MIT-0), the second after the SageMaker MLOps sample - a Terraform governance layer for AWS Organizations on top of an existing Control Tower landing zone. It declares the OU hierarchy, all six Organizations policy types, Control Tower baselines and controls, and delegated administrators for 15 AWS services, all from the management account.",
+         "description": "Published by AWS under the aws-samples organization (MIT-0), the second after the SageMaker MLOps sample - a Terraform governance layer for AWS Organizations on top of an existing Control Tower landing zone. It declares the OU hierarchy, six Organizations policy types, Control Tower baselines and controls, and delegated administrators for 15 AWS services, all from the management account.",
          "date": "September 2026",
          "status": "complete",
          "tools_tech": [
@@ -60,15 +60,15 @@
          ],
          "features": [
             "A root deployment, not a module - it runs only in the management account and creates nothing in member accounts, with Macie enablement the one documented exception",
-            "All six Organizations policy types (SCP, RCP, tag, backup, AI opt-out, chat applications) as 21 policy documents, attachable to the root or any OU",
+            "Six Organizations policy types (SCP, RCP, tag, backup, AI opt-out, chat applications) as 20 policy documents, attachable to the root or any OU",
             "OU hierarchy up to five levels deep, with Control Tower baselines registered parent before child",
             "Control Tower controls enabled per OU, and Control Tower owned OUs targeted but never recreated",
             "Delegated administrators for 15 services, including GuardDuty, Security Hub, Inspector, Macie, Detective, Firewall Manager, CloudTrail and IPAM",
             "Five ready-made scenarios - minimal, standard, enterprise, regulated workload and data residency"
          ],
          "case_study": {
-            "problem": "Teams on an existing Control Tower landing zone still need their OUs, all six Organizations policy types, controls and delegated administrators managed as code.",
-            "built": "Wrote a Terraform root deployment for the management account, published by AWS under aws-samples, covering OUs, 21 policy documents, Control Tower controls and 15 delegated admins.",
+            "problem": "Teams on an existing Control Tower landing zone still need their OUs, Organizations policies, controls and delegated administrators managed as code.",
+            "built": "Wrote a Terraform root deployment for the management account, published by AWS under aws-samples, covering OUs, 20 policy documents, Control Tower controls and 15 delegated admins.",
             "decisions": [
                "A root deployment, not a module, run only from the management account",
                "Creates nothing in member accounts; Macie enablement is the one documented exception",
@@ -302,7 +302,7 @@
          "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with an animated SVG cover scene for every project, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
          "date": "October 2022",
          "status": "active",
-         "version": "4.18.0",
+         "version": "4.18.1",
          "tools_tech": [
             "React 19",
             "Vite 8",
