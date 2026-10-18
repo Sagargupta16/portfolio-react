@@ -491,7 +491,7 @@ async function manifestVersion(repo) {
          const v = parseVersion(
             read(Buffer.from(content, "base64").toString()),
          );
-         if (v && v.some((n) => n > 0)) return v;
+         if (v?.some((n) => n > 0)) return v;
       } catch {
          // file absent or unparsable: try the next manifest
       }
