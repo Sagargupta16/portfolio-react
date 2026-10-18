@@ -419,6 +419,18 @@ if (Array.isArray(services)) {
    }
 }
 
+const PROJECT_STATUSES = new Set(["active", "beta", "complete"]);
+const SEMVER = /^\d+\.\d+\.\d+$/;
+
+function checkStatus(project, path) {
+   if (!PROJECT_STATUSES.has(project?.status)) {
+      fail(`${path}.status`, "must be active, beta, or complete");
+   }
+   if (project?.version !== undefined && !SEMVER.test(project.version)) {
+      fail(`${path}.version`, "must be a bare semver like 2.28.1");
+   }
+}
+
 const projectCategories = [
    "featured_projects",
    "collaborative_projects",
@@ -443,6 +455,7 @@ if (requireRecord(projects, "projects")) {
             requireUrl(project.live, `${path}.live`);
          }
          checkCaseStudy(project?.case_study, `${path}.case_study`);
+         checkStatus(project, path);
       }
    }
    requireUnique(allProjects, "id", "projects.all_categories");

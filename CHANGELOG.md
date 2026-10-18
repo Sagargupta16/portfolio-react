@@ -12,8 +12,19 @@ All notable changes to this project are documented here. Follows [Semantic Versi
    - **agent-brain** (59, `BrainScene`): three agent hosts sharing one markdown memory where facts are corrected or withdrawn, never overwritten. The October news item now has a project card to match.
    - **Shared Workflows** (60, `WorkflowScene`): 11 repos calling one library of seven reusable GitHub Actions workflows with a one-line `uses:` reference.
 
+- **Project status and version.** Every project record has a hand-set `status` (`active`, `beta` or `complete`) that shows as the first chip on its card and in its detail view: Active is a solid blue dot, Beta a sky ring, Complete a muted ring. Active and beta projects also show their version, which `sync-live-data.js` refreshes weekly from the higher of the latest release tag and the root manifest (`package.json`, `pyproject.toml` or the Claude plugin manifest). The validator rejects any other status and any version that is not bare semver. Breakdown: 27 active, 1 beta (MCP Toolkit), 22 complete.
+
 ### Changed
 
+- **Project copy refreshed against each repo** (59 edits across 31 projects, every number re-measured from the repo). Highlights:
+   - Ledger Sync now lists Neon PostgreSQL.
+   - Code Arena runs code through Judge0 CE and is frontend-only.
+   - LeetCode Among Us and Placemento are on TypeScript and Express 5 (Among Us also dropped MongoDB).
+   - Lingua Connect's video calls are removed.
+   - Instagram Autopilot now publishes animated SVG Reels.
+   - The SageMaker sample drops the outdated "0 bandit issues" claim and adds region Shapley explanations and the upload quarantine Lambda.
+   - Claude Cost Optimizer drops its unsourced savings range and adds the claude-rate CLI.
+   - Version-in-description mentions moved to the status chip.
 - **Every cover is now an animated scene.** The 12 remaining screenshot covers became scenes built from each repo's own code and real UI:
    - Ledger Sync (`LedgerScene`): a messy statement is parsed into the ledger, the SHA256 check drops a duplicate row, and the cash flow Sankey refreshes.
    - Kalchar (`GalleryScene`): the work filter steps through Madhubani, Pichwai, Lippan and Gond plates.

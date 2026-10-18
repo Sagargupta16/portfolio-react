@@ -6,6 +6,9 @@
  *   projects.json  open_source_contributions  status, merged_at, stars (GitHub REST)
  *   projects.json  community_discussions      "accepted" when the user's answer is accepted,
  *                                             plus newly accepted answers (GitHub GraphQL)
+ *   projects.json  <group>[].version          active and beta projects: the higher of the
+ *                                             latest release tag and the root manifest
+ *                                             version (GitHub REST)
  *   achievements.json  coding_platform_stats.leetcode  solved, hard, contests, best rating,
  *                                             best rank, badge, top %, solved by difficulty,
  *                                             rating per attended contest (LeetCode GraphQL)
@@ -455,6 +458,86 @@ async function syncGithubStats(gh) {
    }
 }
 
+// ---------- project versions ----------
+
+const SEMVER = /^v?(\d+)\.(\d+)\.(\d+)$/i;
+const parseVersion = (value) => {
+   const m = SEMVER.exec(String(value ?? "").trim());
+   return m ? m.slice(1).map(Number) : null;
+};
+const newer = (a, b) => {
+   const i = a.findIndex((n, k) => n !== b[k]);
+   return i !== -1 && a[i] > b[i];
+};
+
+// Root manifests that carry a version, checked in order; first hit wins.
+const MANIFESTS = [
+   ["package.json", (t) => JSON.parse(t).version],
+   ["pyproject.toml", (t) => /^version\s*=\s*"([^"]+)"/m.exec(t)?.[1]],
+   [
+      ".claude-plugin/marketplace.json",
+      (t) => {
+         const d = JSON.parse(t);
+         return d.metadata?.version ?? d.version;
+      },
+   ],
+   [".claude-plugin/plugin.json", (t) => JSON.parse(t).version],
+];
+
+async function manifestVersion(repo) {
+   for (const [file, read] of MANIFESTS) {
+      try {
+         const { content } = await ghRest(`/repos/${repo}/contents/${file}`);
+         const v = parseVersion(
+            read(Buffer.from(content, "base64").toString()),
+         );
+         if (v && v.some((n) => n > 0)) return v;
+      } catch {
+         // file absent or unparsable: try the next manifest
+      }
+   }
+   return null;
+}
+
+async function releaseVersion(repo) {
+   try {
+      return parseVersion(
+         (await ghRest(`/repos/${repo}/releases/latest`)).tag_name,
+      );
+   } catch {
+      return null;
+   }
+}
+
+// A release tag can lag the manifest (or not exist), so take the higher one.
+async function latestVersion(repo) {
+   const [release, manifest] = await Promise.all([
+      releaseVersion(repo),
+      manifestVersion(repo),
+   ]);
+   if (!release || !manifest) return release ?? manifest;
+   return newer(release, manifest) ? release : manifest;
+}
+
+async function syncProjectVersions(list) {
+   const shipping = list.filter(
+      (p) =>
+         p.status !== "complete" && p.github?.startsWith("https://github.com/"),
+   );
+   await Promise.all(
+      shipping.map(async (project) => {
+         const repo = project.github.replace("https://github.com/", "");
+         const v = await latestVersion(repo);
+         const version = v?.join(".");
+         if (!version || version === project.version) return;
+         note(
+            `${project.title} version ${project.version ?? "none"} -> ${version}`,
+         );
+         project.version = version;
+      }),
+   );
+}
+
 // ---------- main ----------
 
 const projects = JSON.parse(readFileSync(PROJECTS_PATH, "utf8"));
@@ -464,6 +547,14 @@ const before = JSON.stringify([projects, achievements, news]);
 await syncPullRequests(projects.open_source_contributions || []);
 await refreshKnownDiscussions(projects.community_discussions || []);
 await addNewAcceptedDiscussions(projects.community_discussions || []);
+await syncProjectVersions(
+   [
+      "featured_projects",
+      "collaborative_projects",
+      "other_projects",
+      "community_projects",
+   ].flatMap((group) => projects[group] || []),
+);
 if (achievements.coding_platform_stats?.leetcode) {
    await syncLeetcode(achievements.coding_platform_stats.leetcode);
 }

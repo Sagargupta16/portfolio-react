@@ -6,6 +6,7 @@
          "title": "SageMaker Image Classification MLOps",
          "description": "Published by AWS under the aws-samples organization (MIT-0) - an end-to-end, production-shaped MLOps pipeline for image classification on Amazon SageMaker, declared entirely in Terraform across 86 files and 13 reusable modules. Event-driven ingestion, multi-architecture training behind hard clinical quality gates, human-approved governed deployment, and a closed drift-to-retrain loop. The worked example classifies medical images, but the architecture is domain-agnostic.",
          "date": "July 2026",
+         "status": "complete",
          "tools_tech": [
             "Terraform",
             "Amazon SageMaker",
@@ -22,8 +23,9 @@
             "Three architectures (VGG16, DenseNet121, EfficientNetV2M) trained in parallel with two-phase transfer learning, then ensembled",
             "Clinical quality gate as a hard pipeline condition - accuracy >= 0.85, recall >= 0.95, precision >= 0.80, AUC >= 0.90, or the model is never registered",
             "Closed-loop retraining: an hourly PSI drift job and a daily fairness job raise alarms that trigger EventBridge, which restarts training; human approval still gates every deployment",
-            "Responsible AI built in - Fairlearn bias metrics as an in-pipeline gate, Grad-CAM and SHAP explainability, Model Cards, Bedrock Guardrails, and A2I human review",
-            "Security scanning clean: 0 checkov failed checks and 0 bandit issues, every suppression documented with a reason"
+            "Responsible AI built in: Fairlearn bias metrics as an in-pipeline gate, per-request Grad-CAM and region Shapley explanations, Model Cards, Bedrock Guardrails, and optional A2I human review",
+            "An upload quarantine Lambda moves bad images aside before the pipeline reads them",
+            "Security scanning clean: 0 checkov failed checks, every skip documented with a reason"
          ],
          "case_study": {
             "problem": "Taking an image classifier to production on SageMaker means wiring data validation, training, quality gates, governed deployment and drift monitoring into one lifecycle.",
@@ -34,7 +36,7 @@
                "Every model registers as PendingManualApproval, so a person approves each deployment",
                "Blue/green canary rollout that rolls back on error and latency alarms"
             ],
-            "outcome": "Drift and fairness alarms restart training on their own, a reviewer still approves every rollout, and scans report 0 checkov failed checks and 0 bandit issues."
+            "outcome": "Drift and fairness alarms restart training on their own, a reviewer still approves every rollout, and checkov reports 0 failed checks in CI."
          },
          "github": "https://github.com/aws-samples/sample-sagemaker-image-classification-mlops",
          "live": "",
@@ -45,6 +47,7 @@
          "title": "AWS Organizations Governance on Control Tower",
          "description": "Published by AWS under the aws-samples organization (MIT-0), the second after the SageMaker MLOps sample - a Terraform governance layer for AWS Organizations on top of an existing Control Tower landing zone. It declares the OU hierarchy, all six Organizations policy types, Control Tower baselines and controls, and delegated administrators for 15 AWS services, all from the management account.",
          "date": "September 2026",
+         "status": "complete",
          "tools_tech": [
             "Terraform",
             "AWS Organizations",
@@ -83,6 +86,8 @@
          "title": "Kalchar",
          "description": "Production folk-art portfolio and commission site for a traditional artist - Madhubani, Pichwai, Lippan, and Gond artwork gallery with a buy filter, events, workshops, custom orders, and a server-rendered admin panel. Public pages are static, catalog lives in Neon Postgres behind a single data seam, and artwork images are served from Cloudflare R2.",
          "date": "May 2026",
+         "status": "active",
+         "version": "1.39.1",
          "tools_tech": [
             "Next.js 16",
             "React 19",
@@ -95,8 +100,8 @@
          ],
          "features": [
             "Artwork gallery with buy filter, events, workshops, and custom-order flows",
-            "Admin panel (artworks, events, profile, maintainers) behind Auth.js + Google with a DB allowlist",
-            "Neon Postgres catalog via Drizzle, R2 image variants pipeline, WhatsApp order handoff",
+            "Admin panel (artworks, events, workshops, testimonials, profile, maintainers) behind Auth.js + Google with a DB allowlist",
+            "Neon Postgres catalog via Drizzle, R2 image variants pipeline, enquiries queue with WhatsApp handoff",
             "Static/SSG public pages + server-rendered admin on Vercel, Motion + Lenis animations"
          ],
          "case_study": {
@@ -118,6 +123,8 @@
          "title": "GitScope",
          "description": "A Chrome extension plus web dashboard that adds deep GitHub profile insights - 9-stat grid, coding personality badges, language breakdown, activity heatmap, contribution donut, repo growth timeline, profile comparison, and a leaderboard across everyone you follow. Published on the Chrome Web Store with GitHub OAuth for traffic analytics.",
          "date": "March 2026",
+         "status": "active",
+         "version": "1.2.3",
          "tools_tech": [
             "JavaScript",
             "TypeScript",
@@ -150,12 +157,15 @@
       {
          "id": 15,
          "title": "Ledger Sync",
-         "description": "A self-hosted personal finance dashboard (v2.28.0) with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, 50/30/20 budgeting, bill calendar, GST analysis, subscription tracking, year-in-review, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
+         "description": "A self-hosted personal finance dashboard with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, 50/30/20 budgeting, bill calendar, GST analysis, subscription tracking, year-in-review, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
          "date": "July 2026",
+         "status": "active",
+         "version": "2.28.1",
          "tools_tech": [
             "TypeScript",
             "React 19",
             "FastAPI",
+            "Neon PostgreSQL",
             "SQLite",
             "Tailwind CSS",
             "AWS Bedrock",
@@ -187,19 +197,22 @@
          "title": "LeetCode Rating Predictor",
          "description": "Full-stack LeetCode contest rating predictor using a Dense neural network trained on 121K+ contest records, featuring a FastAPI backend with LeetCode GraphQL integration and a React glassmorphism frontend.",
          "date": "December 2023",
+         "status": "active",
+         "version": "2.3.4",
          "tools_tech": [
             "Python",
             "React 19",
             "FastAPI",
             "TensorFlow",
             "Keras",
+            "NumPy",
             "GraphQL"
          ],
          "features": [
             "Dense neural network trained on 121K+ contest records",
             "Automated data pipeline via LeetCode GraphQL API",
-            "Glassmorphism React frontend with live contest selection",
-            "34 backend tests + 11 frontend tests, Docker + Render deploy"
+            "Glassmorphism React frontend with live contest selection and rank auto-fill",
+            "59 backend tests + 19 frontend tests, Docker + Render deploy"
          ],
          "case_study": {
             "problem": "LeetCode contestants want an estimate of how a given contest rank will change their rating.",
@@ -220,6 +233,7 @@
          "title": "Blue Green AWS Terraform",
          "description": "A comprehensive Infrastructure as Code solution for implementing Blue-Green deployment on AWS using Terraform, providing a complete CI/CD pipeline with zero-downtime deployments across ECS on EC2, ALB, CodePipeline, and KMS-encrypted artifacts.",
          "date": "July 2025",
+         "status": "complete",
          "tools_tech": [
             "Terraform",
             "AWS",
@@ -253,6 +267,8 @@
          "title": "Instagram Likes Leaderboard",
          "description": "A browser-based tool with three modes - Likes Leaderboard, Stats Dashboard, and Follower Analysis - that scans your Instagram posts and surfaces your biggest fans, ghost followers, non-mutuals, and engagement metrics. No downloads or sign-ups required.",
          "date": "February 2026",
+         "status": "active",
+         "version": "2.3.1",
          "tools_tech": [
             "TypeScript",
             "Preact",
@@ -264,7 +280,7 @@
             "Three analysis modes: Likes Leaderboard, Stats Dashboard, Follower Analysis",
             "Ghost follower / non-mutual / mutual detection, top fans, most-liked post",
             "Multi-step scan with pause/resume and progress bars",
-            "Desktop console + Android Eruda browser support, no sign-up needed"
+            "Shared filters across all three views, CSV and JSON exports, no sign-up needed"
          ],
          "case_study": {
             "problem": "Instagram shows a like count on each post, but not who your most frequent likers are or who does not follow you back.",
@@ -285,6 +301,8 @@
          "title": "Personal Portfolio",
          "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with an animated SVG cover scene for every project, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
          "date": "October 2022",
+         "status": "active",
+         "version": "4.18.0",
          "tools_tech": [
             "React 19",
             "Vite 8",
@@ -295,7 +313,7 @@
          ],
          "features": [
             "Minimal dark design with ambient aurora + beam background",
-            "Project cards with live site screenshots and animated SVG covers",
+            "Project cards with an animated SVG cover scene for every project",
             "Data-driven content via JSON files",
             "GitHub activity calendar integration"
          ],
@@ -318,7 +336,9 @@
          "title": "SelfHub",
          "description": "A Model Context Protocol (MCP) server that acts as your personal digital memory hub - store notes, preferences, code snippets, tasks, and any info from any MCP-enabled AI assistant (Claude Desktop, VS Code Copilot). Your personal knowledge base travels with you across AI conversations.",
          "date": "March 2025",
-         "tools_tech": ["TypeScript", "MCP", "Node.js", "pnpm"],
+         "status": "active",
+         "version": "0.2.4",
+         "tools_tech": ["TypeScript", "MCP", "Node.js", "MongoDB", "pnpm"],
          "features": [
             "MCP-compliant server with stdio transport for Claude Desktop + VS Code",
             "store_memory, list_memories, search_memories, and more tools",
@@ -343,8 +363,9 @@
       {
          "id": 39,
          "title": "Code Arena",
-         "description": "A real-time competitive coding platform where 2-5 friends race to solve LeetCode problems with built-in C++ and Python execution via sandboxed Piston containers. Features Blind Race and Live Status Board modes with a server-authoritative WebSocket timer and LeetCode-style Monaco editor. Live demo is UI-only (backend offline).",
+         "description": "A real-time competitive coding platform where 2-5 friends race to solve LeetCode problems with built-in C++ and Python execution through the Judge0 CE API. Features Blind Race and Live Status Board modes with a server-authoritative WebSocket timer and LeetCode-style Monaco editor. The FastAPI backend has since been removed, so the repo and live demo are frontend-only.",
          "date": "April 2026",
+         "status": "complete",
          "tools_tech": [
             "React 19",
             "TypeScript",
@@ -352,12 +373,12 @@
             "WebSocket",
             "MongoDB",
             "Monaco Editor",
-            "Piston",
+            "Judge0 CE",
             "GitHub OAuth"
          ],
          "features": [
             "Real-time multiplayer coding races with 2-5 players, private 6-char room codes",
-            "Built-in C++ and Python execution in sandboxed Piston containers",
+            "C++ and Python execution through the hosted Judge0 CE API",
             "Blind Race mode (no peeking) and Live Status Board mode",
             "Server-authoritative WebSocket timer, Monaco editor with language toggle and test cases"
          ],
@@ -371,10 +392,12 @@
          "title": "Placemento",
          "description": "A comprehensive web-based placement management system for MCA students at NIT Warangal, with student dashboards, company profiles, placement analytics, JWT + email OTP auth, interview experience sharing, and role-based access control. Built as a monorepo serving the entire batch.",
          "date": "January 2024",
+         "status": "complete",
          "tools_tech": [
             "React 19",
+            "TypeScript",
             "Node.js",
-            "Express",
+            "Express 5",
             "MongoDB Atlas",
             "Recharts",
             "JWT",
@@ -384,7 +407,7 @@
             "JWT auth with email OTP verification, role-based access (admin/student)",
             "Searchable, sortable student/company data tables (custom DataTable component)",
             "Placement analytics, trend visualization, interview experience sharing",
-            "Automated email notifications for placement activities"
+            "Hashed OTPs that expire after 10 minutes, rate limiting on API routes"
          ],
          "github": "https://github.com/MCA-NITW/placemento",
          "live": "",
@@ -397,17 +420,17 @@
          "title": "Lingua Connect",
          "description": "An interactive online platform built on the MERN stack, connecting language learners with personalized tutors for tailored online lessons.",
          "date": "March 2024",
+         "status": "complete",
          "tools_tech": [
             "MongoDB",
             "Express.js",
             "React",
+            "Vite",
             "Node.js",
-            "Video Calls",
             "Payment Integration"
          ],
          "features": [
             "Language tutor matching",
-            "One-to-one video calls",
             "Flashcard storage",
             "Subscription-based payments",
             "User registration and search"
@@ -421,19 +444,24 @@
       {
          "id": 4,
          "title": "LeetCode Among Us",
-         "description": "A competitive LeetCode tracking platform for MCA NITW students with personal dashboards, real-time leaderboards, contest performance tracking, and badge collections. Features multiple view modes (Overview, Problem Stats, Contest Stats, Performance) and batch-wise comparisons.",
+         "description": "A competitive LeetCode tracking platform for MCA NITW students with personal dashboards, real-time leaderboards, contest performance tracking, and badge collections. Features four leaderboard views (Overview, Problems, Contests, Consistency), batch-wise comparisons, and a head-to-head Compare page.",
          "date": "August 2023",
+         "status": "active",
+         "version": "3.2.0",
          "tools_tech": [
-            "React 18",
+            "React 19",
+            "TypeScript",
             "Node.js",
-            "Express",
-            "MongoDB",
+            "Express 5",
+            "Chart.js 4",
+            "LeetCode GraphQL",
             "React Icons"
          ],
          "features": [
             "Personal LeetCode dashboard with profile analytics and activity calendar",
             "Real-time leaderboards with dynamic filtering and batch comparisons",
             "Contest performance tracking with ratings and rankings",
+            "Derived stats like current streak, rating delta and completion percent, card layout on phones",
             "Medal badges for top 3 performers, dark mode support"
          ],
          "github": "https://github.com/MCA-NITW/leetcode_among_us",
@@ -447,11 +475,12 @@
          "title": "MCA NITW Website",
          "description": "The official web portal for the MCA department at NIT Warangal - alumni networking, student directory, study materials, placement cell coordination, and CR cell panel. Full-stack MERN application serving current students, faculty, and alumni.",
          "date": "February 2023",
+         "status": "complete",
          "tools_tech": [
             "React 19",
             "React Router 7",
             "Material-UI",
-            "Express 4",
+            "Express 5",
             "MongoDB",
             "Mongoose"
          ],
@@ -472,6 +501,7 @@
          "title": "Noobathon",
          "description": "A team hackathon project built during MCA 1st year at the CSEA Noobathon event, featuring a responsive web page created collaboratively in a team of 3.",
          "date": "April 2022",
+         "status": "complete",
          "tools_tech": ["HTML5", "CSS3", "Hackathon"],
          "features": [
             "Built in a team of 3",
@@ -492,6 +522,8 @@
          "title": "Kinfolk",
          "description": "Collaborative family graph where relatives each keep their own record, invite each other, and join matching people without either side losing their copy. A family is modelled as a directed acyclic graph rather than a tree: parentage hangs off a union row, so remarriages, half-siblings, single parents, and adoption are ordinary data instead of renderer special cases. Cross-tree identity is a consent-gated link, so merging is non-destructive and an unlink restores both original views.",
          "date": "August 2026",
+         "status": "active",
+         "version": "0.4.0",
          "tools_tech": [
             "Next.js 16",
             "TypeScript",
@@ -508,6 +540,7 @@
             "Union-find tree fusion with deterministic fused ids, so a combined graph is reproducible",
             "Missing data is first-class: unknown is a stored value and approximate dates keep their own fields",
             "Also a contact graph, where a friendship carries no generation and never reaches the layout engine",
+            "Tree view or a searchable People directory, with profiles split into Family, About and Contact",
             "Contact values never render on cards or in their accessible labels"
          ],
          "github": "https://github.com/Sagargupta16/kinfolk",
@@ -518,6 +551,8 @@
          "title": "Orbit",
          "description": "Personal CRM for the people in your orbit: contacts, connections, and interaction history in a tabular relationship dashboard. FastAPI and SQLAlchemy 2 behind a React 19 frontend, with Google and GitHub OAuth against a live Neon Postgres database. The contacts surface is wired end to end; interactions, circles, and reminders are modelled in the schema and not yet exposed.",
          "date": "July 2026",
+         "status": "active",
+         "version": "0.1.2",
          "tools_tech": [
             "FastAPI",
             "Python 3.13",
@@ -526,11 +561,12 @@
             "React 19",
             "TypeScript",
             "Vite",
-            "Neon Postgres"
+            "Neon Postgres",
+            "Vercel"
          ],
          "features": [
             "OAuth sign-in (Google and GitHub) with protected routes and a live Neon-backed API",
-            "Contacts dashboard wired to the backend, deployed to GitHub Pages",
+            "Contacts table on GitHub Pages that turns into stacked cards on phones, calling a FastAPI backend on Vercel",
             "Alembic migrations over a SQLAlchemy 2 schema covering contacts, interactions, circles, and reminders",
             "uv for Python and pnpm for the frontend, run together from root scripts"
          ],
@@ -540,8 +576,10 @@
       {
          "id": 46,
          "title": "Sagas",
-         "description": "A living library of unfinished books - original fantasy, fan fiction, and essays written in the open, one chapter at a time. Astro static site with content collections and zero client JS; every book is a folder of Markdown, drafts are public, and git history is the writing log.",
+         "description": "A living library of unfinished books - original fantasy, fan fiction, and essays written in the open, one chapter at a time. Astro static site with content collections and a small localStorage reader; every book is a folder of Markdown, drafts are public, and git history is the writing log.",
          "date": "July 2026",
+         "status": "active",
+         "version": "0.2.2",
          "tools_tech": [
             "Astro 7",
             "TypeScript",
@@ -553,7 +591,8 @@
             "Three shelves: original fantasy, fan fiction, and essays",
             "One folder per book: book.md plus a Markdown file per chapter",
             "Chapter status tracking (draft / revising / final) with RSS feed on publish",
-            "Zero client-side JavaScript, deploys to GitHub Pages on every push"
+            "Reader with saved theme and type settings, resume position, and browser read-aloud",
+            "Per-chapter writing history from git, deploys to GitHub Pages on every push"
          ],
          "github": "https://github.com/Sagargupta16/sagas",
          "live": "https://sagargupta.online/sagas/"
@@ -561,21 +600,26 @@
       {
          "id": 40,
          "title": "Instagram Autopilot",
-         "description": "Fully automated Instagram content creation and posting powered by AWS Bedrock AI and Composio v3, publishing live daily. Cron generates topics, captions, and premium AI image carousels via Stability Image Ultra, with dedup history, content-filter resilience (skips filtered slides, publishes if 2+ remain), and Instagram location tags via Meta Places - all through GitHub Actions.",
+         "description": "Fully automated Instagram publisher powered by AWS Bedrock and Composio v3, posting live up to twice a day. It publishes only animated SVG Reels (how-it-works explainers, stat stories, and timelines) drawn as SMIL SVG, rendered with headless Chrome and ffmpeg, and set to licensed music. Every number on screen must appear in the fetched source text or the slot fails, and each publish is checkpointed so a lost response never reposts - all through GitHub Actions.",
          "date": "July 2026",
+         "status": "active",
+         "version": "0.9.1",
          "tools_tech": [
             "Python",
             "AWS Bedrock",
-            "Stability Image Ultra",
             "Claude Opus",
             "Composio v3 API",
+            "Headless Chrome",
+            "ffmpeg",
+            "Cloudinary",
             "GitHub Actions"
          ],
          "features": [
-            "Daily cron publishes live - topic + caption + image prompts via Bedrock Claude",
-            "Premium AI image carousels via Stability Image Ultra with negative prompts",
-            "Content-filter resilience: skips filtered slides, publishes when 2+ survive",
-            "Dedup history committed back to repo, wide-niche content pillars via config.json"
+            "Three weighted Reel pillars: tech explainers, stat stories, and history timelines",
+            "Number grounding: every figure on screen must appear in the source text, or the slot fails",
+            "Headless Chrome frames encoded by ffmpeg to H.264, with 15 licensed Mixkit tracks baked in",
+            "At most two posts a day, 180 minutes apart, with durable receipts that block blind reposts",
+            "60 vendored Lucide icons and three rotating looks so consecutive posts never match"
          ],
          "github": "https://github.com/Sagargupta16/instagram-autopilot",
          "live": ""
@@ -583,19 +627,21 @@
       {
          "id": 7,
          "title": "AWS DevOps Infrastructure",
-         "description": "A full-stack FARM (FastAPI, React, MongoDB) application containerized with Docker and deployed on AWS ECS, with a comprehensive CI/CD pipeline using GitHub Actions and Amazon ECR.",
+         "description": "A full-stack FARM (FastAPI, React, MongoDB) application containerized with Docker, with a GitHub Actions pipeline to Amazon ECR and ECS kept as a manually triggered reference deploy.",
          "date": "November 2023",
+         "status": "complete",
          "tools_tech": [
             "AWS",
             "Docker",
             "FastAPI",
             "React",
+            "Vite",
             "GitHub Actions",
             "MongoDB Atlas"
          ],
          "features": [
             "Dockerized FARM stack with user management and blog system",
-            "Automated CI/CD: GitHub Actions -> ECR -> ECS",
+            "GitHub Actions CI on every push, ECR -> ECS deploy workflows run manually as a reference",
             "Docker Compose setup for local multi-container development",
             "Test coverage reporting with Pytest, linting via Pylint + Flake8 + Prettier"
          ],
@@ -607,6 +653,7 @@
          "title": "Stock Market Prediction",
          "description": "An LSTM neural network that predicts stock prices for major tech companies (AAPL, MSFT, AMZN, TSLA) using historical market data from Yahoo Finance with moving averages and technical analysis visualizations.",
          "date": "December 2023",
+         "status": "complete",
          "tools_tech": [
             "Python",
             "PyTorch",
@@ -629,11 +676,12 @@
          "title": "Brainstorm Verse",
          "description": "A modern idea-sharing platform built with Next.js 16 App Router where creativity meets collaboration. Idea feed powered by server actions, personalized user profiles, secure Clerk authentication, and file uploads via UploadThing.",
          "date": "August 2023",
+         "status": "complete",
          "tools_tech": [
             "TypeScript",
             "Next.js 16",
-            "MongoDB 8",
-            "Tailwind CSS",
+            "Mongoose 9",
+            "Tailwind CSS 4",
             "shadcn/ui",
             "Clerk",
             "UploadThing"
@@ -652,9 +700,11 @@
          "title": "Authentication System",
          "description": "A production-ready MERN authentication module with JWT tokens (7-day expiry), bcrypt password hashing, Joi password-complexity validation, and a CORS-enabled Express API with a token-gated React home route. Reusable auth scaffold for MERN stack applications.",
          "date": "September 2023",
+         "status": "complete",
          "tools_tech": [
             "Express",
             "React",
+            "Vite",
             "MongoDB",
             "Mongoose",
             "JWT",
@@ -664,8 +714,8 @@
          "features": [
             "JWT-based auth with 7-day expiry; the React home route is gated on the stored token",
             "Password complexity enforced via joi-password-complexity (upper/lower/digit/symbol)",
-            "Bcrypt password hashing with salt rounds",
-            "CORS-enabled, server-side Joi schema validation, React Router frontend"
+            "Bcrypt password hashing with salt rounds, inputs coerced to strings against NoSQL injection",
+            "CORS-enabled, server-side Joi schema validation, Vite and React Router frontend"
          ],
          "github": "https://github.com/Sagargupta16/Authentication-System",
          "live": ""
@@ -673,21 +723,22 @@
       {
          "id": 48,
          "title": "Contact Manager",
-         "description": "A full-stack MERN contact management app with MongoDB persistence, full CRUD, search/filter, dark/light mode with localStorage, and zero-refresh SPA navigation via React Router. Frontend on GitHub Pages, backend on Render.",
+         "description": "A full-stack MERN contact management app with MongoDB persistence, full CRUD, favorites and tags, search/filter with saved filter state, dark/light mode with localStorage, and modal add/edit/detail views on a single page. Frontend on GitHub Pages, backend on Render.",
          "date": "July 2022",
+         "status": "complete",
          "tools_tech": [
             "React 19",
-            "React Router 7",
+            "Vite 8",
             "Express 5",
             "MongoDB",
-            "Mongoose 8",
+            "Mongoose 9",
             "Node.js"
          ],
          "features": [
             "Full CRUD with MongoDB persistence via Mongoose",
-            "Search and filter contacts by name or email",
-            "Dark/light mode persisted in localStorage",
-            "Zero-refresh SPA navigation with React Router 7"
+            "Favorites and custom tags on every contact",
+            "Search by name, email or tag, with favorite and tag filters saved in localStorage",
+            "Dark/light mode persisted in localStorage, modal add/edit/detail views"
          ],
          "github": "https://github.com/Sagargupta16/Contact-Manager-Mern",
          "live": "https://sagargupta.online/Contact-Manager-Mern/"
@@ -695,11 +746,12 @@
       {
          "id": 5,
          "title": "Tour Vibes",
-         "description": "A full-stack MERN travel journal with JWT auth, image uploads via Multer, community and personal feeds with pagination, likes/comments, full-text search across titles/content/tags, and Framer Motion animations. Built with Vite 7 + React 19 + shadcn/ui.",
+         "description": "A full-stack MERN travel journal with JWT auth, image uploads via Multer, community and personal feeds with pagination, likes/comments, full-text search across titles/content/tags, and Framer Motion animations. Built with Vite 8 + React 19 + shadcn/ui.",
          "date": "March 2023",
+         "status": "complete",
          "tools_tech": [
             "React 19",
-            "Vite 7",
+            "Vite 8",
             "Tailwind CSS 4",
             "shadcn/ui",
             "Framer Motion",
@@ -709,7 +761,7 @@
             "Multer"
          ],
          "features": [
-            "JWT auth with 1-hour expiry, auto-logout, rate limiting on auth endpoints",
+            "JWT auth with 1-hour expiry, auto-logout, rate limiting on auth and feed endpoints",
             "Travel posts with image uploads (Multer 5MB limit), tags, location, travel date",
             "Community feed (paginated, sortable), likes/comments, full-text search",
             "Dark/light mode, Framer Motion transitions, skeleton loading, Sonner toasts"
@@ -722,6 +774,7 @@
          "title": "PacMan Game Unity",
          "description": "A classic Pac-Man game recreated using Unity Engine with C# scripting for an authentic gaming experience.",
          "date": "June 2022",
+         "status": "complete",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Classic Pac-Man gameplay",
@@ -737,6 +790,7 @@
          "title": "Minesweeper Game Unity",
          "description": "A classic Minesweeper game recreated using Unity Engine with C# scripting, featuring grid-based gameplay and mine detection mechanics.",
          "date": "June 2022",
+         "status": "complete",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Classic Minesweeper gameplay",
@@ -752,6 +806,7 @@
          "title": "Snake Game Unity",
          "description": "A classic Snake game built using Unity Engine with C# scripting, featuring timer-stepped grid movement, adjustable speed sliders, and score tracking.",
          "date": "June 2022",
+         "status": "complete",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Classic Snake gameplay",
@@ -767,6 +822,7 @@
          "title": "Flappy Bird Game Unity",
          "description": "A Flappy Bird clone built using Unity Engine with C# scripting, featuring physics-based gameplay and pipes that oscillate up and down at different speeds.",
          "date": "June 2022",
+         "status": "complete",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
          "features": [
             "Flappy Bird gameplay",
@@ -784,6 +840,8 @@
          "title": "orrery",
          "description": "Animated architecture and system design diagrams from one YAML spec, with 16,682 official icons from AWS, Azure, Google Cloud, Kubernetes, GitHub and IBM. The Eclipse Layout Kernel places nested boundaries and routes edges, packets travel every edge and numbered steps play in order, and one spec renders to SVG, PNG, editable draw.io, a React component and an HTML viewer. Ships as an Agent Skill and Claude Code plugin.",
          "date": "October 2026",
+         "status": "active",
+         "version": "0.4.0",
          "tools_tech": [
             "TypeScript",
             "ELK",
@@ -806,6 +864,8 @@
          "title": "svg-forge",
          "description": "A Claude Code plugin for designing animated SVGs that render everywhere they are shown: self-contained files for GitHub READMEs and img tags, and React plus Motion scenes for web apps. It packages the rules and gotchas from building animated README cards and project cover scenes into three skills, a designer agent, a generator, and a validator.",
          "date": "October 2026",
+         "status": "active",
+         "version": "0.2.0",
          "tools_tech": ["Python", "SVG", "SMIL", "Motion", "Claude Code"],
          "features": [
             "animated-svg, motion-scene and svg-audit skills, plus an svg-designer agent that builds and iterates end to end",
@@ -821,6 +881,8 @@
          "title": "agent-brain",
          "description": "An agent harness plus a shared markdown brain that Claude Code, Codex and Kiro all read and write. Each fact is one markdown file with its source; facts get corrected or withdrawn with history, never silently overwritten, and recall runs over BM25 through a stdio MCP server. Ships with 15 skills, 7 subagents, safety hooks, always-on rules, and 27 public lessons from real failures.",
          "date": "October 2026",
+         "status": "active",
+         "version": "0.1.0",
          "tools_tech": [
             "Python",
             "MCP",
@@ -843,6 +905,8 @@
          "title": "Shared Workflows",
          "description": "Seven reusable GitHub Actions workflows that 11 of my repos call with a one-line uses: reference instead of copying CI. Node and Python CI, GitHub Pages deploys, Docker builds with a Trivy scan, dependency and filesystem security scans, Terraform checks with Checkov, and tag-triggered releases.",
          "date": "May 2026",
+         "status": "active",
+         "version": "1.0.0",
          "tools_tech": [
             "GitHub Actions",
             "Trivy",
@@ -864,6 +928,8 @@
          "title": "GitHub Stats Card Action",
          "description": "A GitHub Action that renders an animated GitHub stats card as an SVG in your own repo, so your profile README never depends on a hosted widget. Five stat tiles, a contribution calendar, current and longest streak, and top languages in one self-hosted card, published on the GitHub Marketplace.",
          "date": "September 2026",
+         "status": "active",
+         "version": "1.1.0",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
@@ -884,6 +950,8 @@
          "title": "LeetCode Card Action",
          "description": "A GitHub Action that renders an animated LeetCode card as an SVG in your own repo. Contest rating history is drawn as a line with the peak marked, next to the contest badge, current rating, top percentage, and problems solved by difficulty. Published on the GitHub Marketplace.",
          "date": "September 2026",
+         "status": "active",
+         "version": "1.0.1",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
@@ -904,6 +972,8 @@
          "title": "OSS Contributions Card Action",
          "description": "A GitHub Action that finds your merged and open pull requests to other people's repos through the GitHub GraphQL search, with no manual list to maintain, and renders them as animated SVG cards in your own repo: a summary card, a merged list, and an in-review list. Published on the GitHub Marketplace.",
          "date": "September 2026",
+         "status": "active",
+         "version": "1.0.0",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
@@ -924,6 +994,8 @@
          "title": "readme-kit",
          "description": "A GitHub Action that turns one profile.yml into a matching set of self-hosted animated SVG cards for your GitHub profile README: hero, terminal, section headers, divider, footer, timeline, tiles, panels, stats, buttons, and project cards. One theme.accent colors the whole set. Published on the GitHub Marketplace.",
          "date": "September 2026",
+         "status": "active",
+         "version": "1.0.0",
          "tools_tech": ["Python 3.13", "GitHub Actions", "YAML", "SVG"],
          "features": [
             "One profile.yml drives every card, so the whole README stays visually consistent",
@@ -937,8 +1009,10 @@
       {
          "id": 45,
          "title": "skillcheck",
-         "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, a 19-field client-extension registry across 3 runtimes (Claude Code, Copilot, Cursor), structure and reference validation, SARIF output, and a drop-in GitHub Action.",
+         "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, a 19-field client-extension registry across 3 runtimes (Claude Code, Copilot, Cursor), structure and reference validation, SARIF output, and a drop-in GitHub Action listed on the GitHub Marketplace.",
          "date": "July 2026",
+         "status": "active",
+         "version": "0.2.5",
          "tools_tech": [
             "TypeScript",
             "Node.js",
@@ -960,6 +1034,8 @@
          "title": "ITR Agent",
          "description": "Local-first MCP server that walks you through filing an Indian income tax return, published on npm. 12 tools spanning form selection, deterministic computation, old-vs-new regime comparison, advance tax planning, and document parsing - all on your machine. The LLM never does arithmetic; every number comes from a versioned, auditable rule pack. Works with Claude Desktop, Claude Code, and any MCP client.",
          "date": "July 2026",
+         "status": "active",
+         "version": "0.5.0",
          "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "npm"],
          "features": [
             "recommend_itr_form picks ITR-1/2/3/4 with rule-by-rule reasoning, including brought-forward losses that force ITR-3",
@@ -974,8 +1050,10 @@
       {
          "id": 38,
          "title": "Claude Skills",
-         "description": "Custom Claude Code plugin marketplace (v5.2.0) with 16 curated plugins covering dev workflow, Docker, dependency audits, refactoring, git workflows, open source contributions, Python clean code, animation, and more. Installable via /plugin marketplace.",
+         "description": "Custom Claude Code plugin marketplace with 16 curated plugins covering dev workflow, Docker, dependency audits, refactoring, git workflows, open source contributions, Python clean code, animation, and more, plus svg-forge listed from its own repo. Installable via /plugin marketplace.",
          "date": "June 2026",
+         "status": "active",
+         "version": "5.4.0",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -995,8 +1073,10 @@
       {
          "id": 36,
          "title": "Claude Cost Optimizer",
-         "description": "Installable Claude Code plugin with cost-mode skill that saves 30-60% on costs through concise responses, model routing, budget hooks, and efficient workflow patterns. Includes web-based Repo Analyzer, Cost Calculator, and Badge Checker tools.",
+         "description": "Installable Claude Code plugin with a cost-mode skill for concise responses, model routing, budget hooks, and efficient workflow patterns, plus claude-rate, a local CLI that grades a project, your ~/.claude setup, and 30 days of real usage. Includes web-based Repo Analyzer, Cost Calculator, and Badge Checker tools.",
          "date": "March 2026",
+         "status": "active",
+         "version": "1.16.1",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -1007,6 +1087,7 @@
          ],
          "features": [
             "cost-mode skill with 3 intensity levels (lite / standard / strict)",
+            "claude-rate local CLI grades the project, ~/.claude setup, and cache hit rate from local transcripts",
             "Web-based Repo Analyzer with cost grade (A+ to F) and recommendations",
             "Cost Calculator and shields.io badge checker",
             "12 deep-dive guides, stack-specific CLAUDE.md templates, 40+ agent support via skills.sh"
@@ -1019,6 +1100,8 @@
          "title": "Bedrock Multi-Model MCP",
          "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stability AI, Luma, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
          "date": "April 2026",
+         "status": "active",
+         "version": "0.4.0",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
@@ -1030,7 +1113,7 @@
          "features": [
             "bedrock_ask and bedrock_compare - send prompts to one model or 2-5 side-by-side",
             "Text models: Claude, Llama 4 Maverick/Scout, Mistral Large 3, Nova Pro/Lite, Qwen3, DeepSeek V3.2/R1, GPT-OSS",
-            "Image models: Stable Image Ultra, SD 3.5 Large, Stable Image Core (1536x1536)",
+            "Image models: Stable Image Ultra, SD 3.5 Large, Stable Image Core, sized by aspect ratio",
             "Video generation via Luma Ray 2 (async S3 output), Titan/Cohere embeddings, bearer token auth fallback"
          ],
          "github": "https://github.com/Sagargupta16/bedrock-multi-model-mcp",
@@ -1039,14 +1122,22 @@
       {
          "id": 30,
          "title": "MCP Toolkit",
-         "description": "Reusable utilities and middleware for building production-ready MCP servers. Drop-in packages for the TypeScript SDK covering auth, caching, rate limiting, logging, and CORS - so you stop reimplementing the same plumbing for every MCP server.",
-         "date": "March 2025",
-         "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "npm"],
+         "description": "Reusable utilities and middleware for building MCP servers, in beta. Drop-in packages for the TypeScript SDK covering auth, caching, rate limiting, logging, and CORS - so you stop reimplementing the same plumbing for every MCP server. Not on npm yet, so it builds from source.",
+         "date": "March 2026",
+         "status": "beta",
+         "version": "0.2.0",
+         "tools_tech": [
+            "TypeScript",
+            "MCP Protocol",
+            "Node.js",
+            "npm workspaces"
+         ],
          "features": [
             "@mcp-toolkit/auth - API key and JWT authentication",
             "@mcp-toolkit/cache - response caching with TTL and LRU",
             "@mcp-toolkit/rate-limit - token bucket strategy",
-            "@mcp-toolkit/logger (structured JSON) and @mcp-toolkit/cors (origin validation)"
+            "@mcp-toolkit/logger (structured JSON) and @mcp-toolkit/cors (origin validation)",
+            "v0.2.0 wraps registerTool() as well as the deprecated tool(), with 76 node:test tests"
          ],
          "github": "https://github.com/Sagargupta16/mcp-toolkit",
          "live": ""
@@ -1056,6 +1147,7 @@
          "title": "Claude Code Recipes",
          "description": "47 copy-paste recipes for Claude Code covering 15 commands, 9 subagents, 5 hooks, skills, workflows, CLAUDE.md templates, and MCP configs. Every recipe works out of the box - just drop into your .claude/ folder and use immediately.",
          "date": "March 2026",
+         "status": "complete",
          "tools_tech": [
             "Claude Code",
             "AI Agents",
@@ -1066,7 +1158,8 @@
             "15 command recipes (/code-review, /pr-description, /refactor, /debug, /migrate)",
             "9 subagent recipes (researcher, test-runner, code-reviewer, security-analyst)",
             "5 hook recipes + MCP server configurations",
-            "Model-tier annotations (haiku/sonnet/opus) for cost-aware adoption"
+            "Model-tier annotations (haiku/sonnet/opus) for cost-aware adoption",
+            "CI checks frontmatter, the hook schema, links and recipe counts, plus a TROUBLESHOOTING.md"
          ],
          "github": "https://github.com/Sagargupta16/claude-code-recipes",
          "live": ""
@@ -1075,13 +1168,15 @@
          "id": 31,
          "title": "Awesome MCP Servers",
          "description": "A curated [awesome] list of Model Context Protocol servers, frameworks, clients, tutorials, and community resources - covering data, developer tools, cloud, productivity, search, AI/ML, finance, and observability.",
-         "date": "March 2025",
+         "date": "March 2026",
+         "status": "active",
          "tools_tech": ["MCP Protocol", "AI Agents", "Curated List"],
          "features": [
-            "Categorized MCP server directory (Data, Dev Tools, Cloud, AI/ML, Finance)",
+            "Categorized MCP server directory in 21 categories (Data, Dev Tools, Cloud, AI/ML, Finance)",
             "Frameworks and clients listings with official SDKs and Inspector",
             "Tutorials, articles, videos, and community links",
-            "Community-maintained with open contribution PRs"
+            "CI-enforced entry rules (real MCP, open license, pushed within 180 days) and a monthly health audit",
+            "Searchable site rebuilt hourly from the README; form submissions open their own PR and auto-merge on green checks"
          ],
          "github": "https://github.com/Sagargupta16/awesome-mcp-servers",
          "live": "https://sagargupta.online/awesome-mcp-servers/"
@@ -1090,7 +1185,8 @@
          "id": 32,
          "title": "Deploy Guide",
          "description": "Step-by-step deployment guides for every platform - 38 guides, 13 platforms, 14 frameworks, 6 databases. Covers GitHub Pages, Vercel, Render, Railway, Fly.io, Netlify, Cloudflare Pages, AWS ECS, DigitalOcean, and more.",
-         "date": "March 2025",
+         "date": "March 2026",
+         "status": "complete",
          "tools_tech": [
             "DevOps",
             "AWS",
@@ -1112,13 +1208,15 @@
          "id": 33,
          "title": "Agent Recipes",
          "description": "Copy-paste AI agent workflows for real-world developer tasks - code review, testing, migrations, documentation, security scanning, and deployment automation. Works with Claude Code, Cursor, Aider, or any AI coding assistant.",
-         "date": "March 2025",
+         "date": "March 2026",
+         "status": "complete",
          "tools_tech": ["AI Agents", "Claude Code", "Cursor", "Aider"],
          "features": [
             "Code review: PR review, architecture review, dependency audit, performance review",
             "Testing: unit test generation, E2E writer, coverage gap finder",
             "Migrations: JS->TS, React class->hooks, CJS->ESM",
-            "Documentation: README generator, API docs, changelog writer"
+            "Documentation: README generator, API docs, changelog writer",
+            "extract-prompt.sh feeds an agent just the prompt, and CI lints the format of all 22 recipes"
          ],
          "github": "https://github.com/Sagargupta16/agent-recipes",
          "live": ""
@@ -1128,6 +1226,7 @@
          "title": "AI Git Hooks",
          "description": "AI-powered git hooks that review code, generate commit messages, catch bugs, and scan for security issues before you push. Drop-in hooks using Claude, OpenAI, or local Ollama for every stage of your git workflow.",
          "date": "March 2026",
+         "status": "complete",
          "tools_tech": ["Git Hooks", "Claude", "OpenAI", "Ollama", "Bash"],
          "features": [
             "pre-commit: AI code review for bugs, style, anti-patterns",
@@ -1141,20 +1240,24 @@
       {
          "id": 42,
          "title": "Credly Badge README Action",
-         "description": "A GitHub Action that auto-syncs your Credly certifications and badges to your GitHub profile README - no more manual updates when you earn a new cert. Categorizes badges into Industry Certifications, Professional/Partner, and Knowledge/Learning with non-destructive HTML-marker updates. Since v1.1.0 an SVG card mode (output readme, svg, or both) draws every badge into one animated SVG card in two or three groups.",
+         "description": "A GitHub Action that auto-syncs your Credly certifications and badges to your GitHub profile README - no more manual updates when you earn a new cert. Categorizes badges into Industry Certifications, Professional/Partner, and Knowledge/Learning with non-destructive HTML-marker updates. Since v1.1.0 an SVG card mode (output readme, svg, or both) draws every badge into one animated SVG card in two or three groups, and since v1.2.0 the card inlines its badges as WebP at under a third of the old size.",
          "date": "March 2026",
+         "status": "active",
+         "version": "1.2.0",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
             "Credly API",
-            "Markdown"
+            "Markdown",
+            "Pillow"
          ],
          "features": [
             "Auto-fetch Credly badges via public API and sync weekly",
             "Categorized sections: Industry Certifications, Professional/Partner, Knowledge/Learning",
             "Non-destructive updates using <!-- CREDLY-BADGES:START/END --> markers",
             "Configurable badge size, retry logic, and categorization keywords",
-            "v1.1.0 SVG card mode: output readme | svg | both, all badges as one animated SVG card in two or three groups"
+            "v1.1.0 SVG card mode: output readme | svg | both, all badges as one animated SVG card in two or three groups",
+            "v1.2.0 inlines card badges as WebP, so the 22-badge example card is 124 KB instead of 391 KB"
          ],
          "github": "https://github.com/Sagargupta16/credly-badge-readme-action",
          "live": "https://github.com/marketplace/actions/credly-badge-readme-updater"

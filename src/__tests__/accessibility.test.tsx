@@ -24,6 +24,7 @@ const project: Project & { category: string } = {
    title: "Portfolio React",
    description: "A portfolio project.",
    date: "September 2026",
+   status: "active",
    tools_tech: ["React", "TypeScript"],
    features: ["Accessible details"],
    github: "https://github.com/Sagargupta16/portfolio-react",
