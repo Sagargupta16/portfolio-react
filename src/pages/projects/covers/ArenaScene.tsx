@@ -30,7 +30,7 @@ import type { Box, Keys, Loop } from "./kit/sceneTokens";
  * timer ticking, the problem on the left, the Monaco editor on the right with
  * the test results strip under it, and the Live Status Board beside it.
  * 1. You finish typing a line and hit Submit.
- * 2. match:submit rides to the Piston container, where the Python runtime runs.
+ * 2. match:submit rides to the hosted Judge0 CE API, which runs the Python submission.
  * 3. The result rides back: the test cases light one by one.
  * 4. The status board updates: your row goes AC and overtakes the leader,
  *    while the other players' passed bars keep moving on their own clock.
@@ -53,8 +53,8 @@ const CASE_STEP = 24;
 const CASES = [0, 1, 2, 3].map((i) => 108 + i * CASE_STEP);
 const CASES_ID = "arena-cases";
 
-/* right column: the Piston container and the Live Status Board */
-const PISTON: Box = [222, 18, 72, 46];
+/* right column: the Judge0 runner and the Live Status Board */
+const JUDGE: Box = [222, 18, 72, 46];
 const PY_CHIP: Box = [229, 38, 28, 16];
 const CPP_CHIP: Box = [261, 38, 26, 16];
 const BOARD: Box = [222, 76, 72, 70];
@@ -75,9 +75,9 @@ const CODE: [number, number, number, string][] = [
 const TYPED_Y = 100;
 
 /* submit leaves the editor's edge for the Python runtime and back */
-const SUBMIT_CURVE = sCurve([WIN_RIGHT, 40], [PISTON[0], 46]);
-const SUBMIT_ROUTE = route(SUBMIT_CURVE, line([PISTON[0], 46], [243, 46]));
-const RESULT_CURVE = sCurve([PISTON[0], 58], [WIN_RIGHT, 134]);
+const SUBMIT_CURVE = sCurve([WIN_RIGHT, 40], [JUDGE[0], 46]);
+const SUBMIT_ROUTE = route(SUBMIT_CURVE, line([JUDGE[0], 46], [243, 46]));
+const RESULT_CURVE = sCurve([JUDGE[0], 58], [WIN_RIGHT, 134]);
 const RESULT_ROUTE = route(RESULT_CURVE);
 
 /* scaleX fill that grows to `to` between `on` and `off`, then fades */
@@ -234,10 +234,10 @@ const Results = () => (
    </>
 );
 
-const Piston = ({ tint }: Readonly<{ tint: string }>) => (
+const Judge = ({ tint }: Readonly<{ tint: string }>) => (
    <>
-      <Panel box={PISTON} rx={7} />
-      <Wire d={`M${PISTON[0]},31 H${PISTON[0] + PISTON[2]}`} />
+      <Panel box={JUDGE} rx={7} />
+      <Wire d={`M${JUDGE[0]},31 H${JUDGE[0] + JUDGE[2]}`} />
       <Panel box={PY_CHIP} rx={3} />
       <Panel box={CPP_CHIP} rx={3} />
       {[PY_CHIP, CPP_CHIP].map(([x, y]) => (
@@ -306,7 +306,7 @@ const Stage = ({ tint }: Readonly<{ tint: string }>) => (
       <Problem />
       <Editor tint={tint} />
       <Results />
-      <Piston tint={tint} />
+      <Judge tint={tint} />
       <Board tint={tint} />
    </>
 );
@@ -325,7 +325,7 @@ const ArenaScene = ({ tint }: Readonly<{ tint: string }>) => (
          SUBMIT
       </Label>
       <Label at={[229, 25]} color={W55}>
-         PISTON
+         JUDGE0
       </Label>
       <motion.div style={layer} {...loopProps(AC_ROW)}>
          <Label at={[281, SLOTS[1]]} color={GREEN}>

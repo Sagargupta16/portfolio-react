@@ -3,7 +3,7 @@ import type { Easing, Transition } from "motion/react";
 import { easeInOut } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
 
-/* Geometry, timing and chrome shared by the WebAppScene stages and AuthScene.
+/* Geometry, timing and chrome shared by the WebAppScene stages.
    A stage lays its panels out in percent of the 16:10 slot and sizes the
    small things (dots, pills, bars) in px for the ~350 px card slot.
    Wires live in one SVG whose viewBox is 160 x 100: the slot is 16:10, so

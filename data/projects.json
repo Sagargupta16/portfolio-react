@@ -696,54 +696,6 @@
          "live": ""
       },
       {
-         "id": 26,
-         "title": "Authentication System",
-         "description": "A production-ready MERN authentication module with JWT tokens (7-day expiry), bcrypt password hashing, Joi password-complexity validation, and a CORS-enabled Express API with a token-gated React home route. Reusable auth scaffold for MERN stack applications.",
-         "date": "September 2023",
-         "status": "complete",
-         "tools_tech": [
-            "Express",
-            "React",
-            "Vite",
-            "MongoDB",
-            "Mongoose",
-            "JWT",
-            "bcrypt",
-            "Joi"
-         ],
-         "features": [
-            "JWT-based auth with 7-day expiry; the React home route is gated on the stored token",
-            "Password complexity enforced via joi-password-complexity (upper/lower/digit/symbol)",
-            "Bcrypt password hashing with salt rounds, inputs coerced to strings against NoSQL injection",
-            "CORS-enabled, server-side Joi schema validation, Vite and React Router frontend"
-         ],
-         "github": "https://github.com/Sagargupta16/Authentication-System",
-         "live": ""
-      },
-      {
-         "id": 48,
-         "title": "Contact Manager",
-         "description": "A full-stack MERN contact management app with MongoDB persistence, full CRUD, favorites and tags, search/filter with saved filter state, dark/light mode with localStorage, and modal add/edit/detail views on a single page. Frontend on GitHub Pages, backend on Render.",
-         "date": "July 2022",
-         "status": "complete",
-         "tools_tech": [
-            "React 19",
-            "Vite 8",
-            "Express 5",
-            "MongoDB",
-            "Mongoose 9",
-            "Node.js"
-         ],
-         "features": [
-            "Full CRUD with MongoDB persistence via Mongoose",
-            "Favorites and custom tags on every contact",
-            "Search by name, email or tag, with favorite and tag filters saved in localStorage",
-            "Dark/light mode persisted in localStorage, modal add/edit/detail views"
-         ],
-         "github": "https://github.com/Sagargupta16/Contact-Manager-Mern",
-         "live": "https://sagargupta.online/Contact-Manager-Mern/"
-      },
-      {
          "id": 5,
          "title": "Tour Vibes",
          "description": "A full-stack MERN travel journal with JWT auth, image uploads via Multer, community and personal feeds with pagination, likes/comments, full-text search across titles/content/tags, and Framer Motion animations. Built with Vite 8 + React 19 + shadcn/ui.",

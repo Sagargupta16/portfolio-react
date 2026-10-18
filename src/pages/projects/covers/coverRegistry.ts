@@ -18,7 +18,6 @@ const GraphScene = lazy(() => import("./GraphScene"));
 const GameScene = lazy(() => import("./GameScene"));
 const DocsScene = lazy(() => import("./DocsScene"));
 const AutomationScene = lazy(() => import("./AutomationScene"));
-const AuthScene = lazy(() => import("./AuthScene"));
 const WebAppScene = lazy(() => import("./WebAppScene"));
 const GateScene = lazy(() => import("./GateScene"));
 const TaxScene = lazy(() => import("./TaxScene"));
@@ -39,7 +38,6 @@ const ArenaScene = lazy(() => import("./ArenaScene"));
 const AmongUsScene = lazy(() => import("./AmongUsScene"));
 const StudyHubScene = lazy(() => import("./StudyHubScene"));
 const LibraryScene = lazy(() => import("./LibraryScene"));
-const ContactsScene = lazy(() => import("./ContactsScene"));
 const CostScene = lazy(() => import("./CostScene"));
 
 export type ProjectCover = {
@@ -77,12 +75,10 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    // Others
    51: { kind: "scene", Scene: WebAppScene, variant: "contacts" }, // Orbit (personal CRM)
    46: { kind: "scene", Scene: LibraryScene }, // Sagas (sagargupta.online/sagas)
-   48: { kind: "scene", Scene: ContactsScene }, // Contact Manager
    40: { kind: "scene", Scene: AutomationScene, variant: "instagram" }, // Instagram Autopilot
    7: { kind: "scene", Scene: InfraScene, variant: "pipeline" }, // AWS DevOps Infrastructure (GitHub Actions -> ECR -> ECS)
    14: { kind: "scene", Scene: MlScene }, // Stock Market Prediction
    11: { kind: "scene", Scene: WebAppScene, variant: "social" }, // Brainstorm Verse
-   26: { kind: "scene", Scene: AuthScene }, // Authentication System
    5: { kind: "scene", Scene: WebAppScene, variant: "travel" }, // Tour Vibes
    12: { kind: "scene", Scene: GameScene, variant: "pacman" },
    16: { kind: "scene", Scene: GameScene, variant: "minesweeper" },
