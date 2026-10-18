@@ -375,6 +375,7 @@ const Page = ({ tint }: Readonly<{ tint: string }>) => {
          <Nav />
          {/* the viewport: a nested svg clips the scrolling document */}
          <svg
+            aria-hidden="true"
             x={x}
             y={VIEW_TOP}
             width={w}

@@ -163,7 +163,7 @@ const layerStyle: CSSProperties = { position: "absolute", inset: 0 };
 /* an identified like in flight: the wrapper fills the stage like Packet */
 const Heart = ({ tint, loop }: Readonly<{ tint: string; loop: Loop }>) => (
    <motion.div style={layerStyle} {...loopProps(loop)}>
-      <svg viewBox="0 0 10 9" style={heartBox}>
+      <svg viewBox="0 0 10 9" style={heartBox} aria-hidden="true">
          <path d={HEART_D} fill={tint} />
       </svg>
    </motion.div>
