@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.19.0] - 2026-10-19
+
+### Added
+
+- **Third AWS sample** (featured project 61, `AgentCoreScene`): [sample-agentcore-harness-agent-terraform](https://github.com/aws-samples/sample-agentcore-harness-agent-terraform), a skills-based agent with governed MCP tools on Amazon Bedrock AgentCore, deployed with Terraform. It has a case-study brief, a cover scene of its gateway mechanism (calls pass or are denied by the Cedar policy), a news item, and an experience publication entry.
+
+### Changed
+
+- The About specialization line and the Stats "AWS samples" highlight now say three. The validator derives the highlight from the aws-samples project count, so the two cannot drift.
+
 ## [4.18.2] - 2026-10-18
 
 ### Fixed
