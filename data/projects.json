@@ -82,6 +82,45 @@
          "organization": "aws-samples"
       },
       {
+         "id": 61,
+         "title": "AgentCore Harness Agent with Governed MCP Tools",
+         "description": "Published by AWS under the aws-samples organization (MIT-0), the third sample - a skills-based AI agent hosted on the Amazon Bedrock AgentCore harness and deployed entirely with Terraform. Its tools run as an MCP server on AgentCore Runtime behind AgentCore Gateway, where a default-deny Cedar policy allows only the listed tools and callers, so Claude Code, Codex and Kiro can call them directly or hand a whole request to the hosted agent.",
+         "date": "October 2026",
+         "status": "complete",
+         "tools_tech": [
+            "Terraform",
+            "Amazon Bedrock AgentCore",
+            "Model Context Protocol",
+            "Cedar",
+            "Amazon Bedrock",
+            "AWS CodeBuild",
+            "Amazon CloudWatch",
+            "Node.js"
+         ],
+         "features": [
+            "71 Terraform resources in 12 files: harness, runtime, gateway, policy engine, evaluator, registry, CodeBuild, alarms and budget",
+            "9 MCP tools behind AgentCore Gateway, with a default-deny Cedar policy and a limit of 30 calls a minute per caller",
+            "ask_architect runs one turn of the hosted agent: prompt plus 3 agent skills, Claude on Bedrock and AgentCore Memory",
+            "AgentCore Evaluations scores sessions, and promote.sh moves a version to the pinned PROD endpoint only after it passes",
+            "deploy.sh refuses a plan that deletes or replaces anything unless told to, and asks before it applies",
+            "The worked example draws AWS architecture diagrams with the official icons and writes HLD, LLD and ADR documents"
+         ],
+         "case_study": {
+            "problem": "Teams that want to host an AI agent on AgentCore need its tools governed and its releases gated, not just a running endpoint.",
+            "built": "Wrote a Terraform stack, published by AWS under aws-samples, that hosts a skills-based agent on the AgentCore harness and serves its tools over MCP behind a Cedar-governed gateway.",
+            "decisions": [
+               "Default-deny Cedar policy at the gateway, allowing only listed tools and caller roles",
+               "One container image for the harness session and the tools runtime",
+               "A version reaches PROD only after AgentCore Evaluations passes it",
+               "Everything agent-specific is an input, so the same stack hosts a different agent"
+            ],
+            "outcome": "Point Claude Code, Codex or Kiro at the gateway URL and call the tools, or ask the hosted agent; swap the prompt, skills and MCP server to host your own."
+         },
+         "github": "https://github.com/aws-samples/sample-agentcore-harness-agent-terraform",
+         "live": "",
+         "organization": "aws-samples"
+      },
+      {
          "id": 44,
          "title": "Kalchar",
          "description": "Production folk-art portfolio and commission site for a traditional artist - Madhubani, Pichwai, Lippan, and Gond artwork gallery with a buy filter, events, workshops, custom orders, and a server-rendered admin panel. Public pages are static, catalog lives in Neon Postgres behind a single data seam, and artwork images are served from Cloudflare R2.",

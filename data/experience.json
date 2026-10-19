@@ -180,6 +180,11 @@
                "title": "AWS Sample Published: Terraform AWS Organizations Governance on Control Tower (aws-samples, MIT-0)",
                "type": "publication",
                "year": "2026"
+            },
+            {
+               "title": "AWS Sample Published: Skills-Based Agent with Governed MCP Tools on Amazon Bedrock AgentCore, Terraform (aws-samples, MIT-0)",
+               "type": "publication",
+               "year": "2026"
             }
          ],
          "internal_achievements": [

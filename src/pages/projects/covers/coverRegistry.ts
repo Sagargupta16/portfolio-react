@@ -24,6 +24,7 @@ const TaxScene = lazy(() => import("./TaxScene"));
 const PluginScene = lazy(() => import("./PluginScene"));
 const GuideScene = lazy(() => import("./GuideScene"));
 const GovernanceScene = lazy(() => import("./GovernanceScene"));
+const AgentCoreScene = lazy(() => import("./AgentCoreScene"));
 const DiagramScene = lazy(() => import("./DiagramScene"));
 const ForgeScene = lazy(() => import("./ForgeScene"));
 const BrainScene = lazy(() => import("./BrainScene"));
@@ -54,6 +55,7 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    // Featured
    49: { kind: "scene", Scene: MlopsScene }, // SageMaker Image Classification MLOps
    52: { kind: "scene", Scene: GovernanceScene }, // AWS Organizations Governance on Control Tower
+   61: { kind: "scene", Scene: AgentCoreScene }, // AgentCore Harness Agent with Governed MCP Tools
    50: { kind: "scene", Scene: GraphScene }, // Kinfolk (family DAG)
    44: { kind: "scene", Scene: GalleryScene }, // Kalchar (kalchar.co.in)
    37: { kind: "scene", Scene: ExtensionScene }, // GitScope (extension injecting into a GitHub profile)
