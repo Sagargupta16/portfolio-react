@@ -444,36 +444,36 @@
       "github": {
          "username": "Sagargupta16",
          "url": "https://github.com/Sagargupta16",
-         "contributions": 7972,
-         "pull_requests": 1670,
-         "longest_streak": 154,
+         "contributions": 8025,
+         "pull_requests": 1781,
+         "longest_streak": 147,
          "languages": [
             {
                "name": "TypeScript",
-               "percent": 55.9
+               "percent": 54.7
             },
             {
                "name": "Python",
-               "percent": 26
+               "percent": 25
             },
             {
                "name": "JavaScript",
-               "percent": 7
+               "percent": 9.2
             },
             {
                "name": "CSS",
-               "percent": 3.2
+               "percent": 3
             },
             {
                "name": "C++",
-               "percent": 3.1
+               "percent": 2.7
             },
             {
                "name": "Shell",
-               "percent": 1.2
+               "percent": 1.6
             }
          ],
-         "fetched": "2026-10-16"
+         "fetched": "2026-10-19"
       }
    }
 }
