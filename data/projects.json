@@ -237,7 +237,7 @@
          "description": "Full-stack LeetCode contest rating predictor using a Dense neural network trained on 121K+ contest records, featuring a FastAPI backend with LeetCode GraphQL integration and a React glassmorphism frontend.",
          "date": "December 2023",
          "status": "active",
-         "version": "2.3.4",
+         "version": "2.4.0",
          "tools_tech": [
             "Python",
             "React 19",
@@ -307,7 +307,7 @@
          "description": "A browser-based tool with three modes - Likes Leaderboard, Stats Dashboard, and Follower Analysis - that scans your Instagram posts and surfaces your biggest fans, ghost followers, non-mutuals, and engagement metrics. No downloads or sign-ups required.",
          "date": "February 2026",
          "status": "active",
-         "version": "2.3.1",
+         "version": "2.4.0",
          "tools_tech": [
             "TypeScript",
             "Preact",
@@ -376,7 +376,7 @@
          "description": "A Model Context Protocol (MCP) server that acts as your personal digital memory hub - store notes, preferences, code snippets, tasks, and any info from any MCP-enabled AI assistant (Claude Desktop, VS Code Copilot). Your personal knowledge base travels with you across AI conversations.",
          "date": "March 2025",
          "status": "active",
-         "version": "0.2.4",
+         "version": "0.3.0",
          "tools_tech": ["TypeScript", "MCP", "Node.js", "MongoDB", "pnpm"],
          "features": [
             "MCP-compliant server with stdio transport for Claude Desktop + VS Code",
@@ -486,7 +486,7 @@
          "description": "A competitive LeetCode tracking platform for MCA NITW students with personal dashboards, real-time leaderboards, contest performance tracking, and badge collections. Features four leaderboard views (Overview, Problems, Contests, Consistency), batch-wise comparisons, and a head-to-head Compare page.",
          "date": "August 2023",
          "status": "active",
-         "version": "3.2.0",
+         "version": "3.4.0",
          "tools_tech": [
             "React 19",
             "TypeScript",
@@ -562,7 +562,7 @@
          "description": "Collaborative family graph where relatives each keep their own record, invite each other, and join matching people without either side losing their copy. A family is modelled as a directed acyclic graph rather than a tree: parentage hangs off a union row, so remarriages, half-siblings, single parents, and adoption are ordinary data instead of renderer special cases. Cross-tree identity is a consent-gated link, so merging is non-destructive and an unlink restores both original views.",
          "date": "August 2026",
          "status": "active",
-         "version": "0.4.0",
+         "version": "0.5.0",
          "tools_tech": [
             "Next.js 16",
             "TypeScript",
@@ -591,7 +591,7 @@
          "description": "Personal CRM for the people in your orbit: contacts, connections, and interaction history in a tabular relationship dashboard. FastAPI and SQLAlchemy 2 behind a React 19 frontend, with Google and GitHub OAuth against a live Neon Postgres database. The contacts surface is wired end to end; interactions, circles, and reminders are modelled in the schema and not yet exposed.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.1.2",
+         "version": "0.2.0",
          "tools_tech": [
             "FastAPI",
             "Python 3.13",
@@ -618,7 +618,7 @@
          "description": "A living library of unfinished books - original fantasy, fan fiction, and essays written in the open, one chapter at a time. Astro static site with content collections and a small localStorage reader; every book is a folder of Markdown, drafts are public, and git history is the writing log.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.2.2",
+         "version": "0.3.0",
          "tools_tech": [
             "Astro 7",
             "TypeScript",
@@ -642,7 +642,7 @@
          "description": "Fully automated Instagram publisher powered by AWS Bedrock and Composio v3, posting live up to twice a day. It publishes only animated SVG Reels (how-it-works explainers, stat stories, and timelines) drawn as SMIL SVG, rendered with headless Chrome and ffmpeg, and set to licensed music. Every number on screen must appear in the fetched source text or the slot fails, and each publish is checkpointed so a lost response never reposts - all through GitHub Actions.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.9.1",
+         "version": "0.12.0",
          "tools_tech": [
             "Python",
             "AWS Bedrock",
@@ -832,7 +832,7 @@
          "description": "Animated architecture and system design diagrams from one YAML spec, with 16,682 official icons from AWS, Azure, Google Cloud, Kubernetes, GitHub and IBM. The Eclipse Layout Kernel places nested boundaries and routes edges, packets travel every edge and numbered steps play in order, and one spec renders to SVG, PNG, editable draw.io, a React component and an HTML viewer. Ships as an Agent Skill and Claude Code plugin.",
          "date": "October 2026",
          "status": "active",
-         "version": "0.4.0",
+         "version": "0.8.0",
          "tools_tech": [
             "TypeScript",
             "ELK",
@@ -856,7 +856,7 @@
          "description": "A Claude Code plugin for designing animated SVGs that render everywhere they are shown: self-contained files for GitHub READMEs and img tags, and React plus Motion scenes for web apps. It packages the rules and gotchas from building animated README cards and project cover scenes into three skills, a designer agent, a generator, and a validator.",
          "date": "October 2026",
          "status": "active",
-         "version": "0.2.0",
+         "version": "0.3.0",
          "tools_tech": ["Python", "SVG", "SMIL", "Motion", "Claude Code"],
          "features": [
             "animated-svg, motion-scene and svg-audit skills, plus an svg-designer agent that builds and iterates end to end",
@@ -873,7 +873,7 @@
          "description": "An agent harness plus a shared markdown brain that Claude Code, Codex and Kiro all read and write. Each fact is one markdown file with its source; facts get corrected or withdrawn with history, never silently overwritten, and recall runs over BM25 through a stdio MCP server. Ships with 15 skills, 7 subagents, safety hooks, always-on rules, and 27 public lessons from real failures.",
          "date": "October 2026",
          "status": "active",
-         "version": "0.1.0",
+         "version": "0.1.1",
          "tools_tech": [
             "Python",
             "MCP",
@@ -1003,7 +1003,7 @@
          "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, a 19-field client-extension registry across 3 runtimes (Claude Code, Copilot, Cursor), structure and reference validation, SARIF output, and a drop-in GitHub Action listed on the GitHub Marketplace.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.2.5",
+         "version": "0.2.7",
          "tools_tech": [
             "TypeScript",
             "Node.js",
@@ -1026,7 +1026,7 @@
          "description": "Local-first MCP server that walks you through filing an Indian income tax return, published on npm. 12 tools spanning form selection, deterministic computation, old-vs-new regime comparison, advance tax planning, and document parsing - all on your machine. The LLM never does arithmetic; every number comes from a versioned, auditable rule pack. Works with Claude Desktop, Claude Code, and any MCP client.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.5.0",
+         "version": "0.5.2",
          "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "npm"],
          "features": [
             "recommend_itr_form picks ITR-1/2/3/4 with rule-by-rule reasoning, including brought-forward losses that force ITR-3",
@@ -1044,7 +1044,7 @@
          "description": "Custom Claude Code plugin marketplace with 16 curated plugins covering dev workflow, Docker, dependency audits, refactoring, git workflows, open source contributions, Python clean code, animation, and more, plus svg-forge listed from its own repo. Installable via /plugin marketplace.",
          "date": "June 2026",
          "status": "active",
-         "version": "5.4.0",
+         "version": "5.6.0",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -1067,7 +1067,7 @@
          "description": "Installable Claude Code plugin with a cost-mode skill for concise responses, model routing, budget hooks, and efficient workflow patterns, plus claude-rate, a local CLI that grades a project, your ~/.claude setup, and 30 days of real usage. Includes web-based Repo Analyzer, Cost Calculator, and Badge Checker tools.",
          "date": "March 2026",
          "status": "active",
-         "version": "1.16.1",
+         "version": "1.17.0",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -1092,7 +1092,7 @@
          "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stability AI, Luma, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
          "date": "April 2026",
          "status": "active",
-         "version": "0.4.0",
+         "version": "0.5.0",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
@@ -1116,7 +1116,7 @@
          "description": "Reusable utilities and middleware for building MCP servers, in beta. Drop-in packages for the TypeScript SDK covering auth, caching, rate limiting, logging, and CORS - so you stop reimplementing the same plumbing for every MCP server. Not on npm yet, so it builds from source.",
          "date": "March 2026",
          "status": "beta",
-         "version": "0.2.0",
+         "version": "0.3.0",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
