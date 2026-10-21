@@ -206,7 +206,7 @@
       "date": "2025-07",
       "type": "launch",
       "text": "Built zero-downtime Blue-Green deployments on AWS with Terraform, ECS and CodePipeline",
-      "link": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform"
+      "link": "https://github.com/Sagargupta16/terraform-aws-ecs-blue-green"
    },
    {
       "date": "2025-06-28",

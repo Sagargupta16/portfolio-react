@@ -298,7 +298,7 @@
             ],
             "outcome": "A push to main builds once, passes an 80% test coverage gate, deploys to test, and reaches prod after approval with zero downtime."
          },
-         "github": "https://github.com/Sagargupta16/Blue_Green_AWS_Terraform",
+         "github": "https://github.com/Sagargupta16/terraform-aws-ecs-blue-green",
          "live": ""
       },
       {
@@ -684,7 +684,7 @@
             "Docker Compose setup for local multi-container development",
             "Test coverage reporting with Pytest, linting via Pylint + Flake8 + Prettier"
          ],
-         "github": "https://github.com/Sagargupta16/DevOps-AWS-FARM",
+         "github": "https://github.com/Sagargupta16/farm-stack-aws-ecs",
          "live": ""
       },
       {
