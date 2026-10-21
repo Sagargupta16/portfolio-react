@@ -24,7 +24,7 @@ import type { Point, TintProps } from "./tokens";
 import { FadeLayer, Packet, Stage, StageSvg, Wires } from "./primitives";
 
 /*
- * AWS DevOps Infrastructure (DevOps-AWS-FARM): the GitHub Actions run graph
+ * AWS DevOps Infrastructure (farm-stack-aws-ecs): the GitHub Actions run graph
  * of main.yml, then the AWS half of deploy.yml.
  * A push flows through the job graph while each column ticks green in
  * dependency order: black/flake8 and eslint/prettier, then pytest with

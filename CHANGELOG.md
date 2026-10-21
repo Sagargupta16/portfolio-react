@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.19.1] - 2026-10-21
+
+### Changed
+
+- Two project repositories were renamed, so their links follow: Blue Green AWS Terraform now points at `Sagargupta16/terraform-aws-ecs-blue-green` (projects and news) and AWS DevOps Infrastructure at `Sagargupta16/farm-stack-aws-ecs`. GitHub redirects the old URLs; titles and slugs are unchanged, so the profile README cards keep their names.
+
 ## [4.19.0] - 2026-10-19
 
 ### Added
