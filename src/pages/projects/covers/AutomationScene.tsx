@@ -1,4 +1,5 @@
 import type { PipelineProps } from "./automation/sceneTokens";
+import { BASE_GRADIENT } from "./kit/sceneTokens";
 import CarouselPipeline from "./automation/CarouselPipeline";
 import BadgePipeline from "./automation/BadgePipeline";
 import GithubCardPipeline from "./automation/GithubCardPipeline";
@@ -66,7 +67,7 @@ const AutomationScene = ({ tint, variant }: CoverSceneProps) => {
          style={{
             ...FILL,
             overflow: "hidden",
-            background: "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)",
+            background: BASE_GRADIENT,
          }}
       >
          {/* light: one faint wash where the artifact lands */}

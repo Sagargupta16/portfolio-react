@@ -1,16 +1,19 @@
 import { Bot, Brain, Code, Network, ShieldCheck, Workflow } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import type { ServiceKey } from "@/types";
+import { BLUE_LIGHT, BLUE_PALE, SKY } from "@/constants/theme";
 
-export const iconMap: Record<string, LucideIcon> = {
-   "Landing Zones & Cloud Governance": ShieldCheck,
-   "Infrastructure as Code & CI/CD": Workflow,
-   "Cloud Networking": Network,
-   "MLOps & GenAI on AWS": Brain,
-   "AI Agents & Developer Tooling": Bot,
-   "Full-Stack Product Builds": Code,
+/** Title icon per stable services.json `key`. */
+export const SERVICE_ICONS: Record<ServiceKey, LucideIcon> = {
+   "landing-zones": ShieldCheck,
+   "iac-cicd": Workflow,
+   "cloud-networking": Network,
+   "mlops-genai": Brain,
+   "agent-tooling": Bot,
+   "full-stack": Code,
 };
 
-export interface AccentColor {
+interface AccentColor {
    iconBg: string;
    icon: string;
    dot: string;
@@ -19,7 +22,7 @@ export interface AccentColor {
 /* One accent per card, blue family only. Three tones cycle so no two
    neighbours match, side by side or stacked, in the two-column desktop grid
    and in the single phone column. */
-const TONES = ["#60a5fa", "#38bdf8", "#93c5fd"];
+const TONES = [BLUE_LIGHT, SKY, BLUE_PALE];
 
 export const ACCENT_COLORS: AccentColor[] = Array.from(
    { length: 6 },

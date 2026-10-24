@@ -1,6 +1,10 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Crosshair, GitBranch, Hammer, TrendingUp } from "lucide-react";
 import type { CaseStudy } from "@/types";
+import { getUiCopy } from "@data/ui";
+import "./case-study-brief.css";
+
+const COPY = getUiCopy().case_study;
 
 /* The four questions an engineer reading a project asks first: what was the
    problem, what did he build, which decisions mattered, what changed. Rows
@@ -38,25 +42,25 @@ const CaseStudyBrief = ({ brief, accent, inspect }: CaseStudyBriefProps) => (
       className="case-brief"
       style={{ "--brief-accent": accent } as CSSProperties}
    >
-      <Row icon={<Crosshair size={13} />} label="Problem">
+      <Row icon={<Crosshair size={13} />} label={COPY.problem}>
          {brief.problem}
       </Row>
-      <Row icon={<Hammer size={13} />} label="What I built">
+      <Row icon={<Hammer size={13} />} label={COPY.built}>
          {brief.built}
       </Row>
-      <Row icon={<GitBranch size={13} />} label="Key decisions">
+      <Row icon={<GitBranch size={13} />} label={COPY.decisions}>
          <ul>
             {brief.decisions.map((decision) => (
                <li key={decision}>{decision}</li>
             ))}
          </ul>
       </Row>
-      <Row icon={<TrendingUp size={13} />} label="Outcome" highlight>
+      <Row icon={<TrendingUp size={13} />} label={COPY.outcome} highlight>
          {brief.outcome}
       </Row>
       {inspect && (
          <div className="case-brief-row case-brief-inspect">
-            <dt>Inspect</dt>
+            <dt>{COPY.inspect}</dt>
             <dd>{inspect}</dd>
          </div>
       )}

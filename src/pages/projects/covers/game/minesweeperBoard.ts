@@ -6,7 +6,7 @@
  */
 
 /* '*' mine, '#' stays covered, digits are what the flood uncovers. */
-export const BOARD = [
+const BOARD = [
    "*#*#######",
    "***#*##*##",
    "##221#*###",
@@ -29,12 +29,12 @@ export interface Cell {
    row: number;
    mark: string;
 }
-export const CELLS: Cell[] = BOARD.flatMap((line, row) =>
+const CELLS: Cell[] = BOARD.flatMap((line, row) =>
    [...line].map((mark, col) => ({ col, row, mark })),
 );
 const isDigit = (c: Cell) => c.mark >= "0" && c.mark <= "9";
 export const MINES = CELLS.filter((c) => c.mark === "*");
-export const OPENED = CELLS.filter(isDigit);
+const OPENED = CELLS.filter(isDigit);
 export const NUMBERED = OPENED.filter((c) => c.mark !== "0");
 export const CLOSED = CELLS.filter((c) => c.mark === "#");
 /* The flood radiates from the click; four rings of two Manhattan steps. */
@@ -82,7 +82,7 @@ export const CYCLE = 6;
 
 /* Storyboard clock, seconds. */
 export const CLICK_AT = 1;
-export const FLOOD_STEP = 0.12;
+const FLOOD_STEP = 0.12;
 export const FADE = 0.15;
 export const ringAt = (ring: number) => CLICK_AT + FLOOD_STEP * ring;
 export const MINE_AT = 3.8;

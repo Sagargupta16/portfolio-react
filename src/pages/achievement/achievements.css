@@ -63,12 +63,12 @@
    color: var(--result-color);
    font-family: var(--font-mono);
    font-variant-numeric: tabular-nums;
-   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+   transition: transform 0.25s var(--ease-cinematic);
 }
 
 .competition-placement-label {
    color: var(--color-text-muted);
-   font-size: 9px;
+   font-size: 11px;
    line-height: 1;
    letter-spacing: 0.06em;
    text-transform: uppercase;

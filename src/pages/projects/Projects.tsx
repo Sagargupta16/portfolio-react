@@ -2,6 +2,7 @@ import {
    useState,
    useMemo,
    useCallback,
+   useDeferredValue,
    useRef,
    type CSSProperties,
 } from "react";
@@ -14,6 +15,7 @@ import {
    getCommunityProjects,
    getSpotlightProjectId,
 } from "@data/projects";
+import { getSectionCopy } from "@data/sections";
 import {
    BLUE,
    DURATION,
@@ -24,13 +26,14 @@ import {
 } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { fillTemplate } from "@utils/fillTemplate";
 import { parseProjectDate } from "@utils/projectMetadata";
 import {
    projectSlug,
    readProjectParam,
    writeProjectParam,
 } from "@utils/projectLink";
-import { FILTERS } from "./projectConstants";
+import { FILTERS, filterLabel } from "./projectConstants";
 import type { ProjectWithCategory } from "./projectConstants";
 import ProjectGrid from "./ProjectGrid";
 import OpenSourceBanner from "./OpenSourceBanner";
@@ -54,7 +57,7 @@ const filterChipVariants: Variants = {
 };
 
 const CHIP_RADIUS = 12;
-const ACTIVE_LABEL = "#fff";
+const ACTIVE_LABEL = "rgb(var(--ch-white))";
 
 // Every chip shares this geometry; only the sliding pill marks the active one,
 // so the bar never reflows when the selection changes.
@@ -70,8 +73,8 @@ const CHIP_STYLE: CSSProperties = {
    fontFamily: MONO_FONT,
    fontWeight: 500,
    cursor: "pointer",
-   border: "1px solid rgba(255, 255, 255, 0.06)",
-   background: "rgba(255, 255, 255, 0.03)",
+   border: "1px solid rgb(var(--ch-white) / 0.06)",
+   background: "rgb(var(--ch-white) / 0.03)",
    transition: "color 0.2s ease",
 };
 
@@ -85,6 +88,10 @@ const PILL_STYLE: CSSProperties = {
 
 const PILL_SPRING = { type: "spring", stiffness: 500, damping: 40 } as const;
 const TAP = { scale: 0.97 };
+
+// The chip group is a fieldset for its group semantics; this drops the
+// browser's fieldset frame so it lays out exactly like the old div.
+const FIELDSET_RESET: CSSProperties = { border: 0, margin: 0, padding: 0 };
 
 /** The project a shared ?project=<slug> link points at, with its category. */
 const projectFromLink = (): ProjectWithCategory | null => {
@@ -106,7 +113,12 @@ const projectFromLink = (): ProjectWithCategory | null => {
 const Projects = () => {
    const { reducedMotion } = useMotionPreference();
    const [activeFilter, setActiveFilter] = useState<string>("Featured");
+   const { title, subtitle, search } = getSectionCopy("projects");
    const [query, setQuery] = useState("");
+   // The grid filters on a deferred copy of the query, so the input stays
+   // responsive while up to 49 layout-animated cards re-measure in a
+   // background render that the next keystroke can interrupt.
+   const deferredQuery = useDeferredValue(query);
    const searchRef = useRef<HTMLInputElement>(null);
    // Flips on the first filter change: cards mounted afterwards enter with the
    // short swap rise instead of the taller first-scroll reveal.
@@ -125,7 +137,7 @@ const Projects = () => {
    const collaborativeProjects = useMemo(() => getCollaborativeProjects(), []);
    const otherProjects = useMemo(() => getOtherProjects(), []);
    const spotlightProjectId =
-      activeFilter === "Featured" && !query.trim()
+      activeFilter === "Featured" && !deferredQuery.trim()
          ? getSpotlightProjectId()
          : null;
 
@@ -192,7 +204,7 @@ const Projects = () => {
    ]);
 
    const filteredProjects = useMemo(() => {
-      const terms = query.trim().toLowerCase().split(/\s+/);
+      const terms = deferredQuery.trim().toLowerCase().split(/\s+/);
       const matches = categoryProjects.filter((project) => {
          const text = [
             project.title,
@@ -209,7 +221,7 @@ const Projects = () => {
       return spotlight
          ? [spotlight, ...matches.filter((project) => project !== spotlight)]
          : matches;
-   }, [categoryProjects, query, spotlightProjectId]);
+   }, [categoryProjects, deferredQuery, spotlightProjectId]);
 
    const hasSpotlight = filteredProjects.some(
       (project) => project.id === spotlightProjectId,
@@ -230,25 +242,36 @@ const Projects = () => {
       writeProjectParam(null);
    }, []);
 
+   // One element per deferred result, so a keystroke's urgent render reuses
+   // it and skips the grid until the deferred filter has caught up.
+   const projectGrid = useMemo(
+      () => (
+         <ProjectGrid
+            projects={filteredProjects}
+            spotlightProjectId={spotlightProjectId}
+            hasFiltered={hasFiltered}
+            onOpenProject={handleOpenProject}
+         />
+      ),
+      [filteredProjects, spotlightProjectId, hasFiltered, handleOpenProject],
+   );
+
    return (
-      <PageSection
-         id="projects"
-         title="Things I've *built*"
-         subtitle="Projects"
-      >
+      <PageSection id="projects" title={title} subtitle={subtitle}>
          <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
             <motion.div
                className="project-toolbar"
                variants={filterBarVariants}
             >
-               <div
+               <fieldset
                   className="project-filters"
-                  role="group"
-                  aria-label="Filter projects"
+                  aria-label={search.filter_label}
+                  style={FIELDSET_RESET}
                >
                   {visibleFilters.map((filter) => {
                      const isActive = activeFilter === filter;
                      const count = counts[filter] ?? 0;
+                     const label = filterLabel(filter);
                      return (
                         <motion.button
                            key={filter}
@@ -262,7 +285,12 @@ const Projects = () => {
                            whileTap={TAP}
                            aria-pressed={isActive}
                            aria-controls="project-results"
-                           aria-label={`${filter} (${count} project${count === 1 ? "" : "s"})`}
+                           aria-label={fillTemplate(
+                              count === 1
+                                 ? search.filter_count_one
+                                 : search.filter_count_many,
+                              { filter: label, count },
+                           )}
                         >
                            {isActive && (
                               <motion.span
@@ -272,9 +300,7 @@ const Projects = () => {
                                  transition={PILL_SPRING}
                               />
                            )}
-                           <span style={{ position: "relative" }}>
-                              {filter}
-                           </span>
+                           <span style={{ position: "relative" }}>{label}</span>
                            <span
                               aria-hidden="true"
                               style={{
@@ -286,8 +312,8 @@ const Projects = () => {
                                  padding: "1px 6px",
                                  borderRadius: 6,
                                  background: isActive
-                                    ? "rgba(0, 0, 0, 0.18)"
-                                    : "rgba(255, 255, 255, 0.06)",
+                                    ? "rgb(var(--ch-black) / 0.18)"
+                                    : "rgb(var(--ch-white) / 0.06)",
                                  transition: "background-color 0.2s ease",
                                  // Use tabular digits so 1-digit and 2-digit counts
                                  // don't shift the button width during filter swaps.
@@ -299,7 +325,7 @@ const Projects = () => {
                         </motion.button>
                      );
                   })}
-               </div>
+               </fieldset>
                <div className="project-search">
                   <Search size={18} aria-hidden="true" />
                   <input
@@ -316,8 +342,8 @@ const Projects = () => {
                      onKeyDown={(event) => {
                         if (event.key === "Escape") clearSearch();
                      }}
-                     placeholder="Search title or technology"
-                     aria-label="Search projects"
+                     placeholder={search.placeholder}
+                     aria-label={search.label}
                      aria-describedby="project-result-count"
                      aria-controls="project-results"
                      autoComplete="off"
@@ -327,7 +353,7 @@ const Projects = () => {
                      <button
                         type="button"
                         className="project-action"
-                        aria-label="Clear search"
+                        aria-label={search.clear}
                         onClick={clearSearch}
                      >
                         <X size={16} aria-hidden="true" />
@@ -338,21 +364,19 @@ const Projects = () => {
 
             <div className="project-results-summary">
                <span id="project-result-count" role="status" aria-live="polite">
-                  {filteredProjects.length} of {counts[activeFilter]} projects
+                  {fillTemplate(search.summary, {
+                     shown: filteredProjects.length,
+                     total: counts[activeFilter],
+                  })}
                </span>
                <span>
-                  {hasSpotlight ? "Spotlight, then newest" : "Newest first"}
+                  {hasSpotlight ? search.order_spotlight : search.order_newest}
                </span>
             </div>
 
             {/* Card grid with animated covers */}
             {filteredProjects.length ? (
-               <ProjectGrid
-                  projects={filteredProjects}
-                  spotlightProjectId={spotlightProjectId}
-                  hasFiltered={hasFiltered}
-                  onOpenProject={handleOpenProject}
-               />
+               projectGrid
             ) : (
                <motion.div
                   className="project-empty"
@@ -361,10 +385,9 @@ const Projects = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.18, ease: EASING.cinematic }}
                >
-                  <h3>No matching projects</h3>
+                  <h3>{search.empty_title}</h3>
                   <p>
-                     Try another name or technology, or reset the filters to
-                     explore all {counts.All} projects.
+                     {fillTemplate(search.empty_body, { total: counts.All })}
                   </p>
                   <button
                      type="button"
@@ -374,7 +397,7 @@ const Projects = () => {
                         clearSearch();
                      }}
                   >
-                     Reset filters
+                     {search.reset}
                   </button>
                </motion.div>
             )}

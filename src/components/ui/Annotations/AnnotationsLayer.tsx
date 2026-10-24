@@ -1,13 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
+import { useLenis } from "lenis/react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { ANNOTATIONS, type Annotation } from "@/constants/annotations";
-import { EASING } from "@/constants/theme";
+import { DURATION, EASING } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { setAnnotationsOn } from "@utils/annotationsState";
+import { fillTemplate } from "@utils/fillTemplate";
+import { getUiCopy } from "@data/ui";
 import "./annotations.css";
+
+const COPY = getUiCopy().notes;
 
 /* Numbered pins over the live page, one per note in constants/annotations.
    Pins live in document coordinates (absolute, not fixed), so they ride the
@@ -63,6 +68,7 @@ const measurePins = (): Pin[] => {
 const AnnotationsLayer = () => {
    const { isMobile } = useBreakpoint();
    const { reducedMotion } = useMotionPreference();
+   const lenis = useLenis();
    const [pins, setPins] = useState<Pin[]>([]);
    const [openId, setOpenId] = useState<string | null>(null);
 
@@ -96,19 +102,30 @@ const AnnotationsLayer = () => {
          const target = pins[index];
          if (!target) return;
          setOpenId(target.note.id);
+         // Lenis owns scrolling in Full mode (it clamps to the page itself);
+         // Reduced mode has no instance and scrolls natively.
+         const offset = -window.innerHeight / 3;
+         if (lenis) {
+            lenis.scrollTo(target.top, { offset });
+            return;
+         }
          window.scrollTo({
-            top: Math.max(target.top - window.innerHeight / 3, 0),
+            top: Math.max(target.top + offset, 0),
             behavior: reducedMotion ? "auto" : "smooth",
          });
       },
-      [pins, reducedMotion],
+      [pins, reducedMotion, lenis],
    );
    const step = (delta: number) =>
       goTo((openIndex + delta + pins.length) % pins.length);
 
    useEffect(() => {
+      // Pins sit under every modal, so this listens on window: it hears
+      // Escape after the document-level modal, palette and gloss handlers,
+      // and skips one a layer above already handled (defaultPrevented).
       const onKey = (event: KeyboardEvent) => {
-         if (event.key !== "Escape") return;
+         if (event.key !== "Escape" || event.defaultPrevented) return;
+         event.preventDefault();
          if (openId) setOpenId(null);
          else setAnnotationsOn(false);
       };
@@ -118,10 +135,10 @@ const AnnotationsLayer = () => {
          if (target?.closest(".annotation-card, .annotation-pin")) return;
          setOpenId(null);
       };
-      document.addEventListener("keydown", onKey);
+      window.addEventListener("keydown", onKey);
       document.addEventListener("pointerdown", onPointerDown);
       return () => {
-         document.removeEventListener("keydown", onKey);
+         window.removeEventListener("keydown", onKey);
          document.removeEventListener("pointerdown", onPointerDown);
       };
    }, [openId]);
@@ -154,7 +171,10 @@ const AnnotationsLayer = () => {
                }
                aria-expanded={pin.note.id === openId}
                aria-controls="annotation-card"
-               aria-label={`Note ${index + 1}: ${pin.note.title}`}
+               aria-label={fillTemplate(COPY.pin_label, {
+                  index: index + 1,
+                  title: pin.note.title,
+               })}
             >
                {index + 1}
             </motion.button>
@@ -195,7 +215,7 @@ const AnnotationsLayer = () => {
                         type="button"
                         className="annotation-icon-btn"
                         onClick={() => setOpenId(null)}
-                        aria-label="Close note"
+                        aria-label={COPY.close}
                      >
                         <X size={14} aria-hidden="true" />
                      </button>
@@ -207,7 +227,7 @@ const AnnotationsLayer = () => {
                         type="button"
                         className="annotation-icon-btn"
                         onClick={() => step(-1)}
-                        aria-label="Previous note"
+                        aria-label={COPY.previous}
                      >
                         <ChevronLeft size={16} aria-hidden="true" />
                      </button>
@@ -215,7 +235,7 @@ const AnnotationsLayer = () => {
                         type="button"
                         className="annotation-icon-btn"
                         onClick={() => step(1)}
-                        aria-label="Next note"
+                        aria-label={COPY.next}
                      >
                         <ChevronRight size={16} aria-hidden="true" />
                      </button>
@@ -230,24 +250,27 @@ const AnnotationsLayer = () => {
                role="status"
                initial={reducedMotion ? false : { opacity: 0, y: 16 }}
                animate={{ opacity: 1, y: 0 }}
-               transition={{ duration: 0.25, ease: EASING.brisk }}
+               transition={{ duration: DURATION.quick, ease: EASING.brisk }}
             >
                <span>
-                  {pins.length} build {pins.length === 1 ? "note" : "notes"}
+                  {fillTemplate(
+                     pins.length === 1 ? COPY.count_one : COPY.count_many,
+                     { count: pins.length },
+                  )}
                </span>
                <button
                   type="button"
                   onClick={() => goTo(0)}
                   className="annotations-banner-btn"
                >
-                  Start
+                  {COPY.start}
                </button>
                <button
                   type="button"
                   onClick={() => setAnnotationsOn(false)}
                   className="annotations-banner-btn"
                >
-                  Turn off
+                  {COPY.turn_off}
                </button>
             </motion.div>
          )}

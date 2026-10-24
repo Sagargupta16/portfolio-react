@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import { Bar, Label, Packet, Panel, Pip, Shell, Wire } from "./kit/primitives";
 import {
-   GREEN,
    GRID,
    W03,
    W06,

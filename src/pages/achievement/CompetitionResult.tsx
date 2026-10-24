@@ -1,9 +1,10 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import type { Achievement } from "@/types";
+import { getSectionCopy } from "@data/sections";
 import useMotionPreference from "@hooks/useMotionPreference";
 import {
-   CYAN,
+   BLUE_LIGHT,
    DURATION,
    EASING,
    TEXT_MUTED,
@@ -25,6 +26,7 @@ const PLACEMENT_COLORS: Record<string, string> = {
 };
 
 const MAX_STAGGER_S = 0.2;
+const COPY = getSectionCopy("achievements").competitions;
 
 const splitTitle = (title: string): [string, string] => {
    const idx = title.indexOf(" - ");
@@ -37,7 +39,7 @@ const parsePlacement = (
    const [prefix, event] = splitTitle(title);
 
    if (prefix.startsWith("Rank ")) {
-      return { rank: prefix, event, color: CYAN };
+      return { rank: prefix, event, color: BLUE_LIGHT };
    }
 
    const ordinalMatch = /^(\d+(?:st|nd|rd|th)) Place$/.exec(prefix);
@@ -79,7 +81,7 @@ const CompetitionResult = ({ item, index }: CompetitionResultProps) => {
          >
             {rank && (
                <span className="competition-placement-label">
-                  {isRanking ? "Rank" : "Place"}
+                  {isRanking ? COPY.rank : COPY.place}
                </span>
             )}
             <span className="competition-placement-value">

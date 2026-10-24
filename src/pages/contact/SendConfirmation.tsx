@@ -1,7 +1,17 @@
 import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { CheckCircle } from "lucide-react";
-import { CYAN, TEXT_PRIMARY, TEXT_MUTED } from "@/constants/theme";
+import {
+   BLUE_LIGHT,
+   DURATION,
+   EASING,
+   TEXT_PRIMARY,
+   TEXT_MUTED,
+} from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import { fillTemplate } from "@utils/fillTemplate";
+
+const COPY = getSectionCopy("contact").sent;
 
 interface SendConfirmationProps {
    onReset: () => void;
@@ -38,7 +48,7 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
          <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: DURATION.default, ease: EASING.cinematic }}
             style={{
                display: "flex",
                flexDirection: "column",
@@ -51,7 +61,7 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
                animate={{ scale: 1 }}
                transition={{ type: "spring", stiffness: 200, damping: 15 }}
             >
-               <CheckCircle size={48} style={{ color: CYAN }} />
+               <CheckCircle size={48} style={{ color: BLUE_LIGHT }} />
             </motion.div>
             <h3
                ref={headingRef}
@@ -62,11 +72,11 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
                   color: TEXT_PRIMARY,
                }}
             >
-               Message sent!
+               {COPY.title}
             </h3>
             {senderName && (
                <p style={{ fontSize: 14, color: TEXT_MUTED }}>
-                  Thanks, {senderName}! I'll get back to you soon.
+                  {fillTemplate(COPY.thanks, { name: senderName })}
                </p>
             )}
             <button
@@ -75,7 +85,7 @@ const SendConfirmation = ({ onReset, senderName }: SendConfirmationProps) => {
                onClick={onReset}
                style={{ marginTop: 8 }}
             >
-               Send another message
+               {COPY.again}
             </button>
          </motion.div>
       </div>

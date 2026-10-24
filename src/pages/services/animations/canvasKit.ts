@@ -63,7 +63,7 @@ export const dot = (
 
 /* A packet styled with `dot([0, 0], ...)` rides canvas points: each stop is
    [time, point, opacity], and x / y keyframes are the points themselves. */
-export type TripStop = readonly [t: number, at: Pt, opacity: number];
+type TripStop = readonly [t: number, at: Pt, opacity: number];
 
 export const trip = (stops: readonly TripStop[]): Keys => ({
    times: stops.map(([t]) => t),
@@ -74,7 +74,7 @@ export const trip = (stops: readonly TripStop[]): Keys => ({
 
 const RAMP = 0.02;
 
-export type Span = readonly [on: number, off: number];
+type Span = readonly [on: number, off: number];
 
 /* Opacity windows in one track: fade in at `on`, hold, gone by `off`. */
 export const flashes = (...windows: readonly Span[]): Keys => ({

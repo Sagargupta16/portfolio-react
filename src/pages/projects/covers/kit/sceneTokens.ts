@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { MONO_FONT } from "@/constants/theme";
+import { BG_PRIMARY, MONO_FONT } from "@/constants/theme";
 
 /*
  * Stage kit shared by the Gate, Mcp and Plugin cover families.
@@ -13,17 +13,20 @@ import { MONO_FONT } from "@/constants/theme";
  * Static hairlines keep a 1 px non-scaling stroke. Animated pathLength and
  * pathOffset strokes never do: Chrome measures the normalised dash in user
  * units but paints a non-scaling stroke in screen units, so a draw would stop
- * short. Every looped element that animates a stroke property also starts at
- * opacity 0, so the frozen Reduced frame hides it.
+ * short. Stroke loops run on the JS frameloop, which the Reduced freeze cannot
+ * pause, so in Reduced Trace swaps its loop for a still stroke.
  */
 
 export interface TintProps {
    tint: string;
 }
 
-export const GREEN = "#22c55e";
-export const AMBER = "#f59e0b";
-export const INK = "#0b1012";
+/* Shared by every scene family, the engagement scenes and the cover slot.
+   Green and amber status colours come from @/constants/theme. */
+export const INK = BG_PRIMARY;
+export const BASE_GRADIENT = `linear-gradient(160deg, #0e1a24 0%, ${BG_PRIMARY} 60%)`;
+/* Opaque stand-in for a 3% white panel, for faces that cover or overlap. */
+export const PANEL_SOLID = "#10181c";
 export const W03 = "rgba(255,255,255,0.03)";
 export const W06 = "rgba(255,255,255,0.06)";
 export const W10 = "rgba(255,255,255,0.10)";
@@ -41,8 +44,17 @@ export type Box = readonly [x: number, y: number, w: number, h: number];
 
 const round2 = (v: number) => Math.round(v * 100) / 100;
 
-export const pctX = (x: number) => `${round2((x / STAGE_W) * 100)}%`;
-export const pctY = (y: number) => `${round2((y / STAGE_H) * 100)}%`;
+/* `v` as a CSS percent of `span`; `round` trims it to 2 decimals. */
+export const pct = (v: number, span: number, round = false) => {
+   const p = (v / span) * 100;
+   return `${round ? round2(p) : p}%`;
+};
+
+export const pctX = (x: number) => pct(x, STAGE_W, true);
+export const pctY = (y: number) => pct(y, STAGE_H, true);
+
+/* Cubic ease 3t^2 - 2t^3, flat at 0 and 1 (no clamp). */
+export const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
 export const layer: CSSProperties = { position: "absolute", inset: 0 };
 
@@ -92,9 +104,9 @@ export const dotAt = (at: Pt, size: number, color: string): CSSProperties => ({
 
 /* ---------- timeline ---------- */
 
-export type Ease = "linear" | "easeInOut";
+type Ease = "linear" | "easeInOut";
 
-export interface Tracks {
+interface Tracks {
    x?: (number | string)[];
    y?: (number | string)[];
    opacity?: number[];
@@ -144,6 +156,15 @@ export const shown = (on: number, off: number, ramp = 0.03): Keys => ({
    times: [0, on, on + ramp, off - ramp, off, 1],
    opacity: [0, 0, 1, 1, 0, 0],
 });
+
+/* For a scene that clears at the top of its loop: shown at rest, gone during
+   the `clear` window, back from `at`. Bind the window once per scene. */
+export const backAtFor =
+   (clear: readonly number[]) =>
+   (at: number, ramp = 0.04): Keys => ({
+      times: [0, ...clear, at, at + ramp, 1],
+      opacity: [1, 1, 0, 0, 1, 1],
+   });
 
 /* ---------- curves and routes ---------- */
 

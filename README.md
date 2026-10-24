@@ -11,8 +11,8 @@
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178c6)
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
-![Tests](https://img.shields.io/badge/tests-39%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.17.0-2563eb)
+![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
+![Version](https://img.shields.io/badge/version-4.20.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -91,7 +91,7 @@ For a file map, editing recipes, and contribution checks, read the [contributor 
 | `pnpm dev`           | Start development server                       |
 | `pnpm build`         | Validate data and build to `/build`            |
 | `pnpm preview`       | Preview production build                       |
-| `pnpm test`          | Run 39 focused Vitest tests                    |
+| `pnpm test`          | Run 47 focused Vitest tests                    |
 | `pnpm validate:data` | Validate JSON schemas and cross-file rules     |
 | `pnpm lint`          | ESLint app and scripts (zero warnings)         |
 | `pnpm lint:fix`      | ESLint with auto-fix                           |
@@ -99,6 +99,8 @@ For a file map, editing recipes, and contribution checks, read the [contributor 
 | `pnpm format:check`  | Verify formatting without writing              |
 | `pnpm type-check`    | TypeScript strict-mode checking                |
 | `pnpm check`         | Run format, lint, types, tests, and data gates |
+| `pnpm fetch:resume`  | Fetch and pre-render the latest released CV    |
+| `pnpm brand:icons`   | Regenerate the favicons from the Maker mark    |
 | `pnpm clean`         | Remove build artifacts and cache               |
 
 ---
@@ -114,6 +116,11 @@ data/                                  # JSON content files (edit these to custo
 ├── projects.json
 ├── achievements.json
 ├── services.json
+├── news.json
+├── sections.json
+├── glossary.json
+├── annotations.json
+├── ui.json
 └── contact.json
 src/
 ├── __tests__/                         # Navigation, real form/filter, accessibility, utility, and data tests
@@ -134,11 +141,13 @@ src/
 │       ├── TechTag.tsx                # Reusable skill/tech tag
 │       └── ...
 ├── constants/
+│   ├── annotations.ts                 # "How it's built" pin ids and selectors
 │   ├── sections.ts                    # Section IDs, labels, order, and surfaces
 │   └── theme.ts                       # Centralized colors, fonts, spacing
 ├── data/                              # Domain-specific typed JSON accessors
 │   ├── personal.ts
 │   ├── projects.ts
+│   ├── sections.ts                    # getSectionCopy: section headings
 │   └── ...
 ├── hooks/                             # Breakpoint, focus, section-navigation, and motion providers
 ├── pages/                             # 10 page sections (each split into sub-files)
@@ -152,6 +161,7 @@ src/
 │   ├── services/
 │   │   └── animations/                # 6 service card animations on an 80x80 canvas
 │   ├── stats/                         # Stats.tsx, impact figures, and coding profiles
+│   ├── news/                          # News.tsx: the dated commit-log feed
 │   └── contact/
 ├── types/
 │   └── index.ts                       # Data contracts
@@ -171,22 +181,27 @@ src/
 
 All portfolio content lives in JSON files under `data/` at the project root:
 
-| File                | Content                                                                                        |
-| ------------------- | ---------------------------------------------------------------------------------------------- |
-| `personal.json`     | Name, intro, bio, impact, languages, social profiles, site copy                                |
-| `education.json`    | Degrees, institutions, CGPA                                                                    |
-| `experience.json`   | Professional experience + positions of responsibility                                          |
-| `skills.json`       | Categorized skills (8 primary incl. AWS + 3 secondary)                                         |
-| `services.json`     | Service offerings                                                                              |
-| `projects.json`     | Featured, collaborative, community, other projects, open source PRs, and community discussions |
-| `achievements.json` | Certifications, badges, competitions, coding stats (auto-synced)                               |
-| `contact.json`      | Contact options + EmailJS config                                                               |
+| File                | Content                                                                                                      |
+| ------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `personal.json`     | Name, intro, bio, impact, Stats band headings and tile copy (`stats`), languages, social profiles, site copy |
+| `education.json`    | Degrees, institutions, CGPA                                                                                  |
+| `experience.json`   | Professional experience + positions of responsibility                                                        |
+| `skills.json`       | Categorized skills (8 primary incl. AWS + 3 secondary) and each category's display label (`categories`)      |
+| `services.json`     | Service offerings, each with a stable `key` that selects its animation and icon                              |
+| `projects.json`     | Featured, collaborative, community, other projects, open source PRs, and community discussions               |
+| `achievements.json` | Certifications, badges, competitions, coding stats (auto-synced)                                             |
+| `news.json`         | Dated milestones for the News feed (the live-data sync adds merged PRs and accepted answers)                 |
+| `sections.json`     | Each section's nav label, title, subtitle, More-menu blurb and in-section copy, keyed by section id          |
+| `ui.json`           | Site chrome copy: nav, hero buttons, footer, palette, CV viewer, notes, error and loading states             |
+| `glossary.json`     | Jargon tooltip terms, the phrases they match, and their definitions                                          |
+| `annotations.json`  | "How it's built" pin titles and bodies, keyed by the pin ids in `src/constants/annotations.ts`               |
+| `contact.json`      | Contact options + EmailJS config                                                                             |
 
-Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. Existing text and metadata can usually be updated in JSON alone. Adding or removing a project also requires a matching cover registration; follow the [project editing recipe](CONTRIBUTING.md#add-or-remove-a-project).
+Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. It also requires a heading in `sections.json` for every section registered in `src/constants/sections.ts`, in page order and with at most one `*accent*` word; only known `{name}` placeholders in the Stats tile notes; a label for every skill category; a unique service `key` registered in `ServiceAnimation.tsx`; one glossary term per matched phrase; and an `annotations.json` entry for every pin id. Existing text and metadata can usually be updated in JSON alone. Adding or removing a project also requires a matching cover registration; follow the [project editing recipe](CONTRIBUTING.md#add-or-remove-a-project).
 
-Each project sets a `status` (`active`, `beta` or `complete`) by hand. For active and beta projects, `scripts/sync-live-data.js` keeps `version` current every week: it takes the higher of the latest release tag and the root manifest version.
+Each project sets a `status` (`active`, `beta` or `complete`) by hand. For active and beta projects, `scripts/sync-live-data.js` keeps `version` current every week: it takes the higher of the latest release tag and the root manifest version, and writes it only when it is higher than the stored one. A project whose live link is an npm package page shows the registry's latest published version instead, since that is what the link installs.
 
-Certifications are automatically synced from Credly via a weekly GitHub Actions workflow (`sync-credly.yml`) and validated before the bot can commit them.
+Certifications are synced from Credly by a weekly GitHub Actions workflow (`sync-credly.yml`). Like the live-data sync, it validates the data, then opens or updates a pull request for review instead of pushing to `main`. It never writes an empty badge list, and writes a shorter one only when a manual run sets `allow_fewer`.
 
 ---
 
@@ -213,12 +228,14 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 3. Lint application code and Node scripts with zero warnings
 4. Run strict TypeScript checking
 5. Validate JSON schemas and cross-file invariants
-6. Run all 39 focused tests
-7. Fail on high-severity dependency advisories
+6. Run all 47 focused tests
+7. Fail on high-severity advisories in any dependency
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts
 
-Pull requests run every code/data gate and a production build without depending on the external resume release.
+Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. Every six hours a scheduled run compares the CV version the live site serves with the latest `latex-resume` release and rebuilds only when they differ; a `resume-released` repository dispatch deploys at once.
+
+The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each opens or updates its own pull request, then dispatches this workflow on that branch so the PR gets its `ci` check; a run on any branch other than `main` never deploys.
 
 ---
 

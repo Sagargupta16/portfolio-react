@@ -36,7 +36,7 @@ const ORBIT_SKILLS = [
    "Claude Code",
 ] as const;
 
-export interface OrbitItem {
+interface OrbitItem {
    name: string;
    Icon: SkillIcon["Icon"];
    /** Degrees clockwise from 12 o'clock. */

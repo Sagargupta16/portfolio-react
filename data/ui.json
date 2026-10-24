@@ -1,0 +1,195 @@
+{
+   "new_tab": "{label} (opens in a new tab)",
+   "profile_label": "Visit {name} profile",
+   "skip_link": "Skip to content",
+   "error": {
+      "title": "Something went wrong",
+      "body": "Sorry for the inconvenience. Try refreshing the page to continue.",
+      "refresh": "Refresh Page",
+      "refresh_label": "Refresh the page"
+   },
+   "section": {
+      "loading": "Loading {label}",
+      "unavailable": "{label} is temporarily unavailable",
+      "unavailable_body": "Refresh the page to try loading this section again.",
+      "refresh": "Refresh page"
+   },
+   "nav": {
+      "label": "Primary",
+      "home": "Home",
+      "top_label": "Scroll to top",
+      "navigate_label": "Navigate to {label}",
+      "notes": "How it's built",
+      "notes_label": "How this site is built",
+      "palette_label": "Open command palette",
+      "palette_key": "Ctrl K",
+      "contact": "Contact Me",
+      "more": "More",
+      "menu_open": "Open menu",
+      "menu_close": "Close menu",
+      "menu_label": "Navigation menu",
+      "menu_dismiss": "Close navigation menu"
+   },
+   "hero": {
+      "projects_cta": "See projects",
+      "cv_cta": "Read CV",
+      "pdf_cta": "Download PDF",
+      "latest": "Latest",
+      "latest_pr": "{repo} #{number} merged",
+      "latest_project": "{title} shipped",
+      "scroll": "Scroll",
+      "scroll_label": "Scroll to About section"
+   },
+   "footer": {
+      "copyright": "© {year} {name}. All rights reserved.",
+      "site": "Site",
+      "site_label": "Footer site links",
+      "social": "Social",
+      "social_label": "Footer social links",
+      "download_cv": "Download CV",
+      "easter_egg": "You found the secret! Thanks for exploring.",
+      "end_line": "You've reached the bottom. Everything from here is an *email*.",
+      "hold_copy": "Hold to copy {email}",
+      "copied": "Copied. Talk soon.",
+      "copy_failed": "Copy failed. Hold to try again.",
+      "slide": "slide to email me",
+      "slide_label": "Slide to email me",
+      "slide_sent": "Opening mail",
+      "vitals": "Your visit, measured on you",
+      "vitals_label": "Your visit, measured live",
+      "vitals_pending": "...",
+      "vitals_pending_inp": "tap anything",
+      "visitor_gap": "{time} your time · {gap} of you",
+      "gap_hours": "{count}h",
+      "gap_minutes": "{count}m",
+      "gap_ahead": "{span} ahead",
+      "gap_behind": "{span} behind",
+      "built_with": "Built with",
+      "build": "Build",
+      "machine_link_label": "{file}, {label}",
+      "machine_links": {
+         "index.md": "This page as Markdown",
+         "llms.txt": "llms.txt, the index for AI agents",
+         "rss.xml": "RSS feed of the news timeline"
+      }
+   },
+   "motion": {
+      "modes": { "full": "Full", "reduced": "Reduced" },
+      "button": "{mode} motion",
+      "label": "Motion mode: {mode}. Switch to {next}",
+      "title": "Motion: {mode} (click for {next})"
+   },
+   "back_to_top": "Back to top",
+   "toast_dismiss": "Dismiss",
+   "case_study": {
+      "problem": "Problem",
+      "built": "What I built",
+      "decisions": "Key decisions",
+      "outcome": "Outcome",
+      "inspect": "Inspect"
+   },
+   "notes": {
+      "pin_label": "Note {index}: {title}",
+      "close": "Close note",
+      "previous": "Previous note",
+      "next": "Next note",
+      "count_one": "{count} build note",
+      "count_many": "{count} build notes",
+      "start": "Start",
+      "turn_off": "Turn off"
+   },
+   "palette": {
+      "label": "Command palette",
+      "prompt": "~/sagar $",
+      "placeholder": "type a command or search",
+      "close_key": "esc",
+      "empty": "command not found. try \"cd\" or \"open\"",
+      "groups": {
+         "go": "Go to",
+         "actions": "Actions",
+         "under_the_hood": "Under the hood",
+         "projects": "Projects",
+         "elsewhere": "Elsewhere"
+      },
+      "rows": {
+         "home": {
+            "keywords": "cd home top hero",
+            "command": "cd ~",
+            "hint": "Top of the page"
+         },
+         "section": { "keywords": "cd {id} {label}", "command": "cd {id}" },
+         "email": {
+            "keywords": "copy email {email}",
+            "command": "pbcopy email",
+            "copied": "copied",
+            "failed": "copy failed"
+         },
+         "cv": {
+            "keywords": "open cv resume download pdf",
+            "command": "open cv.pdf",
+            "hint": "Download the CV"
+         },
+         "booking": {
+            "keywords": "book a call schedule meeting cal",
+            "command": "cal book",
+            "hint": "Book a call"
+         },
+         "motion": {
+            "keywords": "motion animation toggle reduced full",
+            "command": "motion --{mode}",
+            "hint_full": "Turn animations back on",
+            "hint_reduced": "Calm the animations"
+         },
+         "notes": {
+            "keywords": "notes annotations how it is built behind the scenes",
+            "command": "notes --{state}",
+            "hint_show": "Pin how-it's-built notes on the page",
+            "hint_hide": "Hide the build notes"
+         },
+         "llms": {
+            "keywords": "cat llms txt ai agents machine readable",
+            "command": "cat llms.txt",
+            "hint": "The index for AI agents"
+         },
+         "markdown": {
+            "keywords": "open markdown md plain text version",
+            "command": "open index.md",
+            "hint": "This whole page as Markdown"
+         },
+         "rss": {
+            "keywords": "rss feed news subscribe xml",
+            "command": "curl rss.xml",
+            "hint": "News as an RSS feed"
+         },
+         "vcard": {
+            "keywords": "save contact card vcard vcf phone",
+            "command": "save contact.vcf",
+            "hint": "Add me to your contacts"
+         },
+         "project": {
+            "keywords": "git clone {title}",
+            "command": "git clone {slug}"
+         },
+         "profile": { "keywords": "open {name}", "command": "open {slug}" }
+      }
+   },
+   "cv": {
+      "title": "Curriculum Vitae",
+      "close": "Close CV viewer",
+      "unavailable": "The inline viewer could not load the CV.",
+      "download_instead": "Download CV instead",
+      "view_label": "CV view",
+      "view_web": "Web",
+      "view_pages": "PDF",
+      "pages_one": "{count} page",
+      "pages_many": "{count} pages",
+      "loading": "Loading...",
+      "zoom_out": "Zoom out",
+      "zoom_in": "Zoom in",
+      "open_pdf": "Open the PDF in a new tab",
+      "download": "Download PDF",
+      "download_short": "PDF",
+      "page_alt": "CV page {page} of {pages}",
+      "sheet_label": "{name} CV"
+   }
+}

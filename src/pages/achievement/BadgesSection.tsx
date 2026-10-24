@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
 import { BookOpen } from "lucide-react";
 import type { LearningBadge } from "@/types";
+import { getSectionCopy } from "@data/sections";
 import { fadeInUp, VIEWPORT_MARGIN } from "@utils/animations";
-import { PURPLE } from "@/constants/theme";
+import { SKY } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
 import BadgeRail from "./BadgeRail";
@@ -45,8 +46,8 @@ const BadgesSection = ({ badges }: BadgesSectionProps) => {
             viewport={{ once: true, margin: VIEWPORT_MARGIN }}
             variants={fadeInUp}
          >
-            <BookOpen size={22} style={{ color: PURPLE }} aria-hidden="true" />
-            <h3>Learning & Training</h3>
+            <BookOpen size={22} style={{ color: SKY }} aria-hidden="true" />
+            <h3>{getSectionCopy("achievements").subsections.badges}</h3>
             <span className="subsection-count">{badges.length}</span>
          </motion.div>
 

@@ -1,8 +1,11 @@
 import { Pin, Users, Star } from "lucide-react";
 import { AMBER } from "@/constants/theme";
 import { getEvidence, STATUS_LABEL } from "@utils/projectEvidence";
+import { getSectionCopy } from "@data/sections";
 import type { Project } from "@/types";
-import type { ProjectWithCategory } from "./projectConstants";
+import { filterLabel, type ProjectWithCategory } from "./projectConstants";
+
+const COPY = getSectionCopy("projects").card;
 
 interface ProjectCardHeaderProps {
    data: ProjectWithCategory;
@@ -28,8 +31,10 @@ export const EvidenceBadges = ({ project, className }: EvidenceBadgesProps) => {
 
    return (
       <ul
-         className={`evidence-badges${className ? ` ${className}` : ""}`}
-         aria-label="Project status and evidence"
+         className={
+            className ? `evidence-badges ${className}` : "evidence-badges"
+         }
+         aria-label={COPY.evidence_label}
       >
          <li
             className={`evidence-badge evidence-badge--status-${project.status}`}
@@ -70,7 +75,7 @@ const ProjectCardHeader = ({
             ) : (
                isFeatured && <Star size={12} aria-hidden="true" />
             )}
-            {spotlight ? "Spotlight" : data.category}
+            {spotlight ? COPY.spotlight : filterLabel(data.category)}
          </span>
          <span>{data.date}</span>
       </div>
@@ -92,8 +97,8 @@ const ProjectCardHeader = ({
                gap: 4,
                padding: "4px 8px",
                borderRadius: 6,
-               background: "rgba(245,158,11,0.08)",
-               border: "1px solid rgba(245,158,11,0.15)",
+               background: "rgb(var(--ch-amber) / 0.08)",
+               border: "1px solid rgb(var(--ch-amber) / 0.15)",
                fontSize: 11,
                fontWeight: 600,
                color: AMBER,

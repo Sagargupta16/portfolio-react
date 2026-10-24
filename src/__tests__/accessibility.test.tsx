@@ -9,6 +9,7 @@ import ExpandableExtras from "@pages/education/ExpandableExtras";
 import ProjectCard from "@pages/projects/ProjectCard";
 import TimelineCardContent from "@pages/experience/TimelineCardContent";
 import type { Education, ProfessionalExperience, Project } from "@/types";
+import { BLUE_LIGHT } from "@/constants/theme";
 
 // MotionPreferenceControl reads useBreakpoint, which throws outside its
 // provider, so the harness supplies both application-root providers.
@@ -110,7 +111,7 @@ describe("accessible interactions", () => {
       const { container } = render(
          <TimelineCardContent
             item={experience}
-            accentColor="#60a5fa"
+            accentColor={BLUE_LIGHT}
             isMobile={false}
             onClick={onClick}
          />,

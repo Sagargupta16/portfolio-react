@@ -1,6 +1,6 @@
 # Contributing
 
-This is a React and TypeScript portfolio with JSON content, reusable UI components, and nine page sections. Start with the file map below, then follow the recipe for the change you want to make.
+This is a React and TypeScript portfolio with JSON content, reusable UI components, and ten page sections. Start with the file map below, then follow the recipe for the change you want to make.
 
 ## Run locally
 
@@ -20,6 +20,12 @@ Environment variables are optional. To disable analytics locally, copy [.env.exa
 | Change                                                   | Start here                                                                                                                       |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | Name, introduction, bio, social links, or impact figures | [data/personal.json](data/personal.json)                                                                                         |
+| Stats band headings, tile labels, or tile notes          | `stats` in [data/personal.json](data/personal.json)                                                                              |
+| Section titles, subtitles, or More-menu blurbs           | [data/sections.json](data/sections.json)                                                                                         |
+| Nav, hero button, footer, palette or CV viewer wording   | [data/ui.json](data/ui.json)                                                                                                     |
+| Jargon tooltip terms and definitions                     | [data/glossary.json](data/glossary.json)                                                                                         |
+| "How it's built" pin copy                                | [data/annotations.json](data/annotations.json) (pin ids and selectors: [annotations.ts](src/constants/annotations.ts))           |
+| News feed items                                          | [data/news.json](data/news.json)                                                                                                 |
 | Projects and open source contributions                   | [data/projects.json](data/projects.json)                                                                                         |
 | Work history or education                                | [data/experience.json](data/experience.json), [data/education.json](data/education.json)                                         |
 | Skills, credentials, or services                         | [data/skills.json](data/skills.json), [data/achievements.json](data/achievements.json), [data/services.json](data/services.json) |
@@ -47,6 +53,7 @@ The page entry points match these sections:
 | Awards     | [Achievement.tsx](src/pages/achievement/Achievement.tsx) |
 | Services   | [Services.tsx](src/pages/services/Services.tsx)          |
 | Stats      | [Stats.tsx](src/pages/stats/Stats.tsx)                   |
+| News       | [News.tsx](src/pages/news/News.tsx)                      |
 | Contact    | [Contact.tsx](src/pages/contact/Contact.tsx)             |
 
 ## How the code fits together
@@ -87,7 +94,7 @@ The validator reports `missing project id` for a JSON record without a cover and
 
 ### Choose the spotlight project
 
-Set the top-level `spotlight_project_id` in [data/projects.json](data/projects.json) to the numeric ID of a record in `featured_projects`. For example, `"spotlight_project_id": 50` selects Kinfolk, and `15` selects Ledger Sync.
+Set the top-level `spotlight_project_id` in [data/projects.json](data/projects.json) to the numeric ID of a record in `featured_projects`. For example, `"spotlight_project_id": 49` selects SageMaker Image Classification MLOps (the current spotlight), and `15` selects Ledger Sync.
 
 The selected project appears first with a Spotlight label and a wide desktop card. The remaining featured projects stay sorted by date. Search results and other categories use the regular date-sorted grid.
 
@@ -95,7 +102,7 @@ Set the value to `null` or remove the setting to disable the spotlight. If you r
 
 ### Add a skill or change its icon
 
-Add the skill name to its category in [data/skills.json](data/skills.json). To give it an icon, add the exact name to `SKILL_ICONS` in [src/utils/skillIcons.ts](src/utils/skillIcons.ts). A skill without a registered icon still renders as text. AWS services go in the `aws` category by their short name ("EC2", "Config") and take the AWS glyph automatically. Each primary category renders as a moving rail; give a long category a second rail with `rails: 2` in `CATEGORY_CONFIG` ([src/pages/skill/Skill.tsx](src/pages/skill/Skill.tsx)).
+Add the skill name to its category in [data/skills.json](data/skills.json). To give it an icon, add the exact name to `SKILL_ICONS` in [src/utils/skillIcons.ts](src/utils/skillIcons.ts). A skill without a registered icon still renders as text. AWS services go in the `aws` category by their short name ("EC2", "Config") and take the AWS glyph automatically. Each primary category renders as a moving rail; give a long category a second rail with `rails: 2` in `CATEGORY_CONFIG` ([src/pages/skill/Skill.tsx](src/pages/skill/Skill.tsx)). A category's heading is its `label` in the `categories` map of the same JSON file; a new category needs one, and `pnpm validate:data` fails without it.
 
 The `hero_stack` list in the same JSON file controls the floating hero artwork. Each listed name must also appear in a primary skill category; validation checks that the list contains 10 to 14 unique entries.
 
@@ -113,9 +120,14 @@ For a new section:
 
 1. Create its component under `src/pages/` and use `PageSection` for its heading and content layout.
 2. Add its ID, navigation label, and surface to `CONTENT_SECTIONS` in [sections.ts](src/constants/sections.ts).
-3. Add its lazy import and component mapping in [App.tsx](src/App.tsx). Keep the same ID in the component's `PageSection` props.
-4. Let `DeferredSection` own the HTML anchor. Do not add a second element with that ID.
-5. Update the application-shell tests and verify navigation to the new section, including a direct `#section-id` reload.
+3. Add its `title` and `subtitle` (and an optional More-menu `blurb`) to [data/sections.json](data/sections.json) under the same ID, in page order. A title may mark one word as `*accent*`; `pnpm validate:data` fails on a missing ID, a wrong order, or a second accent.
+4. Add its lazy import and component mapping in [App.tsx](src/App.tsx). Keep the same ID in the component's `PageSection` props.
+5. Let `DeferredSection` own the HTML anchor. Do not add a second element with that ID.
+6. Update the application-shell tests and verify navigation to the new section, including a direct `#section-id` reload.
+
+### Add a service
+
+Add a record to [data/services.json](data/services.json) with a new stable `key`. The key, not the title, picks the card's art: add it to the `ServiceKey` type in [src/types/index.ts](src/types/index.ts), map it to a canvas in `ANIM_MAP` in [ServiceAnimation.tsx](src/pages/services/ServiceAnimation.tsx), and to a title icon in `SERVICE_ICONS` in [servicesConstants.ts](src/pages/services/servicesConstants.ts). `pnpm validate:data` reads the keys from `ServiceAnimation.tsx` and fails on a missing or unknown one. Service animations live in `src/pages/services/animations/` and draw on an 80 px canvas.
 
 ### Change styles or motion
 
@@ -150,6 +162,6 @@ Before opening a pull request, describe what changed and how you checked it usin
 
 `node_modules/`, `build/`, and `graphify-out/` are generated or local files and are ignored by Git. The resume PDF and its page images under `public/` are generated from the latest `latex-resume` release.
 
-Use `pnpm fetch:resume` when working on the CV viewer locally; it needs network access. Normal application development and pull request builds do not require fetching the resume. See [scripts/prepare-resume.js](scripts/prepare-resume.js) for that pipeline.
+Use `pnpm fetch:resume` when working on the CV viewer locally. It needs network access, and it fails when the latest release tag cannot be resolved (the PDF and the web view must come from the same tag). Normal application development and pull request builds do not require fetching the resume. See [scripts/prepare-resume.js](scripts/prepare-resume.js) for that pipeline.
 
-[CI](.github/workflows/ci-cd.yml) runs the code and data checks for pull requests. Verified builds from `main` fetch the resume and deploy to GitHub Pages. Keep Vite's `/portfolio-react/` base path and `build/` output aligned with that workflow.
+[CI](.github/workflows/ci-cd.yml) runs the code and data checks for pull requests. Verified builds from `main` fetch the resume and deploy to GitHub Pages: on a push, on a manual run, on a `resume-released` repository dispatch, and from a check every six hours that rebuilds only when the live CV is older than the latest `latex-resume` release. The weekly Credly and live-data syncs open pull requests and dispatch CI on their branch; a run on any branch other than `main` never deploys. Keep Vite's `/portfolio-react/` base path and `build/` output aligned with that workflow.

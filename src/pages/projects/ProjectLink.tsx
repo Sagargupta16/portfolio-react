@@ -1,5 +1,6 @@
 import type { ComponentType, CSSProperties } from "react";
-import { CYAN } from "@/constants/theme";
+import { BLUE_LIGHT } from "@/constants/theme";
+import { newTabLabel } from "@data/ui";
 
 interface ProjectLinkProps {
    href: string;
@@ -14,7 +15,7 @@ const ProjectLink = ({
    label,
    ariaLabel,
    icon: Icon,
-   accentColor = CYAN,
+   accentColor = BLUE_LIGHT,
 }: ProjectLinkProps) => (
    <a
       href={href}
@@ -23,7 +24,7 @@ const ProjectLink = ({
       onClick={(e) => e.stopPropagation()}
       className="project-action"
       style={{ "--project-accent": accentColor } as CSSProperties}
-      aria-label={`${ariaLabel} (opens in a new tab)`}
+      aria-label={newTabLabel(ariaLabel)}
    >
       <span aria-hidden="true">
          <Icon size={16} />

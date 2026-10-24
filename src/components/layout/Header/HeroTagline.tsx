@@ -18,6 +18,8 @@ const TAGLINE_WORDS = TAGLINES.map((line) =>
    })),
 );
 const ROTATION_INTERVAL = 3000;
+// Accelerate out: the leaving words pick up speed instead of settling.
+const EXIT_EASE = [0.4, 0, 1, 1] as const;
 
 // Clear the old line before revealing the next; each word settles softly.
 const lineVariants: Variants = {
@@ -37,7 +39,7 @@ const wordVariants: Variants = {
       opacity: 0,
       y: "-55%",
       scale: 0.98,
-      transition: { duration: 0.2, ease: [0.4, 0, 1, 1] },
+      transition: { duration: 0.2, ease: EXIT_EASE },
    },
 };
 

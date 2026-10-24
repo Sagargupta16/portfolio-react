@@ -1,9 +1,12 @@
 import type { Project, ProjectStatus } from "@/types";
+import { getSectionCopy } from "@data/sections";
 import { hasProjectUrl } from "@utils/projectMetadata";
 
-export type EvidenceKind = "aws" | "live" | "source";
+const COPY = getSectionCopy("projects");
 
-export interface Evidence {
+type EvidenceKind = "aws" | "live" | "source";
+
+interface Evidence {
    kind: EvidenceKind;
    label: string;
 }
@@ -22,17 +25,13 @@ export const getEvidence = (
    const isLive = hasProjectUrl(project.live);
    const badges: Evidence[] = [];
 
-   if (isAws) badges.push({ kind: "aws", label: "Published by AWS" });
-   if (isLive) badges.push({ kind: "live", label: "Live" });
+   if (isAws) badges.push({ kind: "aws", label: COPY.evidence.aws });
+   if (isLive) badges.push({ kind: "live", label: COPY.evidence.live });
    if (!isAws && !isLive && hasProjectUrl(project.github)) {
-      badges.push({ kind: "source", label: "Open source" });
+      badges.push({ kind: "source", label: COPY.evidence.source });
    }
 
    return badges.slice(0, MAX_BADGES);
 };
 
-export const STATUS_LABEL: Record<ProjectStatus, string> = {
-   active: "Active",
-   beta: "Beta",
-   complete: "Complete",
-};
+export const STATUS_LABEL: Record<ProjectStatus, string> = COPY.project_status;

@@ -10,6 +10,7 @@ import useMediaQuery from "@hooks/useMediaQuery";
 import useMotionPreference from "@hooks/useMotionPreference";
 import usePointerParallax from "@hooks/usePointerParallax";
 import { MEDIA_QUERIES } from "@/constants/theme";
+import { clamp01 } from "@utils/math";
 import StackTile from "./StackTile";
 import {
    END_FADE,
@@ -35,7 +36,6 @@ const LAYER_STYLE: CSSProperties = {
    pointerEvents: "none",
 };
 
-const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 const smoothstep = (value: number) => {
    const t = clamp01(value);
    return t * t * (3 - 2 * t);

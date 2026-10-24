@@ -2,6 +2,8 @@ import { memo } from "react";
 import { motion } from "motion/react";
 import { EASING, TEXT_PRIMARY } from "@/constants/theme";
 import { NAV_MORE_BLURBS, NAV_PRIMARY_IDS } from "@/constants/sections";
+import { getUiCopy } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
 import NavMoreMenu from "./NavMoreMenu";
 
 interface NavSection {
@@ -15,6 +17,7 @@ interface DesktopNavProps {
    onNavigate: (id: string) => void;
 }
 
+// TEXT_SECONDARY at 90%, as a literal: Motion tweens labels to and from it.
 const TEXT_INACTIVE = "rgba(156, 169, 176, 0.9)";
 const LABEL_HOVER = { color: TEXT_PRIMARY };
 const LABEL_TRANSITION = {
@@ -32,7 +35,7 @@ const PILL_STYLE: React.CSSProperties = {
    position: "absolute",
    inset: 0,
    borderRadius: 8,
-   backgroundColor: "rgba(255, 255, 255, 0.08)",
+   backgroundColor: "rgb(var(--ch-white) / 0.08)",
 };
 const LABEL_STYLE: React.CSSProperties = {
    position: "relative",
@@ -93,7 +96,9 @@ const DesktopNav = ({
                   transition={LABEL_TRANSITION}
                   style={LABEL_STYLE}
                   aria-current={isActive ? "location" : undefined}
-                  aria-label={`Navigate to ${section.label}`}
+                  aria-label={fillTemplate(getUiCopy().nav.navigate_label, {
+                     label: section.label,
+                  })}
                >
                   {isActive && <Pill />}
                   <span style={{ position: "relative" }}>{section.label}</span>

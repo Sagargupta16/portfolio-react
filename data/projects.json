@@ -713,7 +713,7 @@
       {
          "id": 11,
          "title": "Brainstorm Verse",
-         "description": "A modern idea-sharing platform built with Next.js 16 App Router where creativity meets collaboration. Idea feed powered by server actions, personalized user profiles, secure Clerk authentication, and file uploads via UploadThing.",
+         "description": "An idea-sharing platform that started from JS Mastery's Next.js Threads tutorial, reworked around ideas and upgraded to the Next.js 16 App Router. Idea feed powered by server actions, personalized user profiles, secure Clerk authentication, and file uploads via UploadThing.",
          "date": "August 2023",
          "status": "complete",
          "tools_tech": [
@@ -763,7 +763,7 @@
       {
          "id": 12,
          "title": "PacMan Game Unity",
-         "description": "A classic Pac-Man game recreated using Unity Engine with C# scripting for an authentic gaming experience.",
+         "description": "A classic Pac-Man game built in Unity with C# from a Unity 2D tutorial, extended with score tracking and individual ghost speeds.",
          "date": "June 2022",
          "status": "complete",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
@@ -779,7 +779,7 @@
       {
          "id": 16,
          "title": "Minesweeper Game Unity",
-         "description": "A classic Minesweeper game recreated using Unity Engine with C# scripting, featuring grid-based gameplay and mine detection mechanics.",
+         "description": "A classic Minesweeper game built in Unity with C# from a Unity 2D tutorial, extended with a main menu, three difficulty levels, a countdown timer and scoring.",
          "date": "June 2022",
          "status": "complete",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
@@ -795,7 +795,7 @@
       {
          "id": 17,
          "title": "Snake Game Unity",
-         "description": "A classic Snake game built using Unity Engine with C# scripting, featuring timer-stepped grid movement, adjustable speed sliders, and score tracking.",
+         "description": "A classic Snake game built in Unity with C# from a Unity 2D tutorial, extended with a main menu, adjustable snake and food-spawn speed sliders, and score tracking.",
          "date": "June 2022",
          "status": "complete",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
@@ -811,7 +811,7 @@
       {
          "id": 18,
          "title": "Flappy Bird Game Unity",
-         "description": "A Flappy Bird clone built using Unity Engine with C# scripting, featuring physics-based gameplay and pipes that oscillate up and down at different speeds.",
+         "description": "A Flappy Bird clone built in Unity with C# from a Unity 2D tutorial, extended with pipes that oscillate up and down at different speeds and a win line.",
          "date": "June 2022",
          "status": "complete",
          "tools_tech": ["Unity", "C#", "Game Development", "Unity2D"],
@@ -1003,7 +1003,7 @@
          "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, a 19-field client-extension registry across 3 runtimes (Claude Code, Copilot, Cursor), structure and reference validation, SARIF output, and a drop-in GitHub Action listed on the GitHub Marketplace.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.2.7",
+         "version": "0.2.5",
          "tools_tech": [
             "TypeScript",
             "Node.js",
@@ -1026,7 +1026,7 @@
          "description": "Local-first MCP server that walks you through filing an Indian income tax return, published on npm. 12 tools spanning form selection, deterministic computation, old-vs-new regime comparison, advance tax planning, and document parsing - all on your machine. The LLM never does arithmetic; every number comes from a versioned, auditable rule pack. Works with Claude Desktop, Claude Code, and any MCP client.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.5.2",
+         "version": "0.3.0",
          "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "npm"],
          "features": [
             "recommend_itr_form picks ITR-1/2/3/4 with rule-by-rule reasoning, including brought-forward losses that force ITR-3",

@@ -1,8 +1,8 @@
 import { lazy, Suspense, type ReactNode } from "react";
 import { ReactLenis } from "lenis/react";
+import "@utils/chunkReload";
 import Nav from "@components/layout/Navigation/Nav";
 import Hero from "@components/layout/Header/Hero";
-import Footer from "@components/layout/Footer/Footer";
 import AmbientBackground from "@components/layout/AmbientBackground";
 import IntroSplash from "@components/layout/IntroSplash";
 import DeferredSection from "@components/layout/DeferredSection";
@@ -17,6 +17,7 @@ import { MotionPreferenceProvider } from "@hooks/MotionPreferenceProvider";
 import { SectionNavigationProvider } from "@hooks/SectionNavigationProvider";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { CONTENT_SECTIONS } from "@/constants/sections";
+import { getUiCopy } from "@data/ui";
 
 const LENIS_OPTIONS = {
    lerp: 0.1,
@@ -41,6 +42,14 @@ const StackFieldBackdrop = lazy(
    and renders its full "Something went wrong" panel. A failed field chunk
    should leave the flanks empty, not replace the page. */
 const OMIT_BACKDROP = <></>;
+
+// Below every section, so it stays out of the entry bundle too. The fallback
+// holds roughly the footer's height, so a deep link to the last section lands
+// at the same scroll position before and after the chunk arrives.
+const Footer = lazy(() => import("@components/layout/Footer/Footer"));
+const FOOTER_PLACEHOLDER = (
+   <div aria-hidden="true" className="footer-fade" style={{ minHeight: 480 }} />
+);
 
 // DeferredSection renders these only near the viewport or on navigation.
 const About = lazy(() => import("@pages/about/About"));
@@ -96,7 +105,7 @@ const AppContent = () => {
                </ErrorBoundary>
                <div className="relative min-h-dvh">
                   <a href="#main-content" className="skip-link">
-                     Skip to content
+                     {getUiCopy().skip_link}
                   </a>
                   <Nav />
                   <main id="main-content" tabIndex={-1}>
@@ -117,7 +126,9 @@ const AppContent = () => {
                   </main>
                   {/* A footer failure must never reach the root boundary and blank the page. */}
                   <ErrorBoundary fallback={<></>}>
-                     <Footer />
+                     <Suspense fallback={FOOTER_PLACEHOLDER}>
+                        <Footer />
+                     </Suspense>
                   </ErrorBoundary>
                   <BackToTop />
                   <MotionPreferenceControl />

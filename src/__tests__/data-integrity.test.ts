@@ -36,7 +36,7 @@ describe("portfolio data invariants", () => {
          allProjects.length,
       );
       for (const project of allProjects) {
-         expect(getProjectCover(project.id, project.title)).toBeDefined();
+         expect(getProjectCover(project.id)).toBeDefined();
       }
    });
 

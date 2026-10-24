@@ -8,9 +8,7 @@ import type { Easing, Transition } from "motion/react";
 export const CYCLE = 6;
 export const VIEW_W = 1600;
 export const VIEW_H = 1000;
-export const GREEN = "#22c55e";
-export const NON_SCALING = "non-scaling-stroke";
-export const CARD_FILL = "#10181c";
+const NON_SCALING = "non-scaling-stroke";
 export const WHITE_14 = "rgba(255,255,255,0.14)";
 export const WHITE_22 = "rgba(255,255,255,0.22)";
 export const WHITE_55 = "rgba(255,255,255,0.55)";
@@ -90,8 +88,8 @@ export const SHIFT_A = FUSE_X - SHARED_A[0] + SHEET;
 export const SHIFT_B = FUSE_X - SHARED_B[0];
 
 /* The person_link between the two records, a low arc over row II. */
-export const LINK_A: Point = [SHARED_A[0] + HALF_W, ROWS[1]];
-export const LINK_B: Point = [SHARED_B[0] - HALF_W, ROWS[1]];
+const LINK_A: Point = [SHARED_A[0] + HALF_W, ROWS[1]];
+const LINK_B: Point = [SHARED_B[0] - HALF_W, ROWS[1]];
 const ARC_Y = 410;
 const CTRL_A = 757;
 const CTRL_B = 843;
@@ -117,6 +115,6 @@ export const CONSENT_AT = 1.3;
 export const FUSE_FROM = 2.2;
 export const FUSE_TO = 3.1;
 export const UNLINK_FROM = 4.7;
-export const UNLINK_TO = 5.6;
+const UNLINK_TO = 5.6;
 
 export const FUSE = loop(0, FUSE_FROM, FUSE_TO, UNLINK_FROM, UNLINK_TO, CYCLE);

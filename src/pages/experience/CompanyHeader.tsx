@@ -1,5 +1,5 @@
 import { Building2 } from "lucide-react";
-import { TEXT_PRIMARY, TEXT_SECONDARY, PURPLE } from "@/constants/theme";
+import { TEXT_PRIMARY, TEXT_SECONDARY, SKY } from "@/constants/theme";
 import { getOrgLogo } from "@utils/orgLogos";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 
@@ -60,7 +60,7 @@ const CompanyHeader = ({
       {/* Title + Position */}
       <p
          style={{
-            color: PURPLE,
+            color: SKY,
             fontWeight: 600,
             fontSize: isMobile ? 14 : 15,
             marginTop: 4,

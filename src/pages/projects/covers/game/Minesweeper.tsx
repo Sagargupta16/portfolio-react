@@ -1,8 +1,9 @@
 import { useId, type CSSProperties } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { AMBER, MONO_FONT } from "@/constants/theme";
+import { INK } from "../kit/sceneTokens";
 import {
-   INK,
    MEET,
    NON_SCALING,
    NONE,
@@ -252,20 +253,29 @@ const Covers = ({ cells, openAt }: { cells: Cell[]; openAt: number }) => (
    </motion.g>
 );
 
-const Link = ({ tint }: { tint: string }) => (
-   <motion.path
-      d={LINK_D}
-      fill={NONE}
-      stroke={`${tint}99`}
-      strokeWidth={0.5}
-      initial={{ pathLength: 0, opacity: 1 }}
-      animate={{ pathLength: LINK_LENGTH, opacity: LINK_OPACITY }}
-      transition={{
-         pathLength: loop(CYCLE, LINK_LENGTH_TIMES),
-         opacity: loop(CYCLE, LINK_FADE_TIMES),
-      }}
-   />
-);
+/* Its pathLength runs on Motion's JS frameloop, which the Reduced freeze
+   cannot pause, so Reduced shows the link fully drawn and still. */
+const Link = ({ tint }: Readonly<{ tint: string }>) => {
+   const { reducedMotion } = useMotionPreference();
+   const base = {
+      d: LINK_D,
+      fill: NONE,
+      stroke: `${tint}99`,
+      strokeWidth: 0.5,
+   };
+   if (reducedMotion) return <path {...base} />;
+   return (
+      <motion.path
+         {...base}
+         initial={{ pathLength: 0, opacity: 1 }}
+         animate={{ pathLength: LINK_LENGTH, opacity: LINK_OPACITY }}
+         transition={{
+            pathLength: loop(CYCLE, LINK_LENGTH_TIMES),
+            opacity: loop(CYCLE, LINK_FADE_TIMES),
+         }}
+      />
+   );
+};
 
 const Cursor = () => (
    <motion.g
@@ -339,7 +349,12 @@ const GameOverPanel = ({ tint }: { tint: string }) => (
 const Minesweeper = ({ tint }: { tint: string }) => (
    <>
       <div style={washStyle(tint, "32% 46%")} />
-      <svg viewBox={VIEW_BOX} preserveAspectRatio={MEET} style={svgStyle}>
+      <svg
+         aria-hidden="true"
+         viewBox={VIEW_BOX}
+         preserveAspectRatio={MEET}
+         style={svgStyle}
+      >
          <Backdrop />
          <Frame />
          <Revealed tint={tint} />

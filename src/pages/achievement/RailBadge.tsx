@@ -9,7 +9,12 @@ import {
    TEXT_PRIMARY,
 } from "@/constants/theme";
 import { credlyThumb } from "@utils/credlyThumb";
+import { fillTemplate } from "@utils/fillTemplate";
+import { getSectionCopy } from "@data/sections";
+import { newTabLabel } from "@data/ui";
 import useMotionPreference from "@hooks/useMotionPreference";
+
+const CREDENTIAL = getSectionCopy("achievements").certifications.credential;
 
 interface RailBadgeProps {
    badge: LearningBadge;
@@ -46,7 +51,9 @@ const RailBadge = ({ badge, size, decorative = false }: RailBadgeProps) => {
          href={badge.badgeUrl}
          target="_blank"
          rel="noopener noreferrer"
-         aria-label={`${badge.name} credential (opens in a new tab)`}
+         aria-label={newTabLabel(
+            fillTemplate(CREDENTIAL, { name: badge.name }),
+         )}
          tabIndex={decorative ? -1 : undefined}
          whileHover={hover}
          whileFocus={hover}

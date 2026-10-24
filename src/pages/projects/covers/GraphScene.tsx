@@ -1,10 +1,10 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
-import { MONO_FONT } from "@/constants/theme";
+import { GREEN, MONO_FONT } from "@/constants/theme";
+import { BASE_GRADIENT } from "./kit/sceneTokens";
 import {
    CONSENT_AT,
    CYCLE,
-   GREEN,
    SHARED_A,
    SHARED_B,
    SHEET,
@@ -61,10 +61,11 @@ const GraphScene = ({ tint }: CoverSceneProps) => (
          position: "absolute",
          inset: 0,
          overflow: "hidden",
-         background: `radial-gradient(circle at 50% 38%, ${tint}1f 0%, transparent 60%), linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)`,
+         background: `radial-gradient(circle at 50% 38%, ${tint}1f 0%, transparent 60%), ${BASE_GRADIENT}`,
       }}
    >
       <svg
+         aria-hidden="true"
          viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
          preserveAspectRatio="none"
          style={{

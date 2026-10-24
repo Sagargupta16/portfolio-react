@@ -21,7 +21,7 @@ const NODE_OFFSET = 4;
 const NODE_CENTRE = NODE_OFFSET + NODE_SIZE / 2;
 const RAIL_LEFT =
    TIMELINE_DATE_COLUMN + TIMELINE_TRACK_COLUMN / 2 - RAIL_WIDTH / 2;
-const RAIL_BASE = "rgb(255 255 255 / 0.06)";
+const RAIL_BASE = "rgb(var(--ch-white) / 0.06)";
 // 0.45 alpha as a hex suffix for the accent fill.
 const FILL_ALPHA = "73";
 

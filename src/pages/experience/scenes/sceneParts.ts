@@ -23,9 +23,6 @@ import type { Box, Loop, Pt } from "@pages/projects/covers/kit/sceneTokens";
 export const END = 0.92;
 export const GONE = 0.95;
 
-/* The base every scene paints first; a slot shows it until its scene mounts. */
-export const BASE_GRADIENT = "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)";
-
 /*
  * loopProps plus an `initial` at each track's first keyframe. In Reduced mode
  * Motion skips transform loops, so without it a bar would rest at its CSS

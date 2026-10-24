@@ -1,0 +1,31 @@
+/* gloss tooltips: imported by Gloss.tsx, so it ships in the lazy chunks that
+   render GlossText. */
+/* Jargon trigger: reads as body text with a dotted underline, inherits the
+   surrounding type, and brightens the underline while its card is open. */
+.gloss-term {
+   appearance: none;
+   margin: 0;
+   padding: 0;
+   border: 0;
+   border-radius: 2px;
+   background: none;
+   color: inherit;
+   font: inherit;
+   letter-spacing: inherit;
+   text-align: inherit;
+   cursor: help;
+   text-decoration-line: underline;
+   text-decoration-style: dotted;
+   text-decoration-color: rgb(var(--ch-white) / 0.35);
+   text-decoration-thickness: 1px;
+   text-underline-offset: 3px;
+   transition:
+      text-decoration-color 0.16s ease-out,
+      color 0.16s ease-out;
+}
+
+.gloss-term:hover,
+.gloss-term[aria-expanded="true"] {
+   color: var(--color-accent-cyan);
+   text-decoration-color: currentColor;
+}

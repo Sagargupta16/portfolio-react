@@ -1,12 +1,16 @@
 import type { ReactNode } from "react";
 import { Globe, Mail, Star } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
+import { getUiCopy } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
 import type { CvBlock, CvInline, CvJson } from "./cvTypes";
+import "./cv-viewer.css";
 
 /* The CV as a web page: same sections, order and wording as the released PDF
    (parsed from its .tex at build time), set as a white sheet in the PDF's
    typeface family so it reads like the document, but with real text that
-   reflows on a phone, selects, and links. Styles live in .cv-sheet. */
+   reflows on a phone, selects, and links. Styles live in .cv-sheet
+   (cv-viewer.css). */
 
 const ICONS: Record<string, ReactNode> = {
    faGithub: <FaGithub aria-hidden="true" />,
@@ -152,7 +156,12 @@ const blockKey = (block: CvBlock) => {
 };
 
 const CvWeb = ({ cv }: { cv: CvJson }) => (
-   <article className="cv-sheet" aria-label={`${cv.header.name} CV`}>
+   <article
+      className="cv-sheet"
+      aria-label={fillTemplate(getUiCopy().cv.sheet_label, {
+         name: cv.header.name,
+      })}
+   >
       <header className="cv-head">
          <h3 className="cv-name">{cv.header.name}</h3>
          <p className="cv-tagline">{cv.header.tagline.join("  |  ")}</p>

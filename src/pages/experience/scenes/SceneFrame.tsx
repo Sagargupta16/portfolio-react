@@ -1,9 +1,9 @@
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
-import useMotionPreference from "@hooks/useMotionPreference";
+import { GREEN } from "@/constants/theme";
 import { Trace } from "@pages/projects/covers/kit/primitives";
 import {
-   GREEN,
+   BASE_GRADIENT,
    INK,
    NON_SCALING,
    STAGE_H,
@@ -13,7 +13,7 @@ import {
    layer,
 } from "@pages/projects/covers/kit/sceneTokens";
 import type { Box, Loop, Pt } from "@pages/projects/covers/kit/sceneTokens";
-import { BASE_GRADIENT, boxAt, play } from "./sceneParts";
+import { boxAt, play } from "./sceneParts";
 
 /*
  * Shell for the engagement scenes. The covers kit draws on a 320 x 200 stage
@@ -77,16 +77,13 @@ export const Frame = ({
 };
 
 /*
- * A kit Trace that sits out Reduced mode. Its pathLength runs on Motion's JS
- * frameloop, which the freeze cannot pause, and its rest frame is hidden
- * anyway, so leaving it out keeps the Reduced frame identical and truly
- * still.
+ * A kit Trace. Its pathLength runs on Motion's JS frameloop, which the freeze
+ * cannot pause, so Trace itself renders a still, drawn stroke in Reduced (and
+ * leaves out comet trails), matching the project covers.
  */
-export const Draw = (props: Readonly<ComponentProps<typeof Trace>>) => {
-   const { reducedMotion } = useMotionPreference();
-   if (reducedMotion) return null;
-   return <Trace {...props} />;
-};
+export const Draw = (props: Readonly<ComponentProps<typeof Trace>>) => (
+   <Trace {...props} />
+);
 
 interface DashedProps {
    d: string;

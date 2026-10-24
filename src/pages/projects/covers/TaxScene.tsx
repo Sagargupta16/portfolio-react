@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
 import { motion } from "motion/react";
+import { AMBER } from "@/constants/theme";
 import {
-   AMBER,
    SOLID_FILL,
    W10,
    W18,

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { AMBER, GREEN } from "@/constants/theme";
 import {
    Bar,
    Label,
@@ -8,9 +9,7 @@ import {
    Wire,
 } from "@pages/projects/covers/kit/primitives";
 import {
-   AMBER,
    COLUMNS,
-   GREEN,
    NON_SCALING,
    W10,
    W25,

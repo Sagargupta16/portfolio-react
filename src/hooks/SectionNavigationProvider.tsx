@@ -9,6 +9,7 @@ import {
 import { useLenis } from "lenis/react";
 import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useMotionPreference from "./useMotionPreference";
+import { isScrollLocked } from "./useScrollLock";
 import { SectionNavigationContext } from "./sectionNavigationContext";
 
 const SECTION_IDS = new Set<string>([
@@ -102,7 +103,12 @@ export const SectionNavigationProvider = ({
          if (
             request.focus &&
             handledRequestRef.current === request &&
-            target.isConnected
+            target.isConnected &&
+            // An open modal keeps the focus its trap gave it (a ?project=
+            // deep link opens the details with the section); the section
+            // behind sits outside the trap. The lock, not the DOM, says
+            // "open": a closing menu keeps aria-modal through its exit.
+            !isScrollLocked()
          ) {
             target.focus({ preventScroll: true });
          }
@@ -111,8 +117,11 @@ export const SectionNavigationProvider = ({
       if (lenis && !reducedMotion) {
          lenis.resize();
          // Lenis honors the anchor's scroll-margin-top, just like native scroll.
+         // force: an open modal's scroll lock stops Lenis, and the page behind
+         // it should still land on the section the link names.
          lenis.scrollTo(target, {
             immediate: request.immediate,
+            force: true,
             onComplete: focusTarget,
          });
       } else {

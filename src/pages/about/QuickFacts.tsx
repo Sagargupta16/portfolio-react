@@ -9,8 +9,10 @@ import {
    getLanguages,
 } from "@data/personal";
 import { getEducation } from "@data/education";
+import { getSectionCopy } from "@data/sections";
+import { fillTemplate } from "@utils/fillTemplate";
 import {
-   CYAN,
+   BLUE_LIGHT,
    DURATION,
    EASING,
    TEXT_MUTED,
@@ -56,21 +58,25 @@ const QuickFacts = ({ isMobile }: { isMobile: boolean }) => {
       const close = title.indexOf(")", open + 1);
       const degreeShort =
          open !== -1 && close !== -1 ? title.slice(open + 1, close) : title;
+      const copy = getSectionCopy("about").facts;
       return [
-         { Icon: MapPin, label: "Based in", value: getLocation() },
+         { Icon: MapPin, label: copy.based_in, value: getLocation() },
          {
             Icon: Briefcase,
-            label: "Role",
-            value: `${getRole()} @ ${getEmployer()}`,
+            label: copy.role,
+            value: fillTemplate(copy.role_value, {
+               role: getRole(),
+               employer: getEmployer(),
+            }),
          },
          {
             Icon: GraduationCap,
-            label: "Education",
-            value: `${degreeShort}, NIT Warangal`,
+            label: copy.education,
+            value: fillTemplate(copy.education_value, { degree: degreeShort }),
          },
          {
             Icon: Languages,
-            label: "Languages",
+            label: copy.languages,
             value: getLanguages()
                .map((l) => l.name)
                .join(", "),
@@ -88,7 +94,7 @@ const QuickFacts = ({ isMobile }: { isMobile: boolean }) => {
             gap: isMobile ? 16 : 24,
             marginTop: isMobile ? 40 : 56,
             paddingTop: isMobile ? 24 : 32,
-            borderTop: "1px dashed rgba(255,255,255,0.12)",
+            borderTop: "1px dashed rgb(var(--ch-white) / 0.12)",
          }}
          initial="hidden"
          whileInView="visible"
@@ -108,11 +114,11 @@ const QuickFacts = ({ isMobile }: { isMobile: boolean }) => {
                   minWidth: 0,
                }}
             >
-               <Icon size={18} style={{ color: CYAN }} />
+               <Icon size={18} style={{ color: BLUE_LIGHT }} />
                <span
                   style={{
                      fontFamily: MONO_FONT,
-                     fontSize: 10,
+                     fontSize: 11,
                      fontWeight: 600,
                      letterSpacing: "0.12em",
                      textTransform: "uppercase",

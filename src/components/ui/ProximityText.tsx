@@ -1,12 +1,16 @@
 import { useEffect, useRef } from "react";
+import { cancelFrame, frame } from "motion/react";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { segments } from "@utils/accentSegments";
 
 /* Variable-font proximity: each letter's weight swells as the pointer nears
    it (Bricolage's wght axis), falling off over `radius` px. The *accent*
    word stays in the serif and is not varied. Fine pointers only (touch has no
-   hover position); off in Reduced motion. One passive listener, one rAF per
-   move, and the loop idles while the pointer is far from the line. */
+   hover position); off in Reduced motion. One passive listener, at most one
+   pass per frame, and the loop idles while the pointer is far from the line.
+   Each pass reads every letter centre before it writes any weight, in
+   Motion's read and render steps, so a weight change never forces a
+   synchronous layout for the next letter or for Motion's own reads. */
 
 interface Token {
    at: number;
@@ -53,16 +57,19 @@ const ProximityText = ({
       const fine = globalThis.matchMedia?.("(pointer: fine)").matches;
       if (!root || reducedMotion || !fine) return;
       const letters = [...root.querySelectorAll<HTMLElement>("[data-prox]")];
-      let frame = 0;
       let resting = true;
       let pointer = { x: 0, y: 0 };
+      let weights: number[] = [];
 
       const settle = () => {
          for (const el of letters) el.style.fontVariationSettings = "";
-         resting = true;
       };
-      const update = () => {
-         frame = 0;
+      const apply = () => {
+         letters.forEach((el, i) => {
+            el.style.fontVariationSettings = `"wght" ${weights[i]}`;
+         });
+      };
+      const measure = () => {
          const box = root.getBoundingClientRect();
          const near =
             pointer.x > box.left - radius &&
@@ -70,28 +77,35 @@ const ProximityText = ({
             pointer.y > box.top - radius &&
             pointer.y < box.bottom + radius;
          if (!near) {
-            if (!resting) settle();
+            if (!resting) {
+               resting = true;
+               frame.render(settle);
+            }
             return;
          }
          resting = false;
-         for (const el of letters) {
+         weights = letters.map((el) => {
             const r = el.getBoundingClientRect();
             const d = Math.hypot(
                pointer.x - (r.left + r.width / 2),
                pointer.y - (r.top + r.height / 2),
             );
             const t = Math.max(0, 1 - d / radius);
-            el.style.fontVariationSettings = `"wght" ${Math.round(from + (to - from) * t * t)}`;
-         }
+            return Math.round(from + (to - from) * t * t);
+         });
+         frame.render(apply);
       };
+      // A step queues each callback once, so moves within a frame coalesce.
       const onMove = (event: PointerEvent) => {
          pointer = { x: event.clientX, y: event.clientY };
-         if (!frame) frame = requestAnimationFrame(update);
+         frame.read(measure);
       };
       globalThis.addEventListener("pointermove", onMove, { passive: true });
       return () => {
          globalThis.removeEventListener("pointermove", onMove);
-         if (frame) cancelAnimationFrame(frame);
+         cancelFrame(measure);
+         cancelFrame(apply);
+         cancelFrame(settle);
          settle();
       };
    }, [reducedMotion, from, to, radius]);

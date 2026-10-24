@@ -56,8 +56,16 @@ export const heroHeadlineLine: Variants = {
    visible: { y: "0%", transition: entrance(DURATION.slow) },
 };
 
+/* The intro paragraph is the LCP element (measured at 375px). Chrome skips
+   anything painted at opacity 0, so held at 0 it only counted once the splash
+   had lifted. At 0.001 it is painted (under the opaque splash) from the first
+   render, yet that alpha rounds to 0 in an 8-bit blend and moves no pixel by
+   more than a rounding step during the fade, so the entrance looks the same
+   as it did from 0. */
+const INTRO_HIDDEN_OPACITY = 0.001;
+
 export const heroIntro: Variants = {
-   hidden: { opacity: 0, y: 16 },
+   hidden: { opacity: INTRO_HIDDEN_OPACITY, y: 16 },
    visible: { opacity: 1, y: 0, transition: entrance(DURATION.default) },
 };
 

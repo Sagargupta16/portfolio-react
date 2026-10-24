@@ -1,4 +1,5 @@
 import { GREEN } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
 
 interface PresentIndicatorProps {
    /** Show just the pulsing dot (true) or the dot + "Present" label (false). */
@@ -31,7 +32,7 @@ const PresentIndicator = ({ dotOnly = false }: PresentIndicatorProps) => {
    return (
       <>
          {dot}
-         <span>Present</span>
+         <span>{getSectionCopy("experience").card.present}</span>
       </>
    );
 };

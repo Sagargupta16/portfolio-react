@@ -3,12 +3,10 @@ import { motion } from "motion/react";
 import type { LucideIcon } from "lucide-react";
 import { waveCascadeContainer, waveCascadeItem } from "@utils/animations";
 import type { NewsType } from "@/types";
-import {
-   NEWS_TYPE_ORDER,
-   NEWS_TYPES,
-   NEWS_UI,
-   type NewsFilter,
-} from "./newsTypes";
+import { getSectionCopy } from "@data/sections";
+import { NEWS_TYPE_ORDER, NEWS_TYPES, type NewsFilter } from "./newsTypes";
+
+const COPY = getSectionCopy("news").filters;
 
 const PILL_SPRING = { type: "spring", stiffness: 500, damping: 40 } as const;
 const TAP = { scale: 0.97 };
@@ -39,7 +37,7 @@ const NewsFilters = ({
    onSelect,
 }: Readonly<NewsFiltersProps>) => {
    const options: FilterOption[] = [
-      { key: "all", label: NEWS_UI.all, count: total },
+      { key: "all", label: COPY.all, count: total },
       ...NEWS_TYPE_ORDER.filter((type) => counts[type] > 0).map((type) => ({
          key: type,
          label: NEWS_TYPES[type].chip,
@@ -53,7 +51,7 @@ const NewsFilters = ({
       <motion.div
          className="news-filters"
          role="group"
-         aria-label={NEWS_UI.filterGroup}
+         aria-label={COPY.group_label}
          variants={waveCascadeContainer}
       >
          {options.map(({ key, label, count, icon: Icon, style }) => {

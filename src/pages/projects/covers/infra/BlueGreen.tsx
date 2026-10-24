@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import {
-   GREEN,
    LINEAR,
    WHITE_30,
    boxAt,

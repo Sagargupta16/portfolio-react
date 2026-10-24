@@ -1,9 +1,10 @@
 import { Suspense, useRef, type CSSProperties } from "react";
 import { useInView } from "motion/react";
+import ErrorBoundary from "@components/common/ErrorBoundary";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import useMotionPreference from "@hooks/useMotionPreference";
 import type { EngagementSceneKey } from "@/types";
-import { BASE_GRADIENT } from "./sceneParts";
+import { BASE_GRADIENT } from "@pages/projects/covers/kit/sceneTokens";
 import { ENGAGEMENT_SCENES } from "./sceneRegistry";
 
 interface EngagementSceneProps {
@@ -18,6 +19,11 @@ interface EngagementSceneProps {
 // Same idea as ProjectCover: a scene mounts only while its slot sits within
 // this distance of the viewport, so a long modal never runs every loop.
 const MOUNT_MARGIN = "300px 0px";
+
+/* Truthy on purpose (a falsy fallback renders ErrorBoundary's full panel): a
+   failed scene chunk leaves the slot's own sized, gradient-filled box empty
+   instead of taking the whole Experience section down with it. */
+const SCENE_FAILED = <></>;
 
 const BOTTOM_FADE: CSSProperties = {
    position: "absolute",
@@ -57,9 +63,11 @@ const EngagementScene = ({
          }}
       >
          {nearViewport && (
-            <Suspense fallback={null}>
-               <Scene key={preference} tint={tint} />
-            </Suspense>
+            <ErrorBoundary fallback={SCENE_FAILED}>
+               <Suspense fallback={null}>
+                  <Scene key={preference} tint={tint} />
+               </Suspense>
+            </ErrorBoundary>
          )}
          {fade && <div style={BOTTOM_FADE} />}
       </div>

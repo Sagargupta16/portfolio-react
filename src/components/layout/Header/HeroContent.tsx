@@ -1,10 +1,22 @@
 import { lazy, Suspense, useState, useMemo } from "react";
 import { motion } from "motion/react";
 import { ArrowDownRight, Download, FileText } from "lucide-react";
-import { getHeadline, getIntro, getName, getRoleLabel } from "@data/personal";
-import { CYAN, GREEN, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
+import {
+   getHeadline,
+   getHeroGreeting,
+   getIntro,
+   getName,
+   getResumeUrl,
+   getRoleLabel,
+} from "@data/personal";
+import { getUiCopy } from "@data/ui";
+import {
+   BLUE_LIGHT,
+   GREEN,
+   MONO_FONT,
+   TEXT_SECONDARY,
+} from "@/constants/theme";
 import ErrorBoundary from "@components/common/ErrorBoundary";
-import CvViewerModal from "@components/ui/CvViewerModal/CvViewerModal";
 import ProximityText from "@components/ui/ProximityText";
 import MakerMark from "@components/ui/MakerMark";
 import useBreakpoint from "@hooks/useBreakpoint";
@@ -25,14 +37,19 @@ import {
 } from "./heroMotion";
 
 const HeroLatest = lazy(() => import("./HeroLatest"));
-const RESUME_URL =
-   "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
+// Its chunk loads on the first "Read CV" click, then stays mounted so every
+// close still plays the exit animation.
+const CvViewerModal = lazy(
+   () => import("@components/ui/CvViewerModal/CvViewerModal"),
+);
+const RESUME_URL = getResumeUrl();
+const COPY = getUiCopy().hero;
 const NBSP = "\u00A0";
 const CTA_TAP = { scale: 0.97 };
 
 /* Truthy on purpose: ErrorBoundary treats a falsy fallback as "not provided"
-   and renders its full "Something went wrong" panel. A failed HeroLatest chunk
-   should just drop the line, not replace the hero. */
+   and renders its full "Something went wrong" panel. A failed HeroLatest or
+   CV viewer chunk should just drop out, not replace the hero. */
 const OMIT_LINE = <></>;
 
 /* Holds the LATEST row's slot while its chunk loads so the CTAs and socials
@@ -51,7 +68,7 @@ const HeroLatestPlaceholder = () => {
             gap: isMobile ? 4 : 14,
          }}
       >
-         <span style={{ fontFamily: MONO_FONT, fontSize: 10 }}>{NBSP}</span>
+         <span style={{ fontFamily: MONO_FONT, fontSize: 11 }}>{NBSP}</span>
          <span style={{ fontSize: 14, lineHeight: 1.6, minHeight: 44 }}>
             {NBSP}
          </span>
@@ -61,11 +78,13 @@ const HeroLatestPlaceholder = () => {
 
 const HeroContent = () => {
    const [cvOpen, setCvOpen] = useState(false);
+   const [cvLoaded, setCvLoaded] = useState(false);
 
    const name = useMemo(() => getName(), []);
    const intro = useMemo(() => getIntro(), []);
    const roleLabel = useMemo(() => getRoleLabel(), []);
    const headline = useMemo(() => getHeadline(), []);
+   const greeting = useMemo(() => getHeroGreeting(), []);
 
    const { navigateToSection } = useSectionNavigation();
    const introDone = useIntroDone();
@@ -116,8 +135,11 @@ const HeroContent = () => {
                   className="block text-balance"
                   variants={heroHeadlineLine}
                >
-                  Hi, I&apos;m{" "}
-                  <span className="font-signature" style={{ color: CYAN }}>
+                  {greeting}{" "}
+                  <span
+                     className="font-signature"
+                     style={{ color: BLUE_LIGHT }}
+                  >
                      {name}
                   </span>
                   {"."}
@@ -164,11 +186,14 @@ const HeroContent = () => {
                whileTap={CTA_TAP}
                transformTemplate={passThroughTransform}
             >
-               See projects
+               {COPY.projects_cta}
                <ArrowDownRight size={16} aria-hidden="true" />
             </motion.button>
             <motion.button
-               onClick={() => setCvOpen(true)}
+               onClick={() => {
+                  setCvLoaded(true);
+                  setCvOpen(true);
+               }}
                className="btn-outline inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold"
                style={{ paddingInline: 16 }}
                whileTap={CTA_TAP}
@@ -176,7 +201,7 @@ const HeroContent = () => {
                aria-haspopup="dialog"
             >
                <FileText size={15} aria-hidden="true" />
-               Read CV
+               {COPY.cv_cta}
             </motion.button>
             <motion.a
                href={RESUME_URL}
@@ -186,15 +211,26 @@ const HeroContent = () => {
                transformTemplate={passThroughTransform}
             >
                <Download size={15} aria-hidden="true" />
-               Download PDF
+               {COPY.pdf_cta}
             </motion.a>
          </motion.div>
 
          {/* Status widget + Social icons */}
          <HeroSocial />
 
-         {/* In-site CV viewer (lazy: pdf.js loads only when opened) */}
-         <CvViewerModal isOpen={cvOpen} onClose={() => setCvOpen(false)} />
+         {/* In-site CV viewer (lazy: its chunk and the pages load only when
+             opened). Own boundary: a failed chunk leaves the button inert
+             instead of reaching the root ErrorBoundary. */}
+         {cvLoaded && (
+            <ErrorBoundary fallback={OMIT_LINE}>
+               <Suspense fallback={null}>
+                  <CvViewerModal
+                     isOpen={cvOpen}
+                     onClose={() => setCvOpen(false)}
+                  />
+               </Suspense>
+            </ErrorBoundary>
+         )}
       </motion.div>
    );
 };

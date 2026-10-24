@@ -4,8 +4,8 @@ import type { LucideIcon } from "lucide-react";
 import useMotionPreference from "@hooks/useMotionPreference";
 import GlossText from "@components/ui/GlossText";
 import {
-   CYAN,
-   PURPLE,
+   BLUE_LIGHT,
+   SKY,
    GREEN,
    AMBER,
    DURATION,
@@ -14,8 +14,8 @@ import {
 } from "@/constants/theme";
 
 const HIGHLIGHT_ICONS: { Icon: LucideIcon; color: string }[] = [
-   { Icon: Briefcase, color: CYAN },
-   { Icon: GraduationCap, color: PURPLE },
+   { Icon: Briefcase, color: BLUE_LIGHT },
+   { Icon: GraduationCap, color: SKY },
    { Icon: Rocket, color: GREEN },
    { Icon: Trophy, color: AMBER },
 ];
@@ -67,8 +67,8 @@ const HighlightCard = ({ text, index, isMobile }: HighlightCardProps) => {
             alignItems: "flex-start",
             padding: isMobile ? "12px 14px" : "14px 16px",
             borderRadius: 12,
-            background: "rgba(255, 255, 255, 0.03)",
-            border: "1px solid rgba(255, 255, 255, 0.06)",
+            background: "rgb(var(--ch-white) / 0.03)",
+            border: "1px solid rgb(var(--ch-white) / 0.06)",
          }}
       >
          {/* Accent hairline: dim and short at rest, full and bright on hover */}

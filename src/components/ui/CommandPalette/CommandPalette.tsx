@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Command } from "cmdk";
 import {
    ArrowUpRight,
@@ -14,20 +14,31 @@ import {
 } from "lucide-react";
 import { NAV_SECTIONS } from "@/constants/sections";
 import { getContactOptions } from "@data/contact";
-import { getSocialProfiles } from "@data/personal";
+import { getResumeUrl, getSocialProfiles } from "@data/personal";
 import { getFeaturedProjects } from "@data/projects";
+import { getUiCopy } from "@data/ui";
 import useMotionPreference from "@hooks/useMotionPreference";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import { setPaletteOpen } from "@utils/paletteState";
 import { toggleAnnotations, useAnnotationsOn } from "@utils/annotationsState";
+import { fillTemplate } from "@utils/fillTemplate";
+import "./command-palette.css";
 
 /* Cmd/Ctrl+K palette, styled as a shell: every row reads as the command you
    would type (cd about, open cv, git clone ...) with a plain description.
    Jump to sections, copy the email, grab the CV, book a call, flip the motion
-   setting, open featured projects and profiles. Data comes from data/*.json. */
+   setting, open featured projects and profiles. Data comes from data/*.json;
+   the commands, hints and search keywords are the palette copy in ui.json. */
 
-const RESUME_URL =
-   "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
+const COPY = getUiCopy().palette;
+const ROWS = COPY.rows;
+
+type CopyState = "idle" | "copied" | "failed";
+const COPY_COMMAND: Record<CopyState, string> = {
+   idle: ROWS.email.command,
+   copied: ROWS.email.copied,
+   failed: ROWS.email.failed,
+};
 
 const close = () => setPaletteOpen(false);
 
@@ -75,7 +86,11 @@ const slug = (text: string) =>
 const CommandPalette = ({ open }: { open: boolean }) => {
    const { navigateToSection } = useSectionNavigation();
    const { preference, setPreference } = useMotionPreference();
-   const [copied, setCopied] = useState(false);
+   const [copyState, setCopyState] = useState<CopyState>("idle");
+   const copyResetRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+      undefined,
+   );
+   useEffect(() => () => clearTimeout(copyResetRef.current), []);
    const annotationsOn = useAnnotationsOn();
    const contacts = getContactOptions();
    const email = contacts.find((c) => c.link.startsWith("mailto:"))?.value;
@@ -86,45 +101,58 @@ const CommandPalette = ({ open }: { open: boolean }) => {
       navigateToSection(id);
    };
 
+   const copyEmail = async (address: string) => {
+      let next: CopyState = "copied";
+      try {
+         await navigator.clipboard.writeText(address);
+      } catch {
+         // Permission refused, or no clipboard outside a secure context.
+         next = "failed";
+      }
+      setCopyState(next);
+      clearTimeout(copyResetRef.current);
+      copyResetRef.current = setTimeout(() => setCopyState("idle"), 1600);
+   };
+
    return (
       <Command.Dialog
          open={open}
          onOpenChange={setPaletteOpen}
-         label="Command palette"
+         label={COPY.label}
          overlayClassName="palette-overlay"
          contentClassName="palette"
          loop
       >
          <div className="palette-prompt">
-            <span aria-hidden="true">~/sagar $</span>
+            <span aria-hidden="true">{COPY.prompt}</span>
             <Command.Input
-               placeholder="type a command or search"
+               placeholder={COPY.placeholder}
                className="palette-input"
                autoCapitalize="none"
                autoCorrect="off"
                spellCheck={false}
                enterKeyHint="go"
             />
-            <kbd className="palette-kbd">esc</kbd>
+            <kbd className="palette-kbd">{COPY.close_key}</kbd>
          </div>
          <Command.List className="palette-list">
             <Command.Empty className="palette-empty">
-               command not found. try &quot;cd&quot; or &quot;open&quot;
+               {COPY.empty}
             </Command.Empty>
 
-            <Command.Group heading="Go to" className="palette-group">
+            <Command.Group heading={COPY.groups.go} className="palette-group">
                <Row
-                  value="cd home top hero"
-                  command="cd ~"
-                  hint="Top of the page"
+                  value={ROWS.home.keywords}
+                  command={ROWS.home.command}
+                  hint={ROWS.home.hint}
                   icon={<Hash size={14} />}
                   onSelect={() => go("hero")}
                />
                {NAV_SECTIONS.map(({ id, label }) => (
                   <Row
                      key={id}
-                     value={`cd ${id} ${label}`}
-                     command={`cd ${id}`}
+                     value={fillTemplate(ROWS.section.keywords, { id, label })}
+                     command={fillTemplate(ROWS.section.command, { id })}
                      hint={label}
                      icon={<Hash size={14} />}
                      onSelect={() => go(id)}
@@ -132,44 +160,44 @@ const CommandPalette = ({ open }: { open: boolean }) => {
                ))}
             </Command.Group>
 
-            <Command.Group heading="Actions" className="palette-group">
+            <Command.Group
+               heading={COPY.groups.actions}
+               className="palette-group"
+            >
                {email && (
                   <Row
-                     value={`copy email ${email}`}
-                     command={copied ? "copied" : "pbcopy email"}
+                     value={fillTemplate(ROWS.email.keywords, { email })}
+                     command={COPY_COMMAND[copyState]}
                      hint={email}
                      icon={<Copy size={14} />}
-                     onSelect={() => {
-                        void navigator.clipboard?.writeText(email).then(() => {
-                           setCopied(true);
-                           setTimeout(() => setCopied(false), 1600);
-                        });
-                     }}
+                     onSelect={() => void copyEmail(email)}
                   />
                )}
                <Row
-                  value="open cv resume download pdf"
-                  command="open cv.pdf"
-                  hint="Download the CV"
+                  value={ROWS.cv.keywords}
+                  command={ROWS.cv.command}
+                  hint={ROWS.cv.hint}
                   icon={<FileDown size={14} />}
-                  onSelect={() => openExternal(RESUME_URL)}
+                  onSelect={() => openExternal(getResumeUrl())}
                />
                {booking && (
                   <Row
-                     value="book a call schedule meeting cal"
-                     command="cal book"
-                     hint="Book a call"
+                     value={ROWS.booking.keywords}
+                     command={ROWS.booking.command}
+                     hint={ROWS.booking.hint}
                      icon={<Calendar size={14} />}
                      onSelect={() => openExternal(booking)}
                   />
                )}
                <Row
-                  value="motion animation toggle reduced full"
-                  command={`motion --${preference === "reduced" ? "full" : "reduced"}`}
+                  value={ROWS.motion.keywords}
+                  command={fillTemplate(ROWS.motion.command, {
+                     mode: preference === "reduced" ? "full" : "reduced",
+                  })}
                   hint={
                      preference === "reduced"
-                        ? "Turn animations back on"
-                        : "Calm the animations"
+                        ? ROWS.motion.hint_full
+                        : ROWS.motion.hint_reduced
                   }
                   icon={<Sparkles size={14} />}
                   onSelect={() => {
@@ -181,14 +209,17 @@ const CommandPalette = ({ open }: { open: boolean }) => {
                />
             </Command.Group>
 
-            <Command.Group heading="Under the hood" className="palette-group">
+            <Command.Group
+               heading={COPY.groups.under_the_hood}
+               className="palette-group"
+            >
                <Row
-                  value="notes annotations how it is built behind the scenes"
-                  command={`notes --${annotationsOn ? "off" : "on"}`}
+                  value={ROWS.notes.keywords}
+                  command={fillTemplate(ROWS.notes.command, {
+                     state: annotationsOn ? "off" : "on",
+                  })}
                   hint={
-                     annotationsOn
-                        ? "Hide the build notes"
-                        : "Pin how-it's-built notes on the page"
+                     annotationsOn ? ROWS.notes.hint_hide : ROWS.notes.hint_show
                   }
                   icon={<ScanEye size={14} />}
                   onSelect={() => {
@@ -197,30 +228,30 @@ const CommandPalette = ({ open }: { open: boolean }) => {
                   }}
                />
                <Row
-                  value="cat llms txt ai agents machine readable"
-                  command="cat llms.txt"
-                  hint="The index for AI agents"
+                  value={ROWS.llms.keywords}
+                  command={ROWS.llms.command}
+                  hint={ROWS.llms.hint}
                   icon={<FileText size={14} />}
                   onSelect={() => openExternal(siteFile("llms.txt"))}
                />
                <Row
-                  value="open markdown md plain text version"
-                  command="open index.md"
-                  hint="This whole page as Markdown"
+                  value={ROWS.markdown.keywords}
+                  command={ROWS.markdown.command}
+                  hint={ROWS.markdown.hint}
                   icon={<FileText size={14} />}
                   onSelect={() => openExternal(siteFile("index.md"))}
                />
                <Row
-                  value="rss feed news subscribe xml"
-                  command="curl rss.xml"
-                  hint="News as an RSS feed"
+                  value={ROWS.rss.keywords}
+                  command={ROWS.rss.command}
+                  hint={ROWS.rss.hint}
                   icon={<FileText size={14} />}
                   onSelect={() => openExternal(siteFile("rss.xml"))}
                />
                <Row
-                  value="save contact card vcard vcf phone"
-                  command="save contact.vcf"
-                  hint="Add me to your contacts"
+                  value={ROWS.vcard.keywords}
+                  command={ROWS.vcard.command}
+                  hint={ROWS.vcard.hint}
                   icon={<UserPlus size={14} />}
                   onSelect={() => {
                      globalThis.location.assign(siteFile("sagar-gupta.vcf"));
@@ -229,14 +260,21 @@ const CommandPalette = ({ open }: { open: boolean }) => {
                />
             </Command.Group>
 
-            <Command.Group heading="Projects" className="palette-group">
+            <Command.Group
+               heading={COPY.groups.projects}
+               className="palette-group"
+            >
                {getFeaturedProjects()
                   .filter((project) => project.github)
                   .map((project) => (
                      <Row
                         key={project.id}
-                        value={`git clone ${project.title}`}
-                        command={`git clone ${slug(project.title)}`}
+                        value={fillTemplate(ROWS.project.keywords, {
+                           title: project.title,
+                        })}
+                        command={fillTemplate(ROWS.project.command, {
+                           slug: slug(project.title),
+                        })}
                         hint={project.title}
                         icon={<FolderGit2 size={14} />}
                         onSelect={() => openExternal(project.github)}
@@ -244,12 +282,19 @@ const CommandPalette = ({ open }: { open: boolean }) => {
                   ))}
             </Command.Group>
 
-            <Command.Group heading="Elsewhere" className="palette-group">
+            <Command.Group
+               heading={COPY.groups.elsewhere}
+               className="palette-group"
+            >
                {getSocialProfiles().map((profile) => (
                   <Row
                      key={profile.id}
-                     value={`open ${profile.name}`}
-                     command={`open ${profile.name.toLowerCase()}`}
+                     value={fillTemplate(ROWS.profile.keywords, {
+                        name: profile.name,
+                     })}
+                     command={fillTemplate(ROWS.profile.command, {
+                        slug: profile.name.toLowerCase(),
+                     })}
                      hint={profile.link.replace(/^https?:\/\/(www\.)?/, "")}
                      icon={<ArrowUpRight size={14} />}
                      onSelect={() => openExternal(profile.link)}

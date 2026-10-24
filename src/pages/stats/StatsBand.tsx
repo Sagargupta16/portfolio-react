@@ -7,7 +7,7 @@ import {
    getLearningBadges,
 } from "@data/achievements";
 import { getExperience } from "@data/experience";
-import { getHighlights, getImpact } from "@data/personal";
+import { getHighlights, getImpact, getStatsCopy } from "@data/personal";
 import {
    getCommunityDiscussions,
    getOpenSourceContributions,
@@ -18,7 +18,9 @@ import {
 } from "@data/projects";
 import { staggerContainer, staggerItem } from "@utils/animations";
 import { isCertActive } from "@utils/certStatus";
+import { fillTemplate, type TemplateValues } from "@utils/fillTemplate";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
+import type { StatsTileKey } from "@/types";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import useBreakpoint from "@hooks/useBreakpoint";
 
@@ -29,7 +31,8 @@ import useBreakpoint from "@hooks/useBreakpoint";
    coding_platform_stats entries as the platform cards below (CodingProfiles),
    which repeat them per platform with profile links, so the two surfaces
    cannot disagree. Every value is derived from data/*.json rather than
-   written here, so the counts cannot drift away from the underlying entries. */
+   written here, so the counts cannot drift away from the underlying entries.
+   The headings, labels and notes are personal.json `stats` copy. */
 
 interface Stat {
    value: string;
@@ -37,6 +40,7 @@ interface Stat {
    note?: string;
 }
 
+// The repos tile note says "10k+"; keep the two in step.
 const BIG_REPO_STARS = 10_000;
 
 // Credly issuer names are long ("Amazon Web Services Training and
@@ -57,7 +61,7 @@ const StatTile = ({ stat, isMobile }: { stat: Stat; isMobile: boolean }) => (
          gap: 6,
          padding: isMobile ? "16px 14px" : "20px 18px",
          borderRadius: 16,
-         border: "1px solid rgb(255 255 255 / 0.06)",
+         border: "1px solid rgb(var(--ch-white) / 0.06)",
          background: "var(--color-bg-card)",
          minWidth: 0,
       }}
@@ -66,7 +70,7 @@ const StatTile = ({ stat, isMobile }: { stat: Stat; isMobile: boolean }) => (
       <span
          style={{
             fontFamily: MONO_FONT,
-            fontSize: 10,
+            fontSize: 11,
             fontWeight: 700,
             letterSpacing: "0.14em",
             textTransform: "uppercase",
@@ -118,8 +122,20 @@ const StatGroup = ({
 
 const StatsBand = () => {
    const { isMobile } = useBreakpoint();
+   const { headings } = getStatsCopy();
 
    const { impact, delivery, openSource, competitive } = useMemo(() => {
+      // A tile's label and note come from the data; `values` fills the note.
+      const { tiles } = getStatsCopy();
+      const tile = (
+         key: StatsTileKey,
+         value: string,
+         values?: TemplateValues,
+      ): Stat => {
+         const { label, note } = tiles[key];
+         return { value, label, note: note && fillTemplate(note, values) };
+      };
+
       // Expired certifications drop out of the count, and both notes name the
       // issuers that are actually there (a lapsed cert stops adding its issuer).
       const certs = getCertifications().filter((c) => isCertActive(c));
@@ -163,20 +179,26 @@ const StatsBand = () => {
       const oss = getOpenSourceContributions();
       const merged = oss.filter((c) => c.status === "merged");
       const mergedPrs = merged.filter((c) => c.url.includes("/pull/")).length;
-      const mergedRepos = new Set(merged.map((c) => c.repo));
       const coAuthored = merged.length - mergedPrs;
-      let mergedNote = `Across ${mergedRepos.size} projects`;
-      if (coAuthored === 1) mergedNote = "Plus 1 co-authored fix";
-      else if (coAuthored > 1)
-         mergedNote = `Plus ${coAuthored} co-authored fixes`;
+      // Repos with a merged entry only: an open or closed-unmerged PR is not
+      // a contribution the stars, repo count or 10k+ tally may claim.
       const repoStars = new Map<string, number>();
-      for (const contribution of oss) {
+      for (const contribution of merged) {
          if (!repoStars.has(contribution.repo)) {
             repoStars.set(contribution.repo, contribution.stars);
          }
       }
-      const starsReached = [...mergedRepos].reduce(
-         (sum, repo) => sum + (repoStars.get(repo) ?? 0),
+      const prsTile = tiles.merged_prs;
+      let mergedNote = fillTemplate(prsTile.note ?? "", {
+         repos: repoStars.size,
+      });
+      if (coAuthored === 1) mergedNote = prsTile.note_coauthored_one;
+      else if (coAuthored > 1)
+         mergedNote = fillTemplate(prsTile.note_coauthored_many, {
+            count: coAuthored,
+         });
+      const starsReached = [...repoStars.values()].reduce(
+         (sum, stars) => sum + stars,
          0,
       );
       const bigRepos = [...repoStars.values()].filter(
@@ -202,91 +224,53 @@ const StatsBand = () => {
       return {
          impact: [
             {
-               value: impactData.clients_served,
-               label: "Clients served",
+               ...tile("clients_served", impactData.clients_served),
                note: impactData.clients_note,
             },
-            {
-               value: impactData.terraform_resources,
-               label: "Resources under Terraform",
-               note: `Across ${impactData.terraform_workspaces} workspaces, none failing`,
-            },
-            {
-               value: impactData.security_controls,
-               label: "Security controls",
-               note: "State Street landing zone, team result",
-            },
-            {
-               value: String(speakingCount),
-               label: "Talks & patterns",
-               note: "Authored or presented at AWS",
-            },
+            tile("terraform_resources", impactData.terraform_resources, {
+               workspaces: impactData.terraform_workspaces,
+            }),
+            tile("security_controls", impactData.security_controls),
+            tile("talks", String(speakingCount)),
          ] satisfies Stat[],
          delivery: [
+            tile("projects", String(projectCount), { featured: featuredCount }),
             {
-               value: String(projectCount),
-               label: "Projects shipped",
-               note: `${featuredCount} featured`,
-            },
-            {
-               value: String(certs.length),
-               label: "Active certifications",
+               ...tile("certifications", String(certs.length)),
                note: certIssuers.join(" + "),
             },
             {
-               value: String(badges.length),
-               label: "Learning badges",
+               ...tile("badges", String(badges.length)),
                note: badgeNote,
             },
-            {
-               value: String(podium.length),
-               label: "Podium finishes",
-               note: `${place("1st")} first, ${place("2nd")} second, ${place("3rd")} third`,
-            },
+            tile("podium", String(podium.length), {
+               first: place("1st"),
+               second: place("2nd"),
+               third: place("3rd"),
+            }),
          ] satisfies Stat[],
          competitive: [
-            {
-               value: leetcode?.best_rating ?? "",
-               label: "LeetCode rating",
-               note: `${leetcode?.badge} badge, top ${leetcode?.top_percentage} of contestants`,
-            },
-            {
-               value: `${solvedTotal}+`,
-               label: "Problems solved",
-               note: `${leetcode?.problems_solved} LeetCode, ${gfg?.problems_solved} GeeksforGeeks`,
-            },
-            {
-               value: leetcode?.contests ?? "",
-               label: "Contests played",
-               note: `Best finish: rank ${leetcode?.best_contest_rank}`,
-            },
-            {
-               value: leetcode?.hard_solved ?? "",
-               label: "Hard problems solved",
-               note: "The hardest LeetCode tier",
-            },
+            tile("leetcode_rating", leetcode?.best_rating ?? "", {
+               badge: leetcode?.badge,
+               top: leetcode?.top_percentage,
+            }),
+            tile("problems_solved", `${solvedTotal}+`, {
+               leetcode: leetcode?.problems_solved,
+               gfg: gfg?.problems_solved,
+            }),
+            tile("contests", leetcode?.contests ?? "", {
+               rank: leetcode?.best_contest_rank,
+            }),
+            tile("hard_solved", leetcode?.hard_solved ?? ""),
          ] satisfies Stat[],
          openSource: [
-            {
-               value: String(mergedPrs),
-               label: "PRs merged upstream",
-               note: mergedNote,
-            },
-            {
-               value: formatStars(starsReached),
-               label: "GitHub stars",
-               note: "Combined, projects merged into",
-            },
-            {
-               value: String(repoStars.size),
-               label: "Projects contributed to",
-               note: `${bigRepos} with 10k+ stars`,
-            },
-            {
-               value: String(discussions.length),
-               label: "Community answers",
-               note: `${accepted} accepted, ${discussions.length - accepted} marked helpful`,
-            },
+            { ...tile("merged_prs", String(mergedPrs)), note: mergedNote },
+            tile("stars", formatStars(starsReached)),
+            tile("repos", String(repoStars.size), { big: bigRepos }),
+            tile("answers", String(discussions.length), {
+               accepted,
+               helpful: discussions.length - accepted,
+            }),
          ] satisfies Stat[],
       };
    }, []);
@@ -303,29 +287,29 @@ const StatsBand = () => {
          {/* Highlights, then consulting impact: the work clients and
              recruiters are actually assessing comes first. */}
          <StatGroup
-            heading="Highlights"
+            heading={headings.highlights}
             stats={getHighlights()}
             isMobile={isMobile}
          />
          <StatGroup
-            heading="Consulting impact"
+            heading={headings.impact}
             stats={impact}
             isMobile={isMobile}
          />
          <StatGroup
-            heading="Delivery & credentials"
+            heading={headings.delivery}
             stats={delivery}
             isMobile={isMobile}
          />
          <StatGroup
-            heading="Open source"
+            heading={headings.open_source}
             stats={openSource}
             isMobile={isMobile}
          />
          {/* Competitive programming closes the band and leads into the
              platform cards further down the section. */}
          <StatGroup
-            heading="Competitive programming"
+            heading={headings.competitive}
             stats={competitive}
             isMobile={isMobile}
          />

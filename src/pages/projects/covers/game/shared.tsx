@@ -12,7 +12,6 @@ import { MONO_FONT } from "@/constants/theme";
 
 export const VIEW_BOX = "0 0 160 100";
 export const MEET = "xMidYMid meet";
-export const INK = "#0b1012";
 export const NONE = "none";
 export const NON_SCALING = "non-scaling-stroke";
 export const ROUND = "round";
@@ -29,7 +28,6 @@ export const WHITE_20 = "rgba(255,255,255,0.20)";
 export const WHITE_28 = "rgba(255,255,255,0.28)";
 export const WHITE_35 = "rgba(255,255,255,0.35)";
 export const WHITE_45 = "rgba(255,255,255,0.45)";
-export const WHITE_55 = "rgba(255,255,255,0.55)";
 export const WHITE_70 = "rgba(255,255,255,0.70)";
 export const WHITE_85 = "rgba(255,255,255,0.85)";
 

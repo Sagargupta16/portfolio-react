@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { motion } from "motion/react";
+import { AMBER } from "@/constants/theme";
 import {
-   AMBER,
    CYCLE,
    NON_SCALING,
    WHITE_05,

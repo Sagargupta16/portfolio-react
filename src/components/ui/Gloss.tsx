@@ -10,12 +10,21 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import useMediaQuery from "@hooks/useMediaQuery";
 import useMotionPreference from "@hooks/useMotionPreference";
-import { MONO_FONT, TEXT_PRIMARY, TEXT_SECONDARY } from "@/constants/theme";
+import {
+   BG_CARD,
+   MONO_FONT,
+   TEXT_PRIMARY,
+   TEXT_SECONDARY,
+} from "@/constants/theme";
+import "./gloss.css";
 
 const FINE_HOVER = "(hover: hover) and (pointer: fine)";
 const OPEN_DELAY_MS = 120;
 const VIEWPORT_MARGIN = 12;
 const TERM_GAP = 6;
+// The topmost layer: above the command palette (91), toasts (300) and the
+// modals (1000) whose bodies render GlossText.
+const CARD_Z_INDEX = 1100;
 
 interface GlossProps {
    term: string;
@@ -70,13 +79,17 @@ const Gloss = ({ term, definition, children }: GlossProps) => {
    useEffect(() => {
       if (!open) return;
       const close = () => setOpen(false);
+      // Capture phase, so the card closes before the modal it sits in hears
+      // the same Escape; preventDefault tells that modal to stay open.
       const onKeyDown = (event: KeyboardEvent) => {
-         if (event.key === "Escape") close();
+         if (event.key !== "Escape" || event.defaultPrevented) return;
+         event.preventDefault();
+         close();
       };
       const onPointerDown = (event: PointerEvent) => {
          if (!triggerRef.current?.contains(event.target as Node)) close();
       };
-      document.addEventListener("keydown", onKeyDown);
+      document.addEventListener("keydown", onKeyDown, { capture: true });
       document.addEventListener("pointerdown", onPointerDown);
       globalThis.addEventListener("scroll", close, {
          capture: true,
@@ -84,7 +97,7 @@ const Gloss = ({ term, definition, children }: GlossProps) => {
       });
       globalThis.addEventListener("resize", close);
       return () => {
-         document.removeEventListener("keydown", onKeyDown);
+         document.removeEventListener("keydown", onKeyDown, { capture: true });
          document.removeEventListener("pointerdown", onPointerDown);
          globalThis.removeEventListener("scroll", close, { capture: true });
          globalThis.removeEventListener("resize", close);
@@ -144,11 +157,11 @@ const Gloss = ({ term, definition, children }: GlossProps) => {
                         position: "fixed",
                         top: 0,
                         left: 0,
-                        zIndex: 400,
+                        zIndex: CARD_Z_INDEX,
                         maxWidth: "min(280px, calc(100vw - 24px))",
                         padding: "10px 12px",
                         borderRadius: 10,
-                        background: "#0e1417",
+                        background: BG_CARD,
                         border: "1px solid rgba(255, 255, 255, 0.1)",
                         boxShadow: "0 12px 32px rgba(0, 0, 0, 0.45)",
                         pointerEvents: "none",
@@ -159,7 +172,7 @@ const Gloss = ({ term, definition, children }: GlossProps) => {
                            display: "block",
                            marginBottom: 4,
                            fontFamily: MONO_FONT,
-                           fontSize: 10.5,
+                           fontSize: 11,
                            letterSpacing: "0.08em",
                            textTransform: "uppercase",
                            color: TEXT_PRIMARY,

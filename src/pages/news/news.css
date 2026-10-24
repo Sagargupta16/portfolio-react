@@ -51,6 +51,17 @@
    opacity: 0.65;
 }
 
+/* Touch: an invisible strip grows each chip to at least a 44px tap target
+   without changing how it looks (50% is half the chip height, so the 44px
+   phone chips get no extra strip). */
+@media (pointer: coarse) {
+   .news-chip::before {
+      content: "";
+      position: absolute;
+      inset: min(0px, calc(50% - 22px)) 0;
+   }
+}
+
 @media (hover: hover) and (pointer: fine) {
    .news-chip[aria-pressed="false"]:hover {
       border-color: rgb(var(--ch-white) / 0.14);

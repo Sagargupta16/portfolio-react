@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import { Bar, Label, Panel, Wire } from "@pages/projects/covers/kit/primitives";
 import {
    COLUMNS,
-   GREEN,
    INK,
    NON_SCALING,
    W10,

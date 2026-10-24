@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
-import { MONO_FONT } from "@/constants/theme";
+import { BG_PRIMARY, MONO_FONT } from "@/constants/theme";
+import { pct } from "../kit/sceneTokens";
 
 /*
  * Tokens and timeline helpers shared by the three Terraform on AWS cover
@@ -22,24 +23,21 @@ export const STAGE_W = 160;
 export const STAGE_H = 100;
 export const VIEWBOX = `0 0 ${STAGE_W} ${STAGE_H}`;
 
-export const GREEN = "#22c55e";
-export const AMBER = "#f59e0b";
-export const BASE_DARK = "#0b1012";
-export const BASE_GRADIENT = `linear-gradient(160deg, #0e1a24 0%, ${BASE_DARK} 60%)`;
 export const HAIRLINE = "rgba(255,255,255,0.10)";
 export const WHITE_05 = "rgba(255,255,255,0.05)";
 export const WHITE_18 = "rgba(255,255,255,0.18)";
 export const WHITE_30 = "rgba(255,255,255,0.3)";
-export const LABEL_DIM = "rgba(255,255,255,0.5)";
+const LABEL_DIM = "rgba(255,255,255,0.5)";
 export const LABEL_LIT = "rgba(255,255,255,0.88)";
 export const NON_SCALING = "non-scaling-stroke";
-export const EASE = "easeInOut" as const;
+const EASE = "easeInOut" as const;
 export const LINEAR = "linear" as const;
 
 export type Ease = typeof EASE | typeof LINEAR;
 
-export const pctX = (x: number) => `${(x / STAGE_W) * 100}%`;
-export const pctY = (y: number) => `${(y / STAGE_H) * 100}%`;
+/* Unrounded, unlike the 320 x 200 kit stage's pctX / pctY. */
+export const pctX = (x: number) => pct(x, STAGE_W);
+export const pctY = (y: number) => pct(y, STAGE_H);
 
 /*
  * Motion hands opacity to WAAPI, where a single ease string stretches over
@@ -88,14 +86,14 @@ export const boxAt = ([x, y]: Point, w: number, h: number): CSSProperties => ({
 export const panel = (radius = 6): CSSProperties => ({
    borderRadius: radius,
    border: `1px solid ${HAIRLINE}`,
-   background: `linear-gradient(rgba(255,255,255,0.03), rgba(255,255,255,0.03)), ${BASE_DARK}`,
+   background: `linear-gradient(rgba(255,255,255,0.03), rgba(255,255,255,0.03)), ${BG_PRIMARY}`,
 });
 
 /* Same panel with the tint as its accent. */
 export const tintPanel = (tint: string, radius = 6): CSSProperties => ({
    borderRadius: radius,
    border: `1px solid ${tint}59`,
-   background: `linear-gradient(${tint}14, ${tint}14), ${BASE_DARK}`,
+   background: `linear-gradient(${tint}14, ${tint}14), ${BG_PRIMARY}`,
 });
 
 export const dotStyle = (size: number, color: string): CSSProperties => ({

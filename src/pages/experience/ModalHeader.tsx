@@ -1,6 +1,7 @@
 import { Building2 } from "lucide-react";
 import ModalHeaderShell from "@components/ui/ModalHeaderShell";
-import { TEXT_PRIMARY, CYAN, MONO_FONT } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import { TEXT_PRIMARY, BLUE_LIGHT, MONO_FONT } from "@/constants/theme";
 import { getOrgLogo } from "@utils/orgLogos";
 import type { ProfessionalExperience } from "@/types";
 
@@ -14,7 +15,7 @@ const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
    <ModalHeaderShell
       isMobile={isMobile}
       onClose={onClose}
-      closeLabel="Close experience details"
+      closeLabel={getSectionCopy("experience").modal.close}
    >
       <div
          style={{
@@ -26,7 +27,10 @@ const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
       >
          <span style={{ flexShrink: 0, display: "inline-flex" }}>
             {getOrgLogo(experience.company ?? "", isMobile ? 16 : 18) ?? (
-               <Building2 size={isMobile ? 16 : 18} style={{ color: CYAN }} />
+               <Building2
+                  size={isMobile ? 16 : 18}
+                  style={{ color: BLUE_LIGHT }}
+               />
             )}
          </span>
          <h2
@@ -48,7 +52,7 @@ const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
       <p
          style={{
             fontSize: isMobile ? 11 : 13,
-            color: CYAN,
+            color: BLUE_LIGHT,
             fontFamily: MONO_FONT,
             overflow: "hidden",
             textOverflow: "ellipsis",

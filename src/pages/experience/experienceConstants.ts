@@ -1,5 +1,5 @@
 import { Mic2, FileText, GraduationCap } from "lucide-react";
-import { CYAN, PURPLE, GREEN } from "@/constants/theme";
+import { BLUE_LIGHT, SKY, GREEN } from "@/constants/theme";
 
 export const CONTRIB_ICON = {
    talk: Mic2,
@@ -8,7 +8,7 @@ export const CONTRIB_ICON = {
 } as const;
 
 export const CONTRIB_TYPE_COLOR = {
-   talk: CYAN,
-   publication: PURPLE,
+   talk: BLUE_LIGHT,
+   publication: SKY,
    program: GREEN,
 } as const;

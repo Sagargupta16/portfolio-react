@@ -1,6 +1,13 @@
 /// <reference types="vite/client" />
 import React, { type ReactNode, type ErrorInfo } from "react";
-import { CYAN, TEXT_PRIMARY, TEXT_SECONDARY } from "@/constants/theme";
+import {
+   BG_PRIMARY,
+   BLUE_LIGHT,
+   GLASS_BORDER,
+   TEXT_PRIMARY,
+   TEXT_SECONDARY,
+} from "@/constants/theme";
+import { getUiCopy } from "@data/ui";
 
 interface ErrorBoundaryProps {
    children: ReactNode;
@@ -16,8 +23,8 @@ interface ErrorBoundaryState {
 const CONTAINER_STYLE: React.CSSProperties = {
    padding: "24px",
    textAlign: "center",
-   background: "rgba(15, 15, 30, 0.85)",
-   border: "1px solid rgba(255, 255, 255, 0.08)",
+   background: "var(--color-bg-card)",
+   border: `1px solid ${GLASS_BORDER}`,
    borderRadius: 12,
    margin: "20px",
    color: TEXT_PRIMARY,
@@ -33,8 +40,8 @@ const DETAILS_STYLE: React.CSSProperties = {
 const BUTTON_STYLE: React.CSSProperties = {
    marginTop: "16px",
    padding: "8px 20px",
-   background: CYAN,
-   color: "#0a0a1a",
+   background: BLUE_LIGHT,
+   color: BG_PRIMARY,
    border: "none",
    borderRadius: 10,
    cursor: "pointer",
@@ -69,13 +76,11 @@ class ErrorBoundary extends React.Component<
             return this.props.fallback;
          }
 
+         const copy = getUiCopy().error;
          return (
             <div style={CONTAINER_STYLE} role="alert">
-               <h2>Something went wrong</h2>
-               <p>
-                  Sorry for the inconvenience. Try refreshing the page to
-                  continue.
-               </p>
+               <h2>{copy.title}</h2>
+               <p>{copy.body}</p>
                {import.meta.env.DEV && (
                   <details style={DETAILS_STYLE}>
                      <summary>Error Details (Development Only)</summary>
@@ -86,10 +91,10 @@ class ErrorBoundary extends React.Component<
                )}
                <button
                   onClick={this.handleReload}
-                  aria-label="Refresh the page"
+                  aria-label={copy.refresh_label}
                   style={BUTTON_STYLE}
                >
-                  Refresh Page
+                  {copy.refresh}
                </button>
             </div>
          );

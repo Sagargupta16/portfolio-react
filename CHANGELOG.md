@@ -2,6 +2,63 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.20.0] - 2026-10-24
+
+The 2026-10-24 audit sweep: every finding of the whole-repo audit (27 rows, 75 findings), the 89 open SonarCloud issues and the dependency backlog.
+
+### Fixed
+
+- **A failed lazy chunk no longer blanks the page.** A tab left open across a deploy points at hashed chunk files that are gone; pressing Ctrl+K then replaced the nav and every section with "Something went wrong". The command palette, build notes, CV viewer, footer, every project cover, demo and engagement scene now sit in their own error boundary, and a stale tab reloads once on `vite:preloadError` (`src/utils/chunkReload.ts`).
+- **The page behind a modal no longer scrolls.** The lock set `body` overflow, which does nothing while `html` sets `overflow-x: clip`, and Lenis kept scrolling (10 wheel ticks moved the page 1,320 px behind an open project). `useScrollLock` now locks the root element and stops Lenis for the project, experience and CV modals and the phone menu; dialog scroll no longer chains to the page.
+- **Escape closes one layer at a time**: a glossary card, then the palette or modal under it, then the More menu or build notes.
+- Glossary cards open above modals instead of behind them.
+- A shared `?project=` link keeps keyboard focus inside the dialog instead of on the section behind it.
+- **Stats overclaim.** "Projects contributed to" counted every repo with any PR, including ones closed unmerged; it now counts repos with a merged PR: 11, 5 of them with 10k+ stars (was 18 and 8).
+- **Tutorial origins are stated** (#259): Brainstorm Verse started from JS Mastery's Next.js Threads tutorial, and the four Unity games from a Unity 2D tutorial; each says what was added.
+- npm-linked project cards show the version npm serves (skillcheck 0.2.5, ITR Agent 0.3.0); the weekly sync now reads npm's `dist-tags.latest` for them.
+- Contact form: valid addresses such as `o'neil@example.com` are accepted, a stalled send stops after 15 s with a message, and dismissing the toast no longer wipes a newer error.
+- Copying a link or the email shows "Copy failed" when the browser refuses, instead of nothing.
+- Footer slide-to-email: the first tap after a drag is no longer swallowed, and its accessible name contains the visible label (the only Lighthouse failure).
+- Skill categories read "CS Fundamentals" and "Areas of Interest" (title-cased from keys before).
+- Reduced mode: line-drawing loops in 17 cover families, the MLOps service canvas and the engagement scenes rendered invisibly every frame; they now show their drawn state and stop.
+- Experience bullets keep numeric order past 9 items.
+- The Konami code accepts Caps Lock and a repeated first key.
+- `scripts/resume-tex.js`: an unclosed environment in the resume sources fails the deploy step with the token name instead of looping forever.
+
+### Changed
+
+- **First-load JS is 160 KB gzipped, down from 198 KB.** The forced `icons` chunk is gone, so the 71 skill logos load with the lazy sections; the footer and the CV viewer load lazily.
+- **Background loops run on the compositor.** The ambient beams, hero stack tiles, avatar ring, certificate float and skill breathe now animate `transform` strings (WAAPI) instead of x/y/rotate/scale on Motion's JS frameloop. The motion is the same.
+- Service canvases mount only near the viewport, like the project covers.
+- The hero headline's pointer weights read every letter's position once per frame, not once per letter after each write.
+- The footer slide knob arms its drag only as the footer nears the viewport (a drag mounting measures the whole document), and the nav bar keeps its memo across scroll flips.
+- Yellowtail and Bricolage Grotesque are preloaded, and the hero intro paints under the intro splash so LCP is recorded early. The splash is unchanged.
+- About a third of `index.css` moved into the lazy chunks that use it (palette, CV view, case study, contact form, badge and skill rails, footer end note, slide control, glossary card, sheet handle).
+- The skeleton shimmer animates a transform instead of `background-position`; the modal header drops its backdrop blur for an opaque fill.
+- Project search defers the grid update while typing; the footer clock pauses while offscreen.
+- **Copy lives in data.** Section titles, subtitles and More-menu blurbs (`data/sections.json`), the Stats band headings, labels and notes (`personal.json` `stats`), skill category labels (`skills.json` `categories`), glossary and build-note copy (`data/glossary.json`, `data/annotations.json`), every section's nav label and in-section wording (`sections.json`), the site chrome, from the nav and hero buttons to the footer, palette, CV viewer and error states (new `data/ui.json`), and the resume URL (`personal.json` `site.resume_url`). About 300 strings left the components; the rendered text is unchanged. Each service has a stable `key` that picks its icon and canvas. The validator checks every one. `llms.txt` and `index.md` now list the sections.
+- **Tokens.** `BLUE_LIGHT`, `SKY` and `BLUE_PALE` replace the legacy `CYAN`, `PURPLE` and `PINK` aliases; new `BG_PRIMARY`, `BG_CARD`, `MEDIA_QUERIES.coarse`, `TOUCH_HIT_AREA`, `EASING.standard`, CSS `--ch-*` channels and `--ease-*` curves replace hardcoded colours, curves and durations. The muted grey is one value everywhere (`#8a97a0`, 6.4:1 on the background); the last cyan accents moved to sky.
+- UI labels are at least 11 px, and small controls get a 44 px touch hit area on coarse pointers without changing how they look.
+- The scene kit shares its base gradient, colours and helpers (`backAtFor`, `smoothstep`, `pct`) across the cover families; 52 unused exports are gone. Four stores share `createStore`, three scroll listeners share `useScrolledPast`.
+- A Content Security Policy meta tag lists every runtime origin (build only).
+- **Automation.**
+   - Credly sync opens a `chore/sync-credly` PR instead of pushing to main. It refuses to write fewer badges than are stored, and follows pagination.
+   - Both bot PRs dispatch CI, so they get a `ci` check.
+   - CI/CD can be dispatched by hand or by a `resume-released` event, and a 6-hourly check redeploys when latex-resume publishes a new tag.
+   - Deploys are never cancelled by a newer run.
+   - The resume step uses the workflow token and fails when the tag cannot be resolved.
+   - The dependency audit covers every dependency.
+- **Live-data sync.** Versions only move up, and a rate limit skips a project instead of downgrading it. Each GitHub stat has its own 5% gate. Stars are applied per repo. Both sync scripts format their JSON with prettier.
+
+### Removed
+
+- `gh-pages`, the `deploy`/`predeploy` scripts and the `homepage` field (CI deploys with `actions/deploy-pages`), and the `esbuild` devDependency (Vite 8 minifies with Oxc).
+- Dead CSS custom properties and theme tokens.
+
+### Dependencies
+
+- Latest everywhere: motion 14.6, React 19.3, @emailjs/browser 5.0.3, lucide-react 1.61, Lenis 1.3.27, Vite 8.3.5, Vitest 5.0.5, ESLint 10.13, typescript-eslint 8.72, jsdom 30.1.3 and the rest. The `undici` override floor is 8.12.2 and `zod` is pinned to `^4.6.6`, so `pnpm audit` reports nothing.
+
 ## [4.19.1] - 2026-10-21
 
 ### Changed

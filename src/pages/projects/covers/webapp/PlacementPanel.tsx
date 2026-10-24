@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { GREEN } from "@/constants/theme";
 import { Backdrop, Packet, Wires, type Hop } from "./StageParts";
 import {
@@ -265,6 +266,41 @@ const PLACED = 0.56;
 const GROWTH = 0.1;
 const DONUT_CENTRE = 1 + STATS_PAD + MID;
 
+/* The increment's pathLength runs on Motion's JS frameloop, which the
+   Reduced freeze cannot pause, so Reduced shows it fully drawn and still. */
+const Increment = ({ tint }: Readonly<PanelProps>) => {
+   const { reducedMotion } = useMotionPreference();
+   const ring = {
+      cx: MID,
+      cy: MID,
+      r: RADIUS,
+      fill: "none",
+      stroke: tint,
+      strokeWidth: 4,
+   };
+   if (reducedMotion) {
+      return (
+         <circle
+            {...ring}
+            pathLength={1}
+            strokeDasharray={`${GROWTH} 1`}
+            strokeDashoffset={-PLACED}
+         />
+      );
+   }
+   return (
+      <motion.circle
+         {...ring}
+         initial={{ pathLength: 0, pathOffset: PLACED, opacity: 0 }}
+         animate={{
+            pathLength: [0, 0, GROWTH, GROWTH, GROWTH, 0],
+            opacity: ON_OFF,
+         }}
+         transition={loop(CYCLE, ARC_TIMES)}
+      />
+   );
+};
+
 const LegendRow = ({ color }: { color: string }) => (
    <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
       <span style={disc(5, color)} />
@@ -277,6 +313,7 @@ const StatsPanel = ({ tint }: PanelProps) => (
       <span style={LABEL_ABOVE}>STATS</span>
       <div style={{ padding: STATS_PAD }}>
          <svg
+            aria-hidden="true"
             width={DONUT}
             height={DONUT}
             viewBox={`0 0 ${DONUT} ${DONUT}`}
@@ -301,20 +338,7 @@ const StatsPanel = ({ tint }: PanelProps) => (
                   pathLength={1}
                   strokeDasharray={`${PLACED} 1`}
                />
-               <motion.circle
-                  cx={MID}
-                  cy={MID}
-                  r={RADIUS}
-                  fill="none"
-                  stroke={tint}
-                  strokeWidth={4}
-                  initial={{ pathLength: 0, pathOffset: PLACED, opacity: 0 }}
-                  animate={{
-                     pathLength: [0, 0, GROWTH, GROWTH, GROWTH, 0],
-                     opacity: ON_OFF,
-                  }}
-                  transition={loop(CYCLE, ARC_TIMES)}
-               />
+               <Increment tint={tint} />
             </g>
          </svg>
          <span

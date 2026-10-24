@@ -1,12 +1,13 @@
 import { Suspense, useRef, type CSSProperties, type ReactNode } from "react";
 import { useInView } from "motion/react";
+import ErrorBoundary from "@components/common/ErrorBoundary";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { getProjectCover } from "./coverRegistry";
+import { BASE_GRADIENT } from "./kit/sceneTokens";
 
 interface ProjectCoverProps {
    projectId: number;
-   title: string;
    accent: string;
 }
 
@@ -16,17 +17,21 @@ const SCENE_MOUNT_MARGIN = "300px 0px";
 
 // Same base gradient every scene paints first, so a scene mounting over the
 // placeholder is seamless.
-const SCENE_PLACEHOLDER = "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)";
+const SCENE_PLACEHOLDER = BASE_GRADIENT;
 
 const FILL: CSSProperties = { position: "absolute", inset: 0 };
+
+// A failed scene chunk keeps the slot's placeholder, so the card neither
+// shifts nor takes the whole Projects section down with it.
+const SCENE_FAILED = <div style={{ ...FILL, background: SCENE_PLACEHOLDER }} />;
 
 /**
  * 16:10 media slot at the top of a project card.
  * Every project renders an animated scene that is mounted only near the
  * viewport. It zooms subtly on card hover via the .project-cover-img class.
  */
-const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
-   const cover = getProjectCover(projectId, title);
+const ProjectCover = ({ projectId, accent }: ProjectCoverProps) => {
+   const cover = getProjectCover(projectId);
    const frameRef = useRef<HTMLDivElement>(null);
    const nearViewport = useInView(frameRef, { margin: SCENE_MOUNT_MARGIN });
    const { preference } = useMotionPreference();
@@ -42,13 +47,15 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             aria-hidden="true"
             style={FILL}
          >
-            <Suspense fallback={<div className="skeleton" style={FILL} />}>
-               <cover.Scene
-                  key={preference}
-                  tint={accent}
-                  variant={cover.variant}
-               />
-            </Suspense>
+            <ErrorBoundary fallback={SCENE_FAILED}>
+               <Suspense fallback={<div className="skeleton" style={FILL} />}>
+                  <cover.Scene
+                     key={preference}
+                     tint={accent}
+                     variant={cover.variant}
+                  />
+               </Suspense>
+            </ErrorBoundary>
          </div>
       );
    } else {

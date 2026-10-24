@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
+import { AMBER, GREEN } from "@/constants/theme";
 import {
    Bar,
    Label,
@@ -8,9 +9,7 @@ import {
    Wire,
 } from "@pages/projects/covers/kit/primitives";
 import {
-   AMBER,
    DOTS,
-   GREEN,
    W06,
    W16,
    W40,

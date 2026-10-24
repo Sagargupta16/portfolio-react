@@ -206,5 +206,18 @@
       "PyTorch",
       "Bash",
       "FastAPI"
-   ]
+   ],
+   "categories": {
+      "aws": { "label": "AWS" },
+      "devops": { "label": "DevOps & IaC" },
+      "ai_ml": { "label": "AI / Machine Learning" },
+      "ai_tools": { "label": "AI Developer Tools" },
+      "languages": { "label": "Languages" },
+      "backend": { "label": "Backend & Databases" },
+      "frontend": { "label": "Frontend" },
+      "tools_platforms": { "label": "Tools & Platforms" },
+      "cs_fundamentals": { "label": "CS Fundamentals" },
+      "soft_skills": { "label": "Soft Skills" },
+      "areas_of_interest": { "label": "Areas of Interest" }
+   }
 }

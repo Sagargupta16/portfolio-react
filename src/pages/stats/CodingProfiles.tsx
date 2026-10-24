@@ -1,11 +1,14 @@
 import { motion } from "motion/react";
 import { ArrowUpRight, Code, Star } from "lucide-react";
 import { getCodingPlatformStats } from "@data/achievements";
+import { getStatsCopy } from "@data/personal";
+import { getSectionCopy } from "@data/sections";
 import type { CodingPlatformStat } from "@/types";
 import { staggerContainer, fadeInUp } from "@utils/animations";
+import { fillTemplate } from "@utils/fillTemplate";
 import {
    MONO_FONT,
-   PURPLE,
+   SKY,
    TEXT_PRIMARY,
    TEXT_MUTED,
    DURATION,
@@ -16,8 +19,11 @@ import useMotionPreference from "@hooks/useMotionPreference";
 import GitHubCard from "./GitHubCard";
 import LeetCodeCard from "./LeetCodeCard";
 
+const COPY = getStatsCopy().platforms;
+
 // GitHub and LeetCode carry numbers and charts in their own cards; the
-// platforms that report a single figure keep the compact link card.
+// platforms that report a single figure keep the compact link card. Names
+// and captions are personal.json stats.platforms copy.
 const PLATFORM_CONFIG: Record<
    string,
    {
@@ -29,19 +35,20 @@ const PLATFORM_CONFIG: Record<
    }
 > = {
    geeksforgeeks: {
-      label: "GeeksforGeeks",
+      label: COPY.geeksforgeeks.label,
       // Brighter than the GfG brand green: #2f8d46 is 4.44:1 at 11px here.
       color: "#34a853",
       icon: Code,
       highlight: (s) => s.problems_solved ?? "",
-      subtitle: () => "Problems Solved",
+      subtitle: () => COPY.geeksforgeeks.caption,
    },
    hackerrank: {
-      label: "HackerRank",
-      color: PURPLE,
+      label: COPY.hackerrank.label,
+      color: SKY,
       icon: Star,
       highlight: (s) => s.problem_solving ?? "",
-      subtitle: (s) => `Problem Solving | ${s.cpp ?? "?"} C++`,
+      subtitle: (s) =>
+         fillTemplate(COPY.hackerrank.caption, { cpp: s.cpp ?? "?" }),
    },
 };
 
@@ -94,8 +101,8 @@ const CodingProfiles = ({ githubUsername }: Readonly<CodingProfilesProps>) => {
    return (
       <div style={{ marginTop: 48 }}>
          <motion.div className="subsection-heading" variants={fadeInUp}>
-            <Code size={22} style={{ color: PURPLE }} aria-hidden="true" />
-            <h3>Coding Platform Profiles</h3>
+            <Code size={22} style={{ color: SKY }} aria-hidden="true" />
+            <h3>{getSectionCopy("stats").subsections.platforms}</h3>
          </motion.div>
 
          <motion.div
@@ -171,7 +178,7 @@ const CodingProfiles = ({ githubUsername }: Readonly<CodingProfilesProps>) => {
                               marginTop: 4,
                            }}
                         >
-                           View
+                           {COPY.link_label}
                            <ArrowUpRight
                               size={14}
                               className="action-arrow action-arrow--external"

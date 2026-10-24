@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { BG_PRIMARY, GREEN } from "@/constants/theme";
 import {
-   BASE_DARK,
-   GREEN,
    LINEAR,
    NON_SCALING,
    WHITE_18,
@@ -68,16 +68,22 @@ const RUN = {
    times: [0, 0.01, 0.05, 0.5, 0.56, 1],
 };
 
-const Wiring = ({ tint }: TintProps) => (
-   <StageSvg>
-      <Wires paths={[...GRAPH, ...DEPLOY]} />
-      {/* the run in progress: px dashes along every job edge */}
+/* The run in progress: px dashes along every job edge. Reduced holds them
+   still, since strokeDashoffset runs on the JS frameloop the freeze cannot
+   pause. */
+const Run = ({ tint }: Readonly<TintProps>) => {
+   const { reducedMotion } = useMotionPreference();
+   const dashes = {
+      d: GRAPH.join(" "),
+      fill: "none",
+      stroke: tint,
+      strokeDasharray: "3 6",
+      vectorEffect: NON_SCALING,
+   };
+   if (reducedMotion) return <path {...dashes} />;
+   return (
       <motion.path
-         d={GRAPH.join(" ")}
-         fill="none"
-         stroke={tint}
-         strokeDasharray="3 6"
-         vectorEffect={NON_SCALING}
+         {...dashes}
          initial={{ strokeDashoffset: 0, opacity: 0 }}
          animate={{ strokeDashoffset: [0, -144], opacity: RUN.opacity }}
          transition={{
@@ -85,6 +91,13 @@ const Wiring = ({ tint }: TintProps) => (
             opacity: loop(CYCLE, RUN.times),
          }}
       />
+   );
+};
+
+const Wiring = ({ tint }: Readonly<TintProps>) => (
+   <StageSvg>
+      <Wires paths={[...GRAPH, ...DEPLOY]} />
+      <Run tint={tint} />
    </StageSvg>
 );
 
@@ -139,7 +152,7 @@ const Graph = ({ tint }: TintProps) => (
             ...boxAt(COMMIT, 9, 9),
             borderRadius: "50%",
             border: `2px solid ${tint}`,
-            background: BASE_DARK,
+            background: BG_PRIMARY,
          }}
       />
       {[LINT_PY, LINT_NODE, PYTEST, CLIENT, SONAR, PUBLISH].map((p) => (

@@ -1,7 +1,8 @@
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { GREEN } from "@/constants/theme";
 import {
    EASE,
-   GREEN,
    LINEAR,
    SOLID_FILL,
    W10,
@@ -145,21 +146,33 @@ const FileGlyph = ({ tint }: { tint: string }) => (
    />
 );
 
+/* The copy arc draws on. Its pathLength runs on Motion's JS frameloop, which
+   the Reduced freeze cannot pause, so Reduced shows it fully drawn and
+   still. */
+const CopyDraw = ({ tint }: Readonly<{ tint: string }>) => {
+   const { reducedMotion } = useMotionPreference();
+   const d = cubicD(COPY_ARC);
+   if (reducedMotion) return <path d={d} {...drawStroke(`${tint}aa`)} />;
+   return (
+      <motion.path
+         d={d}
+         {...drawStroke(`${tint}aa`)}
+         initial={{ pathLength: 0, opacity: 0 }}
+         animate={{
+            pathLength: [0, 0, 1, 1, 1, 0],
+            opacity: [0, 1, 1, 1, 0, 0],
+         }}
+         transition={loop(CYCLE, [0, COPY_LEG.from, LAND_AT, 0.5, 0.58, 1])}
+      />
+   );
+};
+
 const ClaudeTree = ({ tint }: { tint: string }) => (
    <>
       <Wires>
          <path d={TREE_D} {...hair(W18)} />
          <path d={cubicD(COPY_ARC)} {...hair(W10)} />
-         <motion.path
-            d={cubicD(COPY_ARC)}
-            {...drawStroke(`${tint}aa`)}
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{
-               pathLength: [0, 0, 1, 1, 1, 0],
-               opacity: [0, 1, 1, 1, 0, 0],
-            }}
-            transition={loop(CYCLE, [0, COPY_LEG.from, LAND_AT, 0.5, 0.58, 1])}
-         />
+         <CopyDraw tint={tint} />
       </Wires>
       <div
          style={{

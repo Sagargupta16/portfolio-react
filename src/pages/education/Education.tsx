@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getEducation } from "@data/education";
+import { getSectionCopy } from "@data/sections";
 import { staggerContainer } from "@utils/animations";
-import { PURPLE, MAX_WIDTH_NARROW } from "@/constants/theme";
+import { SKY, MAX_WIDTH_NARROW } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import TimelineSpine from "@components/ui/TimelineSpine";
@@ -10,17 +11,18 @@ import EducationCard from "./EducationCard";
 
 const Education = () => {
    const education = useMemo(() => getEducation(), []);
+   const { title, subtitle } = getSectionCopy("education");
    const { isMobile } = useBreakpoint();
 
    return (
       <PageSection
          id="education"
-         title="Education"
-         subtitle="NIT Warangal (MCA), DAVV (BCA)"
+         title={title}
+         subtitle={subtitle}
          maxWidth={MAX_WIDTH_NARROW}
       >
          <motion.div variants={staggerContainer}>
-            <TimelineSpine accentColor={PURPLE} count={education.length}>
+            <TimelineSpine accentColor={SKY} count={education.length}>
                {education.map((item, index) => (
                   <EducationCard
                      key={item.id}

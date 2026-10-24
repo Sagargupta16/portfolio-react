@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { GREEN } from "@/constants/theme";
 import {
-   GREEN,
    LABEL_LIT,
    NON_SCALING,
    WHITE_18,
@@ -75,36 +76,58 @@ const RETRAIN_TIMES = [0, 0.08, 0.86, 0.9, 0.99, 1];
 const RETRAIN_LENGTH = [1, 0, 0, 0, 1, 1];
 const RETRAIN_OFFSET = [0, 1, 1, 0, 0, 0];
 
-const Wiring = ({ tint }: TintProps) => (
-   <StageSvg>
-      <Wires paths={[...FAN_PATHS, ...RAILS]} />
-      <Wires paths={[RETRAIN]} stroke={`${tint}40`} dash="3 4" />
-      {/* training data in flight on every fan edge: px dashes, so non-scaling */}
-      <motion.path
-         d={FAN_PATHS.join(" ")}
-         fill="none"
-         stroke={tint}
-         strokeDasharray="3 7"
-         vectorEffect={NON_SCALING}
-         initial={{ strokeDashoffset: 0, opacity: 0 }}
-         animate={{ strokeDashoffset: [0, -160], opacity: FLOW_FADE.opacity }}
-         transition={{
-            strokeDashoffset: sweep(CYCLE),
-            opacity: loop(CYCLE, FLOW_FADE.times),
-         }}
-      />
-      {/* RetrainingReason=drift_detected: a uniform-stage draw, no vector-effect */}
-      <motion.path
-         d={RETRAIN}
-         fill="none"
-         stroke={tint}
-         strokeWidth={0.8}
-         initial={{ pathLength: 1, pathOffset: 0 }}
-         animate={{ pathLength: RETRAIN_LENGTH, pathOffset: RETRAIN_OFFSET }}
-         transition={loop(CYCLE, RETRAIN_TIMES)}
-      />
-   </StageSvg>
-);
+/* Stroke props run on Motion's JS frameloop, which the Reduced freeze cannot
+   pause, so Reduced draws both strokes still: the flow as static dashes, the
+   retrain edge fully drawn. */
+const Wiring = ({ tint }: Readonly<TintProps>) => {
+   const { reducedMotion } = useMotionPreference();
+   const flow = {
+      d: FAN_PATHS.join(" "),
+      fill: "none",
+      stroke: tint,
+      strokeDasharray: "3 7",
+      vectorEffect: NON_SCALING,
+   };
+   const retrain = { d: RETRAIN, fill: "none", stroke: tint, strokeWidth: 0.8 };
+   return (
+      <StageSvg>
+         <Wires paths={[...FAN_PATHS, ...RAILS]} />
+         <Wires paths={[RETRAIN]} stroke={`${tint}40`} dash="3 4" />
+         {reducedMotion ? (
+            <>
+               <path {...flow} />
+               <path {...retrain} />
+            </>
+         ) : (
+            <>
+               {/* training data in flight on every fan edge: px dashes, so non-scaling */}
+               <motion.path
+                  {...flow}
+                  initial={{ strokeDashoffset: 0, opacity: 0 }}
+                  animate={{
+                     strokeDashoffset: [0, -160],
+                     opacity: FLOW_FADE.opacity,
+                  }}
+                  transition={{
+                     strokeDashoffset: sweep(CYCLE),
+                     opacity: loop(CYCLE, FLOW_FADE.times),
+                  }}
+               />
+               {/* RetrainingReason=drift_detected: a uniform-stage draw, no vector-effect */}
+               <motion.path
+                  {...retrain}
+                  initial={{ pathLength: 1, pathOffset: 0 }}
+                  animate={{
+                     pathLength: RETRAIN_LENGTH,
+                     pathOffset: RETRAIN_OFFSET,
+                  }}
+                  transition={loop(CYCLE, RETRAIN_TIMES)}
+               />
+            </>
+         )}
+      </StageSvg>
+   );
+};
 
 /* ---------------- packets ---------------- */
 
@@ -164,6 +187,7 @@ const Packets = ({ tint }: TintProps) => (
 const Bucket = ({ tint }: TintProps) => (
    <div style={{ ...boxAt(S3, 29, 23), ...tintPanel(tint, 6) }}>
       <svg
+         aria-hidden="true"
          width={29}
          height={23}
          viewBox="0 0 22 18"

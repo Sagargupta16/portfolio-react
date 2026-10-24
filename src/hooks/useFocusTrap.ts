@@ -43,7 +43,7 @@ const useFocusTrap = <T extends HTMLElement>(
             return;
          }
          const first = nodes[0];
-         const last = nodes[nodes.length - 1];
+         const last = nodes.at(-1);
          const active = document.activeElement as HTMLElement | null;
          // If focus has escaped the container (e.g. landed on the backdrop or
          // body), pull it back in rather than letting Tab walk into the page

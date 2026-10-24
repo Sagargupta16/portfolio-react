@@ -1,10 +1,13 @@
 name: Sync Live Data
 
 # Weekly refresh of facts that can be derived from public APIs (open-source PR status and
-# stars, accepted discussion answers, LeetCode stats and rating history, GitHub contribution
-# and language stats). Opens or updates one PR for review
-# instead of pushing to main. A PR opened with GITHUB_TOKEN starts no other workflows, so
-# this job runs the data gates itself; merging the PR triggers the normal CI/CD deploy.
+# stars, project versions, accepted discussion answers, LeetCode stats and rating history,
+# GitHub contribution and language stats). Opens or updates one PR for review instead of
+# pushing to main. GitHub does create a pull_request run for a PR this GITHUB_TOKEN opens
+# or pushes, but holds it for approval or ends it with no jobs, so the PR never gets a
+# `ci` check that way. workflow_dispatch is the one trigger GITHUB_TOKEN may fire, so the
+# job dispatches CI/CD on the sync branch itself; that run puts the `ci` check on the PR's
+# head commit and deploys nothing. Merging the PR triggers the normal CI/CD deploy.
 
 on:
    schedule:
@@ -14,6 +17,8 @@ on:
 permissions:
    contents: write
    pull-requests: write
+   # gh workflow run: dispatch CI/CD on the sync branch.
+   actions: write
 
 concurrency:
    group: sync-live-data
@@ -43,15 +48,14 @@ jobs:
          - name: Install dependencies
            run: pnpm install --frozen-lockfile
 
+         # The script writes Prettier-formatted JSON itself.
          - name: Fetch live data
            env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            run: node scripts/sync-live-data.js
 
-         - name: Format and validate
-           run: |
-              pnpm exec prettier --write data/projects.json data/achievements.json data/news.json
-              pnpm validate:data
+         - name: Validate generated data
+           run: pnpm validate:data
 
          - name: Check for changes
            id: changes
@@ -73,5 +77,6 @@ jobs:
               if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
                  gh pr create --base main --head "$BRANCH" \
                     --title "chore: sync live data" \
-                    --body "Weekly refresh from public APIs (PR status and stars, accepted discussion answers, LeetCode stats and rating history, GitHub contribution and language stats). Data gates passed in the sync job. Review the diff, then merge to deploy."
+                    --body "Weekly refresh from public APIs (PR status and stars, project versions, accepted discussion answers, LeetCode stats and rating history, GitHub contribution and language stats). Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. Review the diff, then merge to deploy."
               fi
+              gh workflow run ci-cd.yml --ref "$BRANCH"

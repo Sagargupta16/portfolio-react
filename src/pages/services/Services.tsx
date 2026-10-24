@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
+import { getSectionCopy } from "@data/sections";
 import { getServices } from "@data/services";
 import { staggerContainer } from "@utils/animations";
 import { MAX_WIDTH } from "@/constants/theme";
@@ -9,13 +10,10 @@ import "./services.css";
 
 const Services = () => {
    const services = useMemo(() => getServices(), []);
+   const { title, subtitle } = getSectionCopy("services");
 
    return (
-      <PageSection
-         id="services"
-         title="Services"
-         subtitle="What I can help with"
-      >
+      <PageSection id="services" title={title} subtitle={subtitle}>
          <motion.div
             className="service-grid"
             style={{

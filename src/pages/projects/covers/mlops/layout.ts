@@ -6,8 +6,8 @@ import type { Point } from "../infra/tokens";
 
 export const CYCLE = 6;
 
-export const TOP = 28;
-export const BOTTOM = 76;
+const TOP = 28;
+const BOTTOM = 76;
 
 export const S3: Point = [19, TOP];
 export const TRAIN_X = 44;

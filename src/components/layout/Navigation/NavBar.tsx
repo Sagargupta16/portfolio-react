@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, ScanEye, Search, X } from "lucide-react";
 import { setPaletteOpen } from "@utils/paletteState";
@@ -6,11 +6,20 @@ import { toggleAnnotations, useAnnotationsOn } from "@utils/annotationsState";
 import {
    DURATION,
    EASING,
+   GLASS_BORDER,
    TEXT_PRIMARY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
 import MakerMark from "@components/ui/MakerMark";
+import { getSectionCopy } from "@data/sections";
+import { getUiCopy } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
 import DesktopNav from "./DesktopNav";
+
+const COPY = getUiCopy().nav;
+const CONTACT_LABEL = fillTemplate(COPY.navigate_label, {
+   label: getSectionCopy("contact").nav,
+});
 
 interface NavSection {
    id: string;
@@ -58,6 +67,12 @@ const NavBar = ({
    onToggleMenu,
 }: NavBarProps) => {
    const annotationsOn = useAnnotationsOn();
+   // A fresh array each render would break DesktopNav's memo on every scroll
+   // flip, and its layoutId pill would re-measure layout each time.
+   const desktopSections = useMemo(
+      () => sections.filter((s) => s.id !== "contact"),
+      [sections],
+   );
 
    return (
       <motion.nav
@@ -70,17 +85,17 @@ const NavBar = ({
             zIndex: 50,
             height: 64,
             backgroundColor: scrolled
-               ? "rgba(11, 16, 18, 0.92)"
-               : "rgba(11, 16, 18, 0.5)",
+               ? "rgb(var(--ch-bg) / 0.92)"
+               : "rgb(var(--ch-bg) / 0.5)",
             borderBottom: scrolled
-               ? "1px solid rgba(255, 255, 255, 0.06)"
+               ? "1px solid rgb(var(--ch-white) / 0.06)"
                : "1px solid transparent",
             transition: "background-color 0.3s, border-color 0.3s",
          }}
          initial={{ y: -80, opacity: 0 }}
          animate={{ y: 0, opacity: 1 }}
          transition={ENTRANCE_TRANSITION}
-         aria-label="Primary"
+         aria-label={COPY.label}
       >
          <div
             style={{
@@ -105,11 +120,11 @@ const NavBar = ({
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
-                  background: "rgba(255, 255, 255, 0.06)",
-                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  background: "rgb(var(--ch-white) / 0.06)",
+                  border: `1px solid ${GLASS_BORDER}`,
                   borderRadius: 10,
                }}
-               aria-label="Scroll to top"
+               aria-label={COPY.top_label}
             >
                <MakerMark size={36} />
             </button>
@@ -119,7 +134,7 @@ const NavBar = ({
             {!isMobile && (
                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                   <DesktopNav
-                     sections={sections.filter((s) => s.id !== "contact")}
+                     sections={desktopSections}
                      activeSection={activeSection}
                      onNavigate={onNavigate}
                   />
@@ -128,28 +143,28 @@ const NavBar = ({
                      onClick={toggleAnnotations}
                      className={`palette-trigger annotations-trigger${annotationsOn ? " is-on" : ""}`}
                      aria-pressed={annotationsOn}
-                     title="How this site is built"
+                     title={COPY.notes_label}
                   >
                      <ScanEye size={14} aria-hidden="true" />
-                     <span>How it&apos;s built</span>
+                     <span>{COPY.notes}</span>
                   </button>
                   <button
                      type="button"
                      onClick={() => setPaletteOpen(true)}
                      className="palette-trigger"
-                     aria-label="Open command palette"
+                     aria-label={COPY.palette_label}
                      aria-keyshortcuts="Control+K Meta+K"
                   >
                      <Search size={14} aria-hidden="true" />
-                     <kbd>Ctrl K</kbd>
+                     <kbd>{COPY.palette_key}</kbd>
                   </button>
                   <button
                      onClick={() => onNavigate("contact")}
                      className="btn-pill"
                      style={{ fontSize: 13, minHeight: 44 }}
-                     aria-label="Navigate to Contact"
+                     aria-label={CONTACT_LABEL}
                   >
-                     Contact Me
+                     {COPY.contact}
                   </button>
                </div>
             )}
@@ -163,7 +178,7 @@ const NavBar = ({
                      onClick={toggleAnnotations}
                      className={`palette-trigger palette-trigger-icon annotations-trigger${annotationsOn ? " is-on" : ""}`}
                      aria-pressed={annotationsOn}
-                     aria-label="How this site is built"
+                     aria-label={COPY.notes_label}
                   >
                      <ScanEye size={18} aria-hidden="true" />
                   </button>
@@ -171,7 +186,7 @@ const NavBar = ({
                      type="button"
                      onClick={() => setPaletteOpen(true)}
                      className="palette-trigger palette-trigger-icon"
-                     aria-label="Open command palette"
+                     aria-label={COPY.palette_label}
                   >
                      <Search size={18} aria-hidden="true" />
                   </button>
@@ -190,7 +205,9 @@ const NavBar = ({
                      whileHover={ICON_HOVER}
                      whileFocus={ICON_HOVER}
                      transition={COLOR_TRANSITION}
-                     aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                     aria-label={
+                        mobileMenuOpen ? COPY.menu_close : COPY.menu_open
+                     }
                      aria-expanded={mobileMenuOpen}
                      aria-controls="mobile-menu"
                   >

@@ -4,6 +4,7 @@ import { W16 } from "@pages/projects/covers/kit/sceneTokens";
    canvas. Nothing here animates a stroke, so no vector-effect is needed. */
 const Hairlines = ({ d }: Readonly<{ d: string }>) => (
    <svg
+      aria-hidden="true"
       width={80}
       height={80}
       viewBox="0 0 80 80"

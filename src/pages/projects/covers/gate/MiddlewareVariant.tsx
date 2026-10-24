@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { AMBER, GREEN } from "@/constants/theme";
 import {
    Bar,
    Label,
@@ -10,8 +11,6 @@ import {
    Wire,
 } from "../kit/primitives";
 import {
-   AMBER,
-   GREEN,
    GRID,
    W06,
    W16,

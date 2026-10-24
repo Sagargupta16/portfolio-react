@@ -2,9 +2,10 @@ import type { CSSProperties } from "react";
 import {
    AMBER,
    BLUE,
-   CYAN,
+   BLUE_LIGHT,
+   BLUE_PALE,
    MONO_FONT,
-   PURPLE,
+   SKY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
 
@@ -20,7 +21,7 @@ export interface SplitSegment {
 /** Small uppercase mono caption shared by the platform cards. */
 export const CAPTION_STYLE: CSSProperties = {
    fontFamily: MONO_FONT,
-   fontSize: 10,
+   fontSize: 11,
    fontWeight: 700,
    letterSpacing: "0.14em",
    textTransform: "uppercase",
@@ -32,10 +33,10 @@ export const CAPTION_STYLE: CSSProperties = {
 // so adjacent slices stay distinct.
 export const LANGUAGE_SHADES = [
    BLUE,
-   CYAN,
+   BLUE_LIGHT,
    "#1e40af",
-   PURPLE,
-   "#93c5fd",
+   SKY,
+   BLUE_PALE,
    "#bfdbfe",
 ];
 

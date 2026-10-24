@@ -1,0 +1,42 @@
+{
+   "palette": {
+      "title": "Ctrl+K is a shell",
+      "body": "A cmdk command palette with shell-style commands. Its code loads the first time you open it, not with the page."
+   },
+   "headline": {
+      "title": "Type that leans in",
+      "body": "Bricolage Grotesque on its variable weight axis. One animation-frame loop raises each letter from 600 to 800 as your pointer comes within 150px."
+   },
+   "bust": {
+      "title": "Drawn from my own photo",
+      "body": "The bust and the hopping mascot start from my photo. Backgrounds were removed with Stability on Amazon Bedrock, then the poses were sliced into an 8-frame sprite strip."
+   },
+   "mascot": {
+      "title": "It follows your reading",
+      "body": "One shared IntersectionObserver tells the mascot which section heading you are on, so it hops out of the old one and drops into the new one."
+   },
+   "news": {
+      "title": "Stable commit hashes",
+      "body": "Each entry gets a 7-character FNV-1a hash of its date and text, so the hashes stay the same on every build."
+   },
+   "projects": {
+      "title": "Covers without a scroll listener",
+      "body": "Every cover is a scene drawn in code, no screenshots. They reveal with CSS scroll-driven animation (animation-timeline: view()), with no JavaScript watching the scroll."
+   },
+   "contributions": {
+      "title": "Refreshed every Monday",
+      "body": "A scheduled GitHub Actions workflow re-reads PR states, stars and LeetCode stats every Monday and opens a pull request for review."
+   },
+   "contact": {
+      "title": "No backend to run",
+      "body": "The form sends through EmailJS straight from the browser. A hidden honeypot field drops most bots before anything is sent."
+   },
+   "vitals": {
+      "title": "Measured on your device",
+      "body": "Your Core Web Vitals for this visit, read live by the web-vitals library. The numbers stay in your browser."
+   },
+   "build": {
+      "title": "Every push is gated",
+      "body": "Each push to main runs format, lint, type-check, data validation, tests and a dependency audit before Vite builds and GitHub Pages deploys. index.md and llms.txt come out of that same build."
+   }
+}

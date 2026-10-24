@@ -1,25 +1,10 @@
-import { useSyncExternalStore } from "react";
+import { createStore } from "./createStore";
 
 /* Open/closed flag for the command palette, shared by the global Cmd/Ctrl+K
    listener, the nav triggers and the palette itself. */
 
-let open = false;
-const listeners = new Set<() => void>();
+const palette = createStore(false);
 
-export const setPaletteOpen = (next: boolean) => {
-   if (open === next) return;
-   open = next;
-   for (const listener of listeners) listener();
-};
+export const setPaletteOpen = (next: boolean) => palette.set(next);
 
-const subscribe = (listener: () => void) => {
-   listeners.add(listener);
-   return () => listeners.delete(listener);
-};
-
-export const usePaletteOpen = () =>
-   useSyncExternalStore(
-      subscribe,
-      () => open,
-      () => false,
-   );
+export const usePaletteOpen = palette.useValue;

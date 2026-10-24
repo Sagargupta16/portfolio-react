@@ -8,7 +8,10 @@
  *                                             plus newly accepted answers (GitHub GraphQL)
  *   projects.json  <group>[].version          active and beta projects: the higher of the
  *                                             latest release tag and the root manifest
- *                                             version (GitHub REST)
+ *                                             version, written only when it is higher
+ *                                             than the stored one (GitHub REST); for a
+ *                                             project whose live link is an npm package
+ *                                             page, the registry's latest dist-tag (npm)
  *   achievements.json  coding_platform_stats.leetcode  solved, hard, contests, best rating,
  *                                             best rank, badge, top %, solved by difficulty,
  *                                             rating per attended contest (LeetCode GraphQL)
@@ -18,6 +21,8 @@
  *
  * Writes only when something changed and prints a one-line summary per change.
  * A source that fails (rate limit, LeetCode blocking a CI IP) is skipped, never zeroed.
+ * Written files are in the repo's Prettier format, so they pass `pnpm format:check`
+ * without a separate formatting step.
  *
  * Usage: node scripts/sync-live-data.js
  * Env:   GITHUB_TOKEN (required for GraphQL), GITHUB_USER (default Sagargupta16),
@@ -27,6 +32,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { format, resolveConfig } from "prettier";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECTS_PATH = resolve(__dirname, "../data/projects.json");
@@ -55,19 +61,34 @@ const clean = (value) =>
 const warn = (what, err) =>
    console.warn(`skip ${clean(what)}: ${clean(err?.message ?? err)}`);
 
+// Format like `pnpm format` so a written file passes format:check as is.
+async function writeJson(path, data) {
+   const options = await resolveConfig(path);
+   const text = await format(JSON.stringify(data, null, 3), {
+      ...options,
+      filepath: path,
+   });
+   writeFileSync(path, text, "utf8");
+}
+
 const ghHeaders = {
    Accept: "application/vnd.github+json",
    "User-Agent": "portfolio-sync",
    ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
 };
 
-async function ghRest(path) {
-   const res = await fetch(`https://api.github.com${path}`, {
-      headers: ghHeaders,
-   });
-   if (!res.ok) throw new Error(`GET ${path} -> ${res.status}`);
+/** GET a JSON URL; a failed response throws an Error carrying its status. */
+async function getJson(url, headers) {
+   const res = await fetch(url, { headers });
+   if (!res.ok) {
+      const error = new Error(`GET ${url} -> ${res.status}`);
+      error.status = res.status;
+      throw error;
+   }
    return res.json();
 }
+
+const ghRest = (path) => getJson(`https://api.github.com${path}`, ghHeaders);
 
 async function ghGraphql(query, variables) {
    if (!TOKEN) throw new Error("GITHUB_TOKEN is required for GraphQL");
@@ -135,13 +156,17 @@ function applyPrState(entry, live, ref) {
    entry.merged_at = mergedAt;
 }
 
-function applyStars(entry, stars, repo) {
-   const drift =
+/** Set one repo's live star count on all of its entries, or on none. */
+function applyStars(entries, stars, repo) {
+   const drift = (entry) =>
       Math.abs(stars - entry.stars) / Math.max(Number(entry.stars) || 1, 1);
    // Only move stars by more than 5% so routine drift does not make noisy PRs.
-   if (typeof entry.stars === "number" && drift <= STAR_DRIFT) return;
-   note(`stars ${repo}: ${entry.stars} -> ${stars}`);
-   entry.stars = stars;
+   const settled = entries.every(
+      (entry) => typeof entry.stars === "number" && drift(entry) <= STAR_DRIFT,
+   );
+   if (settled) return;
+   note(`stars ${repo}: ${entries[0].stars} -> ${stars}`);
+   for (const entry of entries) entry.stars = stars;
 }
 
 async function syncPullRequests(prs) {
@@ -172,13 +197,22 @@ async function syncPullRequests(prs) {
          try {
             const live = await ghRest(`/repos/${repo}/pulls/${m[3]}`);
             applyPrState(entry, live, `${repo}#${m[3]}`);
-            const stars = starsByRepo.get(repo);
-            if (stars !== null) applyStars(entry, stars, repo);
          } catch (err) {
             warn(`PR ${entry.url}`, err);
          }
       }),
    );
+
+   // Stars belong to the repo, not the PR: set them per repo, so one failed
+   // PR fetch cannot leave a repo's entries disagreeing (the validator
+   // rejects that and the week's sync would be lost).
+   for (const repo of repos) {
+      const stars = starsByRepo.get(repo);
+      const entries = parsed
+         .filter(({ m }) => `${m[1]}/${m[2]}` === repo)
+         .map(({ entry }) => entry);
+      if (stars !== null) applyStars(entries, stars, repo);
+   }
 }
 
 // ---------- discussions ----------
@@ -425,14 +459,19 @@ const languagesMoved = (before = [], after = []) =>
          Math.abs(l.percent - (before[i]?.percent ?? 0)) >= LANGUAGE_DRIFT,
    );
 
-function githubStatsMoved(gh, fields) {
-   return (
-      drifted(gh.contributions, fields.contributions) ||
-      drifted(gh.pull_requests, fields.pull_requests) ||
-      gh.longest_streak !== fields.longest_streak ||
-      languagesMoved(gh.languages, fields.languages)
+// Each stat has its own gate, and only a stat that crosses it is written:
+// a streak move must not carry small contribution or PR moves along.
+const GITHUB_GATES = {
+   contributions: drifted,
+   pull_requests: drifted,
+   longest_streak: drifted,
+   languages: languagesMoved,
+};
+
+const movedGithubStats = (gh, fields) =>
+   Object.fromEntries(
+      Object.entries(fields).filter(([k, v]) => GITHUB_GATES[k](gh[k], v)),
    );
-}
 
 async function syncGithubStats(gh) {
    try {
@@ -449,8 +488,7 @@ async function syncGithubStats(gh) {
       };
       // Contributions tick up daily; like stars, only a real move rewrites the
       // card, so most weeks open no PR. The date moves only with the numbers.
-      if (!githubStatsMoved(gh, fields)) return;
-      if (applyFields(gh, fields, "github")) {
+      if (applyFields(gh, movedGithubStats(gh, fields), "github")) {
          gh.fetched = new Date().toISOString().slice(0, 10);
       }
    } catch (err) {
@@ -484,19 +522,40 @@ const MANIFESTS = [
    [".claude-plugin/plugin.json", (t) => JSON.parse(t).version],
 ];
 
-async function manifestVersion(repo) {
-   for (const [file, read] of MANIFESTS) {
-      try {
-         const { content } = await ghRest(`/repos/${repo}/contents/${file}`);
-         const v = parseVersion(
-            read(Buffer.from(content, "base64").toString()),
-         );
-         if (v?.some((n) => n > 0)) return v;
-      } catch {
-         // file absent or unparsable: try the next manifest
-      }
+// Only a 404 means "not there". Any other failure (a 403 or 429 rate limit,
+// a 5xx) throws, so the project is skipped this week instead of falling back
+// to a lower version from the other source.
+const unless404 = (err, fallback) => {
+   if (err.status === 404) return fallback;
+   throw err;
+};
+
+/** A repo file's base64 content, or undefined when the file does not exist. */
+async function repoFile(repo, file) {
+   try {
+      return (await ghRest(`/repos/${repo}/contents/${file}`)).content;
+   } catch (err) {
+      return unless404(err, undefined);
    }
-   return null;
+}
+
+/** The version a manifest declares, or null (0.0.0 and unparsable count as none). */
+function manifestField(read, content) {
+   try {
+      const v = parseVersion(read(Buffer.from(content, "base64").toString()));
+      return v?.some((n) => n > 0) ? v : null;
+   } catch {
+      return null;
+   }
+}
+
+// Recursion keeps the lookups in order: the first manifest with a version wins.
+async function manifestVersion(repo, index = 0) {
+   if (index === MANIFESTS.length) return null;
+   const [file, read] = MANIFESTS[index];
+   const content = await repoFile(repo, file);
+   const v = content === undefined ? null : manifestField(read, content);
+   return v ?? manifestVersion(repo, index + 1);
 }
 
 async function releaseVersion(repo) {
@@ -504,9 +563,21 @@ async function releaseVersion(repo) {
       return parseVersion(
          (await ghRest(`/repos/${repo}/releases/latest`)).tag_name,
       );
-   } catch {
-      return null;
+   } catch (err) {
+      return unless404(err, null);
    }
+}
+
+// An npm package page names the package, scoped ("@scope/name") or not.
+const NPM_PAGE =
+   /^https:\/\/(?:www\.)?npmjs\.com\/package\/((?:@[\w.-]+\/)?[\w.-]+)\/?$/;
+
+async function npmVersion(name) {
+   const tags = await getJson(
+      `https://registry.npmjs.org/-/package/${encodeURIComponent(name)}/dist-tags`,
+      { Accept: "application/json", "User-Agent": "portfolio-sync" },
+   );
+   return parseVersion(tags.latest);
 }
 
 // A release tag can lag the manifest (or not exist), so take the higher one.
@@ -519,22 +590,36 @@ async function latestVersion(repo) {
    return newer(release, manifest) ? release : manifest;
 }
 
+// A card whose live link is an npm page shows what that link installs: the
+// registry's latest dist-tag is authoritative and may move the version down.
+// Every other card takes the GitHub version, and only when it is higher, so a
+// failed lookup that lands on an older tag can never downgrade it.
+async function syncProjectVersion(project) {
+   const npm = NPM_PAGE.exec(project.live ?? "")?.[1];
+   const v = npm
+      ? await npmVersion(npm)
+      : await latestVersion(project.github.replace("https://github.com/", ""));
+   const version = v?.join(".");
+   if (!version || version === project.version) return;
+   const stored = parseVersion(project.version);
+   if (!npm && stored && !newer(v, stored)) return;
+   note(`${project.title} version ${project.version ?? "none"} -> ${version}`);
+   project.version = version;
+}
+
 async function syncProjectVersions(list) {
    const shipping = list.filter(
       (p) =>
-         p.status !== "complete" && p.github?.startsWith("https://github.com/"),
+         p.status !== "complete" &&
+         (NPM_PAGE.test(p.live ?? "") ||
+            p.github?.startsWith("https://github.com/")),
    );
    await Promise.all(
-      shipping.map(async (project) => {
-         const repo = project.github.replace("https://github.com/", "");
-         const v = await latestVersion(repo);
-         const version = v?.join(".");
-         if (!version || version === project.version) return;
-         note(
-            `${project.title} version ${project.version ?? "none"} -> ${version}`,
-         );
-         project.version = version;
-      }),
+      shipping.map((project) =>
+         syncProjectVersion(project).catch((err) =>
+            warn(`${project.title} version`, err),
+         ),
+      ),
    );
 }
 
@@ -565,17 +650,9 @@ if (achievements.coding_platform_stats?.github) {
 if (JSON.stringify([projects, achievements, news]) === before) {
    console.log("No changes.");
 } else {
-   writeFileSync(NEWS_PATH, JSON.stringify(news, null, 3) + "\n", "utf8");
-   writeFileSync(
-      PROJECTS_PATH,
-      JSON.stringify(projects, null, 3) + "\n",
-      "utf8",
-   );
-   writeFileSync(
-      ACHIEVEMENTS_PATH,
-      JSON.stringify(achievements, null, 3) + "\n",
-      "utf8",
-   );
+   await writeJson(NEWS_PATH, news);
+   await writeJson(PROJECTS_PATH, projects);
+   await writeJson(ACHIEVEMENTS_PATH, achievements);
    console.log(
       `${changes.length} change(s):\n- ${changes.map(clean).join("\n- ")}`,
    );

@@ -1,10 +1,10 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { GREEN } from "@/constants/theme";
+import { INK } from "../kit/sceneTokens";
 import { Backdrop, Packet, Wires, type Hop } from "./StageParts";
 import {
    BORDER_BOX,
-   INK,
    LABEL,
    LABEL_ABOVE,
    WHITE_10,

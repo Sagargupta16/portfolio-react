@@ -6,16 +6,19 @@ import {
    GitPullRequestClosed,
 } from "lucide-react";
 import type { OpenSourceContribution } from "@/types";
-import { PURPLE, GREEN, ORANGE } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import { SKY, GREEN, ORANGE } from "@/constants/theme";
 
 interface ContribCardProps {
    contrib: OpenSourceContribution;
 }
 
+const LABELS = getSectionCopy("projects").contribution_status;
+
 const STATUS_CONFIG = {
-   merged: { color: PURPLE, Icon: GitMerge, label: "Merged" },
-   open: { color: GREEN, Icon: CircleDot, label: "Open" },
-   closed: { color: ORANGE, Icon: GitPullRequestClosed, label: "Closed" },
+   merged: { color: SKY, Icon: GitMerge, label: LABELS.merged },
+   open: { color: GREEN, Icon: CircleDot, label: LABELS.open },
+   closed: { color: ORANGE, Icon: GitPullRequestClosed, label: LABELS.closed },
 } as const;
 
 const ContribCard = ({ contrib }: ContribCardProps) => {

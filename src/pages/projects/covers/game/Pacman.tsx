@@ -1,8 +1,9 @@
 import { useId, type CSSProperties } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { AMBER, GREEN } from "@/constants/theme";
+import { INK } from "../kit/sceneTokens";
 import {
-   INK,
    MEET,
    NON_SCALING,
    NONE,
@@ -200,8 +201,12 @@ const Maze = ({ tint }: { tint: string }) => (
    </>
 );
 
+/* The mask path eats the dots behind Pac-Man. Its pathLength runs on
+   Motion's JS frameloop, which the Reduced freeze cannot pause, so Reduced
+   leaves it out and every pacdot stays on the board. */
 const Pacdots = () => {
    const maskId = `pacdots${useId().replaceAll(/\W/g, "")}`;
+   const { reducedMotion } = useMotionPreference();
    return (
       <>
          <mask
@@ -213,19 +218,21 @@ const Pacdots = () => {
             height={33}
          >
             <rect x={-2} y={-2} width={30} height={33} fill="#fff" />
-            <motion.path
-               d={ROUTE_D}
-               fill={NONE}
-               stroke="#000"
-               strokeWidth={1.1}
-               strokeLinecap={ROUND}
-               initial={{ pathLength: 0, opacity: 1 }}
-               animate={{ pathLength: EATEN_LENGTH, opacity: EATEN_OPACITY }}
-               transition={{
-                  pathLength: loop(CYCLE, EATEN_TIMES, "linear"),
-                  opacity: loop(CYCLE, EATEN_FADE_TIMES),
-               }}
-            />
+            {!reducedMotion && (
+               <motion.path
+                  d={ROUTE_D}
+                  fill={NONE}
+                  stroke="#000"
+                  strokeWidth={1.1}
+                  strokeLinecap={ROUND}
+                  initial={{ pathLength: 0, opacity: 1 }}
+                  animate={{ pathLength: EATEN_LENGTH, opacity: EATEN_OPACITY }}
+                  transition={{
+                     pathLength: loop(CYCLE, EATEN_TIMES, "linear"),
+                     opacity: loop(CYCLE, EATEN_FADE_TIMES),
+                  }}
+               />
+            )}
          </mask>
          <path
             d={DOTS_D}
@@ -411,7 +418,12 @@ const Legend = () => (
 const Pacman = ({ tint }: { tint: string }) => (
    <>
       <div style={washStyle(tint, "68% 42%")} />
-      <svg viewBox={VIEW_BOX} preserveAspectRatio={MEET} style={svgStyle}>
+      <svg
+         aria-hidden="true"
+         viewBox={VIEW_BOX}
+         preserveAspectRatio={MEET}
+         style={svgStyle}
+      >
          {ARROWS.map((arrow) => (
             <ArrowKey key={arrow.id} arrow={arrow} tint={tint} />
          ))}

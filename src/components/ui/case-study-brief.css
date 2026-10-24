@@ -1,0 +1,76 @@
+/* case study brief: problem, built, decisions, outcome, inspect. Imported by
+   CaseStudyBrief.tsx, so it ships in the lazy modal chunks. */
+.case-brief {
+   display: grid;
+   gap: 0;
+   border: 1px solid rgb(255 255 255 / 0.07);
+   border-radius: 12px;
+   background: rgb(255 255 255 / 0.02);
+   overflow: hidden;
+}
+
+.case-brief-row {
+   display: grid;
+   grid-template-columns: 128px minmax(0, 1fr);
+   gap: 12px;
+   padding: 10px 14px;
+   border-top: 1px solid rgb(255 255 255 / 0.05);
+}
+
+.case-brief-row:first-child {
+   border-top: 0;
+}
+
+.case-brief dt {
+   display: flex;
+   align-items: center;
+   gap: 6px;
+   align-self: start;
+   padding-top: 2px;
+   font-family: var(--font-mono);
+   font-size: 11px;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+   color: var(--color-text-muted);
+}
+
+.case-brief dt span {
+   display: inline-flex;
+   color: var(--brief-accent);
+}
+
+.case-brief dd {
+   min-width: 0;
+   overflow-wrap: anywhere;
+   margin: 0;
+   font-size: 13px;
+   line-height: 1.6;
+   color: var(--color-text-secondary);
+}
+
+.case-brief dd ul {
+   display: grid;
+   gap: 4px;
+   padding-left: 14px;
+   list-style: disc;
+}
+
+.case-brief dd li::marker {
+   color: var(--brief-accent);
+}
+
+.case-brief-row.is-outcome {
+   background: color-mix(in srgb, var(--brief-accent) 7%, transparent);
+   box-shadow: inset 2px 0 0 var(--brief-accent);
+}
+
+.case-brief-row.is-outcome dd {
+   color: var(--color-text-primary);
+}
+
+@media (max-width: 639px) {
+   .case-brief-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+   }
+}

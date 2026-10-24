@@ -1,7 +1,8 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { GREEN } from "@/constants/theme";
 import {
-   GREEN,
    HAIRLINE,
    LABEL_LIT,
    NON_SCALING,
@@ -76,32 +77,64 @@ const TREE = [
 
 /* ---------------- policy attachments ---------------- */
 
-/* A uniform-stage draw (no vector-effect), hidden while it resets. */
+/* A uniform-stage draw (no vector-effect), hidden while it resets. Its
+   pathLength runs on Motion's JS frameloop, which the Reduced freeze cannot
+   pause, so Reduced shows it fully drawn and still. */
 const Attachment = ({
    d,
    tint,
    at,
-}: {
+}: Readonly<{
    d: string;
    tint: string;
    at: number;
-}) => (
-   <motion.path
-      d={d}
-      fill="none"
-      stroke={tint}
-      strokeWidth={0.75}
-      initial={{ pathLength: 0, opacity: 0 }}
-      animate={{ pathLength: [0, 0, 1, 1], opacity: [0, 0, 1, 1, 0, 0] }}
-      transition={{
-         pathLength: loop(CYCLE, [0, at, at + 0.12, 1]),
-         opacity: loop(CYCLE, [0, at - 0.005, at + 0.005, 0.92, 0.97, 1]),
-      }}
-   />
-);
+}>) => {
+   const { reducedMotion } = useMotionPreference();
+   const base = { d, fill: "none", stroke: tint, strokeWidth: 0.75 };
+   if (reducedMotion) return <path {...base} />;
+   return (
+      <motion.path
+         {...base}
+         initial={{ pathLength: 0, opacity: 0 }}
+         animate={{ pathLength: [0, 0, 1, 1], opacity: [0, 0, 1, 1, 0, 0] }}
+         transition={{
+            pathLength: loop(CYCLE, [0, at, at + 0.12, 1]),
+            opacity: loop(CYCLE, [0, at - 0.005, at + 0.005, 0.92, 0.97, 1]),
+         }}
+      />
+   );
+};
 
 const DELEGATE_FADE = appear(0.72);
 const ROOT_LIT = appear(0.49);
+
+/* Delegated admin designation: px dashes flowing, so non-scaling. Reduced
+   holds the dashes still (strokeDashoffset runs on the JS frameloop). */
+const Delegation = ({ tint }: Readonly<TintProps>) => {
+   const { reducedMotion } = useMotionPreference();
+   const dashes = {
+      d: DELEGATE,
+      fill: "none",
+      stroke: tint,
+      strokeDasharray: "4 4",
+      vectorEffect: NON_SCALING,
+   };
+   if (reducedMotion) return <path {...dashes} />;
+   return (
+      <motion.path
+         {...dashes}
+         initial={{ strokeDashoffset: 0, opacity: 0 }}
+         animate={{
+            strokeDashoffset: [0, -96],
+            opacity: DELEGATE_FADE.opacity,
+         }}
+         transition={{
+            strokeDashoffset: sweep(CYCLE),
+            opacity: loop(CYCLE, DELEGATE_FADE.times),
+         }}
+      />
+   );
+};
 
 const Wiring = ({ tint }: TintProps) => (
    <StageSvg>
@@ -125,23 +158,7 @@ const Wiring = ({ tint }: TintProps) => (
       <Attachment d={SCP_TO_INFRA} tint={tint} at={0.08} />
       <Attachment d={SCP_TO_WORKLOADS} tint={tint} at={0.1} />
       <Attachment d={RCP_TO_ROOT} tint={tint} at={0.38} />
-      {/* delegated admin designation: px dashes flowing, so non-scaling */}
-      <motion.path
-         d={DELEGATE}
-         fill="none"
-         stroke={tint}
-         strokeDasharray="4 4"
-         vectorEffect={NON_SCALING}
-         initial={{ strokeDashoffset: 0, opacity: 0 }}
-         animate={{
-            strokeDashoffset: [0, -96],
-            opacity: DELEGATE_FADE.opacity,
-         }}
-         transition={{
-            strokeDashoffset: sweep(CYCLE),
-            opacity: loop(CYCLE, DELEGATE_FADE.times),
-         }}
-      />
+      <Delegation tint={tint} />
    </StageSvg>
 );
 

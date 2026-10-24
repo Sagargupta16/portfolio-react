@@ -11,6 +11,7 @@ import {
    W40,
    W55,
    W70,
+   backAtFor,
    clock,
    line,
    loopProps,
@@ -36,14 +37,9 @@ const beat = clock(6);
 /* picks and resources fade out here at the top of every loop */
 const CLEAR = [0.03, 0.07];
 /* shown at rest, gone during CLEAR, back at `at` */
-const OUT_IN = [1, 1, 0, 0, 1, 1];
-const backAt = (at: number, ramp = 0.04) => [0, ...CLEAR, at, at + ramp, 1];
+const backAt = backAtFor(CLEAR);
 const revealAt = (at: number, from = 0): Loop =>
-   beat({
-      times: backAt(at),
-      opacity: OUT_IN,
-      y: [0, 0, from, from, 0, 0],
-   });
+   beat({ ...backAt(at), y: [0, 0, from, from, 0, 0] });
 
 const HEAD: Box = [26, 16, 268, 26];
 const PANEL_Y = 50;
@@ -105,14 +101,10 @@ const CURSOR_STOPS: Stop[] = [
 /* ---------------- timeline ---------------- */
 
 const CURSOR = beat(ride(CURSOR_ROUTE, CURSOR_STOPS));
-const DROPDOWN = beat({
-   times: backAt(0.12),
-   opacity: OUT_IN,
-   y: [0, 0, -5, -5, 0, 0],
-});
-const PICK_CSE = beat({ times: backAt(0.16), opacity: OUT_IN });
-const PICK_YEAR = beat({ times: backAt(0.3), opacity: OUT_IN });
-const PICK_JAVA = beat({ times: backAt(0.37), opacity: OUT_IN });
+const DROPDOWN = beat({ ...backAt(0.12), y: [0, 0, -5, -5, 0, 0] });
+const PICK_CSE = beat(backAt(0.16));
+const PICK_YEAR = beat(backAt(0.3));
+const PICK_JAVA = beat(backAt(0.37));
 const COLUMN_IN = [0.56, 0.62, 0.68].map((at) => revealAt(at, 5));
 
 const Reveal = ({

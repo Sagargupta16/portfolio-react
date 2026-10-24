@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import {
    EASE,
    FILL,
-   GREEN,
    LINEAR,
    W10,
    W18,

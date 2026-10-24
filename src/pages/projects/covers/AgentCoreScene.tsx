@@ -1,9 +1,8 @@
 import { motion } from "motion/react";
+import { AMBER, GREEN } from "@/constants/theme";
 import { Bar, Label, Packet, Panel, Pip, Shell, Wire } from "./kit/primitives";
 import {
-   AMBER,
    COLUMNS,
-   GREEN,
    INK,
    NON_SCALING,
    W06,

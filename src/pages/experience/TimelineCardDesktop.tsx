@@ -2,7 +2,14 @@ import { motion, type Variants } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { splitDateRange, isPresent } from "@utils/dateRange";
-import { MONO_FONT, GREEN, TEXT_MUTED, EASING } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import {
+   MONO_FONT,
+   GREEN,
+   TEXT_MUTED,
+   DURATION,
+   EASING,
+} from "@/constants/theme";
 import {
    TimelineNode,
    TIMELINE_DATE_COLUMN,
@@ -54,7 +61,9 @@ const TimelineCardDesktop = ({
          initial="hidden"
          whileInView="visible"
          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-         transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}
+         transition={{
+            layout: { duration: DURATION.default, ease: EASING.standard },
+         }}
       >
          {/* Left: Date + Location */}
          <div style={{ paddingTop: 4, textAlign: "right", paddingRight: 20 }}>
@@ -83,7 +92,7 @@ const TimelineCardDesktop = ({
                      color: GREEN,
                      letterSpacing: "0.02em",
                   }}
-                  aria-label="Currently active role"
+                  aria-label={getSectionCopy("experience").card.active_role}
                >
                   <PresentIndicator />
                </span>

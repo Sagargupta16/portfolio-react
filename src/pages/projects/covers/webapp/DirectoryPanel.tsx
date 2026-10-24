@@ -1,9 +1,9 @@
 import { motion } from "motion/react";
+import { INK } from "../kit/sceneTokens";
 import { Backdrop, Packet, Wires, type Hop } from "./StageParts";
 import {
    BORDER_BOX,
    CLEAR,
-   INK,
    LABEL,
    LABEL_ABOVE,
    WHITE_06,

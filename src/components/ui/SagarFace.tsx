@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, type Variants } from "motion/react";
 import usePointerLook from "@hooks/usePointerLook";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { DURATION } from "@/constants/theme";
 import portrait from "@assets/brand/sagar-bust.webp";
 
 /* Cartoon bust of him, the same character as the section Mascot (both made
@@ -37,9 +38,9 @@ const glint: Variants = {
       x: ["-120%", "260%"],
       opacity: [0, 1, 0],
       transition: {
-         x: { duration: 0.7, ease: "easeInOut" },
+         x: { duration: DURATION.slow, ease: "easeInOut" },
          opacity: {
-            duration: 0.7,
+            duration: DURATION.slow,
             times: [0, 0.45, 1],
             ease: ["easeOut", "easeIn"],
          },
@@ -53,7 +54,7 @@ const spark: Variants = {
       opacity: [0, 1, 0],
       scale: [0.4, 1, 1.15],
       transition: {
-         duration: 0.7,
+         duration: DURATION.slow,
          delay: 0.08 + i * 0.05,
          times: [0, 0.35, 1],
          ease: ["easeOut", "easeIn"],

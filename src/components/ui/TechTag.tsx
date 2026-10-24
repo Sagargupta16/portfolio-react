@@ -1,4 +1,4 @@
-import { MONO_FONT, CYAN } from "@/constants/theme";
+import { MONO_FONT, BLUE_LIGHT } from "@/constants/theme";
 
 interface TechTagProps {
    label: string;
@@ -6,7 +6,7 @@ interface TechTagProps {
    size?: number;
 }
 
-const TechTag = ({ label, accent = CYAN, size = 11 }: TechTagProps) => (
+const TechTag = ({ label, accent = BLUE_LIGHT, size = 11 }: TechTagProps) => (
    <span
       style={{
          fontFamily: MONO_FONT,

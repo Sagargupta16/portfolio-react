@@ -1,6 +1,8 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
 import {
+   BASE_GRADIENT,
    NON_SCALING,
    STAGE_H,
    STAGE_W,
@@ -19,9 +21,12 @@ import type { Box, Loop, Pt } from "./sceneTokens";
 /* Components of the shared stage kit: the three-layer shell, static SVG
    chrome, scaling animated strokes, and fixed-px HTML packets, pips, labels. */
 
-const BASE = "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)";
 const VIEWBOX = `0 0 ${STAGE_W} ${STAGE_H}`;
-const shell: CSSProperties = { ...layer, overflow: "hidden", background: BASE };
+const shell: CSSProperties = {
+   ...layer,
+   overflow: "hidden",
+   background: BASE_GRADIENT,
+};
 const svgFill: CSSProperties = { ...layer, width: "100%", height: "100%" };
 
 interface ShellProps {
@@ -50,7 +55,12 @@ export const Shell = ({
             background: `radial-gradient(circle at ${focus}, ${tint}1f, transparent 60%)`,
          }}
       />
-      <svg viewBox={VIEWBOX} preserveAspectRatio="none" style={svgFill}>
+      <svg
+         aria-hidden="true"
+         viewBox={VIEWBOX}
+         preserveAspectRatio="none"
+         style={svgFill}
+      >
          {stage}
       </svg>
       {children}
@@ -117,17 +127,29 @@ interface TraceProps {
    loop: Loop;
 }
 
+/* Peak of a keyframe track; a missing track counts as full. */
+const peak = (keys?: number[]) => (keys ? Math.max(...keys) : 1);
+
 /* Animated stroke (pathLength / pathOffset). It scales with the stage on
-   purpose: no vector-effect, so the normalised dash lands where it should. */
-export const Trace = ({ d, color, width, loop }: TraceProps) => (
-   <motion.path
-      d={d}
-      fill="none"
-      stroke={color}
-      strokeWidth={width}
-      {...loopProps(loop)}
-   />
-);
+   purpose: no vector-effect, so the normalised dash lands where it should.
+   Stroke props run on Motion's JS frameloop, which the Reduced freeze cannot
+   pause, so Reduced renders a still stroke: a draw-on fully drawn at its peak
+   length and opacity, and a travelling dash (pathOffset), whose packet the
+   frozen frame hides, not at all. */
+export const Trace = ({ d, color, width, loop }: Readonly<TraceProps>) => {
+   const { reducedMotion } = useMotionPreference();
+   const base = { d, fill: "none", stroke: color, strokeWidth: width };
+   if (!reducedMotion) return <motion.path {...base} {...loopProps(loop)} />;
+   if (loop.pathOffset) return null;
+   return (
+      <path
+         {...base}
+         pathLength={1}
+         strokeDasharray={`${peak(loop.pathLength)} 1`}
+         opacity={peak(loop.opacity)}
+      />
+   );
+};
 
 interface DotProps {
    color: string;

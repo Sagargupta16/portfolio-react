@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { ArrowRight, Code } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Variants } from "motion/react";
 import type { Service } from "@/types";
 import useBreakpoint from "@hooks/useBreakpoint";
@@ -12,8 +12,16 @@ import {
    TEXT_SECONDARY,
 } from "@/constants/theme";
 import GlassCard from "@components/ui/GlassCard";
-import { iconMap, ACCENT_COLORS, ART_STRIP_HEIGHT } from "./servicesConstants";
+import { getSectionCopy } from "@data/sections";
+import { fillTemplate } from "@utils/fillTemplate";
+import {
+   SERVICE_ICONS,
+   ACCENT_COLORS,
+   ART_STRIP_HEIGHT,
+} from "./servicesConstants";
 import ServiceAnimation from "./ServiceAnimation";
+
+const COPY = getSectionCopy("services");
 
 interface ServiceCardProps {
    service: Service;
@@ -40,7 +48,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
    const { reducedMotion } = useMotionPreference();
    const { navigateToSection } = useSectionNavigation();
    const colors = ACCENT_COLORS[index % ACCENT_COLORS.length];
-   const IconComponent = iconMap[service.title] || Code;
+   const IconComponent = SERVICE_ICONS[service.key];
    const lift = reducedMotion ? undefined : HOVER_LIFT;
 
    return (
@@ -92,7 +100,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                   }}
                />
                <ServiceAnimation
-                  title={service.title}
+                  serviceKey={service.key}
                   color={colors.icon}
                   compact={isMobile}
                />
@@ -170,9 +178,11 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                   className="text-action"
                   style={{ marginTop: 12, alignSelf: "flex-start" }}
                   onClick={() => navigateToSection("contact")}
-                  aria-label={`Discuss ${service.title}`}
+                  aria-label={fillTemplate(COPY.cta_label, {
+                     title: service.title,
+                  })}
                >
-                  Let's talk
+                  {COPY.cta}
                   <ArrowRight
                      size={16}
                      className="action-arrow"

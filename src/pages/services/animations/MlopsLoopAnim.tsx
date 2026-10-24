@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
 
 interface MlopsLoopAnimProps {
@@ -235,6 +236,7 @@ const CURVE_X = [0, 0, 6, 6, 0];
 
 const Monitor = ({ color }: Readonly<{ color: string }>) => (
    <svg
+      aria-hidden="true"
       viewBox={`0 0 ${MONITOR.w} ${MONITOR.h}`}
       style={{
          ...rect(MONITOR.x, MONITOR.y, MONITOR.w, MONITOR.h),
@@ -279,31 +281,39 @@ const ARC_LENGTH = [0, 0, 1, 1, 0];
 const ARC_FADE_TIMES = [0, 0.84, 0.85, 0.95, 0.98, 1];
 const ARC_OPACITY = held(0, 1, 0);
 
-const RetrainArc = ({ color }: Readonly<{ color: string }>) => (
-   <svg
-      viewBox="0 0 80 80"
-      style={{ ...rect(0, 0, 80, 80), overflow: "visible" }}
-   >
-      <path
-         d={ARC_PATH}
-         fill="none"
-         stroke={`${color}40`}
-         strokeDasharray="2 2"
-      />
-      <motion.path
-         d={ARC_PATH}
-         fill="none"
-         stroke={color}
-         strokeWidth={1.2}
-         initial={{ pathLength: 0, opacity: 0 }}
-         animate={{ pathLength: ARC_LENGTH, opacity: ARC_OPACITY }}
-         transition={{
-            pathLength: loop(ARC_TIMES),
-            opacity: loop(ARC_FADE_TIMES),
-         }}
-      />
-   </svg>
-);
+/* Its pathLength runs on Motion's JS frameloop, which the Reduced freeze
+   cannot pause, so Reduced shows the edge fully drawn and still. */
+const RetrainArc = ({ color }: Readonly<{ color: string }>) => {
+   const { reducedMotion } = useMotionPreference();
+   const edge = { d: ARC_PATH, fill: "none", stroke: color, strokeWidth: 1.2 };
+   return (
+      <svg
+         aria-hidden="true"
+         viewBox="0 0 80 80"
+         style={{ ...rect(0, 0, 80, 80), overflow: "visible" }}
+      >
+         <path
+            d={ARC_PATH}
+            fill="none"
+            stroke={`${color}40`}
+            strokeDasharray="2 2"
+         />
+         {reducedMotion ? (
+            <path {...edge} />
+         ) : (
+            <motion.path
+               {...edge}
+               initial={{ pathLength: 0, opacity: 0 }}
+               animate={{ pathLength: ARC_LENGTH, opacity: ARC_OPACITY }}
+               transition={{
+                  pathLength: loop(ARC_TIMES),
+                  opacity: loop(ARC_FADE_TIMES),
+               }}
+            />
+         )}
+      </svg>
+   );
+};
 
 const MlopsLoopAnim = ({ color }: Readonly<MlopsLoopAnimProps>) => (
    <div style={{ width: 80, height: 80, position: "relative" }}>

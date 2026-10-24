@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
+import { AMBER } from "@/constants/theme";
 import {
-   AMBER,
    EASE,
    FILL,
    LINEAR,

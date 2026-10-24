@@ -1,5 +1,8 @@
 import { motion } from "motion/react";
 import type { Transition } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { GREEN } from "@/constants/theme";
+import { pct } from "../kit/sceneTokens";
 import {
    ARC,
    CARD_H,
@@ -11,7 +14,6 @@ import {
    FUSE_FROM,
    FUSE_TO,
    FUSE_X,
-   GREEN,
    HALF_H,
    HALF_W,
    LINK,
@@ -25,58 +27,88 @@ import {
    secs,
 } from "./kinfolkLayout";
 
+const CONSENT_STROKE = {
+   d: CONSENT,
+   fill: "none",
+   stroke: GREEN,
+   strokeWidth: 9,
+   strokeLinecap: "round",
+} as const;
+
 /* Pending, then consented: the dashed person_link flows A to B while it is
    pending, consent draws it solid from B back to A, and as the trees fuse
-   it pulls in toward the meeting point under the converging cards. */
-export const PersonLink = ({ tint }: { tint: string }) => (
-   <>
-      <motion.path
-         d={LINK}
-         {...hairline(`${tint}99`)}
-         strokeDasharray="3 4"
-         animate={{ strokeDashoffset: [0, -7], opacity: [1, 1, 0, 0, 1, 1] }}
-         transition={{
-            strokeDashoffset: {
-               duration: 0.7,
-               repeat: Infinity,
-               ease: "linear",
-            },
-            opacity: loop(
-               0,
-               CONSENT_AT + 0.2,
-               CONSENT_AT + 0.5,
-               5.3,
-               5.7,
-               CYCLE,
-            ),
-         }}
-      />
-      <motion.path
-         d={CONSENT}
-         fill="none"
-         stroke={GREEN}
-         strokeWidth={9}
-         strokeLinecap="round"
-         animate={{
-            pathLength: [0, 0, 1, 1, 0],
-            opacity: [0, 0, 1, 1, 0, 0],
-            scaleX: [1, 1, 0.05, 0.05, 1],
-         }}
-         transition={{
-            pathLength: loop(0, CONSENT_AT, CONSENT_AT + 0.7, FUSE_TO, CYCLE),
-            opacity: loop(
-               0,
-               CONSENT_AT - 0.05,
-               CONSENT_AT + 0.05,
-               2.75,
-               3.05,
-               CYCLE,
-            ),
-            scaleX: loop(0, FUSE_FROM, FUSE_TO, FUSE_TO + 0.1, CYCLE),
-         }}
-      />
-   </>
-);
+   it pulls in toward the meeting point under the converging cards. The
+   dash flow and the draw run on Motion's JS frameloop, which the Reduced
+   freeze cannot pause, so Reduced holds the dashes still under the fully
+   drawn consent. */
+export const PersonLink = ({ tint }: Readonly<{ tint: string }>) => {
+   const { reducedMotion } = useMotionPreference();
+   const pending = {
+      d: LINK,
+      ...hairline(`${tint}99`),
+      strokeDasharray: "3 4",
+   };
+   if (reducedMotion) {
+      return (
+         <>
+            <path {...pending} />
+            <path {...CONSENT_STROKE} />
+         </>
+      );
+   }
+   return (
+      <>
+         <motion.path
+            {...pending}
+            animate={{
+               strokeDashoffset: [0, -7],
+               opacity: [1, 1, 0, 0, 1, 1],
+            }}
+            transition={{
+               strokeDashoffset: {
+                  duration: 0.7,
+                  repeat: Infinity,
+                  ease: "linear",
+               },
+               opacity: loop(
+                  0,
+                  CONSENT_AT + 0.2,
+                  CONSENT_AT + 0.5,
+                  5.3,
+                  5.7,
+                  CYCLE,
+               ),
+            }}
+         />
+         <motion.path
+            {...CONSENT_STROKE}
+            animate={{
+               pathLength: [0, 0, 1, 1, 0],
+               opacity: [0, 0, 1, 1, 0, 0],
+               scaleX: [1, 1, 0.05, 0.05, 1],
+            }}
+            transition={{
+               pathLength: loop(
+                  0,
+                  CONSENT_AT,
+                  CONSENT_AT + 0.7,
+                  FUSE_TO,
+                  CYCLE,
+               ),
+               opacity: loop(
+                  0,
+                  CONSENT_AT - 0.05,
+                  CONSENT_AT + 0.05,
+                  2.75,
+                  3.05,
+                  CYCLE,
+               ),
+               scaleX: loop(0, FUSE_FROM, FUSE_TO, FUSE_TO + 0.1, CYCLE),
+            }}
+         />
+      </>
+   );
+};
 
 /* Green confirmation ring as the two records settle into one card. */
 export const FusePulse = () => (
@@ -92,7 +124,6 @@ export const FusePulse = () => (
    />
 );
 
-const pct = (v: number, of: number) => `${(v / of) * 100}%`;
 const XS = ARC.map(([x]) => pct(x, VIEW_W));
 const YS = ARC.map(([, y]) => pct(y, VIEW_H));
 const LAST = ARC.length - 1;

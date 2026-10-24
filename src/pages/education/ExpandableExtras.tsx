@@ -1,7 +1,11 @@
 import { Trophy } from "lucide-react";
-import { AMBER, MONO_FONT, PURPLE, TEXT_SECONDARY } from "@/constants/theme";
+import { AMBER, MONO_FONT, SKY, TEXT_SECONDARY } from "@/constants/theme";
 import type { Education } from "@/types";
 import Disclosure from "@components/ui/Disclosure";
+import { getSectionCopy } from "@data/sections";
+import { fillTemplate } from "@utils/fillTemplate";
+
+const COPY = getSectionCopy("education").extras;
 
 interface ExpandableExtrasProps {
    item: Education;
@@ -35,9 +39,9 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                         fontSize: 11,
                         padding: "3px 8px",
                         borderRadius: 6,
-                        background: "rgba(56,189,248,0.08)",
-                        color: PURPLE,
-                        border: "1px solid rgba(56,189,248,0.15)",
+                        background: "rgb(var(--ch-sky) / 0.08)",
+                        color: SKY,
+                        border: "1px solid rgb(var(--ch-sky) / 0.15)",
                      }}
                   >
                      {skill}
@@ -54,10 +58,12 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                   label={
                      <>
                         <Trophy size={14} aria-hidden="true" />
-                        {achievementCount}{" "}
-                        {achievementCount === 1
-                           ? "achievement"
-                           : "achievements"}
+                        {fillTemplate(
+                           achievementCount === 1
+                              ? COPY.achievements_one
+                              : COPY.achievements_many,
+                           { count: achievementCount },
+                        )}
                      </>
                   }
                >
@@ -82,7 +88,7 @@ const ExpandableExtras = ({ item, marginLeft }: ExpandableExtrasProps) => {
                                  width: 6,
                                  height: 6,
                                  borderRadius: "50%",
-                                 backgroundColor: "rgba(245,158,11,0.5)",
+                                 backgroundColor: "rgb(var(--ch-amber) / 0.5)",
                                  marginTop: 8,
                                  flexShrink: 0,
                               }}

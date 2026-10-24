@@ -14,6 +14,7 @@
       "Terraform, CI/CD and MLOps, end to end."
    ],
    "headline": "I build *secure* AWS platforms that scale.",
+   "hero_greeting": "Hi, I'm",
    "availability": "Now: leading a greenfield AWS migration at RWS",
    "contact": {
       "github": "Sagargupta16"
@@ -31,6 +32,10 @@
       "terraform_resources": "4,000+",
       "terraform_workspaces": "20+",
       "security_controls": "1000+"
+   },
+   "impact_labels": {
+      "terraform_resources": "Resources under Terraform (RWS)",
+      "terraform_workspaces": "HCP Terraform workspaces (RWS)"
    },
    "highlights": [
       {
@@ -56,6 +61,124 @@
          "derived_from": "tfc_ambassador"
       }
    ],
+   "stats": {
+      "headings": {
+         "highlights": "Highlights",
+         "impact": "Consulting impact",
+         "delivery": "Delivery & credentials",
+         "open_source": "Open source",
+         "competitive": "Competitive programming"
+      },
+      "tiles": {
+         "clients_served": { "label": "Clients served" },
+         "terraform_resources": {
+            "label": "Resources under Terraform",
+            "note": "Across {workspaces} workspaces, none failing"
+         },
+         "security_controls": {
+            "label": "Security controls",
+            "note": "State Street landing zone, team result"
+         },
+         "talks": {
+            "label": "Talks & patterns",
+            "note": "Authored or presented at AWS"
+         },
+         "projects": {
+            "label": "Projects shipped",
+            "note": "{featured} featured"
+         },
+         "certifications": { "label": "Active certifications" },
+         "badges": { "label": "Learning badges" },
+         "podium": {
+            "label": "Podium finishes",
+            "note": "{first} first, {second} second, {third} third"
+         },
+         "merged_prs": {
+            "label": "PRs merged upstream",
+            "note": "Across {repos} projects",
+            "note_coauthored_one": "Plus 1 co-authored fix",
+            "note_coauthored_many": "Plus {count} co-authored fixes"
+         },
+         "stars": {
+            "label": "GitHub stars",
+            "note": "Combined, projects merged into"
+         },
+         "repos": {
+            "label": "Projects contributed to",
+            "note": "{big} with 10k+ stars"
+         },
+         "answers": {
+            "label": "Community answers",
+            "note": "{accepted} accepted, {helpful} marked helpful"
+         },
+         "leetcode_rating": {
+            "label": "LeetCode rating",
+            "note": "{badge} badge, top {top} of contestants"
+         },
+         "problems_solved": {
+            "label": "Problems solved",
+            "note": "{leetcode} LeetCode, {gfg} GeeksforGeeks"
+         },
+         "contests": {
+            "label": "Contests played",
+            "note": "Best finish: rank {rank}"
+         },
+         "hard_solved": {
+            "label": "Hard problems solved",
+            "note": "The hardest LeetCode tier"
+         }
+      },
+      "platforms": {
+         "link_label": "View",
+         "github": {
+            "label": "GitHub",
+            "contributions": "Contributions",
+            "pull_requests": "Pull requests",
+            "longest_streak": "Longest streak",
+            "streak_value": "{days} days",
+            "updated": "In the last year | updated {date}",
+            "languages": "Top languages by code size",
+            "profile_label": "GitHub profile @{username}",
+            "calendar": {
+               "label": "Daily GitHub contributions over the last year",
+               "current": "Current streak",
+               "less": "Less",
+               "more": "More",
+               "loading": "Loading GitHub contributions",
+               "summary": "{label}. {current} {days}.",
+               "days_one": "{count} day",
+               "days_many": "{count} days",
+               "tip": "{what} on {when}",
+               "contributions_none": "No contributions",
+               "contributions_one": "{count} contribution",
+               "contributions_many": "{count} contributions"
+            }
+         },
+         "leetcode": {
+            "label": "LeetCode",
+            "profile_label": "LeetCode profile {username}",
+            "top": "top {top}",
+            "best_rating": "Peak rating",
+            "problems_solved": "Solved",
+            "contests": "Contests",
+            "rating_peak": "PEAK {rating}",
+            "rating_contests": "{count} contests",
+            "rating_summary": "Contest rating from {first} in {first_year} to {last} in {last_year} over {count} contests, peak {peak}.",
+            "difficulty": "Solved by difficulty",
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard"
+         },
+         "geeksforgeeks": {
+            "label": "GeeksforGeeks",
+            "caption": "Problems Solved"
+         },
+         "hackerrank": {
+            "label": "HackerRank",
+            "caption": "Problem Solving | {cpp} C++"
+         }
+      }
+   },
    "languages": [
       { "name": "English", "level": "Professional Working" },
       { "name": "Hindi", "level": "Native" }
@@ -81,6 +204,7 @@
       }
    ],
    "site": {
-      "tech_stack": ["React 19", "Vite 8", "Tailwind v4", "Motion", "Lenis"]
+      "tech_stack": ["React 19", "Vite 8", "Tailwind v4", "Motion", "Lenis"],
+      "resume_url": "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf"
    }
 }

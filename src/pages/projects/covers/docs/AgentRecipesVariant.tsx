@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import {
    FILL,
-   GREEN,
    W03,
    W10,
    W18,

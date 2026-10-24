@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
+import { AMBER, GREEN } from "@/constants/theme";
 import {
-   AMBER,
-   GREEN,
    WHITE_30,
    boxAt,
    dotStyle,
@@ -77,6 +76,7 @@ const DRIFT = { x: [0, 0, 5, 5, 0], times: [0, 0.86, 0.91, 0.96, 1] };
 const Monitor = ({ tint }: TintProps) => (
    <div style={{ ...boxAt(MONITOR, 44, 23), ...panel(7), overflow: "hidden" }}>
       <svg
+         aria-hidden="true"
          width={34}
          height={13}
          viewBox="0 0 26 10"

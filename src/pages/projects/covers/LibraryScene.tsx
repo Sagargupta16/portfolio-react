@@ -1,9 +1,9 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import { Bar, Label, Panel, Pip, Shell, Wire } from "./kit/primitives";
 import {
    DOTS,
-   GREEN,
    INK,
    NON_SCALING,
    W06,
@@ -12,6 +12,7 @@ import {
    W40,
    W55,
    W70,
+   backAtFor,
    clock,
    label,
    loopProps,
@@ -42,10 +43,7 @@ const CLEAR = [0.03, 0.07];
 const RAMP = 0.03;
 
 /* shown at rest, gone during CLEAR, back from `at` */
-const backAt = (at: number): Keys => ({
-   times: [0, ...CLEAR, at, at + RAMP, 1],
-   opacity: [1, 1, 0, 0, 1, 1],
-});
+const backAt = backAtFor(CLEAR);
 
 /* ---------- shelves ---------- */
 
@@ -150,11 +148,11 @@ const LINE_LOOPS = LINES.map((_, i) => beat(lineKeys(i)));
 
 const DRAFT = beat(shown(0.05, 0.44));
 const REVISING = beat(shown(0.41, 0.61));
-const FINAL = beat(backAt(0.58));
+const FINAL = beat(backAt(0.58, RAMP));
 
 /* one commit per stage: draft, revising, final */
 const COMMITS: Loop[] = [0.39, 0.57, 0.62].map((at) =>
-   beat({ ...backAt(at), scale: [1, 1, 1, 0.3, 1, 1] }),
+   beat({ ...backAt(at, RAMP), scale: [1, 1, 1, 0.3, 1, 1] }),
 );
 
 /* the book leaves the plate's spine and slides into the empty slot */
@@ -167,7 +165,7 @@ const BOOK = beat({
    y: [0, 0, 0, BOOK_DY, BOOK_DY, 0, 0],
 });
 
-const FEED = beat({ ...backAt(0.8), scale: [1, 1, 1, 0.6, 1, 1] });
+const FEED = beat({ ...backAt(0.8, RAMP), scale: [1, 1, 1, 0.6, 1, 1] });
 
 /* ---------- parts ---------- */
 

@@ -8,11 +8,13 @@ import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
    TEXT_MUTED,
-   CYAN,
+   BLUE_LIGHT,
    MONO_FONT,
+   DURATION,
    EASING,
 } from "@/constants/theme";
 import type { ExperienceProject } from "@/types";
+import { getSectionCopy } from "@data/sections";
 import ProjectSourceLink from "./ProjectSourceLink";
 import EngagementScene from "./scenes/EngagementScene";
 
@@ -32,7 +34,7 @@ const BANNER: CSSProperties = {
    aspectRatio: "16 / 9",
    maxHeight: 336,
    borderRadius: "11px 11px 0 0",
-   borderBottom: "1px solid rgba(255,255,255,0.06)",
+   borderBottom: "1px solid rgb(var(--ch-white) / 0.06)",
 };
 
 const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
@@ -41,21 +43,21 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{
          delay: 0.2 + index * 0.12,
-         duration: 0.4,
+         duration: DURATION.default,
          ease: EASING.cinematic,
       }}
       style={{
          marginBottom: 20,
          padding: CARD_PAD,
          borderRadius: 12,
-         background: "rgba(255,255,255,0.02)",
-         border: "1px solid rgba(255,255,255,0.05)",
+         background: "rgb(var(--ch-white) / 0.02)",
+         border: "1px solid rgb(var(--ch-white) / 0.05)",
       }}
    >
       {project.scene && (
          <EngagementScene
             scene={project.scene}
-            tint={CYAN}
+            tint={BLUE_LIGHT}
             style={BANNER}
             fade
          />
@@ -68,7 +70,7 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
             marginBottom: 8,
          }}
       >
-         <FolderGit2 size={14} style={{ color: CYAN, flexShrink: 0 }} />
+         <FolderGit2 size={14} style={{ color: BLUE_LIGHT, flexShrink: 0 }} />
          <span
             style={{
                fontSize: 14,
@@ -82,12 +84,12 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
          {project.date && (
             <span
                style={{
-                  fontSize: 10,
+                  fontSize: 11,
                   color: TEXT_MUTED,
                   fontFamily: MONO_FONT,
                   padding: "2px 8px",
                   borderRadius: 6,
-                  background: "rgba(255,255,255,0.04)",
+                  background: "rgb(var(--ch-white) / 0.04)",
                }}
             >
                {project.date}
@@ -99,10 +101,13 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
       {project.case_study ? (
          <>
             <div style={{ marginBottom: 10 }}>
-               <CaseStudyBrief brief={project.case_study} accent={CYAN} />
+               <CaseStudyBrief brief={project.case_study} accent={BLUE_LIGHT} />
             </div>
             <div style={{ marginBottom: 8 }}>
-               <Disclosure label="Full details" accentColor={CYAN}>
+               <Disclosure
+                  label={getSectionCopy("experience").modal.full_details}
+                  accentColor={BLUE_LIGHT}
+               >
                   <ul
                      style={{
                         display: "flex",
@@ -111,33 +116,34 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
                         marginBottom: 8,
                      }}
                   >
-                     {Object.entries(project.description)
-                        .sort(([a], [b]) => a.localeCompare(b))
-                        .map(([, text]) => (
-                           <li
-                              key={text}
+                     {/* Integer keys ("1", "2", ... "10") enumerate in
+                         numeric order on their own; a string sort put "10"
+                         before "2". */}
+                     {Object.values(project.description).map((text) => (
+                        <li
+                           key={text}
+                           style={{
+                              color: TEXT_SECONDARY,
+                              fontSize: 12,
+                              lineHeight: 1.7,
+                              display: "flex",
+                              alignItems: "flex-start",
+                              gap: 8,
+                           }}
+                        >
+                           <span
                               style={{
-                                 color: TEXT_SECONDARY,
-                                 fontSize: 12,
-                                 lineHeight: 1.7,
-                                 display: "flex",
-                                 alignItems: "flex-start",
-                                 gap: 8,
+                                 width: 5,
+                                 height: 5,
+                                 borderRadius: "50%",
+                                 background: `${BLUE_LIGHT}80`,
+                                 marginTop: 8,
+                                 flexShrink: 0,
                               }}
-                           >
-                              <span
-                                 style={{
-                                    width: 5,
-                                    height: 5,
-                                    borderRadius: "50%",
-                                    background: `${CYAN}80`,
-                                    marginTop: 8,
-                                    flexShrink: 0,
-                                 }}
-                              />
-                              {text}
-                           </li>
-                        ))}
+                           />
+                           {text}
+                        </li>
+                     ))}
                   </ul>
                </Disclosure>
             </div>
@@ -151,38 +157,36 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
                marginBottom: 8,
             }}
          >
-            {Object.entries(project.description)
-               .sort(([a], [b]) => a.localeCompare(b))
-               .map(([, text]) => (
-                  <li
-                     key={text}
+            {Object.values(project.description).map((text) => (
+               <li
+                  key={text}
+                  style={{
+                     color: TEXT_SECONDARY,
+                     fontSize: 12,
+                     lineHeight: 1.7,
+                     display: "flex",
+                     alignItems: "flex-start",
+                     gap: 8,
+                  }}
+               >
+                  <span
                      style={{
-                        color: TEXT_SECONDARY,
-                        fontSize: 12,
-                        lineHeight: 1.7,
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: 8,
+                        width: 5,
+                        height: 5,
+                        borderRadius: "50%",
+                        background: `${BLUE_LIGHT}80`,
+                        marginTop: 8,
+                        flexShrink: 0,
                      }}
-                  >
-                     <span
-                        style={{
-                           width: 5,
-                           height: 5,
-                           borderRadius: "50%",
-                           background: `${CYAN}80`,
-                           marginTop: 8,
-                           flexShrink: 0,
-                        }}
-                     />
-                     {text}
-                  </li>
-               ))}
+                  />
+                  {text}
+               </li>
+            ))}
          </ul>
       )}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
          {project.skills.map((s) => (
-            <TechTag key={s} label={s} accent={CYAN} size={10} />
+            <TechTag key={s} label={s} accent={BLUE_LIGHT} />
          ))}
       </div>
       {project.link && (
@@ -190,7 +194,7 @@ const ModalProjectCard = ({ project, index }: ModalProjectCardProps) => (
             href={project.link}
             label={project.linkLabel}
             projectName={project.name}
-            accentColor={CYAN}
+            accentColor={BLUE_LIGHT}
          />
       )}
    </motion.div>

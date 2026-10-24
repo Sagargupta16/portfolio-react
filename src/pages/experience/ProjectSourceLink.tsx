@@ -1,5 +1,9 @@
 import { ExternalLink } from "lucide-react";
-import { MONO_FONT } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import { newTabLabel } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
+import { MEDIA_QUERIES, MONO_FONT, TOUCH_HIT_AREA } from "@/constants/theme";
+import useMediaQuery from "@hooks/useMediaQuery";
 
 interface ProjectSourceLinkProps {
    href: string;
@@ -18,34 +22,47 @@ interface ProjectSourceLinkProps {
  */
 const ProjectSourceLink = ({
    href,
-   label = "Source",
+   label = getSectionCopy("experience").links.source,
    projectName,
    accentColor,
-}: ProjectSourceLinkProps) => (
-   <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`View ${projectName} source on GitHub (opens in a new tab)`}
-      style={{
-         display: "inline-flex",
-         alignItems: "center",
-         gap: 5,
-         marginTop: 10,
-         padding: "5px 10px",
-         borderRadius: 8,
-         border: `1px solid ${accentColor}40`,
-         background: `${accentColor}12`,
-         color: accentColor,
-         fontFamily: MONO_FONT,
-         fontSize: 10,
-         lineHeight: 1.4,
-         textDecoration: "none",
-      }}
-   >
-      <ExternalLink size={11} style={{ flexShrink: 0 }} />
-      {label}
-   </a>
-);
+}: ProjectSourceLinkProps) => {
+   // The pill is about 26 px tall. On touch, the shared hit area makes its
+   // tap target at least 44 x 44 px without changing how it looks (same
+   // pattern as the Stats card View links).
+   const coarsePointer = useMediaQuery(MEDIA_QUERIES.coarse);
+
+   return (
+      <a
+         href={href}
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label={newTabLabel(
+            fillTemplate(getSectionCopy("experience").links.source_label, {
+               name: projectName,
+            }),
+         )}
+         style={{
+            position: "relative",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 5,
+            marginTop: 10,
+            padding: "5px 10px",
+            borderRadius: 8,
+            border: `1px solid ${accentColor}40`,
+            background: `${accentColor}12`,
+            color: accentColor,
+            fontFamily: MONO_FONT,
+            fontSize: 11,
+            lineHeight: 1.4,
+            textDecoration: "none",
+         }}
+      >
+         {coarsePointer && <span aria-hidden="true" style={TOUCH_HIT_AREA} />}
+         <ExternalLink size={11} style={{ flexShrink: 0 }} />
+         {label}
+      </a>
+   );
+};
 
 export default ProjectSourceLink;

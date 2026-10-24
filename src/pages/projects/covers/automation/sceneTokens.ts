@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Easing, Transition } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
+import { pct } from "../kit/sceneTokens";
 
 /* Shared timing, geometry and palette tokens for the AutomationScene family.
 
@@ -11,8 +12,8 @@ import { MONO_FONT } from "@/constants/theme";
    Chrome would compute the dash in user units and stroke it in screen units. */
 
 export const CYCLE = 6;
-export const VIEW_W = 1600;
-export const VIEW_H = 1000;
+const VIEW_W = 1600;
+const VIEW_H = 1000;
 export const VIEW_BOX = `0 0 ${VIEW_W} ${VIEW_H}`;
 export const NON_SCALING = "non-scaling-stroke";
 
@@ -23,10 +24,8 @@ export const secs = (...stamps: number[]): number[] =>
 /* Motion eases a keyframe array per segment on its frameloop but over the
    whole iteration on WAAPI values (opacity on HTML), so one ease string pulls
    the tracks apart. Every keyframed value gets one ease per segment. */
-export const perSegment = (
-   times: number[],
-   ease: Easing = "easeInOut",
-): Easing[] => times.slice(1).map(() => ease);
+const perSegment = (times: number[], ease: Easing = "easeInOut"): Easing[] =>
+   times.slice(1).map(() => ease);
 
 /** A repeating full-cycle keyframe transition from timestamps in seconds. */
 export const loop = (...stamps: number[]): Transition => {
@@ -39,8 +38,8 @@ export const loop = (...stamps: number[]): Transition => {
    };
 };
 
-export const xPct = (x: number): string => `${(x / VIEW_W) * 100}%`;
-export const yPct = (y: number): string => `${(y / VIEW_H) * 100}%`;
+export const xPct = (x: number): string => pct(x, VIEW_W);
+export const yPct = (y: number): string => pct(y, VIEW_H);
 
 export type Point = readonly [number, number];
 
@@ -96,9 +95,6 @@ export const travelStamps = (
    });
 };
 
-export const GREEN = "#22c55e";
-export const AMBER = "#f59e0b";
-
 export const WHITE_03 = "rgba(255,255,255,0.03)";
 export const WHITE_05 = "rgba(255,255,255,0.05)";
 export const WHITE_07 = "rgba(255,255,255,0.07)";
@@ -107,9 +103,6 @@ export const WHITE_14 = "rgba(255,255,255,0.14)";
 export const WHITE_22 = "rgba(255,255,255,0.22)";
 export const WHITE_35 = "rgba(255,255,255,0.35)";
 export const WHITE_55 = "rgba(255,255,255,0.55)";
-
-/** Opaque stand-in for a 3% white panel, for faces that cover or overlap. */
-export const PANEL_SOLID = "#10181c";
 export const PANEL_RX = 30;
 
 /* The fetch stage the three card actions share (QueryStage.tsx). */
