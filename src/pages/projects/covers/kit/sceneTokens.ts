@@ -23,7 +23,7 @@ export interface TintProps {
 
 /* Shared by every scene family, the engagement scenes and the cover slot.
    Green and amber status colours come from @/constants/theme. */
-export const INK = BG_PRIMARY;
+export { BG_PRIMARY as INK } from "@/constants/theme";
 export const BASE_GRADIENT = `linear-gradient(160deg, #0e1a24 0%, ${BG_PRIMARY} 60%)`;
 /* Opaque stand-in for a 3% white panel, for faces that cover or overlap. */
 export const PANEL_SOLID = "#10181c";

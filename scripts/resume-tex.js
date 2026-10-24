@@ -342,22 +342,20 @@ const plain = (nodes) =>
 
 /** Group inline nodes into contact links, split at "|" in text runs. */
 const splitLinks = (nodes) => {
-   const links = [];
-   let current = [];
-   const close = () => {
-      if (current.length) links.push(current);
-      current = [];
-   };
+   const links = [[]];
+   const add = (node) => links.at(-1).push(node);
    for (const node of nodes) {
-      if (typeof node === "string" && node.includes("|")) {
-         for (const [idx, part] of node.split("|").entries()) {
-            if (idx > 0) close();
-            if (part.trim()) current.push(part.trim());
-         }
-      } else current.push(node);
+      if (typeof node !== "string" || !node.includes("|")) {
+         add(node);
+         continue;
+      }
+      // Each "|" starts a new group; empty groups are dropped below.
+      node.split("|").forEach((part, idx) => {
+         if (idx > 0) links.push([]);
+         if (part.trim()) add(part.trim());
+      });
    }
-   close();
-   return links;
+   return links.filter((link) => link.length);
 };
 
 const parseHeader = (src) => {

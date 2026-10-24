@@ -41,9 +41,10 @@ jobs:
               latest="$(gh api repos/Sagargupta16/latex-resume/releases/latest --jq .tag_name)"
               # cv.json names the release tag it was parsed from; manifest.json
               # carries it too, for a build whose web view was skipped.
-              live="$(curl -fsSL "$SITE_URL/resume-pages/cv.json" | jq -r '.version // empty' || true)"
+              # --proto =https: the request and any redirect it follows stay on HTTPS.
+              live="$(curl -fsSL --proto '=https' "$SITE_URL/resume-pages/cv.json" | jq -r '.version // empty' || true)"
               if [ -z "$live" ]; then
-                 live="$(curl -fsSL "$SITE_URL/resume-pages/manifest.json" | jq -r '.version // empty' || true)"
+                 live="$(curl -fsSL --proto '=https' "$SITE_URL/resume-pages/manifest.json" | jq -r '.version // empty' || true)"
               fi
               echo "Latest release: $latest. Live site: ${live:-unknown}."
               if [ "$latest" = "$live" ]; then stale=false; else stale=true; fi

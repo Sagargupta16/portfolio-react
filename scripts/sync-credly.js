@@ -124,6 +124,10 @@ const INITIAL_BACKOFF_MS = 1000;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Badge names and error text come from the Credly API; keep each log entry on
+// one line so a value with line breaks cannot forge extra log lines.
+const oneLine = (value) => String(value ?? "").replaceAll(/[\r\n]+/g, " ");
+
 // Retries by recursion so each attempt waits for the previous backoff.
 async function fetchPage(url, attempt = 1) {
    try {
@@ -147,7 +151,9 @@ async function fetchPage(url, attempt = 1) {
       throw error;
    } catch (err) {
       if (err.retriable === false || attempt === MAX_RETRIES) throw err;
-      console.warn(`  attempt ${attempt} error: ${err.message}, retrying…`);
+      console.warn(
+         `  attempt ${attempt} error: ${oneLine(err.message)}, retrying…`,
+      );
       await sleep(INITIAL_BACKOFF_MS * 2 ** (attempt - 1));
       return fetchPage(url, attempt + 1);
    }
@@ -255,17 +261,21 @@ async function main() {
    // Summary
    console.log("\n--- Certifications ---");
    for (const c of certifications) {
-      console.log(`  ${c.name} (${c.issuer}) - ${c.issueDate}`);
+      console.log(
+         `  ${oneLine(c.name)} (${oneLine(c.issuer)}) - ${oneLine(c.issueDate)}`,
+      );
    }
    console.log("\n--- Learning Badges ---");
    for (const b of learningBadges) {
-      console.log(`  ${b.name} (${b.issuer}) - ${b.issueDate}`);
+      console.log(
+         `  ${oneLine(b.name)} (${oneLine(b.issuer)}) - ${oneLine(b.issueDate)}`,
+      );
    }
 }
 
 try {
    await main();
 } catch (err) {
-   console.error("Failed to sync Credly badges:", err.message);
+   console.error("Failed to sync Credly badges:", oneLine(err.message));
    process.exit(1);
 }
