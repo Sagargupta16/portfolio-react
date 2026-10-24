@@ -45,16 +45,15 @@
          "derived_from": "aws_samples"
       },
       {
-         "value": "3x",
-         "label": "TFC Ambassador",
-         "note": "AI/ML, CloudOps, Agentic AI",
-         "derived_from": "tfc_ambassador"
+         "value": "8x",
+         "label": "Field community ambassador",
+         "note": "AI/ML, Serverless, Cloud Ops, Communication Apps",
+         "derived_from": "community_ambassador"
       },
       {
-         "value": "2x",
-         "label": "TFC Member",
-         "note": "NGDE (Graduated), Serverless",
-         "derived_from": "tfc_member"
+         "value": "5",
+         "label": "AWS technical communities",
+         "note": "Ambassador in 4, member of Builder Experience"
       }
    ],
    "stats": {

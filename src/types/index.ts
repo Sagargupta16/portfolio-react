@@ -132,7 +132,8 @@ export interface InternalContribution {
    title: string;
    type: "talk" | "publication" | "program";
    year?: string;
-   /** How many talks or publications one generic line stands for (default 1). */
+   /** How many talks, publications or ambassador levels one generic line
+    *  stands for (default 1). */
    count?: number;
 }
 
@@ -182,8 +183,7 @@ export interface Highlight {
    value: string;
    label: string;
    note?: string;
-   derived_from?:
-      "aws_samples" | "tfc_ambassador" | "tfc_member" | "merged_prs";
+   derived_from?: "aws_samples" | "community_ambassador" | "merged_prs";
 }
 
 export interface ImpactStats {

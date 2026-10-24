@@ -9,8 +9,8 @@ AWS work is described in general terms. Design and layout are unchanged.
 ### Changed
 
 - **Experience, About, Stats and Services** describe AWS work in general terms; engagements are labelled by customer type, with 2 to 3 bullets and a short case study each.
-- **Stats.** Highlights read 11 upstream PRs merged, 3 AWS samples, 3x TFC Ambassador and 2x TFC Member, each derived from the data behind it. Consulting impact reads Clients served, Years at AWS, Speaker certifications and Talks & AWS samples; the talks tile counts both talks through a `count` on their one line.
-- **Programs.** TFC reads 3x Ambassador (AI/ML, CloudOps, Agentic AI) and 2x Member (NGDE, Serverless). New: Anthropic Claude Ambassador, Senior Speaker Certification, a security content review qualification and AWS Jam content testing (DevOps and GenAI). The experience modal's contributions heading reads "Patterns, Guides & Talks".
+- **Stats.** Highlights read 11 upstream PRs merged, 3 AWS samples, 8x field community ambassador (derived from a `count` on the community line) and 5 AWS technical communities. Consulting impact reads Clients served, Years at AWS, Speaker certifications and Talks & AWS samples; the talks tile counts both talks through a `count` on their one line.
+- **Programs.** Field community roles are one line, matching the community hub: ambassador across AI/ML, Serverless, Cloud Ops and Communication Apps (8 ambassador levels), and member of the Builder Experience community. New: Anthropic Claude Ambassador, Senior Speaker Certification, a security content review qualification and AWS Jam content testing (DevOps and GenAI). The experience modal's contributions heading reads "Patterns, Guides & Talks".
 - **Skills.** Added Network Firewall, AWS Backup, Systems Manager Patch Manager and Amazon Bedrock AgentCore (154 primary skills). CS Fundamentals, Soft Skills and Areas of Interest run as moving rails like the other categories, with their small chips.
 - **Location** is Hyderabad, India on the profile, the AWS roles and the JSON-LD address.
 
