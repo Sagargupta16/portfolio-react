@@ -11,10 +11,9 @@ import type { Frame, FigureModule } from "./hairline";
  * tint=%2360a5fa, tour=0 to hold the tour.
  */
 
-// A Map, so the module named in the URL can only ever be one of these files.
-const modules = new Map(
-   Object.entries(import.meta.glob<FigureModule>("./*/*.ts")),
-);
+// Every figure file. The URL never indexes this: a loader is chosen by an
+// exact match against these keys, so only a known file can ever be loaded.
+const modules = Object.entries(import.meta.glob<FigureModule>("./*/*.ts"));
 const q = new URLSearchParams(location.search);
 const path = `./${q.get("m") ?? "covers/diagram"}.ts`;
 const surfaceKey = q.get("surface") ?? "cover";
@@ -25,7 +24,7 @@ const width = Number(q.get("w") ?? 343);
 const tint = q.get("tint") ?? "#60a5fa";
 
 const lab = document.getElementById("lab");
-const load = modules.get(path);
+const load = modules.find(([key]) => key === path)?.[1];
 if (lab && !load) lab.textContent = `no module ${path}`;
 if (lab && load) {
    const mod = await load();
