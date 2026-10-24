@@ -1,10 +1,12 @@
 import { Suspense, useRef, type CSSProperties } from "react";
 import { useInView } from "motion/react";
-import useFreezeAnimations from "@hooks/useFreezeAnimations";
-import useMotionPreference from "@hooks/useMotionPreference";
+import { LazyHairlineFigure } from "@/figures/hairline/HairlineFigure";
+import { FRAMES } from "@/figures/hairline/stage";
 import type { EngagementSceneKey } from "@/types";
-import { BASE_GRADIENT } from "./sceneParts";
 import { ENGAGEMENT_SCENES } from "./sceneRegistry";
+
+// The figure's plate colour, so mounting is seamless.
+const PLATE = "#0c1216";
 
 interface EngagementSceneProps {
    scene: EngagementSceneKey;
@@ -15,8 +17,8 @@ interface EngagementSceneProps {
    fade?: boolean;
 }
 
-// Same idea as ProjectCover: a scene mounts only while its slot sits within
-// this distance of the viewport, so a long modal never runs every loop.
+// Same idea as ProjectCover: a figure mounts only while its slot sits within
+// this distance of the viewport, so a long modal never runs every figure.
 const MOUNT_MARGIN = "300px 0px";
 
 const BOTTOM_FADE: CSSProperties = {
@@ -28,8 +30,9 @@ const BOTTOM_FADE: CSSProperties = {
 };
 
 /**
- * Decorative slot for an engagement scene: lazy, mounted near the viewport,
- * frozen on its rest frame in Reduced mode and restarted when Full returns.
+ * Decorative slot for an engagement figure: lazy and mounted near the
+ * viewport. The kit reads the motion preference itself (Reduced lands every
+ * move at once and stops the tour), so nothing here remounts on it.
  */
 const EngagementScene = ({
    scene,
@@ -39,9 +42,7 @@ const EngagementScene = ({
 }: Readonly<EngagementSceneProps>) => {
    const slotRef = useRef<HTMLDivElement>(null);
    const nearViewport = useInView(slotRef, { margin: MOUNT_MARGIN });
-   const { preference } = useMotionPreference();
-   useFreezeAnimations(slotRef);
-   const Scene = ENGAGEMENT_SCENES[scene];
+   const load = ENGAGEMENT_SCENES[scene];
 
    return (
       <div
@@ -51,14 +52,17 @@ const EngagementScene = ({
          style={{
             position: "relative",
             overflow: "hidden",
-            // the scene's own base, so mounting is seamless
-            background: BASE_GRADIENT,
+            background: PLATE,
             ...style,
          }}
       >
          {nearViewport && (
             <Suspense fallback={null}>
-               <Scene key={preference} tint={tint} />
+               <LazyHairlineFigure
+                  load={load}
+                  frame={FRAMES.banner}
+                  tint={tint}
+               />
             </Suspense>
          )}
          {fade && <div style={BOTTOM_FADE} />}

@@ -272,9 +272,11 @@ const sceneKeys = (() => {
    try {
       const source = readFileSync(resolve(ROOT, SCENE_REGISTRY), "utf8");
       return new Set(
-         [...source.matchAll(/^[ \t]+"([a-z-]+)":[ \t]*lazy\(/gm)].map(
-            (match) => match[1],
-         ),
+         [
+            ...source.matchAll(
+               /^[ \t]+"([a-z-]+)":[ \t]*\(\)[ \t]*=>[ \t]*import\(/gm,
+            ),
+         ].map((match) => match[1]),
       );
    } catch (error) {
       fail(SCENE_REGISTRY, error.message);

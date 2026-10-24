@@ -29,10 +29,11 @@ export const ACCENT_COLORS: AccentColor[] = Array.from(
    },
 );
 
-/* Every animation draws on an 80 px canvas. It scales 1.8x beside the copy on
-   desktop and 1.5x in the phone strip, which is sized to show the whole
-   canvas, so the 6 px source labels render at 9 px or larger everywhere. */
+/* The service figure's square slot, in units of an 80 px base: 144 px beside
+   the copy on desktop, 160 px in the full-width phone strip, which is sized to
+   show the whole square. The slot is sized directly, never CSS-scaled, so
+   hairlines stay 0.9 px. */
 export const ART_CANVAS = 80;
 export const ART_SCALE_DESKTOP = 1.8;
-export const ART_SCALE_COMPACT = 1.5;
+export const ART_SCALE_COMPACT = 2;
 export const ART_STRIP_HEIGHT = ART_CANVAS * ART_SCALE_COMPACT + 8;

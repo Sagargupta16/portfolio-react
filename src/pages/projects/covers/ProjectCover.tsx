@@ -1,7 +1,7 @@
 import { Suspense, useRef, type CSSProperties, type ReactNode } from "react";
 import { useInView } from "motion/react";
-import useFreezeAnimations from "@hooks/useFreezeAnimations";
-import useMotionPreference from "@hooks/useMotionPreference";
+import { LazyHairlineFigure } from "@/figures/hairline/HairlineFigure";
+import { FRAMES } from "@/figures/hairline/stage";
 import { getProjectCover } from "./coverRegistry";
 
 interface ProjectCoverProps {
@@ -10,27 +10,24 @@ interface ProjectCoverProps {
    accent: string;
 }
 
-// A scene mounts only while its card sits within this distance of the
-// viewport, so a 44-card grid never runs more than a few loops at once.
-const SCENE_MOUNT_MARGIN = "300px 0px";
+// A figure mounts only while its card sits within this distance of the
+// viewport, so a 49-card grid never runs more than a few at once.
+const MOUNT_MARGIN = "300px 0px";
 
-// Same base gradient every scene paints first, so a scene mounting over the
-// placeholder is seamless.
-const SCENE_PLACEHOLDER = "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)";
+// The figure's plate colour, so a figure mounting over the placeholder is seamless.
+const PLATE = "#0c1216";
 
 const FILL: CSSProperties = { position: "absolute", inset: 0 };
 
 /**
  * 16:10 media slot at the top of a project card.
- * Every project renders an animated scene that is mounted only near the
- * viewport. It zooms subtly on card hover via the .project-cover-img class.
+ * Every project renders a hairline figure of its mechanism, mounted only near
+ * the viewport. It zooms subtly on card hover via the .project-cover-img class.
  */
 const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
    const cover = getProjectCover(projectId, title);
    const frameRef = useRef<HTMLDivElement>(null);
-   const nearViewport = useInView(frameRef, { margin: SCENE_MOUNT_MARGIN });
-   const { preference } = useMotionPreference();
-   useFreezeAnimations(frameRef);
+   const nearViewport = useInView(frameRef, { margin: MOUNT_MARGIN });
    if (!cover) return null;
 
    let media: ReactNode;
@@ -43,21 +40,16 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             style={FILL}
          >
             <Suspense fallback={<div className="skeleton" style={FILL} />}>
-               <cover.Scene
-                  key={preference}
+               <LazyHairlineFigure
+                  load={cover.load}
+                  frame={FRAMES.cover}
                   tint={accent}
-                  variant={cover.variant}
                />
             </Suspense>
          </div>
       );
    } else {
-      media = (
-         <div
-            aria-hidden="true"
-            style={{ ...FILL, background: SCENE_PLACEHOLDER }}
-         />
-      );
+      media = <div aria-hidden="true" style={{ ...FILL, background: PLATE }} />;
    }
 
    return (
@@ -68,7 +60,7 @@ const ProjectCover = ({ projectId, title, accent }: ProjectCoverProps) => {
             position: "relative",
             overflow: "hidden",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
-            background: "#0c1216",
+            background: PLATE,
          }}
       >
          {media}

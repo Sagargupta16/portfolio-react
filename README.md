@@ -20,7 +20,7 @@
 
 ## About
 
-A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Every project card carries an animated SVG cover scene that shows how that project actually works. Built as a single-page scroll application with strict TypeScript, sections loaded near the viewport, data validation, and a persisted Full/Reduced motion preference.
+A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Every illustration (project covers, experience roles and engagements, services) is an isometric line figure in the style of [hairline](https://github.com/lucasmarkes/hairline): it shows how that project or engagement actually works, tours itself, and answers the pointer. Built as a single-page scroll application with strict TypeScript, sections loaded near the viewport, data validation, and a persisted Full/Reduced motion preference.
 
 Section links support reloads and browser history. Navigation loads the content before scrolling to its destination, while motion changes preserve form drafts, project filters, and keyboard focus.
 
@@ -45,20 +45,20 @@ Section links support reloads and browser history. Navigation loads the content 
 
 ## Sections
 
-| Section          | Features                                                                                                                                                                                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                                                                                                       |
-| **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                                          |
-| **Experience**   | Timeline of roles, each with an animated scene of what that role did; details modal with case-study briefs and a scene per engagement                                                                                                             |
-| **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                                                |
-| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (150 skills; static chips in Reduced)                                                                                                                         |
-| **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; repo-accurate animated cover scenes for every project; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
-| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                              |
-| **Services**     | Six fact-based offerings in an even bento grid, each with a scene that shows the real mechanism (labels 9 px+ on phones)                                                                                                                          |
-| **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                                                                         |
-| **News**         | Dated milestones as a one-line commit graph with stable hashes, filterable by type                                                                                                                                                                |
-| **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                                                 |
-| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build                           |
+| Section          | Features                                                                                                                                                                                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                                                                                                                        |
+| **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                                                           |
+| **Experience**   | Timeline of roles, each with a line figure of what that role did; details modal with case-study briefs and a figure per engagement                                                                                                                                 |
+| **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                                                                 |
+| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (150 skills; static chips in Reduced)                                                                                                                                          |
+| **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; a repo-accurate line figure for every project that answers the pointer; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
+| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                                               |
+| **Services**     | Six fact-based offerings in an even bento grid, each with a line figure of the real deliverable                                                                                                                                                                    |
+| **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                                                                                          |
+| **News**         | Dated milestones as a one-line commit graph with stable hashes, filterable by type                                                                                                                                                                                 |
+| **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                                                                  |
+| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build                                            |
 
 ---
 
@@ -147,7 +147,7 @@ src/
 │   ├── education/
 │   ├── skill/
 │   ├── projects/                      # Projects.tsx, filters, cards, and detail modal
-│   │   └── covers/                    # Cover registry, lazy scene families, shared kit/
+│   │   └── covers/                    # Cover registry (lazy hairline figures from src/figures/)
 │   ├── achievement/
 │   ├── services/
 │   │   └── animations/                # 6 service card animations on an 80x80 canvas
@@ -235,4 +235,4 @@ Pull requests run every code/data gate and a production build without depending 
 
 ## License
 
-GPL-3.0 -- see [LICENSE](LICENSE) for details.
+GPL-3.0 -- see [LICENSE](LICENSE) for details. The figure kit in `src/figures/hairline/` is adapted from [hairline](https://github.com/lucasmarkes/hairline) (MIT); see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -1,13 +1,12 @@
-import { useRef } from "react";
-import useFreezeAnimations from "@hooks/useFreezeAnimations";
-import useMotionPreference from "@hooks/useMotionPreference";
-import GovernanceAnim from "./animations/GovernanceAnim";
-import PipelineAnim from "./animations/PipelineAnim";
-import NetworkAnim from "./animations/NetworkAnim";
-import MlopsLoopAnim from "./animations/MlopsLoopAnim";
-import AgentToolAnim from "./animations/AgentToolAnim";
-import StackAnim from "./animations/StackAnim";
-import { ART_SCALE_COMPACT, ART_SCALE_DESKTOP } from "./servicesConstants";
+import { Suspense, type CSSProperties } from "react";
+import type { FigureModule } from "@/figures/hairline";
+import { LazyHairlineFigure } from "@/figures/hairline/HairlineFigure";
+import { FRAMES } from "@/figures/hairline/stage";
+import {
+   ART_CANVAS,
+   ART_SCALE_COMPACT,
+   ART_SCALE_DESKTOP,
+} from "./servicesConstants";
 
 interface ServiceAnimationProps {
    title: string;
@@ -16,37 +15,54 @@ interface ServiceAnimationProps {
    compact?: boolean;
 }
 
-const ANIM_MAP: Record<string, React.FC<{ color: string }>> = {
-   "Landing Zones & Cloud Governance": GovernanceAnim,
-   "Infrastructure as Code & CI/CD": PipelineAnim,
-   "Cloud Networking": NetworkAnim,
-   "MLOps & GenAI on AWS": MlopsLoopAnim,
-   "AI Agents & Developer Tooling": AgentToolAnim,
-   "Full-Stack Product Builds": StackAnim,
+/** Hairline figure per service, by exact title in data/services.json. */
+const FIGURE_MAP: Record<string, () => Promise<FigureModule>> = {
+   "Landing Zones & Cloud Governance": () =>
+      import("@/figures/services/governance"),
+   "Infrastructure as Code & CI/CD": () =>
+      import("@/figures/services/pipeline"),
+   "Cloud Networking": () => import("@/figures/services/network"),
+   "MLOps & GenAI on AWS": () => import("@/figures/services/mlops"),
+   "AI Agents & Developer Tooling": () => import("@/figures/services/agents"),
+   "Full-Stack Product Builds": () => import("@/figures/services/fullstack"),
 };
 
+/**
+ * A square slot sized directly (no CSS scale, so hairlines stay 0.9 px and
+ * the read-out stays legible): 144 px beside the copy, 160 px in the phone
+ * strip. The kit follows the site's motion preference itself.
+ */
 const ServiceAnimation = ({
    title,
    color,
    compact = false,
 }: Readonly<ServiceAnimationProps>) => {
-   const AnimComponent = ANIM_MAP[title];
-   const frameRef = useRef<HTMLDivElement>(null);
-   const { preference } = useMotionPreference();
-   useFreezeAnimations(frameRef);
-
-   if (!AnimComponent) return null;
+   const load = FIGURE_MAP[title];
+   if (!load) return null;
+   const size = ART_CANVAS * (compact ? ART_SCALE_COMPACT : ART_SCALE_DESKTOP);
 
    return (
       <div
-         ref={frameRef}
          aria-hidden="true"
-         style={{
-            transform: `scale(${compact ? ART_SCALE_COMPACT : ART_SCALE_DESKTOP})`,
-            transformOrigin: "center",
-         }}
+         style={
+            {
+               position: "relative",
+               width: size,
+               height: size,
+               // the stage lets the column's accent light through; plates stay
+               // opaque, filled with the card colour lit by that light
+               "--hairline-stage": "transparent",
+               "--hairline-plate": `color-mix(in srgb, var(--color-bg-card), ${color} 7%)`,
+            } as CSSProperties
+         }
       >
-         <AnimComponent key={preference} color={color} />
+         <Suspense fallback={null}>
+            <LazyHairlineFigure
+               load={load}
+               frame={FRAMES.service}
+               tint={color}
+            />
+         </Suspense>
       </div>
    );
 };

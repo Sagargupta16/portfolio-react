@@ -2,6 +2,50 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [5.0.0] - 2026-10-24
+
+### Changed
+
+- **Every illustration is now a hairline figure.** All 49 project covers, the 7 experience role and engagement figures, and the 6 Services cards are rebuilt as isometric line figures in the visual language of [hairline](https://github.com/lucasmarkes/hairline):
+   - rounded solids drawn as a bright silhouette and one dim crease, with no vertical corners
+   - one bright stroke in the slot's tint as the only highlight
+   - no words inside the drawing; a short caption in the corner names what is under the pointer
+   - a composed rest pose that doubles as the thumbnail
+   - answers staggered out from the pointer by distance or hop, on hairline's two clocks: a 700 ms tween on `(.32, .72, 0, 1)` for a choice, a spring for a position
+
+   Each figure still shows its project's or engagement's real mechanism, and the copy is unchanged.
+
+- **Figures answer the pointer and tour themselves.** On desktop the pointer picks a part and the mechanism responds. A ghost pointer walks each figure through 3 to 6 stops when no hand is on it, which is how it animates on phones, and hands over to a real pointer or keyboard focus and back.
+- **Reduced mode** lands every movement at once and stops the tours, while the pointer still answers. The OS setting is never consulted (unchanged).
+- **Services** art sits in a directly sized square (144 px beside the copy, 160 px in the phone strip, up from 120), never CSS-scaled, so hairlines stay 0.9 px.
+
+### Added
+
+- `src/figures/hairline/`: the figure kit, adapted from hairline (MIT, notice in `THIRD_PARTY_NOTICES.md`).
+   - Isometric maths, springs and tweens.
+   - One shared frame loop that sleeps off screen.
+   - Pointer mapping through the svg's screen matrix, and the tour.
+   - A lazy `HairlineFigure` mount.
+   - Per-surface frames: cover 400x250, banner 400x225, service 320x320.
+   - The site's dark palette, with the tint as the bright stroke and `ok`/`warn` for pass and deny.
+- `src/__tests__/figures.test.ts`: for all 62 figures, checks:
+   - no text and no paint attributes (rules 10 and 04)
+   - nothing outside the frame
+   - the tour shape, and a read-out at every stop
+   - `destroy` empties the svg
+   - a snapshot of the drawing at rest and at every tour stop
+- `src/figures/README.md` (authoring guide: the ten rules and the site's deviations).
+- `figure-lab.html`, a dev-only bench that mounts any figure module by URL.
+
+### Removed
+
+- The Motion scene families and their shared kit:
+   - `src/pages/projects/covers/*Scene.tsx` and its sub-folders, including `kit/`
+   - the seven experience scenes, `SceneFrame` and `sceneParts`
+   - `src/pages/services/animations/`
+   - `useFreezeAnimations`, now unused
+- Every figure module loads lazily when its slot nears the viewport; the Projects chunk is 30.9 KB.
+
 ## [4.19.1] - 2026-10-21
 
 ### Changed
