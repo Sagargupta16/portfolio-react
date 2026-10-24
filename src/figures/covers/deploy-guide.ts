@@ -13,9 +13,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, clamp, disposer, facing, fitFrame, flatDot, inset, mk,
-   now, place, pointer, proj, put, register, rrect, slab, solid, tdone, tset,
-   tval, tween, unproj,
+   Cam, FRAMES, circ, clamp, disposer, facing, fitFrame, flatDot, follow, inset,
+   mk, now, place, proj, put, register, rrect, slab, solid, tdone, tset, tval,
+   tween, unproj,
 } from "@/figures/hairline";
 // prettier-ignore
 import type { FigureMount, Frame, Ring, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -104,15 +104,19 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       });
       cells.forEach((c, k) => {
          const z = tval(cz[k], t);
-         if (z !== c.z)
-            put(c.el, slab(P, front, c.ring, c.inner, 0, (c.z = z)));
+         if (z !== c.z) {
+            c.z = z;
+            put(c.el, slab(P, front, c.ring, c.inner, 0, z));
+         }
          moving ||= !tdone(cz[k], t);
       });
       const [x, y] = ctr(CELLS[home]);
       const top = cells[home].z;
       dots.forEach((d, k) => {
-         if (top !== drawn.d[k])
-            place(d, P(x - 5 + k * 3.4, y + 3, (drawn.d[k] = top)));
+         if (top !== drawn.d[k]) {
+            drawn.d[k] = top;
+            place(d, P(x - 5 + k * 3.4, y + 3, top));
+         }
          const lit = tval(on[k], t) > 0.5;
          if (lit !== drawn.lit[k])
             d.setAttribute("class", lit ? "dot m" : "dot off");
@@ -147,7 +151,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       CELLS.forEach((c, k) => {
          const dist = Math.abs(c[0] - ai) + Math.abs(c[1] - aj);
          const line = a >= 0 && (c[0] === ai || c[1] === aj);
-         let to = a < 0 ? restZ(c) : k === a ? CH + GROW : CH;
+         let to = k === a ? CH + GROW : CH;
+         if (a < 0) to = restZ(c);
          if (line && k !== a) to += clamp(GROW * (0.36 - dist * 0.08), 1, GROW);
          tset(cz[k], to, t, dist * step);
          cells[k].el.sil.classList.toggle("hi", k === k0);
@@ -161,7 +166,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          cells[home].el.g.appendChild(steps);
          drawn.d.fill(Number.NaN);
          on.forEach((w, k) => {
-            w.from = w.to = 0;
+            w.from = 0;
+            w.to = 0;
             tset(w, 1, t, (3 + k * 2) * step);
          });
       }
@@ -170,8 +176,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

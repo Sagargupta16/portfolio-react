@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now,
-   open, place, pointer, poly, proj, put, register, ringAt, rrect, slab, solid,
-   tdone, tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   now, open, part, place, poly, proj, put, register, ringAt, rrect, slab,
+   solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -62,18 +62,10 @@ export const frame = FRAMES.cover;
 /** agents, hooks, skills, then away: left to right as a hand reads the tree. */
 export const tour: Tour = ((s) => [s[1], s[2], s[3], null])(camera(frame).spot);
 
-/** The first fraction l of a polyline, by length. */
-function part(pts: Vec2[], l: number): Vec2[] {
-   const lens = pts
-      .slice(1)
-      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
-   let left = l * lens.reduce((s, d) => s + d, 0);
-   const out = [pts[0]];
-   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
-      const [a, b, k] = [pts[i], pts[i + 1], Math.min(1, left / lens[i]) || 0];
-      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
-   }
-   return out;
+/** Where card i stands when folder a is picked (-1: rest). */
+function height(a: number, i: number) {
+   if (a < 0) return REST[i];
+   return i === a ? BH : REST[i] + LIFT;
 }
 
 /** A row of n dots centred on (x, y), 3.4 apart. */
@@ -162,10 +154,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const from = a < 0 ? act : a;
       cards.forEach((c, i) => {
          const delay = Math.abs(i - from) * step;
-         const to = a < 0 ? REST[i] : i === a ? BH : REST[i] + LIFT;
-         tset(z[i], to, t, i === a ? step : delay);
+         tset(z[i], height(a, i), t, i === a ? step : delay);
          tset(l[i], i === a ? 1 : 0, t, 0);
-         c.el.sil.classList.toggle("hi", i === (a < 0 ? 0 : a));
+         c.el.sil.classList.toggle("hi", i === Math.max(0, a));
       });
       act = a;
       read.textContent = a < 0 ? "rest" : TAGS[a];
@@ -173,8 +164,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    cards[0].el.sil.classList.add("hi");
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = 30 + v * 30), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = 30 + v * 30;
+   };
+   return { set, destroy: bag.dispose };
 };

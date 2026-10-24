@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, clamp, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, place, pointer, proj, put, register, rrect, slab, solid, tdone, tset,
-   tval, tween,
+   Cam, FRAMES, clamp, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, place, proj, put, register, rrect, slab, solid, tdone,
+   tset, tval, tween,
 } from "@/figures/hairline";
 // prettier-ignore
 import type { FigureMount, Frame, Ring, Solid, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -35,6 +35,11 @@ const FEED = rrect(-4, -6, 11 + (N - 1) * PITCH + 15, 20, 7, 8);
 const card = ([x, y]: Vec3 | Vec2, s: number, d: number) =>
    rrect(x - HW * s, y - d * s, x + HW * s, y + d * s, 3 * s + 0.1, 6);
 const DEPTH = [5.4, 7, 6, 4.8];
+/** The read-out for part a: rest, the post, or the feed card it lifts. */
+function label(a: number) {
+   if (a < 0) return "rest";
+   return a === 0 ? "post" : `idea ${a}`;
+}
 const EXTENT = FORM.concat(FEED)
    .map((q): Vec3 => [q.u, q.v, -PT])
    .concat([
@@ -138,12 +143,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    });
    bag.add(B.unregister);
 
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** 0 posts the draft; k in 1..N lifts feed card k - 1; -1 is rest. */
    function setActive(a: number) {
@@ -165,18 +165,19 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       draft.el.sil.classList.toggle("hi", a <= 0);
       cards.forEach((c, k) => c.el.sil.classList.toggle("hi", a === k + 1));
       act = a;
-      read.textContent = a < 0 ? "rest" : post ? "post" : `idea ${a}`;
+      read.textContent = label(a);
       B.wake();
    }
 
    read.textContent = "rest";
    draft.el.sil.classList.add("hi");
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (q) => pick(q, act), setActive);
    return {
-      set: (v) =>
-         void ((arc = ARC * (0.5 + v * 0.5)), (lastF = Number.NaN), B.wake()),
+      set: (v) => {
+         arc = ARC * (0.5 + v * 0.5);
+         lastF = Number.NaN;
+         B.wake();
+      },
       destroy: bag.dispose,
    };
 };

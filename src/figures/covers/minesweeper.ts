@@ -11,8 +11,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, hull, inset, lerp,
-   mk, now, place, pointer, poly, prism, proj, put, register, rings,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, hull, inset,
+   lerp, mk, now, place, poly, prism, proj, put, register, rings,
    rrect, slab, solid, tdone, tset, tval, tween, unproj,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -53,6 +53,17 @@ const ring = (a: number, b: number) => {
    const [p, q] = [xy(a), xy(b)];
    return Math.max(Math.abs(p[0] - q[0]), Math.abs(p[1] - q[1]));
 };
+/** What stands open once cell a is clicked (-1: the rest board). */
+function opened(a: number): Set<number> {
+   if (a < 0) return REST;
+   return MINES.has(a) ? new Set([...REST, ...MINES]) : flood(a);
+}
+/** The read-out for a click on cell a. */
+function label(a: number): string {
+   if (a < 0) return "rest";
+   const [i, j] = xy(a);
+   return `${MINES.has(a) ? "mine" : "cell"} ${i}·${j}`;
+}
 
 const EXTENT = BOARD.map((q): Vec3 => [q.u, q.v, -PT]).concat(
    BOARD.map((q): Vec3 => [q.u, q.v, UP]),
@@ -90,7 +101,15 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const [x, y] = mid(c);
       const [r, ri] = rings(x - 4.2, y - 4.2, x + 4.2, y + 4.2, 2, 1);
       const k = MINES.has(c) ? 0 : n;
-      return { n: k, r, ri, x, y, o: tween(REST.has(c) ? 1 : 0), z: NaN };
+      return {
+         n: k,
+         r,
+         ri,
+         x,
+         y,
+         o: tween(REST.has(c) ? 1 : 0),
+         z: Number.NaN,
+      };
    });
    const els = cells.map(() => solid(g));
    order.forEach((c) => g.appendChild(els[c].g));
@@ -128,7 +147,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    let act = -1;
-   const bright = (c: number, cls: string, on: boolean) => {
+   const bright = (c: number, on: boolean) => {
+      const cls = MINES.has(c) ? "warn" : "hi";
       els[c].sil.classList.toggle(cls, on);
       bombs[c]?.sil.classList.toggle(cls, on);
    };
@@ -137,20 +157,17 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       if (a === act) return;
       const t = now();
       const from = a >= 0 ? a : act;
-      if (act >= 0) bright(act, MINES.has(act) ? "warn" : "hi", false);
-      const open =
-         a < 0 ? REST : MINES.has(a) ? new Set([...REST, ...MINES]) : flood(a);
+      if (act >= 0) bright(act, false);
+      const open = opened(a);
       cells.forEach((m, c) => {
          const on = REST.has(c) || open.has(c);
          tset(m.o, on ? 1 : 0, t, ring(c, from) * step);
       });
-      if (a >= 0) bright(a, MINES.has(a) ? "warn" : "hi", true);
+      if (a >= 0) bright(a, true);
       for (const d of dots[MARK])
          d.setAttribute("class", a < 0 ? "dot" : "dot m");
       act = a;
-      const [i, j] = xy(a);
-      read.textContent =
-         a < 0 ? "rest" : `${MINES.has(a) ? "mine" : "cell"} ${i}·${j}`;
+      read.textContent = label(a);
       B.wake();
    }
 
@@ -166,9 +183,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       }
       return -1;
    };
-   bag.add(
-      pointer(stage, { move: (p) => click(hit(p)), leave: () => click(-1) }),
-   );
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = 30 + 40 * v), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, click);
+   const set = (v: number) => {
+      step = 30 + 40 * v;
+   };
+   return { set, destroy: bag.dispose };
 };

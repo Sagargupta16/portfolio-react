@@ -11,8 +11,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, mk, now, place,
-   pointer, prism, proj, put, register, rrect, seg, slab, solid, tdone, tset,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk, now,
+   place, prism, proj, put, register, rrect, seg, slab, solid, tdone, tset,
    tval, tween,
 } from "@/figures/hairline";
 // prettier-ignore
@@ -64,8 +64,10 @@ export const frame = FRAMES.cover;
 export const tour: Tour = ((s) => [s[1], s[8], s[12], s[15], null])(
    camera(frame).spot,
 );
-const NAME = (a: number) =>
-   a < 5 ? TILE_NAMES[a] : a < 15 ? `wk ${a + 29}` : "streak";
+function NAME(a: number) {
+   if (a < 5) return TILE_NAMES[a];
+   return a < 15 ? `wk ${a + 29}` : "streak";
+}
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
@@ -103,7 +105,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
 
    const z = parts.map(() => tween(0));
    const live = days.map((col) => col.map(() => tween(0)));
-   const drawn = parts.map(() => NaN);
+   const drawn = parts.map(() => Number.NaN);
    const lit = days.map((col) => col.map(() => false));
 
    const B = register(stage, (_dt, t) => {
@@ -146,7 +148,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const hit = (p: Vec2) => {
       const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
       const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
+      if (best < 0 || d[best] >= CAP) return -1;
       return act >= 0 && d[act] - d[best] < STICK ? act : best;
    };
 
@@ -177,11 +179,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    setActive(-1);
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return {
-      set: (v) => void (rise = RISE * (0.5 + v * 0.5)),
-      destroy: bag.dispose,
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      rise = RISE * (0.5 + v * 0.5);
    };
+   return { set, destroy: bag.dispose };
 };

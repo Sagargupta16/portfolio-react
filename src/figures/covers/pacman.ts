@@ -10,8 +10,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, hull, inset, lerp,
-   mk, now, open, place, pointer, poly, prism, proj, put, register, ringAt,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, hull, inset,
+   lerp, mk, nearest, now, open, place, poly, prism, proj, put, register, ringAt,
    rings, rrect, run, slab, solid, tdone, tset, tval, tween, unproj,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2 } from "@/figures/hairline";
@@ -61,7 +61,7 @@ const EXTENT = [-PT, PAC + 3].flatMap((z) =>
 function camera(frame: Frame) {
    const C = Cam(45, 0.5, 1);
    fitFrame(C, EXTENT, frame);
-   return { C, P: proj(C) };
+   return { C, P: proj(C), front: facing(C) };
 }
 
 export const frame = FRAMES.cover;
@@ -75,7 +75,7 @@ export const tour: Tour = (({ P }) =>
 const runner = (trail: Vec2[], dur = 700) => ({
    trail,
    tw: tween(trail.length - 1, dur),
-   drawn: NaN,
+   drawn: Number.NaN,
 });
 type Runner = ReturnType<typeof runner>;
 const pos = (r: Runner, u: number): Vec2 => {
@@ -84,12 +84,22 @@ const pos = (r: Runner, u: number): Vec2 => {
    const [a, b] = [mid(r.trail[i]), mid(r.trail[i + 1] ?? r.trail[i])];
    return [lerp(a[0], b[0], v - i), lerp(a[1], b[1], v - i)];
 };
+/** Sends r on from the cell it is entering to c, the shortest way, stopping `short` cells before it. */
+function send(r: Runner, c: Vec2, short: number, delay: number, t: number) {
+   const i0 = Math.min(r.trail.length - 1, Math.ceil(tval(r.tw, t) - 1e-3));
+   const path = bfs(r.trail[i0], c).slice(1);
+   path.length = Math.max(0, path.length - short);
+   r.trail = r.trail.slice(0, i0 + 1).concat(path);
+   tset(r.tw, r.trail.length - 1, t, delay);
+}
+/** Paint order: a runner at c goes in just after the last wall behind it. */
+const back = (c: Vec2) =>
+   WALLS.findLastIndex((v) => v[2] <= c[0] - R0 || v[3] <= c[1] - R0) +
+   (c[0] + c[1]) / 1e3;
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
-   const { C, P } = camera(f);
-   const front = facing(C);
+   const { C, P, front } = camera(f);
    const bag = disposer();
-   let wait = 40 + 180 * value;
    const g = mk("g", {}, svg);
    put(solid(g), slab(P, front, BOARD, inset(C, BOARD, 1.4), -PT, 0));
    const dots = OPEN.map((c) => {
@@ -113,29 +123,35 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const [pac, ghost] = [runner(IN.slice()), runner([GHOST], 700 * (4 / 3))];
    // prettier-ignore
    const dome = [[R0, 0], [R0, 4.8], [2.8, 6.6], [1.4, 7.6]];
-   let [slots, act] = ["", -1];
+   let [slots, act, wait] = ["", -1, 40 + 180 * value];
+   const set = (v: number) => {
+      wait = 40 + 180 * v;
+   };
 
+   /** Pac-Man at index u, standing at p: body, working mouth, the dots he has eaten. */
+   function drawPac(u: number, p: Vec2) {
+      pac.drawn = u;
+      const b = pos(pac, u - 0.3);
+      const a0 = Math.atan2(p[1] - b[1], p[0] - b[0]) || 0;
+      const m = 0.15 + 0.5 * Math.abs(Math.cos(Math.PI * u));
+      put(pacEl, prism(P, front, disc(R0, p), null, 0, PAC));
+      const lid = Array.from({ length: 15 }, (_, k) => {
+         const a = a0 + m + ((2 * Math.PI - 2 * m) * k) / 14;
+         return P(p[0] + Math.cos(a) * 2.9, p[1] + Math.sin(a) * 2.9, PAC);
+      });
+      mouth.setAttribute("d", open([P(...p, PAC), ...lid, P(...p, PAC)]));
+      const ate = new Set(pac.trail.slice(0, u + 1.3).map(key));
+      for (const o of dots) {
+         let cls = key(o.c) === POWER && act < 0 ? "dot" : "dot m";
+         if (ate.has(key(o.c))) cls = "dot off";
+         if (cls !== o.cls) o.d.setAttribute("class", cls);
+         o.cls = cls;
+      }
+   }
    const B = register(stage, (_dt, t) => {
       const [u, w] = [tval(pac.tw, t), tval(ghost.tw, t)];
       const [p, q] = [pos(pac, u), pos(ghost, w)];
-      if (u !== pac.drawn) {
-         pac.drawn = u;
-         const b = pos(pac, u - 0.3);
-         const a0 = Math.atan2(p[1] - b[1], p[0] - b[0]) || 0;
-         const m = 0.15 + 0.5 * Math.abs(Math.cos(Math.PI * u));
-         put(pacEl, prism(P, front, disc(R0, p), null, 0, PAC));
-         const lid = Array.from({ length: 15 }, (_, k) => {
-            const a = a0 + m + ((2 * Math.PI - 2 * m) * k) / 14;
-            return P(p[0] + Math.cos(a) * 2.9, p[1] + Math.sin(a) * 2.9, PAC);
-         });
-         mouth.setAttribute("d", open([P(...p, PAC), ...lid, P(...p, PAC)]));
-         const ate = new Set(pac.trail.slice(0, u + 1.3).map(key));
-         for (const o of dots) {
-            const lit = key(o.c) === POWER && act < 0;
-            const cls = ate.has(key(o.c)) ? "dot off" : lit ? "dot" : "dot m";
-            if (cls !== o.cls) o.d.setAttribute("class", (o.cls = cls));
-         }
-      }
+      if (u !== pac.drawn) drawPac(u, p);
       if (w !== ghost.drawn) {
          ghost.drawn = w;
          const body = dome.flatMap(([r, z]) => ringAt(P, disc(r, q), z));
@@ -146,34 +162,23 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
             place(e, P(q[0] + a + s, q[1] + a - s, 5.8));
          });
       }
-      // Paint order: each runner goes in just after the last wall behind it.
-      const back = (c: Vec2) =>
-         WALLS.findLastIndex((v) => v[2] <= c[0] - R0 || v[3] <= c[1] - R0) +
-         (c[0] + c[1]) / 1e3;
       const rs = [[back(p), pacEl.g] as const, [back(q), ghostEl.g] as const];
       if (rs[1][0] < rs[0][0]) rs.reverse();
       const s = `${rs.map(([k]) => Math.floor(k))}${rs[0][1] === pacEl.g}`;
-      if (s !== slots && (slots = s))
+      if (s !== slots)
          for (const [k, el] of rs)
             layer.insertBefore(el, walls[Math.floor(k) + 1]?.g ?? null);
+      slots = s;
       return !tdone(pac.tw, t) || !tdone(ghost.tw, t);
    });
    bag.add(B.unregister);
-   /** Sends r on from the cell it is entering to c, the shortest way, stopping `short` cells before it. */
-   function send(r: Runner, c: Vec2, short: number, delay: number, t: number) {
-      const i0 = Math.min(r.trail.length - 1, Math.ceil(tval(r.tw, t) - 1e-3));
-      const path = bfs(r.trail[i0], c).slice(1);
-      path.length = Math.max(0, path.length - short);
-      r.trail = r.trail.slice(0, i0 + 1).concat(path);
-      tset(r.tw, r.trail.length - 1, t, delay);
-   }
    function choose(c: Vec2 | null) {
       const k = c ? key(c) : -1;
       if (k === act) return;
       act = k;
       const t = now();
       pacEl.sil.classList.toggle("hi", !!c);
-      pac.drawn = NaN;
+      pac.drawn = Number.NaN;
       read.textContent = c ? `dot ${c[0]}·${c[1]}` : "rest";
       if (!c) {
          tset(pac.tw, IN.length - 1, t, 0);
@@ -184,17 +189,12 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       send(ghost, c, 2, wait, t);
       B.wake();
    }
-
-   /** The corridor cell nearest the point under p: a wall's top, else the ground. */
-   const hit = (p: Vec2): Vec2 | null => {
+   /** The index in OPEN of the corridor cell nearest the point under p (a wall's top, else the ground), or -1. */
+   const near = nearest(OPEN.map(mid), CELL, 0);
+   const hit = (p: Vec2) => {
       const top = unproj(C, p[0], p[1], WALL);
-      const at = walled(top) ? top : unproj(C, p[0], p[1], 0);
-      const d = (c: Vec2) => Math.hypot(mid(c)[0] - at[0], mid(c)[1] - at[1]);
-      const best = OPEN.reduce((b, c) => (d(c) < d(b) ? c : b));
-      return d(best) < CELL ? best : null;
+      return near(walled(top) ? top : unproj(C, p[0], p[1], 0), -1);
    };
-   const leave = () => choose(null);
-   bag.add(pointer(stage, { move: (p) => choose(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (wait = 40 + 180 * v), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, (i) => choose(OPEN[i] ?? null));
+   return { set, destroy: bag.dispose };
 };

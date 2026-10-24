@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, open, place, pointer, proj, put, register, rrect, slab, solid, tdone,
-   tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, open, part, place, proj, put, register, rrect, slab, solid,
+   tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -63,20 +63,6 @@ export const tour: Tour = ((s) => [s[1], s[3], s[CU], null])(
 
 const hopMs = (v: number) => 30 + v * 60;
 
-/** The first fraction l of the run home, by length. */
-function part(pts: Vec2[], l: number): Vec2[] {
-   const lens = pts
-      .slice(1)
-      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
-   let left = l * lens.reduce((s, d) => s + d, 0);
-   const out = [pts[0]];
-   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
-      const [a, b, k] = [pts[i], pts[i + 1], Math.min(1, left / lens[i]) || 0];
-      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
-   }
-   return out;
-}
-
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
    const bag = disposer();
@@ -101,8 +87,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
 
    const b = BUILT.map((v) => tween(v));
    const run = tween(0);
-   const drawn = STEPS.map(() => NaN);
-   let [runDrawn, mark] = [NaN, ""];
+   const drawn = STEPS.map(() => Number.NaN);
+   let [runDrawn, mark] = [Number.NaN, ""];
 
    const B = register(stage, (_dt, t) => {
       let moving = !tdone(run, t);
@@ -110,7 +96,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          const v = tval(b[k], t);
          moving ||= !tdone(b[k], t);
          if (v === drawn[k]) return;
-         const h = height(k, (drawn[k] = v));
+         drawn[k] = v;
+         const h = height(k, v);
          put(els[k], slab(P, front, s.ring, inner[k], 0, h));
          dots[k].forEach((d, j) => {
             place(d, P((j - k / 2) * 4.4, s.y0 + D / 2, h));
@@ -118,15 +105,15 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          });
       });
       const r = tval(run, t);
-      if (r !== runDrawn)
-         home.setAttribute(
-            "d",
-            (runDrawn = r) > 0.01 ? floor(part(HOME, r)) : "",
-         );
+      if (r !== runDrawn) {
+         runDrawn = r;
+         home.setAttribute("d", r > 0.01 ? floor(part(HOME, r)) : "");
+      }
       // One bright place: the chosen step once built; the customer at rest, green on sign-off.
       const pick = act < 0 ? CU : act;
       const ready = pick === CU ? act < 0 || r > 0.98 : drawn[pick] > 0.95;
-      const key = ready ? `${pick}${act === CU ? "ok" : "hi"}` : "";
+      const cls = act === CU ? "ok" : "hi";
+      const key = ready ? `${pick}${cls}` : "";
       if (key !== mark) {
          [...els, cust].forEach((e) => e.sil.classList.remove("hi", "ok"));
          if (ready)
@@ -138,12 +125,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen; sticky by STICK.
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const hit = nearest(spot, CAP, STICK);
 
    /** Builds the stair up to step a from the foot; handover and sign-off draw the run home. */
    function setActive(a: number) {
@@ -151,7 +133,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const t = now();
       const top = a === CU ? N - 1 : a;
       b.forEach((tw, k) => {
-         const to = a < 0 ? BUILT[k] : k <= top ? 1 : 0;
+         const to = a < 0 ? BUILT[k] : Number(k <= top);
          tset(tw, to, t, to > tval(tw, t) ? k * step : (N - k) * step * 0.5);
       });
       tset(run, a >= N - 1 ? 1 : 0, t, a >= N - 1 ? N * step : 0);
@@ -161,8 +143,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
 
    read.textContent = "rest";
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hopMs(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (q) => hit(q, act), setActive);
+   const set = (v: number) => {
+      step = hopMs(v);
+   };
+   return { set, destroy: bag.dispose };
 };

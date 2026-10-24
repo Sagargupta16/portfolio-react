@@ -26,6 +26,7 @@ All notable changes to this project are documented here. Follows [Semantic Versi
    - One shared frame loop that sleeps off screen.
    - Pointer mapping through the svg's screen matrix, and the tour.
    - A lazy `HairlineFigure` mount.
+   - Shared helpers every figure uses: `part` (a polyline cut by length), `nearest` (the sticky hit test on rest poses) and `follow` (pointer in, svg emptied on dispose).
    - Per-surface frames: cover 400x250, banner 400x225, service 320x320.
    - The site's dark palette, with the tint as the bright stroke and `ok`/`warn` for pass and deny.
 - `src/__tests__/figures.test.ts`: for all 62 figures, checks:

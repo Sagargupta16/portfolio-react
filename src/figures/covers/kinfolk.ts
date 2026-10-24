@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now,
-   open, place, pointer, proj, put, register, rrect, slab, solid, tdone, tset,
-   tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, open, part, place, proj, put, register, rrect, slab, solid,
+   tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -40,7 +40,10 @@ const EDGES = [0, 5].flatMap((o) =>
    pairs([0, 2, 1, 2, 2, 3, 2, 4]).map(([a, b]) => [a + o, b + o]),
 );
 const ADJ = NODES.map((_, i) =>
-   [...EDGES, LINK].flatMap(([a, b]) => (a === i ? [b] : b === i ? [a] : [])),
+   [...EDGES, LINK].flatMap(([a, b]) => {
+      if (a === i) return [b];
+      return b === i ? [a] : [];
+   }),
 );
 const REST = NODES.map((_, i) => (i === LINK[0] || i === LINK[1] ? 0.22 : 0));
 const PLATES = [0, OFF].map((o) =>
@@ -91,18 +94,12 @@ function hops(a: number): number[] {
    return d;
 }
 
-/** The first fraction l of a polyline, by length. */
-function part(pts: Vec2[], l: number): Vec2[] {
-   const lens = pts
-      .slice(1)
-      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
-   let left = l * lens.reduce((s, d) => s + d, 0);
-   const out = [pts[0]];
-   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
-      const [a, b, k] = [pts[i], pts[i + 1], Math.min(1, left / lens[i]) || 0];
-      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
-   }
-   return out;
+/** The read-out for record a (-1: rest). */
+function label(a: number): string {
+   if (a < 0) return "rest";
+   const n = NODES[a];
+   if (n.k === 1) return "union";
+   return `${"ab"[n.t]} gen ${n.k ? 2 : 1}`;
 }
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
@@ -143,7 +140,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
             put(el(i), slab(P, front, rings[i], inner[i], b, b + height(i)));
          }
          const hi = i === act && zi > 0.5;
-         if (hi !== was.hi) el(i).sil.classList.toggle("hi", (was.hi = hi));
+         if (hi !== was.hi) {
+            was.hi = hi;
+            el(i).sil.classList.toggle("hi", hi);
+         }
          moving ||= !tdone(z[i], t);
       });
       const li = tval(l, t);
@@ -157,12 +157,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on the rest tops, sticky by STICK, so a risen record cannot flip the choice.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Raises the family around record a (-1: rest), hop by hop; the link draws once the rise reaches it. */
    function setActive(a: number) {
@@ -180,19 +175,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       tset(l, on ? 1 : 0, t, on ? near * step : 0);
       seal.setAttribute("class", a < 0 ? "dot" : "dot m");
       act = a;
-      const n = NODES[a];
-      read.textContent =
-         a < 0
-            ? "rest"
-            : n.k === 1
-              ? "union"
-              : `${"ab"[n.t]} gen ${n.k ? 2 : 1}`;
+      read.textContent = label(a);
       B.wake();
    }
 
    read.textContent = "rest";
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

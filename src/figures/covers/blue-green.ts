@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now, open,
-   place, pointer, proj, put, register, ringAt, rrect, slab, solid, tdone, tset,
-   tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, lerp, mk,
+   nearest, now, open, place, proj, put, register, ringAt, rrect, slab, solid,
+   tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -67,7 +67,7 @@ function along(pts: Vec2[], f: number): Vec2 {
             lerp(pts[i][1], pts[i + 1][1], k),
          ];
       }
-   return pts[pts.length - 1];
+   return pts.at(-1)!;
 }
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
@@ -143,12 +143,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    });
    bag.add(B.unregister);
 
-   const hit = (p: Vec2) => {
-      const d = spot.map((q) => Math.hypot(q[0] - p[0], q[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** The incoming tasks rise, the traffic moves (green in two steps), then the outgoing tasks drain. */
    function retarget(a: number) {
@@ -177,9 +172,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    kn.sil.classList.add("hi");
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
    return {
       set: (v) => {
          canary = 0.1 + v * 0.4;

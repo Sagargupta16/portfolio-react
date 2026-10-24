@@ -13,9 +13,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, mk, now,
-   place, pointer, proj, put, register, rrect, slab, solid, tdone, tset, tval,
-   tween, type FigureMount, type Frame, type Ring, type Solid, type Tour,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, place, proj, put, register, rrect, slab, solid, tdone, tset,
+   tval, tween, type FigureMount, type Frame, type Ring, type Solid, type Tour,
    type Vec2, type Vec3,
 } from "@/figures/hairline";
 
@@ -65,6 +65,12 @@ export const frame = FRAMES.cover;
 export const tour: Tour = ((s) => [s[4], s[8], s[10], null])(
    camera(frame).spot,
 );
+
+/** The read-out for pick a: a post, a tab, or rest. */
+function label(a: number) {
+   if (a < 0) return "rest";
+   return a > 8 ? ["all", "not fol"][a - 9] : `post ${a + 1}`;
+}
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
@@ -162,24 +168,22 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          el.sil.classList.toggle("hi", a === 9 + i);
       });
       act = a;
-      read.textContent =
-         a < 0 ? "rest" : a > 8 ? ["all", "not fol"][a - 9] : `post ${a + 1}`;
+      read.textContent = label(a);
       B.wake();
    }
    setActive(-1);
    for (const r of rows) [r.y, r.n].forEach((tw) => (tw.t0 = -1e9));
 
+   // Sticky on the last hit, which a leave does not clear.
    let held = -1;
+   const pick = nearest(spot, CAP, STICK);
    const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return (held = -1);
-      if (held < 0 || d[held] >= CAP || d[held] - d[best] >= STICK) held = best;
+      held = pick(p, held);
       return held;
    };
-
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (high = arc(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      high = arc(v);
+   };
+   return { set, destroy: bag.dispose };
 };

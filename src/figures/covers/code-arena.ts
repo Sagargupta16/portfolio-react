@@ -13,8 +13,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, place,
-   pointer, poly, prism, proj, put, register, rings, ringAt, rrect, seg, slab,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk, now,
+   place, poly, prism, proj, put, register, rings, ringAt, rrect, seg, slab,
    solid, tdone, tset, tval, tween, unproj,
 } from "@/figures/hairline";
 import type {
@@ -116,7 +116,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          }
          L.pass.forEach((p, k) => {
             const on = tval(p, t) > 0.5;
-            const cls = on ? "dot ok" : k < PASSED[l] ? "dot m" : "dot off";
+            const was = k < PASSED[l] ? "dot m" : "dot off";
+            const cls = on ? "dot ok" : was;
             if (L.dots[k].getAttribute("class") !== cls)
                L.dots[k].setAttribute("class", cls);
             moving ||= !tdone(p, t);
@@ -171,12 +172,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
 
    read.textContent = "rest";
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = per(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   return {
+      set: (v) => {
+         step = per(v);
+      },
+      destroy: bag.dispose,
+   };
 };

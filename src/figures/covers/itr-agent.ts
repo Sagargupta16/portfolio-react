@@ -14,9 +14,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now,
-   open, place, pointer, proj, put, register, rrect, seg, slab, solid, tdone,
-   tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, lerp, mk,
+   nearest, now, open, place, proj, put, register, rrect, seg, slab, solid,
+   tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -95,8 +95,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const ls = SIDE.map(() => tween(0));
    const opened = RATES.map((_, k) => tween(REST(k)));
    const fill = RATES.map(() => tween(0));
-   const drawn = { s: SIDE.map(() => NaN), l: SIDE.map(() => NaN) };
-   const was = RATES.map(() => NaN);
+   const drawn = {
+      s: SIDE.map(() => Number.NaN),
+      l: SIDE.map(() => Number.NaN),
+   };
+   const was = RATES.map(() => Number.NaN);
 
    const B = register(stage, (_dt, t) => {
       let moving = false;
@@ -146,15 +149,15 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
 
    /** The pack's column first, by the rest bands; then the nearest side part's rest top. */
    const [cx, foot] = [P(0, 0, 0)[0], P(22, 22, 0)[1]];
+   const pick = nearest(spot, CAP, 0);
    const hit = (p: Vec2) => {
       if (Math.abs(p[0] - cx) < 22 && p[1] < foot && p[1] > bands[N - 1] - 20) {
          let k = 0;
          while (k < N - 1 && p[1] < (bands[k] + bands[k + 1]) / 2) k++;
          return k;
       }
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      return d[best] < CAP ? N + best : -1;
+      const best = pick(p, -1);
+      return best < 0 ? -1 : N + best;
    };
 
    function setActive(a: number) {
@@ -163,7 +166,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       act = a;
       const k = a < N ? a : -1;
       RATES.forEach((_, j) => {
-         const to = k < 0 ? (a < 0 ? REST(j) : 0) : j > k ? 1 : 0;
+         let to = j > k ? 1 : 0;
+         if (k < 0) to = a < 0 ? REST(j) : 0;
          tset(opened[j], to, t, Math.abs(j - k) * STEP);
          tset(fill[j], j <= k ? 1 : 0, t, j * STEP);
       });
@@ -173,27 +177,22 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          tset(ls[i], on ? 1 : 0, t, on ? STEP * 2 : 0);
       });
       // One bright place: ITR-2 at rest; 26AS and the forms ruled out answer amber.
-      const cls =
-         a < 0 || a === N + 4 ? "ok" : a === N || a > N + 2 ? "warn" : "hi";
+      let cls = "hi";
+      if (a === N + 4) cls = "ok";
+      else if (a === N || a > N + 2) cls = "warn";
       const mark = a < 0 ? N + 4 : a;
       [...layers, ...sides.map((s) => s.s)].forEach((s, i) => {
-         const c = i === mark ? `sil ${a < 0 ? "hi" : cls}` : "sil";
+         const c = i === mark ? `sil ${cls}` : "sil";
          s.sil.setAttribute("class", c);
       });
       read.textContent = a < 0 ? "rest" : tag(a);
       B.wake();
    }
 
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    const set = (v: number) => {
       lift = 6 + v * 6;
-      was.fill(NaN);
+      was.fill(Number.NaN);
       B.wake();
    };
    return { set, destroy: bag.dispose };

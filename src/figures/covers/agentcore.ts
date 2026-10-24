@@ -15,8 +15,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, inset, mk, now, open, pointer, proj,
-   put, register, rrect, slab, solid, tdone, tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, follow, inset, mk, nearest, now,
+   open, proj, put, register, rrect, slab, solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -74,6 +74,16 @@ const NAME = (i: number) =>
    (i < 3
       ? `client ${i + 1}`
       : `tool ${Math.floor((i - 3) / 3) + 1}.${(i % 3) + 1}`);
+/** Where a call from part a ends: ask_architect for a client, else a itself; -1 at rest or on the deny. */
+function goalOf(a: number) {
+   if (a < 0 || a === STRANGER) return -1;
+   return a < 3 ? 3 + ASK : a;
+}
+/** The tool tile part a calls: its own tile, ask_architect for a listed client or the harness, else -1. */
+function toolOf(a: number) {
+   if (a >= 3 && a < 12) return a - 3;
+   return a >= 0 && a !== STRANGER ? ASK : -1;
+}
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
@@ -126,7 +136,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          const u = tval(tl.tw, t);
          moving ||= !tdone(tl.tw, t);
          if (u === td[k]) return;
-         const z = TT + (td[k] = u) * RISE;
+         td[k] = u;
+         const z = TT + u * RISE;
          put(tl.el, slab(P, front, tl.ring, tl.inner, z, z + KT));
       });
       const b = tval(bt, t);
@@ -141,41 +152,36 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          );
       }
       // One bright place: the gateway while a call crosses it (amber on the deny), then what it reached.
-      const goal = act < 0 || act === STRANGER ? -1 : act < 3 ? 3 + ASK : act;
+      const goal = goalOf(act);
       const there = goal === 12 ? bd > 0.5 : goal > 0 && td[goal - 3] > 0.5;
-      const next = there
-         ? (goal === 12 ? harness : tools[goal - 3].el).sil
-         : wall.sil;
+      let next = wall.sil;
+      if (there) next = (goal === 12 ? harness : tools[goal - 3].el).sil;
       const cls = !there && tval(deny, t) > 0.5 ? "warn" : "hi";
       if (next !== mark || cls !== mc) {
          mark.classList.remove(mc);
-         (mark = next).classList.add((mc = cls));
+         [mark, mc] = [next, cls];
+         mark.classList.add(mc);
       }
       return moving;
    });
    bag.add(B.unregister);
 
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** The call for part a, as hops: the client's run in, the run past the wall, the tool, the harness. */
    function setActive(a: number) {
       if (a === act) return;
       const t = now();
-      const tool =
-         a >= 3 && a < 12 ? a - 3 : a >= 0 && a !== STRANGER ? ASK : -1;
-      const client = a < 0 ? -1 : a < 3 ? a : 0;
+      const tool = toolOf(a);
+      const client = a < 3 ? a : 0;
       const pass = client >= 0 && client !== STRANGER;
       ln.forEach((tw, k) => {
          const on = k < 3 ? k === client : pass && k - 3 === client;
-         tset(tw, on ? 1 : 0, t, on ? (k < 3 ? 0 : step) : 0);
+         tset(tw, on ? 1 : 0, t, on && k >= 3 ? step : 0);
       });
       tools.forEach((tl, k) => {
-         const to = k === tool ? 1 : a < 0 && k === RENDER ? 0.3 : 0;
+         const rest = a < 0 && k === RENDER ? 0.3 : 0;
+         const to = k === tool ? 1 : rest;
          tset(tl.tw, to, t, to === 1 ? 2 * step : 0);
       });
       const turn = tool === ASK && (a < 3 || a === 12);
@@ -186,8 +192,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

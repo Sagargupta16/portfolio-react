@@ -200,14 +200,12 @@ export function hull(input: readonly Vec2[]): Vec2[] {
    const lo: Vec2[] = [],
       up: Vec2[] = [];
    for (const p of pts) {
-      while (lo.length > 1 && x(lo[lo.length - 2], lo[lo.length - 1], p) <= 0)
-         lo.pop();
+      while (lo.length > 1 && x(lo.at(-2)!, lo.at(-1)!, p) <= 0) lo.pop();
       lo.push(p);
    }
    for (let i = pts.length - 1; i >= 0; i--) {
       const p = pts[i];
-      while (up.length > 1 && x(up[up.length - 2], up[up.length - 1], p) <= 0)
-         up.pop();
+      while (up.length > 1 && x(up.at(-2)!, up.at(-1)!, p) <= 0) up.pop();
       up.push(p);
    }
    lo.pop();
@@ -352,10 +350,43 @@ export function ghost(
    return {
       d:
          open(lowP) +
-         [f[0], f[f.length - 1]]
+         [f[0], f.at(-1)!]
             .map((q) => seg(P(q.u, q.v, z0), P(q.u, q.v, z0 - depth)))
             .join(""),
       y0: Math.min(...ringAt(P, f, z0).map((p) => p[1])),
       y1: Math.max(...lowP.map((p) => p[1])) + 2,
    };
 }
+
+/**
+ * Site addition: the first fraction `l` (0 to 1) of a polyline, by length.
+ * Figures use it to grow a wire or a path as a tween runs.
+ */
+export function part(pts: readonly Vec2[], l: number): Vec2[] {
+   const lens = pts
+      .slice(1)
+      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
+   let left = l * lens.reduce((s, d) => s + d, 0);
+   const out = [pts[0]];
+   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
+      const k = Math.min(1, left / lens[i]) || 0;
+      const [a, b] = [pts[i], pts[i + 1]];
+      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
+   }
+   return out;
+}
+
+/**
+ * Site addition: a sticky nearest-spot hit test on rest poses (rule 01).
+ * Returns the index of the spot nearest `p` within `cap`, or -1; the part in
+ * hand (`act`) is kept until another is nearer by more than `stick`.
+ */
+export const nearest =
+   (spots: readonly Vec2[], cap: number, stick: number) =>
+   (p: Vec2, act: number): number => {
+      const d = spots.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
+      const best = d.indexOf(Math.min(...d));
+      if (best < 0 || d[best] >= cap) return -1;
+      const keep = act >= 0 && d[act] < cap && d[act] - d[best] < stick;
+      return keep ? act : best;
+   };

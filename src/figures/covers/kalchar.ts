@@ -11,8 +11,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, place,
-   pointer, proj, put, register, rrect, slab, solid, tdone, tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, place, proj, put, register, rrect, slab, solid, tdone, tset,
+   tval, tween,
    type FigureMount, type Frame, type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
 
@@ -130,10 +131,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    function setActive(s: number) {
       if (s === act) return;
       const t = now();
-      const on = s < 0 ? 0 : s;
+      const on = Math.max(0, s);
       const from = PILLS[s < 0 ? Math.max(act, 0) : s][0];
+      const top = s < 0 ? REST : lift;
       for (const p of plates) {
-         const to = p.s !== on ? 0 : s < 0 ? REST : lift;
+         const to = p.s === on ? top : 0;
          const d = Math.hypot(p.x + CW / 2 - from.u, p.y + p.len / 2 - from.v);
          tset(p.z, to, t, (d / 24) * 45);
          for (const dot of p.dots)
@@ -153,18 +155,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    /** The nearest rest spot, pill or plate, as a style; sticky by STICK. */
    const style = (i: number) =>
       i < PILLS.length ? i : PLATES[i - PILLS.length].s;
+   const pick = nearest(spot, CAP, STICK);
    let held = -1;
    const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return (held = -1);
-      if (held < 0 || d[held] >= CAP || d[held] - d[best] >= STICK) held = best;
-      return style(held);
+      held = pick(p, held);
+      return held < 0 ? -1 : style(held);
    };
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    return {
       set: (v) => {
          lift = 4 + 7 * v;

@@ -13,9 +13,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now, place,
-   pointer, prism, proj, put, register, rings, rrect, seg, slab, solid, tdone,
-   tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, lerp, mk, now,
+   place, prism, proj, put, register, rings, rrect, seg, slab, solid, tdone, tset,
+   tval, tween,
 } from "@/figures/hairline";
 // prettier-ignore
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -50,7 +50,8 @@ function camera(frame: Frame) {
 export const frame = FRAMES.cover;
 /** is:open, the open row that lands, is:merged, away. */
 export const tour: Tour = ((s) => [s[1], s[2], s[0], null])(camera(frame).spot);
-const NAMES = ["is:merged", "is:open"];
+/** The read-out per active value, -1 (rest) to 4 (the third open row). */
+const NAMES = ["rest", "is:merged", "is:open", "pr 1", "pr 2", "pr 3"];
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
@@ -114,7 +115,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const hit = (p: Vec2) => {
       const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
       const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
+      if (best < 0 || d[best] >= CAP) return -1;
       return act >= 0 && d[act] - d[best] < STICK ? act : best;
    };
 
@@ -129,30 +130,24 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          const k = tray ? i - MERGED : i;
          tset(w.z, a === tray ? 1 - k * 0.12 : 0, t, a === tray ? k * 55 : 0);
          // landing: the open row goes, the merged rows step down from the top one first
-         tset(
-            w.mv,
-            land < 0 ? 0 : i === land || i < MERGED ? 1 : 0,
-            t,
-            i < MERGED ? 300 + i * 45 : 0,
-         );
+         const go = land >= 0 && (i === land || i < MERGED);
+         tset(w.mv, go ? 1 : 0, t, i < MERGED ? 300 + i * 45 : 0);
          w.el.sil.classList.toggle("hi", i === land);
       });
       queries.forEach((q, k) =>
-         q.sil.classList.toggle("hi", k === (a < 0 ? 0 : a)),
+         q.sil.classList.toggle("hi", k === Math.max(a, 0)),
       );
       wires.forEach((e, k) =>
          e.setAttribute("class", k === a ? "nf sil dash" : "nf dash"),
       );
-      read.textContent = a < 0 ? "rest" : a < 2 ? NAMES[a] : `pr ${a - 1}`;
+      read.textContent = NAMES[a + 1];
       B.wake();
    }
    setActive(-1);
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return {
-      set: (v) => void (rise = RISE * (0.5 + v * 0.5)),
-      destroy: bag.dispose,
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      rise = RISE * (0.5 + v * 0.5);
    };
+   return { set, destroy: bag.dispose };
 };

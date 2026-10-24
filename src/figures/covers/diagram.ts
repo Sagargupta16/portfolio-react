@@ -10,9 +10,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now,
-   open, place, pointer, poly, proj, put, register, ringAt, rrect, slab, solid,
-   tdone, tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, open, part, place, poly, proj, put, register, ringAt,
+   rrect, slab, solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -79,20 +79,6 @@ export const tour: Tour = ((s) => [s[2], s[3], s[5], null])(camera(frame).spot);
 /** Delay per hop in ms: 40 at intensity 0, 120 at 0.5, 220 at 1. */
 const hop = (v: number) => (v <= 0.5 ? 40 + v * 160 : 120 + (v - 0.5) * 200);
 
-/** The first fraction l of a polyline, by length. */
-function part(pts: Vec2[], l: number): Vec2[] {
-   const lens = pts
-      .slice(1)
-      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
-   let left = l * lens.reduce((s, d) => s + d, 0);
-   const out = [pts[0]];
-   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
-      const [a, b, k] = [pts[i], pts[i + 1], Math.min(1, left / lens[i]) || 0];
-      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
-   }
-   return out;
-}
-
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
    const bag = disposer();
@@ -149,24 +135,24 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
             );
          }
          const hi = i === act && zi > 0.5;
-         if (hi !== was.hi) el(i).sil.classList.toggle("hi", (was.hi = hi));
+         if (hi !== was.hi) {
+            was.hi = hi;
+            el(i).sil.classList.toggle("hi", hi);
+         }
          moving ||= !tdone(z[i], t) || !tdone(l[i], t);
       });
       // One bright place: the corner tile at rest, the chosen tile once it has risen.
       const rest = !drawn.some((d) => d.hi);
-      if (rest !== cornerHi)
-         corner.sil.classList.toggle("hi", (cornerHi = rest));
+      if (rest !== cornerHi) {
+         cornerHi = rest;
+         corner.sil.classList.toggle("hi", rest);
+      }
       return moving;
    });
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen, so a risen tile cannot flip the choice; sticky by STICK.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    const lit = new Set<number>();
    /** Lights the path from users to tile a (-1: none): joiners rise from users out, leavers fall from the far end in. */
@@ -190,8 +176,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

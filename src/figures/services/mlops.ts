@@ -12,8 +12,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, open, place, pointer, proj, put, register, rrect, seg, slab, solid,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, open, place, proj, put, register, rrect, seg, slab, solid,
    tdone, tset, tval, tween, type FigureMount, type Frame, type Ring,
    type Solid, type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
@@ -134,10 +134,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
                   : "",
             );
          }
-         if (z !== was.z) draw(i, (was.z = z) * rise);
+         if (z !== was.z) {
+            was.z = z;
+            draw(i, z * rise);
+         }
          const hi = i === act && z > 0.5;
          if (hi !== was.hi) {
-            els[i][els[i].length - 1].sil.classList.toggle("hi", (was.hi = hi));
+            was.hi = hi;
+            els[i].at(-1)!.sil.classList.toggle("hi", hi);
             // the monitor's score dots come up with it
             if (i === 3)
                for (const d of dots)
@@ -148,7 +152,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       // One bright place: the gate's threshold bar at rest, the chosen station once it has risen.
       const rest = !drawn.some((d) => d.hi);
       if (rest !== barHi) {
-         bar.classList.toggle("hi", (barHi = rest));
+         barHi = rest;
+         bar.classList.toggle("hi", rest);
          bar.classList.toggle("lo", !rest);
       }
       return moving;
@@ -156,12 +161,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen, so a risen station cannot flip the choice; sticky by STICK.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Lights the wires to station a (-1: none) a hop apart, then raises it; leavers drop at once, the last wire first. */
    function setActive(a: number) {
@@ -181,17 +181,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    read.textContent = "rest";
 
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
    return {
       set: (v) => {
          rise = riseOf(v);
-         drawn.forEach((d) => (d.z = Number.NaN));
+         for (const d of drawn) d.z = Number.NaN;
          B.wake();
       },
       destroy: bag.dispose,

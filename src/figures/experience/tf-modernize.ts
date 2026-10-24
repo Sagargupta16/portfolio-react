@@ -12,8 +12,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now,
-   open, place, pointer, proj, put, register, rrect, slab, solid, tdone, tset,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk, now,
+   open, part, place, proj, put, register, rrect, slab, solid, tdone, tset,
    tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -57,18 +57,10 @@ export const tour: Tour = ((s) => [s[8], s[4], s[5], null])(camera(frame).spot);
 
 const hopMs = (v: number) => 30 + v * 60;
 
-/** The first fraction l of a polyline, by length. */
-function part(pts: Vec2[], l: number): Vec2[] {
-   const lens = pts
-      .slice(1)
-      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
-   let left = l * lens.reduce((s, d) => s + d, 0);
-   const out = [pts[0]];
-   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
-      const [a, b, k] = [pts[i], pts[i + 1], Math.min(1, left / lens[i]) || 0];
-      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
-   }
-   return out;
+/** Hops before run k draws: after the lift for a module, else the inner runs first. */
+function runHop(k: number, mod: boolean) {
+   if (mod) return 3;
+   return k < 4 ? Math.abs(MOD_Y[k]) / 18 : 1;
 }
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
@@ -142,10 +134,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const hit = (q: Vec2) => {
       const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
       let best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
+      if (best < 0 || d[best] >= CAP) return -1;
       if (best > 5) best -= 6;
-      const held =
-         act >= 0 ? Math.min(d[act], act < 4 ? d[act + 6] : 1e9) : 1e9;
+      const twin = act < 4 ? d[act + 6] : 1e9;
+      const held = act >= 0 ? Math.min(d[act], twin) : 1e9;
       return held < CAP && held - Math.min(...d) < STICK ? act : best;
    };
 
@@ -154,18 +146,20 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       if (a === act) return;
       const t = now();
       const mod = a >= 0 && a < 4;
+      const peak = a < 0 ? 0.35 : 1;
       lift.forEach((tw, j) => {
          const on = mod ? j > a : a < 0 && j > REST;
-         tset(tw, on ? (a < 0 ? 0.35 : 1) : 0, t, mod ? (3 - j) * step : 0);
+         tset(tw, on ? peak : 0, t, mod ? (3 - j) * step : 0);
       });
       z.forEach((tw, i) => {
-         const on = i === a ? 1 : a < 0 && i === REST ? 0.35 : 0;
+         let on = 0;
+         if (i === a) on = 1;
+         else if (a < 0 && i === REST) on = 0.35;
          tset(tw, on, t, i === a ? 2 * step : 0);
       });
       l.forEach((tw, k) => {
          const on = k < 4 ? k === a || a === 4 || a === 5 : a >= 0;
-         const hop = mod ? 3 : k < 4 ? Math.abs(MOD_Y[k]) / 18 : 1;
-         tset(tw, on ? 1 : 0, t, on ? hop * step : 0);
+         tset(tw, on ? 1 : 0, t, on ? runHop(k, mod) * step : 0);
       });
       tset(pz, a >= 0 ? 1 : 0, t, mod ? 5 * step : step);
       tset(az, a >= 0 && a !== 4 ? 1 : 0, t, mod ? 7 * step : 3 * step);
@@ -175,8 +169,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
 
    read.textContent = "rest";
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hopMs(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = hopMs(v);
+   };
+   return { set, destroy: bag.dispose };
 };

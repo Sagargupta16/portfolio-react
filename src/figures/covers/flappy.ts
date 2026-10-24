@@ -11,9 +11,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, clamp, disposer, facing, fitFrame, flatDot, lerp, mk,
-   now, place, pointer, prism, proj, put, register, rrect, solid, tdone, tset,
-   tval, tween,
+   Cam, FRAMES, circ, clamp, disposer, facing, fitFrame, flatDot, follow, lerp,
+   mk, now, place, prism, proj, put, register, rrect, solid, tdone, tset, tval,
+   tween,
 } from "@/figures/hairline";
 import type {
    FigureMount,
@@ -173,10 +173,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const best = d.indexOf(Math.min(...d));
       return d[best] < SP * C.S * 0.6 ? best : -1;
    };
-   bag.add(
-      pointer(stage, { move: (p) => choose(hit(p)), leave: () => choose(-1) }),
-   );
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, choose);
    return {
       set: (v) => {
          arc = 4 + 8 * v;

@@ -12,8 +12,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, hull, inset, mk, now,
-   place, pointer, poly, prism, proj, put, rad, register, rrect, slab, solid,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, hull, inset,
+   mk, now, place, poly, prism, proj, put, rad, register, rrect, slab, solid,
    tdone, tset, tval, tween, unproj,
    type FigureMount, type Frame, type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
@@ -52,6 +52,19 @@ export const tour: Tour = ((k) => [k.opt[2], k.opt[1], k.card[3], null])(
 );
 
 const per = (v: number) => 30 + v * 30;
+
+/** Where pick a's wave starts in x: an option, a card's middle, or -1 at rest. */
+function origin(a: number) {
+   if (a < 0) return -1;
+   return a < 3 ? OPT[a][0] : (a - 3) * PITCH + CW / 2;
+}
+
+/** The read-out for pick a: rest, a language with its tutor count, or a tutor. */
+function label(a: number) {
+   if (a < 0) return "rest";
+   if (a >= 3) return `tutor ${a - 2}`;
+   return `${LANG[a]} ${TEACH.filter((l) => l.includes(a)).length}`;
+}
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front } = camera(f);
@@ -109,7 +122,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       let moving = false;
       cards.forEach((cd, i) => {
          const th = tval(cd.th, t);
-         if (th !== cd.drawn) draw(i, (cd.drawn = th));
+         if (th !== cd.drawn) {
+            cd.drawn = th;
+            draw(i, th);
+         }
          moving ||= !tdone(cd.th, t);
       });
       return moving;
@@ -145,31 +161,29 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    function setActive(a: number) {
       if (a === act) return;
       const t = now();
-      const from = a < 0 ? -1 : a < 3 ? OPT[a][0] : (a - 3) * PITCH + CW / 2;
+      const from = origin(a);
       cards.forEach((cd, i) => {
          const pass = a < 3 ? TEACH[i].includes(a) : i === a - 3;
          const delay =
             from < 0 ? 0 : (Math.abs(i * PITCH + CW / 2 - from) / PITCH) * step;
-         tset(cd.th, a < 0 ? REST[i] : pass ? LEAN : FOLD, t, delay);
+         const th = pass ? LEAN : FOLD;
+         tset(cd.th, a < 0 ? REST[i] : th, t, delay);
          cd.el.sil.classList.toggle("hi", i === a - 3);
       });
       opts.forEach((el, k) =>
          el.sil.classList.toggle("hi", k === (a < 0 ? 1 : a)),
       );
       act = a;
-      const n = TEACH.filter((l) => l.includes(a)).length;
-      read.textContent =
-         a < 0 ? "rest" : a < 3 ? `${LANG[a]} ${n}` : `tutor ${a - 2}`;
+      read.textContent = label(a);
       B.wake();
    }
 
    setActive(-1);
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = per(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   return {
+      set: (v) => {
+         step = per(v);
+      },
+      destroy: bag.dispose,
+   };
 };

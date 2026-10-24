@@ -14,9 +14,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, open, place, pointer, proj, put, register, rrect, slab, solid, tdone,
-   tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, open, part, place, proj, put, register, rrect, slab, solid,
+   tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -29,7 +29,9 @@ const RULES = [7, 12, 43, 48].map((y, i) => [y, [26, 18, 28, 22][i]]);
 /** Code lines on the prompt's lid. */
 const CODE = [25, 30].map((y, i) => [y, [18, 12][i]]);
 const AGENTS: Vec2[] = [0, 1, 2].map((j) => [80, 2 + j * 26]);
-const TAGS = ["claude", "cursor", "aider"];
+/** The read-out and the prompt's lift for each choice, -1 (rest) first. */
+const READS = ["rest", "prompt", "claude", "cursor", "aider"];
+const LIFTS = [0.12, 1, 0.7, 0.7, 0.7];
 /** Each agent's wire: out of the prompt's side, an elbow, into the puck. */
 const WIRES: Vec2[][] = AGENTS.map(([x, y]) => [
    [40, 28],
@@ -57,20 +59,6 @@ export const tour: Tour = ((s) => [s[0], s[1], s[3], null])(camera(frame).spot);
 
 /** Delay per hop in ms: 40 at intensity 0, 100 at 1. */
 const hop = (v: number) => 40 + v * 60;
-
-/** The first fraction l of a polyline, by length. */
-function part(pts: Vec2[], l: number): Vec2[] {
-   const lens = pts
-      .slice(1)
-      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
-   let left = l * lens.reduce((s, d) => s + d, 0);
-   const out = [pts[0]];
-   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
-      const [a, b, k] = [pts[i], pts[i + 1], Math.min(1, left / lens[i]) || 0];
-      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
-   }
-   return out;
-}
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
@@ -110,7 +98,15 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       });
       const el = solid(g);
       const on = [false, false, false];
-      return { ring, inner: inset(C, ring, 1), el, dots, z: NaN, l: NaN, on };
+      return {
+         ring,
+         inner: inset(C, ring, 1),
+         el,
+         dots,
+         z: Number.NaN,
+         l: Number.NaN,
+         on,
+      };
    });
 
    const lift = tween(0.12);
@@ -160,17 +156,13 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen, so a risen part cannot flip the choice.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      return d[best] < CAP ? best : -1;
-   };
+   const hit = nearest(spot, CAP, 0);
 
    /** 0 lifts the prompt alone; 1 to 3 run it on that agent, hop by hop; -1 is rest. */
    function setActive(a: number) {
       if (a === act) return;
       const t = now();
-      tset(lift, a < 0 ? 0.12 : a === 0 ? 1 : 0.7, t, 0);
+      tset(lift, LIFTS[a + 1], t, 0);
       pucks.forEach((p, j) => {
          const on = a === j + 1;
          tset(l[j], on ? 1 : 0, t, on ? step : 0);
@@ -182,13 +174,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       });
       fence.sil.classList.toggle("hi", a <= 0);
       act = a;
-      read.textContent = a < 0 ? "rest" : a === 0 ? "prompt" : TAGS[a - 1];
+      read.textContent = READS[a + 1];
       B.wake();
    }
    fence.sil.classList.add("hi");
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (p) => hit(p, -1), setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

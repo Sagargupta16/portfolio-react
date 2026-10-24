@@ -13,8 +13,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, clamp, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, place, pointer, poly, proj, put, register, rrect, slab, solid,
+   Cam, FRAMES, clamp, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, place, poly, proj, put, register, rrect, slab, solid,
    tdone, tset, tval, tween, type FigureMount, type Frame, type Ring,
    type Solid, type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
@@ -66,6 +66,9 @@ function ride(k: number, s: number, t: number, top: number): Vec3 {
    const z = top * Math.sin(Math.PI * Math.min(1, t / 0.94));
    return [lerp(a[0], b[0], at - i), lerp(a[1], b[1], at - i), Math.max(0, z)];
 }
+
+/** The read-out for row a (not rest): the repeat caught at the check, or the row imported. */
+const label = (a: number) => (a === DUP ? "dup" : `txn ${a + 1}`);
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
@@ -161,7 +164,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const k = a < 0 ? REST_K : a;
       for (const r of rows) {
          const on = r.k <= k && (r.k !== DUP || a === DUP);
-         const to = !on ? 0 : r.k === DUP ? 0.47 : 1;
+         const full = r.k === DUP ? 0.47 : 1;
+         const to = on ? full : 0;
          const delay = on ? r.k * 70 : Math.abs(r.k - k) * 50;
          tset(r.t, to, t, delay);
          r.el.sil.classList.toggle("hi", r.k === a && a !== DUP);
@@ -170,27 +174,23 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       block.sil.classList.toggle("hi", a < 0);
       block.sil.classList.toggle("warn", a === DUP);
       act = a;
-      read.textContent = a < 0 ? "rest" : a === DUP ? "dup" : `txn ${a + 1}`;
+      read.textContent = a < 0 ? "rest" : label(a);
       B.wake();
    }
    setActive(-1);
 
-   let held = -1;
+   let held = -1; // the row in hand: unlike act, a leave keeps it
+   const pick = nearest(spot, CAP, STICK);
    const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return (held = -1);
-      if (held < 0 || d[held] >= CAP || d[held] - d[best] >= STICK) held = best;
+      held = pick(p, held);
       return held;
    };
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    return {
       set: (v) => {
          top = lift(v);
-         rows.forEach((r) => (r.drawn = -1));
+         for (const r of rows) r.drawn = -1;
          B.wake();
       },
       destroy: bag.dispose,

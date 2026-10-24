@@ -372,10 +372,10 @@ function entry([x, y]: Vec2): Vec2 {
    const dx = x - 200,
       dy = y - 160;
    if (!dx && !dy) return [200, 320];
-   const k = Math.min(
-      dx ? (dx > 0 ? 200 : -200) / dx : Infinity,
-      dy ? (dy > 0 ? 160 : -160) / dy : Infinity,
-   );
+   // distance along the ray to each edge it heads for: x = 0 or 400, y = 0 or 320
+   const kx = dx ? (Math.sign(dx) * 200) / dx : Infinity;
+   const ky = dy ? (Math.sign(dy) * 160) / dy : Infinity;
+   const k = Math.min(kx, ky);
    return [200 + dx * k, 160 + dy * k];
 }
 
@@ -552,7 +552,8 @@ export function __stepFigures(to: number) {
    if (manual === null) {
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
-      manual = last = to;
+      manual = to;
+      last = to;
    }
    while (manual < to) {
       manual = Math.min(to, manual + 1000 / 60);
@@ -562,3 +563,23 @@ export function __stepFigures(to: number) {
 
 /** Test only. The handlers a figure gave pointer() on `stage`, to drive it with viewBox points. */
 export const __pointerOf = (stage: Element) => handlers.get(stage);
+
+/**
+ * Site addition: the tail every figure shares. Routes the pointer through
+ * `pick` into `choose` (-1 on leave) and empties the svg on dispose.
+ */
+export function follow(
+   bag: Disposer,
+   stage: HTMLElement,
+   svg: SVGSVGElement,
+   pick: (p: Vec2) => number,
+   choose: (index: number) => void,
+): void {
+   bag.add(
+      pointer(stage, {
+         move: (p) => choose(pick(p)),
+         leave: () => choose(-1),
+      }),
+   );
+   bag.add(() => svg.replaceChildren());
+}

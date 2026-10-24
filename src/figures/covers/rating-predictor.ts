@@ -40,6 +40,11 @@ const band = (x0: number, x1: number, y: number, h: number, r: number) =>
    rrect(x0, y - h, x1, y + h, r, 4);
 const at = (r: Ring, x: number, y: number): Ring =>
    r.map((q) => ({ ...q, u: q.u + x, v: q.v + y }));
+/** The contest row under form point x, y: 0 or 1, or -1 off the form. */
+function row(x: number, y: number): number {
+   if (x > -4 && x < 44 && y > 12 && y < 54) return y < 32 ? 0 : 1;
+   return -1;
+}
 const EXTENT = PAGE.map((q): Vec3 => [q.u, q.v, -PT]).concat([
    [50, 0, 12],
    [105, 66, 12],
@@ -148,7 +153,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    function choose(j: number, r: number) {
       const t = now();
       if (j >= 0) handles[j].sp.t = r;
-      else handles.forEach((h, k) => (h.sp.t = REST_R[k]));
+      else
+         handles.forEach((h, k) => {
+            h.sp.t = REST_R[k];
+         });
       const want = handles.map((h) => delta(h.sp.t));
       const key = want.map((d) => Math.round(d * 8)).join();
       if (key !== bucket) {
@@ -161,15 +169,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
             c.at = t + 5 * step;
          });
       }
+      const lead = Math.max(j, 0);
       if (j !== act) {
-         handles.forEach((h, k) =>
-            h.el.sil.classList.toggle("hi", k === (j < 0 ? 0 : j)),
-         );
+         handles.forEach((h, k) => h.el.sil.classList.toggle("hi", k === lead));
          act = j;
       }
-      const d = Math.round(want[j < 0 ? 0 : j] * 60);
-      read.textContent =
-         j < 0 ? "rest" : `${NAMES[j]} ${d < 0 ? "-" : "+"}${Math.abs(d)}`;
+      const d = Math.round(want[lead] * 60);
+      const sign = d < 0 ? "-" : "+";
+      read.textContent = j < 0 ? "rest" : `${NAMES[j]} ${sign}${Math.abs(d)}`;
       B.wake();
    }
    choose(-1, 0);
@@ -177,11 +184,13 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    /** On the form's plane: the row by y, the rank by x along its track. */
    const move = (p: Vec2) => {
       const [x, y] = unproj(C, p[0], p[1], 1);
-      const j = x > -4 && x < 44 && y > 12 && y < 54 ? (y < 32 ? 0 : 1) : -1;
-      choose(j, clamp((x - TX0 - 2) / (TX1 - TX0 - 4), 0, 1));
+      choose(row(x, y), clamp((x - TX0 - 2) / (TX1 - TX0 - 4), 0, 1));
    };
 
    bag.add(pointer(stage, { move, leave: () => choose(-1, 0) }));
    bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = 40 + 60 * v), destroy: bag.dispose };
+   const set = (v: number) => {
+      step = 40 + 60 * v;
+   };
+   return { set, destroy: bag.dispose };
 };

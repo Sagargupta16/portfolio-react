@@ -14,8 +14,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, open,
-   place, pointer, proj, put, register, rrect, slab, solid, tdone, tset, tval,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk, now,
+   open, place, proj, put, register, rrect, slab, solid, tdone, tset, tval,
    tween, unproj,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -49,6 +49,20 @@ function pick(C: ReturnType<typeof Cam>, p: Vec2, gap: number) {
       if (Math.max(Math.abs(x), Math.abs(y)) <= RS[i]) return i;
    }
    return -1;
+}
+
+/** Where layer i stands, as a share of the gap, when the call reaches layer a (-1: rest). */
+function lifted(a: number, i: number) {
+   if (a < 0) return REST(i);
+   return i > a ? 1 + (i - a - 1) * 0.15 : 0;
+}
+
+/** How each layer answers: amber where a bad key dies, green on a cache hit, bright otherwise. */
+const ANSWER = ["sil hi", "sil warn", "sil hi", "sil ok", "sil hi"];
+/** Layer i's edge when the call reaches a: only the answering layer (the handler at rest) shows. */
+function edge(a: number, i: number) {
+   const on = a < 0 ? 4 : a;
+   return i === on ? ANSWER[on] : "sil";
 }
 
 export const frame = FRAMES.cover;
@@ -86,7 +100,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
 
    const lift = LAYERS.map((_, i) => tween(REST(i)));
    const wl = tween(0);
-   const drawn = LAYERS.map(() => NaN);
+   const drawn = LAYERS.map(() => Number.NaN);
    let wd = 0;
 
    const B = register(stage, (_dt, t) => {
@@ -122,17 +136,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       act = a;
       tset(wl, a < 0 ? 0 : 1, t, 0);
       LAYERS.forEach((_, i) => {
-         const to = a < 0 ? REST(i) : i > a ? 1 + (i - a - 1) * 0.15 : 0;
-         tset(lift[i], to, t, a < 0 ? (4 - i) * 30 : Math.abs(i - a) * STEP);
-         const cls =
-            i !== (a < 0 ? 4 : a)
-               ? "sil"
-               : a === 1
-                 ? "sil warn"
-                 : a === 3
-                   ? "sil ok"
-                   : "sil hi";
-         els[i].sil.setAttribute("class", cls);
+         const delay = a < 0 ? (4 - i) * 30 : Math.abs(i - a) * STEP;
+         tset(lift[i], lifted(a, i), t, delay);
+         els[i].sil.setAttribute("class", edge(a, i));
       });
       // withRateLimit spends a token from the bucket; withCache lights its entry on a hit.
       tokens.forEach(({ d }, k) =>
@@ -143,12 +149,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const move = (p: Vec2) => setActive(pick(C, p, gap));
-   bag.add(pointer(stage, { move, leave: () => setActive(-1) }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (p) => pick(C, p, gap), setActive);
    const set = (v: number) => {
       gap = 10 + v * 10;
-      drawn.fill(NaN);
+      drawn.fill(Number.NaN);
       B.wake();
    };
    return { set, destroy: bag.dispose };

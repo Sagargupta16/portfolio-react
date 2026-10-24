@@ -11,8 +11,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, extremes, facing, fitFrame, flatDot, inset,
-   mk, now, open, place, pointer, poly, proj, put, register, ringAt, rrect,
+   Cam, FRAMES, circ, disposer, extremes, facing, fitFrame, flatDot, follow,
+   inset, mk, now, open, place, poly, proj, put, register, ringAt, rrect,
    run, seg, slab, solid, tdone, tset, tval, tween, type FigureMount,
    type Frame, type Projector, type Ring, type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
@@ -32,12 +32,10 @@ const LIT = 2;
 /** Lift in world units: 24 at intensity 0, 40 at 1. */
 const liftOf = (v: number) => 24 + v * 16;
 /** How far layer j stands above its place when layer a is chosen: the top one furthest, and a itself a touch. */
-const up = (j: number, a: number, g: number) =>
-   a < 0 || j < a
-      ? 0
-      : j === a
-        ? g * 0.2
-        : g * (0.6 + (0.4 * (j - a)) / (2 - a));
+function up(j: number, a: number, g: number) {
+   if (a < 0 || j < a) return 0;
+   return j === a ? g * 0.2 : g * (0.6 + (0.4 * (j - a)) / (2 - a));
+}
 /** The most extreme pose (rule 03): the base, and the frontend lifted all the way. */
 const EXTENT = BASE.map((q): Vec3 => [q.u, q.v, 0]).concat(
    RINGS[2].map((q): Vec3 => [q.u, q.v, Z0[2] + TK[2] + 40]),
@@ -130,7 +128,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
             );
          }
          const hi = act < 0 ? i === LIT : i === act;
-         if (hi !== L.hi) L.el.sil.classList.toggle("hi", (L.hi = hi));
+         if (hi !== L.hi) {
+            L.hi = hi;
+            L.el.sil.classList.toggle("hi", hi);
+         }
          moving ||= !tdone(L.tw, t);
       });
       return moving;
@@ -161,13 +162,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    read.textContent = "rest";
 
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    return {
       set: (v) => {
          lift = liftOf(v);

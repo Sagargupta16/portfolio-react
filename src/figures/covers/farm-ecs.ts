@@ -14,9 +14,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, clamp, disposer, facing, fitFrame, flatDot, inset, mk, now,
-   open, place, pointer, proj, put, register, ringAt, rrect, slab, solid, tdone,
-   tset, tval, tween,
+   Cam, FRAMES, circ, clamp, disposer, facing, fitFrame, flatDot, follow, inset,
+   mk, nearest, now, open, place, proj, put, register, ringAt, rrect, slab,
+   solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -147,29 +147,29 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       for (let i = 1; i < NODES.length; i++) {
          const u = tval(z[i], t);
          moving ||= !tdone(z[i], t);
-         if (u !== drawn[i]) draw(i, (drawn[i] = u));
+         if (u !== drawn[i]) {
+            drawn[i] = u;
+            draw(i, u);
+         }
       }
       EDGES.forEach(([, c], e) => {
-         edges[e].classList.toggle("sil", drawn[c] > 0.3);
-         edges[e].classList.toggle("lo", !(drawn[c] > 0.3));
+         const lit = drawn[c] > 0.3;
+         edges[e].classList.toggle("sil", lit);
+         edges[e].classList.toggle("lo", !lit);
       });
       // One bright place: the push puck, until the chosen job has run.
       const next =
          act > 0 && drawn[act] > 0.5 ? els[act].el.sil : els[0].el.sil;
       if (next !== mark) {
          mark.classList.remove("hi");
-         (mark = next).classList.add("hi");
+         mark = next;
+         mark.classList.add("hi");
       }
       return moving;
    });
    bag.add(B.unregister);
 
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Runs job a and everything it needs, a column at a time; what leaves goes back from the far end. */
    function setActive(a: number) {
@@ -192,8 +192,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

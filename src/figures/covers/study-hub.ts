@@ -181,18 +181,19 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          ),
       );
       [yr, sub, was] = [a, s, A];
-      read.textContent =
-         a < 0 ? "rest" : s < 0 ? `year ${year(a)}` : `y${year(a)} ${SUBJ[s]}`;
+      const label = s < 0 ? `year ${year(a)}` : `y${year(a)} ${SUBJ[s]}`;
+      read.textContent = a < 0 ? "rest" : label;
       B.wake();
    }
 
-   choose([-1, -1]);
-   bag.add(
-      pointer(stage, {
-         move: (p) => choose(hit(p)),
-         leave: () => choose([-1, -1]),
-      }),
-   );
+   const leave = () => choose([-1, -1]);
+   leave();
+   bag.add(pointer(stage, { move: (p) => choose(hit(p)), leave }));
    bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = per(v)), destroy: bag.dispose };
+   return {
+      set: (v) => {
+         step = per(v);
+      },
+      destroy: bag.dispose,
+   };
 };

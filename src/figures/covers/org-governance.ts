@@ -15,7 +15,7 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, inset, mk, now, pointer, proj, put,
+   Cam, FRAMES, disposer, facing, fitFrame, follow, inset, mk, now, proj, put,
    register, rrect, slab, solid, tdone, tset, tval, tween, unproj,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -39,7 +39,9 @@ const OUS: [number, number, number, number, number, number, string][] = [
 ];
 const [WORKLOADS, PROD] = [5, 6];
 /** The rest pose: Workloads a little proud, Production a little more. */
-const REST = OUS.map((_, i) => (i === WORKLOADS ? 0.2 : i === PROD ? 0.3 : 0));
+const REST = OUS.map(() => 0);
+REST[WORKLOADS] = 0.2;
+REST[PROD] = 0.3;
 const level = (i: number): number => (i ? 1 + level(OUS[i][4]) : 0);
 const under = (a: number, i: number): boolean =>
    i === a || (i > 0 && under(a, OUS[i][4]));
@@ -146,7 +148,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       OUS.forEach((_, i) => {
          const on = a >= 0 && under(a, i);
          const d = on ? (level(i) - level(a)) * STEP : (2 - level(i)) * STEP;
-         tset(gap[i], on ? 1 : a < 0 ? REST[i] : 0, t, Math.max(0, d));
+         const off = a < 0 ? REST[i] : 0;
+         tset(gap[i], on ? 1 : off, t, Math.max(0, d));
       });
       tset(cards[0].tw, a > 0 ? 1 : 0, t, 0);
       tset(cards[1].tw, a === 0 ? 1 : 0, t, 0);
@@ -158,9 +161,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    return {
       set: (v) => {
          G = gapOf(v);

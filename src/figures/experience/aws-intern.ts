@@ -13,9 +13,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, open, place, pointer, poly, proj, put, register, ringAt, rrect, slab,
-   solid, tdone, tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, open, place, poly, proj, put, register, ringAt, rrect,
+   slab, solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -41,6 +41,11 @@ const TASKS = [sq(50, -13, 5, 2), sq(50, 13, 5, 2)];
 const POSTS = [-9, 9].map((y) => sq(GX, y, 2.4, 1.2));
 const BAR = rrect(GX - 3, -13, GX + 3, 13, 1.5, 4);
 const REST = reachOf(-4);
+/** How far the lane runs for stage a (-1: rest); the cluster is the far end. */
+function reach(a: number) {
+   if (a < 0) return REST;
+   return a === 5 ? 1 : reachOf(ST[a][0] + 1);
+}
 const EXTENT = PLATE.map((q): Vec3 => [q.u, q.v, -PT]).concat([
    [-25, -9, 18],
    [GX - 3, -13, PH + 9],
@@ -103,7 +108,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const sils = [train, medal, poc[1], server, bar, box].map((e) => e.sil);
 
    const run = tween(REST);
-   let drawn = NaN;
+   let drawn = Number.NaN;
 
    const B = register(stage, (_dt, t) => {
       const l = tval(run, t);
@@ -139,31 +144,23 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen; sticky by STICK.
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const hit = nearest(spot, CAP, STICK);
 
    /** The lane draws to stage a; the cluster carries the container home. */
    function setActive(a: number) {
       if (a === act) return;
-      const to = a < 0 ? REST : a === 5 ? 1 : reachOf(ST[a][0] + 1);
-      tset(run, to, now(), 0);
+      tset(run, reach(a), now(), 0);
       act = a;
-      drawn = NaN;
+      drawn = Number.NaN;
       read.textContent = a < 0 ? "rest" : TAGS[a];
       B.wake();
    }
 
    read.textContent = "rest";
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (q) => hit(q, act), setActive);
    const set = (v: number) => {
       lift = 4 + v * 8;
-      drawn = NaN;
+      drawn = Number.NaN;
       B.wake();
    };
    return { set, destroy: bag.dispose };

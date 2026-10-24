@@ -12,14 +12,16 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, clamp, disposer, facing, fitFrame, flatDot, inset, mk, now,
-   open, place, pointer, proj, put, register, rrect, slab, solid, tdone, tset,
+   Cam, FRAMES, clamp, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   now, open, place, proj, put, register, rrect, slab, solid, tdone, tset,
    tval, tween, unproj,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
 const [PT, DT, RT, MZ, PITCH, Y0] = [3, 2, 1.4, 3.5, 14, 9];
 const FALL = [1, 0.4, 0.14, 0, 0];
+/** Row i's lift at rest: the description row sits a little proud. */
+const restLift = (i: number) => (i === 1 ? 0.3 : 0);
 const CANVAS = rrect(-10, -10, 124, 90, 7, 8);
 const DOC = rrect(0, 0, 64, 80, 4, 8);
 const REPORT = rrect(82, 0, 114, 80, 4, 8);
@@ -96,11 +98,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    );
    const entries = ROWS.map(() => solid(g));
    const inner = ROW.map((r) => inset(C, r, 0.8));
-   const lift = ROWS.map((_, i) => tween(i === 1 ? 0.3 : 0));
+   const lift = ROWS.map((_, i) => tween(restLift(i)));
    const up = ROWS.map(() => tween(0));
    const hy = tween(1);
-   const drawn = ROWS.map(() => ({ z: NaN, e: NaN }));
-   let headAt = NaN;
+   const drawn = ROWS.map(() => ({ z: Number.NaN, e: Number.NaN }));
+   let headAt = Number.NaN;
    let lit = -2;
 
    const B = register(stage, (_dt, t) => {
@@ -149,23 +151,17 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       tset(hy, a < 0 ? 1 : a, t, 0);
       ROWS.forEach((_, i) => {
          const d = Math.abs(i - (a < 0 ? 1 : a));
-         tset(lift[i], a < 0 ? (i === 1 ? 0.3 : 0) : FALL[d], t, d * 45);
+         tset(lift[i], a < 0 ? restLift(i) : FALL[d], t, d * 45);
          tset(up[i], i === a ? 1 : 0, t, i === a ? 160 : 0);
       });
       read.textContent = a < 0 ? "rest" : tag(a);
       B.wake();
    }
 
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(pick(C, p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (p) => pick(C, p), setActive);
    const set = (v: number) => {
       rise = 3 + v * 4;
-      drawn.forEach((d) => (d.z = NaN));
+      for (const d of drawn) d.z = Number.NaN;
       B.wake();
    };
    return { set, destroy: bag.dispose };

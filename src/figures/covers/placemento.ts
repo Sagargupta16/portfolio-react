@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fillet, fitFrame, flatDot, inset, mk,
-   now, place, pointer, prism, proj, put, register, rings, rrect, slab, solid,
-   tdone, tset, tval, tween, unproj,
+   Cam, FRAMES, disposer, facing, fillet, fitFrame, flatDot, follow, inset, mk,
+   now, place, prism, proj, put, register, rings, rrect, slab, solid, tdone,
+   tset, tval, tween, unproj,
    type FigureMount, type Frame, type Ring, type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
 
@@ -46,7 +46,8 @@ function sector(c: number, b = 0): Ring {
       const a = a0 + ((a1 - a0) * k) / 12;
       pts.push([PX + (R - b) * Math.cos(a), PY + (R - b) * Math.sin(a)]);
    }
-   const rs = pts.map((_, k) => (k === 0 ? 2 : k === 1 || k === 13 ? 1.4 : 0));
+   const rs = pts.map((_, k): number => (k === 1 || k === 13 ? 1.4 : 0));
+   rs[0] = 2;
    const f = fillet(pts, rs, 3).filter(
       (q, k, a) =>
          k === 0 || Math.hypot(q[0] - a[k - 1][0], q[1] - a[k - 1][1]) > 1e-6,
@@ -172,25 +173,21 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       });
       cos.forEach((el, c) => el.sil.classList.toggle("hi", c === a));
       pie.forEach((s, c) => {
-         const to = c === a ? 1 : a < 0 && c === 0 ? 0.5 : 0;
+         let to = c === a ? 1 : 0;
+         if (a < 0 && c === 0) to = 0.5;
          tset(s.out, to, t, c === a ? (far + 1) * step : 0);
          s.el.sil.classList.toggle("hi", a < 0 ? c === 0 : a === 3 && c === 3);
       });
       act = a;
-      read.textContent =
-         a < 0
-            ? "rest"
-            : `${a < 3 ? `co${a + 1}` : "open"} ${count[a]}/${STU.length}`;
+      const name = a < 3 ? `co${a + 1}` : "open";
+      read.textContent = a < 0 ? "rest" : `${name} ${count[a]}/${STU.length}`;
       B.wake();
    }
 
    setActive(-1);
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = per(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = per(v);
+   };
+   return { set, destroy: bag.dispose };
 };

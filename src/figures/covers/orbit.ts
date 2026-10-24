@@ -13,9 +13,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now,
-   open, place, pointer, poly, proj, put, register, ringAt, rrect, slab, solid,
-   tdone, tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, open, place, poly, proj, put, register, ringAt, rrect,
+   slab, solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 // prettier-ignore
 import type { FigureMount, Frame, Ring, Solid, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -31,7 +31,7 @@ const PEOPLE = [0, 205, 3, 1, 70, 2, 1, 255, 4, 2, 15, 1, 2, 135, 2, 2, 300, 3];
 const N = PEOPLE.length / 3;
 const circle = (i: number) => PEOPLE[i * 3];
 const logged = (i: number) => PEOPLE[i * 3 + 2];
-const SPOT = [...Array(N).keys()].map((i): Vec2 => {
+const SPOT = [...new Array(N).keys()].map((i): Vec2 => {
    const [r, a] = [CIRCLES[circle(i)], (PEOPLE[i * 3 + 1] * Math.PI) / 180];
    return [r * Math.cos(a), r * Math.sin(a)];
 });
@@ -40,6 +40,12 @@ const ROW = (i: number, s = 0) =>
    rrect(X0 - s, Y0 + i * PITCH, X1 - s, Y0 + i * PITCH + RW, 2, 6);
 const BASE = rrect(X0 - 6, Y0 - 5, X1 + 6, Y0 + (N - 1) * PITCH + RW + 5, 6, 8);
 const REST = [0.3, 0, 0, 0, 0, 0];
+/** How far row i slides out with record a picked (-1: rest), near places from it. */
+function slideOf(i: number, a: number, near: number) {
+   if (a < 0) return REST[i];
+   if (i === a) return 1;
+   return near === 1 ? 0.15 : 0;
+}
 const EXTENT = circ(R, 48)
    .concat(BASE)
    .map((q): Vec3 => [q.u, q.v, -PT])
@@ -108,9 +114,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       let moving = !tdone(l, t);
       SPOT.forEach((_, i) => {
          const [zi, ri, was] = [tval(z[i], t), tval(r[i], t), drawn[i]];
-         if (zi !== was.z) stand(el(i), pucks[i], 0.9, (was.z = zi) * LIFT, CH);
-         if (ri !== was.r)
-            stand(rows[i], ROW(i, (was.r = ri) * SL * slide), 0.8, ri * RZ, RH);
+         if (zi !== was.z) {
+            was.z = zi;
+            stand(el(i), pucks[i], 0.9, zi * LIFT, CH);
+         }
+         if (ri !== was.r) {
+            was.r = ri;
+            stand(rows[i], ROW(i, ri * SL * slide), 0.8, ri * RZ, RH);
+         }
          moving ||= !tdone(z[i], t) || !tdone(r[i], t);
       });
       const li = tval(l, t);
@@ -131,14 +142,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on rest poses: puck tops and row centres, sticky to the record already picked.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return picked >= 0 && d[picked] < CAP && d[picked] - d[best] < STICK
-         ? picked
-         : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Picks a record through its puck (k < N) or its row (k >= N); -1 is rest. */
    function setActive(k: number) {
@@ -149,11 +153,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          const near = Math.abs(i - (a < 0 ? act : a));
          const mate = a >= 0 && i !== a && circle(i) === circle(a) ? 0.3 : 0;
          tset(z[i], i === a ? 1 : mate, t, near * 45);
-         const out = a < 0 ? REST[i] : i === a ? 1 : near === 1 ? 0.15 : 0;
-         tset(r[i], out, t, near * 45);
+         tset(r[i], slideOf(i, a, near), t, near * 45);
       });
       if (a !== act) {
-         l.from = l.to = 0;
+         l.from = 0;
+         l.to = 0;
          lastL = Number.NaN;
          line.setAttribute("d", "");
          park();
@@ -169,7 +173,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       SPOT.forEach((_, i) => el(i).sil.classList.toggle("hi", k === i));
       rows.forEach((row, i) => row.sil.classList.toggle("hi", k === i + N));
       [picked, act] = [k, a];
-      const nth = [...Array(a + 1).keys()].filter(
+      const nth = [...new Array(a + 1).keys()].filter(
          (i) => circle(i) === circle(a),
       );
       read.textContent = a < 0 ? "rest" : `${NAMES[circle(a)]} ${nth.length}`;
@@ -177,12 +181,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
 
    setActive(-1);
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (p) => pick(p, picked), setActive);
    const set = (v: number) => {
       slide = 0.5 + v * 0.5;
-      drawn.forEach((d) => (d.r = Number.NaN));
+      for (const d of drawn) d.r = Number.NaN;
       B.wake();
    };
    return { set, destroy: bag.dispose };

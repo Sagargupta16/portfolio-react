@@ -15,8 +15,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, mk, now,
-   open, place, pointer, poly, proj, put, register, ringAt, rrect, seg, slab,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   now, open, place, poly, proj, put, register, ringAt, rrect, seg, slab,
    solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -144,8 +144,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    commit.sil.classList.add("hi");
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

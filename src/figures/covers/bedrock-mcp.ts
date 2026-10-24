@@ -13,9 +13,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, open, place, pointer, poly, proj, put, register, ringAt, rrect, slab,
-   seg, solid, tdone, tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, open, place, poly, proj, put, register, ringAt, rrect,
+   slab, seg, solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -45,6 +45,8 @@ const shift = (r: ReturnType<typeof circ>, [x, y]: Vec2) =>
 const tile = ([x, y]: Vec2, h = TS) => rrect(x - h, y - h, x + h, y + h, 2.4);
 const HRING = shift(circ(HUB, 64), HUBAT);
 const CRING = tile(CLIENT, 10);
+/** Each plate's plan centre by paint index: a family, then -2 the client and -1 the hub, read with at(). */
+const SITE = [...FAN, CLIENT, HUBAT];
 /** The most extreme pose (rule 03): every plate, at the top of the rise. */
 const EXTENT: Vec3[] = [...FAN.map((c) => tile(c)), CRING].flatMap((r) =>
    r.flatMap((q): Vec3[] => [
@@ -91,8 +93,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
 
    // Plates back to front by depth: the client, the hub with its mark, the family tiles.
    const order = [-2, -1, ...FAN.keys()].sort((a, b) => {
-      const p = (i: number) => (i === -2 ? CLIENT : i === -1 ? HUBAT : FAN[i]);
-      return p(a)[0] + p(a)[1] - p(b)[0] - p(b)[1];
+      const [pa, pb] = [SITE.at(a)!, SITE.at(b)!];
+      return pa[0] + pa[1] - pb[0] - pb[1];
    });
    const tiles: { s: ReturnType<typeof solid>; d: SVGEllipseElement[] }[] = [];
    let mark!: SVGPathElement;
@@ -122,7 +124,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const inner = rings.map((r) => inset(C, r, 0.9));
    const z = FAN.map(() => tween(0));
    const l = routes.map(() => tween(0));
-   const drawn = { z: FAN.map(() => NaN), l: routes.map(() => NaN) };
+   const drawn = {
+      z: FAN.map(() => Number.NaN),
+      l: routes.map(() => Number.NaN),
+   };
 
    const B = register(stage, (_dt, t) => {
       let moving = false;
@@ -152,12 +157,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    });
    bag.add(B.unregister);
 
-   // Hit test on the tiles' rest tops; the hub and client read as rest.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      return d[best] < CAP ? best : -1;
-   };
+   // Hit test on the tiles' rest tops, not sticky; the hub and client read as rest.
+   const pick = nearest(spot, CAP, 0);
 
    /** Sends the prompt to family a and its neighbours: the client's wire, then the routes out by distance. */
    function setActive(a: number) {
@@ -181,12 +182,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const move = (p: Vec2) => setActive(hit(p));
-   bag.add(pointer(stage, { move, leave: () => setActive(-1) }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (p) => pick(p, -1), setActive);
    const set = (v: number) => {
       rise = 3 + v * 6;
-      drawn.z.fill(NaN);
+      drawn.z.fill(Number.NaN);
       B.wake();
    };
    return { set, destroy: bag.dispose };

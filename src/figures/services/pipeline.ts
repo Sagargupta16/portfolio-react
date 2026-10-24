@@ -11,10 +11,10 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, clamp, disposer, facing, fitFrame, inset, lerp, mk, now,
-   place, pointer, prism, proj, put, register, rings, rrect, slab, solid,
+   Cam, FRAMES, clamp, disposer, facing, fitFrame, follow, inset, lerp, mk,
+   nearest, now, place, prism, proj, put, register, rings, rrect, slab, solid,
    tdone, tset, tval, tween, type FigureMount, type Frame, type Tour,
-   type Vec2, type Vec3,
+   type Vec3,
 } from "@/figures/hairline";
 
 const [PITCH, HS, TS, TH, BT, CAP, STICK] = [44, 17, 7, 7, 3, 40, 12];
@@ -97,22 +97,23 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
                d.setAttribute("class", on ? "dot m" : "dot off");
          }
          const hi = k === act && landed;
-         if (hi !== s.hi) s.el.sil.classList.toggle("hi", (s.hi = hi));
+         if (hi !== s.hi) {
+            s.hi = hi;
+            s.el.sil.classList.toggle("hi", hi);
+         }
       });
       // One bright place: the block, until a chosen stage has it.
       const rest = !plates.some((s) => s.hi);
-      if (rest !== tokHi) tok.sil.classList.toggle("hi", (tokHi = rest));
+      if (rest !== tokHi) {
+         tokHi = rest;
+         tok.sil.classList.toggle("hi", rest);
+      }
       return !tdone(pos, t);
    });
    bag.add(B.unregister);
 
    // Hit test on the stages' rest tops, on screen; the block never moves the choice. Sticky by STICK.
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const hit = nearest(spot, CAP, STICK);
 
    /** Sends the block to stage a, or back to its rest just past test (-1). */
    function setActive(a: number) {
@@ -124,13 +125,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    read.textContent = "rest";
 
-   bag.add(
-      pointer(stage, {
-         move: (q) => setActive(hit(q)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (q) => hit(q, act), setActive);
    return {
       set: (v) => {
          hop = hopOf(v);

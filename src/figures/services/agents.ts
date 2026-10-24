@@ -84,7 +84,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       cards.forEach((c, k) => {
          moving = stepS(c.sp, dt) || moving;
          if (c.sp.x === c.drawn) return;
-         const z = TH + (c.drawn = c.sp.x);
+         c.drawn = c.sp.x;
+         const z = TH + c.drawn;
          put(c.el, prism(P, front, c.ring, c.inner, z, z + CH));
          c.dots.forEach((d, j) =>
             place(d, P(4 + j * 3.2, k * PITCH + T, z + CH - 3.6)),
@@ -118,7 +119,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
 
    function retarget() {
       if (over === null) {
-         cards.forEach((c, k) => (c.sp.t = REST[k] * LIFT));
+         cards.forEach((c, k) => {
+            c.sp.t = REST[k] * LIFT;
+         });
          light(LIT);
          read.textContent = "rest";
       } else {

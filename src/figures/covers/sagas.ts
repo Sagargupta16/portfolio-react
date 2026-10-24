@@ -12,8 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fit, fitFrame, flatDot, inset, mk, now, place,
-   pointer, proj, put, register, rrect, slab, solid, tdone, tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fit, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, place, proj, put, register, rrect, slab, solid, tdone, tset,
+   tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -70,6 +71,13 @@ export const tour: Tour = ((s) => [s[2], s[CH], s[13], null])(
    camera(frame).spot,
 );
 
+/** The read-out for book a: rest, the chapter going final, or its section and number. */
+function label(a: number) {
+   if (a < 0) return "rest";
+   const b = BOOKS[a];
+   return a === CH ? "final" : `${GENRE[b.s]} ${b.n}`;
+}
+
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
    const bag = disposer();
@@ -94,7 +102,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          const oi = tval(out[i], t);
          moving ||= !tdone(out[i], t);
          if (oi === drawn[i]) return;
-         const y = (drawn[i] = oi) * SL * (i === CH ? 1 : pull);
+         drawn[i] = oi;
+         const y = oi * SL * (i === CH ? 1 : pull);
          const r = rings[i].map((q) => ({ ...q, v: q.v + y }));
          put(els[i], slab(P, front, r, inset(C, r, 0.5, 0.3), 0, b.h));
       });
@@ -120,12 +129,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    });
    bag.add(B.unregister);
 
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Pulls book a out (its section-mates a little), or publishes the chapter; -1 is rest. */
    function setActive(a: number) {
@@ -135,25 +139,22 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       BOOKS.forEach((b, i) => {
          const near =
             a >= 0 && !pub && b.s === BOOKS[a].s ? Math.abs(a - i) : 9;
-         const to = i === CH ? (pub ? 0 : 1) : (FALL[near] ?? 0);
-         tset(out[i], to, t, i === CH ? (pub ? 520 : 0) : near * 45);
+         let [to, delay] = [FALL[near] ?? 0, near * 45];
+         if (i === CH) [to, delay] = pub ? [0, 520] : [1, 0];
+         tset(out[i], to, t, delay);
       });
       pubAt = pub ? t : Infinity;
       els.forEach((e, i) =>
          e.sil.classList.toggle("hi", a < 0 ? i === CH : i === a),
       );
       act = a;
-      const b = BOOKS[a];
-      read.textContent =
-         a < 0 ? "rest" : pub ? "final" : `${GENRE[b.s]} ${b.n}`;
+      read.textContent = label(a);
       B.wake();
    }
 
    read.textContent = "rest";
    els[CH].sil.classList.add("hi");
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (q) => pick(q, act), setActive);
    const set = (v: number) => {
       pull = 0.6 + v * 0.4;
       drawn.fill(Number.NaN);

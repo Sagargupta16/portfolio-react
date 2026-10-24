@@ -11,23 +11,25 @@ import type { Frame, FigureModule } from "./hairline";
  * tint=%2360a5fa, tour=0 to hold the tour.
  */
 
-const modules = import.meta.glob<FigureModule>("./*/*.ts");
+// A Map, so the module named in the URL can only ever be one of these files.
+const modules = new Map(
+   Object.entries(import.meta.glob<FigureModule>("./*/*.ts")),
+);
 const q = new URLSearchParams(location.search);
 const path = `./${q.get("m") ?? "covers/diagram"}.ts`;
-const surface = (q.get("surface") ?? "cover") as keyof typeof FRAMES;
+const surfaceKey = q.get("surface") ?? "cover";
+const surface: Frame = Object.hasOwn(FRAMES, surfaceKey)
+   ? FRAMES[surfaceKey as keyof typeof FRAMES]
+   : FRAMES.hairline;
 const width = Number(q.get("w") ?? 343);
 const tint = q.get("tint") ?? "#60a5fa";
 
-async function main() {
-   const load = modules[path];
-   const lab = document.getElementById("lab");
-   if (!lab) return;
-   if (!load) {
-      lab.textContent = `no module ${path}`;
-      return;
-   }
+const lab = document.getElementById("lab");
+const load = modules.get(path);
+if (lab && !load) lab.textContent = `no module ${path}`;
+if (lab && load) {
    const mod = await load();
-   const frame: Frame = mod.frame ?? FRAMES[surface] ?? FRAMES.hairline;
+   const frame: Frame = mod.frame ?? surface;
    createRoot(lab).render(
       <MotionPreferenceProvider>
          <div
@@ -52,5 +54,3 @@ async function main() {
       </MotionPreferenceProvider>,
    );
 }
-
-void main();

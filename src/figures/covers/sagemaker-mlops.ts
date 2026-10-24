@@ -148,17 +148,15 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          cur = at;
          mark.classList.remove(cls);
          mark = parts[MARK[at]].el.sil;
-         mark.classList.add((cls = at === ALARM ? "warn" : "hi"));
+         cls = at === ALARM ? "warn" : "hi";
+         mark.classList.add(cls);
       }
       // The gate reads how many of its four metrics are through.
       const bars = PARTS.filter(
          ([, s, pose], k) => s === 3 && k > 5 && pose(share(p, 3), L)[1] > 6,
       );
-      const text = !over
-         ? "rest"
-         : at === 3
-           ? `gate ${bars.length}/4`
-           : READ[at];
+      let text = at === 3 ? `gate ${bars.length}/4` : READ[at];
+      if (!over) text = "rest";
       if (read.textContent !== text) read.textContent = text;
       return moving;
    });

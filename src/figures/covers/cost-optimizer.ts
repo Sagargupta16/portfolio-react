@@ -13,9 +13,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, place,
-   pointer, poly, proj, put, register, ringAt, rrect, slab, solid, tdone, tset,
-   tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk, nearest,
+   now, place, poly, proj, put, register, ringAt, rrect, slab, solid, tdone,
+   tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -87,7 +87,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const lz = LEVERS.map((_, k) => tween(k === 0 ? 1 : 0));
    const cr = COLS.map(() => tween(CUT[1][0]));
    const co = COLS.map(() => tween(1));
-   const drawn = { l: LEVERS.map(() => NaN), c: COLS.map(() => "") };
+   const drawn = { l: LEVERS.map(() => Number.NaN), c: COLS.map(() => "") };
 
    const B = register(stage, (_dt, t) => {
       let moving = false;
@@ -119,19 +119,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    cols[5].read.sil.classList.add("hi");
 
    // Hit test on the levers' rest tops, sticky by STICK.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Engages levers 0 to a in order (-1: rest, CLAUDE.md trimmed), then the columns follow, nearest first. */
    function setActive(a: number) {
       if (a === act) return;
       const t = now();
       act = a;
-      const n = a < 0 ? 0 : a;
+      const n = Math.max(0, a);
       LEVERS.forEach((_, k) => {
          tset(lz[k], k <= n ? 1 : 0, t, (k <= n ? k : 3 - k) * step);
          levers[k].s.sil.classList.toggle("hi", k === a);
@@ -146,8 +141,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const move = (p: Vec2) => setActive(hit(p));
-   bag.add(pointer(stage, { move, leave: () => setActive(-1) }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = per(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
+   const set = (v: number) => {
+      step = per(v);
+   };
+   return { set, destroy: bag.dispose };
 };

@@ -11,9 +11,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, open,
-   place, pointer, poly, proj, put, register, ringAt, rrect, slab, solid,
-   tdone, tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, open, part, place, poly, proj, put, register, ringAt, rrect,
+   slab, solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -65,21 +65,6 @@ export const tour: Tour = (({ spot }) => [spot[0], spot[3], spot[4], null])(
    camera(frame),
 );
 
-/** The first fraction l of a polyline, by length. */
-function part(pts: Vec2[], l: number): Vec2[] {
-   const out = [pts[0]];
-   const lens = pts
-      .slice(1)
-      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
-   let left = l * lens.reduce((s, d) => s + d, 0);
-   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
-      const k = Math.min(1, left / lens[i]) || 0;
-      const [a, b] = [pts[i], pts[i + 1]];
-      out.push([a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k]);
-   }
-   return out;
-}
-
 /** Delay per hop in ms: 40 at intensity 0, 160 at 1. */
 const hop = (v: number) => 40 + v * 120;
 
@@ -120,7 +105,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const zr = TRAYS.map(() => tween(1));
    const due = TRAYS.map(() => Infinity);
    const wl = tween(1);
-   const drawn = { t: PLUGINS.map(() => NaN), r: TRAYS.map(() => NaN), w: NaN };
+   const drawn = {
+      t: PLUGINS.map(() => Number.NaN),
+      r: TRAYS.map(() => Number.NaN),
+      w: Number.NaN,
+   };
 
    const B = register(stage, (_dt, t) => {
       let moving = !tdone(wl, t);
@@ -159,12 +148,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    tiles[REST].s.sil.classList.add("hi");
 
    // Hit test on the tiles' rest tops, sticky by STICK so a lifted tile cannot flip the choice.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Installs plugin a (-1: back to dev-workflow at rest): tile up, then the wire, then its trays by hop. */
    function setActive(a: number) {
@@ -173,8 +157,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       act = a;
       const p = a < 0 ? REST : a;
       const bits = PLUGINS[p][1];
+      const peak = a < 0 ? 0.4 : 1;
       PLUGINS.forEach((_, i) => {
-         tset(zt[i], i === p ? (a < 0 ? 0.4 : 1) : 0, t, 0);
+         tset(zt[i], i === p ? peak : 0, t, 0);
          tiles[i].s.sil.classList.toggle("hi", i === p);
       });
       // The wire runs again from the marketplace; trays the plugin ships dip, then rise by hop.
@@ -190,8 +175,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       B.wake();
    }
 
-   const move = (p: Vec2) => setActive(hit(p));
-   bag.add(pointer(stage, { move, leave: () => setActive(-1) }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

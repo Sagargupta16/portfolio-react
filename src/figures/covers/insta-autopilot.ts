@@ -14,9 +14,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, mk, now,
-   open, place, pointer, proj, put, register, rrect, slab, solid, tdone, tset,
-   tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, open, place, proj, put, register, rrect, slab, solid, tdone,
+   tset, tval, tween,
 } from "@/figures/hairline";
 // prettier-ignore
 import type { FigureMount, Frame, Ring, Solid, Tour, Tween, Vec2, Vec3 } from "@/figures/hairline";
@@ -123,7 +123,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          ws.forEach((w, i) => {
             const v = tval(w, t);
             moving ||= !tdone(w, t);
-            if (v !== drawn[n][i]) draws[n](i, (drawn[n][i] = v));
+            if (v === drawn[n][i]) return;
+            drawn[n][i] = v;
+            draws[n](i, v);
          }),
       );
       // Grounding: each number on screen is found in the source, one dot at a
@@ -153,13 +155,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    });
    bag.add(B.unregister);
 
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      const cur = pick >= 0 ? 3 + pick : act;
-      if (!(d[best] < CAP)) return -1;
-      return cur >= 0 && d[cur] < CAP && d[cur] - d[best] < STICK ? cur : best;
-   };
+   const near = nearest(spot, CAP, STICK);
+   const hit = (q: Vec2) => near(q, pick >= 0 ? 3 + pick : act);
 
    /** Runs pillar k, or the pillar of slot k - 3 when k >= 3; -1 is rest. */
    function setActive(k: number) {
@@ -173,22 +170,23 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       if (a !== act) checkAt = a >= 0 ? t + 2 * hop + NF * 45 : Infinity;
       sz.forEach((w, j) => {
          const fill = a >= 0 && SLOT_OF[a] === j;
-         tset(
-            w,
-            a < 0 ? REST_SLOT[j] : fill ? 1 : 0,
-            t,
-            fill ? 3 * hop + NF * 45 : 0,
-         );
+         let to = fill ? 1 : 0;
+         if (a < 0) to = REST_SLOT[j];
+         tset(w, to, t, fill ? 3 * hop + NF * 45 : 0);
       });
       [act, pick] = [a, s];
-      const name = `${PILLARS[a]} ${a === FAIL ? 2 : 3}/3`;
-      read.textContent = a < 0 ? "rest" : s >= 0 ? `slot ${s + 1}` : name;
+      let label = `${PILLARS[a]} ${a === FAIL ? 2 : 3}/3`;
+      if (s >= 0) label = `slot ${s + 1}`;
+      read.textContent = a < 0 ? "rest" : label;
       B.wake();
    }
 
    read.textContent = "rest";
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (hop = pace(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   return {
+      set: (v) => {
+         hop = pace(v);
+      },
+      destroy: bag.dispose,
+   };
 };

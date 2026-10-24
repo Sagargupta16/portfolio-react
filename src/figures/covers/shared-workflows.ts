@@ -14,8 +14,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, open, place,
-   pointer, proj, put, register, rrect, slab, solid, tdone, tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk, now,
+   open, place, proj, put, register, rrect, slab, solid, tdone, tset, tval,
+   tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -67,6 +68,12 @@ export const tour: Tour = ((c) => [c.band[SCAN], c.spot[1], c.band[5], null])(
 
 /** Delay per hop in ms: 50 at intensity 0, 110 at 0.5, 170 at 1. */
 const hop = (v: number) => 50 + v * 120;
+
+/** The read-out for a: rest, a drawer's name, or a repo's. */
+function label(a: number) {
+   if (a < 0) return "rest";
+   return a < N ? NAMES[a] : REPOS[a - N][0];
+}
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, band, spot } = camera(f);
@@ -166,24 +173,27 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       drawers.forEach((d, j) => {
          const on = j === a || used.includes(j);
          const delay = r0 >= 0 ? (2 + Math.abs(j - used[0])) * step : 0;
-         tset(d.tw, on ? 1 : a < 0 ? REST[j] : 0, t, on ? delay : 0);
+         const idle = a < 0 ? REST[j] : 0;
+         tset(d.tw, on ? 1 : idle, t, on ? delay : 0);
       });
       // repos nearest the port first: the run from the right-hand card is the shortest
       cards.forEach((c, r) => {
          const on = calls[r];
          const k = r0 >= 0 ? 0 : REPOS.length - r;
-         tset(c.ln, on ? 1 : 0, t, on ? (r0 >= 0 ? step : k * step) : 0);
-         tset(c.tw, on ? 1 : 0, t, on ? (r0 >= 0 ? 0 : (k + 1) * step) : 0);
+         const [ln, tw] = r0 >= 0 ? [step, 0] : [k * step, (k + 1) * step];
+         tset(c.ln, on ? 1 : 0, t, on ? ln : 0);
+         tset(c.tw, on ? 1 : 0, t, on ? tw : 0);
       });
       marks[act < 0 ? SCAN : act].classList.remove("hi");
       marks[a < 0 ? SCAN : a].classList.add("hi");
       act = a;
-      read.textContent = a < 0 ? "rest" : a < N ? NAMES[a] : REPOS[r0][0];
+      read.textContent = label(a);
       B.wake();
    }
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

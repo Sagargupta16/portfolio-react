@@ -7,8 +7,7 @@
  * down the body one hop at a time, as Move() hands the tail on. When the head
  * reaches the food the next step leaves a new tail square behind: the snake
  * grows by one. Leaving plays the run back to the coil. The food is the
- * bright place; once eaten, the head takes it. Intensity is the delay before
- * the head sets off.
+ * bright place; once eaten, the head takes it. Intensity: the start delay.
  */
 
 // prettier-ignore
@@ -139,13 +138,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const fc = mid(aim ?? BAIT);
       paint(food, MAX, showFood ? `${fc}` : "", () => cube(...fc, 3, FOOD));
       if (showFood) items.push([fc[0] + fc[1], -1]);
-      if (showFood !== lit.food)
-         food.sil.classList.toggle("hi", (lit.food = showFood));
-      if (eaten !== lit.head)
-         segs[0].sil.classList.toggle("hi", (lit.head = eaten));
+      if (showFood !== lit.food) food.sil.classList.toggle("hi", showFood);
+      if (eaten !== lit.head) segs[0].sil.classList.toggle("hi", eaten);
+      [lit.food, lit.head] = [showFood, eaten];
       items.sort((a, b) => a[0] - b[0]);
       const order = items.map((it) => it[1]).join();
-      if (order !== lit.order && (lit.order = order))
+      const fresh = order !== lit.order && order !== "";
+      lit.order = order;
+      if (fresh)
          for (const [, k] of items) layer.appendChild((segs[k] ?? food).g);
       return moving;
    });
@@ -193,5 +193,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    };
    bag.add(pointer(stage, { move, leave }));
    bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (wait = 40 + 180 * v), destroy: bag.dispose };
+   const set = (v: number) => {
+      wait = 40 + 180 * v;
+   };
+   return { set, destroy: bag.dispose };
 };

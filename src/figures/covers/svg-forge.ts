@@ -107,13 +107,17 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const nz = NODES.map(() => tween(0));
    const tk = TICKS.map(() => tween(0));
    const fd = tween(0.25);
-   const drawn = { f: NaN, fz: FR.map(() => NaN), nz: NODES.map(() => NaN) };
+   const nan = () => Number.NaN;
+   const drawn = { f: Number.NaN, fz: FR.map(nan), nz: NODES.map(nan) };
    const tickOn = TICKS.map(() => false);
 
    const B = register(stage, (_dt, t) => {
       let moving = !tdone(fd, t);
       const fv = tval(fd, t);
-      if (fv !== drawn.f) place(flow, P(wireX((drawn.f = fv)), WY, CT));
+      if (fv !== drawn.f) {
+         drawn.f = fv;
+         place(flow, P(wireX(fv), WY, CT));
+      }
       tiles.forEach((e, k) => {
          const z = tval(fz[k], t) * rise;
          moving ||= !tdone(fz[k], t);
@@ -148,7 +152,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const hit = (p: Vec2) => {
       const d = spots.map(([s]) => Math.hypot(s[0] - p[0], s[1] - p[1]));
       const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
+      if (best < 0 || d[best] >= CAP) return -1;
       const held = spots.findIndex(
          ([, i], j) => i === act && d[j] - d[best] < STICK,
       );
@@ -180,12 +184,16 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       forge.sil.classList.toggle("hi", a === 0);
       tiles.forEach((e, j) => e.el.sil.classList.toggle("hi", j === k));
       flow.setAttribute("class", a < 0 ? "dot" : "dot m");
-      read.textContent = a < 0 ? "rest" : k < 0 ? NAMES[a] : `frame ${k + 1}`;
+      const label = k < 0 ? NAMES[a] : `frame ${k + 1}`;
+      read.textContent = a < 0 ? "rest" : label;
       B.wake();
    }
 
    const leave = () => setActive(-1);
    bag.add(pointer(stage, { move: (p) => setActive(hit(p), p), leave }));
    bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (rise = 6 + v * 8), destroy: bag.dispose };
+   const set = (v: number) => {
+      rise = 6 + v * 8;
+   };
+   return { set, destroy: bag.dispose };
 };

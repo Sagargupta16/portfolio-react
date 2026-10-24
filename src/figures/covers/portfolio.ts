@@ -14,10 +14,10 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, place,
-   pointer, poly, proj, put, register, ringAt, rrect, seg, slab, solid, tdone,
-   tset, tval, tween, type FigureMount, type Frame, type Ring, type Solid,
-   type Tour, type Vec2, type Vec3,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, place, poly, proj, put, register, ringAt, rrect, seg, slab,
+   solid, tdone, tset, tval, tween, type FigureMount, type Frame, type Ring,
+   type Solid, type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
 
 const NAMES = ["hero", "about", "projects", "stats", "contact"];
@@ -181,17 +181,17 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    setActive(-1);
 
+   // A file, a section or a palette row all pick the same section; -1 stays -1.
+   const pick = nearest(spot, CAP, STICK);
    let held = -1;
    const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return (held = -1);
-      if (held < 0 || d[held] >= CAP || d[held] - d[best] >= STICK) held = best;
+      held = pick(p, held);
       return held % NAMES.length;
    };
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = 50 + 80 * v), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = 50 + 80 * v;
+   };
+   return { set, destroy: bag.dispose };
 };

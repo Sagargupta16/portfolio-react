@@ -11,10 +11,10 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, inset, lerp, mk, now, open,
-   pointer, poly, proj, put, register, ringAt, rrect, slab, solid, tdone, tset,
-   tval, tween, type FigureMount, type Frame, type Solid, type Tour, type Vec2,
-   type Vec3,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, follow, inset, mk, nearest,
+   now, open, part, poly, proj, put, register, ringAt, rrect, slab, solid, tdone,
+   tset, tval, tween, type FigureMount, type Frame, type Solid, type Tour,
+   type Vec2, type Vec3,
 } from "@/figures/hairline";
 
 const [PT, OT, MH, CAP, STICK, STEP] = [3, 3, 8, 44, 12, 90];
@@ -63,20 +63,6 @@ export const frame = FRAMES.service;
 /** The management account, then acct 1.2, then acct 2.1, then away. */
 export const tour: Tour = ((s) => [s[4], s[1], s[2], null])(camera(frame).spot);
 
-/** The first fraction l of a polyline, by length. */
-function part(pts: Vec2[], l: number): Vec2[] {
-   const lens = pts
-      .slice(1)
-      .map((b, i) => Math.hypot(b[0] - pts[i][0], b[1] - pts[i][1]));
-   let left = l * lens.reduce((s, d) => s + d, 0);
-   const out = [pts[0]];
-   for (let i = 0; i < lens.length && left > 0; left -= lens[i++]) {
-      const [a, b, k] = [pts[i], pts[i + 1], Math.min(1, left / lens[i]) || 0];
-      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
-   }
-   return out;
-}
-
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
    const bag = disposer();
@@ -96,7 +82,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const ous = OUS.map((r, k) => {
       const el = solid(g);
       const fence = mk("path", { class: "nf dash" }, g);
-      AY.forEach((_, i) => void (i >> 1 === k && (els[i] = solid(g))));
+      AY.forEach((_, i) => {
+         if (i >> 1 === k) els[i] = solid(g);
+      });
       return { el, fence, inner: inset(C, r, 1.2) };
    });
    const ai = RINGS.map((r) => inset(C, r, 1));
@@ -107,7 +95,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    /** Where a tween is now, and whether it moved since it was last drawn. */
    const step = (s: ReturnType<typeof tw>, t: number) => {
       const v = tval(s.tw, t);
-      return [v, v !== s.d && ((s.d = v), true)] as const;
+      const moved = v !== s.d;
+      s.d = v;
+      return [v, moved] as const;
    };
 
    const B = register(stage, (_dt, t) => {
@@ -135,22 +125,22 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          if (moved || under)
             put(els[i], slab(P, front, RINGS[i], ai[i], z, z + AH[i]));
          const hi = i === act && v > 0.5;
-         if (hi !== lit[i]) els[i].sil.classList.toggle("hi", (lit[i] = hi));
+         if (hi === lit[i]) return;
+         lit[i] = hi;
+         els[i].sil.classList.toggle("hi", hi);
       });
       // One bright place: the management account, until an account has lifted.
       const rest = !lit.some(Boolean);
-      if (rest !== mgHi) mg.sil.classList.toggle("hi", (mgHi = rest));
+      if (rest !== mgHi) {
+         mgHi = rest;
+         mg.sil.classList.toggle("hi", rest);
+      }
       return [...lt, ...zo, ...za, zm].some((s) => !tdone(s.tw, t));
    });
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen, so a lifted account cannot flip the choice; sticky by STICK.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Picks account a (4: the management account, -1: none): trunk, then OU, then account, a hop apart; leavers fall the other way. */
    function setActive(a: number) {
@@ -167,23 +157,17 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       );
       tset(zm.tw, a === 4 ? 1 : 0, t, 0);
       act = a;
-      read.textContent =
-         a < 0 ? "rest" : a === 4 ? "mgmt" : `acct ${ou + 1}.${(a % 2) + 1}`;
+      const name = a === 4 ? "mgmt" : `acct ${ou + 1}.${(a % 2) + 1}`;
+      read.textContent = a < 0 ? "rest" : name;
       B.wake();
    }
    read.textContent = "rest";
 
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (p) => pick(p, act), setActive);
    return {
       set: (v) => {
          lift = rise(v);
-         [...zo, ...za, zm].forEach((s) => (s.d = Number.NaN));
+         for (const s of [...zo, ...za, zm]) s.d = Number.NaN;
          B.wake();
       },
       destroy: bag.dispose,

@@ -12,8 +12,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, place,
-   pointer, proj, put, register, rrect, seg, slab, solid, tdone, tset, tval,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk, now,
+   place, proj, put, register, rrect, seg, slab, solid, tdone, tset, tval,
    tween,
 } from "@/figures/hairline";
 // prettier-ignore
@@ -39,12 +39,22 @@ const CARDS: [number, number, number, number][][] = [
    ],
 ];
 const NAMES = ["hero", "header", "terminal", "projects", "buttons"];
+/** The read-out for part a, from rest (-1) and the yml (0) down the cards. */
+const READ = ["rest", "profile.yml", ...NAMES];
 const mid = (k: number) => (CARDS[k][0][0] + CARDS[k].at(-1)![2]) / 2;
 const KEYS = [33, 37, 41, 45, 49];
 const RISE = 16;
 const EXTENT: Vec3[] = BOARD.map((q): Vec3 => [q.u, q.v, -BT]).concat(
    CARDS.map((_, k): Vec3 => [mid(k), 0, RT + RISE + CT]),
 );
+
+/** Card i's rise and its delay with part a picked: all of them fanned from the yml, or around card a - 1. */
+function riseOf(i: number, a: number): [number, number] {
+   if (a === 0) return [0.7 - i * 0.06, 80 + i * 70];
+   const k = a - 1;
+   if (k < 0) return [0, 0];
+   return [1 / (1 + 0.8 * (i - k) ** 2), Math.abs(i - k) * 45];
+}
 
 /** The camera fitted to a frame; the hit spots: the yml (0), then each card's middle (1-5). */
 function camera(frame: Frame) {
@@ -88,7 +98,15 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          return { ring, el: solid(g) };
       });
       const acc = flatDot(els[0].el.g, C, 1.3, "dot off");
-      return { pieces, els, acc, z: tween(0), a: tween(0), lit: false, d: NaN };
+      return {
+         pieces,
+         els,
+         acc,
+         z: tween(0),
+         a: tween(0),
+         lit: false,
+         d: Number.NaN,
+      };
    });
 
    const B = register(stage, (_dt, t) => {
@@ -116,7 +134,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const hit = (p: Vec2) => {
       const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
       const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
+      if (best < 0 || d[best] >= CAP) return -1;
       return act >= 0 && d[act] - d[best] < STICK ? act : best;
    };
 
@@ -127,14 +145,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       act = a;
       const k = a - 1;
       cards.forEach((c, i) => {
-         const lift =
-            a === 0
-               ? 0.7 - i * 0.06
-               : k >= 0
-                 ? 1 / (1 + 0.8 * (i - k) ** 2)
-                 : 0;
-         const delay =
-            a === 0 ? 80 + i * 70 : k >= 0 ? Math.abs(i - k) * 45 : 0;
+         const [lift, delay] = riseOf(i, a);
          tset(c.z, lift, t, delay);
          tset(c.a, a === 0 ? 1 : 0, t, a === 0 ? delay + 200 : 0);
          c.els.forEach((e) => e.el.sil.classList.toggle("hi", i === k));
@@ -143,16 +154,16 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          e.setAttribute("class", a === 0 ? "nf sil dash" : "nf dash"),
       );
       swatch.setAttribute("class", a <= 0 ? "dot" : "dot m");
-      read.textContent = a < 0 ? "rest" : a === 0 ? "profile.yml" : NAMES[k];
+      read.textContent = READ[a + 1];
       B.wake();
    }
    setActive(-1);
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    return {
-      set: (v) => void (rise = RISE * (0.5 + v * 0.5)),
+      set: (v) => {
+         rise = RISE * (0.5 + v * 0.5);
+      },
       destroy: bag.dispose,
    };
 };

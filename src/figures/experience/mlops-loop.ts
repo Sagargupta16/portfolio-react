@@ -13,9 +13,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, open, place, pointer, proj, put, register, rrect, slab, solid, tdone,
-   tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, open, part, place, proj, put, register, rrect, slab, solid,
+   tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -73,16 +73,6 @@ export const frame = FRAMES.banner;
 /** Training, the endpoint, the monitor, then away. */
 export const tour: Tour = ((s) => [s[1], s[3], s[4], null])(camera(frame).spot);
 
-/** The first fraction l of the run, by length. */
-function part(l: number): Vec2[] {
-   let left = l * TOTAL;
-   const out = [PATH[0]];
-   for (let i = 0; i < LEN.length && left > 0; left -= LEN[i++]) {
-      const [a, b, k] = [PATH[i], PATH[i + 1], Math.min(1, left / LEN[i])];
-      out.push([lerp(a[0], b[0], k), lerp(a[1], b[1], k)]);
-   }
-   return out;
-}
 const sq = (x: number, y: number, h: number) =>
    rrect(x - h, y - h, x + h, y + h, Math.min(3, h * 0.4), 8);
 
@@ -120,7 +110,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const dots = [0, 1, 2, 3].map(() => flatDot(g, C, 1.2, "dot off"));
 
    const run = tween(REST);
-   let drawn = NaN;
+   let drawn = Number.NaN;
    const reach = (l: number, i: number) =>
       Math.max(0, Math.min(1, (l - ST[i][2]) / 0.06 + 1));
 
@@ -128,7 +118,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const l = tval(run, t);
       if (l === drawn) return !tdone(run, t);
       drawn = l;
-      line.setAttribute("d", l > 0.005 ? floor(part(l)) : "");
+      line.setAttribute("d", l > 0.005 ? floor(part(PATH, l)) : "");
       const r = ST.map((_, i) => reach(l, i));
       parts.models.forEach((el, k) => {
          const z = k * (1.6 + r[1] * fan) + r[1] * 2;
@@ -164,31 +154,26 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen; sticky by STICK.
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** The run draws to station a; the monitor closes the loop. */
    function setActive(a: number) {
       if (a === act) return;
-      const to = a < 0 ? REST : a === 4 ? 1 : ST[a][2] + 0.02;
+      let to = REST;
+      if (a === 4) to = 1;
+      else if (a >= 0) to = ST[a][2] + 0.02;
       tset(run, to, now(), 0);
       act = a;
-      drawn = NaN;
+      drawn = Number.NaN;
       read.textContent = a < 0 ? "rest" : TAGS[a];
       B.wake();
    }
 
    read.textContent = "rest";
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, (q) => pick(q, act), setActive);
    const set = (v: number) => {
       fan = 1 + v * 4;
-      drawn = NaN;
+      drawn = Number.NaN;
       B.wake();
    };
    return { set, destroy: bag.dispose };

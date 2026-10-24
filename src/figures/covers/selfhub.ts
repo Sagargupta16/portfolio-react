@@ -150,8 +150,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       if (a === act) return;
       act = a;
       const t = now();
-      const k = a[0] === "d" ? Number(a.slice(1)) : -1;
-      const by = a[0] === "c" ? Number(a[1]) : -1;
+      const k = a.startsWith("d") ? Number(a.slice(1)) : -1;
+      const by = a.startsWith("c") ? Number(a[1]) : -1;
       const to = k >= 0 ? 1 - docs[k].a : by;
       // A store runs client link then server link; a recall runs them back.
       lines.forEach((ln, i) => {
@@ -169,8 +169,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          dc.el.sil.classList.toggle("hi", j === k || (j === N && by >= 0));
       });
       mark.setAttribute("class", a ? "nf lo" : "nf hi");
-      read.textContent =
-         by >= 0 ? "store" : k >= 0 ? `search ${N - k}` : "rest";
+      let label = "rest";
+      if (by >= 0) label = "store";
+      else if (k >= 0) label = `search ${N - k}`;
+      read.textContent = label;
       B.wake();
    }
 
@@ -187,5 +189,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const leave = () => choose("");
    bag.add(pointer(stage, { move: (p) => choose(hit(p)), leave }));
    bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = 60 + 100 * v), destroy: bag.dispose };
+   const set = (v: number) => {
+      step = 60 + 100 * v;
+   };
+   return { set, destroy: bag.dispose };
 };

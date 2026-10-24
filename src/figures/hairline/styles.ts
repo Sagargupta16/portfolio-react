@@ -64,7 +64,7 @@ export const css = [
 export function inject(doc: Document = document): void {
    if (doc.querySelector("style[data-hairline-style]")) return;
    const style = doc.createElement("style");
-   style.setAttribute("data-hairline-style", "");
+   style.dataset.hairlineStyle = "";
    style.textContent = css;
    doc.head.appendChild(style);
 }

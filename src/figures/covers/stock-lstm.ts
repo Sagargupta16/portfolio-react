@@ -13,8 +13,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, clamp, disposer, facing, fitFrame, inset, mk, now, open, poly,
-   pointer, proj, put, register, ringAt, rrect, slab, solid, tdone, tset, tval,
+   Cam, FRAMES, clamp, disposer, facing, fitFrame, follow, inset, mk, now, open,
+   poly, proj, put, register, ringAt, rrect, slab, solid, tdone, tset, tval,
    tween,
 } from "@/figures/hairline";
 // prettier-ignore
@@ -110,7 +110,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          moving ||= !tdone(ph[i], t);
          if (v === drawn.p[i] || i < SEQ) return;
          // A day not yet predicted has no bar at all.
-         if ((drawn.p[i] = v) < 0.05) put(pred[i], { sil: "", crease: "" });
+         drawn.p[i] = v;
+         if (v < 0.05) put(pred[i], { sil: "", crease: "" });
          else stand(pred[i], bar(i, YP), 0, v);
       });
       return moving;
@@ -140,36 +141,35 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       w = nw;
       B.wake();
    }
-   // The rest pose is the last prediction already made: no cell fires at mount.
-   predict(REST_W);
-   pulse.forEach((pk) => Object.assign(pk, { from: 1, to: 1, t0: -1e9 }));
-
    const mid = (at[0][1] + at[N - 1][1]) / 2;
    const pick = (p: Vec2) => {
       if (Math.abs(p[1] - mid) > 70) return -1;
       const d = at.map((q) => Math.abs(q[0] - p[0]));
       return d.indexOf(Math.min(...d));
    };
-   let day = -1;
-   const move = (p: Vec2) => {
-      const i = pick(p);
-      if (i === day) return;
-      day = i;
-      if (i < 0) return leave();
-      const nw = clamp(i - SEQ, 0, N - 1 - SEQ);
-      read.textContent = `day ${nw + SEQ + 1}`;
-      predict(nw);
-   };
-   const leave = () => {
-      day = -1;
+   /** The rest pose is the last prediction already made: no cell fires. */
+   const rest = () => {
       read.textContent = "rest";
-      // The rest pose is the last prediction already made: no cell fires at mount.
       predict(REST_W);
       pulse.forEach((pk) => Object.assign(pk, { from: 1, to: 1, t0: -1e9 }));
    };
+   let day = -1;
+   /** Predicts for the day under the pointer (-1: rest). */
+   function choose(i: number) {
+      if (i === day) return;
+      day = i;
+      if (i < 0) rest();
+      else {
+         const nw = clamp(i - SEQ, 0, N - 1 - SEQ);
+         read.textContent = `day ${nw + SEQ + 1}`;
+         predict(nw);
+      }
+   }
 
-   read.textContent = "rest";
-   bag.add(pointer(stage, { move, leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = pace(v)), destroy: bag.dispose };
+   rest();
+   follow(bag, stage, svg, pick, choose);
+   const set = (v: number) => {
+      step = pace(v);
+   };
+   return { set, destroy: bag.dispose };
 };

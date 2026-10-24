@@ -14,9 +14,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now,
-   open, place, pointer, poly, proj, put, ringAt, register, rrect, slab, solid,
-   tdone, tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, lerp, mk,
+   nearest, now, open, place, poly, proj, put, ringAt, register, rrect, slab,
+   solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -113,7 +113,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const run = SLOTS.map(() => tween(0));
    const land = tween(0);
    const mark = SLOTS.map(() => tween(0, 200));
-   const drawn = SLOTS.map(() => ({ g: NaN, l: NaN, x: NaN, m: false }));
+   const nan = Number.NaN;
+   const drawn = SLOTS.map(() => ({ g: nan, l: nan, x: nan, m: false }));
    const lit = SLOTS.map(() => false);
    let audHi = false;
 
@@ -143,23 +144,23 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          }
          // One bright place: the chosen account; at rest the one still joining.
          const on = i === (act < 0 || act === NEW ? NEW : act);
-         if (on !== lit[i]) lid[i].sil.classList.toggle("hi", (lit[i] = on));
+         if (on !== lit[i]) {
+            lit[i] = on;
+            lid[i].sil.classList.toggle("hi", on);
+         }
          moving ||=
             !tdone(gap[i], t) || !tdone(run[i], t) || !tdone(mark[i], t);
       });
-      if ((act === AUD) !== audHi)
-         audit.sil.classList.toggle("hi", (audHi = act === AUD));
+      if ((act === AUD) !== audHi) {
+         audHi = act === AUD;
+         audit.sil.classList.toggle("hi", audHi);
+      }
       return moving;
    });
    bag.add(B.unregister);
 
    // Hit test on the rest tops (the new account at its slot, its target); sticky by STICK.
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** An account: the sweep spreads by grid steps, then its finding runs. The audit account: every finding, nearest column first. */
    function setActive(a: number) {
@@ -190,8 +191,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
 
    read.textContent = "rest";
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hopMs(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (q) => pick(q, act), setActive);
+   const set = (v: number) => {
+      step = hopMs(v);
+   };
+   return { set, destroy: bag.dispose };
 };

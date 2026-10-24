@@ -14,7 +14,7 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, place, pointer,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk, now, place,
    prism, proj, put, register, rings, rrect, slab, solid, tdone, tset, tval,
    tween, unproj,
    type FigureMount, type Frame, type Tour, type Vec2, type Vec3,
@@ -147,12 +147,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
 
    setActive(-1);
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = per(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   return {
+      set: (v) => {
+         step = per(v);
+      },
+      destroy: bag.dispose,
+   };
 };

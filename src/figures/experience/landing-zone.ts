@@ -11,8 +11,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, open, place, pointer, poly, proj, put, ringAt, register, rrect, slab,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, open, place, poly, proj, put, ringAt, register, rrect, slab,
    solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -61,6 +61,12 @@ const edge = (a: Vec2, b: Vec2): Vec2 => {
    const k = 1 - TS / Math.max(Math.abs(dx), Math.abs(dy));
    return [a[0] + dx * k, a[1] + dy * k];
 };
+/** A spoke's [lift, link] targets: picked (fanned by its hub: 0.6), at rest, or off. */
+function targets(on: boolean, fan: boolean, a: number, rest: number) {
+   if (on) return [fan ? 0.6 : 1, 1];
+   if (a < 0) return [rest, rest > 0.3 ? 0.5 : 0];
+   return [0, 0];
+}
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
@@ -116,16 +122,17 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const z = SPOKES.map((s) => tween(s[4]));
    const l = SPOKES.map((s) => tween(s[4] > 0.3 ? 0.5 : 0));
    const pl = tween(0);
-   const drawn = SPOKES.map(() => ({ z: NaN, l: NaN }));
+   const drawn = SPOKES.map(() => ({ z: Number.NaN, l: Number.NaN }));
    const lit = [...SPOKES, ...HUBS].map(() => false);
-   let [from, peerDrawn] = [0, NaN];
+   let [from, peerDrawn] = [0, Number.NaN];
 
    const B = register(stage, (_dt, t) => {
       let moving = !tdone(pl, t);
       SPOKES.forEach(([, , , h], i) => {
          const [zi, li, was] = [tval(z[i], t), tval(l[i], t), drawn[i]];
          if (li !== was.l) {
-            lines[i].setAttribute("d", run(ends[i], (was.l = li)));
+            was.l = li;
+            lines[i].setAttribute("d", run(ends[i], li));
             dots[i].setAttribute("class", li > 0.9 ? "dot m" : "dot off");
          }
          if (zi !== was.z) {
@@ -142,27 +149,23 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          moving ||= !tdone(z[i], t) || !tdone(l[i], t);
       });
       const p = tval(pl, t);
-      if (p !== peerDrawn)
-         peer.setAttribute(
-            "d",
-            run(from ? [HUBS[1], HUBS[0]] : HUBS, (peerDrawn = p)),
-         );
+      if (p !== peerDrawn) {
+         peerDrawn = p;
+         peer.setAttribute("d", run(from ? [HUBS[1], HUBS[0]] : HUBS, p));
+      }
       // One bright place: the chosen part once it has risen, the new spoke at rest.
       lit.forEach((was, i) => {
          const on = i === (act < 0 ? NEW : act) && (i > 5 || drawn[i].z > 0.3);
-         if (on !== was) el(i).sil.classList.toggle("hi", (lit[i] = on));
+         if (on === was) return;
+         lit[i] = on;
+         el(i).sil.classList.toggle("hi", on);
       });
       return moving;
    });
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen; sticky by STICK.
-   const hit = (q: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - q[0], s[1] - q[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
 
    /** Spoke a: link, then tile. Hub a: its spokes in fan order, a hop apart, and the peering run. */
    function setActive(a: number) {
@@ -172,8 +175,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          const fan = a === 6 + hub;
          const on = a === i || fan;
          const k = fan ? i % 3 : 0;
-         const zt = on ? (fan ? 0.6 : 1) : a < 0 ? rest : 0;
-         const lt = on ? 1 : a < 0 && rest > 0.3 ? 0.5 : 0;
+         const [zt, lt] = targets(on, fan, a, rest);
          tset(l[i], lt, t, on ? k * step : 0);
          tset(z[i], zt, t, on ? (k + 1) * step : 0);
       });
@@ -185,8 +187,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
 
    read.textContent = "rest";
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (q) => setActive(hit(q)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hopMs(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (q) => pick(q, act), setActive);
+   return {
+      set: (v) => {
+         step = hopMs(v);
+      },
+      destroy: bag.dispose,
+   };
 };

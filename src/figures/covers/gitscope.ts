@@ -14,9 +14,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, mk, now,
-   place, pointer, poly, proj, put, ringAt, register, rrect, seg, slab, solid,
-   tdone, tset, tval, tween,
+   Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   nearest, now, place, poly, proj, put, ringAt, register, rrect, seg, slab,
+   solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type {
    FigureMount,
@@ -155,7 +155,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    function setActive(a: number) {
       if (a === act) return;
       const t = now();
-      const k = a < 0 ? REST_K : a === 4 ? -1 : a;
+      let k = a;
+      if (a < 0) k = REST_K;
+      else if (a === 4) k = -1;
       secs.forEach((s, j) => {
          const delay = (j <= k ? j : j - Math.max(k, 0)) * 55;
          tset(s.z, hang(j, k, gap), t, delay);
@@ -169,18 +171,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    setActive(-1);
 
+   // Sticky on the last hit, which a leave does not clear.
    let held = -1;
+   const pick = nearest(spot, CAP, STICK);
    const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return (held = -1);
-      if (held < 0 || d[held] >= CAP || d[held] - d[best] >= STICK) held = best;
+      held = pick(p, held);
       return held;
    };
-
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    return {
       set: (v) => {
          gap = 4 + 4 * v;

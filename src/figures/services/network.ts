@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, inset, lerp, mk, now, pointer,
-   poly, proj, put, register, ringAt, rrect, seg, slab, solid, tdone, tset,
-   tval, tween, type FigureMount, type Frame, type Projector, type Solid,
+   Cam, FRAMES, disposer, facing, fitFrame, follow, inset, lerp, mk, nearest,
+   now, poly, proj, put, register, ringAt, rrect, seg, slab, solid, tdone,
+   tset, tval, tween, type FigureMount, type Frame, type Projector, type Solid,
    type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
 
@@ -71,6 +71,13 @@ function marks(i: number, z: number, P: Projector) {
    return [-5, 0, 5]
       .map((o) => seg(P(x - 8, y + o, z), P(x + 8, y + o, z)))
       .join("");
+}
+
+/** Attachment i's share of the rise when a is picked: the chosen one up, inspection a little after it. */
+function lifted(a: number, i: number) {
+   if (a < 0) return RZ[i];
+   if (i === a) return 1;
+   return i === FW ? 0.4 : 0;
 }
 
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
@@ -139,7 +146,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
             els[i].mk.setAttribute("d", marks(i, zi + HS[i], P));
          }
          const hi = i === act && tval(z[i], t) > 0.5;
-         if (hi !== was.hi) els[i].el.sil.classList.toggle("hi", (was.hi = hi));
+         if (hi !== was.hi) {
+            was.hi = hi;
+            els[i].el.sil.classList.toggle("hi", hi);
+         }
          moving ||= !tdone(z[i], t) || !tdone(l[i], t);
       });
       // One bright place: the hub's square at rest, the chosen attachment once it has risen.
@@ -153,13 +163,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen; the hub itself is rest. Sticky by STICK.
-   const hit = (p: Vec2) => {
-      if (Math.hypot(p[0] - hub[0], p[1] - hub[1]) < 26) return -1;
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
-      return act >= 0 && d[act] < CAP && d[act] - d[best] < STICK ? act : best;
-   };
+   const pick = nearest(spot, CAP, STICK);
+   const hit = (p: Vec2) =>
+      Math.hypot(p[0] - hub[0], p[1] - hub[1]) < 26 ? -1 : pick(p, act);
 
    /** Routes attachment a (-1: none): its link and rise first, then the hub's link to inspection, a hop later. */
    function setActive(a: number) {
@@ -168,9 +174,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       XY.forEach((_, i) => {
          const on = i === a || (a >= 0 && i === FW);
          const hop = i === a ? 0 : 1;
-         const zt = i === a ? 1 : on ? 0.4 : 0;
-         tset(l[i], on ? 1 : a < 0 ? RL[i] : 0, t, on ? hop * STEP : 0);
-         tset(z[i], a < 0 ? RZ[i] : zt, t, on ? hop * 2 * STEP : 0);
+         const idle = a < 0 ? RL[i] : 0;
+         tset(l[i], on ? 1 : idle, t, on ? hop * STEP : 0);
+         tset(z[i], lifted(a, i), t, on ? hop * 2 * STEP : 0);
       });
       act = a;
       read.textContent = a < 0 ? "rest" : NAMES[a];
@@ -178,17 +184,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    read.textContent = "rest";
 
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    return {
       set: (v) => {
          rise = riseOf(v);
-         drawn.forEach((d) => (d.z = Number.NaN));
+         for (const d of drawn) d.z = Number.NaN;
          B.wake();
       },
       destroy: bag.dispose,

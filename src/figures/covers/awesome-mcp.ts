@@ -14,16 +14,17 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, clamp, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, place, pointer, poly, proj, put, register, ringAt, rrect, slab, solid,
-   tdone, tset, tval, tween,
+   Cam, FRAMES, clamp, disposer, facing, fitFrame, flatDot, follow, inset, lerp,
+   mk, nearest, now, place, poly, proj, put, register, ringAt, rrect, slab,
+   solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
 const [PT, BH, EH, GH, SH, TH, RISE, ARC, CAP] = [
    3, 1.6, 2.6, 7, 2.4, 3, 7, 16, 30,
 ];
-const TAGS = ["data", "devtools", "cloud", "search"];
+/** The read-out per active value: the four categories, then the gate. */
+const TAGS = ["data", "devtools", "cloud", "search", "ci"];
 const GATE = rrect(-12, 52, 4, 68, 3, 6);
 const WAIT: Vec3 = [-22, 74, 0];
 const LIST = rrect(12, 0, 62, 52, 3, 6);
@@ -144,11 +145,10 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       });
       tiles.forEach((e, i) => {
          const zi = SH + tval(z[i], t) * RISE;
-         if (zi !== drawn.z[i])
-            put(
-               e.el,
-               slab(P, front, e.ring, e.inner, (drawn.z[i] = zi), zi + TH),
-            );
+         if (zi !== drawn.z[i]) {
+            drawn.z[i] = zi;
+            put(e.el, slab(P, front, e.ring, e.inner, zi, zi + TH));
+         }
          moving ||= !tdone(z[i], t);
       });
       return moving;
@@ -156,11 +156,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    bag.add(B.unregister);
 
    // Hit test on the rest tops, on screen; a section and its site tile are one category.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      return d[best] < CAP ? (best === 0 ? 4 : (best - 1) % 4) : -1;
-   };
+   const CATS = [4, 0, 1, 2, 3, 0, 1, 2, 3];
+   const pick = nearest(spot, CAP, 0);
+   const hit = (p: Vec2) => CATS[pick(p, -1)] ?? -1;
 
    /** 0 to 3: that category, checks, hop, rebuild; 4: the checks alone; -1: rest. */
    function setActive(a: number) {
@@ -171,7 +169,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const dest = cat ? SLOTS[a] : WAIT;
       if (dest !== to) {
          [from, to] = [at(tval(go, t)), dest];
-         go.from = go.to = 0;
+         go.from = 0;
+         go.to = 0;
          tset(go, 1, t, cat ? 3 * step : 0);
       }
       tiles.forEach((e, i) => {
@@ -188,13 +187,14 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       });
       entry.sil.classList.toggle("hi", !cat);
       act = a;
-      read.textContent = a < 0 ? "rest" : cat ? TAGS[a] : "ci";
+      read.textContent = a < 0 ? "rest" : TAGS[a];
       B.wake();
    }
    entry.sil.classList.add("hi");
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = hop(v);
+   };
+   return { set, destroy: bag.dispose };
 };

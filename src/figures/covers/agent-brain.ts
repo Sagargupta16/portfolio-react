@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, mk, now, open,
-   place, pointer, prism, proj, put, register, rings, rrect, seg, slab, solid,
-   tdone, tset, tval, tween,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, mk,
+   now, open, place, prism, proj, put, register, rings, rrect, seg,
+   slab, solid, tdone, tset, tval, tween,
 } from "@/figures/hairline";
 // prettier-ignore
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
@@ -65,6 +65,12 @@ function lift(a: number, i: number) {
    return a === 2 ? PAGES[i].s : 0;
 }
 
+/** A page's edge: the bright one, the struck one dim, the rest plain. */
+function edge(i: number, bright: number) {
+   if (i === bright) return "hi";
+   return i === OLD ? "lo" : "sil";
+}
+
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
    const bag = disposer();
@@ -97,7 +103,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    });
 
    const z = PAGES.map(() => tween(0));
-   const drawn = PAGES.map(() => NaN);
+   const drawn = PAGES.map(() => Number.NaN);
    const B = register(stage, (_dt, t) => {
       let moving = false;
       pages.forEach((e, i) => {
@@ -125,7 +131,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const hit = (p: Vec2) => {
       const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
       const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
+      if (best < 0 || d[best] >= CAP) return -1;
       return act >= 0 && d[act] - d[best] < STICK ? act : best;
    };
 
@@ -139,24 +145,19 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          const dist = Math.hypot(p.x + PW / 2 - (14 + from * 45), p.y + 22);
          tset(z[i], lift(a, i), t, (dist / 12) * 40);
       });
-      const bright = a < 0 ? NEW : a === 0 ? NEW : REP;
-      pages.forEach((e, i) =>
-         e.el.sil.setAttribute(
-            "class",
-            i === bright ? "hi" : i === OLD ? "lo" : "sil",
-         ),
-      );
+      const bright = a > 0 ? REP : NEW;
+      pages.forEach((e, i) => e.el.sil.setAttribute("class", edge(i, bright)));
       link.setAttribute("class", a === 1 ? "nf sil dash" : "nf dash");
       read.textContent = a < 0 ? "rest" : OPS[a];
       B.wake();
    }
    setActive(-1);
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
+   follow(bag, stage, svg, hit, setActive);
    return {
-      set: (v) => void (rise = RISE * (0.6 + v * 0.4)),
+      set: (v) => {
+         rise = RISE * (0.6 + v * 0.4);
+      },
       destroy: bag.dispose,
    };
 };

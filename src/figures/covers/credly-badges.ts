@@ -15,8 +15,8 @@
 // prettier-ignore
 import {
    Cam, FRAMES, circ, disposer, facing, fitFrame, flatDot, inset, lerp, mk,
-   now, open, place, pointer, proj, put, register, rrect, slab, solid, tdone,
-   tset, tval, tween,
+   nearest, now, open, place, proj, put, register, rrect, slab, solid, tdone,
+   tset, tval, tween, follow,
 } from "@/figures/hairline";
 import type { FigureMount, Frame, Tour, Vec2, Vec3 } from "@/figures/hairline";
 
@@ -128,23 +128,18 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          for (const k of now2) g.appendChild(badges[k].el.g);
       }
       const lit = tval(out, t) > 0.5 ? dest : 0;
-      if (lit !== drawn.out)
+      if (lit !== drawn.out) {
+         drawn.out = lit;
          commits.forEach((d, i) =>
-            d?.setAttribute(
-               "class",
-               (drawn.out = lit) === i ? "dot m" : "dot off",
-            ),
+            d?.setAttribute("class", lit === i ? "dot m" : "dot off"),
          );
+      }
       return moving;
    });
    bag.add(B.unregister);
 
    // Hit test on the plates' rest centres, on screen.
-   const hit = (p: Vec2) => {
-      const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
-      const best = d.indexOf(Math.min(...d));
-      return d[best] < CAP ? best : -1;
-   };
+   const pick = nearest(spot, CAP, 0);
 
    /** Sends every badge to its seat on plate a (-1: the README, at rest), category by category. */
    function setActive(a: number) {
@@ -157,7 +152,8 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
             [b.from, b.to, b.go] = [b.pos, SEATS[to][k], tween(0)];
             tset(b.go, 1, t, (CAT[k] * 3 + within) * step);
          });
-         out.from = out.to = 0;
+         out.from = 0;
+         out.to = 0;
          tset(out, 1, t, 10 * step);
          dest = to;
       }
@@ -171,8 +167,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
    marks.setAttribute("class", "nf hi dash");
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = hop(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, (p) => pick(p, -1), setActive);
+   return {
+      set: (v) => {
+         step = hop(v);
+      },
+      destroy: bag.dispose,
+   };
 };

@@ -12,9 +12,9 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fitFrame, flatDot, inset, lerp, mk, now,
-   place, pointer, poly, prism, proj, put, register, rings, ringAt, rrect,
-   slab, solid, tdone, tset, tval, tween, unproj,
+   Cam, FRAMES, disposer, facing, fitFrame, flatDot, follow, inset, lerp, mk,
+   now, place, poly, prism, proj, put, register, rings, ringAt, rrect, slab,
+   solid, tdone, tset, tval, tween, unproj,
    type FigureMount, type Frame, type Tour, type Vec2, type Vec3,
 } from "@/figures/hairline";
 
@@ -152,12 +152,9 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    }
 
    setActive(-1);
-   bag.add(
-      pointer(stage, {
-         move: (p) => setActive(hit(p)),
-         leave: () => setActive(-1),
-      }),
-   );
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (step = per(v)), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   const set = (v: number) => {
+      step = per(v);
+   };
+   return { set, destroy: bag.dispose };
 };

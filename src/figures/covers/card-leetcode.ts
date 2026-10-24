@@ -12,8 +12,8 @@
 
 // prettier-ignore
 import {
-   Cam, FRAMES, disposer, facing, fillet, fitFrame, flatDot, hull, inset, lerp,
-   mk, now, open, place, pointer, poly, prism, proj, put, register, rings, rrect,
+   Cam, FRAMES, disposer, facing, fillet, fitFrame, flatDot, follow, hull, inset,
+   lerp, mk, now, open, place, poly, prism, proj, put, register, rings, rrect,
    seg, slab, tdone, tset, tval, tween, solid,
 } from "@/figures/hairline";
 // prettier-ignore
@@ -85,6 +85,13 @@ function upTo(pts: Vec2[], l: number): Vec2[] {
    return out;
 }
 
+/** The read-out for pick a: rest, a contest's rating, or a column's name. */
+function label(a: number, contest: boolean) {
+   if (a < 0) return "rest";
+   if (!contest) return NAMES[a - 12];
+   return `${a === PEAK ? "peak " : ""}${RATING[a]}`;
+}
+
 export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const { C, P, front, spot } = camera(f);
    const bag = disposer();
@@ -124,7 +131,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
 
    const len = tween(1);
    const h = COLS.map(() => tween(1));
-   const drawn = { len: NaN, h: COLS.map(() => NaN) };
+   const drawn = { len: Number.NaN, h: COLS.map(() => Number.NaN) };
    const B = register(stage, (_dt, t) => {
       let moving = !tdone(len, t);
       const l = tval(len, t);
@@ -132,7 +139,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
          drawn.len = l;
          const pts = upTo(scr, l);
          drawnIn.setAttribute("d", act >= 0 && act < 12 ? open(pts) : "");
-         place(cur, pts[pts.length - 1]);
+         place(cur, pts.at(-1)!);
       }
       cols.forEach((c, b) => {
          const z = 2 + tval(h[b], t) * COLS[b][1] * CH;
@@ -148,7 +155,7 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
    const hit = (p: Vec2) => {
       const d = spot.map((s) => Math.hypot(s[0] - p[0], s[1] - p[1]));
       const best = d.indexOf(Math.min(...d));
-      if (!(d[best] < CAP)) return -1;
+      if (best < 0 || d[best] >= CAP) return -1;
       return act >= 0 && d[act] - d[best] < STICK ? act : best;
    };
 
@@ -159,13 +166,11 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       const contest = a >= 0 && a < 12;
       act = a;
       tset(len, contest ? a / 11 : 1, t, 0);
-      drawn.len = NaN;
+      drawn.len = Number.NaN;
       COLS.forEach((_, b) => {
-         const to = contest
-            ? 0.3 + (0.7 * a) / 11
-            : a < 0 || a - 12 === b
-              ? 1
-              : 1 - sink;
+         let to = 1 - sink;
+         if (contest) to = 0.3 + (0.7 * a) / 11;
+         else if (a < 0 || a - 12 === b) to = 1;
          tset(
             h[b],
             to,
@@ -176,18 +181,16 @@ export const mount: FigureMount = ({ stage, svg, read, frame: f }, value) => {
       });
       peak.setAttribute("class", a < 0 ? "dot" : "dot m");
       cur.setAttribute("class", contest ? "dot" : "dot m");
-      read.textContent =
-         a < 0
-            ? "rest"
-            : contest
-              ? `${a === PEAK ? "peak " : ""}${RATING[a]}`
-              : NAMES[a - 12];
+      read.textContent = label(a, contest);
       B.wake();
    }
    setActive(-1);
 
-   const leave = () => setActive(-1);
-   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave }));
-   bag.add(() => svg.replaceChildren());
-   return { set: (v) => void (sink = 0.35 + v * 0.4), destroy: bag.dispose };
+   follow(bag, stage, svg, hit, setActive);
+   return {
+      set: (v) => {
+         sink = 0.35 + v * 0.4;
+      },
+      destroy: bag.dispose,
+   };
 };
