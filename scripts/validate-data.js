@@ -299,13 +299,7 @@ if (requireRecord(personal, "data/personal.json")) {
       }
    }
    if (requireRecord(personal.impact, "personal.impact")) {
-      for (const field of [
-         "clients_served",
-         "clients_note",
-         "terraform_resources",
-         "terraform_workspaces",
-         "security_controls",
-      ]) {
+      for (const field of ["clients_served", "clients_note", "years_at_aws"]) {
          requireString(personal.impact[field], `personal.impact.${field}`);
       }
    }
@@ -338,8 +332,8 @@ const STATS_GROUPS = [
 ];
 const STATS_TILE_PLACEHOLDERS = {
    clients_served: [],
-   terraform_resources: ["workspaces"],
-   security_controls: [],
+   years_at_aws: [],
+   speaker_certs: [],
    talks: [],
    projects: ["featured"],
    certifications: [],
@@ -693,6 +687,7 @@ const UI_COPY = {
    },
    footer: {
       copyright: ["year", "name"],
+      disclaimer: [],
       site: [],
       site_label: [],
       social: [],
@@ -930,6 +925,12 @@ if (requireRecord(experience, "experience")) {
                      `${entryPath}.type`,
                      "must be talk, publication, or program",
                   );
+               }
+               if (
+                  entry?.count !== undefined &&
+                  !(Number.isInteger(entry.count) && entry.count > 0)
+               ) {
+                  fail(`${entryPath}.count`, "must be a positive integer");
                }
             }
          }
@@ -1170,6 +1171,22 @@ const HIGHLIGHT_COUNTS = {
          .find(Boolean);
       return count ? `${count}x` : "(no Nx TFC Ambassador entry)";
    },
+   tfc_member: () => {
+      const titles = (experience?.professional_experience ?? []).flatMap(
+         (job) => (job?.internal_achievements ?? []).map((a) => a?.title),
+      );
+      const count = titles
+         .map((title) => /^(\d+)x TFC Member\b/.exec(title ?? "")?.[1])
+         .find(Boolean);
+      return count ? `${count}x` : "(no Nx TFC Member entry)";
+   },
+   // Merged pull requests only, as the Stats open-source tile counts them.
+   merged_prs: () =>
+      String(
+         (projects?.open_source_contributions ?? []).filter(
+            (c) => c?.status === "merged" && c?.url?.includes("/pull/"),
+         ).length,
+      ),
 };
 
 const checkHighlight = (item, path) => {

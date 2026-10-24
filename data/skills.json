@@ -12,11 +12,14 @@
       "Detective",
       "Config",
       "KMS",
+      "AWS Backup",
+      "Systems Manager Patch Manager",
       "VPC",
       "Transit Gateway",
       "VPC IPAM",
       "Direct Connect",
       "Site-to-Site VPN",
+      "Network Firewall",
       "Route 53",
       "ALB",
       "CloudFront",
@@ -41,6 +44,7 @@
       "CodeDeploy",
       "SageMaker",
       "Bedrock",
+      "Amazon Bedrock AgentCore",
       "Amazon Q"
    ],
    "devops": [

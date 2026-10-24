@@ -103,7 +103,13 @@ const Skill = () => {
                )}
             </div>
 
-            <SecondarySkills categories={secondaryCategories} />
+            <SecondarySkills
+               categories={secondaryCategories}
+               railOffset={primaryCategories.reduce(
+                  (sum, { rails }) => sum + rails,
+                  0,
+               )}
+            />
          </div>
       </PageSection>
    );

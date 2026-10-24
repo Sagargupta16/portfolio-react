@@ -42,6 +42,7 @@
    },
    "footer": {
       "copyright": "© {year} {name}. All rights reserved.",
+      "disclaimer": "Personal projects and opinions are my own and do not represent Amazon or AWS.",
       "site": "Site",
       "site_label": "Footer site links",
       "social": "Social",

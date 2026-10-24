@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.20.0-2563eb)
+![Version](https://img.shields.io/badge/version-4.21.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -51,7 +51,7 @@ Section links support reloads and browser history. Navigation loads the content 
 | **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                                          |
 | **Experience**   | Timeline of roles, each with an animated scene of what that role did; details modal with case-study briefs and a scene per engagement                                                                                                             |
 | **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                                                |
-| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (150 skills; static chips in Reduced)                                                                                                                         |
+| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (154 skills; static chips in Reduced)                                                                                                                         |
 | **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; repo-accurate animated cover scenes for every project; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
 | **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                              |
 | **Services**     | Six fact-based offerings in an even bento grid, each with a scene that shows the real mechanism (labels 9 px+ on phones)                                                                                                                          |

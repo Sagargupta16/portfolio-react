@@ -151,14 +151,18 @@ const StatsBand = () => {
          .join(", ");
       const impactData = getImpact();
 
-      // Talks and published patterns are tagged by `type` on the experience
+      // Talks and published samples are tagged by `type` on the experience
       // entries, so this count tracks the timeline instead of restating it.
+      // One generic line can stand for several talks (`count`).
       const internal = getExperience().flatMap(
          (job) => job.internal_contributions ?? [],
       );
-      const speakingCount = internal.filter(
-         (c) => c.type === "talk" || c.type === "publication",
-      ).length;
+      const speakingCount = internal
+         .filter((c) => c.type === "talk" || c.type === "publication")
+         .reduce((sum, c) => sum + (c.count ?? 1), 0);
+      const speakerCerts = getExperience()
+         .flatMap((job) => job.internal_achievements ?? [])
+         .filter((a) => /Speaker Certification/.test(a.title)).length;
 
       const projectCount =
          getFeaturedProjects().length +
@@ -227,10 +231,8 @@ const StatsBand = () => {
                ...tile("clients_served", impactData.clients_served),
                note: impactData.clients_note,
             },
-            tile("terraform_resources", impactData.terraform_resources, {
-               workspaces: impactData.terraform_workspaces,
-            }),
-            tile("security_controls", impactData.security_controls),
+            tile("years_at_aws", impactData.years_at_aws),
+            tile("speaker_certs", String(speakerCerts)),
             tile("talks", String(speakingCount)),
          ] satisfies Stat[],
          delivery: [

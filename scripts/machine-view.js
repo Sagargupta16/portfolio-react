@@ -42,15 +42,11 @@ const titleCase = (key) => {
    return words[0].toUpperCase() + words.slice(1);
 };
 
-// The security controls figure needs its scope, which its Stats tile note
-// (personal.stats) states; reuse that copy so the two surfaces cannot drift.
-// Other keys use personal.impact_labels where one is set.
+// Each key reads its Stats tile label (personal.stats), so the two surfaces
+// cannot drift; personal.impact_labels can override one for the machine view.
 const impactLabel = (key, personal) => {
-   const tile = personal.stats?.tiles?.[key];
-   if (key === "security_controls" && tile?.note) {
-      return `${clean(tile.label)} (${clean(tile.note)})`;
-   }
-   const label = personal.impact_labels?.[key];
+   const label =
+      personal.impact_labels?.[key] ?? personal.stats?.tiles?.[key]?.label;
    return label ? clean(label) : titleCase(key);
 };
 
@@ -229,7 +225,7 @@ function jobLines(job) {
    ];
    const recognition = extras.length
       ? [
-           "#### Internal contributions and recognition",
+           "#### Patterns, guides, talks and recognition",
            "",
            ...extras.map(
               (item) => `- ${clean(item.title)} (${clean(item.year)})`,

@@ -15,7 +15,7 @@ const isDigit = (ch: string | undefined) =>
 
 /**
  * Split a display value into an optional prefix (e.g. "~"), the number
- * (thousands separators and one decimal point allowed, e.g. "4,000" or
+ * (thousands separators and one decimal point allowed, e.g. "1,800" or
  * "9.5") and a trailing suffix (e.g. "+", "k", "/10"). A single left-to-right
  * scan, so no input can make it backtrack. decimals drives toFixed so values
  * like a CGPA of 9.5 animate and land correctly; separators are kept.
@@ -59,7 +59,7 @@ const AnimatedCounter = ({
    const inView = useInView(ref, { once: true, amount: 0.5 });
 
    // Parse an optional prefix (e.g. "~"), the number (thousands separators and
-   // one decimal point allowed, e.g. "4,000" or "9.5") and a trailing suffix
+   // one decimal point allowed, e.g. "1,800" or "9.5") and a trailing suffix
    // (e.g. "+", "k", "/10"). decimals drives toFixed so values like a CGPA of
    // 9.5 animate and land correctly instead of being truncated to an integer;
    // a value written with separators keeps them.

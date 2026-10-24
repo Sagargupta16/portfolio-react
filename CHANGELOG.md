@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.21.0] - 2026-10-24
+
+Customer confidentiality: the profile follows the Amazon/AWS rules for describing customer work. Design and layout are unchanged.
+
+### Changed
+
+- **No customer names.** The three engagements read "Enterprise customer", "Financial market infrastructure customer" and "Global financial services customer", with their roles and dates kept. The About line, availability line and the Clients served note are generic too.
+- **Engagements are 2 to 3 generic bullets** about the type of work and the skills used, and their case studies describe the problem, what was built and the decisions without customer facts: no topology, programmes, timelines, change process, metrics, satisfaction scores, or statements that the work used AI tools.
+- **Stats.** Highlights read 11 upstream PRs merged, 3 AWS samples, 3x TFC Ambassador and 2x TFC Member, each derived from the data behind it (the two customer-metric tiles are gone). The resource and control counts in Consulting impact became "Years at AWS" and "Speaker certifications" (derived). The talks tile counts both internal talks through a `count` on their one generic line.
+- **Services.** Customer-specific bullets became generic capabilities; every card keeps five bullets.
+- **Programs.** Internal programs are described generically. An unpublished pattern and an internal hackathon rank are gone. TFC reads 3x Ambassador (AI/ML, CloudOps, Agentic AI) and 2x Member (NGDE, Serverless). New: Anthropic Claude Ambassador, Senior Speaker Certification, a security content review qualification and AWS Jam content testing (DevOps and GenAI). The experience modal's "Internal Contributions" heading reads "Patterns, Guides & Talks".
+- **Skills.** Added Network Firewall, AWS Backup, Systems Manager Patch Manager and Amazon Bedrock AgentCore (154 primary skills). CS Fundamentals, Soft Skills and Areas of Interest now run as moving rails like the other categories, with their small chips, continuing the alternating directions; they were static chip groups before.
+- **Location** is Hyderabad, India on the profile, the AWS roles and the JSON-LD address.
+- Older changelog entries no longer name customers or repeat their figures.
+
+### Added
+
+- Footer disclaimer: "Personal projects and opinions are my own and do not represent Amazon or AWS."
+
 ## [4.20.0] - 2026-10-24
 
 The 2026-10-24 audit sweep: every finding of the whole-repo audit (27 rows, 75 findings), the 89 open SonarCloud issues and the dependency backlog.
@@ -81,9 +100,9 @@ The 2026-10-24 audit sweep: every finding of the whole-repo audit (27 rows, 75 f
 
 Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/FACTS.md`) and live data.
 
-- **APG pattern.** The Amplify Gen 2 pattern is not on any of the 464 live AWS Prescriptive Guidance pattern pages, so the About line and the AWS experience entry now say co-authored and submitted, not yet published. The title matches the resume ("with GitHub").
-- **APG peer reviews.** "3 APG Patterns Peer Reviewed" disagreed with the resume and has no public record, so the count is gone: the entry reads "Peer reviewer for AWS Prescriptive Guidance patterns" and is typed as a program, not a publication. The Stats tile it fed now counts 5 talks, samples and patterns, and its note says "Authored or presented at AWS" instead of "Published org-wide at AWS".
-- **Location.** Bengaluru, not Hyderabad, on the profile, the current AWS role and the JSON-LD address. The 2024 AWS internship stays Hyderabad.
+- **Publication wording.** An item with no public record no longer reads as published.
+- **Peer reviews.** A review count with no public record is gone: the entry reads "Peer reviewer for AWS Prescriptive Guidance patterns" and is typed as a program, not a publication. The Stats tile it fed counts talks and samples, and its note says "Authored or presented at AWS" instead of "Published org-wide at AWS".
+- **Location.** The profile, the current AWS role and the JSON-LD address were updated.
 - **Kick Start.** "Google Kick Start '22 Top 5%" became "Rank 1289 in Google Kick Start '22 Round E": the certificate shows the rank only.
 - **LeetCode Rating Predictor.** The case study no longer quotes the retired 7.84 test MAE (a random record split that leaks users). It now gives the repo's backtest: fixing the participant-count train/serve skew cut MAE from 38.76 to 12.46 on 57 contests.
 - **Claude Cost Optimizer news item.** Dropped "cuts costs 30-60%": the repo's README quotes no typical saving.
@@ -149,7 +168,7 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 
 ### Changed
 
-- Current AWS title is now "ProServe (Cloud Consultant) - DevOps/MLOps" everywhere it is stated: experience entry, hero role label, Quick Facts, intro splash, personal title, the 2024-08 promotion news item, page title and meta/Open Graph/Twitter tags, JSON-LD jobTitle and the web manifest. Engagement roles (RWS, State Street, DTCC) are unchanged.
+- Current AWS title is now "ProServe (Cloud Consultant) - DevOps/MLOps" everywhere it is stated: experience entry, hero role label, Quick Facts, intro splash, personal title, the 2024-08 promotion news item, page title and meta/Open Graph/Twitter tags, JSON-LD jobTitle and the web manifest. Engagement roles are unchanged.
 
 ### Fixed
 
@@ -159,8 +178,8 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 
 ### Added
 
-- **Experience scenes.** Every role card plays its own animated scene of what that role did: the Cloud Consultant card shows the consulting loop (customer need, design, code, plan gate, ship, handover, sign-off), the AWS internship shows training, certification, a proof of concept and an ECS migration through a Terraform plan gate, and the Ikarus-3D card shows lint, test and quality gates, image build, registry, ECS deploy and server provisioning. Inside the details modal each engagement gets a banner scene: the RWS Terraform landing zone with Transit Gateway onboarding, State Street's security controls across accounts, DTCC's Terraform modernization to plan and apply, and the SageMaker train, gate, deploy and drift loop. Scenes mount near the viewport and freeze in Reduced. Optional `scene` keys on roles and engagements in `experience.json` are checked against the scene registry.
-- **Stats highlights.** A Highlights group leads the section: 10/10 CSAT (State Street), ~90% faster account setup (RWS, 3+ days to under 4 hours), AWS samples published and 5x TFC Ambassador, each checked by the validator against the data behind it.
+- **Experience scenes.** Every role card plays its own animated scene of what that role did: the Cloud Consultant card shows the consulting loop (customer need, design, code, plan gate, ship, handover, sign-off), the AWS internship shows training, certification, a proof of concept and an ECS migration through a Terraform plan gate, and the Ikarus-3D card shows lint, test and quality gates, image build, registry, ECS deploy and server provisioning. Inside the details modal each engagement gets a banner scene: a Terraform landing zone with network onboarding, security controls across accounts, Terraform modernization to plan and apply, and the SageMaker train, gate, deploy and drift loop. Scenes mount near the viewport and freeze in Reduced. Optional `scene` keys on roles and engagements in `experience.json` are checked against the scene registry.
+- **Stats highlights.** A Highlights group leads the section, each tile checked by the validator against the data behind it.
 - **GitHub and LeetCode cards.** The GitHub card shows last-year contributions, pull requests, longest streak and a top-languages bar, computed the way the profile README card computes them. The LeetCode card adds a rating curve over every attended contest that draws in on view, with a peak marker, and a solved-by-difficulty bar.
 - **Contribution heatmap inside the GitHub card**: a custom 53-week grid with month and day labels, a legend, the current streak, a hover or tap tooltip, and a diagonal reveal (static in Reduced). Cell shades come from quartiles of active days, so one bulk day no longer pales the rest of the year. On phones it scrolls inside the card, starting at the newest week.
 - **Cloud Networking service** with a Transit Gateway hub-and-spoke inspection scene.
@@ -181,7 +200,7 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 - **"Show less" in News keeps you where you were.** Collapsing the list (or changing filter while expanded) keeps the button where it was on screen instead of leaving the visitor near the bottom of the page.
 - **Service scene labels are readable on phones** (9 px or more, was about 6 px); accent colours are all in the blue family; the 6 cards fill an even grid.
 - **The contribution total shows thousands separators**, the cells are no longer skewed by a 3D tilt, and the count is no longer clipped on phones.
-- **Counters render "4,000+" and "~90%" correctly**; "4,000+" used to show as a big "4" with a small ",000+".
+- **Counters render values with thousands separators and a prefix or suffix correctly**; "1,800+" used to show as a big "1" with a small ",800+".
 - **The Kids Garden School logo** came from a different school's site (Siwan, Bihar).
 
 ## [4.16.0] - 2026-10-10
@@ -212,13 +231,12 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 
 ### Changed
 
-- **AWS experience rewritten around impact.** Built from the engagement write-up: what was built, which problems were solved, and how much time it saved, with team results marked as such.
-   - **RWS:** DevOps and IaC lead for a data-centre exit and a second landing zone. The foundation built as Terraform from a legacy-pipeline estate (4,000+ resources, 20+ workspaces, none failing); two Transit Gateway hubs with self-service onboarding (route table within 15 minutes, firewall access by tag in about a minute); backup, patching and Identity Center moved into code; IPAM approved after measured billing (about 94% lower projected cost); a sandbox mirror for every change; per-account setup cut ~90% (3+ days to under 4 hours). Written without customer-internal programme names, Regions, vendor products or exact internal counts. New case-study brief.
-   - **Removed:** "sole DevOps consultant" (a second DevOps consultant joined) and "50+ workloads into 135+ accounts".
-   - **State Street:** about 10 services in Terraform, the Amazon Detective enablement design, and the 1,000+ preventative controls marked as team work; the unsupported "3 consecutive 5/5 Pulse ratings" is gone.
-   - **DTCC:** ends Nov 2025 (last billable week), not Dec.
-   - The Amplify APG pattern is listed as co-authored.
-- **Impact numbers.** `personal.impact` swaps `workloads_migrated` / `aws_accounts` for `terraform_resources` / `terraform_workspaces`; the Stats tile reads "Resources under Terraform: 4,000+, across 20+ workspaces, none failing", and the security-controls tile now says it is a team result. Validator, types, Stats and the machine view follow the rename.
+- **AWS experience rewritten** around the type of work built, with team results marked as such.
+   - **Enterprise customer:** DevOps and IaC lead on a Terraform landing zone. New case-study brief.
+   - **Removed:** two claims the record did not support.
+   - **Global financial services customer:** Terraform for AWS services and a security enablement design, with team work marked; an unsupported rating claim is gone.
+   - **Financial market infrastructure customer:** end date corrected to Nov 2025.
+- **Impact numbers.** `personal.impact` fields renamed; validator, types, Stats and the machine view follow the rename.
 
 ### Documentation
 
@@ -630,9 +648,9 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 
 ### Changed
 
-- **Experience**: AWS engagements renamed from anonymized labels ("UK-based Firm", "US Financial Services Firm") to actual client names -- **RWS**, **DTCC**, **State Street**
-- **Experience**: AWS projects reordered newest-first (RWS Feb 2026 -> DTCC -> MLOps SME -> State Street)
-- **RWS engagement**: expanded to 5 bullets covering governance + infra security controls (SCPs, tag compliance, Config rules, Security Hub) and multi-account networking (Transit Gateway hub-and-spoke, centralized VPC, Direct Connect/VPN, DNS, egress inspection); skills list grew from 9 to 16 items
+- **Experience**: AWS engagement labels updated
+- **Experience**: AWS projects reordered newest-first
+- **Current engagement**: expanded to cover governance and security controls (SCPs, tag compliance, Config rules, Security Hub) and multi-account networking; skills list grew from 9 to 16 items
 
 ### Updated
 
@@ -782,7 +800,7 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 
 - Experience modal with sticky header, project cards, internal contributions (color-coded by type), internal achievements (amber), and aggregated key skills
 - Clickable timeline cards in Experience section (replaces "Show more" expand)
-- `internal_achievements` field on experience data (TechU Graduate, TFC Ambassador, MLOps SME, Speaker Cert, etc.)
+- `internal_achievements` field on experience data (program, ambassador and speaker entries)
 - `CodingProfiles` component in GitHub section (GitHub, LeetCode, GFG, HackerRank cards in a row)
 - Coding platform stats populated in achievements.json (LeetCode 1200+/2007 Knight, GFG 400+, HackerRank 6-Star)
 - AWS Organizations, SCPs, GuardDuty, Security Hub added to cloud_devops skills
@@ -792,7 +810,7 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 ### Changed
 
 - Experience data restructured: all 3 entries now use consistent `projects[]`, `internal_contributions[]`, `internal_achievements[]` format
-- AWS full-time: 4 projects (State Street, DTCC, MLOps SME internal, RWS ongoing) with real dates and updated bullet points
+- AWS full-time: 4 projects with real dates and updated bullet points
 - Internship wording: "Led" -> "Migrated"/"Containerized", summary rewritten for Ikarus-3D
 - Coding profiles moved from Achievements section to GitHub section
 - Location updated to Hyderabad, Twitter link updated to x.com, GitHub capitalization fixed

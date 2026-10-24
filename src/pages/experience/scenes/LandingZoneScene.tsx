@@ -46,11 +46,11 @@ import {
  *   guardrails    an SCP attaches at the organization root and draws out to
  *                 both OUs, which light
  *   new account   an account lands in its OU and its baseline fills in one
- *                 quick sweep (the setup cut, shown as speed, not a number)
+ *                 quick sweep (automated setup, shown as speed)
  *   onboarding    the account's spoke VPC lights, attaches to the hub, gets
  *                 its own route table row, and a tag opens the firewall
  *   traffic       a packet leaves the VPC through the firewall and crosses
- *                 to the second Transit Gateway hub
+ *                 to another hub
  * 11 animated nodes, 4 labels.
  */
 

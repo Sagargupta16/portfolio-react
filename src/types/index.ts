@@ -132,6 +132,8 @@ export interface InternalContribution {
    title: string;
    type: "talk" | "publication" | "program";
    year?: string;
+   /** How many talks or publications one generic line stands for (default 1). */
+   count?: number;
 }
 
 export interface ProfessionalExperience {
@@ -180,15 +182,14 @@ export interface Highlight {
    value: string;
    label: string;
    note?: string;
-   derived_from?: "aws_samples" | "tfc_ambassador";
+   derived_from?:
+      "aws_samples" | "tfc_ambassador" | "tfc_member" | "merged_prs";
 }
 
 export interface ImpactStats {
    clients_served: string;
    clients_note: string;
-   terraform_resources: string;
-   terraform_workspaces: string;
-   security_controls: string;
+   years_at_aws: string;
 }
 
 /** Stats band groups, each headed by a dashed rule. */
@@ -198,8 +199,8 @@ type StatsGroupKey =
 /** Derived Stats band tiles; their values are computed from data/. */
 export type StatsTileKey =
    | "clients_served"
-   | "terraform_resources"
-   | "security_controls"
+   | "years_at_aws"
+   | "speaker_certs"
    | "talks"
    | "projects"
    | "certifications"
@@ -650,6 +651,7 @@ export interface UiCopy {
    };
    footer: {
       copyright: string;
+      disclaimer: string;
       site: string;
       site_label: string;
       social: string;

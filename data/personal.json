@@ -3,7 +3,7 @@
    "title": "ProServe (Cloud Consultant) - DevOps/MLOps at AWS",
    "role": "ProServe (Cloud Consultant) - DevOps/MLOps",
    "employer": "AWS",
-   "location": "Bengaluru, India",
+   "location": "Hyderabad, India",
    "timezone": "Asia/Kolkata",
    "intro": "Cloud consultant at AWS Professional Services. Terraform, CI/CD, security guardrails and SageMaker MLOps pipelines, plus the MCP servers and Claude Code skills I build to do that work faster.",
    "role_label": "ProServe (Cloud Consultant) - DevOps/MLOps @ AWS",
@@ -15,38 +15,28 @@
    ],
    "headline": "I build *secure* AWS platforms that scale.",
    "hero_greeting": "Hi, I'm",
-   "availability": "Now: leading a greenfield AWS migration at RWS",
+   "availability": "Now: leading DevOps on an enterprise AWS landing zone",
    "contact": {
       "github": "Sagargupta16"
    },
    "about": {
       "greeting": "👋 Hi, my name is Sagar Gupta.",
-      "current_role": "💼 Cloud consultant at AWS Professional Services. DevOps work for State Street and DTCC, and now DevOps and IaC lead on RWS's data-centre exit and new landing zone: 4,000+ resources as code, per-account setup cut ~90% (3+ days to under 4 hours), and network onboarding automated from a ticket per VPC to minutes.",
-      "specialization": "🚀 Three samples published by AWS under aws-samples (a SageMaker MLOps pipeline, an Organizations governance layer and an AgentCore agent with governed MCP tools), a co-authored AWS Prescriptive Guidance pattern (submitted, not yet published), and merged PRs in Apache Airflow, Feast, awslabs/mcp, axios and multer.",
+      "current_role": "💼 Cloud consultant at AWS Professional Services. DevOps and infrastructure as code for financial services and enterprise customers, and now Lead DevOps Consultant on an enterprise landing zone built in Terraform: guardrails, account baselines and automated network onboarding.",
+      "specialization": "🚀 Three samples published by AWS under aws-samples (a SageMaker MLOps pipeline, an Organizations governance layer and an AgentCore agent with governed MCP tools), and merged PRs in Apache Airflow, Feast, awslabs/mcp, axios and multer.",
       "education": "🎓 MCA from NIT Warangal (CGPA 8.38, NIMCET AIR 208). Five active AWS certifications.",
       "competitive_programming": "🏆 LeetCode Guardian (2166 peak rating, top 1.1% of contestants), 1800+ problems across LeetCode and GeeksforGeeks, 107 contests. Rank 1289 in Google Kick Start '22 Round E."
    },
    "impact": {
       "clients_served": "3",
-      "clients_note": "State Street, DTCC, RWS",
-      "terraform_resources": "4,000+",
-      "terraform_workspaces": "20+",
-      "security_controls": "1000+"
-   },
-   "impact_labels": {
-      "terraform_resources": "Resources under Terraform (RWS)",
-      "terraform_workspaces": "HCP Terraform workspaces (RWS)"
+      "clients_note": "Financial services and enterprise customers",
+      "years_at_aws": "2+"
    },
    "highlights": [
       {
-         "value": "10/10",
-         "label": "Client CSAT",
-         "note": "State Street, at project close"
-      },
-      {
-         "value": "~90%",
-         "label": "Faster account setup",
-         "note": "RWS: 3+ days to under 4 hours"
+         "value": "11",
+         "label": "Upstream PRs merged",
+         "note": "Airflow, Feast, awslabs/mcp and more",
+         "derived_from": "merged_prs"
       },
       {
          "value": "3",
@@ -55,10 +45,16 @@
          "derived_from": "aws_samples"
       },
       {
-         "value": "5x",
+         "value": "3x",
          "label": "TFC Ambassador",
-         "note": "AI/ML, NGDE, CloudOps, Agentic AI, Serverless",
+         "note": "AI/ML, CloudOps, Agentic AI",
          "derived_from": "tfc_ambassador"
+      },
+      {
+         "value": "2x",
+         "label": "TFC Member",
+         "note": "NGDE (Graduated), Serverless",
+         "derived_from": "tfc_member"
       }
    ],
    "stats": {
@@ -71,17 +67,17 @@
       },
       "tiles": {
          "clients_served": { "label": "Clients served" },
-         "terraform_resources": {
-            "label": "Resources under Terraform",
-            "note": "Across {workspaces} workspaces, none failing"
+         "years_at_aws": {
+            "label": "Years at AWS",
+            "note": "Professional Services since 2024"
          },
-         "security_controls": {
-            "label": "Security controls",
-            "note": "State Street landing zone, team result"
+         "speaker_certs": {
+            "label": "Speaker certifications",
+            "note": "Associate and Senior"
          },
          "talks": {
-            "label": "Talks & patterns",
-            "note": "Authored or presented at AWS"
+            "label": "Talks & AWS samples",
+            "note": "Presented or published at AWS"
          },
          "projects": {
             "label": "Projects shipped",

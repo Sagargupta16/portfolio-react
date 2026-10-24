@@ -18,7 +18,7 @@ interface SkillCategoryProps {
    glyph: CategoryGlyph;
    /** Position in its list: offsets the breathing so rows never pulse in unison. */
    index: number;
-   /** Compact secondary rendering: h4 and the small chips, never a rail. */
+   /** Compact secondary rendering: an h4 and the small chips. */
    small?: boolean;
    /** Let the glyph breathe once in view. Primary rows only. */
    breathe?: boolean;
@@ -103,7 +103,7 @@ const SkillCategory = ({
    const { preference, reducedMotion } = useMotionPreference();
    const Heading = small ? motion.h4 : motion.h3;
    const breathing = breathe && !reducedMotion ? breathVariants : undefined;
-   const asRails = rails > 0 && !small && !reducedMotion;
+   const asRails = rails > 0 && !reducedMotion;
 
    return (
       <motion.div
@@ -135,6 +135,7 @@ const SkillCategory = ({
                   <SkillRail
                      key={row[0]}
                      items={row}
+                     small={small}
                      reverse={(railOffset + rowIndex) % 2 === 1}
                   />
                ))}

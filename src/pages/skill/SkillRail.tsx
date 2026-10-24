@@ -13,6 +13,8 @@ interface SkillRailProps {
    items: string[];
    /** Run right to left's mirror image, so stacked rails pass each other. */
    reverse?: boolean;
+   /** The compact chips of the secondary categories. */
+   small?: boolean;
 }
 
 /* One copy of the list must be wider than the rail or the seam shows a gap.
@@ -30,7 +32,11 @@ const SECONDS_PER_CHIP = 3;
  * the .badge-rail stylesheet owns the loop, the edge fades and the hover pause.
  * The moving track is decorative; screen readers get the plain list once.
  */
-const SkillRail = ({ items, reverse = false }: Readonly<SkillRailProps>) => {
+const SkillRail = ({
+   items,
+   reverse = false,
+   small = false,
+}: Readonly<SkillRailProps>) => {
    const canHover = useMediaQuery(MEDIA_QUERIES.hover);
    const railRef = useRef<HTMLDivElement>(null);
    const trackRef = useRef<HTMLDivElement>(null);
@@ -63,7 +69,7 @@ const SkillRail = ({ items, reverse = false }: Readonly<SkillRailProps>) => {
 
    const railStyle = {
       "--rail-duration": `${copy.length * SECONDS_PER_CHIP}s`,
-      "--rail-gap": `${CHIP_SIZES.regular.columnGap}px`,
+      "--rail-gap": `${(small ? CHIP_SIZES.small : CHIP_SIZES.regular).columnGap}px`,
    } as CSSProperties;
 
    const renderCopy = (half: string) => (
@@ -72,6 +78,7 @@ const SkillRail = ({ items, reverse = false }: Readonly<SkillRailProps>) => {
             <SkillChip
                key={`${half}:${key}`}
                name={name}
+               small={small}
                hover={canHover ? CHIP_LIFT : undefined}
             />
          ))}
