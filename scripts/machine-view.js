@@ -16,6 +16,9 @@ const DATA_FILES = [
    "education",
    "news",
    "services",
+   "sections",
+   "glossary",
+   "annotations",
 ];
 
 // Generated text stays plain: every dash punctuation char (en/em dash
@@ -32,40 +35,46 @@ const clean = (value) =>
 // The site drops the leading emoji token from each about line.
 const stripLeadToken = (text) => clean(String(text).replace(/^\S+\s/, ""));
 
-// Labels the site uses where the key alone reads badly.
-const LABELS = {
-   aws: "AWS",
-   devops: "DevOps & IaC",
-   ai_ml: "AI / Machine Learning",
-   ai_tools: "AI developer tools",
-   backend: "Backend & Databases",
-   tools_platforms: "Tools & Platforms",
-   cs_fundamentals: "CS fundamentals",
-   terraform_resources: "Resources under Terraform (RWS)",
-   terraform_workspaces: "HCP Terraform workspaces (RWS)",
-   security_controls: "Security controls (State Street landing zone, team)",
-   leetcode: "LeetCode",
-   geeksforgeeks: "GeeksforGeeks",
-   hackerrank: "HackerRank",
-   github: "GitHub",
-};
+// Fallback label for a data key: "clients_served" -> "Clients served". Keys
+// that read badly alone take their label from data/ instead.
 const titleCase = (key) => {
-   if (LABELS[key]) return LABELS[key];
-   const words = key.split("_").join(" ");
+   const words = key.replaceAll("_", " ");
    return words[0].toUpperCase() + words.slice(1);
 };
 
+// The security controls figure needs its scope, which its Stats tile note
+// (personal.stats) states; reuse that copy so the two surfaces cannot drift.
+// Other keys use personal.impact_labels where one is set.
+const impactLabel = (key, personal) => {
+   const tile = personal.stats?.tiles?.[key];
+   if (key === "security_controls" && tile?.note) {
+      return `${clean(tile.label)} (${clean(tile.note)})`;
+   }
+   const label = personal.impact_labels?.[key];
+   return label ? clean(label) : titleCase(key);
+};
+
 // personal.impact as "Label: value" lines; clients_note rides on clients_served.
-const impactLines = (impact = {}) =>
-   Object.entries(impact)
+const impactLines = (personal) => {
+   const impact = personal.impact ?? {};
+   return Object.entries(impact)
       .filter(([key]) => key !== "clients_note")
       .map(([key, value]) => {
          const note =
             key === "clients_served" && impact.clients_note
                ? ` (${clean(impact.clients_note)})`
                : "";
-         return `- ${titleCase(key)}: ${clean(value)}${note}`;
+         return `- ${impactLabel(key, personal)}: ${clean(value)}${note}`;
       });
+};
+
+// The site's section headings (data/sections.json) in page order, each
+// linking its anchor. The *accent* markup is dropped from the title.
+const sectionLines = (sections = {}) =>
+   Object.entries(sections).map(
+      ([id, copy]) =>
+         `- [${clean(copy.title).replaceAll("*", "")}](${SITE}#${id}): ${clean(copy.subtitle)}`,
+   );
 
 // personal.highlights as "Label: value (note)" lines.
 const highlightLines = (highlights = []) =>
@@ -145,7 +154,7 @@ function projectLine(project, { long }) {
    const description = clean(project.description);
    const summary = long
       ? description
-      : (description.match(/^.+?[.!?](\s|$)/)?.[0] ?? description).trim();
+      : (/^.+?[.!?](\s|$)/.exec(description)?.[0] ?? description).trim();
    const lines = [`- ${head}: ${summary}`];
    if (project.tools_tech?.length) {
       lines.push(`  - Tech: ${project.tools_tech.map(clean).join(", ")}`);
@@ -176,175 +185,260 @@ function contactLines({ personal, contact }) {
 
 const isActive = (cert, today) => !cert.expiryDate || cert.expiryDate >= today;
 
-function buildMarkdown(d) {
-   const { personal, experience, projects, skills, achievements, today } = d;
-   const out = [`# ${clean(personal.name)}`, ""];
-   out.push(`${clean(personal.title)}. ${clean(personal.location)}.`, "");
-   out.push(clean(personal.intro), "");
+// index.md is built one section at a time; each block returns its lines,
+// ending on the blank line that separates it from the next.
 
-   out.push("## About", "");
-   for (const line of Object.values(personal.about ?? {})) {
-      out.push(`- ${stripLeadToken(line)}`);
-   }
+const bullets = (record) =>
+   sortedValues(record).map((bullet) => `- ${clean(bullet)}`);
 
-   out.push(
-      "",
-      "## Impact",
-      "",
-      ...impactLines(personal.impact),
-      ...highlightLines(personal.highlights),
-      "",
-   );
+const aboutBlock = (personal) => [
+   "## About",
+   "",
+   ...Object.values(personal.about ?? {}).map(
+      (line) => `- ${stripLeadToken(line)}`,
+   ),
+   "",
+];
 
-   out.push("## Experience", "");
-   for (const job of experience.professional_experience ?? []) {
-      out.push(`### ${clean(job.title)}, ${clean(job.company)}`, "");
-      out.push(
-         [job.date, job.location, job.position]
-            .filter(Boolean)
-            .map(clean)
-            .join(" | "),
+const impactBlock = (personal) => [
+   "## Impact",
+   "",
+   ...impactLines(personal),
+   ...highlightLines(personal.highlights),
+   "",
+];
+
+function engagementLines(project) {
+   const date = project.date ? ` (${clean(project.date)})` : "";
+   const skills = project.skills?.length
+      ? [`- Skills: ${project.skills.map(clean).join(", ")}`]
+      : [];
+   return [
+      `#### ${clean(project.name)}${date}`,
+      "",
+      ...bullets(project.description),
+      ...skills,
+      "",
+   ];
+}
+
+function jobLines(job) {
+   const extras = [
+      ...(job.internal_contributions ?? []),
+      ...(job.internal_achievements ?? []),
+   ];
+   const recognition = extras.length
+      ? [
+           "#### Internal contributions and recognition",
+           "",
+           ...extras.map(
+              (item) => `- ${clean(item.title)} (${clean(item.year)})`,
+           ),
+           "",
+        ]
+      : [];
+   return [
+      `### ${clean(job.title)}, ${clean(job.company)}`,
+      "",
+      [job.date, job.location, job.position]
+         .filter(Boolean)
+         .map(clean)
+         .join(" | "),
+      "",
+      ...(job.summary ? [clean(job.summary), ""] : []),
+      ...(job.projects ?? []).flatMap(engagementLines),
+      ...recognition,
+   ];
+}
+
+const positionLines = (role) => [
+   `### ${clean(role.title)}, ${clean(role.company)}`,
+   "",
+   clean(role.date),
+   "",
+   ...bullets(role.description),
+   "",
+];
+
+const experienceBlock = (experience) => [
+   "## Experience",
+   "",
+   ...(experience.professional_experience ?? []).flatMap(jobLines),
+   ...(experience.positions_of_responsibility ?? []).flatMap(positionLines),
+];
+
+const PROJECT_GROUPS = [
+   ["collaborative_projects", "Collaborative"],
+   ["other_projects", "Other"],
+   ["community_projects", "Community and tools"],
+];
+
+const projectsBlock = (projects) => [
+   "## Projects",
+   "",
+   "### Featured",
+   "",
+   ...(projects.featured_projects ?? []).map((project) =>
+      projectLine(project, { long: true }),
+   ),
+   "",
+   ...PROJECT_GROUPS.filter(([key]) => projects[key]?.length).flatMap(
+      ([key, label]) => [
+         `### ${label}`,
          "",
-      );
-      if (job.summary) out.push(clean(job.summary), "");
-      for (const project of job.projects ?? []) {
-         const date = project.date ? ` (${clean(project.date)})` : "";
-         out.push(`#### ${clean(project.name)}${date}`, "");
-         for (const bullet of sortedValues(project.description)) {
-            out.push(`- ${clean(bullet)}`);
-         }
-         if (project.skills?.length) {
-            out.push(`- Skills: ${project.skills.map(clean).join(", ")}`);
-         }
-         out.push("");
-      }
-      const extras = [
-         ...(job.internal_contributions ?? []),
-         ...(job.internal_achievements ?? []),
-      ];
-      if (extras.length) {
-         out.push("#### Internal contributions and recognition", "");
-         for (const item of extras) {
-            out.push(`- ${clean(item.title)} (${clean(item.year)})`);
-         }
-         out.push("");
-      }
-   }
-   for (const role of experience.positions_of_responsibility ?? []) {
-      out.push(`### ${clean(role.title)}, ${clean(role.company)}`, "");
-      out.push(clean(role.date), "");
-      for (const bullet of sortedValues(role.description)) {
-         out.push(`- ${clean(bullet)}`);
-      }
-      out.push("");
-   }
+         ...projects[key].map((project) =>
+            projectLine(project, { long: false }),
+         ),
+         "",
+      ],
+   ),
+];
 
-   out.push("## Projects", "", "### Featured", "");
-   for (const project of projects.featured_projects ?? []) {
-      out.push(projectLine(project, { long: true }));
-   }
-   out.push("");
-   for (const [key, label] of [
-      ["collaborative_projects", "Collaborative"],
-      ["other_projects", "Other"],
-      ["community_projects", "Community and tools"],
-   ]) {
-      if (!projects[key]?.length) continue;
-      out.push(`### ${label}`, "");
-      for (const project of projects[key]) {
-         out.push(projectLine(project, { long: false }));
-      }
-      out.push("");
-   }
-
-   out.push("## Open source contributions", "");
-   for (const pr of projects.open_source_contributions ?? []) {
+function openSourceBlock(projects) {
+   const prs = (projects.open_source_contributions ?? []).map((pr) => {
       const merged = pr.merged_at ? `, ${pr.merged_at}` : "";
-      out.push(
-         `- ${clean(pr.repo)}: [${clean(pr.title)}](${pr.url}) (${clean(pr.status)}${merged})`,
-      );
-   }
-   out.push("");
-   if (projects.community_discussions?.length) {
-      out.push("### Community answers", "");
-      for (const item of projects.community_discussions) {
-         out.push(
-            `- ${clean(item.repo)}: [${clean(item.title)}](${item.url}) (${clean(item.status)})`,
-         );
-      }
-      out.push("");
-   }
+      return `- ${clean(pr.repo)}: [${clean(pr.title)}](${pr.url}) (${clean(pr.status)}${merged})`;
+   });
+   const answers = (projects.community_discussions ?? []).map(
+      (item) =>
+         `- ${clean(item.repo)}: [${clean(item.title)}](${item.url}) (${clean(item.status)})`,
+   );
+   return [
+      "## Open source contributions",
+      "",
+      ...prs,
+      "",
+      ...(answers.length ? ["### Community answers", "", ...answers, ""] : []),
+   ];
+}
 
-   out.push("## Skills", "");
-   for (const [key, list] of Object.entries(skills)) {
-      if (key === "hero_stack" || !Array.isArray(list)) continue;
-      out.push(`- ${titleCase(key)}: ${list.map(clean).join(", ")}`);
-   }
-   out.push("");
+// Category labels come from skills.json `categories`, as on the site.
+const skillsBlock = (skills) => [
+   "## Skills",
+   "",
+   ...Object.entries(skills)
+      .filter(([key, list]) => key !== "hero_stack" && Array.isArray(list))
+      .map(([key, list]) => {
+         const label = skills.categories?.[key]?.label ?? titleCase(key);
+         return `- ${clean(label)}: ${list.map(clean).join(", ")}`;
+      }),
+   "",
+];
 
-   out.push("## Certifications", "");
-   for (const cert of achievements.certifications ?? []) {
-      if (!isActive(cert, today)) continue;
-      const expiry = cert.expiryDate ? `, expires ${cert.expiryDate}` : "";
-      out.push(
-         `- ${link(clean(cert.name), cert.badgeUrl)}, ${clean(cert.issuer)}. Issued ${cert.issueDate}${expiry}`,
-      );
-   }
-   out.push("");
+const certificationsBlock = ({ achievements, today }) => [
+   "## Certifications",
+   "",
+   ...(achievements.certifications ?? [])
+      .filter((cert) => isActive(cert, today))
+      .map((cert) => {
+         const expiry = cert.expiryDate ? `, expires ${cert.expiryDate}` : "";
+         return `- ${link(clean(cert.name), cert.badgeUrl)}, ${clean(cert.issuer)}. Issued ${cert.issueDate}${expiry}`;
+      }),
+   "",
+];
 
-   out.push("## Achievements", "");
-   for (const item of achievements.achievements ?? []) {
-      out.push(
-         `- ${clean(item.title)}, ${clean(item.organizer)} (${clean(item.date)})`,
-      );
-   }
-   for (const [platform, stats] of Object.entries(
-      achievements.coding_platform_stats ?? {},
-   )) {
+// Platform names come from the Stats cards' copy (personal.stats.platforms).
+const platformLine =
+   (platforms) =>
+   ([platform, stats]) => {
       const facts = Object.entries(stats)
          .filter(([key]) => key !== "url" && key !== "username")
          .map(platformFact)
          .join(", ");
-      out.push(`- ${link(titleCase(platform), stats.url)}: ${facts}`);
-   }
-   out.push("");
+      const name = platforms?.[platform]?.label;
+      return `- ${link(name ? clean(name) : titleCase(platform), stats.url)}: ${facts}`;
+   };
 
-   out.push("## Education", "");
-   for (const school of d.education ?? []) {
-      out.push(`### ${clean(school.title)}`, "");
-      out.push(
-         [school.institution, school.location, school.date]
-            .filter(Boolean)
-            .map(clean)
-            .join(" | "),
-         "",
-      );
-      const facts = [
-         school.cgpa && `- CGPA: ${clean(school.cgpa)}`,
-         ...(school.achievements ?? []).map((item) => `- ${clean(item)}`),
-      ].filter(Boolean);
-      if (facts.length) out.push(...facts, "");
-   }
+const achievementsBlock = ({ achievements, personal }) => [
+   "## Achievements",
+   "",
+   ...(achievements.achievements ?? []).map(
+      (item) =>
+         `- ${clean(item.title)}, ${clean(item.organizer)} (${clean(item.date)})`,
+   ),
+   ...Object.entries(achievements.coding_platform_stats ?? {}).map(
+      platformLine(personal.stats?.platforms),
+   ),
+   "",
+];
 
-   out.push("## Services", "");
-   for (const service of d.services ?? []) {
-      const list = (service.list ?? []).map(clean).join(", ");
-      out.push(`- ${clean(service.title)}: ${list}`);
-   }
-   out.push("");
+function schoolLines(school) {
+   const facts = [
+      school.cgpa && `- CGPA: ${clean(school.cgpa)}`,
+      ...(school.achievements ?? []).map((item) => `- ${clean(item)}`),
+   ].filter(Boolean);
+   return [
+      `### ${clean(school.title)}`,
+      "",
+      [school.institution, school.location, school.date]
+         .filter(Boolean)
+         .map(clean)
+         .join(" | "),
+      "",
+      ...(facts.length ? [...facts, ""] : []),
+   ];
+}
 
-   out.push("## Recent news", "");
-   const news = [...(d.news ?? [])]
+const educationBlock = (education) => [
+   "## Education",
+   "",
+   ...(education ?? []).flatMap(schoolLines),
+];
+
+const servicesBlock = (services) => [
+   "## Services",
+   "",
+   ...(services ?? []).map(
+      (service) =>
+         `- ${clean(service.title)}: ${(service.list ?? []).map(clean).join(", ")}`,
+   ),
+   "",
+];
+
+function newsBlock(news) {
+   const recent = [...(news ?? [])]
       .sort((a, b) => String(b.date).localeCompare(String(a.date)))
       .slice(0, 10);
-   for (const item of news) {
-      const text = clean(item.text);
-      out.push(`- ${item.date}: ${item.link ? link(text, item.link) : text}`);
-   }
-   out.push("");
+   return [
+      "## Recent news",
+      "",
+      ...recent.map((item) => {
+         const text = clean(item.text);
+         return `- ${item.date}: ${item.link ? link(text, item.link) : text}`;
+      }),
+      "",
+   ];
+}
 
-   out.push("## Contact", "", ...contactLines(d), "");
-   return out.join("\n");
+function buildMarkdown(d) {
+   const { personal } = d;
+   return [
+      `# ${clean(personal.name)}`,
+      "",
+      `${clean(personal.title)}. ${clean(personal.location)}.`,
+      "",
+      clean(personal.intro),
+      "",
+      "## Sections",
+      "",
+      ...sectionLines(d.sections),
+      "",
+      ...aboutBlock(personal),
+      ...impactBlock(personal),
+      ...experienceBlock(d.experience),
+      ...projectsBlock(d.projects),
+      ...openSourceBlock(d.projects),
+      ...skillsBlock(d.skills),
+      ...certificationsBlock(d),
+      ...achievementsBlock(d),
+      ...educationBlock(d.education),
+      ...servicesBlock(d.services),
+      ...newsBlock(d.news),
+      "## Contact",
+      "",
+      ...contactLines(d),
+      "",
+   ].join("\n");
 }
 
 function buildLlmsTxt(d) {
@@ -360,7 +454,7 @@ function buildLlmsTxt(d) {
    );
    const mergedRepos = [...new Set(merged.map((p) => clean(p.repo)))];
    const facts = [
-      ...impactLines(personal.impact),
+      ...impactLines(personal),
       ...highlightLines(personal.highlights),
       awsSamples.length > 0 &&
          `- Published by AWS (aws-samples): ${awsSamples.map((p) => clean(p.title)).join(", ")}`,
@@ -384,6 +478,10 @@ function buildLlmsTxt(d) {
       `- [vCard](${SITE}sagar-gupta.vcf): contact card`,
       `- [Website](${SITE}): interactive portfolio`,
       "",
+      "## Sections",
+      "",
+      ...sectionLines(d.sections),
+      "",
       "## Data",
       "",
       ...DATA_FILES.map((name) => `- [${name}.json](${SITE}data/${name}.json)`),
@@ -398,10 +496,10 @@ function buildLlmsTxt(d) {
 // vCard 3.0 (RFC 2426): escape text values, fold lines at 75 octets, CRLF.
 const vEscape = (value) =>
    clean(value)
-      .replaceAll("\\", "\\\\")
-      .replaceAll("\n", "\\n")
-      .replaceAll(",", "\\,")
-      .replaceAll(";", "\\;");
+      .replaceAll("\\", String.raw`\\`)
+      .replaceAll("\n", String.raw`\n`)
+      .replaceAll(",", String.raw`\,`)
+      .replaceAll(";", String.raw`\;`);
 
 function fold(line) {
    const parts = [];

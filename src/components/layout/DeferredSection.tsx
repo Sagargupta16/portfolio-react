@@ -10,6 +10,10 @@ import ErrorBoundary from "@components/common/ErrorBoundary";
 import SectionLoader from "@components/ui/SectionLoader";
 import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useSectionNavigation from "@hooks/useSectionNavigation";
+import { getUiCopy } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
+
+const COPY = getUiCopy().section;
 
 interface DeferredSectionProps {
    id: ContentSectionId;
@@ -94,14 +98,14 @@ const DeferredSection = ({
                            textAlign: "center",
                         }}
                      >
-                        <h2>{label} is temporarily unavailable</h2>
+                        <h2>{fillTemplate(COPY.unavailable, { label })}</h2>
                         <p
                            style={{
                               marginTop: 8,
                               color: "var(--color-text-secondary)",
                            }}
                         >
-                           Refresh the page to try loading this section again.
+                           {COPY.unavailable_body}
                         </p>
                         <button
                            type="button"
@@ -109,7 +113,7 @@ const DeferredSection = ({
                            onClick={() => globalThis.location.reload()}
                            style={{ marginTop: 16 }}
                         >
-                           Refresh page
+                           {COPY.refresh}
                         </button>
                      </div>
                   </SectionReady>

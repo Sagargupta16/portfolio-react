@@ -1,0 +1,71 @@
+/* Slide to contact (footer, phones): track, tint fill, label, knob.
+   Imported by SlideToContact.tsx, so it ships in the lazy footer chunk. */
+.slide-contact {
+   position: relative;
+   display: flex;
+   align-items: center;
+   width: min(320px, 100%);
+   height: 52px;
+   padding: 4px;
+   overflow: hidden;
+   border: 1px solid rgb(255 255 255 / 0.1);
+   border-radius: 999px;
+   background: var(--color-bg-card);
+   color: var(--color-text-primary);
+   font-family: var(--font-mono);
+   font-size: 12px;
+   letter-spacing: 0.02em;
+   text-decoration: none;
+   touch-action: pan-y;
+   -webkit-user-select: none;
+   user-select: none;
+   -webkit-touch-callout: none;
+}
+
+.slide-contact-fill {
+   position: absolute;
+   inset: 0;
+   background: linear-gradient(
+      90deg,
+      rgb(37 99 235 / 0.28),
+      rgb(96 165 250 / 0.18)
+   );
+   transform-origin: left center;
+   pointer-events: none;
+}
+
+.slide-contact-label,
+.slide-contact-sent {
+   position: absolute;
+   inset: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 6px;
+   padding-left: 40px;
+   color: var(--color-text-secondary);
+   pointer-events: none;
+}
+
+.slide-contact-sent {
+   color: var(--color-text-primary);
+}
+
+.slide-contact-knob {
+   position: relative;
+   z-index: 1;
+   display: grid;
+   place-items: center;
+   width: 44px;
+   height: 44px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: var(--color-accent-blue);
+   color: #fff;
+   cursor: grab;
+   touch-action: none;
+}
+
+.slide-contact-knob:active {
+   cursor: grabbing;
+}

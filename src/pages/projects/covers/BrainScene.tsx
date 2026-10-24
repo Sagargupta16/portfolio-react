@@ -18,6 +18,7 @@ import {
    W40,
    W55,
    W70,
+   backAtFor,
    clock,
    label,
    line,
@@ -96,8 +97,7 @@ const RECALL_STOPS: Stop[] = [
 ];
 
 /* shown at rest, gone during CLEAR, back at `at` */
-const OUT_IN = [1, 1, 0, 0, 1, 1];
-const backAt = (at: number, ramp = 0.04) => [0, ...CLEAR, at, at + ramp, 1];
+const backAt = backAtFor(CLEAR);
 
 /* a stroke that is drawn at rest, hidden in CLEAR, redrawn from `at` */
 const redraw = (at: number, span: number): Loop =>
@@ -111,23 +111,15 @@ const REMEMBER = beat(ride(REMEMBER_ROUTE, REMEMBER_STOPS));
 const CORRECT = beat(ride(CORRECT_ROUTE, CORRECT_STOPS));
 const RECALL = beat(ride(RECALL_ROUTE, RECALL_STOPS));
 
-const NEW_PAGE = beat({
-   times: backAt(0.21),
-   opacity: OUT_IN,
-   y: [0, 0, -6, -6, 0, 0],
-});
+const NEW_PAGE = beat({ ...backAt(0.21), y: [0, 0, -6, -6, 0, 0] });
 const STRIKE = redraw(0.4, 0.06);
 const OLD_DIM = beat({
    times: [0, ...CLEAR, 0.44, 0.48, 1],
    opacity: [0.4, 0.4, 1, 1, 0.4, 0.4],
 });
-const STAMP = beat({ times: backAt(0.44), opacity: OUT_IN });
+const STAMP = beat(backAt(0.44));
 const POINTER = redraw(0.47, 0.05);
-const FIX_PAGE = beat({
-   times: backAt(0.51),
-   opacity: OUT_IN,
-   y: [0, 0, -6, -6, 0, 0],
-});
+const FIX_PAGE = beat({ ...backAt(0.51), y: [0, 0, -6, -6, 0, 0] });
 const RANKED = beat(shown(0.7, 0.93));
 const REMEMBER_TAG = beat(shown(0.08, 0.27));
 const RECALL_TAG = beat(shown(0.58, 0.88));

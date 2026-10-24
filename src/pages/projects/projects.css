@@ -295,7 +295,7 @@
    transition:
       background-color 0.2s ease,
       border-color 0.2s ease,
-      transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transform 0.2s var(--ease-cinematic);
 }
 
 .contribution-link:is(:hover, :focus-visible) {
@@ -313,7 +313,7 @@
 }
 
 .contribution-link > .contribution-icon:first-child {
-   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+   transition: transform 0.2s var(--ease-cinematic);
 }
 
 html[data-motion="full"] .contribution-link:focus-visible {
@@ -369,7 +369,7 @@ html[data-motion="full"] .contribution-link:active {
       color-mix(in srgb, var(--contribution-accent) 25%, transparent);
    border-radius: 4px;
    background: color-mix(in srgb, var(--contribution-accent) 12%, transparent);
-   font-size: 9px;
+   font-size: 11px;
    font-weight: 700;
    letter-spacing: 0.05em;
    text-transform: uppercase;
@@ -386,6 +386,22 @@ html[data-motion="full"] .contribution-link:active {
    color: var(--color-text-secondary);
    font-size: 13px;
    line-height: 1.5;
+}
+
+/* Touch screens have no hover to reveal the title tooltip, so they show the
+   whole title. Rows then size to their own tallest card instead of every row
+   stretching to the longest title in the grid. */
+@media (hover: none) {
+   .contribution-grid {
+      grid-auto-rows: auto;
+   }
+
+   .contribution-title {
+      display: block;
+      overflow: visible;
+      -webkit-line-clamp: none;
+      line-clamp: none;
+   }
 }
 
 @media (min-width: 768px) {
@@ -560,7 +576,7 @@ html:not([data-motion="reduced"]) .evidence-badge--live .evidence-dot::after {
    inset: 0;
    border-radius: 50%;
    border: 1px solid var(--evidence-tint);
-   animation: evidence-pulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+   animation: evidence-pulse 2s var(--ease-cinematic) infinite;
 }
 
 @keyframes evidence-pulse {
@@ -590,6 +606,21 @@ html:not([data-motion="reduced"]) .evidence-badge--live .evidence-dot::after {
 .terminal-tab:focus-visible {
    outline: 2px solid var(--color-accent-cyan);
    outline-offset: 1px;
+}
+
+/* Touch: an invisible strip grows each 32px tab to a 44px tap target without
+   changing how it looks (50% is half the tab height). The chrome bar has 6px
+   of padding above and below, so the strip stays inside the frame clip. */
+@media (pointer: coarse) {
+   .terminal-tab {
+      position: relative;
+   }
+
+   .terminal-tab::before {
+      content: "";
+      position: absolute;
+      inset: min(0px, calc(50% - 22px)) 0;
+   }
 }
 
 /* Intentional horizontal scroll: long terraform commands stay on one line. */
@@ -679,7 +710,7 @@ html:not([data-motion="reduced"]) .terminal-caret {
    border-radius: 50%;
    background: #0e1417;
    color: var(--compare-accent);
-   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+   transition: transform 0.2s var(--ease-cinematic);
 }
 
 .compare-handle:focus-visible .compare-knob {
@@ -714,7 +745,7 @@ html:not([data-motion="reduced"]) .compare-slider:active .compare-knob {
 
 .compare-captions dt {
    font-family: var(--font-mono);
-   font-size: 10px;
+   font-size: 11px;
    letter-spacing: 0.06em;
    text-transform: uppercase;
    color: var(--color-text-muted);

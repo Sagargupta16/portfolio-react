@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
-import { EASING, TEXT_PRIMARY, TEXT_SECONDARY } from "@/constants/theme";
+import {
+   EASING,
+   GLASS_BORDER,
+   TEXT_PRIMARY,
+   TEXT_SECONDARY,
+} from "@/constants/theme";
+import { getUiCopy } from "@data/ui";
 
 interface MoreSection {
    id: string;
@@ -34,9 +40,9 @@ const PANEL_STYLE: React.CSSProperties = {
    width: 280,
    padding: 6,
    borderRadius: 14,
-   background: "rgb(14 20 23 / 0.98)",
-   border: "1px solid rgba(255, 255, 255, 0.08)",
-   boxShadow: "0 16px 40px rgba(0, 0, 0, 0.45)",
+   background: "rgb(var(--ch-card) / 0.98)",
+   border: `1px solid ${GLASS_BORDER}`,
+   boxShadow: "0 16px 40px rgb(var(--ch-black) / 0.45)",
    transformOrigin: "top right",
    listStyle: "none",
    margin: 0,
@@ -74,7 +80,8 @@ const NavMoreMenu = ({
          if (!wrapRef.current?.contains(e.target as Node)) close();
       };
       const onKeyDown = (e: KeyboardEvent) => {
-         if (e.key !== "Escape") return;
+         if (e.key !== "Escape" || e.defaultPrevented) return;
+         e.preventDefault();
          close();
          triggerRef.current?.focus();
       };
@@ -131,7 +138,7 @@ const NavMoreMenu = ({
             aria-controls={panelId}
          >
             {activeInMenu && pill}
-            <span style={{ position: "relative" }}>More</span>
+            <span style={{ position: "relative" }}>{getUiCopy().nav.more}</span>
             <motion.span
                aria-hidden="true"
                style={{ position: "relative", display: "inline-flex" }}

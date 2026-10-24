@@ -126,15 +126,23 @@ export const ENTER_RISE = 8;
 export const STAGGER_STEP = 0.05;
 export const STAGGER_CAP = 0.3;
 
-/** Drift loop: one slow figure that ends on its first frame. */
+/* One drift pose as a transform, in the order Motion composes x, y and
+   rotate. Every pose lists all three functions so the browser interpolates
+   each one on its own, exactly as the separate tracks did. */
+const driftPose = (x: number, y: number, rotate: number) =>
+   `translateX(${x}px) translateY(${y}px) rotate(${rotate}deg)`;
+
+/**
+ * Drift loop: one slow figure that ends on its first frame. A `transform`
+ * string, so WAAPI runs it on the compositor instead of the JS frameloop.
+ */
 export const DRIFT = {
-   y: [0, -12, 0],
-   x: [0, 5, 0],
-   rotate: [0, 2, 0],
+   transform: [driftPose(0, 0, 0), driftPose(5, -12, 2), driftPose(0, 0, 0)],
 };
 export const DRIFT_TIMES = [0, 0.5, 1];
-/* One ease per keyframe segment so every track shares one schedule (the
-   cover scenes' perSegment helpers do the same). */
+/* One ease per keyframe segment: WAAPI applies a single ease across the whole
+   loop, so only an array keeps each half eased on its own (the cover scenes'
+   perSegment helpers do the same). */
 export const DRIFT_EASE = DRIFT_TIMES.slice(1).map(() => "easeInOut" as const);
 /** Per-tile phase offset so the field never breathes in unison. */
 export const DRIFT_STAGGER = 0.7;
@@ -159,7 +167,7 @@ for (const name of getHeroStack()) {
    seenGlyphs.add(skill.Icon);
    resolved.push({ name, Icon: skill.Icon, color: skill.color });
 }
-export const heroStackItems: readonly HeroStackItem[] = resolved;
+const heroStackItems: readonly HeroStackItem[] = resolved;
 
 export interface Placement<S> {
    item: HeroStackItem;

@@ -4,13 +4,12 @@
 
 // ===== Colors =====
 // Flat minimal palette (akobir-style): blue family only for accents.
-// Legacy names kept so 40+ call sites don't churn; values remapped.
 export const BLUE = "#2563eb"; // primary CTA
-export const CYAN = "#60a5fa"; // accent text / icons on dark
-export const PURPLE = "#38bdf8"; // secondary accent (roles, PoR)
+export const BLUE_LIGHT = "#60a5fa"; // accent text / icons on dark
+export const SKY = "#38bdf8"; // secondary accent (roles, PoR)
+export const BLUE_PALE = "#93c5fd"; // third shade in blue-family ramps
 export const GREEN = "#22c55e";
 export const AMBER = "#f59e0b";
-export const PINK = "#38bdf8";
 export const ORANGE = "#f97316";
 export const RED = "#ef4444";
 
@@ -23,6 +22,10 @@ export const TEXT_PRIMARY = "#f4f6f7";
 export const TEXT_SECONDARY = "#9ca9b0";
 // Clears WCAG 1.4.3 (4.5:1) for small informational text on the near-black bg.
 export const TEXT_MUTED = "#8a97a0";
+
+// Surfaces -- mirror --color-bg-primary / --color-bg-card in index.css.
+export const BG_PRIMARY = "#0b1012";
+export const BG_CARD = "#0e1417";
 
 export const GLASS_BORDER = "rgba(255, 255, 255, 0.08)";
 
@@ -51,12 +54,14 @@ export const MEDIA_QUERIES = {
    wide: `(min-width: ${BREAKPOINTS.xl}px)`,
    /** The primary pointer can hover: the gate for pointer-driven decoration. */
    hover: "(hover: hover)",
+   /** Touch-first primary pointer: the gate for 44px hit areas. */
+   coarse: "(pointer: coarse)",
 } as const;
 
 // ===== Animation Tokens =====
 // Shared across Framer Motion variants and CSS transitions.
 export const EASING = {
-   smooth: [0.25, 0.46, 0.45, 0.94] as const,
+   standard: [0.4, 0, 0.2, 1] as const,
    cinematic: [0.16, 1, 0.3, 1] as const,
    brisk: [0.25, 0.1, 0.25, 1] as const,
 } as const;
@@ -65,12 +70,23 @@ export const DURATION = {
    quick: 0.25, // hover, tooltip
    default: 0.4, // card reveals, transitions
    slow: 0.7, // section / hero entrance
-   ambient: 20, // decorative background loops
 } as const;
 
 // ===== Shared inline style objects =====
 
-/** Chrome header bar -- used by TerminalCard, ActivityFeed */
+/** Transparent box centred on a small link (which must be position:
+ *  relative), so its tap target is at least 44 x 44 px with no visual change.
+ *  Render it only under MEDIA_QUERIES.coarse. */
+export const TOUCH_HIT_AREA: React.CSSProperties = {
+   position: "absolute",
+   top: "50%",
+   left: "50%",
+   width: "max(100%, 44px)",
+   height: "max(100%, 44px)",
+   transform: "translate(-50%, -50%)",
+};
+
+/** Chrome header bar -- used by TerminalDemo */
 export const CHROME_BAR_STYLE: React.CSSProperties = {
    background: "rgb(var(--ch-bg-sec) / 0.8)",
    borderBottom: "1px solid rgb(var(--ch-white) / 0.06)",

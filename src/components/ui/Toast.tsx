@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle, XCircle, X } from "lucide-react";
 import { GREEN, RED, TEXT_PRIMARY, TEXT_MUTED } from "@/constants/theme";
+import { getUiCopy } from "@data/ui";
 
 interface ToastProps {
    message: string;
@@ -21,6 +22,13 @@ const TOAST_COLORS = {
       border: "rgb(var(--ch-red) / 0.15)",
       icon: XCircle,
    },
+};
+
+// Grows the 24px dismiss button's hit area to 44px without changing how it
+// looks; the toast's 12px vertical padding and gap leave room for it.
+const DISMISS_HIT_AREA: React.CSSProperties = {
+   position: "absolute",
+   inset: -10,
 };
 
 const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
@@ -51,7 +59,7 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                   backdropFilter: "blur(24px)",
                   WebkitBackdropFilter: "blur(24px)",
                   border: `1px solid ${config.border}`,
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+                  boxShadow: "0 10px 40px rgb(var(--ch-black) / 0.4)",
                   maxWidth: 360,
                   minWidth: 240,
                }}
@@ -78,11 +86,12 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                   <button
                      onClick={onClose}
                      style={{
+                        position: "relative",
                         width: 24,
                         height: 24,
                         borderRadius: 6,
                         border: "none",
-                        background: "rgba(255,255,255,0.05)",
+                        background: "rgb(var(--ch-white) / 0.05)",
                         color: TEXT_MUTED,
                         cursor: "pointer",
                         display: "flex",
@@ -97,8 +106,9 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                      onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.currentTarget.style.color = TEXT_MUTED;
                      }}
-                     aria-label="Dismiss"
+                     aria-label={getUiCopy().toast_dismiss}
                   >
+                     <span aria-hidden="true" style={DISMISS_HIT_AREA} />
                      <X size={14} />
                   </button>
                )}

@@ -1,8 +1,8 @@
 import { useId, type CSSProperties } from "react";
 import { motion } from "motion/react";
 import { AMBER, MONO_FONT } from "@/constants/theme";
+import { INK } from "../kit/sceneTokens";
 import {
-   INK,
    MEET,
    NON_SCALING,
    NONE,
@@ -359,7 +359,12 @@ const GameOver = () => (
 const Snake = ({ tint }: { tint: string }) => (
    <>
       <div style={washStyle(tint, "66% 36%")} />
-      <svg viewBox={VIEW_BOX} preserveAspectRatio={MEET} style={svgStyle}>
+      <svg
+         aria-hidden="true"
+         viewBox={VIEW_BOX}
+         preserveAspectRatio={MEET}
+         style={svgStyle}
+      >
          <Slider x={12.8} tint={tint} />
          <Slider x={147.2 - SLIDER_W} tint={tint} />
          <Arena tint={tint} />

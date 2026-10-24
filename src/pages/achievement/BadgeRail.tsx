@@ -4,6 +4,7 @@ import type { LearningBadge } from "@/types";
 import { fadeInUp, VIEWPORT_MARGIN } from "@utils/animations";
 import { DURATION, EASING } from "@/constants/theme";
 import RailBadge from "./RailBadge";
+import "./badge-rail.css";
 
 interface BadgeRailProps {
    badges: LearningBadge[];

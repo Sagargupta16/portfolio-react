@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
+import { PANEL_SOLID } from "../kit/sceneTokens";
 import {
-   CARD_FILL,
    CARD_H,
    CARD_RX,
    CARD_W,
@@ -63,7 +63,7 @@ const Person = ({
    };
    return (
       <>
-         <rect {...box} fill={CARD_FILL} />
+         <rect {...box} fill={PANEL_SOLID} />
          {wash && <rect {...box} fill={wash} />}
          <rect {...box} {...hairline(stroke)} />
          <rect

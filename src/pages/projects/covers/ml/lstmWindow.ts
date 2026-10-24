@@ -4,7 +4,6 @@
  * MinMaxScaler features per day, Close as the label column.
  */
 
-export const BASE_GRADIENT = "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)";
 export const WHITE_03 = "rgba(255,255,255,0.03)";
 export const WHITE_04 = "rgba(255,255,255,0.04)";
 export const WHITE_05 = "rgba(255,255,255,0.05)";
@@ -18,10 +17,10 @@ export const NONE = "none";
 export const NON_SCALING = "non-scaling-stroke";
 export const ROUND = "round";
 
-export const CYCLE = 6;
+const CYCLE = 6;
 export const t = (seconds: number) => seconds / CYCLE;
 
-export type Ease = "linear" | "easeInOut";
+type Ease = "linear" | "easeInOut";
 /* One ease per keyframe segment so WAAPI opacity keeps to `times`. */
 export const loop = (times: number[], ease: Ease = "easeInOut") => ({
    duration: CYCLE,
@@ -33,13 +32,13 @@ export const loop = (times: number[], ease: Ease = "easeInOut") => ({
 /* Chart: one Close price per day, viewBox units (0 0 160 100). */
 export const DAY = 6;
 export const dayX = (day: number) => 40 + DAY * day;
-export const CLOSE_Y = [
+const CLOSE_Y = [
    40, 38.5, 39.5, 36, 37.5, 34, 32.5, 34.5, 31, 30, 32, 28.5, 27, 29, 25.5,
    26.5, 23.5, 24.5,
 ];
 export const CHART_TOP = 17;
 export const CHART_BOTTOM = 47;
-export const linePath = (points: { x: number; y: number }[]) =>
+const linePath = (points: { x: number; y: number }[]) =>
    points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x} ${p.y}`).join("");
 export const CLOSE_POINTS = CLOSE_Y.map((y, day) => ({ x: dayX(day), y }));
 export const CLOSE_D = linePath(CLOSE_POINTS);
@@ -77,13 +76,13 @@ export const CELL = 4;
 export const LINEAR_R = 2;
 
 /* Storyboard: three windows, 1.5 s each, then the plot clears. */
-export const STEPS = [0, 1, 2];
-export const STEP = 1.5;
-export const stepAt = (k: number) => 0.3 + STEP * k;
+const STEPS = [0, 1, 2];
+const STEP = 1.5;
+const stepAt = (k: number) => 0.3 + STEP * k;
 export const CLEAR = 5;
 export const CLEARED = 5.3;
-export const SNAP = 5.4;
-export const BACK = 5.85;
+const SNAP = 5.4;
+const BACK = 5.85;
 
 export const RIG_TIMES = [
    0,
@@ -105,7 +104,7 @@ export const RIG_OPACITY = [1, 1, 0, 0, 1, 1];
 
 /* h: the hidden state walks the five cells, then enters nn.Linear. */
 export const CELL_FIRST = dayX(FIRST_DAY);
-export const CELL_LAST = dayX(FIRST_DAY + SEQ_LENGTH - 1);
+const CELL_LAST = dayX(FIRST_DAY + SEQ_LENGTH - 1);
 export const H_TIMES = [
    0,
    ...STEPS.flatMap((k) =>
@@ -136,7 +135,7 @@ export const SCAN_FADE_TIMES = [
 export const SCAN_OPACITY = [0, ...STEPS.flatMap(() => [0, 1, 1, 0]), 0];
 
 /* Predicted Close: lands next to the actual one, error bar between. */
-export const PREDICTED_Y = [27.2, 25.6, 25.2];
+const PREDICTED_Y = [27.2, 25.6, 25.2];
 export const PREDICTIONS = STEPS.map((k) => ({
    id: `day${FIRST_DAY + SEQ_LENGTH + k}`,
    k,
@@ -169,11 +168,9 @@ export const OUT_FADE_TIMES = [
 ];
 export const OUT_OPACITY = [0, ...STEPS.flatMap(() => [0, 1, 1, 0]), 0];
 export const PREDICTED_D = linePath(PREDICTIONS);
-export const segment = (
-   a: { x: number; y: number },
-   b: { x: number; y: number },
-) => Math.hypot(b.x - a.x, b.y - a.y);
-export const FIRST_SEGMENT =
+const segment = (a: { x: number; y: number }, b: { x: number; y: number }) =>
+   Math.hypot(b.x - a.x, b.y - a.y);
+const FIRST_SEGMENT =
    segment(PREDICTIONS[0], PREDICTIONS[1]) /
    (segment(PREDICTIONS[0], PREDICTIONS[1]) +
       segment(PREDICTIONS[1], PREDICTIONS[2]));

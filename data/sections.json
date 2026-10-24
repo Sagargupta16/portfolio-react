@@ -1,0 +1,224 @@
+{
+   "about": {
+      "nav": "About",
+      "title": "About *me*",
+      "subtitle": "Cloud consultant, open-source contributor",
+      "facts": {
+         "based_in": "Based in",
+         "role": "Role",
+         "role_value": "{role} @ {employer}",
+         "education": "Education",
+         "education_value": "{degree}, NIT Warangal",
+         "languages": "Languages"
+      }
+   },
+   "experience": {
+      "nav": "Experience",
+      "title": "Experience",
+      "subtitle": "Where I've worked",
+      "subsections": { "positions": "Positions of Responsibility" },
+      "links": {
+         "source": "Source",
+         "source_label": "View {name} source on GitHub",
+         "details": "View details",
+         "details_label": "View details for {company}"
+      },
+      "card": {
+         "responsibilities": "Responsibilities",
+         "present": "Present",
+         "active_role": "Currently active role"
+      },
+      "modal": {
+         "close": "Close experience details",
+         "contributions": "Internal Contributions",
+         "achievements": "Internal Achievements",
+         "skills": "Key Skills",
+         "full_details": "Full details"
+      }
+   },
+   "education": {
+      "nav": "Education",
+      "title": "Education",
+      "subtitle": "NIT Warangal (MCA), DAVV (BCA)",
+      "blurb": "NIT Warangal MCA and coursework",
+      "extras": {
+         "achievements_one": "{count} achievement",
+         "achievements_many": "{count} achievements"
+      }
+   },
+   "skills": {
+      "nav": "Skills",
+      "title": "Skills & Technologies",
+      "subtitle": "What I work with"
+   },
+   "projects": {
+      "nav": "Projects",
+      "title": "Things I've *built*",
+      "subtitle": "Projects",
+      "subsections": { "open_source": "Open Source Contributions" },
+      "links": {
+         "details": "Details",
+         "source": "Source",
+         "live": "Live Demo",
+         "view_source": "View Source",
+         "details_label": "View details for {title}",
+         "source_label": "View {title} on GitHub",
+         "live_label": "View {title} live demo"
+      },
+      "search": {
+         "placeholder": "Search title or technology",
+         "label": "Search projects",
+         "clear": "Clear search",
+         "summary": "{shown} of {total} projects",
+         "order_spotlight": "Spotlight, then newest",
+         "order_newest": "Newest first",
+         "empty_title": "No matching projects",
+         "empty_body": "Try another name or technology, or reset the filters to explore all {total} projects.",
+         "reset": "Reset filters",
+         "filter_label": "Filter projects",
+         "filter_count_one": "{filter} ({count} project)",
+         "filter_count_many": "{filter} ({count} projects)"
+      },
+      "filters": {
+         "All": "All",
+         "Featured": "Featured",
+         "Community": "Community",
+         "Collab": "Collab",
+         "Others": "Others"
+      },
+      "card": {
+         "spotlight": "Spotlight",
+         "evidence_label": "Project status and evidence"
+      },
+      "project_status": {
+         "active": "Active",
+         "beta": "Beta",
+         "complete": "Complete"
+      },
+      "evidence": {
+         "aws": "Published by AWS",
+         "live": "Live",
+         "source": "Open source"
+      },
+      "open_source": {
+         "merged": "Merged",
+         "open": "Under Review",
+         "closed": "Community Impact",
+         "accepted": "Accepted Discussion Answers ({count})",
+         "helpful": "Discussion Contributions ({count})"
+      },
+      "contribution_status": {
+         "merged": "Merged",
+         "open": "Open",
+         "closed": "Closed"
+      },
+      "discussion_status": {
+         "accepted": "Accepted",
+         "helpful": "Helpful"
+      },
+      "modal": {
+         "close": "Close project details",
+         "glance": "At a glance",
+         "tech": "Tech Stack",
+         "features": "Key Features",
+         "contributors": "Contributors",
+         "copy_link": "Copy link",
+         "link_copied": "Link copied",
+         "copy_failed": "Copy failed",
+         "demos": {
+            "49": "How it works",
+            "52": "How it runs",
+            "13": "How the cutover works"
+         }
+      }
+   },
+   "achievements": {
+      "nav": "Awards",
+      "title": "Achievements",
+      "subtitle": "Certifications, contests, hackathons",
+      "blurb": "Certifications, badges and contest wins",
+      "subsections": {
+         "certifications": "Industry Certifications",
+         "badges": "Learning & Training",
+         "competitions": "Competitions & Awards"
+      },
+      "certifications": {
+         "active_count": "{count} active",
+         "credential": "{name} credential",
+         "level": "{level} level",
+         "expired": "Expired {when}",
+         "expires": "Expires {when}"
+      },
+      "competitions": {
+         "podium": "Podium finishes",
+         "other": "Other results",
+         "rank": "Rank",
+         "place": "Place"
+      }
+   },
+   "services": {
+      "nav": "Services",
+      "title": "Services",
+      "subtitle": "What I can help with",
+      "blurb": "What I can build for your team",
+      "cta": "Let's talk",
+      "cta_label": "Discuss {title}"
+   },
+   "stats": {
+      "nav": "Stats",
+      "title": "By the Numbers",
+      "subtitle": "Client work, open source, contests",
+      "blurb": "Impact, open source and coding numbers",
+      "subsections": { "platforms": "Coding Platform Profiles" }
+   },
+   "news": {
+      "nav": "News",
+      "title": "News",
+      "subtitle": "Merged PRs, publications and badges, newest first",
+      "blurb": "Recent releases, merges and milestones",
+      "filters": {
+         "all": "All",
+         "group_label": "Filter news by type",
+         "show_all": "Show all {count}",
+         "show_less": "Show less"
+      },
+      "types": {
+         "launch": { "chip": "Launches", "label": "Launch" },
+         "oss": { "chip": "Open source", "label": "Open source" },
+         "award": { "chip": "Awards", "label": "Award" },
+         "community": { "chip": "Community", "label": "Community" },
+         "cert": { "chip": "Certs", "label": "Certification" },
+         "education": { "chip": "Education", "label": "Education" },
+         "work": { "chip": "Career", "label": "Career" }
+      }
+   },
+   "contact": {
+      "nav": "Contact",
+      "title": "Let's *talk*",
+      "subtitle": "Send a note or book a call",
+      "card_label": "{title}: {value}",
+      "vcard": {
+         "label": "Save contact card",
+         "hint": "Adds me to your phone's contacts"
+      },
+      "form": {
+         "name": "Name",
+         "name_placeholder": "John Doe",
+         "email": "Email",
+         "email_placeholder": "john@example.com",
+         "message": "Message",
+         "message_placeholder": "What are you trying to build or migrate?",
+         "send": "Send Message",
+         "send_label": "Send message",
+         "sending_label": "Sending message...",
+         "invalid_email": "Please enter a valid email address.",
+         "send_failed": "Failed to send message. Please try again.",
+         "send_timeout": "Sending is taking too long. Check your connection and try again."
+      },
+      "sent": {
+         "title": "Message sent!",
+         "thanks": "Thanks, {name}! I'll get back to you soon.",
+         "again": "Send another message"
+      }
+   }
+}

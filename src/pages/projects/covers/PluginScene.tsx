@@ -1,10 +1,10 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import { Bar, Label, Panel, Pip, Shell, Trace, Wire } from "./kit/primitives";
 import {
    DOTS,
    FADE,
-   GREEN,
    INK,
    NON_SCALING,
    W06,
@@ -14,6 +14,7 @@ import {
    W40,
    W55,
    W70,
+   backAtFor,
    clock,
    curveD,
    label,
@@ -57,24 +58,17 @@ const ELBOWS = [32, 88, 144, 200].map((d) => d / 200);
 const CHILD_Y = [66, 94, 122, 150];
 
 /* shown at rest, gone during CLEAR, back at `at` */
-const OUT_IN = [1, 1, 0, 0, 1, 1];
-const backAt = (at: number, ramp = 0.04) => [0, ...CLEAR, at, at + ramp, 1];
+const backAt = backAtFor(CLEAR);
 const elbowAt = (e: number) => TREE_FROM + (TREE_TO - TREE_FROM) * e;
 
 /* each child row slides off the spine the moment the tree reaches its elbow;
    its HTML name only fades, since x would replace the label's centring */
 const ROW_REVEALS: Loop[] = ELBOWS.map((e) =>
-   beat({
-      times: backAt(elbowAt(e)),
-      opacity: OUT_IN,
-      x: [0, 0, -8, -8, 0, 0],
-   }),
+   beat({ ...backAt(elbowAt(e)), x: [0, 0, -8, -8, 0, 0] }),
 );
-const NAME_REVEALS: Loop[] = ELBOWS.map((e) =>
-   beat({ times: backAt(elbowAt(e)), opacity: OUT_IN }),
-);
+const NAME_REVEALS: Loop[] = ELBOWS.map((e) => beat(backAt(elbowAt(e))));
 
-const SELECT = beat({ times: backAt(0.12, 0.06), opacity: OUT_IN });
+const SELECT = beat(backAt(0.12, 0.06));
 const CARRY = beat(ride(LINK_ROUTE, INSTALL));
 const CARRIED = beat(lit(INSTALL, LIT_UNTIL));
 const LANDED = beat({
@@ -87,11 +81,7 @@ const UNPACK = beat({
    opacity: [0, 1, 1, 1, 0, 0],
    ease: "linear",
 });
-const ENABLED = beat({
-   times: backAt(0.66),
-   opacity: OUT_IN,
-   scale: [1, 1, 0.4, 0.4, 1, 1],
-});
+const ENABLED = beat({ ...backAt(0.66), scale: [1, 1, 0.4, 0.4, 1, 1] });
 
 /* marketplace.json plugins: [row top, name bar width] */
 const ROWS: [number, number][] = [

@@ -3,7 +3,7 @@ import { MapPin } from "lucide-react";
 import type { Education } from "@/types";
 import { staggerItem } from "@utils/animations";
 import { splitDateRange } from "@utils/dateRange";
-import { MONO_FONT, PURPLE, TEXT_MUTED, EASING } from "@/constants/theme";
+import { MONO_FONT, SKY, TEXT_MUTED, EASING } from "@/constants/theme";
 import {
    TimelineNode,
    TIMELINE_DATE_COLUMN,
@@ -46,7 +46,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                className="glass-card"
                style={{
                   padding: "20px 16px",
-                  borderLeft: `3px solid ${PURPLE}`,
+                  borderLeft: `3px solid ${SKY}`,
                }}
             >
                {/* Date + Location at top */}
@@ -63,7 +63,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                         fontFamily: MONO_FONT,
                         fontSize: 12,
                         fontWeight: 600,
-                        color: PURPLE,
+                        color: SKY,
                      }}
                   >
                      {splitDateRange(item.date).start}
@@ -124,7 +124,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                   fontFamily: MONO_FONT,
                   fontSize: 12,
                   fontWeight: 600,
-                  color: PURPLE,
+                  color: SKY,
                }}
             >
                {item.date.split(" - ")[0]}
@@ -166,7 +166,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                alignItems: "center",
             }}
          >
-            <TimelineNode color={PURPLE} />
+            <TimelineNode color={SKY} />
          </div>
 
          {/* Right: Content card */}

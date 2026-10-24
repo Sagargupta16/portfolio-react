@@ -1,0 +1,72 @@
+/* ===== Badge Rail (learning badges marquee) =====
+   Imported by BadgeRail.tsx and SkillRail.tsx, so it ships with the lazy
+   Achievements and Skills chunks. BadgeRail.tsx sets the loop length and gap
+   as custom properties. Each copy of the list carries its own trailing gap,
+   so the seam is spaced like every other badge. Hover (pointer devices only)
+   and keyboard focus pause the loop. clip, not hidden: focus must never
+   scroll the container, the component slides the track into view instead. */
+.badge-rail {
+   overflow: clip;
+   -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 10%,
+      #000 90%,
+      transparent
+   );
+   mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 10%,
+      #000 90%,
+      transparent
+   );
+}
+
+.badge-rail__track {
+   display: flex;
+   width: max-content;
+   animation: badge-rail var(--rail-duration, 48s) linear infinite;
+}
+
+/* The track holds two copies of the list, so sliding it by half its own
+   width lands exactly on the second copy and the loop is seamless. */
+@keyframes badge-rail {
+   to {
+      transform: translateX(-50%);
+   }
+}
+
+.badge-rail__group {
+   display: flex;
+   align-items: flex-start;
+   flex-shrink: 0;
+   gap: var(--rail-gap, 24px);
+   padding-right: var(--rail-gap, 24px);
+   list-style: none;
+}
+
+.badge-rail:focus-within .badge-rail__track {
+   animation-play-state: paused;
+}
+
+@media (hover: hover) {
+   .badge-rail:hover .badge-rail__track {
+      animation-play-state: paused;
+   }
+}
+
+/* Skill rails (SkillRail.tsx) reuse the badge rail. Every other rail runs the
+   opposite way so stacked rows pass each other; the block padding leaves room
+   for the chip hover lift inside the clip. */
+.skill-rail {
+   padding-block: 4px;
+}
+
+.skill-rail__group {
+   align-items: center;
+}
+
+.skill-rail--reverse .badge-rail__track {
+   animation-direction: reverse;
+}

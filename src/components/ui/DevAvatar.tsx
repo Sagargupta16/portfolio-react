@@ -20,6 +20,11 @@ const SPIN = {
    repeat: Infinity,
    ease: "linear" as const,
 };
+/* One full turn each way as `transform` strings, so WAAPI runs all nine
+   loops on the compositor instead of the JS frameloop. The in-app Reduced
+   gate below is what keeps them still: MotionConfig would not stop these. */
+const TURN = { transform: ["rotate(0deg)", "rotate(360deg)"] };
+const COUNTER_TURN = { transform: ["rotate(0deg)", "rotate(-360deg)"] };
 
 /**
  * Illustrated portrait with the real stack orbiting it. The ring turns
@@ -66,7 +71,7 @@ const DevAvatar = () => {
          {/* Stack ring: one wrapper rotation plus eight counter-rotations */}
          <motion.div
             style={{ position: "absolute", inset: 0 }}
-            animate={reducedMotion ? undefined : { rotate: 360 }}
+            animate={reducedMotion ? undefined : TURN}
             transition={SPIN}
          >
             {orbitItems.map(({ name, Icon, angle }) => {
@@ -87,7 +92,7 @@ const DevAvatar = () => {
                         alignItems: "center",
                         justifyContent: "center",
                      }}
-                     animate={reducedMotion ? undefined : { rotate: -360 }}
+                     animate={reducedMotion ? undefined : COUNTER_TURN}
                      transition={SPIN}
                   >
                      <Icon size={GLYPH_SIZE} color={GLYPH_COLOR} />

@@ -2,8 +2,15 @@ import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { fadeInUp } from "@utils/animations";
-import { MONO_FONT, TEXT_MUTED } from "@/constants/theme";
+import { getStatsCopy } from "@data/personal";
+import {
+   MEDIA_QUERIES,
+   MONO_FONT,
+   TEXT_MUTED,
+   TOUCH_HIT_AREA,
+} from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useMediaQuery from "@hooks/useMediaQuery";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import { CAPTION_STYLE } from "./statsTokens";
 
@@ -31,6 +38,7 @@ export const WideProfileCard = ({
    children,
 }: Readonly<WideProfileCardProps>) => {
    const { isMobile } = useBreakpoint();
+   const coarsePointer = useMediaQuery(MEDIA_QUERIES.coarse);
 
    return (
       <motion.article
@@ -42,7 +50,7 @@ export const WideProfileCard = ({
             gap: 18,
             padding: isMobile ? "18px 16px" : "22px",
             borderRadius: 20,
-            border: "1px solid rgb(255 255 255 / 0.06)",
+            border: "1px solid rgb(var(--ch-white) / 0.06)",
             background: "var(--color-bg-card)",
             minWidth: 0,
          }}
@@ -90,6 +98,7 @@ export const WideProfileCard = ({
                rel="noopener noreferrer"
                aria-label={linkLabel}
                style={{
+                  position: "relative",
                   marginLeft: "auto",
                   display: "inline-flex",
                   alignItems: "center",
@@ -100,7 +109,10 @@ export const WideProfileCard = ({
                   flexShrink: 0,
                }}
             >
-               View
+               {coarsePointer && (
+                  <span aria-hidden="true" style={TOUCH_HIT_AREA} />
+               )}
+               {getStatsCopy().platforms.link_label}
                <ArrowUpRight
                   size={14}
                   className="action-arrow action-arrow--external"

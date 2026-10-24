@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { Mail, Calendar } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { AMBER, BLUE_LIGHT } from "@/constants/theme";
 import { LinkedinIcon, InstagramIcon, GitHubIcon } from "./ContactIcons";
 import type { IconStyleProps } from "./ContactIcons";
 
@@ -10,11 +11,12 @@ interface ContactColors {
    border: string;
 }
 
+// LinkedIn, Instagram and GitHub keep their own brand colours on purpose.
 const CONTACT_COLORS: Record<string, ContactColors> = {
    email: {
-      accent: "#60a5fa",
-      bg: "rgba(96,165,250,0.08)",
-      border: "rgba(96,165,250,0.15)",
+      accent: BLUE_LIGHT,
+      bg: "rgb(var(--ch-blue-light) / 0.08)",
+      border: "rgb(var(--ch-blue-light) / 0.15)",
    },
    linkedin: {
       accent: "#0a66c2",
@@ -27,9 +29,9 @@ const CONTACT_COLORS: Record<string, ContactColors> = {
       border: "rgba(225,48,108,0.15)",
    },
    calendar: {
-      accent: "#f59e0b",
-      bg: "rgba(245,158,11,0.08)",
-      border: "rgba(245,158,11,0.15)",
+      accent: AMBER,
+      bg: "rgb(var(--ch-amber) / 0.08)",
+      border: "rgb(var(--ch-amber) / 0.15)",
    },
    github: {
       accent: "#a5a5c0",
@@ -38,7 +40,7 @@ const CONTACT_COLORS: Record<string, ContactColors> = {
    },
 };
 
-export interface ContactMeta {
+interface ContactMeta {
    Icon: ComponentType<IconStyleProps> | LucideIcon;
    colors: ContactColors;
 }

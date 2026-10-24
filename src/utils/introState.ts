@@ -1,35 +1,16 @@
-import { useSyncExternalStore } from "react";
+import { createStore } from "./createStore";
 
 /* Tiny shared flag: is the opening splash still covering the page?
    IntroSplash flips it; the hero holds its entrance until it clears, so the
    choreography plays as the curtain lifts instead of hidden underneath it. */
 
-let introActive = false;
-const listeners = new Set<() => void>();
+const introDone = createStore(true);
 
-const emit = () => {
-   for (const listener of listeners) listener();
-};
+// Runs during IntroSplash's first render, before the hero subscribes, so it
+// stays silent rather than waking listeners mid-render.
+export const markIntroActive = () => introDone.set(false, false);
 
-export const markIntroActive = () => {
-   introActive = true;
-};
-
-export const markIntroDone = () => {
-   if (!introActive) return;
-   introActive = false;
-   emit();
-};
-
-const subscribe = (listener: () => void) => {
-   listeners.add(listener);
-   return () => listeners.delete(listener);
-};
+export const markIntroDone = () => introDone.set(true);
 
 /** True once no splash is covering the page (always true when none ran). */
-export const useIntroDone = () =>
-   useSyncExternalStore(
-      subscribe,
-      () => !introActive,
-      () => true,
-   );
+export const useIntroDone = introDone.useValue;

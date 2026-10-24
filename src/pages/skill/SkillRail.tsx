@@ -5,6 +5,9 @@ import { fadeInUp } from "@utils/animations";
 import { MEDIA_QUERIES } from "@/constants/theme";
 import SkillChip from "./SkillChip";
 import { CHIP_LIFT, CHIP_SIZES } from "./skillChipStyles";
+// Shared with the learning-badge rail: the .badge-rail loop and the
+// .skill-rail tweaks live in one file.
+import "@pages/achievement/badge-rail.css";
 
 interface SkillRailProps {
    items: string[];

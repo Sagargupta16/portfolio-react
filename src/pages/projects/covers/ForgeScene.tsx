@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import { Bar, Label, Packet, Panel, Shell, Wire } from "./kit/primitives";
 import {
    DOTS,
-   GREEN,
    NON_SCALING,
    W03,
    W10,

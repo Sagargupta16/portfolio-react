@@ -1,12 +1,11 @@
-import { useSyncExternalStore } from "react";
+import { createStore } from "./createStore";
 
 /* Which section the mascot is perched in: the last section to cross a thin
    band 35-40% down the viewport (the same band the nav highlight uses). One
    shared IntersectionObserver; each SectionHeader's Mascot registers its own
    section anchor, which stays mounted while the section's content lazy-loads. */
 
-let active: string | null = null;
-const listeners = new Set<() => void>();
+const activeSection = createStore<string | null>(null);
 let observer: IntersectionObserver | null = null;
 
 const getObserver = () => {
@@ -14,9 +13,7 @@ const getObserver = () => {
    observer = new IntersectionObserver(
       (entries) => {
          for (const entry of entries) {
-            if (!entry.isIntersecting || entry.target.id === active) continue;
-            active = entry.target.id;
-            for (const listener of listeners) listener();
+            if (entry.isIntersecting) activeSection.set(entry.target.id);
          }
       },
       { rootMargin: "-35% 0px -60% 0px" },
@@ -33,14 +30,4 @@ export const watchMascotSection = (id: string) => {
    return () => io.unobserve(element);
 };
 
-const subscribe = (listener: () => void) => {
-   listeners.add(listener);
-   return () => listeners.delete(listener);
-};
-
-export const useMascotSection = () =>
-   useSyncExternalStore(
-      subscribe,
-      () => active,
-      () => null,
-   );
+export const useMascotSection = activeSection.useValue;

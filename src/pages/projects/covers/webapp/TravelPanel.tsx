@@ -1,10 +1,10 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
+import { INK } from "../kit/sceneTokens";
 import { Backdrop, Packet, Wires, type Hop } from "./StageParts";
 import {
    BORDER_BOX,
    CLEAR,
-   INK,
    LABEL,
    LABEL_ABOVE,
    WHITE_06,
@@ -222,6 +222,7 @@ const HEART_SPOT: CSSProperties = {
 /* Heart: outline at rest, filled tint once liked. */
 const Heart = ({ tint }: PanelProps) => (
    <motion.svg
+      aria-hidden="true"
       viewBox="0 0 24 24"
       width={HEART}
       height={HEART}
@@ -273,6 +274,7 @@ const JournalsGrid = ({ tint }: PanelProps) => (
          >
             <CardBody tint={tint} strength="b3" />
             <svg
+               aria-hidden="true"
                viewBox="0 0 24 24"
                width={HEART}
                height={HEART}

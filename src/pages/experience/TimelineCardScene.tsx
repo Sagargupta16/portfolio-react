@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { EngagementSceneKey } from "@/types";
+import { GLASS_BORDER } from "@/constants/theme";
 import EngagementScene from "./scenes/EngagementScene";
 
 interface TimelineCardSceneProps {
@@ -12,7 +13,7 @@ interface TimelineCardSceneProps {
 
 const FRAME: CSSProperties = {
    borderRadius: 12,
-   border: "1px solid rgba(255,255,255,0.08)",
+   border: `1px solid ${GLASS_BORDER}`,
 };
 
 // Desktop: a 16:10 thumbnail beside the summary; it wraps below the text on

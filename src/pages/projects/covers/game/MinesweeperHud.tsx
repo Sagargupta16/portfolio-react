@@ -1,6 +1,7 @@
 import { useId } from "react";
 import { motion } from "motion/react";
 import { AMBER, GREEN, MONO_FONT } from "@/constants/theme";
+import { INK } from "../kit/sceneTokens";
 import {
    CYCLE,
    FADE,
@@ -12,7 +13,6 @@ import {
    ringAt,
 } from "./minesweeperBoard";
 import {
-   INK,
    NON_SCALING,
    NONE,
    ROUND,

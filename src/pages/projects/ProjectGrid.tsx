@@ -1,4 +1,4 @@
-import type { PointerEvent } from "react";
+import { memo, type PointerEvent } from "react";
 import { AnimatePresence } from "motion/react";
 import type { ProjectWithCategory } from "./projectConstants";
 import ProjectCard from "./ProjectCard";
@@ -28,6 +28,8 @@ const trackPointer = (event: PointerEvent<HTMLDivElement>) => {
  * Responsive card grid: 1 column on phones, 2 on tablet, 3 on wide desktop.
  * On a filter change popLayout lifts the leaving cards out of the flow, the
  * survivors glide to their new slots and the newcomers rise into the gaps.
+ * Memoized: Projects passes memoized props, so a search keystroke's urgent
+ * render skips the grid until the deferred filter result changes.
  */
 const ProjectGrid = ({
    projects,
@@ -55,4 +57,4 @@ const ProjectGrid = ({
    </div>
 );
 
-export default ProjectGrid;
+export default memo(ProjectGrid);

@@ -1,31 +1,24 @@
-import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronUp } from "lucide-react";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
+import useScrolledPast from "@hooks/useScrolledPast";
 import useSectionNavigation from "@hooks/useSectionNavigation";
-import { CYAN, DURATION, EASING, GLASS_BORDER } from "@/constants/theme";
+import { BLUE_LIGHT, DURATION, EASING, GLASS_BORDER } from "@/constants/theme";
+import { getUiCopy } from "@data/ui";
 
 const SCROLL_THRESHOLD_PX = 500;
 
-/* Lift plus border tint; the black depth shadow below stays static. */
-const HOVER_LIFT = { y: -2, borderColor: "rgb(var(--ch-cyan) / 0.3)" };
+/* Lift plus a sky border tint; the black depth shadow below stays static.
+   A literal, because Motion cannot tween a colour written as rgb(var(...)). */
+const HOVER_LIFT = { y: -2, borderColor: "rgba(56, 189, 248, 0.3)" };
 
 const BackToTop = () => {
    const { isMobile } = useBreakpoint();
-   const [visible, setVisible] = useState(false);
+   const visible = useScrolledPast(SCROLL_THRESHOLD_PX);
    const { navigateToSection } = useSectionNavigation();
    const { reducedMotion } = useMotionPreference();
    const lift = reducedMotion ? undefined : HOVER_LIFT;
-
-   const handleScroll = useCallback(() => {
-      setVisible(window.scrollY > SCROLL_THRESHOLD_PX);
-   }, []);
-
-   useEffect(() => {
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      return () => window.removeEventListener("scroll", handleScroll);
-   }, [handleScroll]);
 
    return (
       <AnimatePresence>
@@ -49,14 +42,14 @@ const BackToTop = () => {
                   borderRadius: 12,
                   border: `1px solid ${GLASS_BORDER}`,
                   background: "rgb(var(--ch-glass) / 0.5)",
-                  color: CYAN,
+                  color: BLUE_LIGHT,
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                  boxShadow: "0 4px 20px rgb(var(--ch-black) / 0.4)",
                }}
-               aria-label="Back to top"
+               aria-label={getUiCopy().back_to_top}
             >
                <ChevronUp size={20} />
             </motion.button>

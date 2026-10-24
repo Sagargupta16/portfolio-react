@@ -1,0 +1,228 @@
+/* CV web view: the parsed resume set as a white sheet, like the PDF.
+   Imported by CvDocument.tsx (view toggle) and CvWeb.tsx (sheet), so it
+   ships in the lazy CV chunk. */
+.cv-view-toggle {
+   display: inline-flex;
+   padding: 2px;
+   border: 1px solid rgb(255 255 255 / 0.08);
+   border-radius: 9px;
+   background: rgb(255 255 255 / 0.03);
+}
+
+.cv-view-toggle button {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   min-height: 32px;
+   padding: 0 10px;
+   border: 0;
+   border-radius: 7px;
+   background: transparent;
+   color: var(--color-text-secondary);
+   font-size: 12px;
+   font-weight: 600;
+   cursor: pointer;
+   transition:
+      background 0.2s ease,
+      color 0.2s ease;
+}
+
+.cv-view-toggle button[aria-pressed="true"] {
+   background: rgb(255 255 255 / 0.1);
+   color: var(--color-text-primary);
+}
+
+/* Touch: an invisible strip grows each 32px button to a 44px tap target
+   without changing how it looks (50% is half the button height). */
+@media (pointer: coarse) {
+   .cv-view-toggle button {
+      position: relative;
+   }
+
+   .cv-view-toggle button::before {
+      content: "";
+      position: absolute;
+      inset: min(0px, calc(50% - 22px)) 0;
+   }
+}
+
+.cv-sheet {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 36px 44px 40px;
+   border-radius: 6px;
+   background: #fff;
+   box-shadow: 0 8px 32px rgb(0 0 0 / 0.5);
+   color: #111;
+   font-family: Carlito, Calibri, "Segoe UI", var(--font-sans), sans-serif;
+   font-size: 13.5px;
+   line-height: 1.45;
+   text-align: left;
+}
+
+.cv-sheet a {
+   color: #1d4ed8;
+   text-decoration: none;
+}
+
+.cv-sheet a:hover {
+   text-decoration: underline;
+}
+
+.cv-sheet svg {
+   display: inline-block;
+   width: 0.95em;
+   height: 0.95em;
+   margin-right: 3px;
+   vertical-align: -0.12em;
+}
+
+.cv-sheet .cv-star {
+   width: 0.8em;
+   height: 0.8em;
+   margin: 0 0 0 1px;
+}
+
+.cv-head {
+   text-align: center;
+}
+
+.cv-name {
+   font-size: 26px;
+   font-weight: 700;
+   line-height: 1.15;
+   letter-spacing: 0;
+}
+
+.cv-tagline {
+   margin-top: 4px;
+   white-space: pre-wrap;
+}
+
+.cv-links {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 2px 14px;
+   margin-top: 4px;
+}
+
+.cv-section {
+   margin-top: 14px;
+}
+
+.cv-section h4 {
+   margin-bottom: 6px;
+   padding-bottom: 2px;
+   border-bottom: 1px solid #111;
+   font-size: 15px;
+   font-weight: 700;
+   font-variant: small-caps;
+   letter-spacing: 0.02em;
+}
+
+.cv-entry + .cv-entry {
+   margin-top: 8px;
+}
+
+.cv-entry-head {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr) auto;
+   column-gap: 16px;
+}
+
+.cv-entry-title {
+   font-weight: 700;
+}
+
+.cv-entry-date,
+.cv-entry-meta {
+   text-align: right;
+   font-size: 12.5px;
+}
+
+.cv-entry-sub {
+   font-size: 12.5px;
+   font-style: italic;
+}
+
+.cv-entry-meta {
+   font-style: normal;
+}
+
+.cv-bullets,
+.cv-list {
+   margin-top: 3px;
+   padding-left: 18px;
+   list-style: disc;
+}
+
+.cv-bullets li,
+.cv-list li {
+   margin-top: 2px;
+   text-align: justify;
+   overflow-wrap: anywhere;
+}
+
+.cv-list li {
+   text-align: left;
+}
+
+.cv-list li > span {
+   margin-right: 8px;
+}
+
+.cv-aside {
+   float: right;
+   font-size: 12.5px;
+}
+
+.cv-rows p + p {
+   margin-top: 2px;
+}
+
+.cv-para {
+   text-align: justify;
+}
+
+.cv-para + .cv-entry,
+.cv-entry + .cv-para {
+   margin-top: 8px;
+}
+
+@media (max-width: 639px) {
+   .cv-sheet {
+      padding: 22px 16px 26px;
+      font-size: 13px;
+   }
+
+   .cv-name {
+      font-size: 22px;
+   }
+
+   .cv-entry-head {
+      grid-template-columns: minmax(0, 1fr);
+   }
+
+   .cv-entry-date,
+   .cv-entry-meta {
+      order: 2;
+      text-align: left;
+      color: #444;
+   }
+
+   /* One column: role under the company, then dates and place */
+   .cv-entry-sub {
+      order: 1;
+   }
+
+   .cv-bullets li,
+   .cv-para {
+      text-align: left;
+   }
+
+   .cv-aside {
+      float: none;
+      display: block;
+   }
+}

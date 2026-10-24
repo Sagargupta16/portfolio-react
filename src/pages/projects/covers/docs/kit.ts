@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Easing } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
+import { pct, smoothstep } from "../kit/sceneTokens";
 
 /*
  * Shared tokens and geometry for the Docs family (docs/*Variant.tsx) and the
@@ -11,11 +12,9 @@ import { MONO_FONT } from "@/constants/theme";
  */
 
 export const VIEW_W = 160;
-export const VIEW_H = 100;
+const VIEW_H = 100;
 export const VIEW_BOX = `0 0 ${VIEW_W} ${VIEW_H}`;
 
-export const GREEN = "#22c55e";
-export const AMBER = "#f59e0b";
 export const W03 = "rgba(255,255,255,0.03)";
 export const W05 = "rgba(255,255,255,0.05)";
 export const W10 = "rgba(255,255,255,0.10)";
@@ -23,7 +22,6 @@ export const W18 = "rgba(255,255,255,0.18)";
 export const W30 = "rgba(255,255,255,0.30)";
 export const W50 = "rgba(255,255,255,0.50)";
 export const W80 = "rgba(255,255,255,0.80)";
-export const BASE_BG = "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)";
 /** The panel lift (3% white) over an opaque base, so a cover or a wire that
     passes under a panel hides cleanly. */
 export const SOLID_FILL = `linear-gradient(${W03}, ${W03}), #0d1418`;
@@ -33,8 +31,8 @@ export const LINEAR: Easing = "linear";
 
 /* ---------- units -> slot percentages ---------- */
 
-export const px = (x: number) => `${(x / VIEW_W) * 100}%`;
-export const py = (y: number) => `${(y / VIEW_H) * 100}%`;
+export const px = (x: number) => pct(x, VIEW_W);
+export const py = (y: number) => pct(y, VIEW_H);
 export const FILL: CSSProperties = { position: "absolute", inset: 0 };
 export const pin = (x: number, y: number): CSSProperties => ({
    position: "absolute",
@@ -81,10 +79,8 @@ export const LABEL: CSSProperties = {
 /** One ease per keyframe segment. Motion runs opacity through WAAPI and
     transforms on its frameloop; a single ease string spans the whole WAAPI
     iteration and pulls the two tracks out of step (skill rule 11). */
-export const perSegment = (
-   times: readonly number[],
-   ease: Easing = EASE,
-): Easing[] => times.slice(1).map(() => ease);
+const perSegment = (times: readonly number[], ease: Easing = EASE): Easing[] =>
+   times.slice(1).map(() => ease);
 
 export const loop = (
    cycle: number,
@@ -161,7 +157,7 @@ export interface Leg {
    to: number;
 }
 
-export interface Track {
+interface Track {
    x: string[];
    y: string[];
    opacity: number[];
@@ -170,7 +166,6 @@ export interface Track {
 
 const SAMPLES = 6;
 const FADE = 0.03;
-const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
 /**
  * Keyframes for a packet riding one or more legs. Points are sampled on each

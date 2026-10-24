@@ -1,7 +1,7 @@
 import type { ComponentType, CSSProperties } from "react";
 import { motion, type Variants } from "motion/react";
 import { VIEWPORT_MARGIN } from "@utils/animations";
-import { CYAN, DURATION, EASING } from "@/constants/theme";
+import { BLUE_LIGHT, DURATION, EASING } from "@/constants/theme";
 import useMotionPreference from "@hooks/useMotionPreference";
 import SkillTagGroup from "./SkillTagGroup";
 import SkillRail from "./SkillRail";
@@ -39,16 +39,16 @@ const ruleVariants: Variants = {
 };
 
 // Slow exhale: the glyph dims and shrinks at the midpoint and is back on its
-// first frame at the end. Three keyframes, so ease is a per-segment array:
-// opacity runs on WAAPI and scale on the frameloop, and one ease string
-// would let the two drift apart.
+// first frame at the end. The shrink is a `transform` string so both tracks
+// run on WAAPI, off the JS frameloop. Three keyframes, so ease is a
+// per-segment array: WAAPI applies one ease string across the whole loop.
 const BREATH_TIMES = [0, 0.5, 1];
 const BREATH_DURATION = 6;
 const BREATH_OFFSET = 0.7;
 const breathVariants: Variants = {
    visible: (index: number) => ({
       opacity: [1, 0.55, 1],
-      scale: [1, 0.9, 1],
+      transform: ["scale(1)", "scale(0.9)", "scale(1)"],
       transition: {
          duration: BREATH_DURATION,
          times: BREATH_TIMES,
@@ -62,7 +62,7 @@ const breathVariants: Variants = {
 const GLYPH_SIZE = 14;
 const GLYPH_STYLE: CSSProperties = {
    display: "inline-flex",
-   color: CYAN,
+   color: BLUE_LIGHT,
    lineHeight: 0,
 };
 const LABEL_STYLE: CSSProperties = {

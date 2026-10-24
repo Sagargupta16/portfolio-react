@@ -1,10 +1,10 @@
 import { useId } from "react";
 import { motion } from "motion/react";
+import { PANEL_SOLID } from "../kit/sceneTokens";
 import {
    CYCLE,
    LAND_AT,
    NON_SCALING,
-   PANEL_SOLID,
    WHITE_05,
    WHITE_07,
    WHITE_22,

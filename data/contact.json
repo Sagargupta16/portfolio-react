@@ -45,6 +45,6 @@
       "service_id": "service_lyt547p",
       "template_id": "template_yz438w6",
       "public_key": "PAcL61ygLI8WYG16R",
-      "validation_pattern": "^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"
+      "validation_pattern": "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])$"
    }
 }

@@ -1,6 +1,6 @@
 import { motion, type Variants } from "motion/react";
 import { VIEWPORT_MARGIN } from "@utils/animations";
-import { EASING, MAX_WIDTH } from "@/constants/theme";
+import { DURATION, EASING, MAX_WIDTH } from "@/constants/theme";
 import { CONTENT_SECTIONS } from "@/constants/sections";
 import AccentText from "./AccentText";
 import Mascot from "./Mascot";
@@ -28,7 +28,10 @@ const badgeReveal: Variants = {
 
 const titleReveal: Variants = {
    hidden: { y: "100%" },
-   visible: { y: 0, transition: { duration: 0.7, ease: EASING.cinematic } },
+   visible: {
+      y: 0,
+      transition: { duration: DURATION.slow, ease: EASING.cinematic },
+   },
 };
 
 const ruleReveal: Variants = {

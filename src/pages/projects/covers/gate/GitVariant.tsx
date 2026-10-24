@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import {
    Bar,
    Label,
@@ -12,7 +13,6 @@ import {
 } from "../kit/primitives";
 import {
    COLUMNS,
-   GREEN,
    INK,
    NON_SCALING,
    W06,

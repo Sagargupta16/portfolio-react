@@ -1,6 +1,7 @@
 [
    {
       "id": 1,
+      "key": "landing-zones",
       "title": "Landing Zones & Cloud Governance",
       "list": [
          "Organizations, Control Tower, Identity Center",
@@ -12,6 +13,7 @@
    },
    {
       "id": 2,
+      "key": "iac-cicd",
       "title": "Infrastructure as Code & CI/CD",
       "list": [
          "Terraform modules tested with tftest, PyTest",
@@ -23,6 +25,7 @@
    },
    {
       "id": 3,
+      "key": "cloud-networking",
       "title": "Cloud Networking",
       "list": [
          "Transit Gateway hubs with firewall inspection",
@@ -34,6 +37,7 @@
    },
    {
       "id": 4,
+      "key": "mlops-genai",
       "title": "MLOps & GenAI on AWS",
       "list": [
          "SageMaker pipelines behind hard quality gates",
@@ -45,6 +49,7 @@
    },
    {
       "id": 5,
+      "key": "agent-tooling",
       "title": "AI Agents & Developer Tooling",
       "list": [
          "MCP servers for Bedrock, tax filing, memory",
@@ -56,6 +61,7 @@
    },
    {
       "id": 6,
+      "key": "full-stack",
       "title": "Full-Stack Product Builds",
       "list": [
          "React 19 and Next.js 16 frontends",

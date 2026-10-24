@@ -1,9 +1,9 @@
 import { motion } from "motion/react";
 import type { Easing } from "motion/react";
 import type { ReactNode } from "react";
+import { GREEN } from "@/constants/theme";
 import {
    CYCLE,
-   GREEN,
    NON_SCALING,
    PANEL_RX,
    VIEW_BOX,
@@ -31,7 +31,12 @@ const FILL_SLOT = {
 
 /** Full-slot SVG in the shared viewBox; draws back to front in DOM order. */
 export const SceneSvg = ({ children }: { children: ReactNode }) => (
-   <svg viewBox={VIEW_BOX} preserveAspectRatio="none" style={FILL_SLOT}>
+   <svg
+      aria-hidden="true"
+      viewBox={VIEW_BOX}
+      preserveAspectRatio="none"
+      style={FILL_SLOT}
+   >
       {children}
    </svg>
 );

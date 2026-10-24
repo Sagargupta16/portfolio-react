@@ -1,27 +1,12 @@
-import { useSyncExternalStore } from "react";
+import { createStore } from "./createStore";
 
 /* On/off flag for the "how it's built" annotations, shared by the nav toggle,
    the command palette and the pin layer. */
 
-let on = false;
-const listeners = new Set<() => void>();
+const annotations = createStore(false);
 
-export const setAnnotationsOn = (next: boolean) => {
-   if (on === next) return;
-   on = next;
-   for (const listener of listeners) listener();
-};
+export const setAnnotationsOn = (next: boolean) => annotations.set(next);
 
-export const toggleAnnotations = () => setAnnotationsOn(!on);
+export const toggleAnnotations = () => setAnnotationsOn(!annotations.get());
 
-const subscribe = (listener: () => void) => {
-   listeners.add(listener);
-   return () => listeners.delete(listener);
-};
-
-export const useAnnotationsOn = () =>
-   useSyncExternalStore(
-      subscribe,
-      () => on,
-      () => false,
-   );
+export const useAnnotationsOn = annotations.useValue;

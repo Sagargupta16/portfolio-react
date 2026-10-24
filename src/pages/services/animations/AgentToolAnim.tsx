@@ -115,6 +115,7 @@ const AgentSession = ({ color }: ColorProps) => (
       }}
    >
       <svg
+         aria-hidden="true"
          width={4}
          height={6}
          viewBox="0 0 4 6"

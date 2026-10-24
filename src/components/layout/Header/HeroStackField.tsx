@@ -9,6 +9,7 @@ import useMediaQuery from "@hooks/useMediaQuery";
 import useMotionPreference from "@hooks/useMotionPreference";
 import usePointerParallax from "@hooks/usePointerParallax";
 import { MEDIA_QUERIES } from "@/constants/theme";
+import { clamp01 } from "@utils/math";
 import StackTile from "../StackTile";
 import {
    HERO_STACK_SLOTS,
@@ -48,8 +49,6 @@ type FloatingTileProps = Placement<HeroStackSlot> & {
    index: number;
    values: FieldValues;
 };
-
-const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
 /* Top-lane tiles fade with the first scroll; the bottom lane keeps its alpha. */
 const laneOpacity = (slot: HeroStackSlot, scroll: number) =>

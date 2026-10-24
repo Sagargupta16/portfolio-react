@@ -1,8 +1,12 @@
 import { motion, type TransformProperties, type Variants } from "motion/react";
 import { Send } from "lucide-react";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { getSectionCopy } from "@data/sections";
 import { DURATION, EASING, TEXT_SECONDARY, RED } from "@/constants/theme";
 import type { FormData, Status } from "./contactConstants";
+import "./contact-form.css";
+
+const COPY = getSectionCopy("contact").form;
 
 interface ContactFormProps {
    // Callback ref from useContactForm: it also moves focus to the name field
@@ -86,7 +90,7 @@ const ContactForm = ({
 
          <div>
             <label htmlFor="contact-name" style={labelStyle}>
-               Name
+               {COPY.name}
             </label>
             {/* .form-field draws the accent underline while its input has focus */}
             <div className="form-field">
@@ -94,7 +98,7 @@ const ContactForm = ({
                   id="contact-name"
                   type="text"
                   name="name"
-                  placeholder="John Doe"
+                  placeholder={COPY.name_placeholder}
                   value={formData.name}
                   onChange={onChange}
                   autoComplete="name"
@@ -107,14 +111,14 @@ const ContactForm = ({
 
          <div>
             <label htmlFor="contact-email" style={labelStyle}>
-               Email
+               {COPY.email}
             </label>
             <div className="form-field">
                <input
                   id="contact-email"
                   type="email"
                   name="email"
-                  placeholder="john@example.com"
+                  placeholder={COPY.email_placeholder}
                   value={formData.email}
                   onChange={onChange}
                   autoComplete="email"
@@ -144,14 +148,14 @@ const ContactForm = ({
 
          <div>
             <label htmlFor="contact-message" style={labelStyle}>
-               Message
+               {COPY.message}
             </label>
             <div className="form-field">
                <textarea
                   id="contact-message"
                   name="message"
                   rows={isMobile ? 4 : 5}
-                  placeholder="What are you trying to build or migrate?"
+                  placeholder={COPY.message_placeholder}
                   value={formData.message}
                   onChange={onChange}
                   minLength={10}
@@ -167,7 +171,7 @@ const ContactForm = ({
             type="submit"
             disabled={isLoading}
             className="btn-primary"
-            aria-label={isLoading ? "Sending message..." : "Send message"}
+            aria-label={isLoading ? COPY.sending_label : COPY.send_label}
             aria-busy={isLoading}
             whileHover={hover}
             whileFocus={hover}
@@ -192,7 +196,7 @@ const ContactForm = ({
                      border: "2px solid rgba(255,255,255,0.3)",
                      borderTopColor: "#fff",
                      borderRadius: "50%",
-                     animation: "spin 0.7s linear infinite",
+                     animation: `spin ${DURATION.slow}s linear infinite`,
                   }}
                />
             ) : (
@@ -205,7 +209,7 @@ const ContactForm = ({
                   >
                      <Send style={{ width: 16, height: 16 }} />
                   </motion.span>
-                  Send Message
+                  {COPY.send}
                </>
             )}
          </motion.button>

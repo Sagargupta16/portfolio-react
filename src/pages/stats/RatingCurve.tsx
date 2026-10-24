@@ -1,8 +1,12 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
 import type { Variants } from "motion/react";
-import { EASING, MONO_FONT, TEXT_MUTED } from "@/constants/theme";
+import { getStatsCopy } from "@data/personal";
+import { fillTemplate } from "@utils/fillTemplate";
+import { DURATION, EASING, MONO_FONT, TEXT_MUTED } from "@/constants/theme";
 import useMotionPreference from "@hooks/useMotionPreference";
+
+const COPY = getStatsCopy().platforms.leetcode;
 
 // Chart box in SVG units. The SVG scales uniformly (default meet), so stroke
 // widths stay even and the HTML peak label can sit at percentages of it.
@@ -39,7 +43,11 @@ const LAND: Variants = {
    visible: {
       opacity: 1,
       scale: 1,
-      transition: { delay: 1.75, duration: 0.4, ease: EASING.cinematic },
+      transition: {
+         delay: 1.75,
+         duration: DURATION.default,
+         ease: EASING.cinematic,
+      },
    },
 };
 const SHOW: Variants = {
@@ -113,7 +121,14 @@ const RatingCurve = ({ history, color }: Readonly<RatingCurveProps>) => {
          viewport={{ once: true, amount: 0.5 }}
       >
          <span className="sr-only">
-            {`Contest rating from ${chart.firstRating} in ${chart.firstYear} to ${chart.lastRating} in ${chart.lastYear} over ${history.length} contests, peak ${chart.peakRating}.`}
+            {fillTemplate(COPY.rating_summary, {
+               first: chart.firstRating,
+               first_year: chart.firstYear,
+               last: chart.lastRating,
+               last_year: chart.lastYear,
+               count: history.length,
+               peak: chart.peakRating,
+            })}
          </span>
          <div aria-hidden="true" style={{ position: "relative" }}>
             <svg
@@ -127,7 +142,7 @@ const RatingCurve = ({ history, color }: Readonly<RatingCurveProps>) => {
                      x2={W - PAD_X}
                      y1={y}
                      y2={y}
-                     stroke="rgb(255 255 255 / 0.06)"
+                     style={{ stroke: "rgb(var(--ch-white) / 0.06)" }}
                   />
                ))}
                <motion.path
@@ -177,13 +192,13 @@ const RatingCurve = ({ history, color }: Readonly<RatingCurveProps>) => {
                   style={{
                      display: "block",
                      fontFamily: MONO_FONT,
-                     fontSize: 10,
+                     fontSize: 11,
                      fontWeight: 700,
                      letterSpacing: "0.12em",
                      color,
                   }}
                >
-                  {`PEAK ${chart.peakRating}`}
+                  {fillTemplate(COPY.rating_peak, { rating: chart.peakRating })}
                </motion.span>
             </span>
          </div>
@@ -194,12 +209,14 @@ const RatingCurve = ({ history, color }: Readonly<RatingCurveProps>) => {
                justifyContent: "space-between",
                marginTop: 6,
                fontFamily: MONO_FONT,
-               fontSize: 10,
+               fontSize: 11,
                color: TEXT_MUTED,
             }}
          >
             <span>{chart.firstYear}</span>
-            <span>{`${history.length} contests`}</span>
+            <span>
+               {fillTemplate(COPY.rating_contests, { count: history.length })}
+            </span>
             <span>{chart.lastYear}</span>
          </div>
       </motion.div>

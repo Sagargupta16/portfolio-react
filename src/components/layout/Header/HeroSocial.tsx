@@ -5,9 +5,12 @@ import {
    type Transition,
 } from "motion/react";
 import { getSocialProfiles } from "@data/personal";
+import { getUiCopy, newTabLabel } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
 import {
    DURATION,
    EASING,
+   GLASS_BORDER,
    TEXT_PRIMARY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
@@ -19,7 +22,8 @@ const TILE_STYLE: CSSProperties = {
    width: 44,
    height: 44,
    borderRadius: 10,
-   border: "1px solid rgba(255, 255, 255, 0.08)",
+   border: `1px solid ${GLASS_BORDER}`,
+   // A literal, not a var() token: Motion tweens it to the hover fill.
    backgroundColor: "rgba(255, 255, 255, 0.04)",
    display: "flex",
    alignItems: "center",
@@ -70,7 +74,11 @@ const HeroSocial = () => {
                   whileFocus={hover}
                   whileTap={TILE_TAP}
                   transition={TILE_TRANSITION}
-                  aria-label={`Visit ${profile.name} profile (opens in a new tab)`}
+                  aria-label={newTabLabel(
+                     fillTemplate(getUiCopy().profile_label, {
+                        name: profile.name,
+                     }),
+                  )}
                >
                   <IconComponent size={18} aria-hidden="true" />
                </motion.a>

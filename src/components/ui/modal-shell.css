@@ -1,0 +1,28 @@
+/* ===== sheet handle =====
+   Imported by ModalShell.tsx, so it ships in the lazy modal chunks. */
+/* Bottom-sheet grab handle (ModalShell on phones). The element is the 20px
+   touch strip; the pill is drawn by ::before. touch-action: none lets the
+   pointer start a drag instead of a page scroll. */
+.sheet-handle {
+   position: relative;
+   flex-shrink: 0;
+   height: 20px;
+   cursor: grab;
+   touch-action: none;
+}
+
+.sheet-handle:active {
+   cursor: grabbing;
+}
+
+.sheet-handle::before {
+   content: "";
+   position: absolute;
+   top: 8px;
+   left: 50%;
+   width: 36px;
+   height: 4px;
+   margin-left: -18px;
+   border-radius: 999px;
+   background: rgb(var(--ch-white) / 0.24);
+}

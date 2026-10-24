@@ -41,6 +41,10 @@ const GROUND: Record<Frame, number> = {
 const SLEEP_AFTER = 20_000;
 const WAVE_FOR = 1100;
 const DROP = -110;
+// Gravity on the hop: the drop in speeds up (ease-in circ), the leap out
+// slows as it rises (ease-out circ).
+const FALL_EASE = [0.55, 0, 1, 0.45] as const;
+const RISE_EASE = [0, 0.55, 0.45, 1] as const;
 const ACTIVITY = [
    "pointermove",
    "pointerdown",
@@ -76,7 +80,7 @@ const MascotSprite = () => {
          await animate(
             scope.current,
             { y: [DROP, 0], opacity: [0, 1] },
-            { duration: 0.42, ease: [0.55, 0, 1, 0.45] },
+            { duration: 0.42, ease: FALL_EASE },
          );
          if (gone()) return;
          show("land");
@@ -113,7 +117,7 @@ const MascotSprite = () => {
          await animate(
             scope.current,
             { y: DROP, opacity: 0 },
-            { duration: 0.32, ease: [0, 0.55, 0.45, 1] },
+            { duration: 0.32, ease: RISE_EASE },
          );
          safeToRemove();
       };

@@ -1,7 +1,7 @@
 /* Splits a headline into plain runs and *accent* runs, with string offsets
    for stable React keys. Shared by AccentText and ProximityText. */
 
-export interface Segment {
+interface Segment {
    at: number;
    text: string;
    accent: boolean;

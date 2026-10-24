@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { useScroll, useMotionValueEvent } from "motion/react";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useScrolledPast from "@hooks/useScrolledPast";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import { NAV_SECTIONS } from "@/constants/sections";
 import NavBar from "./NavBar";
@@ -15,15 +15,7 @@ const Nav = () => {
    const { navigateToSection } = useSectionNavigation();
    const [activeSection, setActiveSection] = useState("hero");
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-   const [scrolled, setScrolled] = useState(false);
-
-   // Boolean flip only: React bails out when the value is unchanged, so the
-   // bar never re-renders per frame while scrolling. Lenis drives the native
-   // window scroll in root mode, so scrollY tracks it directly.
-   const { scrollY } = useScroll();
-   useMotionValueEvent(scrollY, "change", (y) => {
-      setScrolled(y > SCROLLED_AFTER);
-   });
+   const scrolled = useScrolledPast(SCROLLED_AFTER);
 
    // DeferredSection keeps each anchor mounted while its content loads.
    useEffect(() => {

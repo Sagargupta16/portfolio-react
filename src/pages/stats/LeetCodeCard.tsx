@@ -1,16 +1,16 @@
 import { Trophy } from "lucide-react";
 import type { CodingPlatformStat } from "@/types";
+import { getStatsCopy } from "@data/personal";
+import { newTabLabel } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
 import { AMBER } from "@/constants/theme";
 import RatingCurve from "./RatingCurve";
 import SplitBar from "./SplitBar";
 import { DIFFICULTY_SHADES } from "./statsTokens";
 import { Metrics, WideProfileCard } from "./WideProfileCard";
 
-const LEVELS = [
-   { key: "easy", label: "Easy" },
-   { key: "medium", label: "Medium" },
-   { key: "hard", label: "Hard" },
-] as const;
+const COPY = getStatsCopy().platforms.leetcode;
+const LEVELS = ["easy", "medium", "hard"] as const;
 
 interface LeetCodeCardProps {
    stats: CodingPlatformStat;
@@ -22,7 +22,8 @@ const LeetCodeCard = ({ stats }: Readonly<LeetCodeCardProps>) => {
    const solved = stats.solved_by_difficulty;
    const meta = [
       stats.badge,
-      stats.top_percentage && `top ${stats.top_percentage}`,
+      stats.top_percentage &&
+         fillTemplate(COPY.top, { top: stats.top_percentage }),
    ]
       .filter(Boolean)
       .join(" | ");
@@ -31,17 +32,22 @@ const LeetCodeCard = ({ stats }: Readonly<LeetCodeCardProps>) => {
       <WideProfileCard
          area="leetcode"
          icon={<Trophy size={18} style={{ color: AMBER }} aria-hidden="true" />}
-         label="LeetCode"
+         label={COPY.label}
          color={AMBER}
          meta={meta}
          href={stats.url}
-         linkLabel={`LeetCode profile ${stats.username} (opens in a new tab)`}
+         linkLabel={newTabLabel(
+            fillTemplate(COPY.profile_label, { username: stats.username }),
+         )}
       >
          <Metrics
             items={[
-               { value: stats.best_rating ?? "", label: "Peak rating" },
-               { value: stats.problems_solved ?? "", label: "Solved" },
-               { value: stats.contests ?? "", label: "Contests" },
+               { value: stats.best_rating ?? "", label: COPY.best_rating },
+               {
+                  value: stats.problems_solved ?? "",
+                  label: COPY.problems_solved,
+               },
+               { value: stats.contests ?? "", label: COPY.contests },
             ]}
          />
          {stats.rating_history && (
@@ -49,10 +55,10 @@ const LeetCodeCard = ({ stats }: Readonly<LeetCodeCardProps>) => {
          )}
          {solved && (
             <SplitBar
-               heading="Solved by difficulty"
-               segments={LEVELS.map(({ key, label }) => ({
+               heading={COPY.difficulty}
+               segments={LEVELS.map((key) => ({
                   key,
-                  label,
+                  label: COPY[key],
                   weight: solved[key],
                   display: String(solved[key]),
                   color: DIFFICULTY_SHADES[key],

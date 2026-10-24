@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Easing, Transition } from "motion/react";
 import { easeInOut } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
+import { BASE_GRADIENT, smoothstep } from "../kit/sceneTokens";
 
 /* Geometry, timing and chrome shared by the WebAppScene stages.
    A stage lays its panels out in percent of the 16:10 slot and sizes the
@@ -19,8 +20,8 @@ export interface Pt {
    y: number;
 }
 
-export const VIEW_W = 160;
-export const VIEW_H = 100;
+const VIEW_W = 160;
+const VIEW_H = 100;
 export const VIEWBOX = `0 0 ${VIEW_W} ${VIEW_H}`;
 
 export const WHITE_03 = "rgba(255,255,255,0.03)";
@@ -34,10 +35,8 @@ export const WHITE_22 = "rgba(255,255,255,0.22)";
 export const WHITE_28 = "rgba(255,255,255,0.28)";
 export const WHITE_40 = "rgba(255,255,255,0.40)";
 export const WHITE_60 = "rgba(255,255,255,0.60)";
-export const INK = "#0b1012";
-export const BASE_GRADIENT = "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)";
 
-export const HAIRLINE = `1px solid ${WHITE_10}`;
+const HAIRLINE = `1px solid ${WHITE_10}`;
 export const BORDER_BOX = "border-box";
 export const CLEAR = "transparent";
 export const CENTER_Y = "translateY(-50%)";
@@ -53,7 +52,7 @@ export const ROOT: CSSProperties = {
 export const FILL: CSSProperties = { position: "absolute", inset: 0 };
 
 /* Mid layer: flat bordered panel, the same chrome as every other cover. */
-export const PANEL: CSSProperties = {
+const PANEL: CSSProperties = {
    position: "absolute",
    boxSizing: BORDER_BOX,
    border: HAIRLINE,
@@ -148,8 +147,6 @@ export const vCurve = (a: Pt, b: Pt): string => {
    return `M ${vx(a.x)} ${a.y} C ${vx(a.x)} ${a.y + third} ${vx(b.x)} ${b.y - third} ${vx(b.x)} ${b.y}`;
 };
 
-export const smoothstep = (t: number): number => t * t * (3 - 2 * t);
-
 export type Axis = "h" | "v";
 
 const ARC_SAMPLES = 48;
@@ -158,7 +155,7 @@ const ARC_SAMPLES = 48;
    length. The tail's pathOffset moves by length, so the head maps through
    this to stay on the tail's tip instead of drifting a few px on steep
    curves. Measured in viewBox units, where the 16:10 slot scales evenly. */
-export const arcToT = (a: Pt, b: Pt, axis: Axis): ((s: number) => number) => {
+const arcToT = (a: Pt, b: Pt, axis: Axis): ((s: number) => number) => {
    const runX = vx(b.x) - vx(a.x);
    const runY = b.y - a.y;
    const at = (t: number): [number, number] =>
@@ -213,21 +210,4 @@ export const loop = (
    repeat: Infinity,
    times,
    ease: eases ?? times.slice(1).map(() => EASE),
-});
-
-/* A value that rests at `rest`, eases to `peak` over [on, onDone], holds,
-   and eases back over [off, offDone]; offDone must stay below 1. The usual
-   beat shape, as matching keyframes and times. */
-export interface Beat {
-   values: number[];
-   times: number[];
-}
-
-export const beat = (
-   rest: number,
-   peak: number,
-   [on, onDone, off, offDone]: [number, number, number, number],
-): Beat => ({
-   values: [rest, rest, peak, peak, rest, rest],
-   times: [0, on, onDone, off, offDone, 1],
 });

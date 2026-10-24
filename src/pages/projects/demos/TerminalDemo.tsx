@@ -194,10 +194,17 @@ const TerminalDemo = ({ accent, isMobile }: ProjectDemoProps) => {
                padding: isMobile ? "6px 8px" : "6px 12px",
             }}
          >
-            <div
-               role="group"
+            {/* a set of toggle buttons: a fieldset, reset to a bare flex row */}
+            <fieldset
                aria-label="Terraform workflow step"
-               style={{ display: "flex", gap: 4, minWidth: 0 }}
+               style={{
+                  display: "flex",
+                  gap: 4,
+                  minWidth: 0,
+                  margin: 0,
+                  padding: 0,
+                  border: 0,
+               }}
             >
                {SCRIPTS.map((s, i) => {
                   const active = i === tab;
@@ -224,7 +231,7 @@ const TerminalDemo = ({ accent, isMobile }: ProjectDemoProps) => {
                      </button>
                   );
                })}
-            </div>
+            </fieldset>
             <span
                style={{
                   marginLeft: "auto",

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { motion, type Variants } from "motion/react";
 import { getAbout, getAvailability } from "@data/personal";
+import { getSectionCopy } from "@data/sections";
 import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
 import { GREEN, MONO_FONT, TEXT_PRIMARY, MAX_WIDTH } from "@/constants/theme";
 import DevAvatar from "@components/ui/DevAvatar";
@@ -28,6 +29,7 @@ const highlightsContainer: Variants = {
 const About = () => {
    const aboutInfo = getAbout();
    const availability = getAvailability();
+   const { title, subtitle } = getSectionCopy("about");
    const { isMobile } = useBreakpoint();
 
    const highlights = useMemo(
@@ -41,11 +43,7 @@ const About = () => {
    );
 
    return (
-      <PageSection
-         id="about"
-         title="About *me*"
-         subtitle="Cloud consultant, open-source contributor"
-      >
+      <PageSection id="about" title={title} subtitle={subtitle}>
          <div style={{ maxWidth: MAX_WIDTH, margin: "0 auto" }}>
             <motion.div
                style={{

@@ -1,8 +1,8 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { AMBER } from "@/constants/theme";
+import { INK } from "../kit/sceneTokens";
 import {
-   INK,
    MEET,
    NON_SCALING,
    NONE,
@@ -288,7 +288,12 @@ const Reload = () => (
 const Flappy = ({ tint }: { tint: string }) => (
    <>
       <div style={washStyle(tint, "30% 46%")} />
-      <svg viewBox={VIEW_BOX} preserveAspectRatio={MEET} style={svgStyle}>
+      <svg
+         aria-hidden="true"
+         viewBox={VIEW_BOX}
+         preserveAspectRatio={MEET}
+         style={svgStyle}
+      >
          <Backdrop />
          {POSTS.map((post) => (
             <PostShape key={post.id} post={post} />

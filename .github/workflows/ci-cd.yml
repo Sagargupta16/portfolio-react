@@ -5,25 +5,69 @@ on:
       branches: [main]
    pull_request:
       branches: [main]
-   # A push made by the Credly workflow's GITHUB_TOKEN does not trigger another
-   # push workflow, so rebuild the site after a successful badge sync.
-   workflow_run:
-      workflows: ["Sync Credly Badges"]
-      types: [completed]
+   # On main this builds and deploys. On any other branch it runs the gates
+   # only: the bot sync workflows dispatch it on their branch, because the
+   # pull_request run for a PR their GITHUB_TOKEN opened never starts a job.
+   workflow_dispatch:
+   # For a ping from latex-resume when it publishes a release.
+   repository_dispatch:
+      types: [resume-released]
+   # Picks up a latex-resume release nobody announced: resume-check compares
+   # the live CV with the latest release and the build runs only on a gap.
+   schedule:
+      - cron: "23 */6 * * *"
 
-concurrency:
-   group: "pages-${{ github.ref }}"
-   cancel-in-progress: true
+env:
+   # The live site root; the scheduled resume check reads the CV from here.
+   SITE_URL: https://sagargupta.online/portfolio-react
 
+# Concurrency is set per job, so a scheduled run whose CV is current (it
+# skips ci) never takes the place of a queued push build.
 jobs:
-   ci:
+   resume-check:
+      if: github.event_name == 'schedule'
       permissions:
          contents: read
+      runs-on: ubuntu-latest
+      timeout-minutes: 5
+      outputs:
+         stale: ${{ steps.compare.outputs.stale }}
+      steps:
+         - name: Compare the live CV with the latest resume release
+           id: compare
+           env:
+              GH_TOKEN: ${{ github.token }}
+           run: |
+              latest="$(gh api repos/Sagargupta16/latex-resume/releases/latest --jq .tag_name)"
+              # cv.json names the release tag it was parsed from; manifest.json
+              # carries it too, for a build whose web view was skipped.
+              # --proto =https: the request and any redirect it follows stay on HTTPS.
+              live="$(curl -fsSL --proto '=https' "$SITE_URL/resume-pages/cv.json" | jq -r '.version // empty' || true)"
+              if [ -z "$live" ]; then
+                 live="$(curl -fsSL --proto '=https' "$SITE_URL/resume-pages/manifest.json" | jq -r '.version // empty' || true)"
+              fi
+              echo "Latest release: $latest. Live site: ${live:-unknown}."
+              if [ "$latest" = "$live" ]; then stale=false; else stale=true; fi
+              echo "stale=$stale" >> "$GITHUB_OUTPUT"
+
+   ci:
+      needs: resume-check
+      # resume-check runs only on the schedule and is skipped otherwise; a
+      # scheduled run builds only when the live CV is behind the release.
       if: >
-         github.event_name != 'workflow_run' ||
-         github.event.workflow_run.conclusion == 'success'
+         !cancelled() &&
+         (github.event_name != 'schedule' || needs.resume-check.outputs.stale == 'true')
+      concurrency:
+         group: "ci-${{ github.ref }}"
+         # A newer PR push supersedes the old run; runs on main queue instead.
+         cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+      permissions:
+         contents: read
       runs-on: ubuntu-latest
       timeout-minutes: 20
+      env:
+         # Only main deploys, so only main fetches the resume and uploads Pages.
+         DEPLOY: ${{ github.ref == 'refs/heads/main' }}
       steps:
          - name: Checkout code
            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -57,37 +101,43 @@ jobs:
          - name: Run tests
            run: pnpm test
 
-         # Production dependencies only: the site ships static assets, so dev
-         # tooling advisories without a patched release (braces
-         # GHSA-vfj7-8cjw-p6xm via gh-pages) must not block deploys.
          - name: Security audit
-           run: pnpm audit --prod --audit-level=high
+           run: pnpm audit --audit-level=high
 
          # Deployment builds self-host the latest released CV. Pull requests
-         # intentionally skip this network dependency; Vite can still compile
-         # and test the viewer's failure state without generated public files.
+         # and runs on other branches skip this network dependency; Vite can
+         # still compile and test the viewer's failure state without the
+         # generated public files. The token gives the release lookup the
+         # authenticated rate limit; the step fails if no tag resolves.
          - name: Prepare resume
-           if: github.event_name != 'pull_request'
+           if: env.DEPLOY == 'true'
+           env:
+              GITHUB_TOKEN: ${{ github.token }}
            run: pnpm fetch:resume
 
          - name: Build with Vite
            run: pnpm build
 
          - name: Setup Pages
-           if: github.event_name != 'pull_request'
+           if: env.DEPLOY == 'true'
            uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
 
          - name: Upload Pages artifact
-           if: github.event_name != 'pull_request'
+           if: env.DEPLOY == 'true'
            uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
            with:
               path: build
 
    deploy:
+      # Never for another ref: a dispatch on a bot sync branch runs CI only.
       if: >
-         (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-         (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+         !cancelled() && needs.ci.result == 'success' &&
+         github.ref == 'refs/heads/main'
       needs: ci
+      # One deploy at a time, never cancelled half-way.
+      concurrency:
+         group: pages
+         cancel-in-progress: false
       runs-on: ubuntu-latest
       permissions:
          contents: read

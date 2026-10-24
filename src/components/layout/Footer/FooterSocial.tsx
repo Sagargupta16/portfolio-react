@@ -5,8 +5,15 @@ import {
    type Transition,
 } from "motion/react";
 import { getSocialProfiles } from "@data/personal";
+import { getUiCopy, newTabLabel } from "@data/ui";
 import { staggerItem } from "@utils/animations";
-import { TEXT_SECONDARY, CYAN, DURATION, EASING } from "@/constants/theme";
+import { fillTemplate } from "@utils/fillTemplate";
+import {
+   TEXT_SECONDARY,
+   BLUE_LIGHT,
+   DURATION,
+   EASING,
+} from "@/constants/theme";
 import ICON_MAP from "@utils/iconMap";
 import useMotionPreference from "@hooks/useMotionPreference";
 
@@ -14,7 +21,8 @@ const TILE_STYLE: React.CSSProperties = {
    width: 44,
    height: 44,
    borderRadius: 10,
-   border: "1px solid rgba(255, 255, 255, 0.06)",
+   border: "1px solid rgb(var(--ch-white) / 0.06)",
+   // A literal, not a var() token: Motion tweens it to the hover fill.
    backgroundColor: "rgba(255, 255, 255, 0.03)",
    display: "flex",
    alignItems: "center",
@@ -28,7 +36,7 @@ const TILE_STYLE: React.CSSProperties = {
 const TILE_HOVER: TargetAndTransition = {
    scale: 1.1,
    y: -2,
-   color: CYAN,
+   color: BLUE_LIGHT,
    borderColor: "rgba(96, 165, 250, 0.3)",
    backgroundColor: "rgba(96, 165, 250, 0.08)",
 };
@@ -77,7 +85,11 @@ const FooterSocial = () => {
                   whileFocus={hover}
                   whileTap={TILE_TAP}
                   transition={TILE_TRANSITION}
-                  aria-label={`Visit ${profile.name} profile (opens in a new tab)`}
+                  aria-label={newTabLabel(
+                     fillTemplate(getUiCopy().profile_label, {
+                        name: profile.name,
+                     }),
+                  )}
                >
                   <IconComponent size={16} aria-hidden="true" />
                </motion.a>

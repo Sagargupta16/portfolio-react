@@ -102,7 +102,7 @@ html[data-motion="reduced"] .annotation-pin::after {
 
 .annotation-card-index {
    font-family: var(--font-mono);
-   font-size: 10px;
+   font-size: 11px;
    letter-spacing: 0.12em;
    color: var(--color-text-muted, #8a97a0);
 }
@@ -170,6 +170,23 @@ html[data-motion="reduced"] .annotation-pin::after {
 
 .annotations-banner-btn:hover {
    background: rgb(255 255 255 / 0.12);
+}
+
+/* Touch: like the pin, the 36px icon buttons and 32px banner buttons get an
+   invisible hit area of at least 44px without changing how they look (50% is
+   half the button box). */
+@media (pointer: coarse) {
+   .annotation-icon-btn,
+   .annotations-banner-btn {
+      position: relative;
+   }
+
+   .annotation-icon-btn::before,
+   .annotations-banner-btn::before {
+      content: "";
+      position: absolute;
+      inset: min(0px, calc(50% - 22px));
+   }
 }
 
 /* Phones: the corners hold the motion and back-to-top buttons, so the

@@ -3,8 +3,12 @@ import { ArrowRight } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import Disclosure from "@components/ui/Disclosure";
+import { getSectionCopy } from "@data/sections";
+import { fillTemplate } from "@utils/fillTemplate";
 import CompanyHeader from "./CompanyHeader";
 import TimelineCardScene from "./TimelineCardScene";
+
+const COPY = getSectionCopy("experience");
 
 interface TimelineCardContentProps {
    item: ProfessionalExperience | PositionOfResponsibility;
@@ -50,7 +54,10 @@ const TimelineCardContent = ({
          )}
          {"description" in item && (
             <div style={{ marginLeft: ml, marginTop: 12 }}>
-               <Disclosure label="Responsibilities" accentColor={accentColor}>
+               <Disclosure
+                  label={COPY.card.responsibilities}
+                  accentColor={accentColor}
+               >
                   <ul
                      style={{
                         display: "flex",
@@ -102,7 +109,7 @@ const TimelineCardContent = ({
                               background: `${accentColor}0D`,
                               border: `1px solid ${accentColor}20`,
                               fontFamily: MONO_FONT,
-                              fontSize: 10,
+                              fontSize: 11,
                            }}
                         >
                            {skill}
@@ -130,9 +137,11 @@ const TimelineCardContent = ({
                      marginTop: 4,
                   } as CSSProperties
                }
-               aria-label={`View details for ${item.company}`}
+               aria-label={fillTemplate(COPY.links.details_label, {
+                  company: item.company,
+               })}
             >
-               View details
+               {COPY.links.details}
                <ArrowRight
                   size={16}
                   className="action-arrow"

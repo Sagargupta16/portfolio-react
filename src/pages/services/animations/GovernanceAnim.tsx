@@ -161,7 +161,13 @@ const MONO: React.CSSProperties = {
 /* static Organizations tree: root, two OUs, four accounts, hairline buses */
 const Skeleton = ({ color }: ColorProps) => (
    <>
-      <svg width={80} height={80} viewBox="0 0 80 80" style={COVER}>
+      <svg
+         aria-hidden="true"
+         width={80}
+         height={80}
+         viewBox="0 0 80 80"
+         style={COVER}
+      >
          <path d={TREE_PATH} stroke={WHITE_10} strokeWidth={1} fill="none" />
       </svg>
       <div

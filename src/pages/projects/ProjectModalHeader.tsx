@@ -1,8 +1,27 @@
-import { useState } from "react";
-import { Calendar, Check, Link2, Users, Star, FolderGit2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+   Calendar,
+   Check,
+   CircleAlert,
+   Link2,
+   Users,
+   Star,
+   FolderGit2,
+} from "lucide-react";
 import ModalHeaderShell from "@components/ui/ModalHeaderShell";
-import { TEXT_PRIMARY, TEXT_MUTED, MONO_FONT } from "@/constants/theme";
-import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
+import useMediaQuery from "@hooks/useMediaQuery";
+import {
+   TEXT_PRIMARY,
+   TEXT_MUTED,
+   MEDIA_QUERIES,
+   MONO_FONT,
+} from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import {
+   filterLabel,
+   type CategoryColors,
+   type ProjectWithCategory,
+} from "./projectConstants";
 import { projectShareUrl, projectSlug } from "@utils/projectLink";
 import { EvidenceBadges } from "./ProjectCardHeader";
 
@@ -13,27 +32,58 @@ interface ProjectModalHeaderProps {
    onClose: () => void;
 }
 
+const COPY = getSectionCopy("projects").modal;
+
+type CopyState = "idle" | "copied" | "failed";
+const COPY_FEEDBACK = {
+   idle: { Icon: Link2, text: COPY.copy_link },
+   copied: { Icon: Check, text: COPY.link_copied },
+   failed: { Icon: CircleAlert, text: COPY.copy_failed },
+} as const;
+
+// On touch, grows the 24px button's hit area to 44px without changing how it
+// looks (as ModalHeaderShell does for close): inset counts from the 22px
+// padding box, which the button's relative position makes the containing block.
+const COPY_HIT_AREA: React.CSSProperties = {
+   position: "absolute",
+   inset: "-11px 0",
+};
+
 /** Copies a link that reopens exactly this project's details. */
 const CopyLinkButton = ({ title }: { title: string }) => {
-   const [copied, setCopied] = useState(false);
-   const copy = () => {
-      void navigator.clipboard
-         ?.writeText(projectShareUrl(projectSlug(title)))
-         .then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 1600);
-         });
+   const coarsePointer = useMediaQuery(MEDIA_QUERIES.coarse);
+   const [state, setState] = useState<CopyState>("idle");
+   const resetRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+      undefined,
+   );
+   useEffect(() => () => clearTimeout(resetRef.current), []);
+
+   const copy = async () => {
+      let next: CopyState = "copied";
+      try {
+         await navigator.clipboard.writeText(
+            projectShareUrl(projectSlug(title)),
+         );
+      } catch {
+         // Permission refused, or no clipboard outside a secure context.
+         next = "failed";
+      }
+      setState(next);
+      clearTimeout(resetRef.current);
+      resetRef.current = setTimeout(() => setState("idle"), 1600);
    };
-   const Icon = copied ? Check : Link2;
+   const { Icon, text } = COPY_FEEDBACK[state];
    return (
       <button
          type="button"
-         onClick={copy}
+         onClick={() => void copy()}
          className="project-copy-link"
+         style={{ position: "relative" }}
          aria-live="polite"
       >
+         {coarsePointer && <span aria-hidden="true" style={COPY_HIT_AREA} />}
          <Icon size={11} aria-hidden="true" />
-         {copied ? "Link copied" : "Copy link"}
+         {text}
       </button>
    );
 };
@@ -51,7 +101,7 @@ const ProjectModalHeader = ({
       <ModalHeaderShell
          isMobile={isMobile}
          onClose={onClose}
-         closeLabel="Close project details"
+         closeLabel={COPY.close}
       >
          <div
             style={{
@@ -120,7 +170,7 @@ const ProjectModalHeader = ({
             )}
             <span
                style={{
-                  fontSize: 10,
+                  fontSize: 11,
                   fontWeight: 700,
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
@@ -131,7 +181,7 @@ const ProjectModalHeader = ({
                   border: `1px solid ${colors.borderAlpha}0.2)`,
                }}
             >
-               {project.category}
+               {filterLabel(project.category)}
             </span>
             <EvidenceBadges project={project} />
             <CopyLinkButton title={project.title} />

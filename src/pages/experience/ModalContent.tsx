@@ -1,10 +1,13 @@
 import { motion } from "motion/react";
 import TechTag from "@components/ui/TechTag";
-import { TEXT_MUTED, CYAN, EASING } from "@/constants/theme";
+import { TEXT_MUTED, BLUE_LIGHT, DURATION, EASING } from "@/constants/theme";
 import { waveCascadeContainer, waveCascadeItem } from "@utils/animations";
 import type { ProfessionalExperience } from "@/types";
+import { getSectionCopy } from "@data/sections";
 import ModalProjectCard from "./ModalProjectCard";
 import ModalContributions from "./ModalContributions";
+
+const COPY = getSectionCopy("experience").modal;
 
 interface ModalContentProps {
    experience: ProfessionalExperience;
@@ -39,7 +42,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
 
          {/* Internal Contributions */}
          <ModalContributions
-            title="Internal Contributions"
+            title={COPY.contributions}
             items={contributions}
             baseDelay={contribDelay}
             variant="contributions"
@@ -47,7 +50,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
 
          {/* Internal Achievements */}
          <ModalContributions
-            title="Internal Achievements"
+            title={COPY.achievements}
             items={achievements}
             baseDelay={achieveDelay}
             variant="achievements"
@@ -60,13 +63,13 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
                animate={{ opacity: 1, y: 0 }}
                transition={{
                   delay: skillsDelay,
-                  duration: 0.4,
+                  duration: DURATION.default,
                   ease: EASING.cinematic,
                }}
                style={{
                   marginTop: 20,
                   paddingTop: 16,
-                  borderTop: "1px solid rgba(255,255,255,0.06)",
+                  borderTop: "1px solid rgb(var(--ch-white) / 0.06)",
                }}
             >
                <p
@@ -79,7 +82,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
                      marginBottom: 8,
                   }}
                >
-                  Key Skills
+                  {COPY.skills}
                </p>
                <motion.div
                   variants={waveCascadeContainer}
@@ -93,7 +96,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
                >
                   {allSkills.map((s) => (
                      <motion.div key={s} variants={waveCascadeItem}>
-                        <TechTag label={s} accent={CYAN} />
+                        <TechTag label={s} accent={BLUE_LIGHT} />
                      </motion.div>
                   ))}
                </motion.div>

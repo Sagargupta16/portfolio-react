@@ -37,7 +37,7 @@ const SplitBar = ({ heading, segments }: Readonly<SplitBarProps>) => {
                height: 8,
                borderRadius: 4,
                overflow: "hidden",
-               background: "rgb(255 255 255 / 0.06)",
+               background: "rgb(var(--ch-white) / 0.06)",
             }}
          >
             <motion.div

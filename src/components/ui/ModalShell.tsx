@@ -9,7 +9,8 @@ import {
    type Variants,
 } from "motion/react";
 import { createPortal } from "react-dom";
-import { EASING } from "@/constants/theme";
+import { BG_CARD, DURATION, EASING } from "@/constants/theme";
+import "./modal-shell.css";
 
 interface ModalShellProps {
    /** Whether the modal is rendered. */
@@ -96,7 +97,7 @@ const ModalShell = ({
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                exit={{ opacity: 0 }}
-               transition={{ duration: 0.25 }}
+               transition={{ duration: DURATION.quick }}
                onClick={onClose}
                style={{
                   position: "fixed",
@@ -138,7 +139,10 @@ const ModalShell = ({
                   }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit="exit"
-                  transition={{ duration: 0.4, ease: EASING.cinematic }}
+                  transition={{
+                     duration: DURATION.default,
+                     ease: EASING.cinematic,
+                  }}
                   drag={isMobile ? "y" : false}
                   dragControls={dragControls}
                   dragListener={false}
@@ -151,6 +155,11 @@ const ModalShell = ({
                   aria-modal="true"
                   aria-labelledby={titleId}
                   tabIndex={-1}
+                  // useScrollLock stops Lenis while a modal is open, and a
+                  // stopped Lenis cancels every wheel and touch gesture
+                  // outside a data-lenis-prevent element, so the dialog's own
+                  // scroll needs it.
+                  data-lenis-prevent
                   style={{
                      position: "relative",
                      width: "100%",
@@ -159,6 +168,9 @@ const ModalShell = ({
                      // Phones scroll an inner region so the grab handle
                      // stays put above the content.
                      overflowY: isMobile ? "hidden" : "auto",
+                     // Reaching either end of the dialog never chains on
+                     // to the page behind it.
+                     overscrollBehavior: "contain",
                      ...(isMobile && {
                         display: "flex",
                         flexDirection: "column",
@@ -167,7 +179,7 @@ const ModalShell = ({
                      // corners would read as a rendering bug -- round all four.
                      borderRadius: 20,
                      border: "1px solid rgba(255,255,255,0.1)",
-                     background: "#0e1417",
+                     background: BG_CARD,
                      boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
                      y: sheetY,
                   }}

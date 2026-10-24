@@ -2,17 +2,22 @@ import { useState } from "react";
 import { motion, type Variants } from "motion/react";
 import {
    AMBER,
-   CYAN,
+   BLUE_LIGHT,
    DURATION,
    EASING,
-   PURPLE,
+   SKY,
    RED,
    TEXT_MUTED,
    TEXT_PRIMARY,
    MONO_FONT,
 } from "@/constants/theme";
 import { credlyThumb } from "@utils/credlyThumb";
+import { fillTemplate } from "@utils/fillTemplate";
+import { getSectionCopy } from "@data/sections";
+import { newTabLabel } from "@data/ui";
 import useMotionPreference from "@hooks/useMotionPreference";
+
+const COPY = getSectionCopy("achievements").certifications;
 
 interface CertBadgeProps {
    name: string;
@@ -26,8 +31,8 @@ interface CertBadgeProps {
 }
 
 const LEVEL_COLOR: Record<string, string> = {
-   Associate: CYAN,
-   Foundational: PURPLE,
+   Associate: BLUE_LIGHT,
+   Foundational: SKY,
 };
 const SESSION_TIME = Date.now();
 const EXPIRY_WARNING_DAYS = 90;
@@ -37,13 +42,20 @@ const MAX_STAGGER_S = 0.3;
 /* One hover label on the anchor; every child animates its own "hover" variant
    so the whole badge responds as a unit with zero React state. */
 const HOVER = "hover";
-const FLOAT_KEYFRAMES = [0, -8, 0];
+/* The float is a `transform` string so WAAPI runs it on the compositor
+   instead of the JS frameloop: up 8px and back, one ease per half. */
+const FLOAT_REST = "translateY(0px)";
+const FLOAT_KEYFRAMES = [FLOAT_REST, "translateY(-8px)", FLOAT_REST];
 const FLOAT_EASE = FLOAT_KEYFRAMES.slice(1).map(() => "easeInOut" as const);
 const IMAGE_SPRING = { type: "spring", stiffness: 300, damping: 20 } as const;
 
-/* Hovering parks the float so the badge sits still under the cursor. */
+/* Hovering parks the float so the badge sits still under the cursor. It
+   animates the same `transform` value, so it takes over from the loop. */
 const floatVariants: Variants = {
-   [HOVER]: { y: 0, transition: { duration: DURATION.default } },
+   [HOVER]: {
+      transform: FLOAT_REST,
+      transition: { duration: DURATION.default },
+   },
 };
 const imageVariants: Variants = { [HOVER]: { scale: 1.08 } };
 const nameVariants: Variants = { [HOVER]: { color: TEXT_PRIMARY } };
@@ -67,11 +79,12 @@ const getExpiryMeta = (expiryDate?: string): ExpiryMeta | null => {
       year: "numeric",
       timeZone: "UTC",
    });
-   if (daysUntilExpiry < 0) return { label: `Expired ${when}`, color: RED };
-   if (daysUntilExpiry <= EXPIRY_WARNING_DAYS) {
-      return { label: `Expires ${when}`, color: AMBER };
+   if (daysUntilExpiry < 0) {
+      return { label: fillTemplate(COPY.expired, { when }), color: RED };
    }
-   return { label: `Expires ${when}`, color: TEXT_MUTED };
+   const label = fillTemplate(COPY.expires, { when });
+   if (daysUntilExpiry <= EXPIRY_WARNING_DAYS) return { label, color: AMBER };
+   return { label, color: TEXT_MUTED };
 };
 
 const CertBadge = ({
@@ -88,13 +101,13 @@ const CertBadge = ({
    // If the CDN's resized variant fails (transient 5xx / cold cache on newly
    // synced badges), fall back to the original full-size URL once.
    const [useOriginal, setUseOriginal] = useState(false);
-   const accent = LEVEL_COLOR[level ?? ""] ?? CYAN;
+   const accent = LEVEL_COLOR[level ?? ""] ?? BLUE_LIGHT;
    const expiryMeta = getExpiryMeta(expiryDate);
    // aria-label replaces the anchor's content for assistive tech, so the level
    // chip and expiry state rendered inside it must be folded in here.
    const ariaLabel = [
-      `${name} credential`,
-      level && `${level} level`,
+      fillTemplate(COPY.credential, { name }),
+      level && fillTemplate(COPY.level, { level }),
       expiryMeta?.label,
    ]
       .filter(Boolean)
@@ -103,7 +116,7 @@ const CertBadge = ({
    const floatLoop = reducedMotion
       ? undefined
       : {
-           y: FLOAT_KEYFRAMES,
+           transform: FLOAT_KEYFRAMES,
            transition: {
               duration: 3,
               repeat: Infinity,
@@ -117,7 +130,7 @@ const CertBadge = ({
          href={badgeUrl}
          target="_blank"
          rel="noopener noreferrer"
-         aria-label={`${ariaLabel} (opens in a new tab)`}
+         aria-label={newTabLabel(ariaLabel)}
          initial={{ opacity: 0, y: 24 }}
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
@@ -192,7 +205,7 @@ const CertBadge = ({
             {level && (
                <span
                   style={{
-                     fontSize: 9,
+                     fontSize: 11,
                      fontWeight: 700,
                      textTransform: "uppercase",
                      letterSpacing: "0.08em",
@@ -209,7 +222,7 @@ const CertBadge = ({
             {expiryMeta && (
                <span
                   style={{
-                     fontSize: 9,
+                     fontSize: 11,
                      fontWeight: 600,
                      letterSpacing: "0.04em",
                      color: expiryMeta.color,

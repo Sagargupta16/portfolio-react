@@ -2,14 +2,19 @@ import { Suspense, type ComponentType, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { ExternalLink, Sparkles, Check, Play } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
+import ErrorBoundary from "@components/common/ErrorBoundary";
 import TechTag from "@components/ui/TechTag";
 import GlossText from "@components/ui/GlossText";
 import CaseStudyBrief from "@components/ui/CaseStudyBrief";
+import { getSectionCopy } from "@data/sections";
+import { newTabLabel } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
 import { hasProjectUrl } from "@utils/projectMetadata";
 import {
    TEXT_SECONDARY,
    TEXT_MUTED,
    MONO_FONT,
+   DURATION,
    EASING,
 } from "@/constants/theme";
 import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
@@ -25,7 +30,7 @@ interface ProjectModalBodyProps {
 const fadeInUpProps = (delay: number) => ({
    initial: { opacity: 0, y: 10 },
    animate: { opacity: 1, y: 0 },
-   transition: { delay, duration: 0.4, ease: EASING.cinematic },
+   transition: { delay, duration: DURATION.default, ease: EASING.cinematic },
 });
 
 const sectionLabelStyle: React.CSSProperties = {
@@ -66,7 +71,7 @@ const ModalLink = ({
          fontSize: 13,
          textDecoration: "none",
       }}
-      aria-label={`${ariaLabel} (opens in a new tab)`}
+      aria-label={newTabLabel(ariaLabel)}
    >
       <Icon size={15} />
       {label}
@@ -97,6 +102,7 @@ const ProjectModalBody = ({
    const hasLive = hasProjectUrl(project.live);
    const demo = getProjectDemo(project.id);
    const brief = project.case_study;
+   const { links: linkLabels, modal: modalCopy } = getSectionCopy("projects");
 
    // Source and demo sit at the top, inside the brief when there is one, so
    // the "where can I inspect this" answer never needs a scroll.
@@ -105,18 +111,22 @@ const ProjectModalBody = ({
          {hasLive && (
             <ModalLink
                href={project.live}
-               ariaLabel={`View ${project.title} live demo`}
+               ariaLabel={fillTemplate(linkLabels.live_label, {
+                  title: project.title,
+               })}
                icon={ExternalLink}
-               label="Live Demo"
+               label={linkLabels.live}
                kind="primary"
             />
          )}
          {hasGithub && (
             <ModalLink
                href={project.github}
-               ariaLabel={`View ${project.title} on GitHub`}
+               ariaLabel={fillTemplate(linkLabels.source_label, {
+                  title: project.title,
+               })}
                icon={FaGithub}
-               label="View Source"
+               label={linkLabels.view_source}
                kind="outline"
             />
          )}
@@ -145,7 +155,7 @@ const ProjectModalBody = ({
          </motion.p>
 
          {brief ? (
-            <Section delay={0.21} label="At a glance">
+            <Section delay={0.21} label={modalCopy.glance}>
                <CaseStudyBrief
                   brief={brief}
                   accent={colors.accent}
@@ -158,7 +168,7 @@ const ProjectModalBody = ({
 
          {/* Tech stack */}
          {project.tools_tech.length > 0 && (
-            <Section delay={0.24} label="Tech Stack">
+            <Section delay={0.24} label={modalCopy.tech}>
                <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {project.tools_tech.map((t) => (
                      <TechTag
@@ -189,16 +199,22 @@ const ProjectModalBody = ({
                   </span>
                }
             >
-               <Suspense
-                  fallback={
-                     <div
-                        className="skeleton"
-                        style={{ height: isMobile ? 260 : 220 }}
-                     />
-                  }
+               {/* Own boundary: a failed demo chunk leaves an empty frame of
+                   the skeleton's height instead of replacing the section. */}
+               <ErrorBoundary
+                  fallback={<div style={{ height: isMobile ? 260 : 220 }} />}
                >
-                  <demo.Demo accent={colors.accent} isMobile={isMobile} />
-               </Suspense>
+                  <Suspense
+                     fallback={
+                        <div
+                           className="skeleton"
+                           style={{ height: isMobile ? 260 : 220 }}
+                        />
+                     }
+                  >
+                     <demo.Demo accent={colors.accent} isMobile={isMobile} />
+                  </Suspense>
+               </ErrorBoundary>
             </Section>
          )}
 
@@ -215,7 +231,7 @@ const ProjectModalBody = ({
                      }}
                   >
                      <Sparkles size={12} style={{ color: colors.accent }} />
-                     Key Features
+                     {modalCopy.features}
                   </span>
                }
             >
@@ -256,7 +272,7 @@ const ProjectModalBody = ({
 
          {/* Contributors (collab projects) */}
          {contributors.length > 0 && (
-            <Section delay={0.36} label="Contributors">
+            <Section delay={0.36} label={modalCopy.contributors}>
                <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {contributors.map((c) => (
                      <span
@@ -266,9 +282,9 @@ const ProjectModalBody = ({
                            fontSize: 11,
                            padding: "3px 8px",
                            borderRadius: 6,
-                           background: "rgba(255,255,255,0.03)",
+                           background: "rgb(var(--ch-white) / 0.03)",
                            color: TEXT_SECONDARY,
-                           border: "1px solid rgba(255,255,255,0.06)",
+                           border: "1px solid rgb(var(--ch-white) / 0.06)",
                         }}
                      >
                         {c}

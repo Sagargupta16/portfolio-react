@@ -5,6 +5,7 @@ import {
    TEXT_MUTED,
    AMBER,
    MONO_FONT,
+   DURATION,
    EASING,
 } from "@/constants/theme";
 import type { InternalContribution } from "@/types";
@@ -33,13 +34,13 @@ const ModalContributions = ({
          animate={{ opacity: 1, y: 0 }}
          transition={{
             delay: baseDelay,
-            duration: 0.4,
+            duration: DURATION.default,
             ease: EASING.cinematic,
          }}
          style={{
             marginTop: 8,
             paddingTop: 16,
-            borderTop: "1px solid rgba(255,255,255,0.06)",
+            borderTop: "1px solid rgb(var(--ch-white) / 0.06)",
          }}
       >
          <p
@@ -67,11 +68,11 @@ const ModalContributions = ({
                   ? AMBER
                   : CONTRIB_TYPE_COLOR[c.type] || AMBER;
                const bgBase = isAchievements
-                  ? `rgba(245,158,11,0.03)`
-                  : "rgba(255,255,255,0.02)";
+                  ? "rgb(var(--ch-amber) / 0.03)"
+                  : "rgb(var(--ch-white) / 0.02)";
                const borderBase = isAchievements
-                  ? `rgba(245,158,11,0.08)`
-                  : "rgba(255,255,255,0.04)";
+                  ? "rgb(var(--ch-amber) / 0.08)"
+                  : "rgb(var(--ch-white) / 0.04)";
 
                return (
                   <div
@@ -112,7 +113,7 @@ const ModalContributions = ({
                      {c.year && (
                         <span
                            style={{
-                              fontSize: 10,
+                              fontSize: 11,
                               color: TEXT_MUTED,
                               fontFamily: MONO_FONT,
                               flexShrink: 0,

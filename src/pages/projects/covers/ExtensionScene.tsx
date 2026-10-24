@@ -20,6 +20,7 @@ import {
    W40,
    W55,
    W70,
+   backAtFor,
    clock,
    loopProps,
    ride,
@@ -43,8 +44,7 @@ import type { Box, Loop, Stop, TintProps } from "./kit/sceneTokens";
 const beat = clock(6);
 /* the panel fades out of the sidebar here at the top of every loop */
 const CLEAR = [0.03, 0.07];
-const OUT_IN = [1, 1, 0, 0, 1, 1];
-const backAt = (at: number, ramp: number) => [0, ...CLEAR, at, at + ramp, 1];
+const backAt = backAtFor(CLEAR);
 /* children reset while the panel is hidden, then return at `at` */
 const afterClear = (at: number, ramp: number) => [
    0,
@@ -117,12 +117,8 @@ const ICON_PULSE = beat({
 const GRAPHQL_TAG = beat(shown(0.22, 0.42));
 const SEND = beat(ride(QUERY, QUERY_STOPS));
 const RETURN = beat(ride(RESPONSE, RESPONSE_STOPS));
-const INJECT = beat({
-   times: backAt(0.44, 0.05),
-   opacity: OUT_IN,
-   y: [0, 0, -6, -6, 0, 0],
-});
-const TITLE = beat({ times: backAt(0.44, 0.05), opacity: OUT_IN });
+const INJECT = beat({ ...backAt(0.44, 0.05), y: [0, 0, -6, -6, 0, 0] });
+const TITLE = beat(backAt(0.44, 0.05));
 const STATS = beat({
    times: afterClear(0.5, 0.05),
    opacity: [1, 1, 0, 0, 1, 1],

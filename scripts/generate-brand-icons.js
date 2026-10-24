@@ -31,12 +31,14 @@ const icons = [
    ["android-chrome-192x192.png", 192, true],
    ["android-chrome-512x512.png", 512, true],
 ];
-for (const [name, size, app] of icons) {
-   await sharp(Buffer.from(svg({ small: size <= 24, app })))
-      .resize(size, size)
-      .png()
-      .toFile(fileURLToPath(new URL(name, output)));
-}
+await Promise.all(
+   icons.map(([name, size, app]) =>
+      sharp(Buffer.from(svg({ small: size <= 24, app })))
+         .resize(size, size)
+         .png()
+         .toFile(fileURLToPath(new URL(name, output))),
+   ),
+);
 
 // ICO supports PNG payloads. Keep 16/32/48px entries for older browser shells.
 const sizes = [16, 32, 48];

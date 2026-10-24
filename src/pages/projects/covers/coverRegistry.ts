@@ -41,7 +41,7 @@ const StudyHubScene = lazy(() => import("./StudyHubScene"));
 const LibraryScene = lazy(() => import("./LibraryScene"));
 const CostScene = lazy(() => import("./CostScene"));
 
-export type ProjectCover = {
+type ProjectCover = {
    kind: "scene";
    Scene: SceneComponent;
    variant?: string;
@@ -110,7 +110,5 @@ const COVER_BY_ID: Record<number, ProjectCover> = {
    56: { kind: "scene", Scene: AutomationScene, variant: "kit" }, // readme-kit
 };
 
-export const getProjectCover = (
-   id: number,
-   _title: string,
-): ProjectCover | undefined => COVER_BY_ID[id];
+export const getProjectCover = (id: number): ProjectCover | undefined =>
+   COVER_BY_ID[id];

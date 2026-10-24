@@ -29,9 +29,10 @@ interface StackTileProps {
  * One floating glyph tile: DevAvatar's flat chrome (card fill, hairline
  * border) around the skill's brand-colour mark, as the Skills section draws
  * it. The outer node fades and rises in once the hero copy has settled; the
- * inner node carries the drift loop, transform only, one ease per segment so
- * every track shares one schedule. Reduced leaves the tile at rest:
- * MotionConfig snaps the rise and only the fade plays.
+ * inner node carries the drift loop as one `transform` string on WAAPI, one
+ * ease per segment. Reduced leaves the tile at rest: the drift never starts
+ * (MotionConfig would not stop a `transform` loop), MotionConfig snaps the
+ * rise and only the fade plays.
  */
 const StackTile = ({
    item,

@@ -7,14 +7,19 @@ import {
    getOtherProjects,
    getCommunityProjects,
 } from "@data/projects";
+import { getUiCopy, newTabLabel } from "@data/ui";
 import { parseProjectDate, hasProjectUrl } from "@utils/projectMetadata";
+import { fillTemplate } from "@utils/fillTemplate";
 import { MONO_FONT, TEXT_MUTED } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { heroLatest } from "./heroMotion";
 
+const COPY = getUiCopy().hero;
+
 /* One derived line under the hero intro: the most recently merged upstream PR
-   and the newest shipped project. Nothing is hand-written here, so it moves on
-   its own whenever the data files are updated. The hero carries no numbers. */
+   and the newest shipped project. Nothing is hand-written here (the wording
+   is the hero copy in data/ui.json), so it moves on its own whenever the data
+   files are updated. The hero carries no numbers. */
 
 const HeroLatest = () => {
    const { isMobile } = useBreakpoint();
@@ -26,7 +31,10 @@ const HeroLatest = () => {
             (b.merged_at ?? "").localeCompare(a.merged_at ?? ""),
          )[0];
       const prText = latestPr
-         ? `${latestPr.repo.split("/")[1]} #${latestPr.url.split("/").pop()} merged`
+         ? fillTemplate(COPY.latest_pr, {
+              repo: latestPr.repo.split("/")[1],
+              number: latestPr.url.split("/").pop(),
+           })
          : null;
 
       const newestProject = [
@@ -42,7 +50,7 @@ const HeroLatest = () => {
                parseProjectDate(a.date).getTime(),
          )[0];
       const projectText = newestProject
-         ? `${newestProject.title} shipped`
+         ? fillTemplate(COPY.latest_project, { title: newestProject.title })
          : null;
 
       const links: { text: string; href: string }[] = [];
@@ -71,7 +79,7 @@ const HeroLatest = () => {
          <span
             style={{
                fontFamily: MONO_FONT,
-               fontSize: 10,
+               fontSize: 11,
                fontWeight: 700,
                letterSpacing: "0.16em",
                textTransform: "uppercase",
@@ -79,7 +87,7 @@ const HeroLatest = () => {
                flexShrink: 0,
             }}
          >
-            Latest
+            {COPY.latest}
          </span>
          <div
             style={{
@@ -99,7 +107,7 @@ const HeroLatest = () => {
                   className="hero-latest-link"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`${text} (opens in a new tab)`}
+                  aria-label={newTabLabel(text)}
                >
                   {text}
                </a>

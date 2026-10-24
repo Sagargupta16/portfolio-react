@@ -3,6 +3,8 @@
    the old react-github-calendar widget used). The card headline keeps the
    weekly-synced totals, so the heatmap adds only what the sync does not carry:
    the grid itself and the current streak. */
+import { getStatsCopy } from "@data/personal";
+import { fillTemplate } from "@utils/fillTemplate";
 
 export interface ContributionDay {
    /** ISO calendar date, YYYY-MM-DD. */
@@ -10,7 +12,7 @@ export interface ContributionDay {
    count: number;
 }
 
-export type Level = 0 | 1 | 2 | 3 | 4;
+type Level = 0 | 1 | 2 | 3 | 4;
 
 export interface CalendarCell extends ContributionDay {
    level: Level;
@@ -21,7 +23,7 @@ export interface CalendarCell extends ContributionDay {
    row: number;
 }
 
-export interface MonthLabel {
+interface MonthLabel {
    col: number;
    label: string;
 }
@@ -30,7 +32,7 @@ export interface CalendarSummary {
    currentStreak: number;
 }
 
-export interface CalendarModel {
+interface CalendarModel {
    cells: CalendarCell[];
    /** Empty slots before the first day, so the first column starts on Sunday. */
    lead: number;
@@ -39,13 +41,9 @@ export interface CalendarModel {
    summary: CalendarSummary;
 }
 
-export const CALENDAR_COPY = {
-   label: "Daily GitHub contributions over the last year",
-   current: "Current streak",
-   less: "Less",
-   more: "More",
-   loading: "Loading GitHub contributions",
-} as const;
+/** The heatmap's labels and counted phrases (personal.json, under the GitHub
+ *  card's stats copy). */
+export const CALENDAR_COPY = getStatsCopy().platforms.github.calendar;
 
 /** Weekday rows that carry a label (Sunday is row 0), as GitHub draws them. */
 export const DAY_LABELS = [
@@ -83,21 +81,26 @@ const toUtc = (iso: string): number => {
 
 const dayNumber = (iso: string): number => Math.round(toUtc(iso) / DAY_MS);
 
-export const formatCount = (n: number): string => n.toLocaleString(LOCALE);
+const formatCount = (n: number): string => n.toLocaleString(LOCALE);
 
 const plural = (n: number, one: string, many: string): string =>
-   `${formatCount(n)} ${n === 1 ? one : many}`;
+   fillTemplate(n === 1 ? one : many, { count: formatCount(n) });
 
-export const formatDays = (n: number): string => plural(n, "day", "days");
+export const formatDays = (n: number): string =>
+   plural(n, CALENDAR_COPY.days_one, CALENDAR_COPY.days_many);
 
 /** "12 contributions on Sep 29, 2026", singular for 1, "No contributions" for 0. */
 export const formatDayTip = ({ date, count }: ContributionDay): string => {
    const when = DATE_FORMAT.format(toUtc(date));
    const what =
       count === 0
-         ? "No contributions"
-         : plural(count, "contribution", "contributions");
-   return `${what} on ${when}`;
+         ? CALENDAR_COPY.contributions_none
+         : plural(
+              count,
+              CALENDAR_COPY.contributions_one,
+              CALENDAR_COPY.contributions_many,
+           );
+   return fillTemplate(CALENDAR_COPY.tip, { what, when });
 };
 
 /** Five levels by quartile of the active days, so one huge day (an import, a
@@ -186,7 +189,11 @@ export const buildCalendar = (
 export const describeCalendar = ({
    currentStreak: current,
 }: CalendarSummary): string =>
-   `${CALENDAR_COPY.label}. ${CALENDAR_COPY.current} ${formatDays(current)}.`;
+   fillTemplate(CALENDAR_COPY.summary, {
+      label: CALENDAR_COPY.label,
+      current: CALENDAR_COPY.current,
+      days: formatDays(current),
+   });
 
 const isDay = (value: unknown): value is ContributionDay => {
    const day = value as Partial<ContributionDay> | null;

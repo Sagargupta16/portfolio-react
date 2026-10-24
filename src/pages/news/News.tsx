@@ -1,18 +1,15 @@
 import { useId, useMemo, useState } from "react";
 import { AnimatePresence, motion, type Transition } from "motion/react";
 import { getNews } from "@data/news";
+import { getSectionCopy } from "@data/sections";
+import { fillTemplate } from "@utils/fillTemplate";
 import { EASING, MAX_WIDTH_NARROW, MONO_FONT } from "@/constants/theme";
 import useMotionPreference from "@hooks/useMotionPreference";
 import PageSection from "@components/layout/PageSection";
 import type { NewsItem, NewsType } from "@/types";
 import NewsFilters from "./NewsFilters";
 import NewsRow from "./NewsRow";
-import {
-   COLLAPSED_COUNT,
-   NEWS_TYPE_ORDER,
-   NEWS_UI,
-   type NewsFilter,
-} from "./newsTypes";
+import { COLLAPSED_COUNT, NEWS_TYPE_ORDER, type NewsFilter } from "./newsTypes";
 import useScrollAnchor from "./useScrollAnchor";
 import "./news.css";
 
@@ -62,6 +59,7 @@ const groupByYear = (items: NewsItem[]) => {
 
 const News = () => {
    const news = useMemo(() => getNews(), []);
+   const { title, subtitle, filters: filterCopy } = getSectionCopy(SECTION_ID);
    const { reducedMotion } = useMotionPreference();
    const [filter, setFilter] = useState<NewsFilter>("all");
    const [expanded, setExpanded] = useState(false);
@@ -104,8 +102,8 @@ const News = () => {
    return (
       <PageSection
          id={SECTION_ID}
-         title="News"
-         subtitle="Merged PRs, publications and badges, newest first"
+         title={title}
+         subtitle={subtitle}
          maxWidth={MAX_WIDTH_NARROW}
       >
          <NewsFilters
@@ -163,8 +161,10 @@ const News = () => {
                   style={{ fontFamily: MONO_FONT, fontSize: 13 }}
                >
                   {expanded
-                     ? NEWS_UI.showLess
-                     : `${NEWS_UI.showAll} ${filtered.length}`}
+                     ? filterCopy.show_less
+                     : fillTemplate(filterCopy.show_all, {
+                          count: filtered.length,
+                       })}
                </button>
             </div>
          )}

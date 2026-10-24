@@ -7,7 +7,9 @@ import {
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import { DURATION, EASING } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
 import { VIEWPORT_MARGIN } from "@utils/animations";
+import { fillTemplate } from "@utils/fillTemplate";
 import { hasProjectUrl } from "@utils/projectMetadata";
 import useMotionPreference from "@hooks/useMotionPreference";
 import {
@@ -30,6 +32,7 @@ interface ProjectCardProps {
 }
 
 const MAX_VISIBLE_TAGS = 5;
+const LINK_LABELS = getSectionCopy("projects").links;
 
 // Hover lift; whileFocus gets the same target so keyboard focus matches.
 const CARD_LIFT = {
@@ -121,11 +124,7 @@ const ProjectCard = ({
          whileFocus={lift}
       >
          {/* Media: animated cover scene */}
-         <ProjectCover
-            projectId={data.id}
-            title={data.title}
-            accent={colors.accent}
-         />
+         <ProjectCover projectId={data.id} accent={colors.accent} />
 
          <div className="project-card-body">
             <ProjectCardHeader
@@ -158,9 +157,11 @@ const ProjectCard = ({
                         type="button"
                         onClick={onOpen}
                         className="project-action project-action--primary"
-                        aria-label={`View details for ${data.title}`}
+                        aria-label={fillTemplate(LINK_LABELS.details_label, {
+                           title: data.title,
+                        })}
                      >
-                        Details
+                        {LINK_LABELS.details}
                         <ArrowRight
                            size={16}
                            className="action-arrow"
@@ -171,8 +172,10 @@ const ProjectCard = ({
                   {hasGithub && (
                      <ProjectLink
                         href={data.github}
-                        label="Source"
-                        ariaLabel={`View ${data.title} on GitHub`}
+                        label={LINK_LABELS.source}
+                        ariaLabel={fillTemplate(LINK_LABELS.source_label, {
+                           title: data.title,
+                        })}
                         icon={FaGithub}
                         accentColor={colors.accent}
                      />
@@ -180,8 +183,10 @@ const ProjectCard = ({
                   {hasLive && (
                      <ProjectLink
                         href={data.live}
-                        label="Live Demo"
-                        ariaLabel={`View ${data.title} live demo`}
+                        label={LINK_LABELS.live}
+                        ariaLabel={fillTemplate(LINK_LABELS.live_label, {
+                           title: data.title,
+                        })}
                         icon={ExternalLink}
                         accentColor={colors.accent}
                      />

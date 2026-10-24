@@ -18,6 +18,17 @@ const GLOW_EASE: Easing[] = [EASE_IN_OUT, EASE_IN_OUT];
 /** Out-and-back drift between two transforms, landing on the first frame. */
 const drift = (from: string, to: string) => ({ transform: [from, to, from] });
 
+/* Beams: a 0 -> 140vw sweep at constant speed, tilted 24deg. The sweep is a
+   `transform` string so WAAPI runs it on the compositor; an animated transform
+   replaces the inline one, so the tilt rides in every keyframe (it also stays
+   in style for the frames before the sweep starts). Keyframed on the fade's
+   `times`, linear throughout, it is the same straight run as a two-frame
+   0 -> 140vw tween while both tracks share one schedule. */
+const BEAM_TILT = 24;
+const BEAM_TIMES = [0, 0.1, 0.9, 1];
+const beamAt = (vw: number) => `translateX(${vw}vw) rotate(${BEAM_TILT}deg)`;
+const BEAM_SWEEP = [0, 14, 126, 140].map(beamAt);
+
 const glowStyle = {
    position: "absolute",
    borderRadius: "50%",
@@ -44,7 +55,7 @@ const AmbientBackground = () => {
                position: "absolute",
                inset: 0,
                backgroundImage:
-                  "radial-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1px)",
+                  "radial-gradient(rgb(var(--ch-white) / 0.04) 1px, transparent 1px)",
                backgroundSize: "28px 28px",
                maskImage:
                   "radial-gradient(ellipse 90% 70% at 50% 30%, black 20%, transparent 80%)",
@@ -63,7 +74,7 @@ const AmbientBackground = () => {
                height: 800,
                marginLeft: -550,
                background:
-                  "radial-gradient(ellipse at center, rgb(37 99 235 / 0.14), rgb(34 211 238 / 0.05) 40%, transparent 75%)",
+                  "radial-gradient(ellipse at center, rgb(var(--ch-blue) / 0.14), rgb(var(--ch-sky) / 0.05) 40%, transparent 75%)",
             }}
             animate={
                reducedMotion
@@ -104,7 +115,7 @@ const AmbientBackground = () => {
                width: 700,
                height: 600,
                background:
-                  "radial-gradient(ellipse at center, rgb(37 99 235 / 0.07), transparent 70%)",
+                  "radial-gradient(ellipse at center, rgb(var(--ch-blue) / 0.07), transparent 70%)",
             }}
             animate={
                reducedMotion
@@ -123,21 +134,21 @@ const AmbientBackground = () => {
                width: 1,
                height: "130%",
                background:
-                  "linear-gradient(180deg, transparent, rgb(96 165 250 / 0.35) 30%, rgb(96 165 250 / 0.35) 70%, transparent)",
-               rotate: 24,
+                  "linear-gradient(180deg, transparent, rgb(var(--ch-blue-light) / 0.35) 30%, rgb(var(--ch-blue-light) / 0.35) 70%, transparent)",
+               rotate: BEAM_TILT,
                transformOrigin: "top center",
                opacity: reducedMotion ? 0 : undefined,
             }}
             animate={
                reducedMotion
                   ? undefined
-                  : { x: ["0vw", "140vw"], opacity: [0, 0.9, 0.9, 0] }
+                  : { transform: BEAM_SWEEP, opacity: [0, 0.9, 0.9, 0] }
             }
             transition={{
                duration: 14,
                repeat: Infinity,
                ease: "linear",
-               times: [0, 0.1, 0.9, 1],
+               times: BEAM_TIMES,
             }}
          />
 
@@ -150,22 +161,22 @@ const AmbientBackground = () => {
                width: 1,
                height: "130%",
                background:
-                  "linear-gradient(180deg, transparent, rgb(56 189 248 / 0.22) 30%, rgb(56 189 248 / 0.22) 70%, transparent)",
-               rotate: 24,
+                  "linear-gradient(180deg, transparent, rgb(var(--ch-sky) / 0.22) 30%, rgb(var(--ch-sky) / 0.22) 70%, transparent)",
+               rotate: BEAM_TILT,
                transformOrigin: "top center",
                opacity: reducedMotion ? 0 : undefined,
             }}
             animate={
                reducedMotion
                   ? undefined
-                  : { x: ["0vw", "140vw"], opacity: [0, 0.8, 0.8, 0] }
+                  : { transform: BEAM_SWEEP, opacity: [0, 0.8, 0.8, 0] }
             }
             transition={{
                duration: 21,
                repeat: Infinity,
                ease: "linear",
                delay: 7,
-               times: [0, 0.1, 0.9, 1],
+               times: BEAM_TIMES,
             }}
          />
 
@@ -175,7 +186,7 @@ const AmbientBackground = () => {
                position: "absolute",
                inset: 0,
                background:
-                  "radial-gradient(ellipse 120% 90% at 50% 40%, transparent 50%, rgb(11 16 18 / 0.85) 100%)",
+                  "radial-gradient(ellipse 120% 90% at 50% 40%, transparent 50%, rgb(var(--ch-bg) / 0.85) 100%)",
             }}
          />
       </div>

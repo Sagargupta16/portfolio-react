@@ -2,7 +2,9 @@ import { motion } from "motion/react";
 import { ShieldCheck } from "lucide-react";
 import { fadeInUp } from "@utils/animations";
 import type { Certification } from "@/types";
-import { CYAN } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import { fillTemplate } from "@utils/fillTemplate";
+import { BLUE_LIGHT } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { isCertActive, sortActiveFirst } from "@utils/certStatus";
 import CertBadge from "./CertBadge";
@@ -28,9 +30,19 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
             viewport={{ once: true, margin: "0px 0px -60px 0px" }}
             variants={fadeInUp}
          >
-            <ShieldCheck size={22} style={{ color: CYAN }} aria-hidden="true" />
-            <h3>Industry Certifications</h3>
-            <span className="subsection-count" title={`${activeCount} active`}>
+            <ShieldCheck
+               size={22}
+               style={{ color: BLUE_LIGHT }}
+               aria-hidden="true"
+            />
+            <h3>{getSectionCopy("achievements").subsections.certifications}</h3>
+            <span
+               className="subsection-count"
+               title={fillTemplate(
+                  getSectionCopy("achievements").certifications.active_count,
+                  { count: activeCount },
+               )}
+            >
                {activeCount}
             </span>
          </motion.div>

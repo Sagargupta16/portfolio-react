@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { BASE_GRADIENT } from "./kit/sceneTokens";
 import Flappy from "./game/Flappy";
 import Minesweeper from "./game/Minesweeper";
 import Pacman from "./game/Pacman";
@@ -33,7 +34,7 @@ const GameScene = ({ tint, variant = DEFAULT_GAME }: CoverSceneProps) => {
             position: "absolute",
             inset: 0,
             overflow: "hidden",
-            background: "linear-gradient(160deg, #0e1a24 0%, #0b1012 60%)",
+            background: BASE_GRADIENT,
          }}
       >
          <Game tint={tint} />

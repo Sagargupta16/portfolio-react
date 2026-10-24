@@ -163,6 +163,7 @@ const frameStyle = (
 
 const Wires = () => (
    <svg
+      aria-hidden="true"
       viewBox="0 0 80 80"
       width={80}
       height={80}

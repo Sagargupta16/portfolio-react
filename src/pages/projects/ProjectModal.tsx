@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from "react";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useFocusTrap from "@hooks/useFocusTrap";
+import useScrollLock from "@hooks/useScrollLock";
 import ModalShell from "@components/ui/ModalShell";
 import {
    getCategoryColors,
@@ -18,22 +19,23 @@ interface ProjectModalProps {
 const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
    const { isMobile } = useBreakpoint();
    const dialogRef = useFocusTrap<HTMLDivElement>(project !== null);
+   useScrollLock(project !== null);
 
+   // A layer above (palette, open gloss) that handled this Escape already
+   // called preventDefault, so one press closes only the topmost layer.
    const onEsc = useCallback(
       (e: KeyboardEvent) => {
-         if (e.key === "Escape") onClose();
+         if (e.key !== "Escape" || e.defaultPrevented) return;
+         e.preventDefault();
+         onClose();
       },
       [onClose],
    );
 
    useEffect(() => {
       if (!project) return;
-      document.body.style.overflow = "hidden";
       document.addEventListener("keydown", onEsc);
-      return () => {
-         document.body.style.overflow = "";
-         document.removeEventListener("keydown", onEsc);
-      };
+      return () => document.removeEventListener("keydown", onEsc);
    }, [project, onEsc]);
 
    const colors = project
@@ -66,11 +68,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   onClose={onClose}
                />
                {/* Same animated cover scene as the card */}
-               <ProjectCover
-                  projectId={project.id}
-                  title={project.title}
-                  accent={colors.accent}
-               />
+               <ProjectCover projectId={project.id} accent={colors.accent} />
                <ProjectModalBody
                   project={project}
                   colors={colors}

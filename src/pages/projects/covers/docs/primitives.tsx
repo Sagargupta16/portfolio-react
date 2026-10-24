@@ -1,9 +1,9 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
+import { BASE_GRADIENT } from "../kit/sceneTokens";
 import {
-   BASE_BG,
    FILL,
-   GREEN,
    LABEL,
    LINEAR,
    SOLID_FILL,
@@ -30,7 +30,7 @@ import {
 
 /* ---------- back layer ---------- */
 
-export type LatticeKind = "grid" | "rules" | "dots" | "crosses";
+type LatticeKind = "grid" | "rules" | "dots" | "crosses";
 
 const range = (from: number, to: number, step: number) =>
    Array.from(
@@ -69,6 +69,7 @@ const DOTS: CSSProperties = {
     `none` scales uniformly. */
 export const Wires = ({ children }: { children: ReactNode }) => (
    <svg
+      aria-hidden="true"
       viewBox={VIEW_BOX}
       preserveAspectRatio="none"
       style={{ ...FILL, width: "100%", height: "100%" }}
@@ -107,7 +108,7 @@ export const SceneRoot = ({
       style={{
          ...FILL,
          overflow: "hidden",
-         background: `radial-gradient(circle at ${focus}, ${tint}1f, transparent 60%), ${BASE_BG}`,
+         background: `radial-gradient(circle at ${focus}, ${tint}1f, transparent 60%), ${BASE_GRADIENT}`,
       }}
    >
       {lattice && <Lattice kind={lattice} />}
@@ -346,7 +347,7 @@ export const Pop = ({
 };
 
 /** CSS check glyph, 6 x 3 px before rotation. */
-export const CheckGlyph = ({ color = GREEN }: { color?: string }) => (
+const CheckGlyph = ({ color = GREEN }: { color?: string }) => (
    <span
       style={{
          display: "block",

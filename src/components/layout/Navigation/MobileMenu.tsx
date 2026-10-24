@@ -1,8 +1,13 @@
 import { memo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, X } from "lucide-react";
-import { TEXT_SECONDARY, GLASS_BORDER } from "@/constants/theme";
+import { TEXT_SECONDARY, GLASS_BORDER, DURATION } from "@/constants/theme";
 import useFocusTrap from "@hooks/useFocusTrap";
+import useScrollLock from "@hooks/useScrollLock";
+import { getUiCopy } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
+
+const COPY = getUiCopy().nav;
 
 interface NavSection {
    id: string;
@@ -25,25 +30,26 @@ const MobileMenu = ({
    onClose,
 }: MobileMenuProps) => {
    const panelRef = useFocusTrap<HTMLDivElement>(open);
+   useScrollLock(open);
 
+   // Skips an Escape a layer above (the palette) already handled, so one press
+   // closes only the topmost layer.
    const onEsc = useCallback(
       (e: KeyboardEvent) => {
-         if (e.key === "Escape") onClose();
+         if (e.key !== "Escape" || e.defaultPrevented) return;
+         e.preventDefault();
+         onClose();
       },
       [onClose],
    );
 
-   // While open: lock body scroll and allow Escape to dismiss -- mirrors the
+   // While open: lock page scroll and allow Escape to dismiss -- mirrors the
    // project/experience modal behavior so the overlay can't be tabbed/scrolled
    // behind on touch. useFocusTrap restores focus to the hamburger on close.
    useEffect(() => {
       if (!open) return;
-      document.body.style.overflow = "hidden";
       document.addEventListener("keydown", onEsc);
-      return () => {
-         document.body.style.overflow = "";
-         document.removeEventListener("keydown", onEsc);
-      };
+      return () => document.removeEventListener("keydown", onEsc);
    }, [open, onEsc]);
 
    return (
@@ -54,14 +60,14 @@ const MobileMenu = ({
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                exit={{ opacity: 0 }}
-               transition={{ duration: 0.25 }}
+               transition={{ duration: DURATION.quick }}
             >
                {/* Backdrop */}
                <motion.div
                   style={{
                      position: "absolute",
                      inset: 0,
-                     backgroundColor: "rgba(0, 0, 0, 0.55)",
+                     backgroundColor: "rgb(var(--ch-black) / 0.55)",
                   }}
                   onClick={onClose}
                />
@@ -72,7 +78,7 @@ const MobileMenu = ({
                   id="mobile-menu"
                   role="dialog"
                   aria-modal="true"
-                  aria-label="Navigation menu"
+                  aria-label={COPY.menu_label}
                   tabIndex={-1}
                   data-lenis-prevent
                   style={{
@@ -83,9 +89,9 @@ const MobileMenu = ({
                      width: "min(288px, 85vw)",
                      overflowY: "auto",
                      overscrollBehavior: "contain",
-                     backgroundColor: "rgba(11, 16, 18, 0.97)",
+                     backgroundColor: "rgb(var(--ch-bg) / 0.97)",
                      borderLeft: `1px solid ${GLASS_BORDER}`,
-                     boxShadow: "-10px 0 40px rgba(0, 0, 0, 0.3)",
+                     boxShadow: "-10px 0 40px rgb(var(--ch-black) / 0.3)",
                   }}
                   initial={{ x: "100%" }}
                   animate={{ x: 0 }}
@@ -107,7 +113,7 @@ const MobileMenu = ({
                      <button
                         type="button"
                         onClick={onClose}
-                        aria-label="Close navigation menu"
+                        aria-label={COPY.menu_dismiss}
                         style={{
                            width: 44,
                            height: 44,
@@ -135,7 +141,7 @@ const MobileMenu = ({
                         <span className="mobile-nav-number" aria-hidden="true">
                            00
                         </span>
-                        Home
+                        {COPY.home}
                         <ArrowRight
                            size={16}
                            className="action-arrow"
@@ -154,7 +160,9 @@ const MobileMenu = ({
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: index * 0.03 }}
                               aria-current={isActive ? "location" : undefined}
-                              aria-label={`Navigate to ${section.label}`}
+                              aria-label={fillTemplate(COPY.navigate_label, {
+                                 label: section.label,
+                              })}
                            >
                               <span
                                  className="mobile-nav-number"

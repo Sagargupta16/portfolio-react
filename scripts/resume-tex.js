@@ -34,12 +34,22 @@ const UNICODE_DASHES = new RegExp(
    "g",
 );
 
-// CRLF first: "." stops at "\r", so a trailing "%\r" would survive otherwise.
+/** Index of the first "%" not escaped as "\%", or -1. */
+const commentStart = (line) => {
+   let at = line.indexOf("%");
+   while (at > 0 && line[at - 1] === "\\") at = line.indexOf("%", at + 1);
+   return at;
+};
+
+// CRLF first, so a trailing "\r" never sits after the comment.
 const stripComments = (src) =>
    src
       .replaceAll("\r\n", "\n")
       .split("\n")
-      .map((line) => line.replace(/(?<!\\)%.*$/, ""))
+      .map((line) => {
+         const at = commentStart(line);
+         return at === -1 ? line : line.slice(0, at);
+      })
       .join("\n");
 
 // Plain-text cleanup for TeX ligatures and escapes. Every dash becomes "-".
@@ -51,7 +61,7 @@ const cleanText = (text) =>
       .replaceAll(UNICODE_DASHES, "-")
       .replaceAll("``", '"')
       .replaceAll("''", '"')
-      .replaceAll(/\\ /g, " ")
+      .replaceAll(String.raw`\ `, " ")
       .replaceAll(/\s+/g, " ");
 
 /** Read a balanced {...} group starting at src[i] === "{". */
@@ -113,77 +123,82 @@ const trimRun = (nodes) => {
    return out.filter((node) => node !== "");
 };
 
+/** Push the nodes of command `name`, whose arguments start at pos; returns the end. */
+const emitCommand = (src, pos, name, out) => {
+   if (name === "href") {
+      const { args, end } = readArgs(src, pos, 2);
+      out.push({ t: "a", href: args[0], c: parseInline(args[1]) });
+      return end;
+   }
+   if (STYLE[name]) {
+      const { args, end } = readArgs(src, pos, 1);
+      out.push({ t: STYLE[name], c: parseInline(args[0]) });
+      return end;
+   }
+   if (name.startsWith("fa")) {
+      if (!PRIVATE_ICONS.has(name)) out.push({ t: "icon", name });
+      return pos;
+   }
+   if (DROP_WITH_ARG.has(name)) return readArgs(src, pos, 1).end;
+   // \small{..}, \LARGE{..} and anything unknown: keep the content.
+   const open = skipSpace(src, pos);
+   if (src[open] !== "{") return open;
+   const { body, end } = readGroup(src, open);
+   out.push(...parseInline(body));
+   return end;
+};
+
+/** Read the control sequence at src[i] === "\\"; returns the next index. */
+const readCommand = (src, i, run) => {
+   if (src[i + 1] === "\\") {
+      run.flush();
+      run.out.push({ t: "br" });
+      return i + 2;
+   }
+   const match = /^\\([A-Za-z]+)\*?/.exec(src.slice(i));
+   if (!match) {
+      // Escaped character such as \% or \&: cleanText handles it.
+      run.buf += src.slice(i, i + 2);
+      return i + 2;
+   }
+   const name = match[1];
+   const pos = i + match[0].length;
+   if (name === "textasciitilde") {
+      run.buf += "~";
+      return pos;
+   }
+   run.flush();
+   return emitCommand(src, pos, name, run.out);
+};
+
 export function parseInline(src) {
-   const out = [];
-   let buf = "";
-   const flush = () => {
-      pushText(out, buf);
-      buf = "";
+   // Text collects in buf and joins out as one cleaned run at each command.
+   const run = {
+      out: [],
+      buf: "",
+      flush() {
+         pushText(this.out, this.buf);
+         this.buf = "";
+      },
    };
    let i = 0;
    while (i < src.length) {
       const ch = src[i];
       if (ch === "\\") {
-         if (src[i + 1] === "\\") {
-            flush();
-            out.push({ t: "br" });
-            i += 2;
-            continue;
-         }
-         const match = /^\\([A-Za-z]+)\*?/.exec(src.slice(i));
-         if (!match) {
-            // Escaped character such as \% or \&: cleanText handles it.
-            buf += src.slice(i, i + 2);
-            i += 2;
-            continue;
-         }
-         const name = match[1];
-         let pos = i + match[0].length;
-         if (name === "textasciitilde") {
-            buf += "~";
-            i = pos;
-            continue;
-         }
-         flush();
-         if (name === "href") {
-            const { args, end } = readArgs(src, pos, 2);
-            out.push({ t: "a", href: args[0], c: parseInline(args[1]) });
-            i = end;
-         } else if (STYLE[name]) {
-            const { args, end } = readArgs(src, pos, 1);
-            out.push({ t: STYLE[name], c: parseInline(args[0]) });
-            i = end;
-         } else if (name.startsWith("fa")) {
-            if (!PRIVATE_ICONS.has(name)) out.push({ t: "icon", name });
-            i = pos;
-         } else if (DROP_WITH_ARG.has(name)) {
-            i = readArgs(src, pos, 1).end;
-         } else {
-            // \small{..}, \LARGE{..} and anything unknown: keep the content.
-            pos = skipSpace(src, pos);
-            if (src[pos] === "{") {
-               const { body, end } = readGroup(src, pos);
-               out.push(...parseInline(body));
-               i = end;
-            } else i = pos;
-         }
-         continue;
-      }
-      if (ch === "{" || ch === "}") {
+         i = readCommand(src, i, run);
+      } else if (ch === "{" || ch === "}") {
          i++;
-         continue;
-      }
-      if (ch === "$") {
+      } else if (ch === "$") {
          // Math only appears as list markers ($\diamond$); drop it.
          const close = src.indexOf("$", i + 1);
          i = close === -1 ? src.length : close + 1;
-         continue;
+      } else {
+         run.buf += ch === "~" ? " " : ch;
+         i++;
       }
-      buf += ch === "~" ? " " : ch;
-      i++;
    }
-   flush();
-   return trimRun(out);
+   run.flush();
+   return trimRun(run.out);
 }
 
 /** Split inline nodes on {t:"br"} into rows, dropping empty rows. */
@@ -196,6 +211,17 @@ const splitRows = (nodes) => {
    return rows.map(trimRun).filter((row) => row.length > 0);
 };
 
+// Block-level macro names, as they appear in the source.
+const RESUME_EXP = String.raw`\resumeExp`;
+const RESUME_EDU = String.raw`\resumeEdu`;
+const LIST_START = String.raw`\resumeItemListStart`;
+const LIST_END = String.raw`\resumeItemListEnd`;
+const ACHIEVEMENT = String.raw`\resumeAchievement`;
+const ENV_END = new Map([
+   [String.raw`\begin{itemize}`, String.raw`\end{itemize}`],
+   [String.raw`\begin{tabular*}`, String.raw`\end{tabular*}`],
+]);
+
 /** Items inside \resumeItemListStart ... \resumeItemListEnd. */
 const parseItems = (src) => {
    const items = [];
@@ -205,7 +231,7 @@ const parseItems = (src) => {
    for (const [k, mark] of marks.entries()) {
       const start = mark.index + mark[0].length;
       const stop = k + 1 < marks.length ? marks[k + 1].index : src.length;
-      if (mark[0] === "\\resumeAchievement") {
+      if (mark[0] === ACHIEVEMENT) {
          const { args } = readArgs(src, start, 2);
          const aside = parseInline(args[1]);
          items.push({
@@ -223,6 +249,9 @@ const parseItems = (src) => {
 const between = (src, from, startTok, endTok) => {
    const start = src.indexOf(startTok, from);
    const end = src.indexOf(endTok, start + startTok.length);
+   // An unclosed environment would send parseBlocks' cursor backwards and loop
+   // forever, hanging the deploy; fail it with the token instead.
+   if (end === -1) throw new Error(`resume-tex: ${startTok} has no ${endTok}`);
    return {
       body: src.slice(start + startTok.length, end),
       end: end + endTok.length,
@@ -231,6 +260,62 @@ const between = (src, from, startTok, endTok) => {
 
 const BLOCK_TOKENS =
    /\\resumeExp|\\resumeEdu|\\resumeItemListStart|\\begin\{itemize\}|\\begin\{tabular\*\}|\\small\s*\{/g;
+
+// Each reader takes the token match m, pushes its blocks and returns the end.
+
+/** \resumeExp / \resumeEdu: a titled entry with four arguments. */
+const readEntry = (src, m, blocks) => {
+   const { args, end } = readArgs(src, m.index + m[0].length, 4);
+   const [title, subtitle, date, meta] = args.map(parseInline);
+   blocks.push({ t: "entry", title, subtitle, date, meta, items: [] });
+   return end;
+};
+
+/** \resumeItemListStart ... \resumeItemListEnd. */
+const readItemList = (src, m, blocks) => {
+   const { body, end } = between(src, m.index, m[0], LIST_END);
+   const items = parseItems(body);
+   const last = blocks.at(-1);
+   // A plain list right after an entry is that entry's bullets.
+   if (
+      last?.t === "entry" &&
+      last.items.length === 0 &&
+      !body.includes(ACHIEVEMENT)
+   )
+      last.items = items.map((item) => item.c);
+   else blocks.push({ t: "list", items });
+   return end;
+};
+
+/** An itemize or tabular* environment, read as rows split on \\. */
+const readEnvironment = (src, m, blocks) => {
+   const { body, end } = between(src, m.index, m[0], ENV_END.get(m[0]));
+   // Drop the environment's option and column-spec groups, then split on \\.
+   const inner = body
+      .replace(/^\s*\[[^\]]*\]/, "")
+      .replace(/^\s*\{[^}]*\}(\[[^\]]*\])?\{[^}]*\}/, "")
+      .replaceAll(/\\item\b/g, "");
+   const rows = splitRows(parseInline(inner));
+   if (rows.length) blocks.push({ t: "rows", rows });
+   return end;
+};
+
+/** \small{...}: a paragraph (summary) or a wrapper around a table. */
+const readSmall = (src, m, blocks) => {
+   const open = src.indexOf("{", m.index);
+   const { body, end } = readGroup(src, open);
+   blocks.push(...parseBlocks(body));
+   return end;
+};
+
+const readBlock = (src, m, blocks) => {
+   const tok = m[0];
+   if (tok === RESUME_EXP || tok === RESUME_EDU)
+      return readEntry(src, m, blocks);
+   if (tok === LIST_START) return readItemList(src, m, blocks);
+   if (ENV_END.has(tok)) return readEnvironment(src, m, blocks);
+   return readSmall(src, m, blocks);
+};
 
 /** Turn one section body into blocks. */
 const parseBlocks = (src) => {
@@ -245,49 +330,7 @@ const parseBlocks = (src) => {
    let cursor = 0;
    for (let m = tokens.exec(src); m; m = tokens.exec(src)) {
       leftover(src.slice(cursor, m.index));
-      const tok = m[0];
-      if (tok === "\\resumeExp" || tok === "\\resumeEdu") {
-         const { args, end } = readArgs(src, m.index + tok.length, 4);
-         const [title, subtitle, date, meta] = args.map(parseInline);
-         blocks.push({ t: "entry", title, subtitle, date, meta, items: [] });
-         cursor = end;
-      } else if (tok === "\\resumeItemListStart") {
-         const { body, end } = between(
-            src,
-            m.index,
-            tok,
-            "\\resumeItemListEnd",
-         );
-         const items = parseItems(body);
-         const last = blocks.at(-1);
-         // A plain list right after an entry is that entry's bullets.
-         if (
-            last?.t === "entry" &&
-            last.items.length === 0 &&
-            !body.includes("\\resumeAchievement")
-         )
-            last.items = items.map((item) => item.c);
-         else blocks.push({ t: "list", items });
-         cursor = end;
-      } else if (tok === "\\begin{itemize}" || tok === "\\begin{tabular*}") {
-         const endTok =
-            tok === "\\begin{itemize}" ? "\\end{itemize}" : "\\end{tabular*}";
-         const { body, end } = between(src, m.index, tok, endTok);
-         // Drop the environment's option and column-spec groups, then split on \\.
-         const inner = body
-            .replace(/^\s*\[[^\]]*\]/, "")
-            .replace(/^\s*\{[^}]*\}(\[[^\]]*\])?\{[^}]*\}/, "")
-            .replaceAll(/\\item\b/g, "");
-         const rows = splitRows(parseInline(inner));
-         if (rows.length) blocks.push({ t: "rows", rows });
-         cursor = end;
-      } else {
-         // \small{...}: a paragraph (summary) or a wrapper around a table.
-         const open = src.indexOf("{", m.index);
-         const { body, end } = readGroup(src, open);
-         blocks.push(...parseBlocks(body));
-         cursor = end;
-      }
+      cursor = readBlock(src, m, blocks);
       tokens.lastIndex = cursor;
    }
    leftover(src.slice(cursor));
@@ -296,6 +339,24 @@ const parseBlocks = (src) => {
 
 const plain = (nodes) =>
    nodes.map((n) => (typeof n === "string" ? n : plain(n.c ?? []))).join("");
+
+/** Group inline nodes into contact links, split at "|" in text runs. */
+const splitLinks = (nodes) => {
+   const links = [[]];
+   const add = (node) => links.at(-1).push(node);
+   for (const node of nodes) {
+      if (typeof node !== "string" || !node.includes("|")) {
+         add(node);
+         continue;
+      }
+      // Each "|" starts a new group; empty groups are dropped below.
+      node.split("|").forEach((part, idx) => {
+         if (idx > 0) links.push([]);
+         if (part.trim()) add(part.trim());
+      });
+   }
+   return links.filter((link) => link.length);
+};
 
 const parseHeader = (src) => {
    const centers = [
@@ -306,22 +367,7 @@ const parseHeader = (src) => {
       .split("|")
       .map((s) => s.trim())
       .filter(Boolean);
-   // Contact links are separated by "|" text runs.
-   const links = [];
-   let current = [];
-   for (const node of parseInline(linksSrc)) {
-      if (typeof node === "string" && node.includes("|")) {
-         const parts = node.split("|");
-         for (const [idx, part] of parts.entries()) {
-            if (part.trim()) current.push(part.trim());
-            if (idx < parts.length - 1) {
-               if (current.length) links.push(current);
-               current = [];
-            }
-         }
-      } else current.push(node);
-   }
-   if (current.length) links.push(current);
+   const links = splitLinks(parseInline(linksSrc));
    return {
       name: plain(parseInline(nameSrc)).trim(),
       tagline,

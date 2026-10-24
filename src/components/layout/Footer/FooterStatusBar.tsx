@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import {
    getAvailability,
@@ -6,31 +6,38 @@ import {
    getSiteConfig,
    getTimezone,
 } from "@data/personal";
+import { getUiCopy } from "@data/ui";
 import { staggerItem } from "@utils/animations";
-import { MONO_FONT } from "@/constants/theme";
+import { fillTemplate } from "@utils/fillTemplate";
+import {
+   GLASS_BORDER,
+   GREEN,
+   MEDIA_QUERIES,
+   MONO_FONT,
+} from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useMediaQuery from "@hooks/useMediaQuery";
 import { describeGap, offsetMinutes } from "@utils/timeGap";
 
 /* The footer's last row is a status bar: local time where he works, the
    availability line from personal.json, the stack the site is built with and
-   the build stamp Vite injects at build time. Everything here is data or
-   build metadata; nothing is hardcoded copy. */
+   the build stamp Vite injects at build time. The labels are the footer copy
+   in data/ui.json; the rest is data or build metadata. */
 
-const LABEL_COLOR = "rgba(244, 246, 247, 0.55)";
-const VALUE_COLOR = "rgba(244, 246, 247, 0.9)";
-const CHIP_BG = "rgba(255, 255, 255, 0.06)";
-const CHIP_BORDER = "1px solid rgba(255, 255, 255, 0.08)";
-const LIVE_GREEN = "#22c55e";
+const LABEL_COLOR = "rgb(var(--ch-text) / 0.55)";
+const VALUE_COLOR = "rgb(var(--ch-text) / 0.9)";
+const CHIP_BG = "rgb(var(--ch-white) / 0.06)";
+const CHIP_BORDER = `1px solid ${GLASS_BORDER}`;
+// Touch gets a 44 px hit area around the 24 px machine-view chips.
+const TOUCH_SLOP_PX = 10;
+const COPY = getUiCopy().footer;
 
-// Generated at build from data/*.json (scripts/machine-view.js).
-const MACHINE_LINKS = [
-   { file: "index.md", label: "This page as Markdown" },
-   { file: "llms.txt", label: "llms.txt, the index for AI agents" },
-   { file: "rss.xml", label: "RSS feed of the news timeline" },
-];
+// Generated at build from data/*.json (scripts/machine-view.js), in this
+// order; each one's description is in the footer copy.
+const MACHINE_FILES = ["index.md", "llms.txt", "rss.xml"] as const;
 
 const chipStyle: React.CSSProperties = {
-   fontSize: 10,
+   fontSize: 11,
    color: VALUE_COLOR,
    fontFamily: MONO_FONT,
    padding: "2px 8px",
@@ -41,7 +48,7 @@ const chipStyle: React.CSSProperties = {
 };
 
 const labelStyle: React.CSSProperties = {
-   fontSize: 10,
+   fontSize: 11,
    letterSpacing: "0.12em",
    textTransform: "uppercase",
    color: LABEL_COLOR,
@@ -50,41 +57,71 @@ const labelStyle: React.CSSProperties = {
 
 interface ClockReading {
    text: string;
+   zone: string;
    iso: string;
 }
 
-const readClock = (timeZone: string): ClockReading => {
+interface ClockFormats {
+   time: Intl.DateTimeFormat;
+   zone: Intl.DateTimeFormat;
+}
+
+// Built once per zone rather than on every tick.
+const clockFormats = (timeZone: string): ClockFormats => ({
+   time: new Intl.DateTimeFormat("en-GB", {
+      timeZone,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+   }),
+   // en-IN yields IST for Asia/Kolkata where en-US would print GMT+5:30.
+   zone: new Intl.DateTimeFormat("en-IN", { timeZone, timeZoneName: "short" }),
+});
+
+const readClock = (formats: ClockFormats, timeZone: string): ClockReading => {
    const now = new Date();
    return {
-      text: new Intl.DateTimeFormat("en-GB", {
-         timeZone,
-         hour: "2-digit",
-         minute: "2-digit",
-         second: "2-digit",
-         hour12: false,
-      }).format(now),
+      text: formats.time.format(now),
+      zone:
+         formats.zone
+            .formatToParts(now)
+            .find((part) => part.type === "timeZoneName")?.value ?? timeZone,
       iso: now.toISOString(),
    };
 };
 
-const zoneAbbreviation = (timeZone: string) =>
-   // en-IN yields IST for Asia/Kolkata where en-US would print GMT+5:30.
-   new Intl.DateTimeFormat("en-IN", { timeZone, timeZoneName: "short" })
-      .formatToParts(new Date())
-      .find((part) => part.type === "timeZoneName")?.value ?? timeZone;
-
-/** Ticking local clock for the place named in personal.json. */
+/** Ticking local clock for the place named in personal.json. It ticks only
+    while on screen and reads the time afresh each time it scrolls back in. */
 const LocalClock = ({ timeZone }: { timeZone: string }) => {
-   const [now, setNow] = useState(() => readClock(timeZone));
+   const timeRef = useRef<HTMLTimeElement>(null);
+   const formats = useMemo(() => clockFormats(timeZone), [timeZone]);
+   const [now, setNow] = useState(() => readClock(formats, timeZone));
+   const [onScreen, setOnScreen] = useState(false);
 
    useEffect(() => {
-      const tick = () => setNow(readClock(timeZone));
+      const element = timeRef.current;
+      if (!element) return;
+      const observer = new IntersectionObserver((entries) => {
+         for (const entry of entries) {
+            if (entry.isIntersecting) setNow(readClock(formats, timeZone));
+            setOnScreen(entry.isIntersecting);
+         }
+      });
+      observer.observe(element);
+      return () => observer.disconnect();
+   }, [formats, timeZone]);
+
+   useEffect(() => {
+      if (!onScreen) return;
+      const tick = () => setNow(readClock(formats, timeZone));
       const id = window.setInterval(tick, 1000);
       return () => window.clearInterval(id);
-   }, [timeZone]);
+   }, [onScreen, formats, timeZone]);
 
    return (
       <time
+         ref={timeRef}
          dateTime={now.iso}
          style={{
             fontSize: 12,
@@ -93,7 +130,7 @@ const LocalClock = ({ timeZone }: { timeZone: string }) => {
             color: VALUE_COLOR,
          }}
       >
-         {now.text} {zoneAbbreviation(timeZone)}
+         {now.text} {now.zone}
       </time>
    );
 };
@@ -104,6 +141,15 @@ const LocalClock = ({ timeZone }: { timeZone: string }) => {
 const VisitorGap = ({ timeZone }: { timeZone: string }) => {
    const [visitorZone] = useState(
       () => Intl.DateTimeFormat().resolvedOptions().timeZone,
+   );
+   const visitorFormat = useMemo(
+      () =>
+         new Intl.DateTimeFormat(undefined, {
+            timeZone: visitorZone,
+            hour: "2-digit",
+            minute: "2-digit",
+         }),
+      [visitorZone],
    );
    const [now, setNow] = useState(() => new Date());
 
@@ -117,11 +163,7 @@ const VisitorGap = ({ timeZone }: { timeZone: string }) => {
       offsetMinutes(visitorZone, now),
    );
    if (!gap) return null;
-   const theirs = new Intl.DateTimeFormat(undefined, {
-      timeZone: visitorZone,
-      hour: "2-digit",
-      minute: "2-digit",
-   }).format(now);
+   const theirs = visitorFormat.format(now);
 
    return (
       <span
@@ -133,13 +175,14 @@ const VisitorGap = ({ timeZone }: { timeZone: string }) => {
             fontVariantNumeric: "tabular-nums",
          }}
       >
-         {theirs} your time {"·"} {gap} of you
+         {fillTemplate(COPY.visitor_gap, { time: theirs, gap })}
       </span>
    );
 };
 
 const FooterStatusBar = () => {
    const { isMobile } = useBreakpoint();
+   const coarsePointer = useMediaQuery(MEDIA_QUERIES.coarse);
    const techStack = getSiteConfig().tech_stack || [];
    const availability = getAvailability();
    const timeZone = getTimezone();
@@ -158,7 +201,7 @@ const FooterStatusBar = () => {
             // Clear the fixed motion control and Back to top (44 px tall,
             // 20 or 32 px from the bottom) so neither covers the bar.
             paddingBottom: isMobile ? 72 : 56,
-            borderTop: "1px solid rgba(255,255,255,0.08)",
+            borderTop: `1px solid ${GLASS_BORDER}`,
          }}
          variants={staggerItem}
       >
@@ -179,7 +222,7 @@ const FooterStatusBar = () => {
                   width: 7,
                   height: 7,
                   borderRadius: "50%",
-                  background: LIVE_GREEN,
+                  background: GREEN,
                   flexShrink: 0,
                }}
             />
@@ -210,7 +253,7 @@ const FooterStatusBar = () => {
                justifyContent: "center",
             }}
          >
-            <span style={labelStyle}>Built with</span>
+            <span style={labelStyle}>{COPY.built_with}</span>
             {techStack.map((tech) => (
                <span key={tech} style={chipStyle}>
                   {tech}
@@ -229,24 +272,44 @@ const FooterStatusBar = () => {
                justifyContent: isMobile ? "center" : "flex-end",
             }}
          >
-            <span style={labelStyle}>Build</span>
+            <span style={labelStyle}>{COPY.build}</span>
             <span style={chipStyle}>v{import.meta.env.APP_VERSION}</span>
             <span style={chipStyle}>{import.meta.env.BUILD_DATE}</span>
-            {MACHINE_LINKS.map(({ file, label }) => (
+            {MACHINE_FILES.map((file) => (
                <a
                   key={file}
                   href={`${import.meta.env.BASE_URL}${file}`}
                   className="footer-machine-link"
+                  // The link is the hit area and the chip draws inside it. On
+                  // touch it grows to 44 px and negative margins hand the
+                  // extra back, so the row keeps its 24 px height.
                   style={{
-                     ...chipStyle,
                      display: "inline-flex",
                      alignItems: "center",
-                     minHeight: 24,
+                     borderRadius: chipStyle.borderRadius,
                      textDecoration: "none",
+                     minHeight: coarsePointer
+                        ? 24 + TOUCH_SLOP_PX * 2
+                        : undefined,
+                     margin: coarsePointer
+                        ? `-${TOUCH_SLOP_PX}px 0`
+                        : undefined,
                   }}
-                  aria-label={`${file}, ${label}`}
+                  aria-label={fillTemplate(COPY.machine_link_label, {
+                     file,
+                     label: COPY.machine_links[file],
+                  })}
                >
-                  {file}
+                  <span
+                     style={{
+                        ...chipStyle,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        minHeight: 24,
+                     }}
+                  >
+                     {file}
+                  </span>
                </a>
             ))}
          </div>

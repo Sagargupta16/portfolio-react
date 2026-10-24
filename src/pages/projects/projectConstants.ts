@@ -2,51 +2,64 @@ import {
    getOpenSourceContributions,
    getCommunityDiscussions,
 } from "@data/projects";
+import { getSectionCopy } from "@data/sections";
 import type {
    Project,
+   ProjectFilter,
    OpenSourceContribution,
    CommunityDiscussion,
 } from "@/types";
+import { AMBER, BLUE_LIGHT, GREEN, SKY } from "@/constants/theme";
 
+/* Chip order. These are ids: each one's on-screen label is
+   projects.filters in data/sections.json. */
 export const FILTERS = [
    "All",
    "Featured",
    "Community",
    "Collab",
    "Others",
-] as const;
+] as const satisfies readonly ProjectFilter[];
+
+const FILTER_LABELS = getSectionCopy("projects").filters;
+
+/** The on-screen name of a filter chip or project category. */
+export const filterLabel = (filter: string): string =>
+   FILTER_LABELS[filter as ProjectFilter];
 
 export interface CategoryColors {
    accent: string;
    gradient: string;
+   /** Colour function open at its alpha slot: append e.g. `0.1)`. */
    bgAlpha: string;
    borderAlpha: string;
 }
 
+// Each gradient runs from the accent token to one deeper step of its own hue.
 const CATEGORY_COLORS: Record<string, CategoryColors> = {
    Featured: {
-      accent: "#60a5fa",
-      gradient: "linear-gradient(to right, #60a5fa, #3b82f6)",
-      bgAlpha: "rgba(96,165,250,",
-      borderAlpha: "rgba(96,165,250,",
+      accent: BLUE_LIGHT,
+      gradient: `linear-gradient(to right, ${BLUE_LIGHT}, #3b82f6)`,
+      bgAlpha: "rgb(var(--ch-blue-light) / ",
+      borderAlpha: "rgb(var(--ch-blue-light) / ",
    },
    Community: {
-      accent: "#22c55e",
-      gradient: "linear-gradient(to right, #22c55e, #16a34a)",
-      bgAlpha: "rgba(34,197,94,",
-      borderAlpha: "rgba(34,197,94,",
+      accent: GREEN,
+      gradient: `linear-gradient(to right, ${GREEN}, #16a34a)`,
+      bgAlpha: "rgb(var(--ch-green) / ",
+      borderAlpha: "rgb(var(--ch-green) / ",
    },
    Collab: {
-      accent: "#38bdf8",
-      gradient: "linear-gradient(to right, #38bdf8, #0ea5e9)",
-      bgAlpha: "rgba(56,189,248,",
-      borderAlpha: "rgba(56,189,248,",
+      accent: SKY,
+      gradient: `linear-gradient(to right, ${SKY}, #0ea5e9)`,
+      bgAlpha: "rgb(var(--ch-sky) / ",
+      borderAlpha: "rgb(var(--ch-sky) / ",
    },
    Others: {
-      accent: "#f59e0b",
-      gradient: "linear-gradient(to right, #f59e0b, #d97706)",
-      bgAlpha: "rgba(245,158,11,",
-      borderAlpha: "rgba(245,158,11,",
+      accent: AMBER,
+      gradient: `linear-gradient(to right, ${AMBER}, #d97706)`,
+      bgAlpha: "rgb(var(--ch-amber) / ",
+      borderAlpha: "rgb(var(--ch-amber) / ",
    },
 };
 

@@ -1,9 +1,10 @@
 import { useId } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { PANEL_SOLID } from "../kit/sceneTokens";
 import {
    CYCLE,
    NON_SCALING,
-   PANEL_SOLID,
    WHITE_07,
    WHITE_35,
    WHITE_55,
@@ -55,8 +56,44 @@ const DRAW_TO = 3.2;
 const PEAK_AT = 3.3;
 const RESET = 5.3;
 
-/* Path draws need user-unit strokes: no non-scaling-stroke here (Chrome
-   would measure the dash in user units and stroke it in screen units). */
+/* The contest history draws on. Path draws need user-unit strokes: no
+   non-scaling-stroke here (Chrome would measure the dash in user units and
+   stroke it in screen units). Its pathLength runs on Motion's JS frameloop,
+   which the Reduced freeze cannot pause, so Reduced shows the line fully
+   drawn and still. */
+const HistoryLine = ({ tint }: Readonly<{ tint: string }>) => {
+   const { reducedMotion } = useMotionPreference();
+   const base = {
+      d: LINE,
+      fill: "none",
+      stroke: tint,
+      strokeWidth: 10,
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+   } as const;
+   if (reducedMotion) return <path {...base} />;
+   return (
+      <motion.path
+         {...base}
+         animate={{
+            pathLength: [0, 0, 1, 1, 1, 0],
+            opacity: [0, 0, 1, 1, 0, 0],
+         }}
+         transition={{
+            pathLength: loop(0, DRAW_FROM, DRAW_TO, RESET, RESET + 0.3, CYCLE),
+            opacity: loop(
+               0,
+               DRAW_FROM - 0.05,
+               DRAW_FROM + 0.05,
+               RESET,
+               RESET + 0.3,
+               CYCLE,
+            ),
+         }}
+      />
+   );
+};
+
 const RatingLine = ({
    tint,
    gradientId,
@@ -93,29 +130,7 @@ const RatingLine = ({
             CYCLE,
          )}
       />
-      <motion.path
-         d={LINE}
-         fill="none"
-         stroke={tint}
-         strokeWidth={10}
-         strokeLinecap="round"
-         strokeLinejoin="round"
-         animate={{
-            pathLength: [0, 0, 1, 1, 1, 0],
-            opacity: [0, 0, 1, 1, 0, 0],
-         }}
-         transition={{
-            pathLength: loop(0, DRAW_FROM, DRAW_TO, RESET, RESET + 0.3, CYCLE),
-            opacity: loop(
-               0,
-               DRAW_FROM - 0.05,
-               DRAW_FROM + 0.05,
-               RESET,
-               RESET + 0.3,
-               CYCLE,
-            ),
-         }}
-      />
+      <HistoryLine tint={tint} />
       <motion.circle
          cx={LAST_X}
          cy={LAST_Y}

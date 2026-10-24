@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
+import { BASE_GRADIENT } from "../kit/sceneTokens";
 import {
-   BASE_GRADIENT,
    HAIRLINE,
    NON_SCALING,
    STAGE_H,
@@ -22,7 +22,7 @@ import type { Ease, Point, TintProps } from "./tokens";
 
 /* ---------------- back layer ---------------- */
 
-export type Backdrop = "grid" | "dots";
+type Backdrop = "grid" | "dots";
 
 const CELL = 20;
 const DRIFT_SECONDS = 32;
@@ -128,7 +128,7 @@ export const Stage = ({
 
 /* Uniform stage SVG: pathLength draws live here, without vector-effect. */
 export const StageSvg = ({ children }: { children: ReactNode }) => (
-   <svg viewBox={VIEWBOX} style={svgLayer}>
+   <svg aria-hidden="true" viewBox={VIEWBOX} style={svgLayer}>
       {children}
    </svg>
 );
@@ -159,7 +159,7 @@ export const Wires = ({
 
 /* ---------------- front layer: packets in flight ---------------- */
 
-export type Dir = "right" | "left" | "down" | "up";
+type Dir = "right" | "left" | "down" | "up";
 
 const HEAD = 5;
 const TRAIL_LEN = 15;

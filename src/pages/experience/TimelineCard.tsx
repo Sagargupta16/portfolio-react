@@ -1,5 +1,5 @@
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
-import { CYAN } from "@/constants/theme";
+import { BLUE_LIGHT } from "@/constants/theme";
 import TimelineCardMobile from "./TimelineCardMobile";
 import TimelineCardDesktop from "./TimelineCardDesktop";
 
@@ -14,7 +14,7 @@ interface TimelineCardProps {
 const TimelineCard = ({
    item,
    index,
-   accentColor = CYAN,
+   accentColor = BLUE_LIGHT,
    isMobile,
    onClick,
 }: TimelineCardProps) => {

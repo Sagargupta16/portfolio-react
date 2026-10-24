@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
 import {
    EASE,
    FILL,
@@ -29,7 +30,7 @@ const SVG_LAYER: CSSProperties = {
    pointerEvents: "none",
 };
 
-export type Texture = "dots" | "grid" | "contour";
+type Texture = "dots" | "grid" | "contour";
 
 const LATTICE_CELL = 18;
 const LATTICE_DRIFT = 32;
@@ -58,7 +59,12 @@ const CONTOURS = [
 ];
 
 const Contours = () => (
-   <svg viewBox={VIEWBOX} preserveAspectRatio="none" style={SVG_LAYER}>
+   <svg
+      aria-hidden="true"
+      viewBox={VIEWBOX}
+      preserveAspectRatio="none"
+      style={SVG_LAYER}
+   >
       {CONTOURS.map((d) => (
          <path
             key={d}
@@ -129,7 +135,12 @@ export const Wires = ({
    paths: string[];
    children?: ReactNode;
 }) => (
-   <svg viewBox={VIEWBOX} preserveAspectRatio="none" style={SVG_LAYER}>
+   <svg
+      aria-hidden="true"
+      viewBox={VIEWBOX}
+      preserveAspectRatio="none"
+      style={SVG_LAYER}
+   >
       {paths.map((d) => (
          <path
             key={d}
@@ -180,7 +191,9 @@ export interface Hop {
    tail behind it. The tail has no vector effect (Chrome sizes pathLength
    dashes in user units but lays a non-scaling stroke in screen space), and
    the head is HTML so it stays 5 px at every slot width. Both are hidden at
-   frame 0, which is what the frozen Reduced mode shows. */
+   frame 0, which is what the frozen Reduced mode shows. The tail's
+   pathOffset runs on Motion's JS frameloop, which the freeze cannot pause,
+   so Reduced leaves the tail out. */
 export const Packet = ({
    hop,
    color,
@@ -192,6 +205,7 @@ export const Packet = ({
    cycle: number;
    head?: CSSProperties;
 }) => {
+   const { reducedMotion } = useMotionPreference();
    const { from, to, depart, arrive, axis = "h" } = hop;
    const d = axis === "h" ? hCurve(from, to) : vCurve(from, to);
    const [x0, x1] = ends(from.x, to.x);
@@ -202,36 +216,43 @@ export const Packet = ({
    const yEase = [EASE, axis === "h" ? across : along, EASE, EASE];
    return (
       <>
-         <svg viewBox={VIEWBOX} preserveAspectRatio="none" style={SVG_LAYER}>
-            <motion.path
-               d={d}
-               fill="none"
-               stroke={color}
-               strokeWidth={1}
-               strokeLinecap="round"
-               initial={{
-                  pathLength: TRAIL,
-                  pathSpacing: 2,
-                  pathOffset: -TRAIL,
-                  opacity: 0,
-               }}
-               animate={{
-                  pathOffset: [-TRAIL, -TRAIL, 1 - TRAIL, 1 - TRAIL, -TRAIL],
-                  opacity: [0, 0, 0.5, 0.5, 0, 0],
-               }}
-               transition={{
-                  pathOffset: loop(cycle, travel),
-                  opacity: loop(cycle, [
-                     0,
-                     depart,
-                     depart + 0.03,
-                     arrive,
-                     arrive + 0.03,
-                     1,
-                  ]),
-               }}
-            />
-         </svg>
+         {!reducedMotion && (
+            <svg
+               aria-hidden="true"
+               viewBox={VIEWBOX}
+               preserveAspectRatio="none"
+               style={SVG_LAYER}
+            >
+               <motion.path
+                  d={d}
+                  fill="none"
+                  stroke={color}
+                  strokeWidth={1}
+                  strokeLinecap="round"
+                  initial={{
+                     pathLength: TRAIL,
+                     pathSpacing: 2,
+                     pathOffset: -TRAIL,
+                     opacity: 0,
+                  }}
+                  animate={{
+                     pathOffset: [-TRAIL, -TRAIL, 1 - TRAIL, 1 - TRAIL, -TRAIL],
+                     opacity: [0, 0, 0.5, 0.5, 0, 0],
+                  }}
+                  transition={{
+                     pathOffset: loop(cycle, travel),
+                     opacity: loop(cycle, [
+                        0,
+                        depart,
+                        depart + 0.03,
+                        arrive,
+                        arrive + 0.03,
+                        1,
+                     ]),
+                  }}
+               />
+            </svg>
+         )}
          <div style={lane(from, to)}>
             <motion.div
                initial={{ x: x0, y: y0, opacity: 0 }}

@@ -1,8 +1,10 @@
 import { useMemo, useCallback, useState } from "react";
 import { motion } from "motion/react";
-import { getName, getSocialProfiles } from "@data/personal";
+import { getName, getResumeUrl, getSocialProfiles } from "@data/personal";
+import { getUiCopy, newTabLabel } from "@data/ui";
+import { fillTemplate } from "@utils/fillTemplate";
 import { staggerItem } from "@utils/animations";
-import { EASING } from "@/constants/theme";
+import { EASING, GLASS_BORDER, TEXT_PRIMARY } from "@/constants/theme";
 import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
@@ -13,9 +15,10 @@ import FooterEndNote from "./FooterEndNote";
 import FooterStatusBar from "./FooterStatusBar";
 
 const CURRENT_YEAR = new Date().getFullYear();
-const RESUME_URL =
-   "https://github.com/Sagargupta16/latex-resume/releases/latest/download/resume.pdf";
-const LINK_COLOR = "rgba(244, 246, 247, 0.9)";
+const RESUME_URL = getResumeUrl();
+const LINK_COLOR = "rgb(var(--ch-text) / 0.9)";
+const UI = getUiCopy();
+const COPY = UI.footer;
 
 // The footer lists a subset of the section registry in registry order. Home
 // targets the hero, which is not a registered content section.
@@ -25,7 +28,7 @@ const FOOTER_SECTION_IDS = new Set<ContentSectionId>([
    "contact",
 ]);
 const SITE_LINKS: { id: string; label: string }[] = [
-   { id: "hero", label: "Home" },
+   { id: "hero", label: UI.nav.home },
    ...CONTENT_SECTIONS.filter(({ id }) => FOOTER_SECTION_IDS.has(id)).map(
       ({ id, label }) => ({ id, label }),
    ),
@@ -107,17 +110,17 @@ const FooterContent = () => {
                   whileTap={TILE_TAP}
                   animate={spinTarget}
                   transition={TILE_TRANSITION}
-                  aria-label="Home"
+                  aria-label={UI.nav.home}
                   style={{
                      width: 48,
                      height: 48,
                      borderRadius: 12,
-                     border: "1px solid rgba(255, 255, 255, 0.08)",
+                     border: `1px solid ${GLASS_BORDER}`,
                      cursor: "pointer",
                      display: "flex",
                      alignItems: "center",
                      justifyContent: "center",
-                     background: "rgba(255, 255, 255, 0.06)",
+                     background: "rgb(var(--ch-white) / 0.06)",
                   }}
                >
                   <MakerMark size={40} />
@@ -125,19 +128,19 @@ const FooterContent = () => {
                <p
                   className="font-signature"
                   aria-hidden="true"
-                  style={{ color: "#f4f6f7", fontSize: 30, lineHeight: 1 }}
+                  style={{ color: TEXT_PRIMARY, fontSize: 30, lineHeight: 1 }}
                >
                   {name}
                </p>
-               <p style={{ color: "rgba(244,246,247,0.8)", fontSize: 14 }}>
-                  &copy; {CURRENT_YEAR} {name}. All rights reserved.
+               <p style={{ color: "rgb(var(--ch-text) / 0.8)", fontSize: 14 }}>
+                  {fillTemplate(COPY.copyright, { year: CURRENT_YEAR, name })}
                </p>
                <FooterSocial />
             </div>
 
             {/* SITE column */}
-            <nav aria-label="Footer site links">
-               <h2 style={columnHeading}>Site</h2>
+            <nav aria-label={COPY.site_label}>
+               <h2 style={columnHeading}>{COPY.site}</h2>
                {SITE_LINKS.map((link) => (
                   <button
                      key={link.id}
@@ -155,20 +158,20 @@ const FooterContent = () => {
                   className="footer-link"
                   style={columnLink}
                >
-                  Download CV
+                  {COPY.download_cv}
                </a>
             </nav>
 
             {/* SOCIAL column */}
-            <nav aria-label="Footer social links">
-               <h2 style={columnHeading}>Social</h2>
+            <nav aria-label={COPY.social_label}>
+               <h2 style={columnHeading}>{COPY.social}</h2>
                {socialProfiles.map((profile) => (
                   <a
                      key={profile.id}
                      href={profile.link}
                      target="_blank"
                      rel="noopener noreferrer"
-                     aria-label={`${profile.name} (opens in a new tab)`}
+                     aria-label={newTabLabel(profile.name)}
                      className="footer-link"
                      style={columnLink}
                   >

@@ -1,8 +1,9 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
 import { MONO_FONT } from "@/constants/theme";
+import { BASE_GRADIENT } from "./kit/sceneTokens";
 import {
-   BASE_GRADIENT,
    CELL,
    CELL_FIRST,
    CELL_Y,
@@ -292,21 +293,25 @@ const Prediction = ({
    );
 };
 
-const PredictedLine = ({ tint }: { tint: string }) => (
-   <motion.path
-      d={PREDICTED_D}
-      fill={NONE}
-      stroke={tint}
-      strokeWidth={0.55}
-      strokeLinejoin={ROUND}
-      initial={{ pathLength: 0, opacity: 1 }}
-      animate={{ pathLength: LINE_LENGTH, opacity: RIG_OPACITY }}
-      transition={{
-         pathLength: loop(LINE_TIMES),
-         opacity: loop(RIG_FADE_TIMES),
-      }}
-   />
-);
+/* Its pathLength runs on Motion's JS frameloop, which the Reduced freeze
+   cannot pause, so Reduced shows the line fully drawn and still. */
+const PredictedLine = ({ tint }: Readonly<{ tint: string }>) => {
+   const { reducedMotion } = useMotionPreference();
+   const base = { d: PREDICTED_D, fill: NONE, stroke: tint, strokeWidth: 0.55 };
+   if (reducedMotion) return <path {...base} strokeLinejoin={ROUND} />;
+   return (
+      <motion.path
+         {...base}
+         strokeLinejoin={ROUND}
+         initial={{ pathLength: 0, opacity: 1 }}
+         animate={{ pathLength: LINE_LENGTH, opacity: RIG_OPACITY }}
+         transition={{
+            pathLength: loop(LINE_TIMES),
+            opacity: loop(RIG_FADE_TIMES),
+         }}
+      />
+   );
+};
 
 const label: CSSProperties = {
    fontFamily: MONO_FONT,
@@ -382,6 +387,7 @@ const MlScene = ({ tint }: CoverSceneProps) => (
          }}
       />
       <svg
+         aria-hidden="true"
          viewBox="0 0 160 100"
          preserveAspectRatio="xMidYMid meet"
          style={{

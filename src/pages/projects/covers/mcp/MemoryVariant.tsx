@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { GREEN } from "@/constants/theme";
 import {
    Bar,
    Label,
@@ -11,7 +12,6 @@ import {
 } from "../kit/primitives";
 import {
    DOTS,
-   GREEN,
    INK,
    W10,
    W16,

@@ -1,14 +1,28 @@
 name: Sync Credly Badges
 
+# Weekly refresh of certifications and badges from Credly. Opens or updates one PR for
+# review instead of pushing to main (main requires the `ci` check). As in Sync Live Data,
+# the pull_request run for a PR this GITHUB_TOKEN opens never starts a job, so the job
+# dispatches CI/CD on the sync branch to put the `ci` check on the PR's head commit.
+# Merging the PR triggers the normal CI/CD deploy.
+
 on:
    # Run weekly on Monday at 6:00 AM UTC
    schedule:
       - cron: "0 6 * * 1"
    # Allow manual trigger
    workflow_dispatch:
+      inputs:
+         allow_fewer:
+            description: "Accept fewer badges than achievements.json lists (a badge was really removed)"
+            type: boolean
+            default: false
 
 permissions:
    contents: write
+   pull-requests: write
+   # gh workflow run: dispatch CI/CD on the sync branch.
+   actions: write
 
 concurrency:
    group: sync-credly
@@ -18,6 +32,8 @@ jobs:
    sync:
       runs-on: ubuntu-latest
       timeout-minutes: 10
+      env:
+         BRANCH: chore/sync-credly
       steps:
          - name: Checkout code
            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -36,13 +52,12 @@ jobs:
          - name: Install dependencies
            run: pnpm install --frozen-lockfile
 
+         # The script writes Prettier-formatted JSON itself. It never writes an
+         # empty badge list, and a shorter one only when allow_fewer is set.
          - name: Fetch Credly badges
+           env:
+              CREDLY_ALLOW_FEWER: ${{ inputs.allow_fewer && '1' || '' }}
            run: node scripts/sync-credly.js
-
-         # sync-credly.js writes plain JSON.stringify output; without this the CI
-         # format check fails on main after every badge sync (2026-10-13).
-         - name: Format generated data
-           run: pnpm exec prettier --write data/achievements.json
 
          - name: Validate generated data
            run: node scripts/validate-data.js
@@ -50,13 +65,23 @@ jobs:
          - name: Check for changes
            id: changes
            run: |
-              git diff --quiet data/achievements.json && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+              git diff --quiet data/achievements.json && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
 
-         - name: Commit and push updates
+         - name: Open or update the sync PR
            if: steps.changes.outputs.changed == 'true'
+           env:
+              GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            run: |
               git config user.name "github-actions[bot]"
               git config user.email "github-actions[bot]@users.noreply.github.com"
+              git switch -c "$BRANCH"
               git add data/achievements.json
               git commit -m "chore: sync Credly badges [automated]"
-              git push
+              # The bot branch is rebuilt from main each run; only this branch is force-pushed.
+              git push --force origin "$BRANCH"
+              if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
+                 gh pr create --base main --head "$BRANCH" \
+                    --title "chore: sync Credly badges" \
+                    --body "Weekly refresh of certifications and badges from Credly. Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. Review the diff, then merge to deploy."
+              fi
+              gh workflow run ci-cd.yml --ref "$BRANCH"

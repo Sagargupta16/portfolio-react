@@ -1,10 +1,10 @@
 import { GraduationCap } from "lucide-react";
 import type { Education } from "@/types";
 import {
-   CYAN,
+   BLUE_LIGHT,
    GREEN,
    MONO_FONT,
-   PURPLE,
+   SKY,
    TEXT_PRIMARY,
 } from "@/constants/theme";
 import { getOrgLogo } from "@utils/orgLogos";
@@ -30,8 +30,8 @@ const InstitutionRow = ({ institution }: { institution: string }) => (
             width: LOGO_TILE,
             height: LOGO_TILE,
             borderRadius: 12,
-            background: "rgba(255,255,255,0.92)",
-            border: "1px solid rgba(255,255,255,0.12)",
+            background: "rgb(var(--ch-white) / 0.92)",
+            border: "1px solid rgb(var(--ch-white) / 0.12)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -39,7 +39,7 @@ const InstitutionRow = ({ institution }: { institution: string }) => (
          }}
       >
          {getOrgLogo(institution, LOGO_SIZE, LOGO_MAX_WIDTH) ?? (
-            <GraduationCap style={{ width: 20, height: 20, color: PURPLE }} />
+            <GraduationCap style={{ width: 20, height: 20, color: SKY }} />
          )}
       </div>
       <h3
@@ -71,8 +71,8 @@ const CgpaBadge = ({
             gap: 8,
             padding: "4px 12px",
             borderRadius: 10,
-            background: "rgba(34,197,94,0.06)",
-            border: "1px solid rgba(34,197,94,0.12)",
+            background: "rgb(var(--ch-green) / 0.06)",
+            border: "1px solid rgb(var(--ch-green) / 0.12)",
             ...(isMobile
                ? { alignSelf: "flex-start" as const }
                : { flexShrink: 0 }),
@@ -101,7 +101,7 @@ const EducationCardHeader = ({
       return (
          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <InstitutionRow institution={item.institution} />
-            <p style={{ color: CYAN, fontWeight: 600, fontSize: 14 }}>
+            <p style={{ color: BLUE_LIGHT, fontWeight: 600, fontSize: 14 }}>
                {item.title}
             </p>
             <CgpaBadge item={item} isMobile={isMobile} />
@@ -122,7 +122,7 @@ const EducationCardHeader = ({
             <InstitutionRow institution={item.institution} />
             <p
                style={{
-                  color: CYAN,
+                  color: BLUE_LIGHT,
                   fontWeight: 600,
                   fontSize: 14,
                   marginTop: 4,

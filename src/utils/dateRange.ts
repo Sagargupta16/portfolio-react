@@ -8,7 +8,7 @@ export const splitDateRange = (
 ): { start: string; end?: string } => {
    const parts = range.split(" - ");
    const start = parts[0] ?? range;
-   const end = parts.length > 1 ? parts[parts.length - 1] : undefined;
+   const end = parts.length > 1 ? parts.at(-1) : undefined;
    return { start, end };
 };
 

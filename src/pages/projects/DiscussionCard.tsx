@@ -1,15 +1,18 @@
 import type { CSSProperties } from "react";
 import { ArrowUpRight, BadgeCheck, MessageCircle } from "lucide-react";
 import type { CommunityDiscussion } from "@/types";
-import { CYAN, PURPLE } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import { BLUE_LIGHT, SKY } from "@/constants/theme";
 
 interface DiscussionCardProps {
    discussion: CommunityDiscussion;
 }
 
+const LABELS = getSectionCopy("projects").discussion_status;
+
 const STATUS_CONFIG = {
-   accepted: { color: CYAN, Icon: BadgeCheck, label: "Accepted" },
-   helpful: { color: PURPLE, Icon: MessageCircle, label: "Helpful" },
+   accepted: { color: BLUE_LIGHT, Icon: BadgeCheck, label: LABELS.accepted },
+   helpful: { color: SKY, Icon: MessageCircle, label: LABELS.helpful },
 } as const;
 
 const DiscussionCard = ({ discussion }: DiscussionCardProps) => {

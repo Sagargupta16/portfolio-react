@@ -3,7 +3,14 @@ import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
 import { staggerItem } from "@utils/animations";
 import { splitDateRange, isPresent } from "@utils/dateRange";
-import { MONO_FONT, GREEN, TEXT_MUTED } from "@/constants/theme";
+import { getSectionCopy } from "@data/sections";
+import {
+   MONO_FONT,
+   GREEN,
+   TEXT_MUTED,
+   DURATION,
+   EASING,
+} from "@/constants/theme";
 import TimelineCardContent from "./TimelineCardContent";
 import PresentIndicator from "./PresentIndicator";
 
@@ -34,7 +41,9 @@ const TimelineCardMobile = ({
          whileInView="visible"
          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
          style={{ marginBottom: 16 }}
-         transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}
+         transition={{
+            layout: { duration: DURATION.default, ease: EASING.standard },
+         }}
       >
          <div
             className="glass-card"
@@ -75,7 +84,9 @@ const TimelineCardMobile = ({
                               gap: 4,
                               color: GREEN,
                            }}
-                           aria-label="Currently active role"
+                           aria-label={
+                              getSectionCopy("experience").card.active_role
+                           }
                         >
                            <PresentIndicator />
                         </span>

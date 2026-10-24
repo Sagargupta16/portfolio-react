@@ -1,7 +1,10 @@
 import { motion, type Variants } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import type { ContactOption } from "@/types";
+import { getSectionCopy } from "@data/sections";
+import { newTabLabel } from "@data/ui";
 import { staggerItem } from "@utils/animations";
+import { fillTemplate } from "@utils/fillTemplate";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { DURATION, EASING, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
 import { CONTACT_META, DEFAULT_CONTACT_META } from "./contactConstants";
@@ -31,6 +34,10 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
    const { reducedMotion } = useMotionPreference();
    const opensNewTab = option.link.startsWith("https://");
    const hover = reducedMotion ? undefined : HOVER;
+   const cardLabel = fillTemplate(getSectionCopy("contact").card_label, {
+      title: option.title,
+      value: option.value,
+   });
 
    return (
       <motion.a
@@ -51,7 +58,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
             textDecoration: "none",
             cursor: "pointer",
          }}
-         aria-label={`${option.title}: ${option.value}${opensNewTab ? " (opens in a new tab)" : ""}`}
+         aria-label={opensNewTab ? newTabLabel(cardLabel) : cardLabel}
       >
          <motion.div
             variants={tileVariants}

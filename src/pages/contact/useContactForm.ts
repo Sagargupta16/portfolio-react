@@ -1,7 +1,24 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import { getEmailConfig } from "@data/contact";
+import { getSectionCopy } from "@data/sections";
 import type { FormData, Status } from "./contactConstants";
+
+const COPY = getSectionCopy("contact").form;
+
+// EmailJS takes no abort signal, so a stalled request is raced against a
+// timer: the spinner and the disabled Send button give way to an error
+// instead of hanging. The request itself is left to finish or fail.
+const SEND_TIMEOUT_MS = 15_000;
+const SEND_TIMEOUT = new Error("EmailJS send timed out");
+
+const withTimeout = <T>(work: Promise<T>, ms: number): Promise<T> => {
+   let timer: ReturnType<typeof setTimeout> | undefined;
+   const timeout = new Promise<never>((_, reject) => {
+      timer = setTimeout(() => reject(SEND_TIMEOUT), ms);
+   });
+   return Promise.race([work, timeout]).finally(() => clearTimeout(timer));
+};
 
 const useContactForm = () => {
    const formElementRef = useRef<HTMLFormElement>(null);
@@ -41,9 +58,13 @@ const useContactForm = () => {
    // error status (not via an effect mirroring status.type) and stays until the
    // user dismisses it or edits a field -- no auto-dismiss timer.
    const showError = useCallback((message: string, field?: "email") => {
+      // A dismissal's pending clear must not wipe this newer error.
+      clearTimeout(clearTimerRef.current);
       setStatus({ type: "error", message, field });
       setToastVisible(true);
    }, []);
+
+   useEffect(() => () => clearTimeout(clearTimerRef.current), []);
 
    const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -66,10 +87,13 @@ const useContactForm = () => {
          if (honeypot?.value) return;
          if (!formElementRef.current) return;
 
+         // type="email" has already applied the WHATWG rule. The pattern keeps
+         // that rule's characters and adds one check: a dotted domain, so a
+         // typo like john@gmail is caught before it costs a reply.
          if (emailConfig.validation_pattern) {
             const pattern = new RegExp(emailConfig.validation_pattern);
             if (!pattern.test(formData.email)) {
-               showError("Please enter a valid email address.", "email");
+               showError(COPY.invalid_email, "email");
                return;
             }
          }
@@ -78,11 +102,14 @@ const useContactForm = () => {
          setStatus({ type: "", message: "" });
 
          try {
-            const result = await emailjs.sendForm(
-               emailConfig.service_id,
-               emailConfig.template_id,
-               formElementRef.current,
-               emailConfig.public_key,
+            const result = await withTimeout(
+               emailjs.sendForm(
+                  emailConfig.service_id,
+                  emailConfig.template_id,
+                  formElementRef.current,
+                  { publicKey: emailConfig.public_key },
+               ),
+               SEND_TIMEOUT_MS,
             );
 
             if (result.status === 200) {
@@ -93,10 +120,12 @@ const useContactForm = () => {
             } else {
                // EmailJS resolved with a non-200 status -- surface it instead of
                // silently doing nothing.
-               showError("Failed to send message. Please try again.");
+               showError(COPY.send_failed);
             }
-         } catch {
-            showError("Failed to send message. Please try again.");
+         } catch (error) {
+            showError(
+               error === SEND_TIMEOUT ? COPY.send_timeout : COPY.send_failed,
+            );
          } finally {
             setIsLoading(false);
          }
@@ -106,6 +135,7 @@ const useContactForm = () => {
 
    const dismissToast = useCallback(() => {
       setToastVisible(false);
+      clearTimeout(clearTimerRef.current);
       clearTimerRef.current = setTimeout(
          () => setStatus({ type: "", message: "" }),
          300,

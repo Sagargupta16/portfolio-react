@@ -2,8 +2,9 @@ import { motion, AnimatePresence } from "motion/react";
 import { UserPlus } from "lucide-react";
 import Toast from "@components/ui/Toast";
 import { getContactOptions } from "@data/contact";
+import { getSectionCopy } from "@data/sections";
 import { rotateInUp, staggerContainer, staggerItem } from "@utils/animations";
-import { MAX_WIDTH_FORM, TEXT_MUTED } from "@/constants/theme";
+import { DURATION, MAX_WIDTH_FORM, TEXT_MUTED } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import ContactCard from "./ContactCard";
@@ -17,6 +18,7 @@ const VCARD_HREF = `${import.meta.env.BASE_URL}sagar-gupta.vcf`;
 const Contact = () => {
    const { isMobile } = useBreakpoint();
    const contactOptions = getContactOptions();
+   const { title, subtitle, vcard } = getSectionCopy("contact");
 
    const {
       formRef,
@@ -35,8 +37,8 @@ const Contact = () => {
    return (
       <PageSection
          id="contact"
-         title="Let's *talk*"
-         subtitle="Send a note or book a call"
+         title={title}
+         subtitle={subtitle}
          maxWidth={MAX_WIDTH_FORM}
       >
          <motion.div
@@ -93,7 +95,7 @@ const Contact = () => {
                         aria-hidden="true"
                         style={{ width: 16, height: 16 }}
                      />
-                     Save contact card
+                     {vcard.label}
                   </a>
                   <p
                      id="contact-vcard-hint"
@@ -103,7 +105,7 @@ const Contact = () => {
                         textAlign: isMobile ? "center" : "left",
                      }}
                   >
-                     Adds me to your phone&apos;s contacts
+                     {vcard.hint}
                   </p>
                </motion.div>
             </motion.div>
@@ -117,7 +119,7 @@ const Contact = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.4 }}
+                        transition={{ duration: DURATION.default }}
                      >
                         <SendConfirmation
                            onReset={resetConfirmation}
@@ -130,7 +132,7 @@ const Contact = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.25 }}
+                        transition={{ duration: DURATION.quick }}
                      >
                         <ContactForm
                            formRef={formRef}

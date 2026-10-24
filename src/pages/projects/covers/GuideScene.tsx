@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
+import useMotionPreference from "@hooks/useMotionPreference";
+import { GREEN } from "@/constants/theme";
 import {
    EASE,
    FILL,
-   GREEN,
    LINEAR,
    SOLID_FILL,
    W05,
@@ -164,6 +165,28 @@ const OtherPill = ({ y }: { y: number }) => (
    </div>
 );
 
+/* The answered route draws on. Its pathLength runs on Motion's JS frameloop,
+   which the Reduced freeze cannot pause, so Reduced shows it fully drawn and
+   still. */
+const RouteDraw = ({ tint }: Readonly<{ tint: string }>) => {
+   const { reducedMotion } = useMotionPreference();
+   if (reducedMotion) return <path d={ROUTE_D} {...drawStroke(tint)} />;
+   return (
+      <motion.path
+         d={ROUTE_D}
+         {...drawStroke(tint)}
+         initial={{ pathLength: 0, opacity: 0 }}
+         animate={{ pathLength: ROUTE_LENGTH, opacity: ROUTE_OPACITY }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            times: ROUTE_TIMES,
+            ease: ROUTE_EASE,
+         }}
+      />
+   );
+};
+
 const Tree = ({ tint }: { tint: string }) => (
    <>
       <Wires>
@@ -174,18 +197,7 @@ const Tree = ({ tint }: { tint: string }) => (
          {BRANCHES.map((c) => (
             <path key={c[3].y} d={cubicD(c)} {...hair(W18)} />
          ))}
-         <motion.path
-            d={ROUTE_D}
-            {...drawStroke(tint)}
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: ROUTE_LENGTH, opacity: ROUTE_OPACITY }}
-            transition={{
-               duration: CYCLE,
-               repeat: Infinity,
-               times: ROUTE_TIMES,
-               ease: ROUTE_EASE,
-            }}
-         />
+         <RouteDraw tint={tint} />
       </Wires>
       <Dot x={ROOT.x} y={ROOT.y} color={W50} size={11} ring />
       <Pop

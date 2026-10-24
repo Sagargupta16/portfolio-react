@@ -4,19 +4,29 @@
  * Fetches badges from Credly public API and updates achievements.json
  * with separated certifications and learning badges.
  *
+ * Follows every page of the API. Refuses to write when the result has no
+ * badges or fewer than achievements.json already lists, so a bad API answer
+ * cannot wipe the section; set CREDLY_ALLOW_FEWER=1 when a badge really was
+ * removed. The file is written in the repo's Prettier format, so it passes
+ * `pnpm format:check` as is.
+ *
  * Usage: node scripts/sync-credly.js
  *
- * Env: CREDLY_USERNAME (default: sagar-gupta.f8eb96cc)
+ * Env: CREDLY_USERNAME (default: sagar-gupta.f8eb96cc), CREDLY_ALLOW_FEWER
  */
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { format, resolveConfig } from "prettier";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_PATH = resolve(__dirname, "../data/achievements.json");
 const CREDLY_USERNAME = process.env.CREDLY_USERNAME || "sagar-gupta.f8eb96cc";
 const API_URL = `https://www.credly.com/users/${CREDLY_USERNAME}/badges.json`;
+const ALLOW_FEWER = process.env.CREDLY_ALLOW_FEWER === "1";
+// Credly serves 48 badges a page; this caps a next_page_url that never ends.
+const MAX_PAGES = 20;
 
 // Patterns that identify a full industry certification (not a learning badge)
 const CERTIFICATION_PATTERNS = [
@@ -114,40 +124,91 @@ const INITIAL_BACKOFF_MS = 1000;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function fetchBadges() {
-   console.log("Fetching badges from Credly API…");
-   let lastError;
-   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-      try {
-         const res = await fetch(API_URL, {
-            signal: AbortSignal.timeout(15_000),
-         });
-         if (res.ok) {
-            const json = await res.json();
-            const badges = json.data || json;
-            if (!Array.isArray(badges)) {
-               throw new TypeError(
-                  "Credly response did not contain a badge array (shape changed?)",
-               );
-            }
-            return badges;
+// Badge names and error text come from the Credly API; keep each log entry on
+// one line so a value with line breaks cannot forge extra log lines.
+const oneLine = (value) => String(value ?? "").replaceAll(/[\r\n]+/g, " ");
+
+// Retries by recursion so each attempt waits for the previous backoff.
+async function fetchPage(url, attempt = 1) {
+   try {
+      const res = await fetch(url, {
+         signal: AbortSignal.timeout(15_000),
+      });
+      if (res.ok) {
+         const json = await res.json();
+         const badges = json.data || json;
+         if (!Array.isArray(badges)) {
+            throw new TypeError(
+               "Credly response did not contain a badge array (shape changed?)",
+            );
          }
-         const retriable = res.status >= 500 || res.status === 429;
-         const msg = `Credly API returned ${res.status}: ${res.statusText}`;
-         const error = new Error(msg);
-         error.retriable = retriable;
-         throw error;
-      } catch (err) {
-         lastError = err;
-         if (err.retriable === false || attempt === MAX_RETRIES) throw err;
-         console.warn(`  attempt ${attempt} error: ${err.message}, retrying…`);
+         return { badges, metadata: json.metadata ?? {} };
       }
+      const retriable = res.status >= 500 || res.status === 429;
+      const msg = `Credly API returned ${res.status}: ${res.statusText}`;
+      const error = new Error(msg);
+      error.retriable = retriable;
+      throw error;
+   } catch (err) {
+      if (err.retriable === false || attempt === MAX_RETRIES) throw err;
+      console.warn(
+         `  attempt ${attempt} error: ${oneLine(err.message)}, retrying…`,
+      );
       await sleep(INITIAL_BACKOFF_MS * 2 ** (attempt - 1));
+      return fetchPage(url, attempt + 1);
    }
-   throw lastError;
+}
+
+// Paginate with recursion so each page waits for the previous one. Only
+// Credly's own next_page_url is followed.
+async function fetchBadges(url = API_URL, found = [], page = 1) {
+   const { badges, metadata } = await fetchPage(url);
+   found.push(...badges);
+   const next = metadata.next_page_url;
+   if (!next) {
+      const total = metadata.total_count;
+      if (typeof total === "number" && found.length < total) {
+         throw new Error(
+            `Credly listed ${total} badges but sent ${found.length}`,
+         );
+      }
+      return found;
+   }
+   if (page >= MAX_PAGES) throw new Error(`more than ${MAX_PAGES} pages`);
+   const nextUrl = new URL(next);
+   if (nextUrl.origin !== new URL(API_URL).origin) {
+      throw new Error(`unexpected next_page_url host ${nextUrl.host}`);
+   }
+   return fetchBadges(nextUrl.href, found, page + 1);
+}
+
+// A short or empty answer (an API hiccup, a shape change) must never shrink
+// the section; CREDLY_ALLOW_FEWER=1 accepts a real removal, never an empty list.
+function assertNotFewer(next, existing) {
+   const current =
+      (existing.certifications?.length ?? 0) +
+      (existing.learning_badges?.length ?? 0);
+   if (next === 0) throw new Error("Credly gave 0 badges; refusing to write");
+   if (next < current && !ALLOW_FEWER) {
+      throw new Error(
+         `Credly gave ${next} badges, achievements.json has ${current}; ` +
+            "refusing to write (set CREDLY_ALLOW_FEWER=1 if a badge was removed)",
+      );
+   }
+}
+
+// Format like `pnpm format` so the written file passes format:check as is.
+async function writeJson(path, data) {
+   const options = await resolveConfig(path);
+   const text = await format(JSON.stringify(data, null, 3), {
+      ...options,
+      filepath: path,
+   });
+   writeFileSync(path, text, "utf8");
 }
 
 async function main() {
+   console.log("Fetching badges from Credly API…");
    const badges = await fetchBadges();
    console.log(`Fetched ${badges.length} badges from Credly`);
 
@@ -185,6 +246,7 @@ async function main() {
    } catch {
       console.log("No existing achievements.json found, creating new one");
    }
+   assertNotFewer(certifications.length + learningBadges.length, existing);
 
    const updated = {
       certifications,
@@ -193,23 +255,27 @@ async function main() {
       coding_platform_stats: existing.coding_platform_stats || {},
    };
 
-   writeFileSync(DATA_PATH, JSON.stringify(updated, null, 3) + "\n", "utf8");
+   await writeJson(DATA_PATH, updated);
    console.log(`Updated ${DATA_PATH}`);
 
    // Summary
    console.log("\n--- Certifications ---");
    for (const c of certifications) {
-      console.log(`  ${c.name} (${c.issuer}) - ${c.issueDate}`);
+      console.log(
+         `  ${oneLine(c.name)} (${oneLine(c.issuer)}) - ${oneLine(c.issueDate)}`,
+      );
    }
    console.log("\n--- Learning Badges ---");
    for (const b of learningBadges) {
-      console.log(`  ${b.name} (${b.issuer}) - ${b.issueDate}`);
+      console.log(
+         `  ${oneLine(b.name)} (${oneLine(b.issuer)}) - ${oneLine(b.issueDate)}`,
+      );
    }
 }
 
 try {
    await main();
 } catch (err) {
-   console.error("Failed to sync Credly badges:", err.message);
+   console.error("Failed to sync Credly badges:", oneLine(err.message));
    process.exit(1);
 }
