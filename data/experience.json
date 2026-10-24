@@ -17,15 +17,15 @@
                "description": {
                   "1": "Built a Terraform landing zone: Organizations OUs, SCPs, tag policies, account baselines and least-privilege deploy roles.",
                   "2": "Automated network onboarding and tag-based firewall access with Transit Gateway.",
-                  "3": "Moved backup, patching and access into code with AWS Backup, Systems Manager Patch Manager and IAM Identity Center."
+                  "3": "Codified backup, patching and access with AWS Backup, Systems Manager Patch Manager and IAM Identity Center."
                },
                "case_study": {
                   "problem": "An enterprise customer needed its AWS landing zone built and managed as code.",
                   "built": "Terraform for the foundation: guardrails, account baselines, Identity Center access, backup and patching, and self-service network onboarding.",
                   "decisions": [
                      "One shared library of tested Terraform modules",
-                     "Tag-driven firewall access instead of hand-written rules",
-                     "Every change tested in a sandbox first, with the same least-privilege role"
+                     "Tag-based firewall access defined in code",
+                     "Every change planned and tested before apply"
                   ],
                   "outcome": "The landing zone, its guardrails and network onboarding are managed as tested Terraform code."
                },
@@ -57,7 +57,7 @@
                   "problem": "Legacy infrastructure code needed modernizing for security and scalability.",
                   "built": "Refactored and new Terraform infrastructure code that moves legacy patterns to cloud-native modules.",
                   "decisions": [
-                     "Reusable Terraform modules instead of copied code",
+                     "Reusable Terraform modules for each infrastructure pattern",
                      "Secure defaults built into the modules",
                      "Knowledge transfer alongside the code"
                   ],
@@ -221,27 +221,26 @@
          "position": "Internship",
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
-         "summary": "Underwent extensive hands-on DevOps and Cloud training, delivered multiple proof-of-concepts, and contributed to a production ECS migration project using Terraform and CI/CD pipelines.",
+         "summary": "Hands-on DevOps and cloud training, several proofs of concept, and DevOps work on a container deployment with Terraform and CI/CD.",
          "scene": "aws-intern",
          "projects": [
             {
                "name": "ECS Application Deployment with Terraform",
                "date": "Mar 2024 - Jul 2024",
                "description": {
-                  "1": "Migrated on-premises web application to AWS ECS, implementing high-availability architecture and CI/CD pipeline using AWS CodePipeline, reducing maintenance overhead.",
-                  "2": "Architected infrastructure as code using Terraform, managing AWS resources including VPC, ALB, and ECS clusters while implementing blue-green deployment strategy for zero-downtime updates.",
-                  "3": "Automated Docker image building and deployment process through integration of AWS CodeBuild, CodeDeploy, and Amazon ECR, streamlining application delivery workflow.",
-                  "4": "Established comprehensive monitoring solution using AWS X-Ray and CloudWatch for distributed tracing and full observability of application performance."
+                  "1": "Built Terraform for an ECS service: VPC, ALB, ECS and blue-green deploys.",
+                  "2": "Automated image builds and releases with CodeBuild, CodeDeploy and Amazon ECR.",
+                  "3": "Added tracing and monitoring with X-Ray and CloudWatch."
                },
                "case_study": {
-                  "problem": "An on-premises web application needed to move to AWS with high availability, zero-downtime updates and less maintenance overhead.",
-                  "built": "Migrated the application to AWS ECS, with Terraform for the VPC, ALB and ECS clusters and a CI/CD pipeline on AWS CodePipeline.",
+                  "problem": "A containerized web application needed infrastructure as code, automated releases and zero-downtime updates on AWS.",
+                  "built": "Terraform for the VPC, ALB and ECS service, with a CI/CD pipeline on AWS CodePipeline.",
                   "decisions": [
                      "Blue-green deployment strategy for zero-downtime updates",
                      "Docker builds and deploys automated through CodeBuild, CodeDeploy and Amazon ECR",
                      "X-Ray and CloudWatch for distributed tracing and observability"
                   ],
-                  "outcome": "The application moved to a high-availability ECS architecture with zero-downtime blue-green updates and reduced maintenance overhead."
+                  "outcome": "The service runs on ECS with zero-downtime blue-green releases from a CodePipeline pipeline."
                },
                "skills": [
                   "AWS",

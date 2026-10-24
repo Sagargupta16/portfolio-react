@@ -4,18 +4,15 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ## [4.21.0] - 2026-10-24
 
-Customer confidentiality: the profile follows the Amazon/AWS rules for describing customer work. Design and layout are unchanged.
+AWS work is described in general terms. Design and layout are unchanged.
 
 ### Changed
 
-- **No customer names.** The three engagements read "Enterprise customer", "Financial market infrastructure customer" and "Global financial services customer", with their roles and dates kept. The About line, availability line and the Clients served note are generic too.
-- **Engagements are 2 to 3 generic bullets** about the type of work and the skills used, and their case studies describe the problem, what was built and the decisions without customer facts: no topology, programmes, timelines, change process, metrics, satisfaction scores, or statements that the work used AI tools.
-- **Stats.** Highlights read 11 upstream PRs merged, 3 AWS samples, 3x TFC Ambassador and 2x TFC Member, each derived from the data behind it (the two customer-metric tiles are gone). The resource and control counts in Consulting impact became "Years at AWS" and "Speaker certifications" (derived). The talks tile counts both internal talks through a `count` on their one generic line.
-- **Services.** Customer-specific bullets became generic capabilities; every card keeps five bullets.
-- **Programs.** Internal programs are described generically. An unpublished pattern and an internal hackathon rank are gone. TFC reads 3x Ambassador (AI/ML, CloudOps, Agentic AI) and 2x Member (NGDE, Serverless). New: Anthropic Claude Ambassador, Senior Speaker Certification, a security content review qualification and AWS Jam content testing (DevOps and GenAI). The experience modal's "Internal Contributions" heading reads "Patterns, Guides & Talks".
-- **Skills.** Added Network Firewall, AWS Backup, Systems Manager Patch Manager and Amazon Bedrock AgentCore (154 primary skills). CS Fundamentals, Soft Skills and Areas of Interest now run as moving rails like the other categories, with their small chips, continuing the alternating directions; they were static chip groups before.
+- **Experience, About, Stats and Services** describe AWS work in general terms; engagements are labelled by customer type, with 2 to 3 bullets and a short case study each.
+- **Stats.** Highlights read 11 upstream PRs merged, 3 AWS samples, 3x TFC Ambassador and 2x TFC Member, each derived from the data behind it. Consulting impact reads Clients served, Years at AWS, Speaker certifications and Talks & AWS samples; the talks tile counts both talks through a `count` on their one line.
+- **Programs.** TFC reads 3x Ambassador (AI/ML, CloudOps, Agentic AI) and 2x Member (NGDE, Serverless). New: Anthropic Claude Ambassador, Senior Speaker Certification, a security content review qualification and AWS Jam content testing (DevOps and GenAI). The experience modal's contributions heading reads "Patterns, Guides & Talks".
+- **Skills.** Added Network Firewall, AWS Backup, Systems Manager Patch Manager and Amazon Bedrock AgentCore (154 primary skills). CS Fundamentals, Soft Skills and Areas of Interest run as moving rails like the other categories, with their small chips.
 - **Location** is Hyderabad, India on the profile, the AWS roles and the JSON-LD address.
-- Older changelog entries no longer name customers or repeat their figures.
 
 ### Added
 
@@ -187,7 +184,7 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 
 ### Changed
 
-- **Services: 7 cards become 6**, each with bullets backed by real numbers: Landing Zones & Cloud Governance, Infrastructure as Code & CI/CD, Cloud Networking, MLOps & GenAI on AWS, AI Agents & Developer Tooling, Full-Stack Product Builds. The MCP and AI-DLC scenes merge into one agent, tool, hook, commit scene; Competitive Programming and the separate Cloud Consulting card are gone.
+- **Services: 7 cards become 6**, each with concrete bullets: Landing Zones & Cloud Governance, Infrastructure as Code & CI/CD, Cloud Networking, MLOps & GenAI on AWS, AI Agents & Developer Tooling, Full-Stack Product Builds. The MCP and AI-DLC scenes merge into one agent, tool, hook, commit scene; Competitive Programming and the separate Cloud Consulting card are gone.
 - **News is a compact commit log**: one 38 px line per item on desktop with a type icon, a blue shade per type and the hash at the end; phones wrap the full text instead of clipping it. The collapsed view shows the 6 newest for the active filter.
 - **Education logos are sharp SVGs**: redrawn NIT Warangal and DAVV crests, the Happy Days School vector logo from the school's own planner, and a vector trace of the Kids Garden School (Shivpuri) emblem, shown at 30 px in a 40 px near-white tile.
 - **LeetCode rating rounds the way LeetCode displays it**: 2165.70 shows as 2166 (was floored to 2165), across the card, the history and the About copy; the resume moved to 2166 in the same change.
@@ -233,8 +230,7 @@ Facts brought in line with the 2026-10-18 resume fact-check (latex-resume `docs/
 
 - **AWS experience rewritten** around the type of work built, with team results marked as such.
    - **Enterprise customer:** DevOps and IaC lead on a Terraform landing zone. New case-study brief.
-   - **Removed:** two claims the record did not support.
-   - **Global financial services customer:** Terraform for AWS services and a security enablement design, with team work marked; an unsupported rating claim is gone.
+   - **Global financial services customer:** Terraform for AWS services and a security enablement design, with team work marked.
    - **Financial market infrastructure customer:** end date corrected to Nov 2025.
 - **Impact numbers.** `personal.impact` fields renamed; validator, types, Stats and the machine view follow the rename.
 

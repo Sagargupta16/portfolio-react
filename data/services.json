@@ -17,10 +17,10 @@
       "title": "Infrastructure as Code & CI/CD",
       "list": [
          "Terraform modules tested with tftest, PyTest",
-         "Reusable modules instead of copied Terraform",
+         "Versioned Terraform module libraries",
          "GitHub Actions, CodePipeline, OIDC roles",
          "Blue-green and canary with auto rollback",
-         "Changes tested in a sandbox account first"
+         "Plan and test before every apply"
       ]
    },
    {

@@ -19,6 +19,7 @@ const DATA_FILES = [
    "sections",
    "glossary",
    "annotations",
+   "ui",
 ];
 
 // Generated text stays plain: every dash punctuation char (en/em dash
@@ -434,6 +435,8 @@ function buildMarkdown(d) {
       "",
       ...contactLines(d),
       "",
+      clean(d.ui.footer.disclaimer),
+      "",
    ].join("\n");
 }
 
@@ -485,6 +488,8 @@ function buildLlmsTxt(d) {
       "## Contact",
       "",
       ...contactLines(d),
+      "",
+      clean(d.ui.footer.disclaimer),
       "",
    ].join("\n");
 }
