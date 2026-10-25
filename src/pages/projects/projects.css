@@ -489,7 +489,7 @@ html[data-motion="full"] .contribution-link:active {
    }
 }
 
-/* ===== Evidence badges (Published by AWS / Live / Open source) ===== */
+/* ===== Evidence badges (By me on aws-samples / Live / Open source) ===== */
 .evidence-badges {
    display: flex;
    flex-wrap: wrap;

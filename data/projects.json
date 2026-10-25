@@ -4,7 +4,7 @@
       {
          "id": 49,
          "title": "SageMaker Image Classification MLOps",
-         "description": "Published by AWS under the aws-samples organization (MIT-0) - an end-to-end, production-shaped MLOps pipeline for image classification on Amazon SageMaker, declared entirely in Terraform across 86 files and 13 reusable modules. Event-driven ingestion, multi-architecture training behind hard clinical quality gates, human-approved governed deployment, and a closed drift-to-retrain loop. The worked example classifies medical images, but the architecture is domain-agnostic.",
+         "description": "Published by me under the aws-samples organization (MIT-0) - an end-to-end, production-shaped MLOps pipeline for image classification on Amazon SageMaker, declared entirely in Terraform across 86 files and 13 reusable modules. Event-driven ingestion, multi-architecture training behind hard clinical quality gates, human-approved governed deployment, and a closed drift-to-retrain loop. The worked example classifies medical images, but the architecture is domain-agnostic.",
          "date": "July 2026",
          "status": "complete",
          "tools_tech": [
@@ -29,7 +29,7 @@
          ],
          "case_study": {
             "problem": "Taking an image classifier to production on SageMaker means wiring data validation, training, quality gates, governed deployment and drift monitoring into one lifecycle.",
-            "built": "Wrote the whole pipeline in Terraform, 86 files across 4 stacks and 13 reusable modules, published by AWS under aws-samples (MIT-0).",
+            "built": "Wrote the whole pipeline in Terraform, 86 files across 4 stacks and 13 reusable modules, published by me under aws-samples (MIT-0).",
             "decisions": [
                "Terraform owns every persistent resource; Lambda only orchestrates",
                "Clinical quality gate is a hard pipeline condition, or nothing is registered",
@@ -45,7 +45,7 @@
       {
          "id": 52,
          "title": "AWS Organizations Governance on Control Tower",
-         "description": "Published by AWS under the aws-samples organization (MIT-0), the second after the SageMaker MLOps sample - a Terraform governance layer for AWS Organizations on top of an existing Control Tower landing zone. It declares the OU hierarchy, six Organizations policy types, Control Tower baselines and controls, and delegated administrators for 15 AWS services, all from the management account.",
+         "description": "Published by me under the aws-samples organization (MIT-0), the second after the SageMaker MLOps sample - a Terraform governance layer for AWS Organizations on top of an existing Control Tower landing zone. It declares the OU hierarchy, six Organizations policy types, Control Tower baselines and controls, and delegated administrators for 15 AWS services, all from the management account.",
          "date": "September 2026",
          "status": "complete",
          "tools_tech": [
@@ -68,7 +68,7 @@
          ],
          "case_study": {
             "problem": "Teams on an existing Control Tower landing zone still need their OUs, Organizations policies, controls and delegated administrators managed as code.",
-            "built": "Wrote a Terraform root deployment for the management account, published by AWS under aws-samples, covering OUs, 20 policy documents, Control Tower controls and 15 delegated admins.",
+            "built": "Wrote a Terraform root deployment for the management account, published by me under aws-samples, covering OUs, 20 policy documents, Control Tower controls and 15 delegated admins.",
             "decisions": [
                "A root deployment, not a module, run only from the management account",
                "Creates nothing in member accounts; Macie enablement is the one documented exception",
@@ -84,7 +84,7 @@
       {
          "id": 61,
          "title": "AgentCore Harness Agent with Governed MCP Tools",
-         "description": "Published by AWS under the aws-samples organization (MIT-0), the third sample - a skills-based AI agent hosted on the Amazon Bedrock AgentCore harness and deployed entirely with Terraform. Its tools run as an MCP server on AgentCore Runtime behind AgentCore Gateway, where a default-deny Cedar policy allows only the listed tools and callers, so Claude Code, Codex and Kiro can call them directly or hand a whole request to the hosted agent.",
+         "description": "Published by me under the aws-samples organization (MIT-0), the third sample - a skills-based AI agent hosted on the Amazon Bedrock AgentCore harness and deployed entirely with Terraform. Its tools run as an MCP server on AgentCore Runtime behind AgentCore Gateway, where a default-deny Cedar policy allows only the listed tools and callers, so Claude Code, Codex and Kiro can call them directly or hand a whole request to the hosted agent.",
          "date": "October 2026",
          "status": "complete",
          "tools_tech": [
@@ -107,7 +107,7 @@
          ],
          "case_study": {
             "problem": "Teams that want to host an AI agent on AgentCore need its tools governed and its releases gated, not just a running endpoint.",
-            "built": "Wrote a Terraform stack, published by AWS under aws-samples, that hosts a skills-based agent on the AgentCore harness and serves its tools over MCP behind a Cedar-governed gateway.",
+            "built": "Wrote a Terraform stack, published by me under aws-samples, that hosts a skills-based agent on the AgentCore harness and serves its tools over MCP behind a Cedar-governed gateway.",
             "decisions": [
                "Default-deny Cedar policy at the gateway, allowing only listed tools and caller roles",
                "One container image for the harness session and the tools runtime",
