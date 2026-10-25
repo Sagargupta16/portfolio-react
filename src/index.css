@@ -231,6 +231,15 @@ img {
    animation: scroll-hint 1.8s ease-in-out infinite;
 }
 
+/* usePauseOffscreen marks a host that left the viewport. Its CSS loops hold
+   their frame until it returns; important so it beats inline animations. */
+[data-offscreen],
+[data-offscreen] *,
+[data-offscreen] *::before,
+[data-offscreen] *::after {
+   animation-play-state: paused !important;
+}
+
 /* The three timing overrides stay important: they must beat inline styles
    (the contact spinner animation, NavBar, Toast and Projects transitions)
    and more specific component rules. Nothing sets a smooth scroll-behavior,

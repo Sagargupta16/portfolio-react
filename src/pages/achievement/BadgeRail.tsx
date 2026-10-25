@@ -1,6 +1,7 @@
 import { useRef, useState, type CSSProperties } from "react";
 import { motion } from "motion/react";
 import type { LearningBadge } from "@/types";
+import usePauseOffscreen from "@hooks/usePauseOffscreen";
 import { fadeInUp, VIEWPORT_MARGIN } from "@utils/animations";
 import { DURATION, EASING } from "@/constants/theme";
 import RailBadge from "./RailBadge";
@@ -29,6 +30,8 @@ const SHIFT_TRANSITION = { duration: DURATION.quick, ease: EASING.brisk };
 const BadgeRail = ({ badges, size, gap, loopSeconds }: BadgeRailProps) => {
    const railRef = useRef<HTMLDivElement>(null);
    const [shift, setShift] = useState(0);
+   // Off-screen the track falls off the compositor and costs a full core.
+   usePauseOffscreen(railRef);
 
    // Focus pauses the marquee, but the focused badge may already have
    // travelled out of the clipped viewport. Slide the whole track so it is in

@@ -16,6 +16,7 @@ import { BreakpointProvider } from "@hooks/BreakpointProvider";
 import { MotionPreferenceProvider } from "@hooks/MotionPreferenceProvider";
 import { SectionNavigationProvider } from "@hooks/SectionNavigationProvider";
 import useMotionPreference from "@hooks/useMotionPreference";
+import useLenisOnDemand from "@hooks/useLenisOnDemand";
 import { CONTENT_SECTIONS } from "@/constants/sections";
 import { getUiCopy } from "@data/ui";
 
@@ -30,6 +31,8 @@ const LENIS_OPTIONS = {
    // prefers reduced motion. Full mode means full motion; the in-app Reduced
    // mode (which unmounts the Lenis instance) is the only gate.
    respectReducedMotion: false,
+   // useLenisOnDemand runs the frame loop only while a smooth scroll moves.
+   autoRaf: false,
 };
 
 // Site-wide floating stack field (>= 1280px). Lazy so the skill glyph
@@ -80,6 +83,7 @@ const SECTION_COMPONENTS = {
 // beside the page lets Reduced destroy scrolling without remounting content.
 const SmoothScroll = ({ children }: { children: ReactNode }) => {
    const { reducedMotion } = useMotionPreference();
+   useLenisOnDemand();
    return (
       <>
          {!reducedMotion && <ReactLenis root options={LENIS_OPTIONS} />}

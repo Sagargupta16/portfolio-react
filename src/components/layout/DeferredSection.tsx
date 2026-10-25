@@ -10,6 +10,7 @@ import ErrorBoundary from "@components/common/ErrorBoundary";
 import SectionLoader from "@components/ui/SectionLoader";
 import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useSectionNavigation from "@hooks/useSectionNavigation";
+import usePauseOffscreen, { SECTION_MARGIN } from "@hooks/usePauseOffscreen";
 import { getUiCopy } from "@data/ui";
 import { fillTemplate } from "@utils/fillTemplate";
 
@@ -56,6 +57,7 @@ const DeferredSection = ({
    const { loadThrough } = useSectionNavigation();
    const index = CONTENT_SECTIONS.findIndex((section) => section.id === id);
    const shouldRender = nearViewport || index <= loadThrough;
+   usePauseOffscreen(sectionRef, SECTION_MARGIN);
 
    useEffect(() => {
       const element = sectionRef.current;

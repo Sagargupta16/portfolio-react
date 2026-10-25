@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, type CSSProperties } from "react";
 import { motion } from "motion/react";
 import useMediaQuery from "@hooks/useMediaQuery";
+import usePauseOffscreen from "@hooks/usePauseOffscreen";
 import { fadeInUp } from "@utils/animations";
 import { MEDIA_QUERIES } from "@/constants/theme";
 import SkillChip from "./SkillChip";
@@ -40,6 +41,7 @@ const SkillRail = ({
    const canHover = useMediaQuery(MEDIA_QUERIES.hover);
    const railRef = useRef<HTMLDivElement>(null);
    const trackRef = useRef<HTMLDivElement>(null);
+   usePauseOffscreen(railRef);
 
    // Set the duration on the element itself, so a font swap or resize never
    // re-renders the chips. The track holds two copies; one copy is half.

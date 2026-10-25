@@ -135,6 +135,8 @@ Global CSS variables, Tailwind theme values, and shared CSS classes live in [src
 
 Use `useMotionPreference` for Full/Reduced behavior. Full is the default; Reduced freezes decorative movement and uses native scrolling. Preserve interactive component state when switching preferences. Only decorative artwork should be keyed by the motion preference.
 
+Loops pause while they are out of view. Sections, the hero, the footer, the cover and scene slots and the rails already call `usePauseOffscreen(ref)`; give any new looping host its own call. Lenis runs its frame loop only during a smooth scroll (`useLenisOnDemand`), so keep `autoRaf: false` in `App.tsx`.
+
 Use [Disclosure.tsx](src/components/ui/Disclosure.tsx) for expandable content. Its native `details` element owns keyboard interaction and open state; CSS animates the chevron and content entrance. Use the shared `text-action` and `action-arrow` classes for text buttons with matching hover and keyboard feedback.
 
 Check the affected section at phone and desktop widths, with keyboard navigation and in both motion modes.
