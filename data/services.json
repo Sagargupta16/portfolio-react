@@ -62,7 +62,7 @@
    {
       "id": 6,
       "key": "full-stack",
-      "title": "Full-Stack Product Builds",
+      "title": "Full-Stack Projects",
       "list": [
          "React 19 and Next.js 16 frontends",
          "FastAPI and Node.js APIs with WebSockets",

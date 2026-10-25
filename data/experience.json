@@ -7,7 +7,7 @@
          "position": "Full-time",
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
-         "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
+         "summary": "Helping enterprise customers design, migrate, implement and build scalable solutions on AWS with infrastructure automation and MLOps.",
          "scene": "consulting-loop",
          "projects": [
             {
@@ -211,7 +211,7 @@
          "position": "Internship",
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
-         "summary": "Hands-on DevOps and cloud training, several proofs of concept, and DevOps work on a container deployment with Terraform and CI/CD.",
+         "summary": "Hands-on DevOps and cloud training, several proofs of concept, and Terraform and CI/CD for a container deployment.",
          "scene": "aws-intern",
          "projects": [
             {

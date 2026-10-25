@@ -2,7 +2,7 @@
    "about": {
       "nav": "About",
       "title": "About *me*",
-      "subtitle": "Cloud consultant, open-source contributor",
+      "subtitle": "Cloud consultant at AWS, open-source contributor",
       "facts": {
          "based_in": "Based in",
          "role": "Role",
@@ -54,7 +54,7 @@
    "projects": {
       "nav": "Projects",
       "title": "Things I've *built*",
-      "subtitle": "Projects",
+      "subtitle": "Projects and samples",
       "subsections": { "open_source": "Open Source Contributions" },
       "links": {
          "details": "Details",

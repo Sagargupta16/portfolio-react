@@ -183,7 +183,7 @@ export interface Highlight {
    value: string;
    label: string;
    note?: string;
-   derived_from?: "aws_samples" | "tfc_ambassador" | "merged_prs";
+   derived_from?: "aws_samples" | "tfc_ambassador" | "leetcode_peak";
 }
 
 export interface ImpactStats {

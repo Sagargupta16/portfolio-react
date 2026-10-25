@@ -1171,13 +1171,9 @@ const HIGHLIGHT_COUNTS = {
          .find(Boolean);
       return count ? `${count}x` : "(no Nx TFC Ambassador entry)";
    },
-   // Merged pull requests only, as the Stats open-source tile counts them.
-   merged_prs: () =>
-      String(
-         (projects?.open_source_contributions ?? []).filter(
-            (c) => c?.status === "merged" && c?.url?.includes("/pull/"),
-         ).length,
-      ),
+   // The peak rating the weekly sync keeps in the LeetCode stats.
+   leetcode_peak: () =>
+      String(achievements?.coding_platform_stats?.leetcode?.best_rating ?? ""),
 };
 
 const checkHighlight = (item, path) => {
