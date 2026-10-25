@@ -176,7 +176,7 @@ function contactLines({ personal, contact }) {
       contact.email && `- Email: ${contact.email}`,
       linkedin && `- LinkedIn: ${linkedin}`,
       github && `- GitHub: ${github}`,
-      contact.booking && `- Book a call: ${contact.booking}`,
+      contact.booking && `- Schedule a chat: ${contact.booking}`,
    ].filter(Boolean);
 }
 
@@ -226,7 +226,7 @@ function jobLines(job) {
    ];
    const recognition = extras.length
       ? [
-           "#### Patterns, guides, talks and recognition",
+           "#### Samples, reviews, talks and recognition",
            "",
            ...extras.map(
               (item) => `- ${clean(item.title)} (${clean(item.year)})`,
@@ -383,7 +383,7 @@ const educationBlock = (education) => [
 ];
 
 const servicesBlock = (services) => [
-   "## Services",
+   "## Focus areas",
    "",
    ...(services ?? []).map(
       (service) =>

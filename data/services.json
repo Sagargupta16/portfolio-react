@@ -30,8 +30,8 @@
       "list": [
          "Transit Gateway hub-and-spoke with inspection",
          "Self-service VPC onboarding automation",
-         "Tag-based firewall access rules",
-         "IP address planning with pooled CIDRs",
+         "Multi-account VPC and IP address design",
+         "Route 53 DNS across accounts",
          "Hybrid connectivity for on-premises networks"
       ]
    },

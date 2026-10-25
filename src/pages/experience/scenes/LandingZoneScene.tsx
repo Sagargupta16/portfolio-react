@@ -49,8 +49,7 @@ import {
  *                 quick sweep (automated setup, shown as speed)
  *   onboarding    the account's spoke VPC lights, attaches to the hub, gets
  *                 its own route table row, and a tag opens the firewall
- *   traffic       a packet leaves the VPC through the firewall and crosses
- *                 to another hub
+ *   traffic       a packet leaves the VPC through the firewall to the hub
  * 11 animated nodes, 4 labels.
  */
 
@@ -134,7 +133,6 @@ const Tree = ({ tint }: Readonly<TintProps>) => (
 /* ---------------- network hubs and onboarding ---------------- */
 
 const HUB_A: Pt = [212, 40];
-const HUB_B: Pt = [278, 40];
 const HUB_R = 9;
 const VPC: Box = [192, 136, 40, 22];
 const VPC_TOP: Pt = [212, VPC[1]];
@@ -142,7 +140,7 @@ const ATTACH = `M${VPC_TOP[0]},${VPC_TOP[1]} V${HUB_A[1] + HUB_R}`;
 const ROUTES: Box = [228, 88, 54, 40];
 const FIREWALL: Pt = [212, 76];
 const ACCOUNT_LINK = curveD(sCurve([145, 107], [VPC[0], 147]));
-const TRAFFIC = route(line(VPC_TOP, HUB_A), line(HUB_A, HUB_B));
+const TRAFFIC = route(line(VPC_TOP, HUB_A));
 
 const VPC_LIT = held(0.38);
 const ATTACHED = beat(
@@ -179,12 +177,7 @@ const Hub = ({ at, tint }: Readonly<TintProps & { at: Pt }>) => (
 
 const Network = ({ tint }: Readonly<TintProps>) => (
    <>
-      <Wire d={`M${HUB_A[0] + HUB_R},40 H${HUB_B[0] - HUB_R}`} stroke={W16} />
-      {/* an existing spoke on the second hub */}
-      <Wire d={`M${HUB_B[0]},${HUB_B[1] + HUB_R} V64`} stroke={W16} />
-      <Panel box={[268, 64, 20, 12]} rx={2.5} />
       <Hub at={HUB_A} tint={tint} />
-      <Hub at={HUB_B} tint={tint} />
       <Dashed d={ATTACH} />
       <Draw d={ATTACH} color={tint} width={1.4} loop={ATTACHED} />
       <Wire d={`M212,108 H${ROUTES[0]}`} stroke={W16} />
@@ -227,9 +220,7 @@ const Front = ({ tint }: Readonly<TintProps>) => (
       </motion.span>
       <Label at={[35, 70]}>OU</Label>
       <Pip at={[141, 103.5]} color={GREEN} loop={BASELINE_OK} />
-      <Label at={[245, 29]} centered>
-         TGW
-      </Label>
+      <Label at={[226, 40]}>TGW</Label>
       <div style={firewall} />
       <Label at={[212, 147]} centered>
          VPC

@@ -133,7 +133,7 @@
          "booking": {
             "keywords": "book a call schedule meeting cal",
             "command": "cal book",
-            "hint": "Book a call"
+            "hint": "Schedule a chat"
          },
          "motion": {
             "keywords": "motion animation toggle reduced full",

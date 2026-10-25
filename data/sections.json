@@ -30,8 +30,8 @@
       },
       "modal": {
          "close": "Close experience details",
-         "contributions": "Patterns, Guides & Talks",
-         "achievements": "Internal Achievements",
+         "contributions": "Samples, Reviews & Talks",
+         "achievements": "Programs & Recognition",
          "skills": "Key Skills",
          "full_details": "Full details"
       }
@@ -157,12 +157,12 @@
       }
    },
    "services": {
-      "nav": "Services",
-      "title": "Services",
-      "subtitle": "What I can help with",
-      "blurb": "What I can build for your team",
-      "cta": "Let's talk",
-      "cta_label": "Discuss {title}"
+      "nav": "Focus Areas",
+      "title": "Focus Areas",
+      "subtitle": "What I work on",
+      "blurb": "Areas I work in, at AWS and in open source",
+      "cta": "Ask me about this",
+      "cta_label": "Ask about {title}"
    },
    "stats": {
       "nav": "Stats",
@@ -195,7 +195,7 @@
    "contact": {
       "nav": "Contact",
       "title": "Let's *talk*",
-      "subtitle": "Send a note or book a call",
+      "subtitle": "Send a note or schedule a chat",
       "card_label": "{title}: {value}",
       "vcard": {
          "label": "Save contact card",
@@ -207,7 +207,7 @@
          "email": "Email",
          "email_placeholder": "john@example.com",
          "message": "Message",
-         "message_placeholder": "What are you trying to build or migrate?",
+         "message_placeholder": "What would you like to talk about?",
          "send": "Send Message",
          "send_label": "Send message",
          "sending_label": "Sending message...",
