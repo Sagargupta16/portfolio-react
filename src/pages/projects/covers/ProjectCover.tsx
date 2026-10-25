@@ -4,6 +4,7 @@ import ErrorBoundary from "@components/common/ErrorBoundary";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import useMotionPreference from "@hooks/useMotionPreference";
 import usePauseOffscreen from "@hooks/usePauseOffscreen";
+import useSceneClock from "@hooks/useSceneClock";
 import { getProjectCover } from "./coverRegistry";
 import { BASE_GRADIENT } from "./kit/sceneTokens";
 
@@ -39,6 +40,7 @@ const ProjectCover = ({ projectId, accent }: ProjectCoverProps) => {
    const { preference } = useMotionPreference();
    useFreezeAnimations(frameRef);
    usePauseOffscreen(frameRef);
+   useSceneClock(frameRef);
    if (!cover) return null;
 
    let media: ReactNode;

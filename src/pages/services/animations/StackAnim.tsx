@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { GREEN, MONO_FONT } from "@/constants/theme";
+import { sceneDriver } from "@utils/sceneClock";
 
 interface StackAnimProps {
    color: string;
@@ -310,6 +311,7 @@ const CommittedRow = ({
          transition={{
             duration: LOOP,
             repeat: Infinity,
+            driver: sceneDriver,
             ease: perSegment(times, "easeOut"),
             times,
          }}
@@ -339,6 +341,7 @@ const TravelDot = ({ color, hop }: Readonly<TravelDotProps>) => (
       transition={{
          duration: LOOP,
          repeat: Infinity,
+         driver: sceneDriver,
          ease: perSegment(hop.times, "easeInOut"),
          times: hop.times,
       }}
@@ -363,6 +366,7 @@ const LiveDot = () => (
       transition={{
          duration: LOOP / 4,
          repeat: Infinity,
+         driver: sceneDriver,
          ease: perSegment(LIVE_TIMES, "easeInOut"),
          times: LIVE_TIMES,
       }}

@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Easing, Transition } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
 import { pct } from "../kit/sceneTokens";
+import { sceneDriver } from "@utils/sceneClock";
 
 /* Shared timing, geometry and palette tokens for the AutomationScene family.
 
@@ -33,6 +34,7 @@ export const loop = (...stamps: number[]): Transition => {
    return {
       duration: CYCLE,
       repeat: Infinity,
+      driver: sceneDriver,
       times,
       ease: perSegment(times),
    };

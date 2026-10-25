@@ -4,12 +4,16 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ## [4.21.3] - 2026-10-25
 
-An open tab no longer keeps the laptop busy. Measured idle in Chrome on a 240 Hz panel at 1440 x 900: the hero after one scroll through the page drops from 141 to 198% of a CPU core to about 70%, Contact from 136% to 50%, a fresh hero from 87% to 70%. Every animation looks and moves as before.
+An open tab no longer keeps the laptop busy. Measured idle in Chrome on a 240 Hz panel at 1440 x 900: the hero after one scroll through the page drops from 141 to 198% of a CPU core to about 70%, Contact from 136% to 50%, a fresh hero from 87% to 70%. The scene clock below takes Projects from 195% to 151%, Experience from 134% to 94% and Focus Areas from 137% to 108% (same build with the clock forced off).
 
 ### Fixed
 
 - **Loops pause while out of view.** Sections, the hero, the footer, every cover, scene and Focus Areas slot, and the badge and skill rails hold their loops once they leave the viewport and resume where they stopped (`usePauseOffscreen`). Off-screen, Chrome had dropped the Credly badge rail from the compositor, and once Achievements had loaded it held a full core for the rest of the visit.
 - **Smooth scrolling runs only while it scrolls.** Lenis asked for a frame on every display refresh even when idle, 240 a second on a 240 Hz screen; its loop now starts with each smooth scroll and sleeps when it settles (`useLenisOnDemand`). Wheel and link scrolls cover the same distance in the same time as before.
+
+### Changed
+
+- **Scene loops update 60 times a second on fast screens.** On displays above 75 Hz, the SVG parts of the project covers, experience scenes and Focus Areas art run on one shared 60 Hz clock (`utils/sceneClock`, `sceneDriver` on every infinite scene transition, `useSceneClock` in the three slots) instead of the display's rate: Chrome repaints the page for SVG loops on every refresh, 240 times a second on a 240 Hz panel. Pace and timing are unchanged; HTML parts, scrolling, hover and every other animation keep the full rate, and 60 Hz screens keep Motion's own loop.
 
 ## [4.21.2] - 2026-10-25
 

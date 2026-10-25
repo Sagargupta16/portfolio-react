@@ -14,6 +14,7 @@ import {
    type Axis,
    type Pt,
 } from "./shared";
+import { sceneDriver } from "@utils/sceneClock";
 
 /* Layers every stage composes: Backdrop (back), Wires (mid hairlines),
    Packet (front, data in flight). Only components live here; the geometry
@@ -102,6 +103,7 @@ export const Backdrop = ({
             transition={{
                duration: LATTICE_DRIFT,
                repeat: Infinity,
+               driver: sceneDriver,
                ease: "linear",
             }}
             style={{

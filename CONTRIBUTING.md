@@ -135,7 +135,7 @@ Global CSS variables, Tailwind theme values, and shared CSS classes live in [src
 
 Use `useMotionPreference` for Full/Reduced behavior. Full is the default; Reduced freezes decorative movement and uses native scrolling. Preserve interactive component state when switching preferences. Only decorative artwork should be keyed by the motion preference.
 
-Loops pause while they are out of view. Sections, the hero, the footer, the cover and scene slots and the rails already call `usePauseOffscreen(ref)`; give any new looping host its own call. Lenis runs its frame loop only during a smooth scroll (`useLenisOnDemand`), so keep `autoRaf: false` in `App.tsx`.
+Loops pause while they are out of view. Sections, the hero, the footer, the cover and scene slots and the rails already call `usePauseOffscreen(ref)`; give any new looping host its own call. Lenis runs its frame loop only during a smooth scroll (`useLenisOnDemand`), so keep `autoRaf: false` in `App.tsx`. Every infinite loop in a cover, experience scene or Focus Areas canvas takes `driver: sceneDriver` from `@utils/sceneClock` in its transition (the kit's `loopProps` already does), so it runs on the shared 60 Hz scene clock on fast screens; the slots call `useSceneClock`.
 
 Use [Disclosure.tsx](src/components/ui/Disclosure.tsx) for expandable content. Its native `details` element owns keyboard interaction and open state; CSS animates the chevron and content entrance. Use the shared `text-action` and `action-arrow` classes for text buttons with matching hover and keyboard feedback.
 

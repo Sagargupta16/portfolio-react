@@ -17,6 +17,7 @@ import {
    yPct,
 } from "./sceneTokens";
 import type { Point } from "./sceneTokens";
+import { sceneDriver } from "@utils/sceneClock";
 
 /* Shared building blocks for the AutomationScene family: the scene SVG, the
    mid-layer panels and wires, and the front-layer packets, status dots and
@@ -175,6 +176,7 @@ export const Packet = ({
    const move = {
       duration: CYCLE,
       repeat: Infinity,
+      driver: sceneDriver,
       times: moveTimes,
       ease: moveEase,
    };
@@ -235,7 +237,12 @@ export const CronGlyph = ({
    >
       <motion.div
          animate={{ rotate: 360 }}
-         transition={{ duration: CYCLE, repeat: Infinity, ease: "linear" }}
+         transition={{
+            duration: CYCLE,
+            repeat: Infinity,
+            driver: sceneDriver,
+            ease: "linear",
+         }}
          style={{
             position: "absolute",
             left: 4.25,

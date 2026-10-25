@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { BG_PRIMARY, MONO_FONT } from "@/constants/theme";
 import { pct } from "../kit/sceneTokens";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Tokens and timeline helpers shared by the three Terraform on AWS cover
@@ -50,6 +51,7 @@ export const loop = (duration: number, times: number[], ease: Ease = EASE) => ({
    times,
    ease: times.slice(1).map(() => ease),
    repeat: Infinity,
+   driver: sceneDriver,
 });
 
 /* Fade in at `at`, hold, then fade out with the rest of the scene. */

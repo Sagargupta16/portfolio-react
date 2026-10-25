@@ -4,6 +4,7 @@ import ErrorBoundary from "@components/common/ErrorBoundary";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import useMotionPreference from "@hooks/useMotionPreference";
 import usePauseOffscreen from "@hooks/usePauseOffscreen";
+import useSceneClock from "@hooks/useSceneClock";
 import type { EngagementSceneKey } from "@/types";
 import { BASE_GRADIENT } from "@pages/projects/covers/kit/sceneTokens";
 import { ENGAGEMENT_SCENES } from "./sceneRegistry";
@@ -50,6 +51,7 @@ const EngagementScene = ({
    const { preference } = useMotionPreference();
    useFreezeAnimations(slotRef);
    usePauseOffscreen(slotRef);
+   useSceneClock(slotRef);
    const Scene = ENGAGEMENT_SCENES[scene];
 
    return (

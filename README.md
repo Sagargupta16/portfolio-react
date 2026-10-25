@@ -149,7 +149,7 @@ src/
 │   ├── projects.ts
 │   ├── sections.ts                    # getSectionCopy: section headings
 │   └── ...
-├── hooks/                             # Breakpoint, focus, section-navigation, and motion providers; off-screen loop pause, on-demand Lenis
+├── hooks/                             # Breakpoint, focus, section-navigation, and motion providers; off-screen loop pause, on-demand Lenis, scene clock
 ├── pages/                             # 10 page sections (each split into sub-files)
 │   ├── about/
 │   ├── experience/

@@ -30,6 +30,7 @@ import {
    Text,
    Wires,
 } from "./primitives";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * skillcheck: `skillcheck lint` opens a SKILL.md and a rule head sweeps its
@@ -180,6 +181,7 @@ const ScanHead = ({ tint }: { tint: string }) => (
       transition={{
          duration: CYCLE,
          repeat: Infinity,
+         driver: sceneDriver,
          times: SCAN_TIMES,
          ease: SCAN_EASE,
       }}

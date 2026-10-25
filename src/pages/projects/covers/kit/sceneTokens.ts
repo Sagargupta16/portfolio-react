@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { BG_PRIMARY, MONO_FONT } from "@/constants/theme";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Stage kit shared by the Gate, Mcp and Plugin cover families.
@@ -128,8 +129,9 @@ export type Keys = Omit<Loop, "duration">;
 /*
  * Motion hands opacity to WAAPI, where a single ease string stretches over the
  * whole iteration and drags keyframes off their `times`, while transforms and
- * stroke props ease per segment on the JS frameloop. One ease per segment
- * keeps every track on the storyboard clock.
+ * stroke props ease per segment on the JS loop. One ease per segment keeps
+ * every track on the storyboard clock. sceneDriver puts the JS loop on the
+ * shared 60 Hz scene clock on fast screens (utils/sceneClock).
  */
 export const loopProps = ({
    duration,
@@ -143,6 +145,7 @@ export const loopProps = ({
       times,
       ease: times.slice(1).map(() => ease),
       repeat: Infinity,
+      driver: sceneDriver,
    },
 });
 

@@ -29,6 +29,7 @@ import {
    SceneRoot,
    Wires,
 } from "./primitives";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Awesome MCP Servers: the "Suggest a server" form becomes one
@@ -198,6 +199,7 @@ const Gate = ({ tint }: { tint: string }) => (
          transition={{
             duration: CYCLE,
             repeat: Infinity,
+            driver: sceneDriver,
             times: SCAN_TIMES,
             ease: SCAN_EASE,
          }}

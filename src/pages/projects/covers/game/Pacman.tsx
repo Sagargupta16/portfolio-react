@@ -25,6 +25,7 @@ import {
    washStyle,
 } from "./shared";
 import { DOOR_D, DOTS_D, HOUSE_D, WALLS_D } from "./pacmanMaze";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * PacMan Game Unity on the repo's own maze: the 26 x 29 dot grid and wall
@@ -269,7 +270,12 @@ const PacMan = ({ tint }: { tint: string }) => (
          fill={INK}
          initial={{ scaleY: 1 }}
          animate={{ scaleY: CHOMP }}
-         transition={{ duration: 0.3, repeat: Infinity, ease: eases(2) }}
+         transition={{
+            duration: 0.3,
+            repeat: Infinity,
+            driver: sceneDriver,
+            ease: eases(2),
+         }}
       />
    </motion.g>
 );

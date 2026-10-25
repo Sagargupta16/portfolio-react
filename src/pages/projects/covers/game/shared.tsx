@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { MONO_FONT } from "@/constants/theme";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Shared vocabulary for the Unity 2D game covers (GameScene variants).
@@ -75,6 +76,7 @@ export const loop = (
 ) => ({
    duration,
    repeat: Infinity,
+   driver: sceneDriver,
    times,
    ease: eases(times.length - 1, ease),
 });

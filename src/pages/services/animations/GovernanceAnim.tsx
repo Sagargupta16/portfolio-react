@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
+import { sceneDriver } from "@utils/sceneClock";
 
 interface GovernanceAnimProps {
    color: string;
@@ -75,6 +76,7 @@ const TRAVEL_EASE: Ease[] = ["linear", "easeInOut", "linear"];
 const loop = (times: number[], ease: Ease | Ease[] = "linear") => ({
    duration: LOOP,
    repeat: Infinity,
+   driver: sceneDriver,
    times,
    ease: Array.isArray(ease) ? ease : times.slice(1).map(() => ease),
 });

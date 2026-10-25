@@ -36,6 +36,7 @@ import {
    Text,
    Wires,
 } from "./docs/primitives";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Deploy Guide: the README's Quick Decision Tree routes "what are you
@@ -180,6 +181,7 @@ const RouteDraw = ({ tint }: Readonly<{ tint: string }>) => {
          transition={{
             duration: CYCLE,
             repeat: Infinity,
+            driver: sceneDriver,
             times: ROUTE_TIMES,
             ease: ROUTE_EASE,
          }}

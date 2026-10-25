@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import type { Easing, Transition } from "motion/react";
 import { MONO_FONT, GREEN } from "@/constants/theme";
+import { sceneDriver } from "@utils/sceneClock";
 
 interface PipelineAnimProps {
    color: string;
@@ -105,6 +106,7 @@ const LED_SCALE = [1, 1, 1.4, 1, 1.4, 1, 1.4, 1, 1];
 const loop = (times: number[], ease: Easing = EASE): Transition => ({
    duration: LOOP,
    repeat: Infinity,
+   driver: sceneDriver,
    times,
    ease: times.slice(1).map(() => ease),
 });

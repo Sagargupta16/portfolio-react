@@ -1,6 +1,8 @@
 import { lazy, Suspense, type ReactNode } from "react";
 import { ReactLenis } from "lenis/react";
 import "@utils/chunkReload";
+// Measures the display rate at startup, before any scene loop starts.
+import "@utils/sceneClock";
 import Nav from "@components/layout/Navigation/Nav";
 import Hero from "@components/layout/Header/Hero";
 import AmbientBackground from "@components/layout/AmbientBackground";

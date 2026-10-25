@@ -22,6 +22,7 @@ import {
    washStyle,
    type Ease,
 } from "./shared";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Flappy Bird Game Unity: Bird.cs sets a constant rightward velocity and
@@ -60,6 +61,7 @@ const BIRD_EASE: Ease[] = [
 const birdMotion = (delay = 0) => ({
    duration: CYCLE,
    repeat: Infinity,
+   driver: sceneDriver,
    times: BIRD_TIMES,
    ease: BIRD_EASE,
    delay,
@@ -176,6 +178,7 @@ const PostShape = ({ post }: { post: Post }) => {
             y: {
                duration: post.switchTime * 2,
                repeat: Infinity,
+               driver: sceneDriver,
                times: SINK_TIMES,
                ease: SINK_EASE,
             },
