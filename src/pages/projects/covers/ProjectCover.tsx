@@ -3,6 +3,8 @@ import { useInView } from "motion/react";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import useMotionPreference from "@hooks/useMotionPreference";
+import usePauseOffscreen from "@hooks/usePauseOffscreen";
+import useSceneClock from "@hooks/useSceneClock";
 import { getProjectCover } from "./coverRegistry";
 import { BASE_GRADIENT } from "./kit/sceneTokens";
 
@@ -12,7 +14,8 @@ interface ProjectCoverProps {
 }
 
 // A scene mounts only while its card sits within this distance of the
-// viewport, so a 44-card grid never runs more than a few loops at once.
+// viewport, so a 44-card grid never runs more than a few loops at once. Its
+// loops wait for the card itself to be in view (usePauseOffscreen).
 const SCENE_MOUNT_MARGIN = "300px 0px";
 
 // Same base gradient every scene paints first, so a scene mounting over the
@@ -36,6 +39,8 @@ const ProjectCover = ({ projectId, accent }: ProjectCoverProps) => {
    const nearViewport = useInView(frameRef, { margin: SCENE_MOUNT_MARGIN });
    const { preference } = useMotionPreference();
    useFreezeAnimations(frameRef);
+   usePauseOffscreen(frameRef);
+   useSceneClock(frameRef);
    if (!cover) return null;
 
    let media: ReactNode;

@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Backdrop } from "./StageParts";
 import { EASE, WHITE_03, WHITE_10, span, type PanelProps } from "./shared";
+import { sceneDriver } from "@utils/sceneClock";
 
 /* Fallback for an unknown variant: one panel, three skeleton rows breathing. */
 
@@ -26,6 +27,7 @@ const DefaultPanel = ({ tint }: PanelProps) => (
                   transition={{
                      duration: 2.6,
                      repeat: Infinity,
+                     driver: sceneDriver,
                      delay: row * 0.4,
                      ease: [EASE, EASE],
                   }}

@@ -4,6 +4,7 @@ import { ChevronDown } from "lucide-react";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import { getUiCopy } from "@data/ui";
 import useSectionNavigation from "@hooks/useSectionNavigation";
+import usePauseOffscreen, { SECTION_MARGIN } from "@hooks/usePauseOffscreen";
 import HeroContent from "./HeroContent";
 
 const HeroStackField = lazy(() => import("./HeroStackField"));
@@ -17,6 +18,7 @@ const OMIT_FIELD = <></>;
 const Hero = () => {
    const sectionRef = useRef<HTMLElement>(null);
    const { navigateToSection } = useSectionNavigation();
+   usePauseOffscreen(sectionRef, SECTION_MARGIN);
 
    return (
       <section

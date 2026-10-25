@@ -29,6 +29,7 @@ import {
    Text,
    Wires,
 } from "./primitives";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Claude Code Recipes: a command recipe (frontmatter `model: sonnet`) is
@@ -271,6 +272,7 @@ const Prompt = ({ tint }: { tint: string }) => (
                transition={{
                   duration: CYCLE,
                   repeat: Infinity,
+                  driver: sceneDriver,
                   times: COVER_TIMES,
                   ease: COVER_EASE,
                }}
@@ -290,6 +292,7 @@ const Prompt = ({ tint }: { tint: string }) => (
             transition={{
                duration: 1,
                repeat: Infinity,
+               driver: sceneDriver,
                times: [0, 0.5, 1],
                ease: [LINEAR, LINEAR],
             }}

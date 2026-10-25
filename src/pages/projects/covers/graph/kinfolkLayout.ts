@@ -1,4 +1,5 @@
 import type { Easing, Transition } from "motion/react";
+import { sceneDriver } from "@utils/sceneClock";
 
 /* Geometry, palette and beats for GraphScene (Kinfolk), in one 1600 x 1000
    viewBox that matches the 16:10 slot. Static hairlines are non-scaling;
@@ -21,7 +22,13 @@ export const secs = (...stamps: number[]): number[] =>
 export const loop = (...stamps: number[]): Transition => {
    const times = secs(...stamps);
    const ease: Easing[] = times.slice(1).map(() => "easeInOut");
-   return { duration: CYCLE, repeat: Infinity, times, ease };
+   return {
+      duration: CYCLE,
+      repeat: Infinity,
+      driver: sceneDriver,
+      times,
+      ease,
+   };
 };
 
 export const hairline = (stroke: string) => ({

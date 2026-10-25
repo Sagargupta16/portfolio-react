@@ -1,3 +1,4 @@
+import { sceneDriver } from "@utils/sceneClock";
 /*
  * Data, geometry and storyboard for the Stock Market Prediction cover, in
  * the 160 x 100 viewBox. Names follow SMP.ipynb: seq_length 5, six
@@ -25,6 +26,7 @@ type Ease = "linear" | "easeInOut";
 export const loop = (times: number[], ease: Ease = "easeInOut") => ({
    duration: CYCLE,
    repeat: Infinity,
+   driver: sceneDriver,
    times,
    ease: times.slice(1).map(() => ease),
 });

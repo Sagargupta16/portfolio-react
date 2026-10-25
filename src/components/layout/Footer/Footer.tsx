@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { staggerContainer } from "@utils/animations";
+import usePauseOffscreen, { SECTION_MARGIN } from "@hooks/usePauseOffscreen";
 import { MONO_FONT, TEXT_PRIMARY } from "@/constants/theme";
 import { getUiCopy } from "@data/ui";
 import FooterContent from "./FooterContent";
@@ -23,6 +24,8 @@ const MODIFIER_KEYS = new Set(["shift", "capslock"]);
 
 const Footer = () => {
    const [easterEgg, setEasterEgg] = useState(false);
+   const footerRef = useRef<HTMLElement>(null);
+   usePauseOffscreen(footerRef, SECTION_MARGIN);
 
    // Matches the last ten keys rather than stepping an index, so a near miss
    // such as a third ArrowUp still completes, and B/A match in any case.
@@ -44,6 +47,7 @@ const Footer = () => {
 
    return (
       <footer
+         ref={footerRef}
          className="footer-fade"
          style={{
             position: "relative",

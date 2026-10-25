@@ -19,6 +19,7 @@ import {
    pctY,
 } from "./kit/sceneTokens";
 import type { Box, Loop, TintProps } from "./kit/sceneTokens";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Claude Cost Optimizer: what one Claude Code session pays per turn, and the
@@ -114,6 +115,7 @@ const motionOf = (loop: Loop | Stretch) => {
          times,
          ease: times.slice(1).map(() => "easeInOut" as const),
          repeat: Infinity,
+         driver: sceneDriver,
       },
    };
 };

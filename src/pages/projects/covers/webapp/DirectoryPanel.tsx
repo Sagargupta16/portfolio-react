@@ -20,6 +20,7 @@ import {
    type PanelProps,
    type Pt,
 } from "./shared";
+import { sceneDriver } from "@utils/sceneClock";
 
 /* MCA NITW portal, logged in: the SideNavBar's Alumni link is pressed, the
    alumni loader calls /users/all, the server holds the reply for its one
@@ -134,7 +135,12 @@ const UsersAll = ({ tint }: PanelProps) => (
          animate={{ opacity: ON_OFF, rotate: 360 }}
          transition={{
             opacity: loop(CYCLE, WAIT_TIMES),
-            rotate: { duration: 0.8, repeat: Infinity, ease: "linear" },
+            rotate: {
+               duration: 0.8,
+               repeat: Infinity,
+               driver: sceneDriver,
+               ease: "linear",
+            },
          }}
          style={{
             position: "absolute",

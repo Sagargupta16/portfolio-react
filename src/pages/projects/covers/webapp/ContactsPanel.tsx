@@ -23,6 +23,7 @@ import {
    span,
    type PanelProps,
 } from "./shared";
+import { sceneDriver } from "@utils/sceneClock";
 
 /* Orbit, "the people in your orbit": circles on the left (Family, Friends,
    Work, Network) with contacts riding them. One leaves its ring and lands
@@ -108,7 +109,12 @@ const OrbitRings = ({ tint }: PanelProps) => (
       <motion.div
          initial={{ rotate: 0 }}
          animate={{ rotate: 360 }}
-         transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+         transition={{
+            duration: 40,
+            repeat: Infinity,
+            driver: sceneDriver,
+            ease: "linear",
+         }}
          style={{ position: "absolute", inset: 0 }}
       >
          {RIDERS.map((r) => (
@@ -124,7 +130,12 @@ const OrbitRings = ({ tint }: PanelProps) => (
       <motion.span
          initial={{ opacity: 0.6 }}
          animate={{ opacity: [0.6, 1, 0.6] }}
-         transition={{ duration: 2.7, repeat: Infinity, ease: [EASE, EASE] }}
+         transition={{
+            duration: 2.7,
+            repeat: Infinity,
+            driver: sceneDriver,
+            ease: [EASE, EASE],
+         }}
          style={{
             position: "absolute",
             left: "50%",

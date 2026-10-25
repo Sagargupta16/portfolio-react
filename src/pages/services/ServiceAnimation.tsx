@@ -3,6 +3,8 @@ import { useInView } from "motion/react";
 import type { ServiceKey } from "@/types";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import useMotionPreference from "@hooks/useMotionPreference";
+import usePauseOffscreen from "@hooks/usePauseOffscreen";
+import useSceneClock from "@hooks/useSceneClock";
 import GovernanceAnim from "./animations/GovernanceAnim";
 import PipelineAnim from "./animations/PipelineAnim";
 import NetworkAnim from "./animations/NetworkAnim";
@@ -51,6 +53,8 @@ const ServiceAnimation = ({
    const nearViewport = useInView(frameRef, { margin: ART_MOUNT_MARGIN });
    const { preference } = useMotionPreference();
    useFreezeAnimations(frameRef);
+   usePauseOffscreen(frameRef);
+   useSceneClock(frameRef);
 
    if (!AnimComponent) return null;
 

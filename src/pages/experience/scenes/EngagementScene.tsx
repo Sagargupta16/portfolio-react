@@ -3,6 +3,8 @@ import { useInView } from "motion/react";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
 import useMotionPreference from "@hooks/useMotionPreference";
+import usePauseOffscreen from "@hooks/usePauseOffscreen";
+import useSceneClock from "@hooks/useSceneClock";
 import type { EngagementSceneKey } from "@/types";
 import { BASE_GRADIENT } from "@pages/projects/covers/kit/sceneTokens";
 import { ENGAGEMENT_SCENES } from "./sceneRegistry";
@@ -35,7 +37,8 @@ const BOTTOM_FADE: CSSProperties = {
 
 /**
  * Decorative slot for an engagement scene: lazy, mounted near the viewport,
- * frozen on its rest frame in Reduced mode and restarted when Full returns.
+ * paused while the slot itself is out of view, frozen on its rest frame in
+ * Reduced mode and restarted when Full returns.
  */
 const EngagementScene = ({
    scene,
@@ -47,6 +50,8 @@ const EngagementScene = ({
    const nearViewport = useInView(slotRef, { margin: MOUNT_MARGIN });
    const { preference } = useMotionPreference();
    useFreezeAnimations(slotRef);
+   usePauseOffscreen(slotRef);
+   useSceneClock(slotRef);
    const Scene = ENGAGEMENT_SCENES[scene];
 
    return (

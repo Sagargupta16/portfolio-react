@@ -26,6 +26,7 @@ import {
    loop,
    secs,
 } from "./kinfolkLayout";
+import { sceneDriver } from "@utils/sceneClock";
 
 const CONSENT_STROKE = {
    d: CONSENT,
@@ -68,6 +69,7 @@ export const PersonLink = ({ tint }: Readonly<{ tint: string }>) => {
                strokeDashoffset: {
                   duration: 0.7,
                   repeat: Infinity,
+                  driver: sceneDriver,
                   ease: "linear",
                },
                opacity: loop(
@@ -138,6 +140,7 @@ const ARC_TIMES = secs(
 const ARC_MOVE: Transition = {
    duration: CYCLE,
    repeat: Infinity,
+   driver: sceneDriver,
    times: ARC_TIMES,
    ease: ARC_TIMES.slice(1).map(() => "linear"),
 };

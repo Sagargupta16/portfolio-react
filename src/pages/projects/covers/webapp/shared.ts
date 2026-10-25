@@ -3,6 +3,7 @@ import type { Easing, Transition } from "motion/react";
 import { easeInOut } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
 import { BASE_GRADIENT, smoothstep } from "../kit/sceneTokens";
+import { sceneDriver } from "@utils/sceneClock";
 
 /* Geometry, timing and chrome shared by the WebAppScene stages.
    A stage lays its panels out in percent of the 16:10 slot and sizes the
@@ -208,6 +209,7 @@ export const loop = (
 ): Transition => ({
    duration,
    repeat: Infinity,
+   driver: sceneDriver,
    times,
    ease: eases ?? times.slice(1).map(() => EASE),
 });

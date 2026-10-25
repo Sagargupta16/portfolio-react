@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
+import { sceneDriver } from "@utils/sceneClock";
 
 interface MlopsLoopAnimProps {
    color: string;
@@ -98,6 +99,7 @@ const tinted = (color: string): CSSProperties => ({
 const loop = (times: number[]) => ({
    duration: CYCLE,
    repeat: Infinity,
+   driver: sceneDriver,
    times,
    ease: times.slice(1).map(() => "easeInOut" as const),
 });

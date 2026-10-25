@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Easing } from "motion/react";
 import { MONO_FONT } from "@/constants/theme";
 import { pct, smoothstep } from "../kit/sceneTokens";
+import { sceneDriver } from "@utils/sceneClock";
 
 /*
  * Shared tokens and geometry for the Docs family (docs/*Variant.tsx) and the
@@ -90,6 +91,7 @@ export const loop = (
 ) => ({
    duration: cycle,
    repeat: Infinity,
+   driver: sceneDriver,
    times,
    delay,
    ease: perSegment(times, ease),
