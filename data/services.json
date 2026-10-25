@@ -44,7 +44,7 @@
          "Drift and fairness alarms trigger retraining",
          "Blue-green endpoints with automatic rollback",
          "Bedrock Guardrails and optional A2I review",
-         "Pipeline published by AWS on aws-samples"
+         "Pipeline published as a solution on aws-samples"
       ]
    },
    {

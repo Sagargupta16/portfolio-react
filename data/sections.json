@@ -96,7 +96,7 @@
          "complete": "Complete"
       },
       "evidence": {
-         "aws": "Published by AWS",
+         "aws": "Published on aws-samples",
          "live": "Live",
          "source": "Open source"
       },

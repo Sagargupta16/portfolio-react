@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.21.2] - 2026-10-25
+
+### Changed
+
+- **The three AWS samples read as solutions he published.** "Published by AWS" becomes "published as a solution under aws-samples" (About: "Published three solutions under aws-samples") on the About line, the Highlights note, the experience bullets, the three project cards and their case studies, the Focus Areas bullet and the machine view; the project card badge reads "Published on aws-samples".
+
 ## [4.21.1] - 2026-10-25
 
 ### Changed

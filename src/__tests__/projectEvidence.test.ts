@@ -6,17 +6,17 @@ const GH = "https://github.com/example/repo";
 const LIVE = "https://example.com";
 
 describe("getEvidence", () => {
-   it("marks aws-samples projects as published by AWS", () => {
+   it("marks aws-samples projects as published solutions", () => {
       expect(
          getEvidence({ organization: "aws-samples", github: GH, live: "" }),
-      ).toEqual([{ kind: "aws", label: "Published by AWS" }]);
+      ).toEqual([{ kind: "aws", label: "Published on aws-samples" }]);
    });
 
    it("adds a live badge after the AWS badge when both apply", () => {
       expect(
          getEvidence({ organization: "aws-samples", github: GH, live: LIVE }),
       ).toEqual([
-         { kind: "aws", label: "Published by AWS" },
+         { kind: "aws", label: "Published on aws-samples" },
          { kind: "live", label: "Live" },
       ]);
    });
