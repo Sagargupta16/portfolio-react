@@ -24,7 +24,7 @@ interface EvidenceBadgesProps {
 
 /**
  * Small pills: the project status (Active / Beta / Complete, with its
- * version), then proof (By me on aws-samples / Live / Open source).
+ * version), then proof (Published on aws-samples / Live / Open source).
  */
 export const EvidenceBadges = ({ project, className }: EvidenceBadgesProps) => {
    const badges = getEvidence(project);

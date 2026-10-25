@@ -6,7 +6,7 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ### Changed
 
-- **The three AWS samples read as his own work.** "Published by AWS" becomes "published by me under aws-samples" on the About line, the Highlights note, the experience bullets, the three project cards and their case studies, the Focus Areas bullet and the machine view; the project card badge reads "By me on aws-samples".
+- **The three AWS samples read as solutions he published.** "Published by AWS" becomes "published as a solution under aws-samples" (About: "Published three solutions under aws-samples") on the About line, the Highlights note, the experience bullets, the three project cards and their case studies, the Focus Areas bullet and the machine view; the project card badge reads "Published on aws-samples".
 
 ## [4.21.1] - 2026-10-25
 

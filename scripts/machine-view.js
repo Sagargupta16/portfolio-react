@@ -140,8 +140,8 @@ function projectLine(project, { long }) {
       project.date && `(${clean(project.date)})`,
       // Skip the marker when the description already opens with it.
       project.organization === "aws-samples" &&
-         !project.description?.startsWith("Published by me") &&
-         "- Published by me under aws-samples",
+         !project.description?.startsWith("Published as a solution") &&
+         "- Published as a solution under aws-samples",
    ]
       .filter(Boolean)
       .join(" ");
@@ -456,7 +456,7 @@ function buildLlmsTxt(d) {
       ...impactLines(personal),
       ...highlightLines(personal.highlights),
       awsSamples.length > 0 &&
-         `- Published by me under aws-samples: ${awsSamples.map((p) => clean(p.title)).join(", ")}`,
+         `- Solutions published under aws-samples: ${awsSamples.map((p) => clean(p.title)).join(", ")}`,
       merged.length > 0 &&
          `- Merged open source PRs: ${merged.length}, in ${mergedRepos.join(", ")}`,
       activeCerts.length > 0 &&
