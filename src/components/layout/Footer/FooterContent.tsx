@@ -135,6 +135,15 @@ const FooterContent = () => {
                <p style={{ color: "rgb(var(--ch-text) / 0.8)", fontSize: 14 }}>
                   {fillTemplate(COPY.copyright, { year: CURRENT_YEAR, name })}
                </p>
+               <p
+                  style={{
+                     color: "rgb(var(--ch-text) / 0.6)",
+                     fontSize: 12,
+                     maxWidth: 280,
+                  }}
+               >
+                  {COPY.disclaimer}
+               </p>
                <FooterSocial />
             </div>
 

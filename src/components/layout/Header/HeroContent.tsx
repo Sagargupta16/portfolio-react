@@ -155,7 +155,7 @@ const HeroContent = () => {
             </span>
          </motion.h1>
 
-         {/* Intro: what to hire him for, in two sentences. Replaces the old
+         {/* Intro: what he works on, in two sentences. Replaces the old
              cycling role labels, which said nothing specific. */}
          <motion.p
             className="text-base md:text-lg"

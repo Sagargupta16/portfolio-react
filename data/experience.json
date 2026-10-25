@@ -6,32 +6,28 @@
          "title": "ProServe (Cloud Consultant) - DevOps/MLOps",
          "position": "Full-time",
          "company": "Amazon Web Services",
-         "location": "Bengaluru, India",
+         "location": "Hyderabad, India",
          "summary": "Assisting enterprise customers in designing, migrating, implementing, and building scalable solutions on AWS with infrastructure automation and MLOps.",
          "scene": "consulting-loop",
          "projects": [
             {
-               "name": "Lead DevOps Consultant - RWS (Ongoing)",
+               "name": "Lead DevOps Consultant, Enterprise customer (Ongoing)",
                "date": "Feb 2026 - Present",
                "scene": "landing-zone",
                "description": {
-                  "1": "Accounts were created by a legacy pipeline and the landing zone had no infrastructure as code. I built it in Terraform: Organizations OUs with Control Tower baselines, SCPs and tag policies, and an account baseline that gives every account OIDC deploy roles and a security baseline (IMDSv2, EBS encryption, public-access blocks, no default VPC). 4,000+ resources across 20+ Terraform Cloud workspaces with none failing, and per-account setup cut ~90% (3+ days to under 4 hours).",
-                  "2": "Every new VPC, route and firewall rule needed a network-team ticket. I built two Transit Gateway hubs in separate AWS Regions with Network Firewall inspection, VPN and Direct Connect, plus self-service onboarding: each new workload gets its own route table within 15 minutes and firewall access by tag in about a minute.",
-                  "3": "Backup, patching and access were set up account by account. I moved them into code: AWS Backup with a delegated-admin vault and SSM Patch Manager in every workload account, and IAM Identity Center permission sets with least-privilege deploy roles.",
-                  "4": "AWS IPAM had been ruled out on cost. I measured real billing in a sandbox, showed that prefix delegation cut the projected cost by about 94%, and the customer approved it; a multi-level IP pool tree is now live.",
-                  "5": "Every production change goes through the customer's change control and is applied by their engineers. I mirrored the estate in a sandbox so each change runs there first through the same least-privilege role, and brought console-made changes into Terraform without a single diff.",
-                  "6": "Faster delivery: a second landing zone foundation stood up in about four weeks, ahead of schedule; a blocker on a private Kubernetes endpoint was fixed the next day with a self-hosted Terraform agent; a hybrid network link went live in one day; reusable Terraform modules replaced copied code. Kiro and Claude Code drove the specs and 50+ design documents with 130+ architecture figures."
+                  "1": "Built a Terraform landing zone: Organizations OUs, SCPs, tag policies, account baselines and least-privilege deploy roles.",
+                  "2": "Automated network onboarding and tag-based firewall access with Transit Gateway.",
+                  "3": "Codified backup, patching and access with AWS Backup, Systems Manager Patch Manager and IAM Identity Center."
                },
                "case_study": {
-                  "problem": "The customer needed a landing zone built as code for two migration programmes at once: accounts came from a legacy pipeline, nothing was in Terraform, and every VPC and firewall rule was a network-team ticket.",
-                  "built": "Terraform automation for the whole foundation: guardrails, account baselines, Identity Center, backup and patching, two Transit Gateway hubs, IPAM, and self-service network onboarding.",
+                  "problem": "An enterprise customer needed its AWS landing zone built and managed as code.",
+                  "built": "Terraform for the foundation: guardrails, account baselines, Identity Center access, backup and patching, and self-service network onboarding.",
                   "decisions": [
-                     "A separate network hub per programme, sharing one module library",
-                     "Tag-driven firewall access through hub-owned prefix lists and one writer",
-                     "AWS IPAM with prefix delegation, enforced by a narrow SCP",
-                     "Every change applied in a sandbox mirror first, same least-privilege role"
+                     "One shared library of tested Terraform modules",
+                     "Tag-based firewall access defined in code",
+                     "Every change planned and tested before apply"
                   ],
-                  "outcome": "Per-account setup went from 3+ days to under 4 hours (~90% faster), migrations landed on a fully coded foundation (4,000+ resources, none failing), and new workload networks onboard in minutes."
+                  "outcome": "The landing zone, its guardrails and network onboarding are managed as tested Terraform code."
                },
                "skills": [
                   "AWS",
@@ -42,39 +38,34 @@
                   "Config Rules",
                   "Transit Gateway",
                   "VPC",
-                  "Direct Connect",
-                  "VPN",
                   "Route 53",
                   "Terraform",
                   "GitHub Actions",
-                  "Cloud Migration",
-                  "Solution Architecture",
-                  "Kiro"
+                  "Solution Architecture"
                ]
             },
             {
-               "name": "DevOps Consultant - DTCC",
+               "name": "DevOps Consultant, Financial market infrastructure customer",
                "date": "Aug 2025 - Nov 2025",
                "scene": "tf-modernize",
                "description": {
-                  "1": "Refactored and created critical Terraform infrastructure code to enhance security and scalability, solving complex legacy modernization challenges in financial services.",
-                  "2": "Used Amazon Q to accelerate code analysis and migration assessments, transforming infrastructure patterns to align with cloud-native principles.",
-                  "3": "Partnered with client engineering teams on secure infrastructure practices and knowledge transfer."
+                  "1": "Refactored and wrote Terraform infrastructure code for security and scalability.",
+                  "2": "Moved legacy infrastructure patterns to cloud-native, reusable Terraform modules.",
+                  "3": "Shared secure infrastructure-as-code practices with the customer's engineering teams."
                },
                "case_study": {
-                  "problem": "A financial services client had legacy infrastructure that needed modernizing to enhance security and scalability.",
-                  "built": "Refactored and created critical Terraform infrastructure code, and used Amazon Q to accelerate code analysis and migration assessments.",
+                  "problem": "Legacy infrastructure code needed modernizing for security and scalability.",
+                  "built": "Refactored and new Terraform infrastructure code that moves legacy patterns to cloud-native modules.",
                   "decisions": [
-                     "Amazon Q for code analysis and migration assessments",
-                     "Infrastructure patterns transformed to align with cloud-native principles",
-                     "Secure infrastructure practices shared with client engineering teams"
+                     "Reusable Terraform modules for each infrastructure pattern",
+                     "Secure defaults built into the modules",
+                     "Knowledge transfer alongside the code"
                   ],
-                  "outcome": "Critical Terraform infrastructure code was modernized for security and scalability, aligned with cloud-native principles, with knowledge transfer to client engineering teams."
+                  "outcome": "Modernized, reusable Terraform code with secure defaults, handed over with knowledge transfer."
                },
                "skills": [
                   "AWS",
                   "Terraform",
-                  "Amazon Q",
                   "CloudFormation",
                   "DevSecOps",
                   "Cloud Migration"
@@ -86,9 +77,9 @@
                "scene": "mlops-loop",
                "description": {
                   "1": "Architected end-to-end MLOps pipeline on SageMaker, automating data processing, multi-model training, and ensemble model creation for medical image classification.",
-                  "2": "Deployed production SageMaker endpoints with blue-green deployment, auto-scaling, and drift detection - enabling zero-downtime model updates with automatic rollback.",
+                  "2": "Deployed SageMaker endpoints with blue-green rollout, auto-scaling and drift detection, so model updates ship with zero downtime and roll back automatically.",
                   "3": "Provisioned entire infrastructure with Terraform and built CI/CD via CodePipeline and CodeBuild, deploying CloudFront frontend and API Gateway + Lambda inference API.",
-                  "4": "Generalized and published by AWS as an official sample under the aws-samples organization (MIT-0) - 86 Terraform files across 4 stacks and 13 reusable modules, with clinical quality gates, closed-loop drift retraining, and responsible-AI safeguards (Fairlearn bias gates, Model Cards, Bedrock Guardrails, optional A2I review)."
+                  "4": "Published by AWS as an official sample under aws-samples (MIT-0): 86 Terraform files across 4 stacks and 13 reusable modules, with clinical quality gates, closed-loop drift retraining, and responsible-AI safeguards (Fairlearn bias gates, Model Cards, Bedrock Guardrails, optional A2I review)."
                },
                "case_study": {
                   "problem": "Medical image classification needed an automated path from data processing and multi-model training to production endpoints that update without downtime.",
@@ -98,7 +89,7 @@
                      "Blue-green endpoint deployment with auto-scaling and drift detection",
                      "CloudFront frontend with an API Gateway and Lambda inference API"
                   ],
-                  "outcome": "The endpoints support zero-downtime model updates with automatic rollback, and the work was generalized and published by AWS as an official sample under aws-samples (MIT-0)."
+                  "outcome": "The endpoints support zero-downtime model updates with automatic rollback, and the pipeline is published by AWS as an official sample under aws-samples (MIT-0)."
                },
                "skills": [
                   "AWS",
@@ -116,24 +107,23 @@
                "linkLabel": "aws-samples"
             },
             {
-               "name": "DevOps Consultant - State Street",
+               "name": "DevOps Consultant, Global financial services customer",
                "date": "Oct 2024 - Aug 2025",
                "scene": "security-controls",
                "description": {
-                  "1": "Built Terraform for about 10 AWS services with automated tests (tftest, PyTest) on the landing zone team, part of the path that opened 38+ services to application teams.",
-                  "2": "Designed Amazon Detective enablement: delegated admin moved from the Control Tower management account to the Audit account through an AFT customization, organization-wide auto-enable in Terraform, and GuardDuty findings cut from 6-hour to 15-minute notifications.",
-                  "3": "Worked on EBS consumer-service design, compute service enablement and EC2 patching reviews, and on the security solution behind 1,000+ preventative controls aligned with CCMv4.0.",
-                  "4": "Collaborated across Landing Zone, Compliance, Security and Migrations workstreams. The landing zone went live across the firm in 2025 (team result); the project closed with a 10/10 CSAT."
+                  "1": "Wrote tested Terraform modules (terraform test, PyTest) for AWS services on a landing zone team.",
+                  "2": "Built organization-wide security service enablement in Terraform, with delegated administration and auto-enable for member accounts.",
+                  "3": "Worked with security and compliance teams on storage, compute and patching reviews."
                },
                "case_study": {
-                  "problem": "A regulated bank exiting its data centres needed a landing zone that could receive applications under CCMv4.0 compliance.",
-                  "built": "Terraform and test frameworks for about 10 services, plus the Amazon Detective enablement design, on the landing zone team.",
+                  "problem": "A landing zone team needed AWS services enabled as tested, secure Terraform.",
+                  "built": "Terraform modules with automated tests for AWS services, plus organization-wide security service enablement.",
                   "decisions": [
-                     "Detective delegated admin in the Audit account through an AFT customization",
+                     "Delegated administration for security services",
                      "Organization-wide auto-enable for member accounts in Terraform",
-                     "Automated module testing with tftest and PyTest"
+                     "Automated module testing with terraform test and PyTest"
                   ],
-                  "outcome": "The landing zone went live across the firm in 2025 with 1,000+ preventative and 300+ detective controls (team result), and the project closed with a 10/10 CSAT."
+                  "outcome": "AWS services reached application teams as tested Terraform modules with security enabled by default."
                },
                "skills": [
                   "AWS",
@@ -144,27 +134,16 @@
                   "CloudWatch",
                   "SNS",
                   "EBS",
-                  "Detective",
-                  "CCMv4.0",
                   "Security Hardening"
                ]
             }
          ],
          "internal_contributions": [
             {
-               "title": "Tech Talk: Automating Unit Testing for Terraform using Terraform Test and PyTest frameworks",
+               "title": "Internal tech talks on Terraform testing and GitOps",
                "type": "talk",
-               "year": "2025"
-            },
-            {
-               "title": "Tech Talk: GitOps Configuration Safety with Health Checks and Pipeline Gating",
-               "type": "talk",
-               "year": "2026"
-            },
-            {
-               "title": "APG Pattern (co-author, submitted, not yet published): Secure PR Previews and Approval-Gated Releases for Amplify Gen 2 with GitHub",
-               "type": "publication",
-               "year": "2025"
+               "year": "2025-2026",
+               "count": 2
             },
             {
                "title": "Peer reviewer for AWS Prescriptive Guidance patterns",
@@ -189,14 +168,19 @@
          ],
          "internal_achievements": [
             {
-               "title": "ProServe MLOps SME Program Graduate",
+               "title": "AWS Professional Services MLOps SME program graduate",
                "type": "program",
                "year": "2025"
             },
             {
-               "title": "5x TFC Ambassador: AI/ML, NGDE (Graduated), CloudOps (AWS DevOps Agent), Agentic AI, Serverless",
+               "title": "8x TFC Ambassador across 5 communities: Generative AI, Agentic AI, GenAI/ML and Anthropic Claude (AI/ML), AWS DevOps Agent (Cloud Ops), Serverless, Connect (Communication Apps) and NGDE (Builder Experience); NGDE Member (graduated)",
                "type": "program",
                "year": "2025-2026"
+            },
+            {
+               "title": "Senior Speaker Certification",
+               "type": "program",
+               "year": "2026"
             },
             {
                "title": "Associate Speaker Certification",
@@ -204,12 +188,17 @@
                "year": "2026"
             },
             {
-               "title": "AWS T&C Subject Matter Expert (SME) Program Contributor",
+               "title": "Security content review qualification",
                "type": "program",
-               "year": "2025"
+               "year": "2026"
             },
             {
-               "title": "ML Hackathon 2025 - 26th/238 teams",
+               "title": "AWS Jam content tester for re:Invent 2026, DevOps and GenAI",
+               "type": "program",
+               "year": "2026"
+            },
+            {
+               "title": "AWS Training and Certification SME",
                "type": "program",
                "year": "2025"
             }
@@ -222,27 +211,26 @@
          "position": "Internship",
          "company": "Amazon Web Services",
          "location": "Hyderabad, India",
-         "summary": "Underwent extensive hands-on DevOps and Cloud training, delivered multiple proof-of-concepts, and contributed to a production ECS migration project using Terraform and CI/CD pipelines.",
+         "summary": "Hands-on DevOps and cloud training, several proofs of concept, and DevOps work on a container deployment with Terraform and CI/CD.",
          "scene": "aws-intern",
          "projects": [
             {
                "name": "ECS Application Deployment with Terraform",
                "date": "Mar 2024 - Jul 2024",
                "description": {
-                  "1": "Migrated on-premises web application to AWS ECS, implementing high-availability architecture and CI/CD pipeline using AWS CodePipeline, reducing maintenance overhead.",
-                  "2": "Architected infrastructure as code using Terraform, managing AWS resources including VPC, ALB, and ECS clusters while implementing blue-green deployment strategy for zero-downtime updates.",
-                  "3": "Automated Docker image building and deployment process through integration of AWS CodeBuild, CodeDeploy, and Amazon ECR, streamlining application delivery workflow.",
-                  "4": "Established comprehensive monitoring solution using AWS X-Ray and CloudWatch for distributed tracing and full observability of application performance."
+                  "1": "Built Terraform for an ECS service: VPC, ALB, ECS and blue-green deploys.",
+                  "2": "Automated image builds and releases with CodeBuild, CodeDeploy and Amazon ECR.",
+                  "3": "Added tracing and monitoring with X-Ray and CloudWatch."
                },
                "case_study": {
-                  "problem": "An on-premises web application needed to move to AWS with high availability, zero-downtime updates and less maintenance overhead.",
-                  "built": "Migrated the application to AWS ECS, with Terraform for the VPC, ALB and ECS clusters and a CI/CD pipeline on AWS CodePipeline.",
+                  "problem": "A containerized web application needed infrastructure as code, automated releases and zero-downtime updates on AWS.",
+                  "built": "Terraform for the VPC, ALB and ECS service, with a CI/CD pipeline on AWS CodePipeline.",
                   "decisions": [
                      "Blue-green deployment strategy for zero-downtime updates",
                      "Docker builds and deploys automated through CodeBuild, CodeDeploy and Amazon ECR",
                      "X-Ray and CloudWatch for distributed tracing and observability"
                   ],
-                  "outcome": "The application moved to a high-availability ECS architecture with zero-downtime blue-green updates and reduced maintenance overhead."
+                  "outcome": "The service runs on ECS with zero-downtime blue-green releases from a CodePipeline pipeline."
                },
                "skills": [
                   "AWS",
@@ -264,7 +252,7 @@
          "internal_contributions": [],
          "internal_achievements": [
             {
-               "title": "TechU Graduate",
+               "title": "AWS early-career technical program graduate",
                "type": "program",
                "year": "2024"
             }

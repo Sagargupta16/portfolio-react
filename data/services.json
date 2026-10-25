@@ -6,9 +6,9 @@
       "list": [
          "Organizations, Control Tower, Identity Center",
          "SCP, RCP and tag policy guardrails as code",
-         "Security Hub, GuardDuty and Detective",
-         "Per-account setup: 3+ days to under 4 hours",
-         "Data-centre exit landing zone, 10/10 CSAT"
+         "Security Hub, GuardDuty and Inspector baselines",
+         "Account baselines with least-privilege deploy roles",
+         "Delegated admin for organization-wide security"
       ]
    },
    {
@@ -17,10 +17,10 @@
       "title": "Infrastructure as Code & CI/CD",
       "list": [
          "Terraform modules tested with tftest, PyTest",
-         "4,000+ resources across 20+ workspaces",
+         "Versioned Terraform module libraries",
          "GitHub Actions, CodePipeline, OIDC roles",
          "Blue-green and canary with auto rollback",
-         "Every change rehearsed in a sandbox mirror"
+         "Plan and test before every apply"
       ]
    },
    {
@@ -28,11 +28,11 @@
       "key": "cloud-networking",
       "title": "Cloud Networking",
       "list": [
-         "Transit Gateway hubs with firewall inspection",
-         "Self-service VPC route tables in 15 minutes",
-         "Firewall access by tag in about a minute",
-         "AWS IPAM at about 94% lower projected cost",
-         "Direct Connect and VPN landing on the hubs"
+         "Transit Gateway hub-and-spoke with inspection",
+         "Self-service VPC onboarding automation",
+         "Multi-account VPC and IP address design",
+         "Route 53 DNS across accounts",
+         "Hybrid connectivity for on-premises networks"
       ]
    },
    {
@@ -55,7 +55,7 @@
          "MCP servers for Bedrock, tax filing, memory",
          "A 16-plugin Claude Code marketplace",
          "AI-DLC: CLAUDE.md, skills, hooks, subagents",
-         "Kiro and Claude Code specs, 50+ design docs",
+         "Spec-driven design with Kiro, Claude Code",
          "skillcheck: Agent Skills conformance on npm"
       ]
    },
