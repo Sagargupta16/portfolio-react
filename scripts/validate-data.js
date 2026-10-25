@@ -1162,16 +1162,14 @@ const HIGHLIGHT_COUNTS = {
       String(
          allProjects.filter((p) => p?.organization === "aws-samples").length,
       ),
-   // The field community line carries its ambassador level count in `count`.
-   community_ambassador: () => {
-      const entry = (experience?.professional_experience ?? [])
-         .flatMap((job) => job?.internal_achievements ?? [])
-         .find((a) =>
-            /^AWS technical field community ambassador\b/.test(a?.title ?? ""),
-         );
-      return entry?.count
-         ? `${entry.count}x`
-         : "(no field community ambassador entry with a count)";
+   tfc_ambassador: () => {
+      const titles = (experience?.professional_experience ?? []).flatMap(
+         (job) => (job?.internal_achievements ?? []).map((a) => a?.title),
+      );
+      const count = titles
+         .map((title) => /^(\d+)x TFC Ambassador\b/.exec(title ?? "")?.[1])
+         .find(Boolean);
+      return count ? `${count}x` : "(no Nx TFC Ambassador entry)";
    },
    // Merged pull requests only, as the Stats open-source tile counts them.
    merged_prs: () =>

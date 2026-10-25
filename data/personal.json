@@ -46,14 +46,14 @@
       },
       {
          "value": "8x",
-         "label": "Field community ambassador",
-         "note": "AI/ML, Serverless, Cloud Ops, Communication Apps",
-         "derived_from": "community_ambassador"
+         "label": "TFC Ambassador",
+         "note": "AI/ML incl. Anthropic Claude, Cloud Ops, Serverless, Connect, NGDE",
+         "derived_from": "tfc_ambassador"
       },
       {
          "value": "5",
-         "label": "AWS technical communities",
-         "note": "Ambassador in 4, member of Builder Experience"
+         "label": "TFC communities",
+         "note": "Ambassador in 4, NGDE Member in Builder Experience"
       }
    ],
    "stats": {
