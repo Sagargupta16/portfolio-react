@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.21.1] - 2026-10-25
+
+### Changed
+
+- **Highlights.** The upstream PRs tile gives way to LeetCode Guardian (2166 peak contest rating, derived from the LeetCode stats); the tiles read 3 AWS samples, 8x TFC Ambassador, 5 TFC communities and LeetCode Guardian.
+- **Wording.** The Stats group heading reads "At AWS" and its first tile "Customer engagements"; the About subtitle says "Cloud consultant at AWS"; the Projects subtitle reads "Projects and samples"; the Full-Stack card is "Full-Stack Projects"; the education line spells out "NIMCET All India Rank 208" and uses the numeral 5; the AWS role and internship summaries read more directly with the same content.
+
 ## [4.21.0] - 2026-10-24
 
 AWS work is described in general terms. Design and layout are unchanged.

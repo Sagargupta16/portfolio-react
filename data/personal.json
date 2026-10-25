@@ -23,7 +23,7 @@
       "greeting": "👋 Hi, my name is Sagar Gupta.",
       "current_role": "💼 Cloud consultant at AWS Professional Services. DevOps and infrastructure as code for financial services and enterprise customers, and now Lead DevOps Consultant on an enterprise landing zone built in Terraform: guardrails, account baselines and automated network onboarding.",
       "specialization": "🚀 Three samples published by AWS under aws-samples (a SageMaker MLOps pipeline, an Organizations governance layer and an AgentCore agent with governed MCP tools), and merged PRs in Apache Airflow, Feast, awslabs/mcp, axios and multer.",
-      "education": "🎓 MCA from NIT Warangal (CGPA 8.38, NIMCET AIR 208). Five active AWS certifications.",
+      "education": "🎓 MCA from NIT Warangal (CGPA 8.38, NIMCET All India Rank 208). 5 active AWS certifications.",
       "competitive_programming": "🏆 LeetCode Guardian (2166 peak rating, top 1.1% of contestants), 1800+ problems across LeetCode and GeeksforGeeks, 107 contests. Rank 1289 in Google Kick Start '22 Round E."
    },
    "impact": {
@@ -32,12 +32,6 @@
       "years_at_aws": "2+"
    },
    "highlights": [
-      {
-         "value": "11",
-         "label": "Upstream PRs merged",
-         "note": "Airflow, Feast, awslabs/mcp and more",
-         "derived_from": "merged_prs"
-      },
       {
          "value": "3",
          "label": "AWS samples",
@@ -54,18 +48,24 @@
          "value": "5",
          "label": "TFC communities",
          "note": "Ambassador in 4, NGDE Member in Builder Experience"
+      },
+      {
+         "value": "2166",
+         "label": "LeetCode Guardian",
+         "note": "Peak contest rating",
+         "derived_from": "leetcode_peak"
       }
    ],
    "stats": {
       "headings": {
          "highlights": "Highlights",
-         "impact": "Consulting impact",
+         "impact": "At AWS",
          "delivery": "Delivery & credentials",
          "open_source": "Open source",
          "competitive": "Competitive programming"
       },
       "tiles": {
-         "clients_served": { "label": "Clients served" },
+         "clients_served": { "label": "Customer engagements" },
          "years_at_aws": {
             "label": "Years at AWS",
             "note": "Professional Services since 2024"
