@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.22.0] - 2026-10-28
+
+### Added
+
+- **Forward Deployed Engineering focus area.** A new lead card opens Focus Areas: embedded with customer teams as the DevOps lead, end-to-end delivery from design to deployment, customer requirements to tested Terraform modules, enterprise and financial services engagements, three solutions published under aws-samples, and internal tech talks on Terraform testing and GitOps. It spans the full row on desktop with its list in two columns. Its scene runs left to right on a wide 160 x 80 canvas: the engineer takes the open seat in the customer team, a module fills line by line and passes its test, and the pattern travels out to SAMPLES.
+
+### Changed
+
+- **Focus Areas art is larger and clearer.** The art column widens from 150 to 200 px (400 px for the lead card) and every canvas scales 2.3x on desktop (was 1.8x) and 2x in the phone strip (was 1.5x). Scene labels render at the project covers' 8 px on every screen. Panels, lines and resting parts are one step brighter, and a faint dot lattice sits behind each canvas. The six existing scenes keep their mechanisms and timing.
+
 ## [4.21.3] - 2026-10-25
 
 An open tab no longer keeps the laptop busy. Measured idle in Chrome on a 240 Hz panel at 1440 x 900: the hero after one scroll through the page drops from 141 to 198% of a CPU core to about 70%, Contact from 136% to 50%, a fresh hero from 87% to 70%. The scene clock below takes Projects from 195% to 151%, Experience from 134% to 94% and Focus Areas from 137% to 108% (same build with the clock forced off).

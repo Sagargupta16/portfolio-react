@@ -16,8 +16,11 @@ import { getSectionCopy } from "@data/sections";
 import { fillTemplate } from "@utils/fillTemplate";
 import {
    SERVICE_ICONS,
-   ACCENT_COLORS,
+   ART_COLUMN,
+   ART_COLUMN_WIDE,
    ART_STRIP_HEIGHT,
+   accentFor,
+   isWideArt,
 } from "./servicesConstants";
 import ServiceAnimation from "./ServiceAnimation";
 
@@ -47,13 +50,16 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
    const { isMobile } = useBreakpoint();
    const { reducedMotion } = useMotionPreference();
    const { navigateToSection } = useSectionNavigation();
-   const colors = ACCENT_COLORS[index % ACCENT_COLORS.length];
+   const colors = accentFor(index);
    const IconComponent = SERVICE_ICONS[service.key];
    const lift = reducedMotion ? undefined : HOVER_LIFT;
+   // The wide-scene card leads the grid across the full row (services.css).
+   const lead = isWideArt(service.key);
+   const artColumn = lead ? ART_COLUMN_WIDE : ART_COLUMN;
 
    return (
       <GlassCard
-         className="service-card"
+         className={lead ? "service-card service-card--lead" : "service-card"}
          style={
             {
                "--action-accent": colors.icon,
@@ -74,8 +80,9 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
          >
             {/* Left: Animation */}
             <div
+               className="service-art"
                style={{
-                  width: isMobile ? "100%" : 150,
+                  width: isMobile ? "100%" : artColumn,
                   minHeight: isMobile ? ART_STRIP_HEIGHT : "auto",
                   flexShrink: 0,
                   display: "flex",
@@ -139,14 +146,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                   {service.title}
                </h3>
 
-               <ul
-                  style={{
-                     display: "flex",
-                     flexDirection: "column",
-                     flex: 1,
-                     gap: 6,
-                  }}
-               >
+               <ul className="service-list">
                   {service.list.map((item) => (
                      <li
                         key={item}

@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.21.3-2563eb)
+![Version](https://img.shields.io/badge/version-4.22.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -54,7 +54,7 @@ Section links support reloads and browser history. Navigation loads the content 
 | **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (154 skills; static chips in Reduced)                                                                                                                         |
 | **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; repo-accurate animated cover scenes for every project; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
 | **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                              |
-| **Focus Areas**  | Six fact-based focus areas in an even bento grid, each with a scene that shows the real mechanism (labels 9 px+ on phones)                                                                                                                        |
+| **Focus Areas**  | Seven fact-based focus areas, Forward Deployed Engineering first across the full row with a wide scene, then an even grid; each card's scene shows the real mechanism, labels at the project covers' 8 px                                         |
 | **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                                                                         |
 | **News**         | Dated milestones as a one-line commit graph with stable hashes, filterable by type                                                                                                                                                                |
 | **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                                                 |
@@ -159,7 +159,7 @@ src/
 │   │   └── covers/                    # Cover registry, lazy scene families, shared kit/
 │   ├── achievement/
 │   ├── services/
-│   │   └── animations/                # 6 service card animations on an 80x80 canvas
+│   │   └── animations/                # 7 service card animations on an 80x80 canvas (160x80 for the lead card)
 │   ├── stats/                         # Stats.tsx, impact figures, and coding profiles
 │   ├── news/                          # News.tsx: the dated commit-log feed
 │   └── contact/

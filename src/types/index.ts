@@ -415,6 +415,7 @@ export interface SkillsFile extends SkillsData {
 /** Stable service id: picks the card's icon and canvas, so the title stays
  *  free to change. validate-data.js checks it against ServiceAnimation. */
 export type ServiceKey =
+   | "forward-deployed"
    | "landing-zones"
    | "iac-cicd"
    | "cloud-networking"

@@ -22,14 +22,25 @@ export const CANVAS: CSSProperties = {
    height: 80,
 };
 
-/* 6 px in source; ServiceAnimation scales it to 9 px on phones, 10.8 px on
-   desktop. */
+/* Neutral chrome, one step brighter than the cover kit's W03 / W10 / W16 /
+   W25: at 2x and more, beside a full card of copy, those read as dim. */
+export const CHROME_FILL = "rgba(255,255,255,0.05)";
+export const CHROME_LINE = "rgba(255,255,255,0.16)";
+export const CHROME_HAIR = "rgba(255,255,255,0.22)";
+export const CHROME_GHOST = "rgba(255,255,255,0.32)";
+
+/* Labels render at the project covers' 8 px (kit `label`) on every screen.
+   The canvas is scaled as a whole, so ServiceAnimation sets --art-label to
+   8 px divided by that scale; tracking is in em so it follows the size. */
+export const LABEL_SIZE = "var(--art-label, 6px)";
+export const LABEL_TRACK = "0.11em";
+
 export const MICRO_LABEL: CSSProperties = {
    position: "absolute",
    fontFamily: MONO_FONT,
-   fontSize: 6,
+   fontSize: LABEL_SIZE,
    fontWeight: 700,
-   letterSpacing: 0.4,
+   letterSpacing: LABEL_TRACK,
    lineHeight: 1,
    textTransform: "uppercase",
    whiteSpace: "nowrap",

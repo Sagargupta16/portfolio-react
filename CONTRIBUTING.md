@@ -127,7 +127,7 @@ For a new section:
 
 ### Add a service
 
-Add a record to [data/services.json](data/services.json) with a new stable `key`. The key, not the title, picks the card's art: add it to the `ServiceKey` type in [src/types/index.ts](src/types/index.ts), map it to a canvas in `ANIM_MAP` in [ServiceAnimation.tsx](src/pages/services/ServiceAnimation.tsx), and to a title icon in `SERVICE_ICONS` in [servicesConstants.ts](src/pages/services/servicesConstants.ts). `pnpm validate:data` reads the keys from `ServiceAnimation.tsx` and fails on a missing or unknown one. Service animations live in `src/pages/services/animations/` and draw on an 80 px canvas.
+Add a record to [data/services.json](data/services.json) with a new stable `key`. The key, not the title, picks the card's art: add it to the `ServiceKey` type in [src/types/index.ts](src/types/index.ts), map it to a canvas in `ANIM_MAP` in [ServiceAnimation.tsx](src/pages/services/ServiceAnimation.tsx), and to a title icon in `SERVICE_ICONS` in [servicesConstants.ts](src/pages/services/servicesConstants.ts). `pnpm validate:data` reads the keys from `ServiceAnimation.tsx` and fails on a missing or unknown one. Service animations live in `src/pages/services/animations/` and draw on an 80 px canvas; the lead card (the first record, listed in `isWideArt`) draws on a 160 x 80 one and spans the full row on desktop. Scene labels use `MICRO_LABEL` or `LABEL_SIZE` from `canvasKit.ts`, so they render at the project covers' 8 px at any scale, and neutral chrome uses the kit's `CHROME_*` tokens.
 
 ### Change styles or motion
 
