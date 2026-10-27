@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.21.3-2563eb)
+![Version](https://img.shields.io/badge/version-4.21.4-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 

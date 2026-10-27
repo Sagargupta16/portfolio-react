@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.21.4] - 2026-10-27
+
+### Changed
+
+- **Open source, caught up with GitHub.** PrefectHQ/prefect#23557 (merged 2026-10-24) and terraform-aws-modules/terraform-aws-s3-bucket#416 (under review) join the contributions; the Stats tiles now read 12 PRs merged upstream. The cursoragent sidebar thread (accepted 2026-10-27) joins the accepted answers (7), and five threads where the asker or another user said the reply helped or gave it a thumbs-up join the helpful ones: PicPeak, fastapi telemetry, two GitHub Pages threads and the fork workflow check.
+- **News** adds the Prefect and atlantis merges and the new accepted answer.
+
 ## [4.21.3] - 2026-10-25
 
 An open tab no longer keeps the laptop busy. Measured idle in Chrome on a 240 Hz panel at 1440 x 900: the hero after one scroll through the page drops from 141 to 198% of a CPU core to about 70%, Contact from 136% to 50%, a fresh hero from 87% to 70%. The scene clock below takes Projects from 195% to 151%, Experience from 134% to 94% and Focus Areas from 137% to 108% (same build with the clock forced off).

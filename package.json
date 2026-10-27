@@ -1,6 +1,6 @@
 {
    "name": "portfolio-react",
-   "version": "4.21.3",
+   "version": "4.21.4",
    "type": "module",
    "packageManager": "pnpm@11.28.4",
    "private": true,
