@@ -1462,6 +1462,21 @@
          "title": "Replace aws_api_gateway_domain_name when endpoint types change to or from PRIVATE",
          "url": "https://github.com/hashicorp/terraform-provider-aws/pull/50226",
          "status": "open"
+      },
+      {
+         "repo": "PrefectHQ/prefect",
+         "stars": 24036,
+         "title": "Allow the provisioned ECS execution role to create CloudWatch log groups",
+         "url": "https://github.com/PrefectHQ/prefect/pull/23557",
+         "merged_at": "2026-10-24",
+         "status": "merged"
+      },
+      {
+         "repo": "terraform-aws-modules/terraform-aws-s3-bucket",
+         "stars": 588,
+         "title": "Avoid null filter attribute lookups on Terraform versions before 1.12",
+         "url": "https://github.com/terraform-aws-modules/terraform-aws-s3-bucket/pull/416",
+         "status": "open"
       }
    ],
    "community_discussions": [
@@ -1553,6 +1568,42 @@
          "repo": "langgenius/dify",
          "title": "Dify+MCP Agent finishes without executing any tool call",
          "url": "https://github.com/langgenius/dify/discussions/31751",
+         "status": "helpful"
+      },
+      {
+         "repo": "community/community",
+         "title": "The repository homepage sidebar still lists cursoragent (Cursor Agent) under Contributors after removing",
+         "url": "https://github.com/orgs/community/discussions/211394",
+         "status": "accepted"
+      },
+      {
+         "repo": "PicPeak/picpeak",
+         "title": "S3/R2 backend: are thumbnails, previews and originals streamed through the backend, or served directly from the bucket?",
+         "url": "https://github.com/PicPeak/picpeak/discussions/1721",
+         "status": "helpful"
+      },
+      {
+         "repo": "fastapi/fastapi",
+         "title": "Telemetry: a request left out with exclude still records into the outer request's telemetry when nested in it",
+         "url": "https://github.com/fastapi/fastapi/discussions/16466",
+         "status": "helpful"
+      },
+      {
+         "repo": "community/community",
+         "title": "GitHub Pages custom domain HTTPS certificate not issued despite valid DNS",
+         "url": "https://github.com/orgs/community/discussions/209210",
+         "status": "helpful"
+      },
+      {
+         "repo": "community/community",
+         "title": "GitHub Pages returning 404 on all repos - main page and game",
+         "url": "https://github.com/orgs/community/discussions/190370",
+         "status": "helpful"
+      },
+      {
+         "repo": "community/community",
+         "title": "How can I detect pending workflow enablement on a fork when the permissions API returns enabled: true?",
+         "url": "https://github.com/orgs/community/discussions/211109",
          "status": "helpful"
       }
    ]
