@@ -13,6 +13,7 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 - **Focus Areas art is larger and clearer.** The art column widens from 150 to 200 px (400 px for the lead card) and every canvas scales 2.3x on desktop (was 1.8x) and 2x in the phone strip (was 1.5x). Scene labels render at the project covers' 8 px on every screen. Panels, lines and resting parts are one step brighter, and a faint dot lattice sits behind each canvas. The six existing scenes keep their mechanisms and timing.
 - **Open source, caught up with GitHub.** PrefectHQ/prefect#23557 (merged 2026-10-24) and terraform-aws-modules/terraform-aws-s3-bucket#416 (under review) join the contributions; the Stats tiles now read 12 PRs merged upstream. The cursoragent sidebar thread (accepted 2026-10-27) joins the accepted answers (7), and five threads where the asker or another user said the reply helped or gave it a thumbs-up join the helpful ones: PicPeak, fastapi telemetry, two GitHub Pages threads and the fork workflow check.
 - **News** adds the Prefect and atlantis merges and the new accepted answer.
+- **Live data** from the weekly sync, re-run 2026-10-28: project versions (Kalchar 1.41.1, Ledger Sync 2.32.0, orrery 0.12.2, Kinfolk 0.6.1, this site 4.22.0 and twelve more), LeetCode solved counts, and GitHub pull request and language stats.
 
 ## [4.21.3] - 2026-10-25
 
