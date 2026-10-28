@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
+import { LABEL_SIZE, LABEL_TRACK } from "./canvasKit";
 
 interface GovernanceAnimProps {
    color: string;
@@ -23,9 +24,9 @@ type Ease = "easeInOut" | "linear";
 const LOOP = 5.5;
 const t = (seconds: number) => seconds / LOOP;
 
-const WHITE_03 = "rgba(255,255,255,0.03)";
-const WHITE_10 = "rgba(255,255,255,0.10)";
-const WHITE_12 = "rgba(255,255,255,0.12)";
+const WHITE_03 = "rgba(255,255,255,0.05)";
+const WHITE_10 = "rgba(255,255,255,0.16)";
+const WHITE_12 = "rgba(255,255,255,0.18)";
 
 /* OU tree geometry on the 80 x 80 canvas */
 const ROOT_CX = 40;
@@ -152,9 +153,9 @@ const STATUS_DOT: React.CSSProperties = {
 const MONO: React.CSSProperties = {
    position: "absolute",
    fontFamily: MONO_FONT,
-   fontSize: 6,
+   fontSize: LABEL_SIZE,
    fontWeight: 700,
-   letterSpacing: 0.5,
+   letterSpacing: LABEL_TRACK,
    lineHeight: 1,
    textTransform: "uppercase",
    whiteSpace: "nowrap",

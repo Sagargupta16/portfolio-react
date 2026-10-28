@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import type { Easing, Transition } from "motion/react";
 import { MONO_FONT, GREEN } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
+import { LABEL_SIZE, LABEL_TRACK } from "./canvasKit";
 
 interface PipelineAnimProps {
    color: string;
@@ -16,10 +17,10 @@ interface PipelineAnimProps {
 const LOOP = 5;
 const EASE = "easeInOut";
 
-const WHITE_HAIRLINE = "rgba(255,255,255,0.16)";
-const WHITE_BORDER = "rgba(255,255,255,0.10)";
-const WHITE_FILL = "rgba(255,255,255,0.03)";
-const WHITE_MUTED = "rgba(255,255,255,0.18)";
+const WHITE_HAIRLINE = "rgba(255,255,255,0.22)";
+const WHITE_BORDER = "rgba(255,255,255,0.16)";
+const WHITE_FILL = "rgba(255,255,255,0.05)";
+const WHITE_MUTED = "rgba(255,255,255,0.24)";
 const WHITE_TEXT = "rgba(255,255,255,0.72)";
 
 const BOX: React.CSSProperties = {
@@ -29,9 +30,9 @@ const BOX: React.CSSProperties = {
 
 const label: React.CSSProperties = {
    fontFamily: MONO_FONT,
-   fontSize: 6,
+   fontSize: LABEL_SIZE,
    fontWeight: 700,
-   letterSpacing: 0.5,
+   letterSpacing: LABEL_TRACK,
    lineHeight: 1,
    whiteSpace: "nowrap",
 };
@@ -168,7 +169,7 @@ const Gate = ({ color }: Readonly<PipelineAnimProps>) => (
          style={{
             ...gateBox,
             border: `1px solid ${WHITE_MUTED}`,
-            background: "rgba(255,255,255,0.04)",
+            background: "rgba(255,255,255,0.06)",
          }}
       />
       <motion.div
@@ -221,8 +222,8 @@ const AlbPill = () => (
          width: 32,
          height: 10,
          borderRadius: 5,
-         border: "1px solid rgba(255,255,255,0.22)",
-         background: "rgba(255,255,255,0.05)",
+         border: "1px solid rgba(255,255,255,0.28)",
+         background: "rgba(255,255,255,0.07)",
          display: "flex",
          alignItems: "center",
          justifyContent: "center",

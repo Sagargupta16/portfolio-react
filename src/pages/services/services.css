@@ -4,6 +4,20 @@
    gap: 20px;
 }
 
+/* Static dot lattice behind each canvas, faded toward the column edges. */
+.service-art::before {
+   content: "";
+   position: absolute;
+   inset: 0;
+   background-image: radial-gradient(
+      rgb(255 255 255 / 0.07) 1px,
+      transparent 1.4px
+   );
+   background-size: 12px 12px;
+   mask-image: radial-gradient(circle at 50% 50%, #000 35%, transparent 80%);
+   pointer-events: none;
+}
+
 .service-art-light {
    opacity: 0.2;
    transition: opacity 0.2s ease;
@@ -13,10 +27,32 @@
    opacity: 0.5;
 }
 
-/* Six cards, three even rows: every row takes the tallest card's height. */
+.service-list {
+   display: flex;
+   flex-direction: column;
+   flex: 1;
+   gap: 6px;
+}
+
+/* Seven cards: the lead card (first in services.json, the wide scene) spans
+   the first row at its own height, then three even rows of two that each
+   take the tallest card's height. The lead card's list runs in two columns
+   so it does not stretch across the row. */
 @media (min-width: 1024px) {
    .service-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: auto;
       grid-auto-rows: 1fr;
+   }
+
+   .service-grid > .service-card--lead {
+      grid-column: 1 / -1;
+   }
+
+   .service-grid > .service-card--lead .service-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+      column-gap: 32px;
    }
 }

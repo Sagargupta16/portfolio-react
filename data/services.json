@@ -1,5 +1,18 @@
 [
    {
+      "id": 7,
+      "key": "forward-deployed",
+      "title": "Forward Deployed Engineering",
+      "list": [
+         "Embedded with customer teams as the DevOps lead",
+         "End-to-end delivery, from design to deployment",
+         "Customer requirements to tested Terraform modules",
+         "Enterprise and financial services engagements",
+         "Three solutions published under aws-samples",
+         "Internal tech talks on Terraform testing and GitOps"
+      ]
+   },
+   {
       "id": 1,
       "key": "landing-zones",
       "title": "Landing Zones & Cloud Governance",

@@ -1,9 +1,12 @@
 import { motion } from "motion/react";
 import { GREEN } from "@/constants/theme";
-import { W03, W10, W16, shown } from "@pages/projects/covers/kit/sceneTokens";
+import { shown } from "@pages/projects/covers/kit/sceneTokens";
 import type { Keys, Pt } from "@pages/projects/covers/kit/sceneTokens";
 import {
    CANVAS,
+   CHROME_FILL,
+   CHROME_HAIR,
+   CHROME_LINE,
    MICRO_LABEL,
    box,
    dot,
@@ -121,7 +124,7 @@ const Spoke = ({ color, at }: Readonly<{ color: string; at: Pt }>) => (
       {SUBNETS.map((top) => (
          <span
             key={top}
-            style={{ ...box(3, top, 12 - top, 1), background: W16 }}
+            style={{ ...box(3, top, 12 - top, 1), background: CHROME_HAIR }}
          />
       ))}
    </div>
@@ -138,7 +141,11 @@ const FIREWALL_RAILS = [35, 43];
 const Inspection = ({ color }: ColorProps) => (
    <>
       <div
-         style={{ ...INSPECT_BOX, border: `1px solid ${W10}`, background: W03 }}
+         style={{
+            ...INSPECT_BOX,
+            border: `1px solid ${CHROME_LINE}`,
+            background: CHROME_FILL,
+         }}
       />
       <motion.div
          style={{
@@ -156,7 +163,7 @@ const Inspection = ({ color }: ColorProps) => (
             style={{
                ...box(left, AT_INSPECT[1] - 1.5, 2, 3),
                borderRadius: 0.5,
-               background: W16,
+               background: CHROME_HAIR,
             }}
          />
       ))}
@@ -198,7 +205,7 @@ const NewSpoke = ({ color }: ColorProps) => (
       <motion.div
          style={{
             ...box(39.5, 50, 1, 14),
-            background: W16,
+            background: CHROME_HAIR,
             transformOrigin: "50% 100%",
          }}
          {...animate({

@@ -126,7 +126,7 @@
          "description": "Production folk-art portfolio and commission site for a traditional artist - Madhubani, Pichwai, Lippan, and Gond artwork gallery with a buy filter, events, workshops, custom orders, and a server-rendered admin panel. Public pages are static, catalog lives in Neon Postgres behind a single data seam, and artwork images are served from Cloudflare R2.",
          "date": "May 2026",
          "status": "active",
-         "version": "1.39.1",
+         "version": "1.41.1",
          "tools_tech": [
             "Next.js 16",
             "React 19",
@@ -199,7 +199,7 @@
          "description": "A self-hosted personal finance dashboard with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, 50/30/20 budgeting, bill calendar, GST analysis, subscription tracking, year-in-review, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
          "date": "July 2026",
          "status": "active",
-         "version": "2.28.1",
+         "version": "2.32.0",
          "tools_tech": [
             "TypeScript",
             "React 19",
@@ -237,7 +237,7 @@
          "description": "Full-stack LeetCode contest rating predictor using a Dense neural network trained on 121K+ contest records, featuring a FastAPI backend with LeetCode GraphQL integration and a React glassmorphism frontend.",
          "date": "December 2023",
          "status": "active",
-         "version": "2.4.0",
+         "version": "2.6.0",
          "tools_tech": [
             "Python",
             "React 19",
@@ -341,7 +341,7 @@
          "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with an animated SVG cover scene for every project, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
          "date": "October 2022",
          "status": "active",
-         "version": "4.18.2",
+         "version": "4.22.0",
          "tools_tech": [
             "React 19",
             "Vite 8",
@@ -486,7 +486,7 @@
          "description": "A competitive LeetCode tracking platform for MCA NITW students with personal dashboards, real-time leaderboards, contest performance tracking, and badge collections. Features four leaderboard views (Overview, Problems, Contests, Consistency), batch-wise comparisons, and a head-to-head Compare page.",
          "date": "August 2023",
          "status": "active",
-         "version": "3.4.0",
+         "version": "3.4.2",
          "tools_tech": [
             "React 19",
             "TypeScript",
@@ -562,7 +562,7 @@
          "description": "Collaborative family graph where relatives each keep their own record, invite each other, and join matching people without either side losing their copy. A family is modelled as a directed acyclic graph rather than a tree: parentage hangs off a union row, so remarriages, half-siblings, single parents, and adoption are ordinary data instead of renderer special cases. Cross-tree identity is a consent-gated link, so merging is non-destructive and an unlink restores both original views.",
          "date": "August 2026",
          "status": "active",
-         "version": "0.5.0",
+         "version": "0.6.1",
          "tools_tech": [
             "Next.js 16",
             "TypeScript",
@@ -591,7 +591,7 @@
          "description": "Personal CRM for the people in your orbit: contacts, connections, and interaction history in a tabular relationship dashboard. FastAPI and SQLAlchemy 2 behind a React 19 frontend, with Google and GitHub OAuth against a live Neon Postgres database. The contacts surface is wired end to end; interactions, circles, and reminders are modelled in the schema and not yet exposed.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.2.0",
+         "version": "0.2.3",
          "tools_tech": [
             "FastAPI",
             "Python 3.13",
@@ -642,7 +642,7 @@
          "description": "Fully automated Instagram publisher powered by AWS Bedrock and Composio v3, posting live up to twice a day. It publishes only animated SVG Reels (how-it-works explainers, stat stories, and timelines) drawn as SMIL SVG, rendered with headless Chrome and ffmpeg, and set to licensed music. Every number on screen must appear in the fetched source text or the slot fails, and each publish is checkpointed so a lost response never reposts - all through GitHub Actions.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.12.0",
+         "version": "0.15.1",
          "tools_tech": [
             "Python",
             "AWS Bedrock",
@@ -832,7 +832,7 @@
          "description": "Animated architecture and system design diagrams from one YAML spec, with 16,682 official icons from AWS, Azure, Google Cloud, Kubernetes, GitHub and IBM. The Eclipse Layout Kernel places nested boundaries and routes edges, packets travel every edge and numbered steps play in order, and one spec renders to SVG, PNG, editable draw.io, a React component and an HTML viewer. Ships as an Agent Skill and Claude Code plugin.",
          "date": "October 2026",
          "status": "active",
-         "version": "0.8.0",
+         "version": "0.12.2",
          "tools_tech": [
             "TypeScript",
             "ELK",
@@ -873,7 +873,7 @@
          "description": "An agent harness plus a shared markdown brain that Claude Code, Codex and Kiro all read and write. Each fact is one markdown file with its source; facts get corrected or withdrawn with history, never silently overwritten, and recall runs over BM25 through a stdio MCP server. Ships with 15 skills, 7 subagents, safety hooks, always-on rules, and 27 public lessons from real failures.",
          "date": "October 2026",
          "status": "active",
-         "version": "0.1.1",
+         "version": "0.1.3",
          "tools_tech": [
             "Python",
             "MCP",
@@ -920,7 +920,7 @@
          "description": "A GitHub Action that renders an animated GitHub stats card as an SVG in your own repo, so your profile README never depends on a hosted widget. Five stat tiles, a contribution calendar, current and longest streak, and top languages in one self-hosted card, published on the GitHub Marketplace.",
          "date": "September 2026",
          "status": "active",
-         "version": "1.1.0",
+         "version": "1.3.0",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
@@ -942,7 +942,7 @@
          "description": "A GitHub Action that renders an animated LeetCode card as an SVG in your own repo. Contest rating history is drawn as a line with the peak marked, next to the contest badge, current rating, top percentage, and problems solved by difficulty. Published on the GitHub Marketplace.",
          "date": "September 2026",
          "status": "active",
-         "version": "1.0.1",
+         "version": "1.2.0",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
@@ -1044,7 +1044,7 @@
          "description": "Custom Claude Code plugin marketplace with 16 curated plugins covering dev workflow, Docker, dependency audits, refactoring, git workflows, open source contributions, Python clean code, animation, and more, plus svg-forge listed from its own repo. Installable via /plugin marketplace.",
          "date": "June 2026",
          "status": "active",
-         "version": "5.6.0",
+         "version": "5.6.1",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -1067,7 +1067,7 @@
          "description": "Installable Claude Code plugin with a cost-mode skill for concise responses, model routing, budget hooks, and efficient workflow patterns, plus claude-rate, a local CLI that grades a project, your ~/.claude setup, and 30 days of real usage. Includes web-based Repo Analyzer, Cost Calculator, and Badge Checker tools.",
          "date": "March 2026",
          "status": "active",
-         "version": "1.17.0",
+         "version": "1.17.2",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -1092,7 +1092,7 @@
          "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stability AI, Luma, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
          "date": "April 2026",
          "status": "active",
-         "version": "0.5.0",
+         "version": "0.6.0",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
@@ -1116,7 +1116,7 @@
          "description": "Reusable utilities and middleware for building MCP servers, in beta. Drop-in packages for the TypeScript SDK covering auth, caching, rate limiting, logging, and CORS - so you stop reimplementing the same plumbing for every MCP server. Not on npm yet, so it builds from source.",
          "date": "March 2026",
          "status": "beta",
-         "version": "0.3.0",
+         "version": "0.3.3",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
@@ -1234,7 +1234,7 @@
          "description": "A GitHub Action that auto-syncs your Credly certifications and badges to your GitHub profile README - no more manual updates when you earn a new cert. Categorizes badges into Industry Certifications, Professional/Partner, and Knowledge/Learning with non-destructive HTML-marker updates. Since v1.1.0 an SVG card mode (output readme, svg, or both) draws every badge into one animated SVG card in two or three groups, and since v1.2.0 the card inlines its badges as WebP at under a third of the old size.",
          "date": "March 2026",
          "status": "active",
-         "version": "1.2.0",
+         "version": "1.4.0",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
@@ -1462,6 +1462,21 @@
          "title": "Replace aws_api_gateway_domain_name when endpoint types change to or from PRIVATE",
          "url": "https://github.com/hashicorp/terraform-provider-aws/pull/50226",
          "status": "open"
+      },
+      {
+         "repo": "PrefectHQ/prefect",
+         "stars": 24036,
+         "title": "Allow the provisioned ECS execution role to create CloudWatch log groups",
+         "url": "https://github.com/PrefectHQ/prefect/pull/23557",
+         "merged_at": "2026-10-24",
+         "status": "merged"
+      },
+      {
+         "repo": "terraform-aws-modules/terraform-aws-s3-bucket",
+         "stars": 588,
+         "title": "Avoid null filter attribute lookups on Terraform versions before 1.12",
+         "url": "https://github.com/terraform-aws-modules/terraform-aws-s3-bucket/pull/416",
+         "status": "open"
       }
    ],
    "community_discussions": [
@@ -1553,6 +1568,42 @@
          "repo": "langgenius/dify",
          "title": "Dify+MCP Agent finishes without executing any tool call",
          "url": "https://github.com/langgenius/dify/discussions/31751",
+         "status": "helpful"
+      },
+      {
+         "repo": "community/community",
+         "title": "The repository homepage sidebar still lists cursoragent (Cursor Agent) under Contributors after removing",
+         "url": "https://github.com/orgs/community/discussions/211394",
+         "status": "accepted"
+      },
+      {
+         "repo": "PicPeak/picpeak",
+         "title": "S3/R2 backend: are thumbnails, previews and originals streamed through the backend, or served directly from the bucket?",
+         "url": "https://github.com/PicPeak/picpeak/discussions/1721",
+         "status": "helpful"
+      },
+      {
+         "repo": "fastapi/fastapi",
+         "title": "Telemetry: a request left out with exclude still records into the outer request's telemetry when nested in it",
+         "url": "https://github.com/fastapi/fastapi/discussions/16466",
+         "status": "helpful"
+      },
+      {
+         "repo": "community/community",
+         "title": "GitHub Pages custom domain HTTPS certificate not issued despite valid DNS",
+         "url": "https://github.com/orgs/community/discussions/209210",
+         "status": "helpful"
+      },
+      {
+         "repo": "community/community",
+         "title": "GitHub Pages returning 404 on all repos - main page and game",
+         "url": "https://github.com/orgs/community/discussions/190370",
+         "status": "helpful"
+      },
+      {
+         "repo": "community/community",
+         "title": "How can I detect pending workflow enablement on a fork when the permissions API returns enabled: true?",
+         "url": "https://github.com/orgs/community/discussions/211109",
          "status": "helpful"
       }
    ]

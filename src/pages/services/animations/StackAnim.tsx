@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { GREEN, MONO_FONT } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
+import { LABEL_SIZE, LABEL_TRACK } from "./canvasKit";
 
 interface StackAnimProps {
    color: string;
@@ -44,10 +45,10 @@ const FADE_START = 0.88;
 const FADE_END = 0.98;
 const ROW_GROW = 0.04;
 
-const HAIRLINE = "rgba(255,255,255,0.12)";
-const CHROME = "rgba(255,255,255,0.18)";
-const EMPTY_ROW = "rgba(255,255,255,0.06)";
-const TABLE_ROW = "rgba(255,255,255,0.14)";
+const HAIRLINE = "rgba(255,255,255,0.18)";
+const CHROME = "rgba(255,255,255,0.24)";
+const EMPTY_ROW = "rgba(255,255,255,0.09)";
+const TABLE_ROW = "rgba(255,255,255,0.20)";
 
 const DOT_SIZE = 4;
 const LIVE_DOT_SIZE = 3;
@@ -57,8 +58,8 @@ const BOX_SIZING = "border-box";
 /*
  * Static frames, canvas px (root is 80 x 80). The composition spans y 13-69.
  * The phone strip in ServiceCard is sized to show the whole canvas at
- * ART_SCALE_COMPACT (1.5x) and the desktop column fits it at 1.8x, so nothing
- * is clipped at either size and the 6 px labels render at 9 px or more.
+ * ART_SCALE_COMPACT (1.8x) and the desktop column fits it at 2.3x, so nothing
+ * is clipped at either size and the 6 px labels render at 10.8 px or more.
  */
 const BROWSER: Rect = { left: 2, top: 13, width: 36, height: 18 };
 const BROWSER_CHROME = 5;
@@ -225,11 +226,11 @@ const ApiBox = ({ color }: Readonly<StackAnimProps>) => (
    >
       <span
          style={{
-            fontSize: 6,
+            fontSize: LABEL_SIZE,
             lineHeight: 1,
             fontFamily: MONO_FONT,
             fontWeight: 700,
-            letterSpacing: 0.3,
+            letterSpacing: LABEL_TRACK,
             color,
          }}
       >
@@ -254,11 +255,11 @@ const PostgresTable = ({ color }: Readonly<StackAnimProps>) => (
          >
             <span
                style={{
-                  fontSize: 6,
+                  fontSize: LABEL_SIZE,
                   lineHeight: 1,
                   fontFamily: MONO_FONT,
                   fontWeight: 700,
-                  letterSpacing: 0.2,
+                  letterSpacing: LABEL_TRACK,
                   color,
                }}
             >

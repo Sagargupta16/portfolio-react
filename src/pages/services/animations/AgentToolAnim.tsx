@@ -1,14 +1,18 @@
 import { motion } from "motion/react";
 import { GREEN } from "@/constants/theme";
-import {
-   W10,
-   W25,
-   W40,
-   W55,
-   shown,
-} from "@pages/projects/covers/kit/sceneTokens";
+import { W40, W55, shown } from "@pages/projects/covers/kit/sceneTokens";
 import type { Pt } from "@pages/projects/covers/kit/sceneTokens";
-import { CANVAS, MICRO_LABEL, box, dot, looping, pop, trip } from "./canvasKit";
+import {
+   CANVAS,
+   CHROME_GHOST,
+   CHROME_LINE,
+   MICRO_LABEL,
+   box,
+   dot,
+   looping,
+   pop,
+   trip,
+} from "./canvasKit";
 import Hairlines from "./Hairlines";
 
 interface AgentToolAnimProps {
@@ -78,14 +82,14 @@ const ToolRows = ({ color }: ColorProps) => (
                style={{
                   ...box(8, top, 3, 3),
                   borderRadius: 0.5,
-                  background: W25,
+                  background: CHROME_GHOST,
                }}
             />
             <span
                style={{
                   ...box(ROW_BAR.left, top, ROW_BAR.width, ROW_BAR.height),
                   borderRadius: 1.5,
-                  background: W10,
+                  background: CHROME_LINE,
                }}
             />
          </span>
@@ -130,7 +134,7 @@ const AgentSession = ({ color }: ColorProps) => (
          />
       </svg>
       <span style={{ ...box(9, 4, 12, 1), background: W40 }} />
-      <span style={{ ...box(9, 8, 8, 1), background: W25 }} />
+      <span style={{ ...box(9, 8, 8, 1), background: CHROME_GHOST }} />
    </div>
 );
 
@@ -187,7 +191,9 @@ const Diff = ({ color }: ColorProps) => (
 /* Hook gate on the lane, then the commit rail with older commits */
 const HookAndRail = ({ color }: ColorProps) => (
    <>
-      <span style={{ ...box(54, GATE_Y - 0.5, 18, 1), background: W25 }} />
+      <span
+         style={{ ...box(54, GATE_Y - 0.5, 18, 1), background: CHROME_GHOST }}
+      />
       <motion.span
          style={{ ...box(54, GATE_Y - 0.5, 18, 1), background: GREEN }}
          {...animate(shown(0.6, 0.72, 0.02))}

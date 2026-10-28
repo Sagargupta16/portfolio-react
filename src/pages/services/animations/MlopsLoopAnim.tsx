@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
+import { LABEL_SIZE, LABEL_TRACK } from "./canvasKit";
 
 interface MlopsLoopAnimProps {
    color: string;
@@ -20,10 +21,10 @@ interface MlopsLoopAnimProps {
 
 const CYCLE = 5;
 
-const HAIRLINE = "rgba(255,255,255,0.10)";
-const PANEL_BORDER = "1px solid rgba(255,255,255,0.14)";
-const PANEL_FILL = "rgba(255,255,255,0.04)";
-const GHOST = "rgba(255,255,255,0.22)";
+const HAIRLINE = "rgba(255,255,255,0.16)";
+const PANEL_BORDER = "1px solid rgba(255,255,255,0.20)";
+const PANEL_FILL = "rgba(255,255,255,0.06)";
+const GHOST = "rgba(255,255,255,0.30)";
 const TICK = "rgba(255,255,255,0.45)";
 const LABEL_COLOR = "rgba(255,255,255,0.5)";
 
@@ -46,10 +47,10 @@ const DROP_END = { x: 52, y: 55 };
 
 const label: CSSProperties = {
    fontFamily: MONO_FONT,
-   fontSize: 6,
+   fontSize: LABEL_SIZE,
    fontWeight: 700,
    lineHeight: 1,
-   letterSpacing: "0.1em",
+   letterSpacing: LABEL_TRACK,
    textTransform: "uppercase",
    textAlign: "center",
    whiteSpace: "nowrap",
@@ -73,10 +74,14 @@ const dot = (cx: number, cy: number, size: number, background: string) => ({
    background,
 });
 
-/* Label spanning the width of its box, offset from the top edge. */
+/* Label spanning the width of its box, offset from the top edge and centred
+   in its 6 px band at any label size. */
 const caption = (width: number, top: number) => ({
    ...label,
    ...rect(0, top, width, 6),
+   display: "flex",
+   alignItems: "center",
+   justifyContent: "center",
 });
 
 const panel: CSSProperties = {
