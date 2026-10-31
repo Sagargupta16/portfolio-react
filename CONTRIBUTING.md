@@ -145,22 +145,22 @@ Check the affected section at phone and desktop widths, with keyboard navigation
 
 These were built, seen on the real page and dropped. Check this list before proposing a redesign or a new visual language, and pilot anything new on one surface first, as an addition beside the current design rather than a replacement for it.
 
-| Date | Direction | Outcome |
-| --- | --- | --- |
-| 2026-06-14 | Premium-dark reskin | Reverted; the next redesign started from scratch |
-| 2026-06-28 | `backdrop-filter` blur on scrolling surfaces | Removed for scroll jank; gradients instead |
-| 2026-07-11 | Ground-up "transactions" concept | Rejected before 4.0.0; the existing design was kept and refined |
-| 2026-07-14 | WebGL / Three.js background | Removed in 4.0.0; no Three.js since |
-| 2026-09-05 | Following the OS reduced-motion setting | Replaced by two explicit modes, Full (default) and Reduced |
-| 2026-09-17 | Kinfolk as a featured project | Kept out of Featured |
-| 2026-09-18 | Story page (long-form personal story) | Built 2026-08-17, hidden 2026-09-15, deleted 2026-09-18 |
-| 2026-09-23 | A site-wide UI/UX pass | Reverted whole |
-| 2026-10-09 | Generated 3D and anime avatar renders | Rejected; the About bust and the mascot come from the owner's own pose sheet |
-| 2026-10-09 | A separate public data repo | Rejected; data stays in `data/*.json` here |
-| 2026-10-18 | Screenshots as project covers | Replaced by an animated scene per project |
+| Date       | Direction                                                                                    | Outcome                                                                                                        |
+| ---------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| 2026-06-14 | Premium-dark reskin                                                                          | Reverted; the next redesign started from scratch                                                               |
+| 2026-06-28 | `backdrop-filter` blur on scrolling surfaces                                                 | Removed for scroll jank; gradients instead                                                                     |
+| 2026-07-11 | Ground-up "transactions" concept                                                             | Rejected before 4.0.0; the existing design was kept and refined                                                |
+| 2026-07-14 | WebGL / Three.js background                                                                  | Removed in 4.0.0; no Three.js since                                                                            |
+| 2026-09-05 | Following the OS reduced-motion setting                                                      | Replaced by two explicit modes, Full (default) and Reduced                                                     |
+| 2026-09-17 | Kinfolk as a featured project                                                                | Kept out of Featured                                                                                           |
+| 2026-09-18 | Story page (long-form personal story)                                                        | Built 2026-08-17, hidden 2026-09-15, deleted 2026-09-18                                                        |
+| 2026-09-23 | A site-wide UI/UX pass                                                                       | Reverted whole                                                                                                 |
+| 2026-10-09 | Generated 3D and anime avatar renders                                                        | Rejected; the About bust and the mascot come from the owner's own pose sheet                                   |
+| 2026-10-09 | A separate public data repo                                                                  | Rejected; data stays in `data/*.json` here                                                                     |
+| 2026-10-18 | Screenshots as project covers                                                                | Replaced by an animated scene per project                                                                      |
 | 2026-10-24 | Hairline isometric figures on project covers, experience scenes and Focus Areas cards (#268) | Closed unmerged; the Motion scenes stay. The kit is kept on branch `feat/hairline-figures` for a new placement |
-| 2026-10-25 | Researched rewrite of the headline, taglines and About | Rejected; copy stays in the owner's own words |
-| 2026-10-25 | Moving SVG loops to WAAPI for idle CPU | Measured no gain; loops pause off-screen and share one 60 Hz clock instead |
+| 2026-10-25 | Researched rewrite of the headline, taglines and About                                       | Rejected; copy stays in the owner's own words                                                                  |
+| 2026-10-25 | Moving SVG loops to WAAPI for idle CPU                                                       | Measured no gain; loops pause off-screen and share one 60 Hz clock instead                                     |
 
 ## Verify your change
 
