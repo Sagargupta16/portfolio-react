@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.22.1] - 2026-10-31
+
+Design directions that were tried and dropped are written down, so a redesign pass does not propose them again. No change to the site.
+
+### Added
+
+- **Design directions already tried** in `CONTRIBUTING.md`: fourteen directions from 2026-06-14 to 2026-10-25, each with its date and what happened, from the premium-dark reskin and the story page to the hairline figures (#268) and the copy rewrite, plus the rule to pilot anything new on one surface, as an addition beside the current design.
+
 ## [4.22.0] - 2026-10-28
 
 ### Added
