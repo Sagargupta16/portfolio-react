@@ -341,7 +341,7 @@
          "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with an animated SVG cover scene for every project, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
          "date": "October 2022",
          "status": "active",
-         "version": "4.22.0",
+         "version": "4.22.1",
          "tools_tech": [
             "React 19",
             "Vite 8",
