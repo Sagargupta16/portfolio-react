@@ -107,7 +107,8 @@ const ContributionCalendar = ({
          (days) => {
             if (live) setState({ status: "ready", days });
          },
-         () => {
+         (error: unknown) => {
+            console.warn("GitHub contributions failed to load:", error);
             if (live) setState({ status: "error" });
          },
       );

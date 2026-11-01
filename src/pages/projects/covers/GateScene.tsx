@@ -24,6 +24,16 @@ const VARIANTS: Record<string, React.FC<TintProps>> = {
 
 const GateScene = ({ tint, variant }: CoverSceneProps) => {
    const Variant = VARIANTS[variant ?? ""] ?? MiddlewareVariant;
+   /* An unknown key is a registry bug: say so in dev. */
+   if (
+      import.meta.env.DEV &&
+      variant !== undefined &&
+      !Object.hasOwn(VARIANTS, variant)
+   ) {
+      console.warn(
+         `GateScene: unknown variant "${variant}", rendering "middleware"`,
+      );
+   }
    return <Variant tint={tint} />;
 };
 

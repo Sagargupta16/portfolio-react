@@ -60,6 +60,21 @@ const clean = (value) =>
       .slice(0, 300);
 const warn = (what, err) =>
    console.warn(`skip ${clean(what)}: ${clean(err?.message ?? err)}`);
+// En and em dash, built from code points so this file stays plain ASCII.
+const DASHES = new RegExp(`[${String.fromCodePoint(0x2013, 0x2014)}]`, "g");
+// A discussion title goes into projects.json and news.json as written, and
+// from there into the site and the machine view's Markdown: en and em dashes
+// become "-", brackets, parentheses, angle brackets and control characters
+// go, whitespace collapses, and the title stops at 160 characters.
+const cleanTitle = (title) =>
+   Array.from(String(title ?? ""), (ch) => (isControl(ch) ? " " : ch))
+      .join("")
+      .replaceAll(DASHES, "-")
+      .replaceAll(/[[\]()<>]/g, "")
+      .replaceAll(/\s+/g, " ")
+      .trim()
+      .slice(0, 160)
+      .trimEnd();
 
 // Format like `pnpm format` so a written file passes format:check as is.
 async function writeJson(path, data) {
@@ -113,12 +128,12 @@ function liveStatus(pr) {
 
 const news = JSON.parse(readFileSync(NEWS_PATH, "utf8"));
 
-/** Add one item unless its link is already in the news; keeps newest-first by month. */
+/** Add one item unless its link is already in the news; keeps newest-first by day. */
 function addNews(item) {
    if (item.link && news.some((n) => n.link === item.link)) return;
-   const at = news.findIndex(
-      (n) => n.date.slice(0, 7) <= item.date.slice(0, 7),
-   );
+   // Before the first strictly older item, so same-day items keep their
+   // order. As strings, a month-only "2026-10" is older than "2026-10-15".
+   const at = news.findIndex((n) => n.date < item.date);
    news.splice(at === -1 ? news.length : at, 0, item);
    note(`news added: ${item.date} ${item.text.slice(0, 60)}`);
 }
@@ -287,11 +302,12 @@ async function addNewAcceptedDiscussions(list) {
    }
    for (const node of nodes.filter((n) => isNewAcceptedAnswer(n, known))) {
       const repo = node.repository.nameWithOwner;
+      const title = cleanTitle(node.title);
       // Keep accepted answers grouped ahead of the "helpful" ones.
       const firstHelpful = list.findIndex((d) => d.status !== "accepted");
       list.splice(firstHelpful === -1 ? list.length : firstHelpful, 0, {
          repo,
-         title: node.title,
+         title,
          url: node.url,
          status: "accepted",
       });
@@ -299,7 +315,7 @@ async function addNewAcceptedDiscussions(list) {
       addNews({
          date: node.answer.createdAt.slice(0, 10),
          type: "community",
-         text: `Accepted answer on ${repo}: ${node.title}`.slice(0, 159),
+         text: `Accepted answer on ${repo}: ${title}`.slice(0, 159),
          link: node.url,
          impact: "minor",
       });

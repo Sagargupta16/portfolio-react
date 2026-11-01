@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion, LayoutGroup } from "motion/react";
 import { getExperience, getPositionsOfResponsibility } from "@data/experience";
 import { getSectionCopy } from "@data/sections";
@@ -19,10 +19,7 @@ const Experience = () => {
    const [selectedExp, setSelectedExp] =
       useState<ProfessionalExperience | null>(null);
 
-   const hasPositions = useMemo(
-      () => positionsArray?.length > 0,
-      [positionsArray],
-   );
+   const hasPositions = positionsArray.length > 0;
 
    return (
       <PageSection
@@ -37,11 +34,10 @@ const Experience = () => {
                   accentColor={BLUE_LIGHT}
                   count={experienceArray.length}
                >
-                  {experienceArray.map((item, index) => (
+                  {experienceArray.map((item) => (
                      <TimelineCard
                         key={item.id}
                         item={item}
-                        index={index}
                         accentColor={BLUE_LIGHT}
                         isMobile={isMobile}
                         onClick={() => setSelectedExp(item)}
@@ -67,11 +63,10 @@ const Experience = () => {
                         accentColor={SKY}
                         count={positionsArray.length}
                      >
-                        {positionsArray.map((item, index) => (
+                        {positionsArray.map((item) => (
                            <TimelineCard
                               key={item.id}
                               item={item}
-                              index={index}
                               accentColor={SKY}
                               isMobile={isMobile}
                            />

@@ -26,6 +26,7 @@ import {
 } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import useMotionPreference from "@hooks/useMotionPreference";
+import type { ProjectFilter } from "@/types";
 import { fillTemplate } from "@utils/fillTemplate";
 import { parseProjectDate } from "@utils/projectMetadata";
 import {
@@ -34,7 +35,7 @@ import {
    writeProjectParam,
 } from "@utils/projectLink";
 import { FILTERS, filterLabel } from "./projectConstants";
-import type { ProjectWithCategory } from "./projectConstants";
+import type { ProjectCategory, ProjectWithCategory } from "./projectConstants";
 import ProjectGrid from "./ProjectGrid";
 import OpenSourceBanner from "./OpenSourceBanner";
 import ProjectModal from "./ProjectModal";
@@ -97,7 +98,7 @@ const FIELDSET_RESET: CSSProperties = { border: 0, margin: 0, padding: 0 };
 const projectFromLink = (): ProjectWithCategory | null => {
    const slug = readProjectParam();
    if (!slug) return null;
-   const groups: [string, ReturnType<typeof getFeaturedProjects>][] = [
+   const groups: [ProjectCategory, ReturnType<typeof getFeaturedProjects>][] = [
       ["Featured", getFeaturedProjects()],
       ["Community", getCommunityProjects()],
       ["Collab", getCollaborativeProjects()],
@@ -107,12 +108,15 @@ const projectFromLink = (): ProjectWithCategory | null => {
       const match = projects.find((p) => projectSlug(p.title) === slug);
       if (match) return { ...match, category };
    }
+   // The slug names no project, so the link is stale: drop it from the address
+   // bar instead of leaving it there for the next share or reload.
+   writeProjectParam(null);
    return null;
 };
 
 const Projects = () => {
    const { reducedMotion } = useMotionPreference();
-   const [activeFilter, setActiveFilter] = useState<string>("Featured");
+   const [activeFilter, setActiveFilter] = useState<ProjectFilter>("Featured");
    const { title, subtitle, search } = getSectionCopy("projects");
    const [query, setQuery] = useState("");
    // The grid filters on a deferred copy of the query, so the input stays
@@ -127,7 +131,7 @@ const Projects = () => {
    const [selectedProject, setSelectedProject] =
       useState<ProjectWithCategory | null>(projectFromLink);
 
-   const handleFilterChange = useCallback((filter: string) => {
+   const handleFilterChange = useCallback((filter: ProjectFilter) => {
       setActiveFilter(filter);
       setHasFiltered(true);
    }, []);
@@ -169,19 +173,22 @@ const Projects = () => {
    );
 
    const categoryProjects = useMemo(() => {
-      const featured = featuredProjects.map((p) => ({
+      const featured = featuredProjects.map((p): ProjectWithCategory => ({
          ...p,
          category: "Featured",
       }));
-      const community = communityProjects.map((p) => ({
+      const community = communityProjects.map((p): ProjectWithCategory => ({
          ...p,
          category: "Community",
       }));
-      const collab = collaborativeProjects.map((p) => ({
+      const collab = collaborativeProjects.map((p): ProjectWithCategory => ({
          ...p,
          category: "Collab",
       }));
-      const others = otherProjects.map((p) => ({ ...p, category: "Others" }));
+      const others = otherProjects.map((p): ProjectWithCategory => ({
+         ...p,
+         category: "Others",
+      }));
 
       let list: ProjectWithCategory[];
       if (activeFilter === "Featured") list = featured;

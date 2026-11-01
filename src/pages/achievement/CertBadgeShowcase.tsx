@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { ShieldCheck } from "lucide-react";
-import { fadeInUp } from "@utils/animations";
+import { fadeInUp, VIEWPORT_MARGIN } from "@utils/animations";
 import type { Certification } from "@/types";
 import { getSectionCopy } from "@data/sections";
 import { fillTemplate } from "@utils/fillTemplate";
@@ -27,7 +27,7 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
             className="subsection-heading"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+            viewport={{ once: true, margin: VIEWPORT_MARGIN }}
             variants={fadeInUp}
          >
             <ShieldCheck

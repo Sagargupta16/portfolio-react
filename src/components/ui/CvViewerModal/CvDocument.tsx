@@ -167,8 +167,10 @@ const CvToolbar = ({
    setZoomIdx,
 }: CvToolbarProps) => (
    <div
+      className="cv-toolbar"
       style={{
          display: "flex",
+         flexWrap: "wrap",
          alignItems: "center",
          justifyContent: "space-between",
          gap: 8,

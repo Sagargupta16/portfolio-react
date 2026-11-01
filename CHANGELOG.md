@@ -2,6 +2,28 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.22.3] - 2026-11-01
+
+A review of the whole repo found issues that a visitor, a crawler or the data pipeline could hit. This release fixes them. The repo checks pass, and the affected flows were checked in a headless browser at phone and desktop widths.
+
+### Fixed
+
+- **Command palette.** Wheel scrolling over the list scrolls the list, not the page behind it, and Ctrl+K does nothing while another overlay is open, so the palette no longer opens hidden under a modal. Long `git clone` rows are ellipsized on phones, and the trigger is 44px on touch.
+- **Contact form.** The red error toast no longer stays empty during a retry or after a successful send.
+- **Smooth scrolling.** A stall of a second or more during a scroll no longer makes every later scroll jump in one step until reload.
+- **Annotations.** The palette pin stays on its button when notes are turned on mid-page, the mascot pin appears, and a quote in the nav label no longer breaks the layer.
+- **CV viewer.** Sub-bullets nest under their bullet, TeX markup is gone, sections follow the resume order, the toolbar wraps on 360px phones, controls are 44px on touch, and a failed load offers a reload.
+- **Layout and touch.** Hover styles no longer stick after a tap, the phone menu sits above the notes layer, the project search field no longer zooms on iOS, the Contact grid fits at 320px, the mascot no longer covers section eyebrows or titles on phones, the hero's stack tiles clear the status pill, the GitHub stat captions stay on one line at 375px and up, news text wraps at 320px, the 404 numeral is centred, and the 404 redirect knows the news section.
+- **Motion.** The MLOps packet fades in from zero, the Flappy post no longer flashes, Arena's clip ids are unique per mount, the scene clock threshold moved to 85 Hz and pauses while the tab is hidden, counters follow the in-app setting, and keyboard focus lifts project cards.
+- **Performance.** The stack field loads only for the layout that shows it, NumberFlow leaves the eager bundle, and contact cards and open-source rows no longer re-render on each keystroke.
+- **Data pipeline.** The sync runs only from main, news keeps day order, discussion titles are cleaned, a malformed achievements file fails the run, GitHub stats checks always run, project titles and slugs must be unique, and the resume URL must be https.
+- **Machine-readable output.** llms.txt counts 12 merged PRs and notes the co-authored fix separately, and projects whose live value is `#` get no Live link.
+- **Dependencies.** typescript-eslint, eslint, lucide-react and motion are updated, and overrides clear two dev-only advisories.
+
+### Docs
+
+- README and CONTRIBUTING: the resume refresh schedule, the skill count, the asset folder in the tree, and the cover example without the removed field.
+
 ## [4.22.2] - 2026-11-01
 
 The hero headline is two lines again, as the design intends, at every width from 375px up. The second line ("I build secure AWS platforms that scale.") was wider than the hero at 1280px and at 375px, so the headline wrapped to three lines. Measured on the production build in Chrome at 375, 768, 1280 and 1920px: two lines at each, with no horizontal overflow, and still two lines with every letter at the pointer effect's heaviest weight. The words are unchanged.

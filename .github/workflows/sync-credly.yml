@@ -1,10 +1,9 @@
 name: Sync Credly Badges
 
-# Weekly refresh of certifications and badges from Credly. Opens or updates one PR for
-# review instead of pushing to main (main requires the `ci` check). As in Sync Live Data,
-# the pull_request run for a PR this GITHUB_TOKEN opens never starts a job, so the job
-# dispatches CI/CD on the sync branch to put the `ci` check on the PR's head commit.
-# Merging the PR triggers the normal CI/CD deploy.
+# Weekly refresh of certifications and badges from Credly. This workflow opens or
+# updates one bot PR for review instead of pushing to main. The PR's `ci` result
+# comes from the CI/CD run the job dispatches on the sync branch (Sync Live Data
+# explains why). Merging the PR triggers the normal CI/CD deploy.
 
 on:
    # Run weekly on Monday at 6:00 AM UTC
@@ -30,6 +29,8 @@ concurrency:
 
 jobs:
    sync:
+      # Main only: a dispatch on another branch would cut the sync PR from it.
+      if: github.ref == 'refs/heads/main'
       runs-on: ubuntu-latest
       timeout-minutes: 10
       env:

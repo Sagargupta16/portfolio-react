@@ -58,8 +58,8 @@ const BOX_SIZING = "border-box";
 /*
  * Static frames, canvas px (root is 80 x 80). The composition spans y 13-69.
  * The phone strip in ServiceCard is sized to show the whole canvas at
- * ART_SCALE_COMPACT (1.8x) and the desktop column fits it at 2.3x, so nothing
- * is clipped at either size and the 6 px labels render at 10.8 px or more.
+ * ART_SCALE_COMPACT (2x) and the desktop column fits it at 2.3x, so nothing
+ * is clipped at either size and the labels render at 8 px on screen at both.
  */
 const BROWSER: Rect = { left: 2, top: 13, width: 36, height: 18 };
 const BROWSER_CHROME = 5;

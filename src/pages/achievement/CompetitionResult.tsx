@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import type { Achievement } from "@/types";
 import { getSectionCopy } from "@data/sections";
+import { VIEWPORT_MARGIN } from "@utils/animations";
 import useMotionPreference from "@hooks/useMotionPreference";
 import {
    BLUE_LIGHT,
@@ -12,6 +13,7 @@ import {
    MEDAL_SILVER,
    MEDAL_BRONZE,
 } from "@/constants/theme";
+import { isPodium } from "./achievementConstants";
 
 interface CompetitionResultProps {
    item: Achievement;
@@ -22,7 +24,6 @@ const PLACEMENT_COLORS: Record<string, string> = {
    "1st": MEDAL_GOLD,
    "2nd": MEDAL_SILVER,
    "3rd": MEDAL_BRONZE,
-   "4th": TEXT_MUTED,
 };
 
 const MAX_STAGGER_S = 0.2;
@@ -45,7 +46,7 @@ const parsePlacement = (
    const ordinalMatch = /^(\d+(?:st|nd|rd|th)) Place$/.exec(prefix);
    if (ordinalMatch) {
       const ordinal = ordinalMatch[1];
-      const color = PLACEMENT_COLORS[ordinal] ?? TEXT_MUTED;
+      const color = isPodium(title) ? PLACEMENT_COLORS[ordinal] : TEXT_MUTED;
       return { rank: ordinal, event, color };
    }
 
@@ -72,7 +73,7 @@ const CompetitionResult = ({ item, index }: CompetitionResultProps) => {
                ease: EASING.cinematic,
             },
          }}
-         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
          style={{ "--result-color": color } as CSSProperties}
       >
          <div

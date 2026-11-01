@@ -153,9 +153,20 @@ const VisitorGap = ({ timeZone }: { timeZone: string }) => {
    );
    const [now, setNow] = useState(() => new Date());
 
+   // The line shows minutes, so it updates on each minute boundary.
    useEffect(() => {
-      const id = window.setInterval(() => setNow(new Date()), 30_000);
-      return () => window.clearInterval(id);
+      let id = 0;
+      const arm = () => {
+         id = window.setTimeout(
+            () => {
+               setNow(new Date());
+               arm();
+            },
+            60_000 - (Date.now() % 60_000),
+         );
+      };
+      arm();
+      return () => window.clearTimeout(id);
    }, []);
 
    const gap = describeGap(

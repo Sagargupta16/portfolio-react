@@ -45,7 +45,7 @@
    background: transparent;
    color: var(--color-text-primary);
    font: inherit;
-   font-size: 14px;
+   font-size: 16px;
 }
 
 .project-search input::placeholder {
@@ -78,10 +78,23 @@
    height: 100%;
    min-width: 0;
    overflow: hidden;
+   /* .glass-card's two fills, plus the keyboard lift below. */
+   transition:
+      background 0.3s var(--ease-standard),
+      border-color 0.3s var(--ease-standard),
+      translate 0.25s ease;
 }
 
 .project-card--spotlight {
    border-color: color-mix(in srgb, var(--project-accent) 30%, transparent);
+}
+
+/* Keyboard focus lifts the card like hover does. Motion's whileFocus cannot:
+   the card div is not focusable. translate composes with the inline transform
+   Motion writes, :has(:focus-visible) ignores mouse clicks and taps, and
+   Reduced keeps the card still. */
+html[data-motion="full"] .project-card:has(:focus-visible) {
+   translate: 0 -6px;
 }
 
 /* Pointer light: a 1px border ring that brightens where the mouse is
@@ -244,10 +257,18 @@
    color: var(--color-text-primary);
 }
 
-.project-action:is(:hover, :focus-visible) {
+.project-action:focus-visible {
    border-color: var(--project-accent);
    background: rgb(var(--ch-white) / 0.06);
    color: var(--project-accent);
+}
+
+@media (hover: hover) {
+   .project-action:hover {
+      border-color: var(--project-accent);
+      background: rgb(var(--ch-white) / 0.06);
+      color: var(--project-accent);
+   }
 }
 
 .project-empty {
@@ -298,13 +319,28 @@
       transform 0.2s var(--ease-cinematic);
 }
 
-.contribution-link:is(:hover, :focus-visible) {
+.contribution-link:focus-visible {
    border-color: color-mix(
       in srgb,
       var(--contribution-accent) 35%,
       transparent
    );
    background: color-mix(in srgb, var(--contribution-accent) 6%, transparent);
+}
+
+@media (hover: hover) {
+   .contribution-link:hover {
+      border-color: color-mix(
+         in srgb,
+         var(--contribution-accent) 35%,
+         transparent
+      );
+      background: color-mix(
+         in srgb,
+         var(--contribution-accent) 6%,
+         transparent
+      );
+   }
 }
 
 .contribution-icon {
@@ -445,10 +481,6 @@ html[data-motion="full"] .contribution-link:active {
    .project-search {
       flex-basis: 100%;
       max-width: none;
-   }
-
-   .project-search input {
-      font-size: 16px;
    }
 
    .project-card-body {
@@ -621,13 +653,6 @@ html:not([data-motion="reduced"]) .evidence-badge--live .evidence-dot::after {
       position: absolute;
       inset: min(0px, calc(50% - 22px)) 0;
    }
-}
-
-/* Intentional horizontal scroll: long terraform commands stay on one line. */
-.terminal-body {
-   overflow-x: auto;
-   overscroll-behavior-x: contain;
-   scrollbar-width: thin;
 }
 
 .terminal-caret {

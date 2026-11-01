@@ -12,6 +12,7 @@ import {
    type LucideIcon,
 } from "lucide-react";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { sceneDriver } from "@utils/sceneClock";
 import {
    MONO_FONT,
    TEXT_MUTED,
@@ -291,6 +292,7 @@ const PipelineBeams = ({ accent, isMobile }: ProjectDemoProps) => {
                            delay: i * STEP,
                            repeat: Infinity,
                            repeatDelay: CYCLE - STEP,
+                           driver: sceneDriver,
                            ease: "easeInOut",
                         },
                      }}
@@ -333,6 +335,7 @@ const PipelineBeams = ({ accent, isMobile }: ProjectDemoProps) => {
                               delay: i * STEP,
                               repeat: Infinity,
                               repeatDelay: CYCLE - STEP * 1.4,
+                              driver: sceneDriver,
                               ease: "easeOut",
                            }}
                         />

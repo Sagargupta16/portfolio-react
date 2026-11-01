@@ -1,3 +1,4 @@
+import type { ContentSectionId } from "@/constants/sections";
 import { createStore } from "./createStore";
 
 /* Which section the mascot is perched in: the last section to cross a thin
@@ -22,7 +23,7 @@ const getObserver = () => {
 };
 
 /** Starts tracking a section anchor by id; returns the cleanup. */
-export const watchMascotSection = (id: string) => {
+export const watchMascotSection = (id: ContentSectionId) => {
    const element = document.getElementById(id);
    const io = getObserver();
    if (!element || !io) return undefined;

@@ -24,8 +24,14 @@
       color 0.16s ease-out;
 }
 
-.gloss-term:hover,
 .gloss-term[aria-expanded="true"] {
    color: var(--color-accent-cyan);
    text-decoration-color: currentColor;
+}
+
+@media (hover: hover) {
+   .gloss-term:hover {
+      color: var(--color-accent-cyan);
+      text-decoration-color: currentColor;
+   }
 }

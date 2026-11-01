@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { AnimatePresence, motion, useAnimate, usePresence } from "motion/react";
+import type { ContentSectionId } from "@/constants/sections";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { useMascotSection, watchMascotSection } from "@utils/mascotState";
 import frames from "@assets/brand/mascot-frames.webp";
@@ -104,8 +105,8 @@ const MascotSprite = () => {
 
    // Exit: crouch, then leap up and out.
    useEffect(() => {
+      leavingRef.current = !isPresent;
       if (isPresent) return;
-      leavingRef.current = true;
       if (reducedMotion) {
          safeToRemove();
          return;
@@ -188,7 +189,7 @@ const MascotSprite = () => {
 };
 
 interface MascotProps {
-   sectionId: string;
+   sectionId: ContentSectionId;
 }
 
 const Mascot = ({ sectionId }: MascotProps) => {

@@ -59,20 +59,14 @@ const SkillChip = ({
 }: Readonly<SkillChipProps>) => {
    const size = small ? CHIP_SIZES.small : CHIP_SIZES.regular;
    const icon = getSkillIcon(name);
-   return (
-      <motion.span
-         custom={custom}
-         variants={variants}
-         whileHover={hover}
-         whileFocus={focus}
-         transition={CHIP_TRANSITION}
-         style={{
-            ...CHIP_BASE,
-            padding: size.padding,
-            gap: size.gap,
-            fontSize: size.fontSize,
-         }}
-      >
+   const style: CSSProperties = {
+      ...CHIP_BASE,
+      padding: size.padding,
+      gap: size.gap,
+      fontSize: size.fontSize,
+   };
+   const content = (
+      <>
          {icon && (
             <icon.Icon
                size={size.icon}
@@ -82,6 +76,22 @@ const SkillChip = ({
             />
          )}
          {name}
+      </>
+   );
+   // With no hover, focus or variant target nothing animates, so a static chip
+   // skips the Motion wrapper and renders a plain span.
+   if (!hover && !focus && !variants)
+      return <span style={style}>{content}</span>;
+   return (
+      <motion.span
+         custom={custom}
+         variants={variants}
+         whileHover={hover}
+         whileFocus={focus}
+         transition={CHIP_TRANSITION}
+         style={style}
+      >
+         {content}
       </motion.span>
    );
 };

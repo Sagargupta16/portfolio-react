@@ -23,9 +23,12 @@ export const FILTERS = [
 
 const FILTER_LABELS = getSectionCopy("projects").filters;
 
+/** Every filter chip but "All" is also a project category. */
+export type ProjectCategory = Exclude<ProjectFilter, "All">;
+
 /** The on-screen name of a filter chip or project category. */
-export const filterLabel = (filter: string): string =>
-   FILTER_LABELS[filter as ProjectFilter];
+export const filterLabel = (filter: ProjectFilter): string =>
+   FILTER_LABELS[filter];
 
 export interface CategoryColors {
    accent: string;
@@ -68,8 +71,7 @@ export const getCategoryColors = (category: string): CategoryColors =>
    CATEGORY_COLORS[category] ?? CATEGORY_COLORS.Others;
 
 export interface ProjectWithCategory extends Project {
-   category: string;
-   achievement?: string;
+   category: ProjectCategory;
 }
 
 export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] =

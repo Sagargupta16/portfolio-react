@@ -100,6 +100,7 @@ const useContactForm = () => {
 
          setIsLoading(true);
          setStatus({ type: "", message: "" });
+         setToastVisible(false);
 
          try {
             const result = await withTimeout(

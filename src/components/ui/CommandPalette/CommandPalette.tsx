@@ -18,6 +18,7 @@ import { getResumeUrl, getSocialProfiles } from "@data/personal";
 import { getFeaturedProjects } from "@data/projects";
 import { getUiCopy } from "@data/ui";
 import useMotionPreference from "@hooks/useMotionPreference";
+import useScrollLock from "@hooks/useScrollLock";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import { setPaletteOpen } from "@utils/paletteState";
 import { toggleAnnotations, useAnnotationsOn } from "@utils/annotationsState";
@@ -86,6 +87,9 @@ const slug = (text: string) =>
 const CommandPalette = ({ open }: { open: boolean }) => {
    const { navigateToSection } = useSectionNavigation();
    const { preference, setPreference } = useMotionPreference();
+   // Holds the page still behind the palette; the list scrolls itself
+   // (data-lenis-prevent), since a stopped Lenis cancels every other wheel.
+   useScrollLock(open);
    const [copyState, setCopyState] = useState<CopyState>("idle");
    const copyResetRef = useRef<ReturnType<typeof setTimeout> | undefined>(
       undefined,
@@ -135,7 +139,7 @@ const CommandPalette = ({ open }: { open: boolean }) => {
             />
             <kbd className="palette-kbd">{COPY.close_key}</kbd>
          </div>
-         <Command.List className="palette-list">
+         <Command.List className="palette-list" data-lenis-prevent>
             <Command.Empty className="palette-empty">
                {COPY.empty}
             </Command.Empty>

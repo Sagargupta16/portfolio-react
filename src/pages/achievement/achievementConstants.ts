@@ -7,3 +7,7 @@ export const LEVEL_ORDER: Record<string, number> = {
    Professional: 2,
    Advanced: 2,
 };
+
+/** A podium finish: a "1st", "2nd" or "3rd" Place title ("1st Place - X"). */
+export const isPodium = (title: string): boolean =>
+   /^(?:1st|2nd|3rd) Place - /.test(title);

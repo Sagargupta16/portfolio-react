@@ -10,6 +10,10 @@ import MobileMenu from "./MobileMenu";
 // bar itself stays fixed at the top; it never slides away on scroll.
 const SCROLLED_AFTER = 50;
 
+/** One entry of the section list the bar, the desktop links and the mobile
+    menu all render. */
+export type NavSection = (typeof NAV_SECTIONS)[number];
+
 const Nav = () => {
    const { isTablet: isMobile } = useBreakpoint();
    const { navigateToSection } = useSectionNavigation();
@@ -60,9 +64,9 @@ const Nav = () => {
             onToggleMenu={toggleMenu}
          />
 
-         {/* Mobile overlay menu */}
+         {/* Mobile overlay menu, closed while the desktop layout is up */}
          <MobileMenu
-            open={mobileMenuOpen}
+            open={mobileMenuOpen && isMobile}
             sections={NAV_SECTIONS}
             activeSection={activeSection}
             onNavigate={scrollToSection}

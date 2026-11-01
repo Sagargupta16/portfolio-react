@@ -7,7 +7,7 @@ import TechTag from "@components/ui/TechTag";
 import GlossText from "@components/ui/GlossText";
 import CaseStudyBrief from "@components/ui/CaseStudyBrief";
 import { getSectionCopy } from "@data/sections";
-import { newTabLabel } from "@data/ui";
+import { getUiCopy, newTabLabel } from "@data/ui";
 import { fillTemplate } from "@utils/fillTemplate";
 import { hasProjectUrl } from "@utils/projectMetadata";
 import {
@@ -19,6 +19,8 @@ import {
 } from "@/constants/theme";
 import type { CategoryColors, ProjectWithCategory } from "./projectConstants";
 import { getProjectDemo } from "./demos/demoRegistry";
+
+const { demo: DEMO_COPY, common: COMMON_COPY } = getUiCopy();
 
 interface ProjectModalBodyProps {
    project: ProjectWithCategory;
@@ -101,6 +103,7 @@ const ProjectModalBody = ({
    const hasGithub = hasProjectUrl(project.github);
    const hasLive = hasProjectUrl(project.live);
    const demo = getProjectDemo(project.id);
+   const demoHeight = isMobile ? 260 : 220;
    const brief = project.case_study;
    const { links: linkLabels, modal: modalCopy } = getSectionCopy("projects");
 
@@ -199,16 +202,42 @@ const ProjectModalBody = ({
                   </span>
                }
             >
-               {/* Own boundary: a failed demo chunk leaves an empty frame of
-                   the skeleton's height instead of replacing the section. */}
+               {/* Own boundary: a failed demo chunk leaves a frame of the
+                   skeleton's height with a message and a reload button
+                   instead of replacing the section. */}
                <ErrorBoundary
-                  fallback={<div style={{ height: isMobile ? 260 : 220 }} />}
+                  fallback={
+                     <div
+                        role="alert"
+                        style={{
+                           height: demoHeight,
+                           display: "flex",
+                           flexDirection: "column",
+                           alignItems: "center",
+                           justifyContent: "center",
+                           gap: 12,
+                           color: TEXT_SECONDARY,
+                           fontSize: isMobile ? 12 : 13,
+                           textAlign: "center",
+                        }}
+                     >
+                        <span>{DEMO_COPY.unavailable}</span>
+                        <button
+                           type="button"
+                           className="btn-outline"
+                           onClick={() => globalThis.location.reload()}
+                           style={{ minHeight: 44 }}
+                        >
+                           {COMMON_COPY.reload}
+                        </button>
+                     </div>
+                  }
                >
                   <Suspense
                      fallback={
                         <div
                            className="skeleton"
-                           style={{ height: isMobile ? 260 : 220 }}
+                           style={{ height: demoHeight }}
                         />
                      }
                   >

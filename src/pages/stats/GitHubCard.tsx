@@ -78,6 +78,7 @@ const GitHubCard = ({ username, stats }: Readonly<GitHubCardProps>) => {
                   display: `${language.percent}%`,
                   color: LANGUAGE_SHADES[i % LANGUAGE_SHADES.length],
                }))}
+               scale={100}
             />
          )}
       </WideProfileCard>

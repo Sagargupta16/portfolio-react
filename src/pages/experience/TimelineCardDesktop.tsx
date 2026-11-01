@@ -1,6 +1,7 @@
 import { motion, type Variants } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
+import { VIEWPORT_MARGIN } from "@utils/animations";
 import { splitDateRange, isPresent } from "@utils/dateRange";
 import { getSectionCopy } from "@data/sections";
 import {
@@ -20,7 +21,6 @@ import PresentIndicator from "./PresentIndicator";
 
 interface TimelineCardDesktopProps {
    item: ProfessionalExperience | PositionOfResponsibility;
-   index: number;
    accentColor: string;
    onClick?: () => void;
 }
@@ -37,7 +37,6 @@ const timelineEntry: Variants = {
 
 const TimelineCardDesktop = ({
    item,
-   index,
    accentColor,
    onClick,
 }: TimelineCardDesktopProps) => {
@@ -53,14 +52,13 @@ const TimelineCardDesktop = ({
             gap: 0,
          }}
          variants={timelineEntry}
-         custom={index}
          // Own viewport trigger: parent propagation breaks when the card
          // remounts after a resize across the mobile/desktop boundary (the
          // parent is already "visible", so late-mounting children would stay
          // stuck at "hidden" forever).
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
          transition={{
             layout: { duration: DURATION.default, ease: EASING.standard },
          }}

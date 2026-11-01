@@ -17,18 +17,25 @@ const COPY = getUiCopy().notes;
 /* Numbered pins over the live page, one per note in constants/annotations.
    Pins live in document coordinates (absolute, not fixed), so they ride the
    page with native and Lenis scrolling alike; they are re-measured when the
-   page resizes or a deferred section mounts. Phones read the open note in a
-   bottom card, desktop gets a card under the pin. */
+   page resizes or a deferred section mounts. A pin on something that never
+   scrolls (the palette button in the fixed nav) keeps viewport coordinates
+   instead and is drawn fixed, in its own layer above the nav. Phones read
+   the open note in a bottom card, desktop gets a card under the pin. */
 
 interface Pin {
    note: Annotation;
    top: number;
    left: number;
+   /** Inside a position: fixed ancestor: viewport coordinates, drawn fixed. */
+   fixed: boolean;
 }
 
 const PIN_SIZE = 26;
 const CARD_WIDTH = 300;
 const EDGE = 12;
+// The nav is z-index 50 and the page layer 45, so page pins slide under the
+// nav as they scroll; pins on the nav itself need a layer above it.
+const FIXED_LAYER_STYLE = { zIndex: 51 };
 
 // Pin to the box the content actually fills: a centred h1 spans the full
 // width, but its text does not, so the range rect hugs the letters.
@@ -39,27 +46,40 @@ const contentRect = (el: HTMLElement) => {
    return rect.width > 0 && rect.height > 0 ? rect : el.getBoundingClientRect();
 };
 
-const firstVisible = (selector: string) => {
+const firstVisible = ({ selector, match }: Annotation) => {
    for (const el of document.querySelectorAll<HTMLElement>(selector)) {
+      if (match && !match(el)) continue;
       const rect = contentRect(el);
-      if (rect.width > 0 && rect.height > 0) return rect;
+      if (rect.width > 0 && rect.height > 0) return { el, rect };
    }
    return null;
+};
+
+const insideFixed = (el: Element) => {
+   for (let node: Element | null = el; node; node = node.parentElement) {
+      if (getComputedStyle(node).position === "fixed") return true;
+   }
+   return false;
 };
 
 const measurePins = (): Pin[] => {
    const pins: Pin[] = [];
    for (const note of ANNOTATIONS) {
-      const rect = firstVisible(note.selector);
-      if (!rect) continue;
+      const target = firstVisible(note);
+      if (!target) continue;
+      const { rect } = target;
+      const fixed = insideFixed(target.el);
+      const scrollX = fixed ? 0 : window.scrollX;
+      const scrollY = fixed ? 0 : window.scrollY;
       const left = Math.min(
-         Math.max(rect.left + window.scrollX - PIN_SIZE / 2, EDGE),
+         Math.max(rect.left + scrollX - PIN_SIZE / 2, EDGE),
          document.documentElement.clientWidth - PIN_SIZE - EDGE,
       );
       pins.push({
          note,
-         top: Math.max(rect.top + window.scrollY - PIN_SIZE / 2, EDGE),
+         top: Math.max(rect.top + scrollY - PIN_SIZE / 2, EDGE),
          left,
+         fixed,
       });
    }
    return pins.sort((a, b) => a.top - b.top || a.left - b.left);
@@ -102,6 +122,8 @@ const AnnotationsLayer = () => {
          const target = pins[index];
          if (!target) return;
          setOpenId(target.note.id);
+         // A fixed pin is always in view, and its top is not a page offset.
+         if (target.fixed) return;
          // Lenis owns scrolling in Full mode (it clamps to the page itself);
          // Reduced mode has no instance and scrolls natively.
          const offset = -window.innerHeight / 3;
@@ -150,131 +172,141 @@ const AnnotationsLayer = () => {
         )
       : 0;
 
-   return createPortal(
-      <div className="annotations-layer">
-         {pins.map((pin, index) => (
-            <motion.button
-               key={pin.note.id}
-               type="button"
-               className={`annotation-pin${pin.note.id === openId ? " is-open" : ""}`}
-               style={{ top: pin.top, left: pin.left }}
-               initial={reducedMotion ? false : { scale: 0.4, opacity: 0 }}
-               animate={{ scale: 1, opacity: 1 }}
-               transition={{
-                  delay: reducedMotion ? 0 : index * 0.05,
-                  type: "spring",
-                  stiffness: 420,
-                  damping: 22,
-               }}
-               onClick={() =>
-                  setOpenId(pin.note.id === openId ? null : pin.note.id)
-               }
-               aria-expanded={pin.note.id === openId}
-               aria-controls="annotation-card"
-               aria-label={fillTemplate(COPY.pin_label, {
-                  index: index + 1,
-                  title: pin.note.title,
-               })}
-            >
-               {index + 1}
-            </motion.button>
-         ))}
+   const renderPin = (pin: Pin, index: number) => (
+      <motion.button
+         key={pin.note.id}
+         type="button"
+         className={`annotation-pin${pin.note.id === openId ? " is-open" : ""}`}
+         style={{
+            position: pin.fixed ? "fixed" : undefined,
+            top: pin.top,
+            left: pin.left,
+         }}
+         initial={reducedMotion ? false : { scale: 0.4, opacity: 0 }}
+         animate={{ scale: 1, opacity: 1 }}
+         transition={{
+            delay: reducedMotion ? 0 : index * 0.05,
+            type: "spring",
+            stiffness: 420,
+            damping: 22,
+         }}
+         onClick={() => setOpenId(pin.note.id === openId ? null : pin.note.id)}
+         aria-expanded={pin.note.id === openId}
+         aria-controls="annotation-card"
+         aria-label={fillTemplate(COPY.pin_label, {
+            index: index + 1,
+            title: pin.note.title,
+         })}
+      >
+         {index + 1}
+      </motion.button>
+   );
 
-         <AnimatePresence>
-            {open && (
+   // Rendered in its pin's layer; each layer keeps its own AnimatePresence,
+   // so the card still plays its exit when the next note is in the other.
+   const card = open && (
+      <motion.div
+         key={open.note.id}
+         id="annotation-card"
+         role="dialog"
+         aria-label={open.note.title}
+         className={`annotation-card${isMobile ? " is-sheet" : ""}`}
+         style={
+            isMobile
+               ? undefined
+               : {
+                    position: open.fixed ? "fixed" : undefined,
+                    top: open.top + PIN_SIZE + 10,
+                    left: cardLeft,
+                    width: CARD_WIDTH,
+                 }
+         }
+         initial={reducedMotion ? false : { opacity: 0, y: isMobile ? 24 : 6 }}
+         animate={{ opacity: 1, y: 0 }}
+         exit={{ opacity: 0, y: isMobile ? 24 : 6 }}
+         transition={{ duration: 0.2, ease: EASING.brisk }}
+      >
+         <div className="annotation-card-head">
+            <span className="annotation-card-index">
+               {String(openIndex + 1).padStart(2, "0")} /{" "}
+               {String(pins.length).padStart(2, "0")}
+            </span>
+            <button
+               type="button"
+               className="annotation-icon-btn"
+               onClick={() => setOpenId(null)}
+               aria-label={COPY.close}
+            >
+               <X size={14} aria-hidden="true" />
+            </button>
+         </div>
+         <p className="annotation-card-title">{open.note.title}</p>
+         <p className="annotation-card-body">{open.note.body}</p>
+         <div className="annotation-card-nav">
+            <button
+               type="button"
+               className="annotation-icon-btn"
+               onClick={() => step(-1)}
+               aria-label={COPY.previous}
+            >
+               <ChevronLeft size={16} aria-hidden="true" />
+            </button>
+            <button
+               type="button"
+               className="annotation-icon-btn"
+               onClick={() => step(1)}
+               aria-label={COPY.next}
+            >
+               <ChevronRight size={16} aria-hidden="true" />
+            </button>
+         </div>
+      </motion.div>
+   );
+
+   // Fixed pins sit at the top of the viewport and sort first, so their layer
+   // comes first too and the tab order follows the pin numbers.
+   return createPortal(
+      <>
+         <div className="annotations-layer" style={FIXED_LAYER_STYLE}>
+            {pins.map((pin, index) => pin.fixed && renderPin(pin, index))}
+            <AnimatePresence>{open?.fixed && card}</AnimatePresence>
+         </div>
+         <div className="annotations-layer">
+            {pins.map((pin, index) => !pin.fixed && renderPin(pin, index))}
+            <AnimatePresence>{!open?.fixed && card}</AnimatePresence>
+
+            {pins.length > 0 && !(isMobile && open) && (
                <motion.div
-                  key={open.note.id}
-                  id="annotation-card"
-                  role="dialog"
-                  aria-label={open.note.title}
-                  className={`annotation-card${isMobile ? " is-sheet" : ""}`}
-                  style={
-                     isMobile
-                        ? undefined
-                        : {
-                             top: open.top + PIN_SIZE + 10,
-                             left: cardLeft,
-                             width: CARD_WIDTH,
-                          }
-                  }
-                  initial={
-                     reducedMotion
-                        ? false
-                        : { opacity: 0, y: isMobile ? 24 : 6 }
-                  }
+                  className="annotations-banner"
+                  role="status"
+                  initial={reducedMotion ? false : { opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: isMobile ? 24 : 6 }}
-                  transition={{ duration: 0.2, ease: EASING.brisk }}
+                  transition={{ duration: DURATION.quick, ease: EASING.brisk }}
                >
-                  <div className="annotation-card-head">
-                     <span className="annotation-card-index">
-                        {String(openIndex + 1).padStart(2, "0")} /{" "}
-                        {String(pins.length).padStart(2, "0")}
-                     </span>
-                     <button
-                        type="button"
-                        className="annotation-icon-btn"
-                        onClick={() => setOpenId(null)}
-                        aria-label={COPY.close}
-                     >
-                        <X size={14} aria-hidden="true" />
-                     </button>
-                  </div>
-                  <p className="annotation-card-title">{open.note.title}</p>
-                  <p className="annotation-card-body">{open.note.body}</p>
-                  <div className="annotation-card-nav">
-                     <button
-                        type="button"
-                        className="annotation-icon-btn"
-                        onClick={() => step(-1)}
-                        aria-label={COPY.previous}
-                     >
-                        <ChevronLeft size={16} aria-hidden="true" />
-                     </button>
-                     <button
-                        type="button"
-                        className="annotation-icon-btn"
-                        onClick={() => step(1)}
-                        aria-label={COPY.next}
-                     >
-                        <ChevronRight size={16} aria-hidden="true" />
-                     </button>
-                  </div>
+                  <span>
+                     {fillTemplate(
+                        pins.length === 1 ? COPY.count_one : COPY.count_many,
+                        { count: pins.length },
+                     )}
+                  </span>
+                  <button
+                     type="button"
+                     onClick={() => goTo(0)}
+                     className="annotations-banner-btn"
+                  >
+                     {COPY.start}
+                  </button>
+                  <button
+                     type="button"
+                     onClick={() => setAnnotationsOn(false)}
+                     className="annotations-banner-btn"
+                  >
+                     {COPY.turn_off}
+                  </button>
                </motion.div>
             )}
-         </AnimatePresence>
-
-         {pins.length > 0 && !(isMobile && open) && (
-            <motion.div
-               className="annotations-banner"
-               role="status"
-               initial={reducedMotion ? false : { opacity: 0, y: 16 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ duration: DURATION.quick, ease: EASING.brisk }}
-            >
-               <span>
-                  {fillTemplate(
-                     pins.length === 1 ? COPY.count_one : COPY.count_many,
-                     { count: pins.length },
-                  )}
-               </span>
-               <button
-                  type="button"
-                  onClick={() => goTo(0)}
-                  className="annotations-banner-btn"
-               >
-                  {COPY.start}
-               </button>
-               <button
-                  type="button"
-                  onClick={() => setAnnotationsOn(false)}
-                  className="annotations-banner-btn"
-               >
-                  {COPY.turn_off}
-               </button>
-            </motion.div>
-         )}
-      </div>,
+         </div>
+      </>,
       document.body,
    );
 };

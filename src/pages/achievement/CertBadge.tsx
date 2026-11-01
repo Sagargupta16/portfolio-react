@@ -11,6 +11,7 @@ import {
    TEXT_PRIMARY,
    MONO_FONT,
 } from "@/constants/theme";
+import { VIEWPORT_MARGIN } from "@utils/animations";
 import { credlyThumb } from "@utils/credlyThumb";
 import { fillTemplate } from "@utils/fillTemplate";
 import { getSectionCopy } from "@data/sections";
@@ -133,7 +134,7 @@ const CertBadge = ({
          aria-label={newTabLabel(ariaLabel)}
          initial={{ opacity: 0, y: 24 }}
          whileInView={{ opacity: 1, y: 0 }}
-         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
          transition={{
             delay: Math.min(entranceDelay, MAX_STAGGER_S),
             duration: 0.5,

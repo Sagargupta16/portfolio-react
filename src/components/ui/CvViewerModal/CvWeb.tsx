@@ -103,8 +103,9 @@ const Block = ({ block }: { block: CvBlock }) => {
                {block.items.length > 0 && (
                   <ul className="cv-bullets">
                      {block.items.map((item) => (
-                        <li key={textOf(item)}>
-                           <Inline nodes={item} />
+                        <li key={textOf(item.text)}>
+                           <Inline nodes={item.text} />
+                           <SubList subs={item.sub} />
                         </li>
                      ))}
                   </ul>
@@ -115,15 +116,16 @@ const Block = ({ block }: { block: CvBlock }) => {
          return (
             <ul className="cv-list">
                {block.items.map((item) => (
-                  <li key={textOf(item.c)}>
+                  <li key={textOf(item.text)}>
                      <span>
-                        <Inline nodes={item.c} />
+                        <Inline nodes={item.text} />
                      </span>
                      {item.aside && (
                         <em className="cv-aside">
                            <Inline nodes={item.aside} />
                         </em>
                      )}
+                     <SubList subs={item.sub} />
                   </li>
                ))}
             </ul>
@@ -147,10 +149,22 @@ const Block = ({ block }: { block: CvBlock }) => {
    }
 };
 
+/* Sub-bullets of one bullet, rendered as a nested list (nothing when empty). */
+const SubList = ({ subs }: { subs: CvInline[][] }) =>
+   subs.length === 0 ? null : (
+      <ul className="cv-bullets">
+         {subs.map((sub) => (
+            <li key={textOf(sub)}>
+               <Inline nodes={sub} />
+            </li>
+         ))}
+      </ul>
+   );
+
 const blockKey = (block: CvBlock) => {
    if (block.t === "entry")
       return `e:${textOf(block.title)}:${textOf(block.date)}`;
-   if (block.t === "list") return `l:${textOf(block.items[0]?.c ?? [])}`;
+   if (block.t === "list") return `l:${textOf(block.items[0]?.text ?? [])}`;
    if (block.t === "rows") return `r:${textOf(block.rows[0] ?? [])}`;
    return `p:${textOf(block.c)}`;
 };

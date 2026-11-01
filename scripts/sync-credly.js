@@ -94,7 +94,10 @@ function getBadgeType(badge) {
 
 function transformBadge(badge, id) {
    // Credly badge names carry en/em dashes; house style forbids them
-   const name = (badge.badge_template?.name || "").replace(/[–—]/g, "-");
+   const name = (badge.badge_template?.name || "").replace(
+      /[\u2013\u2014]/g,
+      "-",
+   );
    const type = getBadgeType(badge);
    const entry = {
       id,
@@ -243,7 +246,10 @@ async function main() {
    let existing = {};
    try {
       existing = JSON.parse(readFileSync(DATA_PATH, "utf8"));
-   } catch {
+   } catch (err) {
+      // Only a missing file starts fresh; a file that fails to read or parse
+      // must stop the sync, or its achievements and coding stats are lost.
+      if (err.code !== "ENOENT") throw err;
       console.log("No existing achievements.json found, creating new one");
    }
    assertNotFewer(certifications.length + learningBadges.length, existing);

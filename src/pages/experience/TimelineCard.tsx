@@ -5,7 +5,6 @@ import TimelineCardDesktop from "./TimelineCardDesktop";
 
 interface TimelineCardProps {
    item: ProfessionalExperience | PositionOfResponsibility;
-   index: number;
    accentColor?: string;
    isMobile: boolean;
    onClick?: () => void;
@@ -13,7 +12,6 @@ interface TimelineCardProps {
 
 const TimelineCard = ({
    item,
-   index,
    accentColor = BLUE_LIGHT,
    isMobile,
    onClick,
@@ -22,7 +20,6 @@ const TimelineCard = ({
       return (
          <TimelineCardMobile
             item={item}
-            index={index}
             accentColor={accentColor}
             onClick={onClick}
          />
@@ -32,7 +29,6 @@ const TimelineCard = ({
    return (
       <TimelineCardDesktop
          item={item}
-         index={index}
          accentColor={accentColor}
          onClick={onClick}
       />

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "motion/react";
 import {
    GitPullRequest,
@@ -17,7 +18,11 @@ import {
    DURATION,
    EASING,
 } from "@/constants/theme";
-import { staggerContainer, staggerItem } from "@utils/animations";
+import {
+   staggerContainer,
+   staggerItem,
+   VIEWPORT_MARGIN,
+} from "@utils/animations";
 import { fillTemplate } from "@utils/fillTemplate";
 import {
    OPEN_SOURCE_CONTRIBUTIONS,
@@ -183,7 +188,7 @@ const OpenSourceBanner = () => {
                      variants={staggerContainer}
                      initial="hidden"
                      whileInView="visible"
-                     viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+                     viewport={{ once: true, margin: VIEWPORT_MARGIN }}
                   >
                      {acceptedDiscussions.map((d) => (
                         <motion.div key={d.url} variants={staggerItem}>
@@ -233,7 +238,7 @@ const OpenSourceBanner = () => {
                      variants={staggerContainer}
                      initial="hidden"
                      whileInView="visible"
-                     viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+                     viewport={{ once: true, margin: VIEWPORT_MARGIN }}
                   >
                      {helpfulDiscussions.map((d) => (
                         <motion.div key={d.url} variants={staggerItem}>
@@ -248,4 +253,4 @@ const OpenSourceBanner = () => {
    );
 };
 
-export default OpenSourceBanner;
+export default memo(OpenSourceBanner);

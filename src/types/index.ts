@@ -754,6 +754,13 @@ export interface UiCopy {
       download_short: string;
       page_alt: string;
       sheet_label: string;
+      load_failed: string;
+   };
+   common: {
+      reload: string;
+   };
+   demo: {
+      unavailable: string;
    };
 }
 

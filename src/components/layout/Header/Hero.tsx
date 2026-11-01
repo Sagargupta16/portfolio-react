@@ -2,7 +2,9 @@ import { lazy, Suspense, useRef } from "react";
 import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
 import ErrorBoundary from "@components/common/ErrorBoundary";
+import { MEDIA_QUERIES } from "@/constants/theme";
 import { getUiCopy } from "@data/ui";
+import useMediaQuery from "@hooks/useMediaQuery";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import usePauseOffscreen, { SECTION_MARGIN } from "@hooks/usePauseOffscreen";
 import HeroContent from "./HeroContent";
@@ -18,6 +20,7 @@ const OMIT_FIELD = <></>;
 const Hero = () => {
    const sectionRef = useRef<HTMLElement>(null);
    const { navigateToSection } = useSectionNavigation();
+   const wide = useMediaQuery(MEDIA_QUERIES.wide);
    usePauseOffscreen(sectionRef, SECTION_MARGIN);
 
    return (
@@ -38,12 +41,15 @@ const Hero = () => {
              owns the flanks from 1280px up): after the copy in DOM order so
              the headline paints first, under it visually (z-0 beneath
              HeroContent's z-10). Lazy so the skill glyph registry stays out
-             of the entry bundle. */}
-         <ErrorBoundary fallback={OMIT_FIELD}>
-            <Suspense fallback={null}>
-               <HeroStackField hostRef={sectionRef} />
-            </Suspense>
-         </ErrorBoundary>
+             of the entry bundle, and rendered only below 1280px, so wide
+             screens never request its chunk. */}
+         {!wide && (
+            <ErrorBoundary fallback={OMIT_FIELD}>
+               <Suspense fallback={null}>
+                  <HeroStackField hostRef={sectionRef} />
+               </Suspense>
+            </ErrorBoundary>
+         )}
 
          {/* Scroll indicator */}
          <motion.button

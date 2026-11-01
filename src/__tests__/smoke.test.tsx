@@ -62,9 +62,7 @@ describe("application shell", () => {
       const { container } = render(<App />);
       expect(container.querySelector("main")).toBeTruthy();
       expect(screen.queryByText("Contact section")).toBeNull();
-      fireEvent.click(
-         screen.getByRole("button", { name: "Navigate to Contact" }),
-      );
+      fireEvent.click(screen.getByRole("button", { name: "Contact Me" }));
       await screen.findByText("Contact section");
 
       for (const section of CONTENT_SECTIONS) {

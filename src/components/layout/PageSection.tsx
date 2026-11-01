@@ -3,9 +3,10 @@ import { motion } from "motion/react";
 import { sectionRevealEnhanced, VIEWPORT_MARGIN } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import SectionHeader from "@components/ui/SectionHeader";
+import type { ContentSectionId } from "@/constants/sections";
 
 interface PageSectionProps {
-   id: string;
+   id: ContentSectionId;
    title: string;
    subtitle: string;
    children: ReactNode;

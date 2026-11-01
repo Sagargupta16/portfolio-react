@@ -1,4 +1,4 @@
-import type { Variants } from "motion/react";
+import type { TransformProperties, Variants } from "motion/react";
 import { DURATION, EASING } from "@/constants/theme";
 
 // ===== Shared Reveal Tokens =====
@@ -90,3 +90,13 @@ export const waveCascadeItem: Variants = {
       transition: { duration: DURATION.default, ease: EASING.brisk },
    },
 };
+
+// ===== Press Transform =====
+/* Once a whileTap settles, Motion writes `transform: none` inline, which beats
+   the .btn-* :hover lift in the stylesheet for good. Returning the generated
+   string as-is leaves the inline transform empty at rest, so CSS owns the
+   hover lift and Motion only writes during the press. */
+export const passThroughTransform = (
+   _transform: TransformProperties,
+   generated: string,
+) => generated;

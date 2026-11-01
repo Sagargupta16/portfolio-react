@@ -24,6 +24,16 @@ const VARIANTS: Record<string, React.FC<TintProps>> = {
 
 const McpScene = ({ tint, variant }: CoverSceneProps) => {
    const Variant = VARIANTS[variant ?? ""] ?? MemoryVariant;
+   /* An unknown key is a registry bug: say so in dev. */
+   if (
+      import.meta.env.DEV &&
+      variant !== undefined &&
+      !Object.hasOwn(VARIANTS, variant)
+   ) {
+      console.warn(
+         `McpScene: unknown variant "${variant}", rendering "memory"`,
+      );
+   }
    return <Variant tint={tint} />;
 };
 

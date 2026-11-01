@@ -3,26 +3,32 @@
 // subset the resume uses is understood: \section, \resumeExp, \resumeEdu,
 // \resumeAchievement, the item-list wrappers, itemize/tabular rows, and the
 // inline \textbf / \textit / \texttt / \href / \fa* commands. Layout-only
-// commands (\vspace, \hspace, \small, center) are dropped.
+// commands (\vspace, \hspace, \small, center, and \begin / \end with the
+// environment name and its [options]) are dropped.
 //
 // Inline node:  string | { t: "b"|"i"|"code", c } | { t: "a", href, c }
 //               | { t: "icon", name } | { t: "br" }
-// Block node:   { t: "entry", title, subtitle, date, meta, items }
-//               | { t: "list", items: [{ c, aside }] }
+// Bullet:       { text: Inline[], sub: Inline[][], aside? }; sub holds the
+//               items of an itemize nested in the bullet ([] when none), and
+//               aside the second argument of a \resumeAchievement
+// Block node:   { t: "entry", title, subtitle, date, meta, items: Bullet[] }
+//               | { t: "list", items: Bullet[] }
 //               | { t: "rows", rows: Inline[][] }
 //               | { t: "para", c }
 
-// The order body.tex inputs them, header first.
+// The order latex-resume's common/body.tex inputs them for the general
+// variant at tag v1.4.0, header first. achievements.tex is the section
+// body.tex's \variantPublications hook inputs by default, after Experience.
 export const RESUME_FILES = [
    "common/header.tex",
    "variants/general/summary.tex",
    "variants/general/experience.tex",
+   "variants/general/achievements.tex",
    "common/certifications.tex",
-   "common/education.tex",
    "variants/general/projects.tex",
    "variants/general/oss.tex",
+   "common/education.tex",
    "variants/general/skills.tex",
-   "variants/general/achievements.tex",
 ];
 
 // Header icons that carry contact data the site does not publish as text.
@@ -140,6 +146,13 @@ const emitCommand = (src, pos, name, out) => {
       return pos;
    }
    if (DROP_WITH_ARG.has(name)) return readArgs(src, pos, 1).end;
+   // \begin{name}[options] and \end{name} only shape the layout: drop both.
+   if (name === "begin" || name === "end") {
+      const { end } = readArgs(src, pos, 1);
+      if (name === "end") return end;
+      const options = /^\s*\[[^\]]*\]/.exec(src.slice(end));
+      return options ? end + options[0].length : end;
+   }
    // \small{..}, \LARGE{..} and anything unknown: keep the content.
    const open = skipSpace(src, pos);
    if (src[open] !== "{") return open;
@@ -222,7 +235,21 @@ const ENV_END = new Map([
    [String.raw`\begin{tabular*}`, String.raw`\end{tabular*}`],
 ]);
 
-/** Items inside \resumeItemListStart ... \resumeItemListEnd. */
+const NESTED_LIST = /\\(begin|end)\{itemize\}/g;
+
+/** Itemize nesting depth at src[i]: 0 for a top-level bullet. */
+const depthAt = (src, i) => {
+   let depth = 0;
+   for (const m of src.slice(0, i).matchAll(NESTED_LIST)) {
+      depth += m[1] === "begin" ? 1 : -1;
+   }
+   return depth;
+};
+
+/**
+ * Bullets inside \resumeItemListStart ... \resumeItemListEnd. An \item in a
+ * nested itemize is a sub-bullet of the bullet before it.
+ */
 const parseItems = (src) => {
    const items = [];
    const marks = [
@@ -235,13 +262,17 @@ const parseItems = (src) => {
          const { args } = readArgs(src, start, 2);
          const aside = parseInline(args[1]);
          items.push({
-            c: parseInline(args[0]),
+            text: parseInline(args[0]),
+            sub: [],
             ...(aside.length && { aside }),
          });
-      } else {
-         const c = parseInline(src.slice(start, stop));
-         if (c.length) items.push({ c });
+         continue;
       }
+      const text = parseInline(src.slice(start, stop));
+      if (!text.length) continue;
+      if (items.length && depthAt(src, mark.index) > 0)
+         items.at(-1).sub.push(text);
+      else items.push({ text, sub: [] });
    }
    return items;
 };
@@ -282,7 +313,7 @@ const readItemList = (src, m, blocks) => {
       last.items.length === 0 &&
       !body.includes(ACHIEVEMENT)
    )
-      last.items = items.map((item) => item.c);
+      last.items = items;
    else blocks.push({ t: "list", items });
    return end;
 };

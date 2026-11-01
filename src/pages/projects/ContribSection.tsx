@@ -2,7 +2,11 @@ import type { ComponentType } from "react";
 import { motion } from "motion/react";
 import type { OpenSourceContribution } from "@/types";
 import { MONO_FONT } from "@/constants/theme";
-import { staggerContainer, staggerItem } from "@utils/animations";
+import {
+   staggerContainer,
+   staggerItem,
+   VIEWPORT_MARGIN,
+} from "@utils/animations";
 import ContribCard from "./ContribCard";
 
 interface ContribSectionProps {
@@ -47,7 +51,7 @@ const ContribSection = ({
          variants={staggerContainer}
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
       >
          {items.map((contrib) => (
             <motion.div key={contrib.url} variants={staggerItem}>

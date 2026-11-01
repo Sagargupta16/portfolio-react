@@ -51,7 +51,7 @@ Section links support reloads and browser history. Navigation loads the content 
 | **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                                          |
 | **Experience**   | Timeline of roles, each with an animated scene of what that role did; details modal with case-study briefs and a scene per engagement                                                                                                             |
 | **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                                                |
-| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (154 skills; static chips in Reduced)                                                                                                                         |
+| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (154 primary skills (174 with the three secondary rails); static chips in Reduced)                                                                            |
 | **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; repo-accurate animated cover scenes for every project; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
 | **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                              |
 | **Focus Areas**  | Seven fact-based focus areas, Forward Deployed Engineering first across the full row with a wide scene, then an even grid; each card's scene shows the real mechanism, labels at the project covers' 8 px                                         |
@@ -124,6 +124,9 @@ data/                                  # JSON content files (edit these to custo
 └── contact.json
 src/
 ├── __tests__/                         # Navigation, real form/filter, accessibility, utility, and data tests
+├── assets/
+│   ├── brand/                         # Maker mark drawing, About bust, mascot frames
+│   └── logos/                         # Experience and education logos
 ├── components/
 │   ├── common/                        # ErrorBoundary
 │   ├── layout/
@@ -233,7 +236,7 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts
 
-Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. Every six hours a scheduled run compares the CV version the live site serves with the latest `latex-resume` release and rebuilds only when they differ; a `resume-released` repository dispatch deploys at once.
+Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. The resume is checked every six hours: a scheduled run compares the release tag of the CV the live site serves with the latest `latex-resume` release, and rebuilds the CV and deploys only when that tag has changed.
 
 The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each opens or updates its own pull request, then dispatches this workflow on that branch so the PR gets its `ci` check; a run on any branch other than `main` never deploys.
 

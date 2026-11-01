@@ -14,8 +14,10 @@ interface ProjectCoverProps {
 }
 
 // A scene mounts only while its card sits within this distance of the
-// viewport, so a 44-card grid never runs more than a few loops at once. Its
-// loops wait for the card itself to be in view (usePauseOffscreen).
+// viewport, so the card grid never runs more than a few loops at once.
+// usePauseOffscreen pauses the WAAPI loops while the cover itself is off
+// screen; the SVG loops driven by Motion's JS frame loop keep running for as
+// long as the cover is mounted.
 const SCENE_MOUNT_MARGIN = "300px 0px";
 
 // Same base gradient every scene paints first, so a scene mounting over the

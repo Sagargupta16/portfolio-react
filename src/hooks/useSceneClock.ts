@@ -16,7 +16,7 @@ const SWEEP_TICKS = 30;
  * paused and stepped forward by real elapsed time on every tick, so it keeps
  * its place and pace and stays in step with the scene's JS loops on
  * sceneDriver. HTML parts, entrances and CSS animations run as before. Does
- * nothing on screens at 75 Hz or less, or in Reduced, where
+ * nothing on screens at 85 Hz or less, or in Reduced, where
  * useFreezeAnimations holds the rest frame.
  */
 const useSceneClock = (ref: RefObject<HTMLElement | null>) => {

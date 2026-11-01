@@ -26,6 +26,8 @@ concurrency:
 
 jobs:
    sync:
+      # Main only: a dispatch on another branch would cut the sync PR from it.
+      if: github.ref == 'refs/heads/main'
       runs-on: ubuntu-latest
       timeout-minutes: 10
       env:

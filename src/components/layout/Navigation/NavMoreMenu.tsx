@@ -50,8 +50,9 @@ const PANEL_STYLE: React.CSSProperties = {
 
 /**
  * "More" in the desktop nav: a disclosure button over the secondary sections.
- * Click toggles it everywhere; a mouse also opens it on hover. Escape, an
- * outside press, a pick, or focus leaving the menu closes it.
+ * Click toggles it everywhere; a mouse also opens it on hover, and the first
+ * click after that keeps it open. Escape, an outside press, a pick, or focus
+ * leaving the menu closes it.
  */
 const NavMoreMenu = ({
    sections,
@@ -65,6 +66,9 @@ const NavMoreMenu = ({
    const wrapRef = useRef<HTMLDivElement>(null);
    const triggerRef = useRef<HTMLButtonElement>(null);
    const closeTimerRef = useRef<number | undefined>(undefined);
+   // A mouse opens the menu on hover; the click that usually follows on the
+   // trigger should keep it open, not toggle it shut.
+   const openedByHoverRef = useRef(false);
    const panelId = useId();
    const activeInMenu = sections.some(({ id }) => id === activeSection);
 
@@ -98,15 +102,25 @@ const NavMoreMenu = ({
    const onPointerEnter = (e: React.PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       cancelClose();
+      openedByHoverRef.current = true;
       setOpen(true);
    };
    const onPointerLeave = (e: React.PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       cancelClose();
+      openedByHoverRef.current = false;
       closeTimerRef.current = globalThis.setTimeout(
          () => setOpen(false),
          CLOSE_DELAY_MS,
       );
+   };
+   const onTriggerClick = () => {
+      if (openedByHoverRef.current) {
+         openedByHoverRef.current = false;
+         setOpen(true);
+         return;
+      }
+      setOpen((o) => !o);
    };
    const onBlur = (e: React.FocusEvent<HTMLDivElement>) => {
       if (!e.currentTarget.contains(e.relatedTarget)) close();
@@ -128,7 +142,7 @@ const NavMoreMenu = ({
          <motion.button
             ref={triggerRef}
             type="button"
-            onClick={() => setOpen((o) => !o)}
+            onClick={onTriggerClick}
             whileTap={{ scale: 0.97 }}
             animate={{
                color: activeInMenu || open ? TEXT_PRIMARY : inactiveColor,

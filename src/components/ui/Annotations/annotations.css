@@ -132,9 +132,11 @@ html[data-motion="reduced"] .annotation-pin::after {
    cursor: pointer;
 }
 
-.annotation-icon-btn:hover {
-   color: var(--color-text-primary);
-   background: rgb(255 255 255 / 0.08);
+@media (hover: hover) {
+   .annotation-icon-btn:hover {
+      color: var(--color-text-primary);
+      background: rgb(255 255 255 / 0.08);
+   }
 }
 
 .annotations-banner {
@@ -168,8 +170,10 @@ html[data-motion="reduced"] .annotation-pin::after {
    cursor: pointer;
 }
 
-.annotations-banner-btn:hover {
-   background: rgb(255 255 255 / 0.12);
+@media (hover: hover) {
+   .annotations-banner-btn:hover {
+      background: rgb(255 255 255 / 0.12);
+   }
 }
 
 /* Touch: like the pin, the 36px icon buttons and 32px banner buttons get an

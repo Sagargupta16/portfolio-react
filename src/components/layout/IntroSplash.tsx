@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { getName, getRole } from "@data/personal";
 import { markIntroActive, markIntroDone } from "@utils/introState";
@@ -33,10 +33,10 @@ const IntroSplash = () => {
    const [fontReady, setFontReady] = useState(false);
 
    // The hero's entrance starts the moment the curtain begins to lift.
-   const leave = () => {
+   const leave = useCallback(() => {
       markIntroDone();
       setVisible(false);
-   };
+   }, []);
 
    // Start the draw only once the script font is loaded (or after a short cap),
    // so the stroke never animates a fallback face and then swaps.
@@ -63,14 +63,14 @@ const IntroSplash = () => {
       return () => {
          for (const name of events) globalThis.removeEventListener(name, leave);
       };
-   });
+   }, [visible, leave]);
 
    // The hold timer starts once the signature can actually be drawn.
    useEffect(() => {
       if (!visible || !fontReady) return;
       const timer = globalThis.setTimeout(leave, HOLD_MS);
       return () => globalThis.clearTimeout(timer);
-   });
+   }, [visible, fontReady, leave]);
 
    // Never leave the hero held back if the splash unmounts some other way.
    useEffect(() => () => markIntroDone(), []);

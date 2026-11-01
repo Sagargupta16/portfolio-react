@@ -132,7 +132,8 @@ const hostOf = (url) => {
 const socialLink = (personal, name) =>
    personal.social_profiles?.find((p) => p.name === name)?.link;
 
-const link = (label, url) => (url ? `[${label}](${url})` : "");
+// "#" is the no-link placeholder in data/ (hasProjectUrl skips it too).
+const link = (label, url) => (url && url !== "#" ? `[${label}](${url})` : "");
 
 function projectLine(project, { long }) {
    const head = [
@@ -448,17 +449,28 @@ function buildLlmsTxt(d) {
    const awsSamples = (projects.featured_projects ?? []).filter(
       (p) => p.organization === "aws-samples",
    );
+   // Only /pull/ entries are PRs. A merged commit credit is a co-authored
+   // fix, named with the Stats tile's own copy, as StatsBand.tsx does.
    const merged = (projects.open_source_contributions ?? []).filter(
       (p) => p.status === "merged",
    );
-   const mergedRepos = [...new Set(merged.map((p) => clean(p.repo)))];
+   const mergedPrs = merged.filter((p) => p.url?.includes("/pull/"));
+   const mergedRepos = [...new Set(mergedPrs.map((p) => clean(p.repo)))];
+   const coAuthored = merged.length - mergedPrs.length;
+   const prsTile = personal.stats?.tiles?.merged_prs ?? {};
+   const coAuthoredNote =
+      coAuthored === 1
+         ? prsTile.note_coauthored_one
+         : prsTile.note_coauthored_many?.replaceAll("{count}", coAuthored);
+   const credit =
+      coAuthored > 0 && coAuthoredNote ? `. ${clean(coAuthoredNote)}` : "";
    const facts = [
       ...impactLines(personal),
       ...highlightLines(personal.highlights),
       awsSamples.length > 0 &&
          `- Solutions published under aws-samples: ${awsSamples.map((p) => clean(p.title)).join(", ")}`,
-      merged.length > 0 &&
-         `- Merged open source PRs: ${merged.length}, in ${mergedRepos.join(", ")}`,
+      mergedPrs.length > 0 &&
+         `- Merged open source PRs: ${mergedPrs.length}, in ${mergedRepos.join(", ")}${credit}`,
       activeCerts.length > 0 &&
          `- Active certifications: ${activeCerts.map((c) => clean(c.name)).join(", ")}`,
    ].filter(Boolean);

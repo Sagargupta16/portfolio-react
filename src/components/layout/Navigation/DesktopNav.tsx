@@ -4,12 +4,8 @@ import { EASING, TEXT_PRIMARY } from "@/constants/theme";
 import { NAV_MORE_BLURBS, NAV_PRIMARY_IDS } from "@/constants/sections";
 import { getUiCopy } from "@data/ui";
 import { fillTemplate } from "@utils/fillTemplate";
+import type { NavSection } from "./Nav";
 import NavMoreMenu from "./NavMoreMenu";
-
-interface NavSection {
-   id: string;
-   label: string;
-}
 
 interface DesktopNavProps {
    sections: NavSection[];
@@ -65,14 +61,12 @@ const DesktopNav = ({
    activeSection,
    onNavigate,
 }: DesktopNavProps) => {
-   const primary = sections.filter(({ id }) =>
-      (NAV_PRIMARY_IDS as readonly string[]).includes(id),
-   );
+   const primary = sections.filter(({ id }) => NAV_PRIMARY_IDS.includes(id));
    const more = sections
-      .filter(({ id }) => !(NAV_PRIMARY_IDS as readonly string[]).includes(id))
+      .filter(({ id }) => !NAV_PRIMARY_IDS.includes(id))
       .map((section) => ({
          ...section,
-         blurb: NAV_MORE_BLURBS[section.id as keyof typeof NAV_MORE_BLURBS],
+         blurb: NAV_MORE_BLURBS[section.id],
       }));
 
    return (

@@ -220,6 +220,16 @@ a.news-row:focus-visible .news-row-arrow {
    color: var(--color-text-secondary);
 }
 
+/* Touch screens wrap the text at any width: there is no hover to reveal the
+   rest of a cut line, and tablets are wider than the phone breakpoint below. */
+@media (hover: none) {
+   .news-text {
+      overflow: visible;
+      overflow-wrap: anywhere;
+      white-space: normal;
+   }
+}
+
 .news-row-arrow {
    flex: none;
    margin-left: -6px;
@@ -296,6 +306,7 @@ a.news-row:focus-visible .news-row-arrow {
 
    .news-text {
       overflow: visible;
+      overflow-wrap: anywhere;
       font-size: 13.5px;
       line-height: 19px;
       white-space: normal;

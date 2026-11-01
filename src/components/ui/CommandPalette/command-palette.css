@@ -94,8 +94,10 @@
    display: flex;
    align-items: center;
    gap: 12px;
+   min-width: 0;
    min-height: 44px;
    padding: 8px 10px;
+   overflow: hidden;
    border-radius: 10px;
    cursor: pointer;
 }
@@ -114,9 +116,11 @@
 }
 
 .palette-command {
+   overflow: hidden;
    color: var(--color-text-primary);
    font-family: var(--font-mono);
    font-size: 13px;
+   text-overflow: ellipsis;
    white-space: nowrap;
 }
 

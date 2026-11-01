@@ -35,8 +35,8 @@ export interface HeroStackSlot {
 export const HERO_STACK_SLOTS: readonly HeroStackSlot[] = [
    { x: 8, y: 12, depth: 6, period: 11, speed: 0.22 },
    { x: 92, y: 12, depth: 5, period: 12, speed: 0.18 },
-   { x: 17, y: 17, depth: 9, period: 13, speed: 0.3 },
-   { x: 83, y: 17, depth: 8, period: 10, speed: 0.26 },
+   { x: 21, y: 14, depth: 9, period: 13, speed: 0.3 },
+   { x: 79, y: 14, depth: 8, period: 10, speed: 0.26 },
    { x: 14, y: 86, depth: 7, period: 14, speed: 0.24 },
    { x: 90, y: 92, depth: 10, period: 9, speed: 0.32 },
 ];

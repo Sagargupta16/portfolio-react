@@ -211,6 +211,7 @@ const NEWS_TYPES = new Set([
    "work",
    "education",
 ]);
+const hasDay = (date) => /^\d{4}-\d{2}-\d{2}$/.test(date ?? "");
 if (requireArray(news, "news")) {
    const seen = new Set();
    news.forEach((item, index) => {
@@ -236,11 +237,13 @@ if (requireArray(news, "news")) {
       const key = `${item.date}|${item.text}`;
       if (seen.has(key)) fail(path, "duplicate news item");
       seen.add(key);
-      // Newest first, compared by month so exact-day and month-only items can mix.
+      // Newest first: by day when both items have one, else by month, so
+      // exact-day and month-only items can mix.
       const prev = news[index - 1];
+      const width = hasDay(prev?.date) && hasDay(item.date) ? 10 : 7;
       if (
          prev &&
-         String(prev.date).slice(0, 7) < String(item.date).slice(0, 7)
+         String(prev.date).slice(0, width) < String(item.date).slice(0, width)
       ) {
          fail(path, "news must be sorted newest first");
       }
@@ -317,6 +320,7 @@ if (requireRecord(personal, "data/personal.json")) {
    }
    if (requireRecord(personal.site, "personal.site")) {
       requireStringArray(personal.site.tech_stack, "personal.site.tech_stack");
+      requireUrl(personal.site.resume_url, "personal.site.resume_url");
    }
 }
 
@@ -649,6 +653,8 @@ for (const [type, copy] of requireKeyedEntries(
 
 // Site chrome copy (data/ui.json): field -> the placeholders it may use.
 const UI_COPY = {
+   common: { reload: [] },
+   demo: { unavailable: [] },
    new_tab: ["label"],
    profile_label: ["name"],
    skip_link: [],
@@ -786,6 +792,7 @@ const UI_COPY = {
       },
    },
    cv: {
+      load_failed: [],
       title: [],
       close: [],
       unavailable: [],
@@ -1044,6 +1051,12 @@ if (Array.isArray(services)) {
 
 const PROJECT_STATUSES = new Set(["active", "beta", "complete"]);
 const SEMVER = /^\d+\.\d+\.\d+$/;
+// The ?project=<slug> link key, as projectSlug in src/utils/projectLink.ts.
+const projectSlug = (title) =>
+   title
+      .toLowerCase()
+      .replaceAll(/[^a-z0-9]+/g, "-")
+      .replaceAll(/^-|-$/g, "");
 
 function checkStatus(project, path) {
    if (!PROJECT_STATUSES.has(project?.status)) {
@@ -1082,6 +1095,19 @@ if (requireRecord(projects, "projects")) {
       }
    }
    requireUnique(allProjects, "id", "projects.all_categories");
+   // Search and shared links find a project by its title, so no two titles
+   // may match in any case or share a slug.
+   const titles = allProjects.map((project) => String(project?.title ?? ""));
+   requireUnique(
+      titles.map((title) => ({ title: title.toLowerCase() })),
+      "title",
+      "projects.all_categories",
+   );
+   requireUnique(
+      titles.map((title) => ({ slug: projectSlug(title) })),
+      "slug",
+      "projects.all_categories",
+   );
 
    const spotlightId = projects.spotlight_project_id;
    if (
@@ -1244,8 +1270,9 @@ const checkLeetcodeSeries = (stats, path) => {
 
 // GitHub numbers from the weekly sync, as the profile README's card shows them.
 const checkGithubStats = (stats, path) => {
-   if (stats.fetched === undefined) return;
-   requireIsoDate(stats.fetched, `${path}.fetched`);
+   if (stats.fetched !== undefined) {
+      requireIsoDate(stats.fetched, `${path}.fetched`);
+   }
    for (const field of ["contributions", "pull_requests", "longest_streak"]) {
       if (!isCount(stats[field])) fail(`${path}.${field}`, "must be a count");
    }

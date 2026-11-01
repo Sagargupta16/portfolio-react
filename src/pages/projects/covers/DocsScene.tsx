@@ -30,8 +30,15 @@ const VARIANTS: Record<string, ComponentType<{ tint: string }>> = {
 const DocsScene = ({ tint, variant }: CoverSceneProps) => {
    const Variant: ComponentType<{ tint: string }> | undefined =
       VARIANTS[variant ?? ""];
-   if (!Variant)
+   if (!Variant) {
+      /* An unknown key is a registry bug: say so in dev. */
+      if (import.meta.env.DEV && variant !== undefined) {
+         console.warn(
+            `DocsScene: unknown variant "${variant}", rendering the bare backdrop`,
+         );
+      }
       return <SceneRoot tint={tint} focus="50% 40%" lattice="dots" />;
+   }
    return <Variant tint={tint} />;
 };
 

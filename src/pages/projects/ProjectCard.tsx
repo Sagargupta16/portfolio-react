@@ -1,6 +1,7 @@
-import type { CSSProperties, Ref } from "react";
+import { memo, useRef, type CSSProperties, type Ref } from "react";
 import {
    motion,
+   useComposedRefs,
    type TargetAndTransition,
    type Transition,
 } from "motion/react";
@@ -12,6 +13,7 @@ import { VIEWPORT_MARGIN } from "@utils/animations";
 import { fillTemplate } from "@utils/fillTemplate";
 import { hasProjectUrl } from "@utils/projectMetadata";
 import useMotionPreference from "@hooks/useMotionPreference";
+import usePauseOffscreen from "@hooks/usePauseOffscreen";
 import {
    getCategoryColors,
    type ProjectWithCategory,
@@ -26,7 +28,9 @@ interface ProjectCardProps {
    /** Mounted by a filter change (short rise, index stagger), not the first scroll reveal. */
    entering?: boolean;
    spotlight?: boolean;
-   onOpen?: () => void;
+   /** Names the visible list; layout is measured only when it changes. */
+   layoutKey?: string;
+   onOpen?: (project: ProjectWithCategory) => void;
    /** AnimatePresence popLayout measures and pins the leaving card through this ref. */
    ref?: Ref<HTMLDivElement>;
 }
@@ -34,7 +38,8 @@ interface ProjectCardProps {
 const MAX_VISIBLE_TAGS = 5;
 const LINK_LABELS = getSectionCopy("projects").links;
 
-// Hover lift; whileFocus gets the same target so keyboard focus matches.
+// Hover lift. Keyboard focus lifts the card in CSS (projects.css): the card
+// itself is not focusable, so a whileFocus target here would never fire.
 const CARD_LIFT = {
    y: -6,
    transition: { duration: DURATION.quick, ease: EASING.brisk },
@@ -70,10 +75,16 @@ const ProjectCard = ({
    index = 0,
    entering = false,
    spotlight = false,
+   layoutKey,
    onOpen,
    ref,
 }: ProjectCardProps) => {
    const { reducedMotion } = useMotionPreference();
+   // The card keeps the ref popLayout hands it and also watches its own
+   // visibility, so the status-dot pulse stops while the card is off screen.
+   const rootRef = useRef<HTMLDivElement>(null);
+   const composedRef = useComposedRefs(rootRef, ref);
+   usePauseOffscreen(rootRef);
    const hasGithub = hasProjectUrl(data.github);
    const hasLive = hasProjectUrl(data.live);
    const colors = getCategoryColors(data.category);
@@ -97,10 +108,11 @@ const ProjectCard = ({
 
    return (
       <motion.div
-         ref={ref}
+         ref={composedRef}
          className={`glass-card project-card${spotlight ? " project-card--spotlight" : ""}`}
          style={{ "--project-accent": colors.accent } as CSSProperties}
          layout="position"
+         layoutDependency={layoutKey}
          initial={{ opacity: 0, y: entrance.rise }}
          whileInView={{
             opacity: 1,
@@ -121,7 +133,6 @@ const ProjectCard = ({
             layout: LAYOUT_SPRING,
          }}
          whileHover={lift}
-         whileFocus={lift}
       >
          {/* Media: animated cover scene */}
          <ProjectCover projectId={data.id} accent={colors.accent} />
@@ -155,7 +166,7 @@ const ProjectCard = ({
                   {clickable && (
                      <button
                         type="button"
-                        onClick={onOpen}
+                        onClick={() => onOpen?.(data)}
                         className="project-action project-action--primary"
                         aria-label={fillTemplate(LINK_LABELS.details_label, {
                            title: data.title,
@@ -198,4 +209,4 @@ const ProjectCard = ({
    );
 };
 
-export default ProjectCard;
+export default memo(ProjectCard);

@@ -1,5 +1,4 @@
 import { Pin, Users, Star } from "lucide-react";
-import { AMBER } from "@/constants/theme";
 import { getEvidence, STATUS_LABEL } from "@utils/projectEvidence";
 import { getSectionCopy } from "@data/sections";
 import type { Project } from "@/types";
@@ -86,28 +85,6 @@ const ProjectCardHeader = ({
             <Users size={14} aria-hidden="true" />
             {data.team}
          </span>
-      )}
-
-      {/* Achievement badge for collaborative */}
-      {isCollab && data.achievement && (
-         <div
-            style={{
-               display: "inline-flex",
-               alignItems: "center",
-               gap: 4,
-               padding: "4px 8px",
-               borderRadius: 6,
-               background: "rgb(var(--ch-amber) / 0.08)",
-               border: "1px solid rgb(var(--ch-amber) / 0.15)",
-               fontSize: 11,
-               fontWeight: 600,
-               color: AMBER,
-               marginBottom: 12,
-               alignSelf: "flex-start",
-            }}
-         >
-            {data.achievement}
-         </div>
       )}
    </>
 );

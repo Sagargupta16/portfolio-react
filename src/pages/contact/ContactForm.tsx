@@ -1,7 +1,8 @@
-import { motion, type TransformProperties, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { Send } from "lucide-react";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { getSectionCopy } from "@data/sections";
+import { passThroughTransform } from "@utils/animations";
 import { DURATION, EASING, TEXT_SECONDARY, RED } from "@/constants/theme";
 import type { FormData, Status } from "./contactConstants";
 import "./contact-form.css";
@@ -40,14 +41,6 @@ const SUBMIT_TAP = { scale: 0.97 };
 const ARROW_NUDGE_PX = 3;
 const ARROW_TRANSITION = { duration: DURATION.quick, ease: EASING.brisk };
 const arrowVariants: Variants = { [HOVER]: { x: ARROW_NUDGE_PX } };
-
-/* Once a whileTap settles, Motion writes transform: none inline, which beats
-   the stylesheet hover lift for good. Returning the generated string as-is
-   leaves the inline transform empty at rest. */
-const passThroughTransform = (
-   _transform: TransformProperties,
-   generated: string,
-) => generated;
 
 const ContactForm = ({
    formRef,
