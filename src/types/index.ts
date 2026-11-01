@@ -350,6 +350,85 @@ export interface CommunityDiscussion {
    status: "accepted" | "helpful";
 }
 
+// Copy of the case-study demos in pages/projects/demos, under `demos` in
+// data/projects.json.
+/** Pipeline nodes, in pipeline order (project 49); icons and layout stay in PipelineBeams. */
+export type PipelineNodeId =
+   | "ingest"
+   | "train"
+   | "ensemble"
+   | "gate"
+   | "registry"
+   | "endpoint"
+   | "drift"
+   | "retrain";
+
+export interface PipelineNodeCopy {
+   title: string;
+   detail: string[];
+}
+
+export interface PipelineDemoCopy {
+   /** Screen-reader description of the whole diagram. */
+   summary: string;
+   footnote: string;
+   nodes: Record<PipelineNodeId, PipelineNodeCopy>;
+}
+
+/** A typed command, tool output, or a "#" annotation. */
+export type TerminalLineKind = "cmd" | "out" | "note";
+
+export interface TerminalLine {
+   kind: TerminalLineKind;
+   text: string;
+}
+
+export interface TerminalScript {
+   id: string;
+   label: string;
+   lines: TerminalLine[];
+}
+
+export interface TerminalDemoCopy {
+   /** Accessible name of the tab group. */
+   step_label: string;
+   /** Caption on the right of the tab bar. */
+   context: string;
+   scripts: TerminalScript[];
+}
+
+/** Picks the traffic colour; Blue and Green are the only two environments. */
+export type BlueGreenEnv = "Blue" | "Green";
+
+export interface BlueGreenRoute {
+   listener: string;
+   env: BlueGreenEnv;
+   state: string;
+}
+
+export interface BlueGreenPanelCopy {
+   tag: string;
+   caption: string;
+   routes: BlueGreenRoute[];
+}
+
+export interface BlueGreenDemoCopy {
+   /** Accessible name of the before/after slider. */
+   slider_label: string;
+   hint: string;
+   /** Heading above the route rows in both panels. */
+   stack: string;
+   before: BlueGreenPanelCopy;
+   after: BlueGreenPanelCopy;
+}
+
+/** Keyed by the project ids in pages/projects/demos/demoRegistry.ts. */
+export interface ProjectDemosCopy {
+   "13": BlueGreenDemoCopy;
+   "49": PipelineDemoCopy;
+   "52": TerminalDemoCopy;
+}
+
 export type NewsType =
    "launch" | "oss" | "community" | "cert" | "award" | "work" | "education";
 
@@ -374,6 +453,7 @@ export interface ProjectsFile {
    community_projects?: Project[];
    open_source_contributions?: OpenSourceContribution[];
    community_discussions?: CommunityDiscussion[];
+   demos: ProjectDemosCopy;
 }
 
 // ===== Skills =====

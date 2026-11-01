@@ -1,12 +1,9 @@
-import { useMemo, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import {
    motion,
    type TargetAndTransition,
    type Transition,
 } from "motion/react";
-import { getSocialProfiles } from "@data/personal";
-import { getUiCopy, newTabLabel } from "@data/ui";
-import { fillTemplate } from "@utils/fillTemplate";
 import {
    DURATION,
    EASING,
@@ -14,8 +11,7 @@ import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
-import ICON_MAP from "@utils/iconMap";
-import useMotionPreference from "@hooks/useMotionPreference";
+import SocialTiles from "../SocialTiles";
 import { heroRow } from "./heroMotion";
 
 const TILE_STYLE: CSSProperties = {
@@ -49,43 +45,19 @@ const TILE_TRANSITION: Transition = {
    ease: EASING.brisk,
 };
 
-const HeroSocial = () => {
-   const socialProfiles = useMemo(() => getSocialProfiles(), []);
-   const { reducedMotion } = useMotionPreference();
-   // Reduced keeps the tiles at their resting design; the press stays.
-   const hover = reducedMotion ? undefined : TILE_HOVER;
-
-   return (
-      <motion.div
-         className="flex flex-wrap items-center justify-center gap-3 mt-2"
-         variants={heroRow}
-      >
-         {socialProfiles.map((profile) => {
-            const IconComponent = ICON_MAP[profile.icon];
-            if (!IconComponent) return null;
-            return (
-               <motion.a
-                  key={profile.id}
-                  href={profile.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={TILE_STYLE}
-                  whileHover={hover}
-                  whileFocus={hover}
-                  whileTap={TILE_TAP}
-                  transition={TILE_TRANSITION}
-                  aria-label={newTabLabel(
-                     fillTemplate(getUiCopy().profile_label, {
-                        name: profile.name,
-                     }),
-                  )}
-               >
-                  <IconComponent size={18} aria-hidden="true" />
-               </motion.a>
-            );
-         })}
-      </motion.div>
-   );
-};
+const HeroSocial = () => (
+   <motion.div
+      className="flex flex-wrap items-center justify-center gap-3 mt-2"
+      variants={heroRow}
+   >
+      <SocialTiles
+         tileStyle={TILE_STYLE}
+         hover={TILE_HOVER}
+         tap={TILE_TAP}
+         transition={TILE_TRANSITION}
+         iconSize={18}
+      />
+   </motion.div>
+);
 
 export default HeroSocial;

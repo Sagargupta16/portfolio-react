@@ -5,6 +5,7 @@
    the grid itself and the current streak. */
 import { getStatsCopy } from "@data/personal";
 import { fillTemplate } from "@utils/fillTemplate";
+import { formatCount } from "@utils/format";
 
 export interface ContributionDay {
    /** ISO calendar date, YYYY-MM-DD. */
@@ -80,8 +81,6 @@ const toUtc = (iso: string): number => {
 };
 
 const dayNumber = (iso: string): number => Math.round(toUtc(iso) / DAY_MS);
-
-const formatCount = (n: number): string => n.toLocaleString(LOCALE);
 
 const plural = (n: number, one: string, many: string): string =>
    fillTemplate(n === 1 ? one : many, { count: formatCount(n) });

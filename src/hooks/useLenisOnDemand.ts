@@ -3,6 +3,11 @@ import { useLenis } from "lenis/react";
 
 // The longest step one frame hands Lenis: two frames at 60 Hz.
 const MAX_STEP = 1000 / 30;
+// A frame that moves less than this has under half a pixel left at lerp 0.1,
+// on any panel up to 500 Hz.
+const SETTLED_PX = 0.005;
+// Long enough that Lenis's damping lands exactly on its target.
+const FINISH_STEP = 1e6;
 
 /**
  * Runs the root Lenis frame loop only while a smooth scroll is in flight.
@@ -18,6 +23,12 @@ const MAX_STEP = 1000 / 30;
  * of its own: the first frame of a run counts as one 60 Hz frame, and every
  * later frame as its real gap capped at MAX_STEP. Neither the sleep before a
  * run nor a stalled frame inside one can finish a scroll in a single jump.
+ *
+ * Lenis ends a run only when its rounded position meets the rounded target,
+ * so a target such as 110.5 reached from below never ends (it settles just
+ * under 110.5) and one just past a half pixel creeps on for seconds. Once a
+ * frame barely moves, one FINISH_STEP lands it on the target and Lenis ends
+ * the run its usual way: onComplete, scrollend and the classes.
  */
 const useLenisOnDemand = () => {
    const lenis = useLenis();
@@ -32,9 +43,21 @@ const useLenisOnDemand = () => {
       let lastTime = 0;
 
       const tick = (time: number) => {
+         const from = lenis.animatedScroll;
+         // Lenis takes no step the first time it is ever handed a time, so
+         // only a later frame of a run can show that it has settled.
+         const midRun = lastTime > 0;
          clock += lastTime ? Math.min(time - lastTime, MAX_STEP) : 1000 / 60;
          lastTime = time;
          lenis.raf(clock);
+         if (
+            midRun &&
+            lenis.isScrolling === "smooth" &&
+            Math.abs(lenis.animatedScroll - from) < SETTLED_PX
+         ) {
+            clock += FINISH_STEP;
+            lenis.raf(clock);
+         }
          frame =
             lenis.isScrolling === "smooth" ? requestAnimationFrame(tick) : 0;
          if (!frame) lastTime = 0;

@@ -5,22 +5,10 @@
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { PUBLIC_DATA_FILES } from "./lib/data-files.js";
+import { newsHash } from "./lib/news-hash.js";
 
 const SITE = "https://sagargupta.online/portfolio-react/";
-const DATA_FILES = [
-   "personal",
-   "experience",
-   "projects",
-   "skills",
-   "achievements",
-   "education",
-   "news",
-   "services",
-   "sections",
-   "glossary",
-   "annotations",
-   "ui",
-];
 
 // Generated text stays plain: every dash punctuation char (en/em dash
 // included) becomes "-", emoji are dropped.
@@ -109,7 +97,7 @@ function loadData(rootDir) {
    const read = (name) =>
       JSON.parse(readFileSync(join(rootDir, "data", `${name}.json`), "utf8"));
    const data = Object.fromEntries(
-      DATA_FILES.map((name) => [name, read(name)]),
+      PUBLIC_DATA_FILES.map((name) => [name, read(name)]),
    );
    // contact.json: only the email and the booking link leave this function.
    const options = read("contact").contact_options ?? [];
@@ -495,7 +483,9 @@ function buildLlmsTxt(d) {
       "",
       "## Data",
       "",
-      ...DATA_FILES.map((name) => `- [${name}.json](${SITE}data/${name}.json)`),
+      ...PUBLIC_DATA_FILES.map(
+         (name) => `- [${name}.json](${SITE}data/${name}.json)`,
+      ),
       "",
       "## Contact",
       "",
@@ -573,17 +563,6 @@ const xmlEscape = (text) =>
 const rfc822 = (date) => {
    const [y, m = "01", d = "01"] = date.split("-");
    return new Date(Date.UTC(Number(y), Number(m) - 1, Number(d))).toUTCString();
-};
-
-// Same FNV-1a over date + text the News section uses for its commit hashes,
-// so each item keeps one stable guid across builds.
-const newsHash = (item) => {
-   let h = 0x811c9dc5;
-   for (const ch of `${item.date}${item.text}`) {
-      h ^= ch.codePointAt(0) ?? 0;
-      h = Math.imul(h, 0x01000193);
-   }
-   return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
 };
 
 function buildRss({ personal, news }) {

@@ -1,4 +1,4 @@
-import { Suspense, useRef, type CSSProperties } from "react";
+import { Suspense, useLayoutEffect, useRef, type CSSProperties } from "react";
 import { useInView } from "motion/react";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
@@ -21,6 +21,21 @@ interface EngagementSceneProps {
 // Same idea as ProjectCover: a scene mounts only while its slot sits within
 // this distance of the viewport, so a long modal never runs every loop.
 const MOUNT_MARGIN = "300px 0px";
+
+/* Inside a dialog the slot scrolls in the dialog's own scroller, which clips
+   it, so against the viewport the margin never applies there: a banner just
+   below the dialog's edge would mount only once scrolled in. The margin is
+   measured against that scroller instead; on the page the root stays the
+   viewport. */
+const SCROLLS = new Set(["auto", "scroll"]);
+const dialogScroller = (slot: HTMLElement | null): Element | null => {
+   const dialog = slot?.closest('[role="dialog"]');
+   for (let el = slot?.parentElement; dialog && el; el = el.parentElement) {
+      if (SCROLLS.has(getComputedStyle(el).overflowY)) return el;
+      if (el === dialog) break;
+   }
+   return null;
+};
 
 /* Truthy on purpose (a falsy fallback renders ErrorBoundary's full panel): a
    failed scene chunk leaves the slot's own sized, gradient-filled box empty
@@ -47,7 +62,15 @@ const EngagementScene = ({
    fade = false,
 }: Readonly<EngagementSceneProps>) => {
    const slotRef = useRef<HTMLDivElement>(null);
-   const nearViewport = useInView(slotRef, { margin: MOUNT_MARGIN });
+   const scrollerRef = useRef<Element | null>(null);
+   // Layout effects run before useInView's observer effect reads the root.
+   useLayoutEffect(() => {
+      scrollerRef.current = dialogScroller(slotRef.current);
+   }, []);
+   const nearViewport = useInView(slotRef, {
+      root: scrollerRef,
+      margin: MOUNT_MARGIN,
+   });
    const { preference } = useMotionPreference();
    useFreezeAnimations(slotRef);
    usePauseOffscreen(slotRef);

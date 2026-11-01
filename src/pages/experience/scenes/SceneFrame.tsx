@@ -1,7 +1,6 @@
-import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
 import { GREEN } from "@/constants/theme";
-import { Trace } from "@pages/projects/covers/kit/primitives";
 import {
    BASE_GRADIENT,
    INK,
@@ -77,13 +76,12 @@ export const Frame = ({
 };
 
 /*
- * A kit Trace. Its pathLength runs on Motion's JS frameloop, which the freeze
- * cannot pause, so Trace itself renders a still, drawn stroke in Reduced (and
- * leaves out comet trails), matching the project covers.
+ * The kit Trace, by the engagement scenes' name. Its pathLength runs on
+ * Motion's JS frameloop, which the freeze cannot pause, so Trace itself
+ * renders a still, drawn stroke in Reduced (and leaves out comet trails),
+ * matching the project covers.
  */
-export const Draw = (props: Readonly<ComponentProps<typeof Trace>>) => (
-   <Trace {...props} />
-);
+export { Trace as Draw } from "@pages/projects/covers/kit/primitives";
 
 interface DashedProps {
    d: string;

@@ -117,19 +117,22 @@ const saveRoute = (row: number, slot: number) =>
 const ROUTE_A = saveRoute(SAVED_A, SLOT_A);
 const ROUTE_B = saveRoute(SAVED_B, SLOT_B);
 const ROUTE_DUP = route(sCurve([SHEET_RIGHT, rowMid(DUP_ROW)], GATE));
-const AT_GATE = ROUTE_A.ends[0];
+/* where each route reaches the gate: the rows sit at different heights, so
+   their curves into it differ in length */
+const AT_GATE_A = ROUTE_A.ends[0];
+const AT_GATE_B = ROUTE_B.ends[0];
 
 /* each saved row holds at the gate while its ID is checked */
 const STOPS_A: Stop[] = [
    [0.08, 0],
-   [0.15, AT_GATE],
-   [0.18, AT_GATE],
+   [0.15, AT_GATE_A],
+   [0.18, AT_GATE_A],
    [0.25, 1],
 ];
 const STOPS_B: Stop[] = [
    [0.22, 0],
-   [0.29, AT_GATE],
-   [0.31, AT_GATE],
+   [0.29, AT_GATE_B],
+   [0.31, AT_GATE_B],
    [0.38, 1],
 ];
 /* the duplicate reaches the gate and is dropped there */

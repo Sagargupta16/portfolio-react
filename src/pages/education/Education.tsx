@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { motion } from "motion/react";
 import { getEducation } from "@data/education";
 import { getSectionCopy } from "@data/sections";
@@ -10,7 +9,7 @@ import TimelineSpine from "@components/ui/TimelineSpine";
 import EducationCard from "./EducationCard";
 
 const Education = () => {
-   const education = useMemo(() => getEducation(), []);
+   const education = getEducation();
    const { title, subtitle } = getSectionCopy("education");
    const { isMobile } = useBreakpoint();
 

@@ -1,3 +1,4 @@
+import type { MotionValue } from "motion/react";
 import type { SkillIcon } from "@utils/skillIcons";
 import { getSkillIcon } from "@utils/skillIcons";
 import { getHeroStack } from "@data/skills";
@@ -85,9 +86,11 @@ export const END_FADE = { start: 0.95, span: 0.04 } as const;
 
 /**
  * Twelve flank slots alternating sides. `edge + depth` stays <= 32, so a
- * tile's furthest reach (edge + 44 tile + 5 drift + depth) is 81px, inside
- * the 85px the 1152px section column leaves free at 1280px. Speeds differ
- * so the flanks read as layers at several depths.
+ * tile's furthest reach (edge + 44 tile + 5 drift + depth) is 81px. The
+ * 1152px section column leaves less than that between 1280px and about
+ * 1330px (61px at 1280px with a scrollbar), so StackFieldBackdrop pulls a
+ * tile toward the screen edge there. Speeds differ so the flanks read as
+ * layers at several depths.
  */
 export const FLANK_SLOTS: readonly FlankSlot[] = [
    { side: "left", edge: 16, rest: 0.14, speed: 0.46, depth: 9, period: 11 },
@@ -172,6 +175,16 @@ const heroStackItems: readonly HeroStackItem[] = resolved;
 export interface Placement<S> {
    item: HeroStackItem;
    slot: S;
+}
+
+/**
+ * The MotionValues both layers hand each tile: page scroll and the two
+ * pointer springs. StackFieldBackdrop adds its own on top.
+ */
+export interface FieldValues {
+   scrollY: MotionValue<number>;
+   pointerX: MotionValue<number>;
+   pointerY: MotionValue<number>;
 }
 
 /** Slot i takes item i; slots past the last resolved item stay empty. */

@@ -339,8 +339,10 @@ html[data-motion="reduced"] .project-action:active {
 }
 
 .section-header-number {
+   flex: none;
    color: var(--color-accent-cyan);
    font-variant-numeric: tabular-nums;
+   white-space: nowrap;
 }
 
 .section-header-heading {

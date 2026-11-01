@@ -21,6 +21,10 @@ const Nav = () => {
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
    const scrolled = useScrolledPast(SCROLLED_AFTER);
 
+   // The overlay only exists on the mobile layout. Leaving it closes the menu
+   // in the same render, so shrinking back to a phone width does not reopen it.
+   if (!isMobile && mobileMenuOpen) setMobileMenuOpen(false);
+
    // DeferredSection keeps each anchor mounted while its content loads.
    useEffect(() => {
       const observer = new IntersectionObserver(

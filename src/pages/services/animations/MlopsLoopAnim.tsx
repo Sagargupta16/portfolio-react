@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
-import { LABEL_SIZE, LABEL_TRACK } from "./canvasKit";
+import { LABEL_SIZE, LABEL_TRACK, looping } from "./canvasKit";
 
 interface MlopsLoopAnimProps {
    color: string;
@@ -20,6 +20,7 @@ interface MlopsLoopAnimProps {
  */
 
 const CYCLE = 5;
+const animate = looping(CYCLE);
 
 const HAIRLINE = "rgba(255,255,255,0.16)";
 const PANEL_BORDER = "1px solid rgba(255,255,255,0.20)";
@@ -96,10 +97,10 @@ const tinted = (color: string): CSSProperties => ({
 });
 
 /*
- * One easing per segment, not one string: Motion hands a single string to
- * WAAPI as the whole-iteration easing, which warps every `times` offset for
- * accelerated values (opacity) while transforms and pathLength stay on the
- * per-segment JS clock. An array keeps both clocks aligned.
+ * One track's transition, for the movers and the retrain edge: their motion
+ * and fade keep separate `times`, which the kit's one-`times` looping()
+ * cannot express. One easing per segment, as in the kit, so WAAPI opacity
+ * and the JS clock stay aligned.
  */
 const loop = (times: number[]) => ({
    duration: CYCLE,
@@ -145,8 +146,7 @@ const STACK_OPACITY = [0.4, 1, 0.6, 0.6, 0.4];
 const TrainerStack = ({ color }: Readonly<{ color: string }>) => (
    <motion.div
       initial={{ opacity: 0.4 }}
-      animate={{ opacity: STACK_OPACITY }}
-      transition={loop(STACK_TIMES)}
+      {...animate({ times: STACK_TIMES, opacity: STACK_OPACITY })}
       style={rect(STACK.x, STACK.y, STACK.w, STACK.h)}
    >
       {STACK_ROWS.map((y) => (
@@ -186,8 +186,11 @@ const Gate = ({ color }: Readonly<{ color: string }>) => (
       >
          <motion.div
             initial={{ scaleX: 0, opacity: 1 }}
-            animate={{ scaleX: BAR_SCALE, opacity: BAR_OPACITY }}
-            transition={loop(BAR_TIMES)}
+            {...animate({
+               times: BAR_TIMES,
+               scaleX: BAR_SCALE,
+               opacity: BAR_OPACITY,
+            })}
             style={{
                position: "absolute",
                inset: 0,
@@ -217,8 +220,7 @@ const Endpoint = () => (
       <div style={dot(LED.x, LED.y, 3, GHOST)} />
       <motion.div
          initial={{ opacity: 0 }}
-         animate={{ opacity: LED_OPACITY }}
-         transition={loop(LED_TIMES)}
+         {...animate({ times: LED_TIMES, opacity: LED_OPACITY })}
          style={dot(LED.x, LED.y, 3, GREEN)}
       />
       <div style={{ ...rect(7, 3.5, 5, 1), background: GHOST }} />
@@ -257,8 +259,7 @@ const Monitor = ({ color }: Readonly<{ color: string }>) => (
          stroke={color}
          strokeWidth={1.2}
          initial={{ x: 0 }}
-         animate={{ x: CURVE_X }}
-         transition={loop(CURVE_TIMES)}
+         {...animate({ times: CURVE_TIMES, x: CURVE_X })}
       />
    </svg>
 );
@@ -270,8 +271,7 @@ const DRIFT_OPACITY = [0, 0, 1, 0.3, 1, 0, 0];
 const DriftAlarm = () => (
    <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: DRIFT_OPACITY }}
-      transition={loop(DRIFT_TIMES)}
+      {...animate({ times: DRIFT_TIMES, opacity: DRIFT_OPACITY })}
       style={rect(DRIFT.x, DRIFT.y, DRIFT.w, DRIFT.h)}
    >
       <div

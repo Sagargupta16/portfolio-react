@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useMemo } from "react";
+import { lazy, Suspense, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowDownRight, Download, FileText } from "lucide-react";
 import {
@@ -98,11 +98,11 @@ const HeroContent = () => {
    const [cvOpen, setCvOpen] = useState(false);
    const [cvLoaded, setCvLoaded] = useState(false);
 
-   const name = useMemo(() => getName(), []);
-   const intro = useMemo(() => getIntro(), []);
-   const roleLabel = useMemo(() => getRoleLabel(), []);
-   const headline = useMemo(() => getHeadline(), []);
-   const greeting = useMemo(() => getHeroGreeting(), []);
+   const name = getName();
+   const intro = getIntro();
+   const roleLabel = getRoleLabel();
+   const headline = getHeadline();
+   const greeting = getHeroGreeting();
 
    const { navigateToSection } = useSectionNavigation();
    const introDone = useIntroDone();

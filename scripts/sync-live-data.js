@@ -29,10 +29,12 @@
  *        LEETCODE_USER (default sagargupta1610)
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { format, resolveConfig } from "prettier";
+import { getJson, githubHeaders, latestRelease } from "./lib/github.js";
+import { mapPool } from "./lib/pool.js";
+import { writeJson } from "./lib/write-json.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECTS_PATH = resolve(__dirname, "../data/projects.json");
@@ -46,13 +48,15 @@ const ME = GITHUB_USER.toLowerCase();
 const SKIP_DISCUSSION_OWNERS = new Set([ME, "mca-nitw"]);
 const STAR_DRIFT = 0.05;
 const LANGUAGE_DRIFT = 2; // percentage points
+const MAX_IN_FLIGHT = 8; // most GitHub requests running at once
 
 const changes = [];
 const note = (msg) => changes.push(msg);
 // API text is untrusted: drop control characters and cap the length before logging.
 const isControl = (ch) => {
    const code = ch.codePointAt(0);
-   return code < 0x20 || code === 0x7f;
+   // C0 controls, DEL and the C1 range (U+0080 to U+009F).
+   return code < 0x20 || (code >= 0x7f && code <= 0x9f);
 };
 const clean = (value) =>
    Array.from(String(value), (ch) => (isControl(ch) ? " " : ch))
@@ -76,32 +80,7 @@ const cleanTitle = (title) =>
       .slice(0, 160)
       .trimEnd();
 
-// Format like `pnpm format` so a written file passes format:check as is.
-async function writeJson(path, data) {
-   const options = await resolveConfig(path);
-   const text = await format(JSON.stringify(data, null, 3), {
-      ...options,
-      filepath: path,
-   });
-   writeFileSync(path, text, "utf8");
-}
-
-const ghHeaders = {
-   Accept: "application/vnd.github+json",
-   "User-Agent": "portfolio-sync",
-   ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
-};
-
-/** GET a JSON URL; a failed response throws an Error carrying its status. */
-async function getJson(url, headers) {
-   const res = await fetch(url, { headers });
-   if (!res.ok) {
-      const error = new Error(`GET ${url} -> ${res.status}`);
-      error.status = res.status;
-      throw error;
-   }
-   return res.json();
-}
+const ghHeaders = githubHeaders(TOKEN);
 
 const ghRest = (path) => getJson(`https://api.github.com${path}`, ghHeaders);
 
@@ -193,29 +172,40 @@ async function syncPullRequests(prs) {
       .filter((x) => x.m);
    const repos = [...new Set(parsed.map(({ m }) => `${m[1]}/${m[2]}`))];
 
-   const starsByRepo = new Map(
-      await Promise.all(
-         repos.map(async (repo) => {
-            try {
-               return [repo, (await ghRest(`/repos/${repo}`)).stargazers_count];
-            } catch (err) {
-               warn(`stars ${repo}`, err);
-               return [repo, null];
-            }
-         }),
-      ),
+   const lives = await mapPool(parsed, MAX_IN_FLIGHT, ({ entry, m }) =>
+      ghRest(`/repos/${m[1]}/${m[2]}/pulls/${m[3]}`).catch((err) => {
+         warn(`PR ${entry.url}`, err);
+         return null;
+      }),
    );
 
-   await Promise.all(
-      parsed.map(async ({ entry, m }) => {
-         const repo = `${m[1]}/${m[2]}`;
+   // A pull request answer carries its base repo's star count, so the repo
+   // itself is fetched only when none of its PRs gave one.
+   const starsByRepo = new Map();
+   const rememberStars = (repo, stars) => {
+      if (typeof stars === "number" && !starsByRepo.has(repo)) {
+         starsByRepo.set(repo, stars);
+      }
+   };
+   for (const [i, { entry, m }] of parsed.entries()) {
+      if (!lives[i]) continue;
+      const repo = `${m[1]}/${m[2]}`;
+      applyPrState(entry, lives[i], `${repo}#${m[3]}`);
+      rememberStars(repo, lives[i].base?.repo?.stargazers_count);
+   }
+   await mapPool(
+      repos.filter((repo) => !starsByRepo.has(repo)),
+      MAX_IN_FLIGHT,
+      async (repo) => {
          try {
-            const live = await ghRest(`/repos/${repo}/pulls/${m[3]}`);
-            applyPrState(entry, live, `${repo}#${m[3]}`);
+            rememberStars(
+               repo,
+               (await ghRest(`/repos/${repo}`)).stargazers_count,
+            );
          } catch (err) {
-            warn(`PR ${entry.url}`, err);
+            warn(`stars ${repo}`, err);
          }
-      }),
+      },
    );
 
    // Stars belong to the repo, not the PR: set them per repo, so one failed
@@ -226,7 +216,7 @@ async function syncPullRequests(prs) {
       const entries = parsed
          .filter(({ m }) => `${m[1]}/${m[2]}` === repo)
          .map(({ entry }) => entry);
-      if (stars !== null) applyStars(entries, stars, repo);
+      if (stars !== undefined) applyStars(entries, stars, repo);
    }
 }
 
@@ -244,25 +234,26 @@ const discussionNumber = (url) =>
 const discussionKey = (repo, n) => `${repo.toLowerCase()}#${n}`;
 const answeredByMe = (d) => d?.answer?.author?.login?.toLowerCase() === ME;
 
+// The status follows the API both ways: accepted while my answer is the
+// accepted one, helpful again once it is unaccepted or another answer
+// replaces it. A discussion the API does not return is left as it is.
 async function refreshKnownDiscussions(list) {
-   await Promise.all(
-      list.map(async (d) => {
-         const [owner, repo] = d.repo.split("/");
-         const n = discussionNumber(d.url);
-         try {
-            const data = await ghGraphql(DISCUSSION, { o: owner, r: repo, n });
-            if (
-               answeredByMe(data.repository?.discussion) &&
-               d.status !== "accepted"
-            ) {
-               note(`discussion ${d.repo}#${n}: ${d.status} -> accepted`);
-               d.status = "accepted";
-            }
-         } catch (err) {
-            warn(`discussion ${d.url}`, err);
+   await mapPool(list, MAX_IN_FLIGHT, async (d) => {
+      const [owner, repo] = d.repo.split("/");
+      const n = discussionNumber(d.url);
+      try {
+         const data = await ghGraphql(DISCUSSION, { o: owner, r: repo, n });
+         const discussion = data.repository?.discussion;
+         if (!discussion) throw new Error("discussion not in the response");
+         const status = answeredByMe(discussion) ? "accepted" : "helpful";
+         if (status !== d.status) {
+            note(`discussion ${d.repo}#${n}: ${d.status} -> ${status}`);
+            d.status = status;
          }
-      }),
-   );
+      } catch (err) {
+         warn(`discussion ${d.url}`, err);
+      }
+   });
 }
 
 // Paginate with recursion so each page waits for the previous cursor.
@@ -576,9 +567,7 @@ async function manifestVersion(repo, index = 0) {
 
 async function releaseVersion(repo) {
    try {
-      return parseVersion(
-         (await ghRest(`/repos/${repo}/releases/latest`)).tag_name,
-      );
+      return parseVersion((await latestRelease(repo, TOKEN)).tag_name);
    } catch (err) {
       return unless404(err, null);
    }
@@ -630,11 +619,11 @@ async function syncProjectVersions(list) {
          (NPM_PAGE.test(p.live ?? "") ||
             p.github?.startsWith("https://github.com/")),
    );
-   await Promise.all(
-      shipping.map((project) =>
-         syncProjectVersion(project).catch((err) =>
-            warn(`${project.title} version`, err),
-         ),
+   // A project looks up its release and its manifest together, so half as
+   // many projects run at once.
+   await mapPool(shipping, MAX_IN_FLIGHT / 2, (project) =>
+      syncProjectVersion(project).catch((err) =>
+         warn(`${project.title} version`, err),
       ),
    );
 }

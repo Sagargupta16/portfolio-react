@@ -9,6 +9,7 @@ import {
 import { motion, type Variants } from "motion/react";
 import { Search, X } from "lucide-react";
 import {
+   getAllProjects,
    getFeaturedProjects,
    getCollaborativeProjects,
    getOtherProjects,
@@ -26,7 +27,7 @@ import {
 } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import useMotionPreference from "@hooks/useMotionPreference";
-import type { ProjectFilter } from "@/types";
+import type { Project, ProjectFilter } from "@/types";
 import { fillTemplate } from "@utils/fillTemplate";
 import { parseProjectDate } from "@utils/projectMetadata";
 import {
@@ -94,20 +95,51 @@ const TAP = { scale: 0.97 };
 // browser's fieldset frame so it lays out exactly like the old div.
 const FIELDSET_RESET: CSSProperties = { border: 0, margin: 0, padding: 0 };
 
+// The chip each project list sits under. A project in a list not named here
+// still shows under "All", filed as "Others" like getCategoryColors does.
+const CATEGORY_LISTS: [ProjectCategory, Project[]][] = [
+   ["Featured", getFeaturedProjects()],
+   ["Community", getCommunityProjects()],
+   ["Collab", getCollaborativeProjects()],
+   ["Others", getOtherProjects()],
+];
+const CATEGORY_OF = new Map(
+   CATEGORY_LISTS.flatMap(([category, list]) =>
+      list.map((project) => [project, category] as const),
+   ),
+);
+
+// Every project with its category, in "All" order.
+const PROJECTS: ProjectWithCategory[] = getAllProjects().map((project) => ({
+   ...project,
+   category: CATEGORY_OF.get(project) ?? "Others",
+}));
+
+const countIn = (category: ProjectCategory) =>
+   PROJECTS.filter((project) => project.category === category).length;
+
+// Counts per filter -- drive both the badge text and the "hide empty" rule.
+// Typed by the filter union, so a misspelt or missing chip fails to compile.
+const COUNTS: Record<ProjectFilter, number> = {
+   All: PROJECTS.length,
+   Featured: countIn("Featured"),
+   Community: countIn("Community"),
+   Collab: countIn("Collab"),
+   Others: countIn("Others"),
+};
+
+// Skip categories with zero items so the filter bar never shows dead options.
+// "All" is kept even at zero so the bar still renders with a fallback.
+const VISIBLE_FILTERS = FILTERS.filter((f) => f === "All" || COUNTS[f] > 0);
+
 /** The project a shared ?project=<slug> link points at, with its category. */
 const projectFromLink = (): ProjectWithCategory | null => {
    const slug = readProjectParam();
    if (!slug) return null;
-   const groups: [ProjectCategory, ReturnType<typeof getFeaturedProjects>][] = [
-      ["Featured", getFeaturedProjects()],
-      ["Community", getCommunityProjects()],
-      ["Collab", getCollaborativeProjects()],
-      ["Others", getOtherProjects()],
-   ];
-   for (const [category, projects] of groups) {
-      const match = projects.find((p) => projectSlug(p.title) === slug);
-      if (match) return { ...match, category };
-   }
+   const match = PROJECTS.find(
+      (project) => projectSlug(project.title) === slug,
+   );
+   if (match) return match;
    // The slug names no project, so the link is stale: drop it from the address
    // bar instead of leaving it there for the next share or reload.
    writeProjectParam(null);
@@ -136,79 +168,23 @@ const Projects = () => {
       setHasFiltered(true);
    }, []);
 
-   const featuredProjects = useMemo(() => getFeaturedProjects(), []);
-   const communityProjects = useMemo(() => getCommunityProjects(), []);
-   const collaborativeProjects = useMemo(() => getCollaborativeProjects(), []);
-   const otherProjects = useMemo(() => getOtherProjects(), []);
    const spotlightProjectId =
       activeFilter === "Featured" && !deferredQuery.trim()
          ? getSpotlightProjectId()
          : null;
 
-   // Counts per filter -- drives both the badge text and the "hide empty" rule.
-   const counts = useMemo<Record<string, number>>(() => {
-      const f = featuredProjects.length;
-      const c = communityProjects.length;
-      const x = collaborativeProjects.length;
-      const o = otherProjects.length;
-      return {
-         Featured: f,
-         Community: c,
-         Collab: x,
-         Others: o,
-         All: f + c + x + o,
-      };
-   }, [
-      featuredProjects,
-      communityProjects,
-      collaborativeProjects,
-      otherProjects,
-   ]);
-
-   // Skip categories with zero items so the filter bar never shows dead options.
-   // "All" is kept even at zero so the bar still renders with a fallback.
-   const visibleFilters = useMemo(
-      () => FILTERS.filter((f) => f === "All" || (counts[f] ?? 0) > 0),
-      [counts],
-   );
-
    const categoryProjects = useMemo(() => {
-      const featured = featuredProjects.map((p): ProjectWithCategory => ({
-         ...p,
-         category: "Featured",
-      }));
-      const community = communityProjects.map((p): ProjectWithCategory => ({
-         ...p,
-         category: "Community",
-      }));
-      const collab = collaborativeProjects.map((p): ProjectWithCategory => ({
-         ...p,
-         category: "Collab",
-      }));
-      const others = otherProjects.map((p): ProjectWithCategory => ({
-         ...p,
-         category: "Others",
-      }));
-
-      let list: ProjectWithCategory[];
-      if (activeFilter === "Featured") list = featured;
-      else if (activeFilter === "Community") list = community;
-      else if (activeFilter === "Collab") list = collab;
-      else if (activeFilter === "Others") list = others;
-      else list = [...featured, ...community, ...collab, ...others];
+      const list =
+         activeFilter === "All"
+            ? [...PROJECTS]
+            : PROJECTS.filter((project) => project.category === activeFilter);
 
       return list.sort(
          (a, b) =>
             parseProjectDate(b.date).getTime() -
             parseProjectDate(a.date).getTime(),
       );
-   }, [
-      activeFilter,
-      featuredProjects,
-      communityProjects,
-      collaborativeProjects,
-      otherProjects,
-   ]);
+   }, [activeFilter]);
 
    const filteredProjects = useMemo(() => {
       const terms = deferredQuery.trim().toLowerCase().split(/\s+/);
@@ -275,9 +251,9 @@ const Projects = () => {
                   aria-label={search.filter_label}
                   style={FIELDSET_RESET}
                >
-                  {visibleFilters.map((filter) => {
+                  {VISIBLE_FILTERS.map((filter) => {
                      const isActive = activeFilter === filter;
-                     const count = counts[filter] ?? 0;
+                     const count = COUNTS[filter];
                      const label = filterLabel(filter);
                      return (
                         <motion.button
@@ -373,7 +349,7 @@ const Projects = () => {
                <span id="project-result-count" role="status" aria-live="polite">
                   {fillTemplate(search.summary, {
                      shown: filteredProjects.length,
-                     total: counts[activeFilter],
+                     total: COUNTS[activeFilter],
                   })}
                </span>
                <span>
@@ -394,7 +370,7 @@ const Projects = () => {
                >
                   <h3>{search.empty_title}</h3>
                   <p>
-                     {fillTemplate(search.empty_body, { total: counts.All })}
+                     {fillTemplate(search.empty_body, { total: COUNTS.All })}
                   </p>
                   <button
                      type="button"

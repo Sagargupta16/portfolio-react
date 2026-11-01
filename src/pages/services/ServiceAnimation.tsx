@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useInView } from "motion/react";
 import type { ServiceKey } from "@/types";
 import useFreezeAnimations from "@hooks/useFreezeAnimations";
@@ -57,14 +57,28 @@ const ServiceAnimation = ({
    const frameRef = useRef<HTMLDivElement>(null);
    const nearViewport = useInView(frameRef, { margin: ART_MOUNT_MARGIN });
    const { preference } = useMotionPreference();
+   const [stripWidth, setStripWidth] = useState(0);
    useFreezeAnimations(frameRef);
    usePauseOffscreen(frameRef);
    useSceneClock(frameRef);
 
-   if (!AnimComponent) return null;
+   // Fit the canvas to the card's art strip (phones) or column (desktop),
+   // never past its design scale: the lead canvas at 2x is 320 px, wider
+   // than the phone strip on a screen under 354 px.
+   useEffect(() => {
+      const strip = frameRef.current?.parentElement;
+      if (!strip) return;
+      // ResizeObserver reports the first size on observe, so no read at mount.
+      const observer = new ResizeObserver(([entry]) =>
+         setStripWidth(entry.contentBoxSize[0].inlineSize),
+      );
+      observer.observe(strip);
+      return () => observer.disconnect();
+   }, []);
 
-   const scale = compact ? ART_SCALE_COMPACT : ART_SCALE_DESKTOP;
    const width = isWideArt(serviceKey) ? ART_CANVAS_WIDE : ART_CANVAS;
+   const design = compact ? ART_SCALE_COMPACT : ART_SCALE_DESKTOP;
+   const scale = stripWidth ? Math.min(design, stripWidth / width) : design;
 
    return (
       <div

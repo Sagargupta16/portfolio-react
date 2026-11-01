@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "node:url";
-import { resolve } from "node:path";
+import { parse, resolve } from "node:path";
 import {
    copyFileSync,
    mkdirSync,
@@ -10,7 +10,9 @@ import {
    readFileSync,
    writeFileSync,
 } from "node:fs";
+import { PRIVATE_DATA_FILES } from "./scripts/lib/data-files.js";
 import { buildMachineFiles } from "./scripts/machine-view.js";
+import heroLatest from "./src/data/heroLatestPlugin.js";
 
 const pkg = JSON.parse(
    readFileSync(new URL("./package.json", import.meta.url), "utf8"),
@@ -18,9 +20,8 @@ const pkg = JSON.parse(
 
 // Publish data/*.json as static files (build/data/), so other tools can read the same
 // source of truth at /portfolio-react/data/<name>.json. contact.json is the one
-// file left out of /data/. It is not secret: src/data/contact.ts bundles it into
-// the app, and the EmailJS IDs in it are public by design.
-const PRIVATE_DATA = new Set(["contact.json"]);
+// file left out of /data/ (PRIVATE_DATA_FILES). It is not secret: src/data/contact.ts
+// bundles it into the app, and the EmailJS IDs in it are public by design.
 function publishData() {
    return {
       name: "publish-data",
@@ -30,7 +31,8 @@ function publishData() {
          const out = new URL("./build/data/", import.meta.url);
          mkdirSync(out, { recursive: true });
          for (const file of readdirSync(src)) {
-            if (file.endsWith(".json") && !PRIVATE_DATA.has(file)) {
+            const { name, ext } = parse(file);
+            if (ext === ".json" && !PRIVATE_DATA_FILES.includes(name)) {
                copyFileSync(new URL(file, src), new URL(file, out));
             }
          }
@@ -156,6 +158,7 @@ export default defineConfig(() => ({
       machineView(),
       preloadFonts(),
       contentSecurityPolicy(),
+      heroLatest(),
    ],
    base: "/portfolio-react/",
    // Build stamp shown in the footer status bar.

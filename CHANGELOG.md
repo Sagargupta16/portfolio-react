@@ -9,21 +9,28 @@ A review of the whole repo found issues that a visitor, a crawler or the data pi
 ### Fixed
 
 - **Command palette.** Wheel scrolling over the list scrolls the list, not the page behind it, and Ctrl+K does nothing while another overlay is open, so the palette no longer opens hidden under a modal. Long `git clone` rows are ellipsized on phones, and the trigger is 44px on touch.
-- **Contact form.** The red error toast no longer stays empty during a retry or after a successful send.
-- **Smooth scrolling.** A stall of a second or more during a scroll no longer makes every later scroll jump in one step until reload.
-- **Annotations.** The palette pin stays on its button when notes are turned on mid-page, the mascot pin appears, and a quote in the nav label no longer breaks the layer.
-- **CV viewer.** Sub-bullets nest under their bullet, TeX markup is gone, sections follow the resume order, the toolbar wraps on 360px phones, controls are 44px on touch, and a failed load offers a reload.
-- **Layout and touch.** Hover styles no longer stick after a tap, the phone menu sits above the notes layer, the project search field no longer zooms on iOS, the Contact grid fits at 320px, the mascot no longer covers section eyebrows or titles on phones, the hero's stack tiles clear the status pill, the GitHub stat captions stay on one line at 375px and up, news text wraps at 320px, the 404 numeral is centred, and the 404 redirect knows the news section.
+- **Contact form.** The red error toast no longer stays empty during a retry or after a successful send. A send that goes through after the 15 second wait now ends on the confirmation, a retry waits for it instead of sending twice, and the timeout message says the message may still arrive.
+- **Smooth scrolling.** A stall of a second or more during a scroll no longer makes every later scroll jump in one step until reload, and a scroll whose target lands on a half pixel now finishes, so a nav jump moves focus to its section.
+- **Motion setting.** Switching between Full and Reduced applies at once to everything already on the page, without a reload and without losing form drafts, filters or focus.
+- **Annotations.** The palette pin stays on its button when notes are turned on mid-page, the mascot pin appears, a quote in the nav label no longer breaks the layer, and a pin's ping pauses while the pin is off screen.
+- **CV viewer.** Sub-bullets nest under their bullet, TeX markup is gone, sections follow the resume order, the toolbar wraps on 360px phones, controls are 44px on touch, a failed load offers a reload, and the web view ends with the same disclaimer as the PDF and the site footer.
+- **Layout and touch.** Hover styles no longer stick after a tap, the phone menu sits above the notes layer, the project search field no longer zooms on iOS, the Contact grid fits at 320px, the mascot no longer covers section eyebrows or titles on phones and the eyebrow number keeps its slash, the wide-screen stack tiles stay clear of the section headings from 1280px to about 1330px, the hero's stack tiles clear the status pill, the GitHub stat captions stay on one line at 375px and up, news text wraps at 320px, the 404 numeral is centred, and the 404 redirect knows the news section.
 - **Motion.** The MLOps packet fades in from zero, the Flappy post no longer flashes, Arena's clip ids are unique per mount, the scene clock threshold moved to 85 Hz and pauses while the tab is hidden, counters follow the in-app setting, and keyboard focus lifts project cards.
-- **Performance.** The stack field loads only for the layout that shows it, NumberFlow leaves the eager bundle, and contact cards and open-source rows no longer re-render on each keystroke.
-- **Data pipeline.** The sync runs only from main, news keeps day order, discussion titles are cleaned, a malformed achievements file fails the run, GitHub stats checks always run, project titles and slugs must be unique, and the resume URL must be https.
+- **Navigation and footer.** The phone menu no longer reopens when the window widens and shrinks back, a click on More after the pointer leaves and re-enters now closes it, and a mistyped time zone leaves out the footer clock lines instead of blanking the status bar.
+- **Focus Areas and scenes.** The Forward Deployed Engineering art scales down to fit phones narrower than 354px instead of being cut off at both sides, engagement scenes inside the Experience modal load shortly before they scroll into view there as they do on the page, and the second packet in the LeetCode Rating Predictor, LeetCode Among Us and Ledger Sync covers stops exactly on its target.
+- **Performance.** The stack field loads only for the layout that shows it, NumberFlow leaves the eager bundle, and contact cards and open-source rows no longer re-render on each keystroke. The hero's latest line is derived at build time, so the first load no longer downloads the projects data (about 21 KB gzipped). The phone stack tiles stop updating while the hero is out of view, scene loops that mount below the fold start paused and stay in step after a scroll away and back, and off-screen hosts share one visibility observer per margin.
+- **Data pipeline.** The weekly syncs run their npm code with a read-only token in one job and hand the changed files to a second job that opens the pull request. The live-data sync makes about 18 fewer GitHub requests per run and never more than 8 at once, an answer that gets unaccepted moves back to helpful, and C1 control characters are stripped from titles. The data check rejects an invalid time zone, a project date not in the "September 2026" form, and malformed demo copy. The sync runs only from main, news keeps day order, discussion titles are cleaned, a malformed achievements file fails the run, GitHub stats checks always run, project titles and slugs must be unique, and the resume URL must be https.
 - **TFC count.** The Programs line and the Highlights tile read 7x TFC Ambassador across 4 communities, plus NGDE Member (graduated) in Builder Experience: 5 communities in all. The NGDE Ambassador level graduated into the Member role, so it no longer counts as an ambassadorship (was 8x).
 - **Machine-readable output.** llms.txt counts 12 merged PRs and notes the co-authored fix separately, and projects whose live value is `#` get no Live link.
 - **Dependencies.** typescript-eslint, eslint, lucide-react and motion are updated, and overrides clear two dev-only advisories.
 
+### Changed
+
+- **Code structure.** Project demo copy (terminal scripts, blue/green captions, pipeline labels) lives in `data/projects.json` under `demos`; one `getAllProjects()` list replaces five hand-written ones; shared helpers live once (`scripts/lib/`, `SocialTiles`, `ContributionLink`, `formatCount`, the services `looping()` transition); the redundant `useMemo` wrappers around data getters are gone. Rendered output is unchanged.
+
 ### Docs
 
-- README and CONTRIBUTING: the resume refresh schedule, the skill count, the asset folder in the tree, and the cover example without the removed field.
+- README and CONTRIBUTING: the resume refresh schedule, the skill count, the asset folder in the tree, the cover example without the removed field, the new data checks, and the two-job sync workflows.
 
 ## [4.22.2] - 2026-11-01
 

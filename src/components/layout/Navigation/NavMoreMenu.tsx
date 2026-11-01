@@ -102,7 +102,10 @@ const NavMoreMenu = ({
    const onPointerEnter = (e: React.PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       cancelClose();
-      openedByHoverRef.current = true;
+      // Only a hover that opens the menu arms the keep-open click. Entering
+      // one that is already open (re-entered within the close delay, or opened
+      // from the keyboard) leaves the next trigger click a plain toggle.
+      if (!open) openedByHoverRef.current = true;
       setOpen(true);
    };
    const onPointerLeave = (e: React.PointerEvent) => {

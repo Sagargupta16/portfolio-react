@@ -14,9 +14,9 @@ import CompetitionsSection from "./CompetitionsSection";
 
 const Achievement = () => {
    const { title, subtitle } = getSectionCopy("achievements");
-   const rawCertifications = useMemo(() => getCertifications(), []);
-   const learningBadges = useMemo(() => getLearningBadges(), []);
-   const achievements = useMemo(() => getAchievements(), []);
+   const rawCertifications = getCertifications();
+   const learningBadges = getLearningBadges();
+   const achievements = getAchievements();
 
    const certifications = useMemo(
       () =>

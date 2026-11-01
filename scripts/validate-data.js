@@ -3,6 +3,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { DATA_FILES } from "./lib/data-files.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const errors = [];
@@ -188,19 +189,24 @@ const validateEntityArray = (items, path, requiredFields) => {
    }
 };
 
-const personal = loadJson("data/personal.json");
-const education = loadJson("data/education.json");
-const experience = loadJson("data/experience.json");
-const skills = loadJson("data/skills.json");
-const services = loadJson("data/services.json");
-const projects = loadJson("data/projects.json");
-const achievements = loadJson("data/achievements.json");
-const contact = loadJson("data/contact.json");
-const news = loadJson("data/news.json");
-const sections = loadJson("data/sections.json");
-const ui = loadJson("data/ui.json");
-const glossary = loadJson("data/glossary.json");
-const annotations = loadJson("data/annotations.json");
+const data = Object.fromEntries(
+   DATA_FILES.map((name) => [name, loadJson(`data/${name}.json`)]),
+);
+const {
+   personal,
+   education,
+   experience,
+   skills,
+   services,
+   projects,
+   achievements,
+   contact,
+   news,
+   sections,
+   ui,
+   glossary,
+   annotations,
+} = data;
 
 const NEWS_TYPES = new Set([
    "launch",
@@ -265,6 +271,20 @@ if (requireRecord(personal, "data/personal.json")) {
       "timezone",
    ]) {
       requireString(personal[field], `personal.${field}`);
+   }
+   // The footer clock builds an Intl.DateTimeFormat from it, which throws a
+   // RangeError for a name that is not an IANA time zone.
+   if (isNonEmptyString(personal.timezone)) {
+      try {
+         new Intl.DateTimeFormat("en", {
+            timeZone: personal.timezone,
+         }).format();
+      } catch {
+         fail(
+            "personal.timezone",
+            `must be an IANA time zone name like Asia/Kolkata, got ${JSON.stringify(personal.timezone)}`,
+         );
+      }
    }
    requireStringArray(personal.hero_taglines, "personal.hero_taglines");
    if (
@@ -641,6 +661,95 @@ requireKeyedLabels(
    readSourceKeys(DEMO_REGISTRY, /^[ \t]+(\d+): [A-Z]\w+,/gm),
    DEMO_REGISTRY,
 );
+
+// Case-study demo copy (data/projects.json "demos"): one entry per demo in the
+// registry, with the fields its component reads (src/data/demos.ts).
+const PIPELINE_NODE_IDS = new Set([
+   "ingest",
+   "train",
+   "ensemble",
+   "gate",
+   "registry",
+   "endpoint",
+   "drift",
+   "retrain",
+]);
+const TERMINAL_LINE_KINDS = new Set(["cmd", "out", "note"]);
+const BLUE_GREEN_ENVS = new Set(["Blue", "Green"]);
+const demoCopy = new Map(
+   requireKeyedEntries(
+      projects?.demos,
+      "projects.demos",
+      readSourceKeys(DEMO_REGISTRY, /^[ \t]+(\d+): [A-Z]\w+,/gm),
+      DEMO_REGISTRY,
+   ),
+);
+const demoAt = (id) => {
+   const demo = demoCopy.get(id);
+   return requireRecord(demo, `projects.demos.${id}`) ? demo : null;
+};
+
+const pipelineDemo = demoAt("49");
+if (pipelineDemo) {
+   const path = "projects.demos.49";
+   requireString(pipelineDemo.summary, `${path}.summary`);
+   requireString(pipelineDemo.footnote, `${path}.footnote`);
+   for (const [id, node] of requireKeyedEntries(
+      pipelineDemo.nodes,
+      `${path}.nodes`,
+      PIPELINE_NODE_IDS,
+      "the PipelineNodeId type in src/types/index.ts",
+   )) {
+      requireString(node?.title, `${path}.nodes.${id}.title`);
+      requireStringArray(node?.detail, `${path}.nodes.${id}.detail`);
+   }
+}
+
+const terminalDemo = demoAt("52");
+if (terminalDemo) {
+   const path = "projects.demos.52";
+   requireString(terminalDemo.step_label, `${path}.step_label`);
+   requireString(terminalDemo.context, `${path}.context`);
+   if (requireArray(terminalDemo.scripts, `${path}.scripts`)) {
+      requireUnique(terminalDemo.scripts, "id", `${path}.scripts`);
+      for (const [index, script] of terminalDemo.scripts.entries()) {
+         const scriptPath = `${path}.scripts[${index}]`;
+         requireString(script?.label, `${scriptPath}.label`);
+         if (!requireArray(script?.lines, `${scriptPath}.lines`)) continue;
+         for (const [lineIndex, line] of script.lines.entries()) {
+            const linePath = `${scriptPath}.lines[${lineIndex}]`;
+            if (!TERMINAL_LINE_KINDS.has(line?.kind)) {
+               fail(`${linePath}.kind`, 'must be "cmd", "out" or "note"');
+            }
+            requireString(line?.text, `${linePath}.text`);
+         }
+      }
+   }
+}
+
+const blueGreenDemo = demoAt("13");
+if (blueGreenDemo) {
+   const path = "projects.demos.13";
+   for (const field of ["slider_label", "hint", "stack"]) {
+      requireString(blueGreenDemo[field], `${path}.${field}`);
+   }
+   for (const side of ["before", "after"]) {
+      const panel = blueGreenDemo[side];
+      const panelPath = `${path}.${side}`;
+      if (!requireRecord(panel, panelPath)) continue;
+      requireString(panel.tag, `${panelPath}.tag`);
+      requireString(panel.caption, `${panelPath}.caption`);
+      if (!requireArray(panel.routes, `${panelPath}.routes`)) continue;
+      for (const [index, route] of panel.routes.entries()) {
+         const routePath = `${panelPath}.routes[${index}]`;
+         requireString(route?.listener, `${routePath}.listener`);
+         requireString(route?.state, `${routePath}.state`);
+         if (!BLUE_GREEN_ENVS.has(route?.env)) {
+            fail(`${routePath}.env`, 'must be "Blue" or "Green"');
+         }
+      }
+   }
+}
 // News type chips and row labels, one per type news.json may use.
 for (const [type, copy] of requireKeyedEntries(
    sections?.news?.types,
@@ -1051,6 +1160,10 @@ if (Array.isArray(services)) {
 
 const PROJECT_STATUSES = new Set(["active", "beta", "complete"]);
 const SEMVER = /^\d+\.\d+\.\d+$/;
+// "September 2026", the form parseProjectDate (src/utils/projectMetadata.ts)
+// reads. Another form there sorts last or lands in the wrong month.
+const PROJECT_DATE =
+   /^(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{4}$/;
 // The ?project=<slug> link key, as projectSlug in src/utils/projectLink.ts.
 const projectSlug = (title) =>
    title
@@ -1083,6 +1196,15 @@ if (requireRecord(projects, "projects")) {
          const path = `projects.${category}[${index}]`;
          for (const field of ["title", "description", "date", "github"]) {
             requireString(project?.[field], `${path}.${field}`);
+         }
+         if (
+            isNonEmptyString(project?.date) &&
+            !PROJECT_DATE.test(project.date)
+         ) {
+            fail(
+               `${path}.date`,
+               'must be a full month name and a four-digit year, like "September 2026"',
+            );
          }
          requireStringArray(project?.tools_tech, `${path}.tools_tech`);
          requireStringArray(project?.features, `${path}.features`);

@@ -1,11 +1,12 @@
 import {
    useCallback,
    useEffect,
+   useLayoutEffect,
    useMemo,
    useState,
    type ReactNode,
 } from "react";
-import { MotionConfig } from "motion/react";
+import { MotionConfig, visualElementStore } from "motion/react";
 import {
    MotionPreferenceContext,
    type MotionPreference,
@@ -52,6 +53,18 @@ export const MotionPreferenceProvider = ({
    useEffect(() => {
       document.documentElement.dataset.motion = motionMode;
    }, [motionMode]);
+
+   // Motion copies reducedMotion into each element once, when it mounts, so
+   // a live toggle would only reach elements mounted after it. Update the ones
+   // already on the page in place instead of remounting the tree, which would
+   // drop drafts, filters and focus. A layout effect runs before the motion
+   // components start this commit's animations in their passive effects.
+   useLayoutEffect(() => {
+      for (const node of document.querySelectorAll("*")) {
+         const element = visualElementStore.get(node);
+         if (element) element.shouldReduceMotion = reducedMotion;
+      }
+   }, [reducedMotion]);
 
    const value = useMemo(
       () => ({ preference, reducedMotion, setPreference }),

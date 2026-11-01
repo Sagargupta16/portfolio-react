@@ -2,22 +2,14 @@ import { describe, expect, it } from "vitest";
 import { getCertifications, getLearningBadges } from "@data/achievements";
 import { getContactOptions, getEmailConfig } from "@data/contact";
 import {
-   getCollaborativeProjects,
+   getAllProjects,
    getCommunityDiscussions,
-   getCommunityProjects,
-   getFeaturedProjects,
    getOpenSourceContributions,
-   getOtherProjects,
 } from "@data/projects";
 import { getProjectCover } from "@pages/projects/covers/coverRegistry";
 import projectsData from "../../data/projects.json";
 
-const allProjects = [
-   ...getFeaturedProjects(),
-   ...getCollaborativeProjects(),
-   ...getOtherProjects(),
-   ...getCommunityProjects(),
-];
+const allProjects = getAllProjects();
 
 // Every project array in projects.json carries `github`; contributions and
 // discussions do not. Counting structurally keeps this a rule about coverage

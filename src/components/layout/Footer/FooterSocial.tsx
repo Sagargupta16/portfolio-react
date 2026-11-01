@@ -1,21 +1,16 @@
-import { useMemo } from "react";
 import {
    motion,
    type TargetAndTransition,
    type Transition,
 } from "motion/react";
-import { getSocialProfiles } from "@data/personal";
-import { getUiCopy, newTabLabel } from "@data/ui";
 import { staggerItem } from "@utils/animations";
-import { fillTemplate } from "@utils/fillTemplate";
 import {
    TEXT_SECONDARY,
    BLUE_LIGHT,
    DURATION,
    EASING,
 } from "@/constants/theme";
-import ICON_MAP from "@utils/iconMap";
-import useMotionPreference from "@hooks/useMotionPreference";
+import SocialTiles from "../SocialTiles";
 
 const TILE_STYLE: React.CSSProperties = {
    width: 44,
@@ -54,49 +49,25 @@ const TILE_TRANSITION: Transition = {
    backgroundColor: COLOR_TWEEN,
 };
 
-const FooterSocial = () => {
-   const socialProfiles = useMemo(() => getSocialProfiles(), []);
-   const { reducedMotion } = useMotionPreference();
-   // Reduced keeps the tiles at their resting design; the press stays.
-   const hover = reducedMotion ? undefined : TILE_HOVER;
-
-   return (
-      <motion.div
-         style={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            gap: 12,
-         }}
-         variants={staggerItem}
-      >
-         {socialProfiles.map((profile) => {
-            const IconComponent = ICON_MAP[profile.icon];
-            if (!IconComponent) return null;
-            return (
-               <motion.a
-                  key={profile.id}
-                  href={profile.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={TILE_STYLE}
-                  whileHover={hover}
-                  whileFocus={hover}
-                  whileTap={TILE_TAP}
-                  transition={TILE_TRANSITION}
-                  aria-label={newTabLabel(
-                     fillTemplate(getUiCopy().profile_label, {
-                        name: profile.name,
-                     }),
-                  )}
-               >
-                  <IconComponent size={16} aria-hidden="true" />
-               </motion.a>
-            );
-         })}
-      </motion.div>
-   );
-};
+const FooterSocial = () => (
+   <motion.div
+      style={{
+         display: "flex",
+         flexWrap: "wrap",
+         alignItems: "center",
+         justifyContent: "flex-start",
+         gap: 12,
+      }}
+      variants={staggerItem}
+   >
+      <SocialTiles
+         tileStyle={TILE_STYLE}
+         hover={TILE_HOVER}
+         tap={TILE_TAP}
+         transition={TILE_TRANSITION}
+         iconSize={16}
+      />
+   </motion.div>
+);
 
 export default FooterSocial;

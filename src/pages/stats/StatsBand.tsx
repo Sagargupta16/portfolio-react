@@ -9,12 +9,10 @@ import {
 import { getExperience } from "@data/experience";
 import { getHighlights, getImpact, getStatsCopy } from "@data/personal";
 import {
+   getAllProjects,
    getCommunityDiscussions,
    getOpenSourceContributions,
    getFeaturedProjects,
-   getCollaborativeProjects,
-   getOtherProjects,
-   getCommunityProjects,
 } from "@data/projects";
 import {
    staggerContainer,
@@ -169,11 +167,7 @@ const StatsBand = () => {
          .flatMap((job) => job.internal_achievements ?? [])
          .filter((a) => /Speaker Certification/.test(a.title)).length;
 
-      const projectCount =
-         getFeaturedProjects().length +
-         getCollaborativeProjects().length +
-         getOtherProjects().length +
-         getCommunityProjects().length;
+      const projectCount = getAllProjects().length;
       const featuredCount = getFeaturedProjects().length;
 
       // Podium = 1st/2nd/3rd place entries in the Awards data.

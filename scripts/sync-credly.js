@@ -15,10 +15,10 @@
  * Env: CREDLY_USERNAME (default: sagar-gupta.f8eb96cc), CREDLY_ALLOW_FEWER
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { format, resolveConfig } from "prettier";
+import { writeJson } from "./lib/write-json.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_PATH = resolve(__dirname, "../data/achievements.json");
@@ -198,16 +198,6 @@ function assertNotFewer(next, existing) {
             "refusing to write (set CREDLY_ALLOW_FEWER=1 if a badge was removed)",
       );
    }
-}
-
-// Format like `pnpm format` so the written file passes format:check as is.
-async function writeJson(path, data) {
-   const options = await resolveConfig(path);
-   const text = await format(JSON.stringify(data, null, 3), {
-      ...options,
-      filepath: path,
-   });
-   writeFileSync(path, text, "utf8");
 }
 
 async function main() {

@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { MONO_FONT, GREEN, AMBER } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
-import { LABEL_SIZE, LABEL_TRACK } from "./canvasKit";
+import { LABEL_SIZE, LABEL_TRACK, looping } from "./canvasKit";
 
 interface GovernanceAnimProps {
    color: string;
@@ -23,6 +23,7 @@ type Ease = "easeInOut" | "linear";
 
 const LOOP = 5.5;
 const t = (seconds: number) => seconds / LOOP;
+const animate = looping(LOOP);
 
 const WHITE_03 = "rgba(255,255,255,0.05)";
 const WHITE_10 = "rgba(255,255,255,0.16)";
@@ -71,9 +72,9 @@ const FADE_OUT = LOOP - FADE_OUT_START;
 
 const TRAVEL_EASE: Ease[] = ["linear", "easeInOut", "linear"];
 
-/* Motion runs opacity through WAAPI. A single ease string becomes the effect
-   easing over the whole iteration, which warps `times`; a per-segment array
-   makes the effect linear and honours `times` on both the WAAPI and JS paths. */
+/* The chips and the rail time each track on its own `times` (and the chips
+   mix eases), which the kit's one-`times` looping() cannot express. One ease
+   per segment, as in the kit, keeps WAAPI opacity on its `times`. */
 const loop = (times: number[], ease: Ease | Ease[] = "linear") => ({
    duration: LOOP,
    repeat: Infinity,
@@ -300,15 +301,11 @@ const AccountOverlay = ({
    dot,
 }: Readonly<OverlayProps>) => (
    <motion.div
-      animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
-      transition={loop([
-         0,
-         t(on),
-         t(on + LIGHT_FADE),
-         t(off),
-         t(off + fadeOut),
-         1,
-      ])}
+      {...animate({
+         times: [0, t(on), t(on + LIGHT_FADE), t(off), t(off + fadeOut), 1],
+         opacity: [0, 0, 1, 1, 0, 0],
+         ease: "linear",
+      })}
       style={{
          ...accountBox(slot),
          border: `1px solid ${border}`,

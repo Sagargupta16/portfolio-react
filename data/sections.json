@@ -213,7 +213,7 @@
          "sending_label": "Sending message...",
          "invalid_email": "Please enter a valid email address.",
          "send_failed": "Failed to send message. Please try again.",
-         "send_timeout": "Sending is taking too long. Check your connection and try again."
+         "send_timeout": "Sending is taking too long. Your message may still go through, so check your connection and wait a moment before trying again."
       },
       "sent": {
          "title": "Message sent!",

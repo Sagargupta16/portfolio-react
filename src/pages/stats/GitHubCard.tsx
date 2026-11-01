@@ -3,13 +3,13 @@ import type { CodingPlatformStat } from "@/types";
 import { getStatsCopy } from "@data/personal";
 import { newTabLabel } from "@data/ui";
 import { fillTemplate } from "@utils/fillTemplate";
+import { formatCount } from "@utils/format";
 import { MONO_FONT, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
 import ContributionCalendar from "./ContributionCalendar";
 import SplitBar from "./SplitBar";
 import { LANGUAGE_SHADES } from "./statsTokens";
 import { Metrics, WideProfileCard } from "./WideProfileCard";
 
-const count = (n = 0) => n.toLocaleString("en-US");
 const COPY = getStatsCopy().platforms.github;
 
 interface GitHubCardProps {
@@ -41,11 +41,11 @@ const GitHubCard = ({ username, stats }: Readonly<GitHubCardProps>) => {
                <Metrics
                   items={[
                      {
-                        value: count(stats.contributions),
+                        value: formatCount(stats.contributions),
                         label: COPY.contributions,
                      },
                      {
-                        value: count(stats.pull_requests),
+                        value: formatCount(stats.pull_requests),
                         label: COPY.pull_requests,
                      },
                      {

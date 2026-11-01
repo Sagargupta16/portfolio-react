@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { GREEN, MONO_FONT } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
-import { LABEL_SIZE, LABEL_TRACK } from "./canvasKit";
+import { LABEL_SIZE, LABEL_TRACK, looping } from "./canvasKit";
 
 interface StackAnimProps {
    color: string;
@@ -33,12 +33,11 @@ const LOOP = 5;
  * Motion eases a keyframe array per segment on the main thread (x, y, scale)
  * but across the whole iteration on WAAPI-accelerated values (opacity), so a
  * single `ease` string pulls the two tracks out of phase and a dot can cross
- * the FASTAPI label at full opacity. An easing array is applied per segment on
- * both tracks, so every keyframed node here builds one from its `times`.
+ * the FASTAPI label at full opacity. The kit's looping() builds one easing
+ * per segment from `times`; the committed rows ease out, which it does not
+ * offer, so they build theirs the same way.
  */
-type SegmentEase = "easeInOut" | "easeOut";
-const perSegment = (times: number[], ease: SegmentEase): SegmentEase[] =>
-   times.slice(1).map(() => ease);
+const animate = looping(LOOP);
 
 /** Beat 5: the three committed rows fade together before the loop restarts. */
 const FADE_START = 0.88;
@@ -313,7 +312,7 @@ const CommittedRow = ({
             duration: LOOP,
             repeat: Infinity,
             driver: sceneDriver,
-            ease: perSegment(times, "easeOut"),
+            ease: times.slice(1).map(() => "easeOut" as const),
             times,
          }}
          style={{
@@ -334,18 +333,12 @@ interface TravelDotProps {
 
 const TravelDot = ({ color, hop }: Readonly<TravelDotProps>) => (
    <motion.div
-      animate={{
+      {...animate({
+         times: hop.times,
          x: hop.path.map((p) => p.x),
          y: hop.path.map((p) => p.y),
          opacity: hop.opacity,
-      }}
-      transition={{
-         duration: LOOP,
-         repeat: Infinity,
-         driver: sceneDriver,
-         ease: perSegment(hop.times, "easeInOut"),
-         times: hop.times,
-      }}
+      })}
       style={{
          position: "absolute",
          left: -DOT_SIZE / 2,
@@ -360,17 +353,15 @@ const TravelDot = ({ color, hop }: Readonly<TravelDotProps>) => (
 
 /* Open socket on the FASTAPI box's right edge; breathes for the whole loop */
 const LIVE_TIMES = [0, 0.5, 1];
+const breathe = looping(LOOP / 4);
 
 const LiveDot = () => (
    <motion.div
-      animate={{ scale: [0.8, 1.1, 0.8], opacity: [0.5, 1, 0.5] }}
-      transition={{
-         duration: LOOP / 4,
-         repeat: Infinity,
-         driver: sceneDriver,
-         ease: perSegment(LIVE_TIMES, "easeInOut"),
+      {...breathe({
          times: LIVE_TIMES,
-      }}
+         scale: [0.8, 1.1, 0.8],
+         opacity: [0.5, 1, 0.5],
+      })}
       style={{
          position: "absolute",
          left: AT_SOCKET.x - LIVE_DOT_SIZE / 2,

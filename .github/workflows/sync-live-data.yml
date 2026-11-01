@@ -6,19 +6,21 @@ name: Sync Live Data
 # pushing to main. GitHub does create a pull_request run for a PR this GITHUB_TOKEN opens
 # or pushes, but holds it for approval or ends it with no jobs, so the PR never gets a
 # `ci` check that way. workflow_dispatch is the one trigger GITHUB_TOKEN may fire, so the
-# job dispatches CI/CD on the sync branch itself; that run puts the `ci` check on the PR's
-# head commit and deploys nothing. Merging the PR triggers the normal CI/CD deploy.
+# open-pr job dispatches CI/CD on the sync branch itself; that run puts the `ci` check on
+# the PR's head commit and deploys nothing. Merging the PR triggers the normal CI/CD deploy.
+#
+# Two jobs, so the write token never meets npm code. `sync` installs dependencies and runs
+# the sync scripts with a read-only token and no stored git credential, then passes the
+# changed data files on as an artifact. `open-pr` runs no npm code: it alone holds the write
+# token to push the branch, open the PR and dispatch CI.
 
 on:
    schedule:
       - cron: "30 6 * * 1"
    workflow_dispatch:
 
-permissions:
-   contents: write
-   pull-requests: write
-   # gh workflow run: dispatch CI/CD on the sync branch.
-   actions: write
+# Each job declares what it needs.
+permissions: {}
 
 concurrency:
    group: sync-live-data
@@ -30,11 +32,15 @@ jobs:
       if: github.ref == 'refs/heads/main'
       runs-on: ubuntu-latest
       timeout-minutes: 10
-      env:
-         BRANCH: chore/sync-live-data
+      permissions:
+         contents: read
+      outputs:
+         changed: ${{ steps.changes.outputs.changed }}
       steps:
          - name: Checkout code
            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+           with:
+              persist-credentials: false
 
          - name: Setup pnpm
            uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
@@ -64,14 +70,51 @@ jobs:
            run: |
               git diff --quiet -- data/ && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
 
-         - name: Open or update the sync PR
+         - name: Stage the changed data
            if: steps.changes.outputs.changed == 'true'
+           run: |
+              mkdir sync-out
+              cp data/projects.json data/achievements.json data/news.json sync-out/
+
+         - name: Pass the changed data to the next job
+           if: steps.changes.outputs.changed == 'true'
+           uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+           with:
+              name: synced-data
+              path: sync-out
+              if-no-files-found: error
+              retention-days: 1
+
+   open-pr:
+      needs: sync
+      if: github.ref == 'refs/heads/main' && needs.sync.outputs.changed == 'true'
+      runs-on: ubuntu-latest
+      timeout-minutes: 5
+      permissions:
+         contents: write
+         pull-requests: write
+         # gh workflow run: dispatch CI/CD on the sync branch.
+         actions: write
+      env:
+         BRANCH: chore/sync-live-data
+      steps:
+         - name: Checkout code
+           uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+         - name: Download the changed data
+           uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+           with:
+              name: synced-data
+              path: sync-out
+
+         - name: Open or update the sync PR
            env:
               GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            run: |
               git config user.name "github-actions[bot]"
               git config user.email "github-actions[bot]@users.noreply.github.com"
               git switch -c "$BRANCH"
+              cp sync-out/projects.json sync-out/achievements.json sync-out/news.json data/
               git add data/projects.json data/achievements.json data/news.json
               git commit -m "chore: sync live data [automated]"
               # The bot branch is rebuilt from main each run; only this branch is force-pushed.
@@ -79,6 +122,6 @@ jobs:
               if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
                  gh pr create --base main --head "$BRANCH" \
                     --title "chore: sync live data" \
-                    --body "Weekly refresh from public APIs (PR status and stars, project versions, accepted discussion answers, LeetCode stats and rating history, GitHub contribution and language stats). Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. Review the diff, then merge to deploy."
+                    --body "Weekly refresh from public APIs (PR status and stars, project versions, accepted discussion answers, LeetCode stats and rating history, GitHub contribution and language stats). Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. A red pull_request run on this PR is expected (it ends with no jobs); the ci check on the head commit comes from the dispatched CI/CD run. Review the diff, then merge to deploy."
               fi
               gh workflow run ci-cd.yml --ref "$BRANCH"

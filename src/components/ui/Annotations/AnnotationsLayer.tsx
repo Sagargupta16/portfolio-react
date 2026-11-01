@@ -7,6 +7,7 @@ import { ANNOTATIONS, type Annotation } from "@/constants/annotations";
 import { DURATION, EASING } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { SECTION_MARGIN, watchVisibility } from "@hooks/usePauseOffscreen";
 import { setAnnotationsOn } from "@utils/annotationsState";
 import { fillTemplate } from "@utils/fillTemplate";
 import { getUiCopy } from "@data/ui";
@@ -36,6 +37,15 @@ const EDGE = 12;
 // The nav is z-index 50 and the page layer 45, so page pins slide under the
 // nav as they scroll; pins on the nav itself need a layer above it.
 const FIXED_LAYER_STYLE = { zIndex: 51 };
+
+// Pins sit on body, outside every section's usePauseOffscreen host, so each
+// one flags itself while it is away and its ping loop holds (annotations.css).
+const pausePingOffscreen = (pin: HTMLElement | null) =>
+   pin
+      ? watchVisibility(pin, SECTION_MARGIN, (visible) =>
+           pin.toggleAttribute("data-offscreen", !visible),
+        )
+      : undefined;
 
 // Pin to the box the content actually fills: a centred h1 spans the full
 // width, but its text does not, so the range rect hugs the letters.
@@ -175,6 +185,7 @@ const AnnotationsLayer = () => {
    const renderPin = (pin: Pin, index: number) => (
       <motion.button
          key={pin.note.id}
+         ref={pausePingOffscreen}
          type="button"
          className={`annotation-pin${pin.note.id === openId ? " is-open" : ""}`}
          style={{

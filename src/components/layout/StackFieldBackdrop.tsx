@@ -9,7 +9,7 @@ import {
 import useMediaQuery from "@hooks/useMediaQuery";
 import useMotionPreference from "@hooks/useMotionPreference";
 import usePointerParallax from "@hooks/usePointerParallax";
-import { MEDIA_QUERIES } from "@/constants/theme";
+import { MAX_WIDTH, MEDIA_QUERIES } from "@/constants/theme";
 import { clamp01 } from "@utils/math";
 import StackTile from "./StackTile";
 import {
@@ -19,6 +19,7 @@ import {
    TILE_OPACITY,
    TILE_SIZES,
    placeItems,
+   type FieldValues,
    type FlankSlot,
    type Placement,
 } from "./Header/heroStackData";
@@ -67,8 +68,22 @@ const edgeFade = (position: number, viewportHeight: number) => {
 const endFadeAt = (progress: number) =>
    1 - smoothstep((progress - END_FADE.start) / END_FADE.span);
 
+/* How far a tile reaches past its edge offset toward the column: the tile,
+   its 5px drift and its pointer travel, plus a gap before the copy. */
+const DRIFT_X = 5;
+const COPY_GAP = 4;
+
+/* The slot's own offset, or less where the flank the section column leaves
+   is narrower than the slot assumes (61px at 1280px with a scrollbar), so no
+   tile reaches a section heading. 100% is the fixed layer: the viewport
+   without its scrollbar. */
+const edgeOffset = (slot: FlankSlot) =>
+   `min(${slot.edge}px, calc((100% - ${MAX_WIDTH}px) / 2 - ${SIZE.tile + DRIFT_X + slot.depth + COPY_GAP}px))`;
+
 const edgeStyle = (slot: FlankSlot): CSSProperties =>
-   slot.side === "left" ? { left: slot.edge } : { right: slot.edge };
+   slot.side === "left"
+      ? { left: edgeOffset(slot) }
+      : { right: edgeOffset(slot) };
 
 const slotStyle = (slot: FlankSlot): CSSProperties => ({
    ...edgeStyle(slot),
@@ -94,17 +109,14 @@ const useViewportHeight = () => {
    return height;
 };
 
-interface FieldValues {
-   scrollY: MotionValue<number>;
+interface BackdropValues extends FieldValues {
    viewportHeight: MotionValue<number>;
    endFade: MotionValue<number>;
-   pointerX: MotionValue<number>;
-   pointerY: MotionValue<number>;
 }
 
 type FloatingTileProps = Placement<FlankSlot> & {
    index: number;
-   values: FieldValues;
+   values: BackdropValues;
 };
 
 /* Outer node: scroll position (wrapped), pointer offset and edge fade, all

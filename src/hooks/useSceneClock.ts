@@ -5,6 +5,7 @@ import {
    sceneClockReady,
 } from "@utils/sceneClock";
 import useMotionPreference from "./useMotionPreference";
+import { watchVisibility } from "./usePauseOffscreen";
 
 /* Motion starts and rebuilds loops after mount, so look for new ones twice a
    second while the slot is in view. */
@@ -13,11 +14,11 @@ const SWEEP_TICKS = 30;
 /**
  * Moves the Web Animations loops on a scene slot's SVG parts onto the shared
  * 60 Hz scene clock (see sceneClock) while the slot is in view: each loop is
- * paused and stepped forward by real elapsed time on every tick, so it keeps
- * its place and pace and stays in step with the scene's JS loops on
- * sceneDriver. HTML parts, entrances and CSS animations run as before. Does
- * nothing on screens at 85 Hz or less, or in Reduced, where
- * useFreezeAnimations holds the rest frame.
+ * paused and stepped forward by real elapsed time on every tick, time out of
+ * view included, so it keeps its pace and stays in step with the scene's JS
+ * loops on sceneDriver, which keep real time. HTML parts, entrances and CSS
+ * animations run as before. Does nothing on screens at 85 Hz or less, or in
+ * Reduced, where useFreezeAnimations holds the rest frame.
  */
 const useSceneClock = (ref: RefObject<HTMLElement | null>) => {
    const { reducedMotion } = useMotionPreference();
@@ -68,10 +69,10 @@ const useSceneClock = (ref: RefObject<HTMLElement | null>) => {
          if (ticks % SWEEP_TICKS === 0) adopt(now);
       };
 
+      // A loop keeps the time of its last step while the slot is away, so the
+      // first tick back also adds the time it spent out of view.
       const show = () => {
-         const now = performance.now();
-         for (const animation of stepped.keys()) stepped.set(animation, now);
-         adopt(now);
+         adopt(performance.now());
          stopTicks ??= onSceneTick(tick);
       };
       const hide = () => {
@@ -79,8 +80,8 @@ const useSceneClock = (ref: RefObject<HTMLElement | null>) => {
          stopTicks = null;
       };
 
-      const observer = new IntersectionObserver(([entry]) => {
-         visible = entry.isIntersecting;
+      const stopWatching = watchVisibility(el, "0px", (isVisible) => {
+         visible = isVisible;
          if (!active) return;
          if (visible) show();
          else hide();
@@ -88,7 +89,6 @@ const useSceneClock = (ref: RefObject<HTMLElement | null>) => {
       const mutations = new MutationObserver(() => {
          if (active && visible) adopt(performance.now());
       });
-      observer.observe(el);
       mutations.observe(el, { childList: true, subtree: true });
       // The display rate is usually known long before a scene mounts.
       void sceneClockReady.then((on) => {
@@ -99,7 +99,7 @@ const useSceneClock = (ref: RefObject<HTMLElement | null>) => {
 
       return () => {
          cancelled = true;
-         observer.disconnect();
+         stopWatching();
          mutations.disconnect();
          hide();
          for (const animation of stepped.keys()) {

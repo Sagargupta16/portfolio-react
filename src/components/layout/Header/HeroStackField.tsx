@@ -1,12 +1,8 @@
-import type { CSSProperties, RefObject } from "react";
-import {
-   motion,
-   useScroll,
-   useTransform,
-   type MotionValue,
-} from "motion/react";
+import { useEffect, type CSSProperties, type RefObject } from "react";
+import { motion, useMotionValue, useScroll, useTransform } from "motion/react";
 import useMediaQuery from "@hooks/useMediaQuery";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { SECTION_MARGIN } from "@hooks/usePauseOffscreen";
 import usePointerParallax from "@hooks/usePointerParallax";
 import { MEDIA_QUERIES } from "@/constants/theme";
 import { clamp01 } from "@utils/math";
@@ -19,6 +15,7 @@ import {
    isTopLane,
    laneSign,
    placeItems,
+   type FieldValues,
    type HeroStackSlot,
    type Placement,
 } from "./heroStackData";
@@ -38,12 +35,6 @@ const slotStyle = (slot: HeroStackSlot): CSSProperties => ({
    marginTop: -SIZE.tile / 2,
    opacity: TILE_OPACITY,
 });
-
-interface FieldValues {
-   scrollY: MotionValue<number>;
-   pointerX: MotionValue<number>;
-   pointerY: MotionValue<number>;
-}
 
 type FloatingTileProps = Placement<HeroStackSlot> & {
    index: number;
@@ -86,9 +77,46 @@ interface FloatingTilesProps {
    canHover: boolean;
 }
 
+/* The page scroll as the tiles see it. It follows the window only while the
+   hero is within SECTION_MARGIN of the viewport (the margin usePauseOffscreen
+   uses on the same section), so the per-frame x and opacity transforms stop
+   once the hero has scrolled away and the tiles can no longer be seen. On the
+   way back it catches up to the window before the hero is on screen. */
+const useHeroScroll = (hostRef: RefObject<HTMLElement | null>) => {
+   const { scrollY: pageScrollY } = useScroll();
+   const scrollY = useMotionValue(0);
+
+   useEffect(() => {
+      const host = hostRef.current;
+      if (!host) return;
+
+      let unfollow: (() => void) | undefined;
+      const observer = new IntersectionObserver(
+         (entries) => {
+            unfollow?.();
+            unfollow = undefined;
+            if (!entries.at(-1)?.isIntersecting) return;
+            scrollY.set(pageScrollY.get());
+            unfollow = pageScrollY.on("change", (latest) =>
+               scrollY.set(latest),
+            );
+         },
+         { rootMargin: SECTION_MARGIN },
+      );
+      observer.observe(host);
+
+      return () => {
+         observer.disconnect();
+         unfollow?.();
+      };
+   }, [hostRef, pageScrollY, scrollY]);
+
+   return scrollY;
+};
+
 /* Full mode only: the scroll value, springs and pointer listener exist here. */
 const FloatingTiles = ({ hostRef, canHover }: FloatingTilesProps) => {
-   const { scrollY } = useScroll();
+   const scrollY = useHeroScroll(hostRef);
    const { x: pointerX, y: pointerY } = usePointerParallax({
       host: hostRef,
       enabled: canHover,

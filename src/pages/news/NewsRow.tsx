@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { NewsItem } from "@/types";
+import { newsHash } from "../../../scripts/lib/news-hash.js";
 import { NEWS_TYPES } from "./newsTypes";
 
 const MONTHS = [
@@ -23,17 +24,6 @@ const shortDate = (date: string) => {
    const [, month, day] = date.split("-");
    const name = MONTHS[Number(month) - 1];
    return day ? `${name} ${Number(day)}` : name;
-};
-
-/** Stable 7-char "commit hash" per item (FNV-1a over date + text), so the
-    list reads like `git log --graph` and each row keeps its id across builds. */
-const shortHash = (item: NewsItem) => {
-   let h = 0x811c9dc5;
-   for (const ch of `${item.date}${item.text}`) {
-      h ^= ch.codePointAt(0) ?? 0;
-      h = Math.imul(h, 0x01000193);
-   }
-   return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
 };
 
 /** One thin line: node on the rail, date, type icon, text, arrow, hash. */
@@ -61,8 +51,10 @@ const NewsRow = ({ item }: Readonly<{ item: NewsItem }>) => {
                className="news-row-arrow"
             />
          )}
+         {/* A stable 7-char "commit hash" per item, so the list reads like
+             `git log --graph` and each row keeps its id across builds. */}
          <span aria-hidden="true" className="news-hash">
-            {shortHash(item)}
+            {newsHash(item)}
          </span>
       </>
    );

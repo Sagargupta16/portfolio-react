@@ -200,6 +200,14 @@
    margin-top: 8px;
 }
 
+/* The PDF's page footer line: small, dark gray, centered. */
+.cv-disclaimer {
+   margin-top: 18px;
+   color: #444;
+   font-size: 10.5px;
+   text-align: center;
+}
+
 @media (max-width: 639px) {
    .cv-sheet {
       padding: 22px 16px 26px;

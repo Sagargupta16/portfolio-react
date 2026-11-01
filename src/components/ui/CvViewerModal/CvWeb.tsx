@@ -195,6 +195,8 @@ const CvWeb = ({ cv }: { cv: CvJson }) => (
             ))}
          </section>
       ))}
+      {/* The PDF carries this line in its page footer (preamble.tex \cfoot). */}
+      <p className="cv-disclaimer">{getUiCopy().footer.disclaimer}</p>
    </article>
 );
 

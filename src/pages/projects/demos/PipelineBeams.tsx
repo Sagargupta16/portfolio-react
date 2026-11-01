@@ -11,6 +11,7 @@ import {
    Workflow,
    type LucideIcon,
 } from "lucide-react";
+import { getPipelineDemoCopy } from "@data/demos";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { sceneDriver } from "@utils/sceneClock";
 import {
@@ -19,67 +20,28 @@ import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
+import type { PipelineNodeId } from "@/types";
 import type { ProjectDemoProps } from "./demoRegistry";
 
 // Every label comes from project 49 in data/projects.json (description,
-// features, tools_tech). Order is the pipeline order; the last node loops
-// back to training.
+// features, tools_tech), held under demos."49". Order is the pipeline order;
+// the last node loops back to training.
+const COPY = getPipelineDemoCopy();
+
 interface PipelineNode {
-   id: string;
+   id: PipelineNodeId;
    icon: LucideIcon;
-   title: string;
-   detail: string[];
 }
 
 const NODES: PipelineNode[] = [
-   {
-      id: "ingest",
-      icon: FolderInput,
-      title: "Ingestion",
-      detail: ["event-driven"],
-   },
-   {
-      id: "train",
-      icon: Workflow,
-      title: "Training",
-      detail: ["3 architectures", "in parallel"],
-   },
-   {
-      id: "ensemble",
-      icon: Layers,
-      title: "Ensemble",
-      detail: ["transfer learning"],
-   },
-   {
-      id: "gate",
-      icon: ShieldCheck,
-      title: "Quality gate",
-      detail: ["accuracy >= 0.85", "recall >= 0.95"],
-   },
-   {
-      id: "registry",
-      icon: UserCheck,
-      title: "Registry",
-      detail: ["human approval"],
-   },
-   {
-      id: "endpoint",
-      icon: Server,
-      title: "Endpoint",
-      detail: ["Terraform-owned"],
-   },
-   {
-      id: "drift",
-      icon: Activity,
-      title: "Drift monitor",
-      detail: ["hourly PSI"],
-   },
-   {
-      id: "retrain",
-      icon: RefreshCw,
-      title: "EventBridge",
-      detail: ["restarts training"],
-   },
+   { id: "ingest", icon: FolderInput },
+   { id: "train", icon: Workflow },
+   { id: "ensemble", icon: Layers },
+   { id: "gate", icon: ShieldCheck },
+   { id: "registry", icon: UserCheck },
+   { id: "endpoint", icon: Server },
+   { id: "drift", icon: Activity },
+   { id: "retrain", icon: RefreshCw },
 ];
 
 const LOOP_TARGET = 1; // the retrain loop re-enters at Training
@@ -192,9 +154,6 @@ const CYCLE = EDGE_COUNT * STEP + REST;
 const BEAM = 0.16;
 const BEAM_GAP = 1.2;
 
-const ARIA_SUMMARY =
-   "Pipeline: event-driven ingestion, training of three architectures in parallel, ensemble, quality gate (accuracy at least 0.85, recall at least 0.95), model registry with human approval, endpoint, hourly PSI drift monitor, and EventBridge restarting training.";
-
 const PipelineBeams = ({ accent, isMobile }: ProjectDemoProps) => {
    const { reducedMotion } = useMotionPreference();
    const frameRef = useRef<HTMLDivElement>(null);
@@ -225,7 +184,7 @@ const PipelineBeams = ({ accent, isMobile }: ProjectDemoProps) => {
          <svg
             viewBox={`-4 0 ${layout.width + 8} ${layout.height}`}
             role="img"
-            aria-label={ARIA_SUMMARY}
+            aria-label={COPY.summary}
             style={{
                display: "block",
                width: "100%",
@@ -303,10 +262,9 @@ const PipelineBeams = ({ accent, isMobile }: ProjectDemoProps) => {
             {NODES.map((node, i) => {
                const box = layout.boxes[i];
                const Icon = node.icon;
+               const { title, detail } = COPY.nodes[node.id];
                const compact = layout.compact;
-               const detailLines = compact
-                  ? [node.detail.join(", ")]
-                  : node.detail;
+               const detailLines = compact ? [detail.join(", ")] : detail;
                return (
                   <g key={node.id}>
                      <rect
@@ -354,7 +312,7 @@ const PipelineBeams = ({ accent, isMobile }: ProjectDemoProps) => {
                         fontSize={12}
                         fontWeight={600}
                      >
-                        {node.title}
+                        {title}
                      </text>
                      {detailLines.map((line, li) => (
                         <text
@@ -381,8 +339,7 @@ const PipelineBeams = ({ accent, isMobile }: ProjectDemoProps) => {
                lineHeight: 1.6,
             }}
          >
-            Drift and fairness alarms trigger EventBridge, which restarts
-            training. Human approval still gates every deployment.
+            {COPY.footnote}
          </p>
       </div>
    );

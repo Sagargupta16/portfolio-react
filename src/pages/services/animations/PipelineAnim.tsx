@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
-import type { Easing, Transition } from "motion/react";
+import type { Transition } from "motion/react";
 import { MONO_FONT, GREEN } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
-import { LABEL_SIZE, LABEL_TRACK } from "./canvasKit";
+import { LABEL_SIZE, LABEL_TRACK, looping } from "./canvasKit";
 
 interface PipelineAnimProps {
    color: string;
@@ -15,7 +15,7 @@ interface PipelineAnimProps {
    Every keyframe array eases back to its first value so the loop closes. */
 
 const LOOP = 5;
-const EASE = "easeInOut";
+const animate = looping(LOOP);
 
 const WHITE_HAIRLINE = "rgba(255,255,255,0.22)";
 const WHITE_BORDER = "rgba(255,255,255,0.16)";
@@ -101,16 +101,16 @@ const GREEN_OPACITY = [0, 0, 1, 1, 0];
 const LED_TIMES = [0, 0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.84, 1];
 const LED_SCALE = [1, 1, 1.4, 1, 1.4, 1, 1.4, 1, 1];
 
-/* One easing per segment, not one string: Motion applies a single `ease`
-   across the whole iteration on WAAPI-accelerated values (opacity) but per
-   segment on the JS clock (x, y, scale), so the tracks drift apart. */
-const loop = (times: number[], ease: Easing = EASE): Transition => ({
+/* The check pops with easeOut, which the kit's looping() does not offer, so
+   it keeps its own transition. One easing per segment, as in the kit: a
+   single string would stretch over the whole iteration on WAAPI opacity. */
+const CHECK_POP: Transition = {
    duration: LOOP,
    repeat: Infinity,
    driver: sceneDriver,
-   times,
-   ease: times.slice(1).map(() => ease),
-});
+   times: CHECK_TIMES,
+   ease: CHECK_TIMES.slice(1).map(() => "easeOut" as const),
+};
 
 /* .tf module tile: two static code hairlines and a plan bar that fills. */
 const TfModule = ({ color }: Readonly<PipelineAnimProps>) => (
@@ -133,8 +133,7 @@ const TfModule = ({ color }: Readonly<PipelineAnimProps>) => (
          style={{ ...codeLine, top: 5, width: 8, background: WHITE_MUTED }}
       />
       <motion.span
-         animate={{ scaleX: PLAN_SCALE }}
-         transition={loop(PLAN_TIMES)}
+         {...animate({ times: PLAN_TIMES, scaleX: PLAN_SCALE })}
          style={{
             position: "absolute",
             left: 3,
@@ -173,8 +172,7 @@ const Gate = ({ color }: Readonly<PipelineAnimProps>) => (
          }}
       />
       <motion.div
-         animate={{ opacity: GATE_OPACITY }}
-         transition={loop(GATE_TIMES)}
+         {...animate({ times: GATE_TIMES, opacity: GATE_OPACITY })}
          style={{
             ...gateBox,
             border: `1px solid ${GREEN}`,
@@ -183,7 +181,7 @@ const Gate = ({ color }: Readonly<PipelineAnimProps>) => (
       />
       <motion.div
          animate={{ scale: CHECK_SCALE, opacity: CHECK_OPACITY }}
-         transition={loop(CHECK_TIMES, "easeOut")}
+         transition={CHECK_POP}
          style={{
             position: "absolute",
             left: 47,
@@ -276,8 +274,7 @@ const TargetGroup = ({
       ))}
       {pulse ? (
          <motion.span
-            animate={{ scale: LED_SCALE }}
-            transition={loop(LED_TIMES)}
+            {...animate({ times: LED_TIMES, scale: LED_SCALE })}
             style={{ ...ledDot, background: led }}
          />
       ) : (
@@ -316,8 +313,12 @@ const PipelineAnim = ({ color }: Readonly<PipelineAnimProps>) => (
 
       {/* plan in flight: tile to gate, then gate down into the ALB */}
       <motion.span
-         animate={{ x: DOT_X, y: DOT_Y, opacity: DOT_OPACITY }}
-         transition={loop(DOT_TIMES)}
+         {...animate({
+            times: DOT_TIMES,
+            x: DOT_X,
+            y: DOT_Y,
+            opacity: DOT_OPACITY,
+         })}
          style={{
             position: "absolute",
             left: 31,
@@ -333,8 +334,7 @@ const PipelineAnim = ({ color }: Readonly<PipelineAnimProps>) => (
 
       {/* listener needle swings from the blue group to the green group */}
       <motion.span
-         animate={{ x: NEEDLE_X }}
-         transition={loop(CUTOVER_TIMES)}
+         {...animate({ times: CUTOVER_TIMES, x: NEEDLE_X })}
          style={{
             position: "absolute",
             left: 17,
@@ -349,8 +349,7 @@ const PipelineAnim = ({ color }: Readonly<PipelineAnimProps>) => (
 
       {/* blue target group drains */}
       <motion.div
-         animate={{ opacity: BLUE_OPACITY }}
-         transition={loop(CUTOVER_TIMES)}
+         {...animate({ times: CUTOVER_TIMES, opacity: BLUE_OPACITY })}
          style={{ ...TARGET_GROUP_ROW, left: 6 }}
       >
          <TargetGroup
@@ -371,8 +370,7 @@ const PipelineAnim = ({ color }: Readonly<PipelineAnimProps>) => (
          />
       </div>
       <motion.div
-         animate={{ opacity: GREEN_OPACITY }}
-         transition={loop(CUTOVER_TIMES)}
+         {...animate({ times: CUTOVER_TIMES, opacity: GREEN_OPACITY })}
          style={{ ...TARGET_GROUP_ROW, left: 48 }}
       >
          <TargetGroup

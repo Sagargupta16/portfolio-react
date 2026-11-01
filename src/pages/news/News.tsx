@@ -58,7 +58,7 @@ const groupByYear = (items: NewsItem[]) => {
 };
 
 const News = () => {
-   const news = useMemo(() => getNews(), []);
+   const news = getNews();
    const { title, subtitle, filters: filterCopy } = getSectionCopy(SECTION_ID);
    const { reducedMotion } = useMotionPreference();
    const [filter, setFilter] = useState<NewsFilter>("all");

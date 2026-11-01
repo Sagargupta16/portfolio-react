@@ -1612,5 +1612,202 @@
          "url": "https://github.com/orgs/community/discussions/211109",
          "status": "helpful"
       }
-   ]
+   ],
+   "demos": {
+      "13": {
+         "slider_label": "Drag to compare before and after the blue/green cutover",
+         "hint": "drag the divider or use the arrow keys",
+         "stack": "ALB / ECS on EC2",
+         "before": {
+            "tag": "Before",
+            "caption": "Blue serves production. CodePipeline builds the new image with CodeBuild, pushes it to ECR, and green is checked on the test listener.",
+            "routes": [
+               {
+                  "listener": ":80 prod",
+                  "env": "Blue",
+                  "state": "live"
+               },
+               {
+                  "listener": ":8080 test",
+                  "env": "Green",
+                  "state": "new build"
+               }
+            ]
+         },
+         "after": {
+            "tag": "After",
+            "caption": "CodeDeploy switches production traffic to green with zero downtime, then drains blue.",
+            "routes": [
+               {
+                  "listener": ":80 prod",
+                  "env": "Green",
+                  "state": "live"
+               },
+               {
+                  "listener": "old task set",
+                  "env": "Blue",
+                  "state": "drained"
+               }
+            ]
+         }
+      },
+      "49": {
+         "summary": "Pipeline: event-driven ingestion, training of three architectures in parallel, ensemble, quality gate (accuracy at least 0.85, recall at least 0.95), model registry with human approval, endpoint, hourly PSI drift monitor, and EventBridge restarting training.",
+         "footnote": "Drift and fairness alarms trigger EventBridge, which restarts training. Human approval still gates every deployment.",
+         "nodes": {
+            "ingest": {
+               "title": "Ingestion",
+               "detail": ["event-driven"]
+            },
+            "train": {
+               "title": "Training",
+               "detail": ["3 architectures", "in parallel"]
+            },
+            "ensemble": {
+               "title": "Ensemble",
+               "detail": ["transfer learning"]
+            },
+            "gate": {
+               "title": "Quality gate",
+               "detail": ["accuracy >= 0.85", "recall >= 0.95"]
+            },
+            "registry": {
+               "title": "Registry",
+               "detail": ["human approval"]
+            },
+            "endpoint": {
+               "title": "Endpoint",
+               "detail": ["Terraform-owned"]
+            },
+            "drift": {
+               "title": "Drift monitor",
+               "detail": ["hourly PSI"]
+            },
+            "retrain": {
+               "title": "EventBridge",
+               "detail": ["restarts training"]
+            }
+         }
+      },
+      "52": {
+         "step_label": "Terraform workflow step",
+         "context": "management account",
+         "scripts": [
+            {
+               "id": "plan",
+               "label": "plan",
+               "lines": [
+                  {
+                     "kind": "cmd",
+                     "text": "ls examples"
+                  },
+                  {
+                     "kind": "out",
+                     "text": "data-residency  enterprise  minimal  regulated-workload  standard"
+                  },
+                  {
+                     "kind": "cmd",
+                     "text": "terraform init"
+                  },
+                  {
+                     "kind": "out",
+                     "text": "Initializing provider plugins..."
+                  },
+                  {
+                     "kind": "out",
+                     "text": "Terraform has been successfully initialized!"
+                  },
+                  {
+                     "kind": "cmd",
+                     "text": "terraform plan  -var-file=examples/standard/terraform.tfvars"
+                  },
+                  {
+                     "kind": "note",
+                     "text": "# standard: SCP + RCP + tag policies + daily backup plan"
+                  },
+                  {
+                     "kind": "note",
+                     "text": "# rejected at plan time: duplicate OU key, oversized policy,"
+                  },
+                  {
+                     "kind": "note",
+                     "text": "#   unresolvable target, unknown control name"
+                  }
+               ]
+            },
+            {
+               "id": "apply",
+               "label": "apply",
+               "lines": [
+                  {
+                     "kind": "cmd",
+                     "text": "terraform apply -var-file=examples/standard/terraform.tfvars"
+                  },
+                  {
+                     "kind": "out",
+                     "text": "Do you want to perform these actions?"
+                  },
+                  {
+                     "kind": "out",
+                     "text": "  Only 'yes' will be accepted to approve."
+                  },
+                  {
+                     "kind": "out",
+                     "text": "  Enter a value: yes"
+                  },
+                  {
+                     "kind": "note",
+                     "text": "# runs only in the management account"
+                  },
+                  {
+                     "kind": "note",
+                     "text": "# OU hierarchy up to 5 levels, baselines parent before child"
+                  },
+                  {
+                     "kind": "note",
+                     "text": "# 6 policy types as 20 policy documents"
+                  },
+                  {
+                     "kind": "note",
+                     "text": "# delegated administrators for 15 services"
+                  }
+               ]
+            },
+            {
+               "id": "validate",
+               "label": "validate",
+               "lines": [
+                  {
+                     "kind": "cmd",
+                     "text": "terraform fmt -check -recursive -diff"
+                  },
+                  {
+                     "kind": "cmd",
+                     "text": "terraform init -backend=false -input=false"
+                  },
+                  {
+                     "kind": "out",
+                     "text": "Terraform has been successfully initialized!"
+                  },
+                  {
+                     "kind": "cmd",
+                     "text": "terraform validate"
+                  },
+                  {
+                     "kind": "out",
+                     "text": "Success! The configuration is valid."
+                  },
+                  {
+                     "kind": "cmd",
+                     "text": "tflint --recursive"
+                  },
+                  {
+                     "kind": "note",
+                     "text": "# same checks as pre-commit; CI is scan-only, no AWS access"
+                  }
+               ]
+            }
+         ]
+      }
+   }
 }
