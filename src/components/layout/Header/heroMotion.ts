@@ -85,6 +85,23 @@ export const HEADLINE_MASK_STYLE: CSSProperties = {
    marginBottom: "-0.08em",
 };
 
+/* The dimmed second headline line keeps the headline size wherever it fits and
+   shrinks to the h1's width where it would wrap, so the headline stays two
+   lines from 375px up without changing its words. The h1 is the size
+   container (`@container w-full`, and the hero column is `w-full` so it keeps
+   its width once the h1 stops pushing it). With every letter at
+   ProximityText's heaviest weight (wght 800) the line measured 16.85 to 17.47
+   times its font size wide (2026-11-01, 375 to 1920px; the high end is on
+   phones, where the pointer effect is off), and 5.6cqi allows 17.9. The
+   1.125rem floor keeps it above the 16px intro text; below about
+   340px it wraps instead of shrinking further. The letter spacing is set
+   again because `.display-heading`'s -0.035em resolves to pixels at the h1's
+   size and a smaller line inherits those pixels (-1.12px on an 18px line). */
+export const HEADLINE_FIT_STYLE: CSSProperties = {
+   fontSize: "max(1.125rem, min(1em, 5.6cqi))",
+   letterSpacing: "-0.035em",
+};
+
 /* Once a whileTap settles, Motion writes `transform: none` inline, which beats
    the .btn-* :hover lift in the stylesheet for good. Returning the generated
    string as-is leaves the inline transform empty at rest, so CSS owns the

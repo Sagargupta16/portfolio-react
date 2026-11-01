@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.22.2] - 2026-11-01
+
+The hero headline is two lines again, as the design intends, at every width from 375px up. The second line ("I build secure AWS platforms that scale.") was wider than the hero at 1280px and at 375px, so the headline wrapped to three lines. Measured on the production build in Chrome at 375, 768, 1280 and 1920px: two lines at each, with no horizontal overflow, and still two lines with every letter at the pointer effect's heaviest weight. The words are unchanged.
+
+### Fixed
+
+- **The dimmed headline line fits the hero instead of wrapping.** It keeps the headline size wherever it fits (40px of 41px at 768px) and shrinks only as far as the width needs: 47.5px at 1280px and above, 18.3px at 375px. The h1 is a size container and the line's font size is `max(1.125rem, min(1em, 5.6cqi))` (`HEADLINE_FIT_STYLE` in `heroMotion.ts`). The 18px floor keeps it above the 16px intro text, so below about 340px it wraps rather than shrink further.
+- **Letter spacing on that line.** `.display-heading`'s -0.035em resolved to pixels at the h1's size and the smaller line inherited them (-1.12px on an 18px line, close to double the intended tightness); the line now sets its own -0.035em.
+- **The hero column keeps its width.** It is `w-full` under its existing `max-w-4xl`, so it no longer depended on the long headline to stretch it; at 1280px the hero now fits above the fold down to the socials and the scroll cue.
+
 ## [4.22.1] - 2026-10-31
 
 Design directions that were tried and dropped are written down, so a redesign pass does not propose them again. No change to the site.
