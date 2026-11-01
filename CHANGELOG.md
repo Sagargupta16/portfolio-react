@@ -17,6 +17,7 @@ A review of the whole repo found issues that a visitor, a crawler or the data pi
 - **Motion.** The MLOps packet fades in from zero, the Flappy post no longer flashes, Arena's clip ids are unique per mount, the scene clock threshold moved to 85 Hz and pauses while the tab is hidden, counters follow the in-app setting, and keyboard focus lifts project cards.
 - **Performance.** The stack field loads only for the layout that shows it, NumberFlow leaves the eager bundle, and contact cards and open-source rows no longer re-render on each keystroke.
 - **Data pipeline.** The sync runs only from main, news keeps day order, discussion titles are cleaned, a malformed achievements file fails the run, GitHub stats checks always run, project titles and slugs must be unique, and the resume URL must be https.
+- **TFC count.** The Programs line and the Highlights tile read 7x TFC Ambassador across 4 communities, plus NGDE Member (graduated) in Builder Experience: 5 communities in all. The NGDE Ambassador level graduated into the Member role, so it no longer counts as an ambassadorship (was 8x).
 - **Machine-readable output.** llms.txt counts 12 merged PRs and notes the co-authored fix separately, and projects whose live value is `#` get no Live link.
 - **Dependencies.** typescript-eslint, eslint, lucide-react and motion are updated, and overrides clear two dev-only advisories.
 
