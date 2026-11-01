@@ -25,6 +25,7 @@ import HeroSocial from "./HeroSocial";
 import HeroTagline from "./HeroTagline";
 import { useIntroDone } from "@utils/introState";
 import {
+   HEADLINE_FIT_STYLE,
    HEADLINE_MASK_STYLE,
    heroContainer,
    heroHeadline,
@@ -92,7 +93,7 @@ const HeroContent = () => {
    return (
       <motion.div
          // Reserve separate lanes for the fixed nav and the scroll indicator.
-         className="relative z-10 flex flex-col items-center text-center px-6 pt-24 pb-24 md:pt-20 gap-5 md:gap-6 max-w-4xl mx-auto"
+         className="relative z-10 flex flex-col items-center text-center px-6 pt-24 pb-24 md:pt-20 gap-5 md:gap-6 w-full max-w-4xl mx-auto"
          variants={heroContainer}
          initial="hidden"
          // Held until the intro curtain starts lifting, so it plays in view.
@@ -124,9 +125,11 @@ const HeroContent = () => {
 
          {/* Heading: display face, name in accent, second line dimmed for
              hierarchy (both lines equally bright read flat). Each line slides
-             up out of its own clipping wrapper; see HEADLINE_MASK_STYLE. */}
+             up out of its own clipping wrapper; see HEADLINE_MASK_STYLE. Two
+             lines at every width: the second fits the h1, see
+             HEADLINE_FIT_STYLE. */}
          <motion.h1
-            className="display-heading leading-[1.06] text-text-primary"
+            className="display-heading @container w-full leading-[1.06] text-text-primary"
             style={{ fontSize: "clamp(2rem, 0.9rem + 3.5vw, 3.75rem)" }}
             variants={heroHeadline}
          >
@@ -148,6 +151,7 @@ const HeroContent = () => {
             <span style={HEADLINE_MASK_STYLE}>
                <motion.span
                   className="block text-balance text-text-secondary"
+                  style={HEADLINE_FIT_STYLE}
                   variants={heroHeadlineLine}
                >
                   <ProximityText text={headline} />
