@@ -11,7 +11,7 @@ import SectionLoader from "@components/ui/SectionLoader";
 import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import usePauseOffscreen, { SECTION_MARGIN } from "@hooks/usePauseOffscreen";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 import { fillTemplate } from "@utils/fillTemplate";
 
 const COPY = getUiCopy().section;

@@ -8,8 +8,8 @@ import {
    getName,
    getResumeUrl,
    getRoleLabel,
-} from "@data/personal";
-import { getUiCopy } from "@data/ui";
+   getUiCopy,
+} from "@data/copyShell";
 import {
    BLUE_LIGHT,
    GREEN,

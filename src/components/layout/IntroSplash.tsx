@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { getName, getRole } from "@data/personal";
+import { getName, getRole } from "@data/copyShell";
 import { markIntroActive, markIntroDone } from "@utils/introState";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { EASING, MONO_FONT, TEXT_MUTED } from "@/constants/theme";

@@ -2,7 +2,7 @@ import { memo } from "react";
 import { motion } from "motion/react";
 import { EASING, TEXT_PRIMARY } from "@/constants/theme";
 import { NAV_MORE_BLURBS, NAV_PRIMARY_IDS } from "@/constants/sections";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 import { fillTemplate } from "@utils/fillTemplate";
 import type { NavSection } from "./Nav";
 import NavMoreMenu from "./NavMoreMenu";

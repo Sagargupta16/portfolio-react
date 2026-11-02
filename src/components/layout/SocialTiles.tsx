@@ -4,8 +4,7 @@ import {
    type TargetAndTransition,
    type Transition,
 } from "motion/react";
-import { getSocialProfiles } from "@data/personal";
-import { getUiCopy, newTabLabel } from "@data/ui";
+import { getSocialProfiles, getUiCopy, newTabLabel } from "@data/copyShell";
 import { fillTemplate } from "@utils/fillTemplate";
 import ICON_MAP from "@utils/iconMap";
 import useMotionPreference from "@hooks/useMotionPreference";

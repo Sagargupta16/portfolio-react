@@ -5,7 +5,7 @@ import {
    useInView,
    type Variants,
 } from "motion/react";
-import { getHeroTaglines } from "@data/personal";
+import { getHeroTaglines } from "@data/copyShell";
 import { EASING } from "@/constants/theme";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { heroLabel } from "./heroMotion";

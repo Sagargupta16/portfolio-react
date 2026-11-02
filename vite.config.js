@@ -13,6 +13,7 @@ import {
 import { PRIVATE_DATA_FILES } from "./scripts/lib/data-files.js";
 import { buildMachineFiles } from "./scripts/machine-view.js";
 import heroLatest from "./src/data/heroLatestPlugin.js";
+import copyShell from "./src/data/copyShellPlugin.js";
 
 const pkg = JSON.parse(
    readFileSync(new URL("./package.json", import.meta.url), "utf8"),
@@ -159,6 +160,7 @@ export default defineConfig(() => ({
       preloadFonts(),
       contentSecurityPolicy(),
       heroLatest(),
+      copyShell(),
    ],
    base: "/portfolio-react/",
    // Build stamp shown in the footer status bar.

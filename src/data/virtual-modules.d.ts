@@ -9,3 +9,11 @@ declare module "virtual:hero-latest" {
    };
    export default latest;
 }
+
+/* The first-load fields of data/personal.json, ui.json and sections.json,
+   as copyShellSlices.ts picks them. */
+declare module "virtual:copy-shell" {
+   export const personal: import("@data/copyShellSlices").PersonalShell;
+   export const ui: import("@data/copyShellSlices").UiShell;
+   export const sections: import("@data/copyShellSlices").SectionsShell;
+}

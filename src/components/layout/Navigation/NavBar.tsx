@@ -11,7 +11,7 @@ import {
    TEXT_SECONDARY,
 } from "@/constants/theme";
 import MakerMark from "@components/ui/MakerMark";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 import DesktopNav from "./DesktopNav";
 import type { NavSection } from "./Nav";
 
