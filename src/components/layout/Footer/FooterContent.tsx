@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { motion } from "motion/react";
 import { getName, getResumeUrl, getSocialProfiles } from "@data/personal";
 import { getUiCopy, newTabLabel } from "@data/ui";
@@ -71,8 +71,8 @@ const columnLink: React.CSSProperties = {
 const FooterContent = () => {
    const { isMobile } = useBreakpoint();
    const { reducedMotion } = useMotionPreference();
-   const name = useMemo(() => getName(), []);
-   const socialProfiles = useMemo(() => getSocialProfiles(), []);
+   const name = getName();
+   const socialProfiles = getSocialProfiles();
 
    const [turns, setTurns] = useState(0);
    const spin = useCallback(() => setTurns((count) => count + 1), []);

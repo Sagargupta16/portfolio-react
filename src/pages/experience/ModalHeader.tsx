@@ -26,7 +26,7 @@ const ModalHeader = ({ experience, onClose, isMobile }: ModalHeaderProps) => (
          }}
       >
          <span style={{ flexShrink: 0, display: "inline-flex" }}>
-            {getOrgLogo(experience.company ?? "", isMobile ? 16 : 18) ?? (
+            {getOrgLogo(experience.company, isMobile ? 16 : 18) ?? (
                <Building2
                   size={isMobile ? 16 : 18}
                   style={{ color: BLUE_LIGHT }}

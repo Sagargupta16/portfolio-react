@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
-import { staggerItem } from "@utils/animations";
+import { staggerItem, VIEWPORT_MARGIN } from "@utils/animations";
 import { splitDateRange, isPresent } from "@utils/dateRange";
 import { getSectionCopy } from "@data/sections";
 import {
@@ -16,14 +16,12 @@ import PresentIndicator from "./PresentIndicator";
 
 interface TimelineCardMobileProps {
    item: ProfessionalExperience | PositionOfResponsibility;
-   index: number;
    accentColor: string;
    onClick?: () => void;
 }
 
 const TimelineCardMobile = ({
    item,
-   index,
    accentColor,
    onClick,
 }: TimelineCardMobileProps) => {
@@ -34,12 +32,11 @@ const TimelineCardMobile = ({
       <motion.div
          layout="position"
          variants={staggerItem}
-         custom={index}
          // Own viewport trigger -- see TimelineCardDesktop for why parent
          // propagation is not enough after a breakpoint remount.
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
          style={{ marginBottom: 16 }}
          transition={{
             layout: { duration: DURATION.default, ease: EASING.standard },

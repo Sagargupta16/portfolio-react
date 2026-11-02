@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import ErrorBoundary from "@components/common/ErrorBoundary";
+import { isScrollLocked } from "@hooks/useScrollLock";
 import { setPaletteOpen, usePaletteOpen } from "@utils/paletteState";
 
 const CommandPalette = lazy(() => import("./CommandPalette"));
@@ -21,6 +22,10 @@ const CommandPaletteHost = () => {
             event.key?.toLowerCase() === "k" &&
             (event.metaKey || event.ctrlKey)
          ) {
+            // Leave the shortcut alone while another overlay (a modal, the
+            // mobile menu) holds the page. An open palette holds the lock
+            // itself, so it still closes.
+            if (!open && isScrollLocked()) return;
             event.preventDefault();
             setPaletteOpen(!open);
          }

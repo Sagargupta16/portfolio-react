@@ -9,20 +9,23 @@ import {
 import { getExperience } from "@data/experience";
 import { getHighlights, getImpact, getStatsCopy } from "@data/personal";
 import {
+   getAllProjects,
    getCommunityDiscussions,
    getOpenSourceContributions,
    getFeaturedProjects,
-   getCollaborativeProjects,
-   getOtherProjects,
-   getCommunityProjects,
 } from "@data/projects";
-import { staggerContainer, staggerItem } from "@utils/animations";
+import {
+   staggerContainer,
+   staggerItem,
+   VIEWPORT_MARGIN,
+} from "@utils/animations";
 import { isCertActive } from "@utils/certStatus";
 import { fillTemplate, type TemplateValues } from "@utils/fillTemplate";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
 import type { StatsTileKey } from "@/types";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import useBreakpoint from "@hooks/useBreakpoint";
+import { isPodium } from "@pages/achievement/achievementConstants";
 
 /* The site's only numeric summary -- the hero deliberately carries no figures.
    Highlights lead: the strongest sourced results, kept in personal.json
@@ -102,7 +105,7 @@ const StatGroup = ({
          variants={staggerContainer}
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
          style={{
             display: "grid",
             // minmax(0, 1fr) on mobile so long mono values can shrink instead
@@ -164,17 +167,11 @@ const StatsBand = () => {
          .flatMap((job) => job.internal_achievements ?? [])
          .filter((a) => /Speaker Certification/.test(a.title)).length;
 
-      const projectCount =
-         getFeaturedProjects().length +
-         getCollaborativeProjects().length +
-         getOtherProjects().length +
-         getCommunityProjects().length;
+      const projectCount = getAllProjects().length;
       const featuredCount = getFeaturedProjects().length;
 
       // Podium = 1st/2nd/3rd place entries in the Awards data.
-      const podium = getAchievements().filter((a) =>
-         /^(1st|2nd|3rd) Place/.test(a.title),
-      );
+      const podium = getAchievements().filter((a) => isPodium(a.title));
       const place = (n: string) =>
          podium.filter((a) => a.title.startsWith(n)).length;
 

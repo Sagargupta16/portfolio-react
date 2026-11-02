@@ -245,6 +245,48 @@ a.news-row:focus-visible .news-row-arrow {
    margin-top: 28px;
 }
 
+/* Wrapped rows, on touch screens at any width (there is no hover to reveal
+   the rest of a cut line, and tablets are wider than the phone breakpoint
+   below) and in narrow windows: the full text wraps, since one line fits only
+   ~24 characters on a phone and unlinked items have no hover to reveal the
+   rest (a 4-line clamp still cut 3 of 59 items). Rows align to their first
+   line (19px), padded so a one-line row is still 44px and its node sits where
+   the rail expects it. */
+@media (hover: none), (max-width: 767px) {
+   .news-graph {
+      --row-h: 44px;
+   }
+
+   .news-row {
+      align-items: flex-start;
+      padding-block: 12.5px;
+   }
+
+   .news-node {
+      margin-top: 3.5px;
+   }
+
+   .news-date,
+   .news-text,
+   .news-hash {
+      line-height: 19px;
+   }
+
+   .news-icon {
+      margin-top: 2.5px;
+   }
+
+   .news-text {
+      overflow: visible;
+      overflow-wrap: anywhere;
+      white-space: normal;
+   }
+
+   .news-row-arrow {
+      margin-top: 3px;
+   }
+}
+
 @media (max-width: 767px) {
    .news-filters {
       flex-wrap: nowrap;
@@ -265,44 +307,25 @@ a.news-row:focus-visible .news-row-arrow {
    }
 
    .news-graph {
-      --row-h: 44px;
       --rail-x: 12px; /* border 1 + padding 6 + 6 - 1 */
    }
 
-   /* Phones wrap the full text: one line fits only ~24 characters here, and
-      unlinked items have no hover to reveal the rest (a 4-line clamp still
-      cut 3 of 59 items). Rows align to their first line (19px), padded so a
-      one-line row is still 44px and its node sits where the rail expects
-      it. The hash gives its width to the text. */
+   /* The hash gives its width to the text. */
    .news-row {
-      align-items: flex-start;
       gap: 8px;
-      padding: 12.5px 6px;
-   }
-
-   .news-node {
-      margin-top: 3.5px;
+      padding-inline: 6px;
    }
 
    .news-date {
       width: 44px;
       font-size: 11.5px;
-      line-height: 19px;
-   }
-
-   .news-icon {
-      margin-top: 2.5px;
    }
 
    .news-text {
-      overflow: visible;
       font-size: 13.5px;
-      line-height: 19px;
-      white-space: normal;
    }
 
    .news-row-arrow {
-      margin-top: 3px;
       margin-left: -4px;
    }
 

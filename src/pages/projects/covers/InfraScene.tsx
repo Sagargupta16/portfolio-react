@@ -22,6 +22,12 @@ interface InfraSceneProps extends TintProps {
 
 const InfraScene = ({ tint, variant = "default" }: InfraSceneProps) => {
    const Body = VARIANTS[variant] ?? BlueGreen;
+   /* An unknown key is a registry bug: say so in dev. */
+   if (import.meta.env.DEV && !Object.hasOwn(VARIANTS, variant)) {
+      console.warn(
+         `InfraScene: unknown variant "${variant}", rendering "default"`,
+      );
+   }
    return <Body tint={tint} />;
 };
 

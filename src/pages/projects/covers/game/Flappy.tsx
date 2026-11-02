@@ -97,7 +97,9 @@ const POST_W = 8;
 const ENTER = 170;
 const EXIT = -20;
 const SPAN = ENTER - EXIT;
-/* Left edge sweep, wrapping from EXIT back to ENTER off screen. */
+/* Left edge sweep, wrapping from EXIT back to ENTER. Both are off screen and
+   share one keyframe time, so the jump takes no time and no tick can draw the
+   post part-way across. */
 const sweep = (p: Post) => {
    const atPass = BIRD.x - POST_W / 2;
    const start =
@@ -105,7 +107,7 @@ const sweep = (p: Post) => {
    const wrap = t((start - EXIT) / WORLD_SPEED);
    return {
       x: [start, EXIT, ENTER, start],
-      times: [0, wrap, Math.min(wrap + 0.0005, 1), 1],
+      times: [0, wrap, wrap, 1],
    };
 };
 const postRect = (p: Post) =>

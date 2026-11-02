@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion, type Variants } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import type { ContactOption } from "@/types";
@@ -135,4 +136,4 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
    );
 };
 
-export default ContactCard;
+export default memo(ContactCard);

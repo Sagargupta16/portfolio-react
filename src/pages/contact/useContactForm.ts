@@ -7,8 +7,11 @@ import type { FormData, Status } from "./contactConstants";
 const COPY = getSectionCopy("contact").form;
 
 // EmailJS takes no abort signal, so a stalled request is raced against a
-// timer: the spinner and the disabled Send button give way to an error
-// instead of hanging. The request itself is left to finish or fail.
+// timer: the spinner and the disabled Send button give way to a message
+// instead of hanging. The request itself is left to finish or fail, and its
+// real outcome replaces that message when it lands (a send that was only slow
+// still ends on the confirmation). While it is unsettled it is kept in
+// pendingSendRef, so a retry waits for it instead of mailing the message twice.
 const SEND_TIMEOUT_MS = 15_000;
 const SEND_TIMEOUT = new Error("EmailJS send timed out");
 
@@ -38,6 +41,7 @@ const useContactForm = () => {
    const clearTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
       undefined,
    );
+   const pendingSendRef = useRef<Promise<void> | null>(null);
    const emailConfig = getEmailConfig();
 
    const [formData, setFormData] = useState<FormData>({
@@ -100,28 +104,46 @@ const useContactForm = () => {
 
          setIsLoading(true);
          setStatus({ type: "", message: "" });
+         setToastVisible(false);
 
-         try {
-            const result = await withTimeout(
-               emailjs.sendForm(
+         const form = formElementRef.current;
+         const senderName = formData.name;
+         let send = pendingSendRef.current;
+         if (!send) {
+            // The outcome is applied by the send itself, not by the race below,
+            // so it still lands if the timer has already given up on it.
+            send = emailjs
+               .sendForm(
                   emailConfig.service_id,
                   emailConfig.template_id,
-                  formElementRef.current,
-                  { publicKey: emailConfig.public_key },
-               ),
-               SEND_TIMEOUT_MS,
-            );
+                  form,
+                  {
+                     publicKey: emailConfig.public_key,
+                  },
+               )
+               .then(
+                  (result) => {
+                     if (result.status === 200) {
+                        setSentName(senderName);
+                        setShowConfirmation(true);
+                        setFormData({ name: "", email: "", message: "" });
+                        form.reset();
+                     } else {
+                        // EmailJS resolved with a non-200 status -- surface it
+                        // instead of silently doing nothing.
+                        showError(COPY.send_failed);
+                     }
+                  },
+                  () => showError(COPY.send_failed),
+               )
+               .finally(() => {
+                  pendingSendRef.current = null;
+               });
+            pendingSendRef.current = send;
+         }
 
-            if (result.status === 200) {
-               setSentName(formData.name);
-               setShowConfirmation(true);
-               setFormData({ name: "", email: "", message: "" });
-               formElementRef.current.reset();
-            } else {
-               // EmailJS resolved with a non-200 status -- surface it instead of
-               // silently doing nothing.
-               showError(COPY.send_failed);
-            }
+         try {
+            await withTimeout(send, SEND_TIMEOUT_MS);
          } catch (error) {
             showError(
                error === SEND_TIMEOUT ? COPY.send_timeout : COPY.send_failed,

@@ -5,22 +5,10 @@
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { PUBLIC_DATA_FILES } from "./lib/data-files.js";
+import { newsHash } from "./lib/news-hash.js";
 
 const SITE = "https://sagargupta.online/portfolio-react/";
-const DATA_FILES = [
-   "personal",
-   "experience",
-   "projects",
-   "skills",
-   "achievements",
-   "education",
-   "news",
-   "services",
-   "sections",
-   "glossary",
-   "annotations",
-   "ui",
-];
 
 // Generated text stays plain: every dash punctuation char (en/em dash
 // included) becomes "-", emoji are dropped.
@@ -109,7 +97,7 @@ function loadData(rootDir) {
    const read = (name) =>
       JSON.parse(readFileSync(join(rootDir, "data", `${name}.json`), "utf8"));
    const data = Object.fromEntries(
-      DATA_FILES.map((name) => [name, read(name)]),
+      PUBLIC_DATA_FILES.map((name) => [name, read(name)]),
    );
    // contact.json: only the email and the booking link leave this function.
    const options = read("contact").contact_options ?? [];
@@ -132,7 +120,8 @@ const hostOf = (url) => {
 const socialLink = (personal, name) =>
    personal.social_profiles?.find((p) => p.name === name)?.link;
 
-const link = (label, url) => (url ? `[${label}](${url})` : "");
+// "#" is the no-link placeholder in data/ (hasProjectUrl skips it too).
+const link = (label, url) => (url && url !== "#" ? `[${label}](${url})` : "");
 
 function projectLine(project, { long }) {
    const head = [
@@ -448,17 +437,28 @@ function buildLlmsTxt(d) {
    const awsSamples = (projects.featured_projects ?? []).filter(
       (p) => p.organization === "aws-samples",
    );
+   // Only /pull/ entries are PRs. A merged commit credit is a co-authored
+   // fix, named with the Stats tile's own copy, as StatsBand.tsx does.
    const merged = (projects.open_source_contributions ?? []).filter(
       (p) => p.status === "merged",
    );
-   const mergedRepos = [...new Set(merged.map((p) => clean(p.repo)))];
+   const mergedPrs = merged.filter((p) => p.url?.includes("/pull/"));
+   const mergedRepos = [...new Set(mergedPrs.map((p) => clean(p.repo)))];
+   const coAuthored = merged.length - mergedPrs.length;
+   const prsTile = personal.stats?.tiles?.merged_prs ?? {};
+   const coAuthoredNote =
+      coAuthored === 1
+         ? prsTile.note_coauthored_one
+         : prsTile.note_coauthored_many?.replaceAll("{count}", coAuthored);
+   const credit =
+      coAuthored > 0 && coAuthoredNote ? `. ${clean(coAuthoredNote)}` : "";
    const facts = [
       ...impactLines(personal),
       ...highlightLines(personal.highlights),
       awsSamples.length > 0 &&
          `- Solutions published under aws-samples: ${awsSamples.map((p) => clean(p.title)).join(", ")}`,
-      merged.length > 0 &&
-         `- Merged open source PRs: ${merged.length}, in ${mergedRepos.join(", ")}`,
+      mergedPrs.length > 0 &&
+         `- Merged open source PRs: ${mergedPrs.length}, in ${mergedRepos.join(", ")}${credit}`,
       activeCerts.length > 0 &&
          `- Active certifications: ${activeCerts.map((c) => clean(c.name)).join(", ")}`,
    ].filter(Boolean);
@@ -483,7 +483,9 @@ function buildLlmsTxt(d) {
       "",
       "## Data",
       "",
-      ...DATA_FILES.map((name) => `- [${name}.json](${SITE}data/${name}.json)`),
+      ...PUBLIC_DATA_FILES.map(
+         (name) => `- [${name}.json](${SITE}data/${name}.json)`,
+      ),
       "",
       "## Contact",
       "",
@@ -561,17 +563,6 @@ const xmlEscape = (text) =>
 const rfc822 = (date) => {
    const [y, m = "01", d = "01"] = date.split("-");
    return new Date(Date.UTC(Number(y), Number(m) - 1, Number(d))).toUTCString();
-};
-
-// Same FNV-1a over date + text the News section uses for its commit hashes,
-// so each item keeps one stable guid across builds.
-const newsHash = (item) => {
-   let h = 0x811c9dc5;
-   for (const ch of `${item.date}${item.text}`) {
-      h ^= ch.codePointAt(0) ?? 0;
-      h = Math.imul(h, 0x01000193);
-   }
-   return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
 };
 
 function buildRss({ personal, news }) {

@@ -53,9 +53,7 @@ vi.mock("lenis/react", () => ({
 describe("navigation and persistent UI state", () => {
    it("preserves a real contact draft and focus through both motion modes", async () => {
       render(<App />);
-      fireEvent.click(
-         screen.getByRole("button", { name: "Navigate to Contact" }),
-      );
+      fireEvent.click(screen.getByRole("button", { name: "Contact Me" }));
       const name = await screen.findByRole<HTMLInputElement>(
          "textbox",
          { name: "Name" },

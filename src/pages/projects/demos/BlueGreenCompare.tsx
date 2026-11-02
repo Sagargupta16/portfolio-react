@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { getBlueGreenDemoCopy } from "@data/demos";
 import {
    BLUE,
    GREEN,
@@ -7,39 +8,25 @@ import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
+import type { BlueGreenPanelCopy } from "@/types";
 import CompareSlider from "./CompareSlider";
 import type { ProjectDemoProps } from "./demoRegistry";
 
-// Project 13 (Blue Green AWS Terraform). Listener ports, ECS on EC2 behind an
-// ALB, CodeBuild + ECR and the CodeDeploy-run zero-downtime switch come from
-// data/projects.json; the green-verified-on-:8080 and blue-drained steps come
-// from the repo README's "Blue-Green Deployment Flow".
-interface Route {
-   listener: string;
-   env: "Blue" | "Green";
-   state: string;
-}
+// Project 13 (Blue Green AWS Terraform), copy in data/projects.json under
+// demos."13". Listener ports, ECS on EC2 behind an ALB, CodeBuild + ECR and the
+// CodeDeploy-run zero-downtime switch come from that project's entry; the
+// green-verified-on-:8080 and blue-drained steps come from the repo README's
+// "Blue-Green Deployment Flow".
+const COPY = getBlueGreenDemoCopy();
 
 interface PanelProps {
-   tag: "Before" | "After";
-   routes: Route[];
+   panel: BlueGreenPanelCopy;
+   isAfter: boolean;
 }
 
 const ENV_COLOR = { Blue: BLUE, Green: GREEN } as const;
 
-const CAPTIONS = [
-   {
-      tag: "Before",
-      text: "Blue serves production. CodePipeline builds the new image with CodeBuild, pushes it to ECR, and green is checked on the test listener.",
-   },
-   {
-      tag: "After",
-      text: "CodeDeploy switches production traffic to green with zero downtime, then drains blue.",
-   },
-];
-
-const Panel = ({ tag, routes }: PanelProps) => {
-   const isAfter = tag === "After";
+const Panel = ({ panel: { tag, routes }, isAfter }: PanelProps) => {
    return (
       <div
          className="compare-panel"
@@ -82,7 +69,7 @@ const Panel = ({ tag, routes }: PanelProps) => {
                marginBottom: 6,
             }}
          >
-            ALB / ECS on EC2
+            {COPY.stack}
          </p>
          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {routes.map((r) => (
@@ -166,34 +153,18 @@ const Panel = ({ tag, routes }: PanelProps) => {
 const BlueGreenCompare = ({ accent }: ProjectDemoProps) => (
    <div>
       <CompareSlider
-         label="Drag to compare before and after the blue/green cutover"
+         label={COPY.slider_label}
          accent={accent}
-         before={
-            <Panel
-               tag="Before"
-               routes={[
-                  { listener: ":80 prod", env: "Blue", state: "live" },
-                  { listener: ":8080 test", env: "Green", state: "new build" },
-               ]}
-            />
-         }
-         after={
-            <Panel
-               tag="After"
-               routes={[
-                  { listener: ":80 prod", env: "Green", state: "live" },
-                  { listener: "old task set", env: "Blue", state: "drained" },
-               ]}
-            />
-         }
+         before={<Panel panel={COPY.before} isAfter={false} />}
+         after={<Panel panel={COPY.after} isAfter />}
       />
       {/* Captions sit outside the clipped layers: text cut in half by the
           divider reads as a rendering bug. */}
       <dl className="compare-captions">
-         {CAPTIONS.map(({ tag, text }) => (
+         {[COPY.before, COPY.after].map(({ tag, caption }) => (
             <div key={tag}>
                <dt>{tag}</dt>
-               <dd>{text}</dd>
+               <dd>{caption}</dd>
             </div>
          ))}
       </dl>
@@ -206,7 +177,7 @@ const BlueGreenCompare = ({ accent }: ProjectDemoProps) => (
             textAlign: "center",
          }}
       >
-         drag the divider or use the arrow keys
+         {COPY.hint}
       </p>
    </div>
 );

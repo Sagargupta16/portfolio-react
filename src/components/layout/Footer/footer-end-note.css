@@ -40,8 +40,10 @@
       transform 0.2s ease;
 }
 
-.hold-copy:hover {
-   border-color: var(--color-border-hover);
+@media (hover: hover) {
+   .hold-copy:hover {
+      border-color: var(--color-border-hover);
+   }
 }
 
 .hold-copy:active {

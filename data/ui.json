@@ -191,6 +191,13 @@
       "download": "Download PDF",
       "download_short": "PDF",
       "page_alt": "CV page {page} of {pages}",
-      "sheet_label": "{name} CV"
+      "sheet_label": "{name} CV",
+      "load_failed": "The CV could not load."
+   },
+   "common": {
+      "reload": "Reload page"
+   },
+   "demo": {
+      "unavailable": "This demo could not load."
    }
 }

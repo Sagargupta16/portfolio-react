@@ -30,6 +30,16 @@ const STAGE_BY_VARIANT: Record<string, ComponentType<PanelProps>> = {
 
 const WebAppScene = ({ tint, variant }: CoverSceneProps) => {
    const Stage = STAGE_BY_VARIANT[variant ?? ""] ?? DefaultPanel;
+   /* An unknown key is a registry bug: say so in dev. */
+   if (
+      import.meta.env.DEV &&
+      variant !== undefined &&
+      !Object.hasOwn(STAGE_BY_VARIANT, variant)
+   ) {
+      console.warn(
+         `WebAppScene: unknown variant "${variant}", rendering the default panel`,
+      );
+   }
    return (
       <div aria-hidden="true" style={ROOT}>
          <Stage tint={tint} />

@@ -1,18 +1,13 @@
 import { GREEN } from "@/constants/theme";
 import { getSectionCopy } from "@data/sections";
 
-interface PresentIndicatorProps {
-   /** Show just the pulsing dot (true) or the dot + "Present" label (false). */
-   dotOnly?: boolean;
-}
-
 /**
- * Green pulsing dot that marks a currently-active role on the experience timeline.
- * When `dotOnly` is false, the dot is rendered with a trailing "Present" label
- * suitable for use inside a flex row (the parent controls the gap).
+ * Green pulsing dot with a trailing "Present" label that marks a
+ * currently-active role on the experience timeline. Suitable for use inside a
+ * flex row (the parent controls the gap).
  */
-const PresentIndicator = ({ dotOnly = false }: PresentIndicatorProps) => {
-   const dot = (
+const PresentIndicator = () => (
+   <>
       <span
          className="animate-glow-pulse"
          aria-hidden="true"
@@ -25,16 +20,8 @@ const PresentIndicator = ({ dotOnly = false }: PresentIndicatorProps) => {
             flexShrink: 0,
          }}
       />
-   );
-
-   if (dotOnly) return dot;
-
-   return (
-      <>
-         {dot}
-         <span>{getSectionCopy("experience").card.present}</span>
-      </>
-   );
-};
+      <span>{getSectionCopy("experience").card.present}</span>
+   </>
+);
 
 export default PresentIndicator;

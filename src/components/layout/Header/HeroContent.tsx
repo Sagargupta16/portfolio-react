@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useMemo } from "react";
+import { lazy, Suspense, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowDownRight, Download, FileText } from "lucide-react";
 import {
@@ -23,6 +23,7 @@ import useBreakpoint from "@hooks/useBreakpoint";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import HeroSocial from "./HeroSocial";
 import HeroTagline from "./HeroTagline";
+import { passThroughTransform } from "@utils/animations";
 import { useIntroDone } from "@utils/introState";
 import {
    HEADLINE_FIT_STYLE,
@@ -34,7 +35,6 @@ import {
    heroLabel,
    heroLogo,
    heroRow,
-   passThroughTransform,
 } from "./heroMotion";
 
 const HeroLatest = lazy(() => import("./HeroLatest"));
@@ -49,9 +49,26 @@ const NBSP = "\u00A0";
 const CTA_TAP = { scale: 0.97 };
 
 /* Truthy on purpose: ErrorBoundary treats a falsy fallback as "not provided"
-   and renders its full "Something went wrong" panel. A failed HeroLatest or
-   CV viewer chunk should just drop out, not replace the hero. */
+   and renders its full "Something went wrong" panel. A failed HeroLatest
+   chunk should just drop out, not replace the hero. */
 const OMIT_LINE = <></>;
+
+/* A failed CV viewer chunk (a stale tab after a deploy, or offline) says so
+   in the hero and offers the reload that fixes it, so "Read CV" never just
+   does nothing. Same pattern as DeferredSection's fallback. */
+const CV_LOAD_FAILED = (
+   <div role="alert">
+      <p style={{ color: TEXT_SECONDARY }}>{getUiCopy().cv.load_failed}</p>
+      <button
+         type="button"
+         className="btn-outline"
+         onClick={() => globalThis.location.reload()}
+         style={{ marginTop: 12 }}
+      >
+         {getUiCopy().common.reload}
+      </button>
+   </div>
+);
 
 /* Holds the LATEST row's slot while its chunk loads so the CTAs and socials
    below do not jump when it arrives. Mirrors HeroLatest's layout and type
@@ -81,11 +98,11 @@ const HeroContent = () => {
    const [cvOpen, setCvOpen] = useState(false);
    const [cvLoaded, setCvLoaded] = useState(false);
 
-   const name = useMemo(() => getName(), []);
-   const intro = useMemo(() => getIntro(), []);
-   const roleLabel = useMemo(() => getRoleLabel(), []);
-   const headline = useMemo(() => getHeadline(), []);
-   const greeting = useMemo(() => getHeroGreeting(), []);
+   const name = getName();
+   const intro = getIntro();
+   const roleLabel = getRoleLabel();
+   const headline = getHeadline();
+   const greeting = getHeroGreeting();
 
    const { navigateToSection } = useSectionNavigation();
    const introDone = useIntroDone();
@@ -223,10 +240,10 @@ const HeroContent = () => {
          <HeroSocial />
 
          {/* In-site CV viewer (lazy: its chunk and the pages load only when
-             opened). Own boundary: a failed chunk leaves the button inert
+             opened). Own boundary: a failed chunk shows CV_LOAD_FAILED
              instead of reaching the root ErrorBoundary. */}
          {cvLoaded && (
-            <ErrorBoundary fallback={OMIT_LINE}>
+            <ErrorBoundary fallback={CV_LOAD_FAILED}>
                <Suspense fallback={null}>
                   <CvViewerModal
                      isOpen={cvOpen}

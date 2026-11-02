@@ -19,8 +19,10 @@ const TerminalDemo = lazy(() => import("./TerminalDemo"));
 const BlueGreenCompare = lazy(() => import("./BlueGreenCompare"));
 
 /** Case-study demo per project id (ids from data/projects.json). Each label
- *  is projects.modal.demos in data/sections.json, keyed by the same id;
- *  validate-data.js reads the ids below and checks the two match. */
+ *  is projects.modal.demos in data/sections.json, keyed by the same id, and
+ *  each demo's own copy is `demos` in data/projects.json (read through
+ *  src/data/demos.ts); validate-data.js reads the ids below and checks they
+ *  match. */
 const DEMO_BY_ID: Record<number, ComponentType<ProjectDemoProps>> = {
    49: PipelineBeams, // SageMaker MLOps
    52: TerminalDemo, // Organizations governance

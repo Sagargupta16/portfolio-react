@@ -39,7 +39,7 @@ const CompanyHeader = ({
                flexShrink: 0,
             }}
          >
-            {getOrgLogo(item.company ?? "", 16) ?? (
+            {getOrgLogo(item.company, 16) ?? (
                <Building2
                   style={{ width: 14, height: 14, color: accentColor }}
                />

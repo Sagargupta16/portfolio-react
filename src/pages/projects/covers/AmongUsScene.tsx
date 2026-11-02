@@ -84,17 +84,17 @@ const contestSlot = (i: number) => BY_RATING.indexOf(i);
 const fetchRoute = (y: number) =>
    route(sCurve([ROSTER_RIGHT, y], GQL), line(GQL, [TABLE[0], GQL[1]]));
 const ROUTES = BATCH_MID.map(fetchRoute);
-const AT_GQL = ROUTES[0].ends[0];
 
-/* each batch: leaves the roster at t0, is resolved in GraphQL, lands */
-const fetchStops = (t0: number): Stop[] => [
+/* each batch: leaves the roster at t0, is resolved in GraphQL, lands. It
+   holds in GraphQL at its own route's end: the two curves differ in length */
+const fetchStops = (t0: number, [atGql]: readonly number[]): Stop[] => [
    [t0, 0],
-   [t0 + 0.08, AT_GQL],
-   [t0 + 0.12, AT_GQL],
+   [t0 + 0.08, atGql],
+   [t0 + 0.12, atGql],
    [t0 + 0.18, 1],
 ];
 const BATCHES = [0.08, 0.3].map((t0, i) =>
-   beat(ride(ROUTES[i], fetchStops(t0))),
+   beat(ride(ROUTES[i], fetchStops(t0, ROUTES[i].ends))),
 );
 
 /* the bracket marks batch one, slides to batch two, then clears */

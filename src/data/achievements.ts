@@ -8,8 +8,10 @@ import achievementsData from "../../data/achievements.json";
 
 export const getCertifications = (): Certification[] =>
    achievementsData.certifications as Certification[];
+// Held once: a missing list would otherwise hand back a new [] on every call.
+const learningBadges = achievementsData.learning_badges ?? [];
 export const getLearningBadges = (): LearningBadge[] =>
-   (achievementsData.learning_badges ?? []) as LearningBadge[];
+   learningBadges as LearningBadge[];
 export const getAchievements = (): Achievement[] =>
    achievementsData.achievements as Achievement[];
 // JSON imports widen the [date, rating] pairs to (string | number)[], so the

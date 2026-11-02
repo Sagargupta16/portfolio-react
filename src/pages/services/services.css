@@ -23,8 +23,14 @@
    transition: opacity 0.2s ease;
 }
 
-.service-card:is(:hover, :has(:focus-visible)) .service-art-light {
+.service-card:has(:focus-visible) .service-art-light {
    opacity: 0.5;
+}
+
+@media (hover: hover) {
+   .service-card:hover .service-art-light {
+      opacity: 0.5;
+   }
 }
 
 .service-list {

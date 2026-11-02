@@ -1,10 +1,14 @@
 name: Sync Credly Badges
 
-# Weekly refresh of certifications and badges from Credly. Opens or updates one PR for
-# review instead of pushing to main (main requires the `ci` check). As in Sync Live Data,
-# the pull_request run for a PR this GITHUB_TOKEN opens never starts a job, so the job
-# dispatches CI/CD on the sync branch to put the `ci` check on the PR's head commit.
-# Merging the PR triggers the normal CI/CD deploy.
+# Weekly refresh of certifications and badges from Credly. This workflow opens or
+# updates one bot PR for review instead of pushing to main. The PR's `ci` result
+# comes from the CI/CD run the open-pr job dispatches on the sync branch (Sync Live
+# Data explains why). Merging the PR triggers the normal CI/CD deploy.
+#
+# Two jobs, so the write token never meets npm code. `sync` installs dependencies and
+# runs the sync script with a read-only token and no stored git credential, then passes
+# the changed file on as an artifact. `open-pr` runs no npm code: it alone holds the
+# write token to push the branch, open the PR and dispatch CI.
 
 on:
    # Run weekly on Monday at 6:00 AM UTC
@@ -18,11 +22,8 @@ on:
             type: boolean
             default: false
 
-permissions:
-   contents: write
-   pull-requests: write
-   # gh workflow run: dispatch CI/CD on the sync branch.
-   actions: write
+# Each job declares what it needs.
+permissions: {}
 
 concurrency:
    group: sync-credly
@@ -30,13 +31,19 @@ concurrency:
 
 jobs:
    sync:
+      # Main only: a dispatch on another branch would cut the sync PR from it.
+      if: github.ref == 'refs/heads/main'
       runs-on: ubuntu-latest
       timeout-minutes: 10
-      env:
-         BRANCH: chore/sync-credly
+      permissions:
+         contents: read
+      outputs:
+         changed: ${{ steps.changes.outputs.changed }}
       steps:
          - name: Checkout code
            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+           with:
+              persist-credentials: false
 
          - name: Setup pnpm
            uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
@@ -67,14 +74,51 @@ jobs:
            run: |
               git diff --quiet data/achievements.json && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
 
-         - name: Open or update the sync PR
+         - name: Stage the changed data
            if: steps.changes.outputs.changed == 'true'
+           run: |
+              mkdir sync-out
+              cp data/achievements.json sync-out/
+
+         - name: Pass the changed data to the next job
+           if: steps.changes.outputs.changed == 'true'
+           uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+           with:
+              name: synced-data
+              path: sync-out
+              if-no-files-found: error
+              retention-days: 1
+
+   open-pr:
+      needs: sync
+      if: github.ref == 'refs/heads/main' && needs.sync.outputs.changed == 'true'
+      runs-on: ubuntu-latest
+      timeout-minutes: 5
+      permissions:
+         contents: write
+         pull-requests: write
+         # gh workflow run: dispatch CI/CD on the sync branch.
+         actions: write
+      env:
+         BRANCH: chore/sync-credly
+      steps:
+         - name: Checkout code
+           uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+         - name: Download the changed data
+           uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+           with:
+              name: synced-data
+              path: sync-out
+
+         - name: Open or update the sync PR
            env:
               GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            run: |
               git config user.name "github-actions[bot]"
               git config user.email "github-actions[bot]@users.noreply.github.com"
               git switch -c "$BRANCH"
+              cp sync-out/achievements.json data/
               git add data/achievements.json
               git commit -m "chore: sync Credly badges [automated]"
               # The bot branch is rebuilt from main each run; only this branch is force-pushed.
@@ -82,6 +126,6 @@ jobs:
               if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
                  gh pr create --base main --head "$BRANCH" \
                     --title "chore: sync Credly badges" \
-                    --body "Weekly refresh of certifications and badges from Credly. Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. Review the diff, then merge to deploy."
+                    --body "Weekly refresh of certifications and badges from Credly. Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. A red pull_request run on this PR is expected (it ends with no jobs); the ci check on the head commit comes from the dispatched CI/CD run. Review the diff, then merge to deploy."
               fi
               gh workflow run ci-cd.yml --ref "$BRANCH"

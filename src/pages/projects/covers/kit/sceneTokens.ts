@@ -3,7 +3,8 @@ import { BG_PRIMARY, MONO_FONT } from "@/constants/theme";
 import { sceneDriver } from "@utils/sceneClock";
 
 /*
- * Stage kit shared by the Gate, Mcp and Plugin cover families.
+ * Stage kit shared by the project cover families, the experience scenes and
+ * the service animations.
  *
  * Geometry is drawn in a 320 x 200 SVG stage, the slot's own 16:10 ratio, so
  * it scales evenly (about 1.1 px per unit on a 343 to 370 px card). Packets,
@@ -318,7 +319,8 @@ export const ride = (r: Route, stops: readonly Stop[]): Keys => {
    const last = path.at(-1) ?? first;
    const frames = [
       { t: 0, s: first.s, o: 0 },
-      { t: first.t - FADE, s: first.s, o: 0 },
+      /* a first stop inside FADE of the start would put this offset below 0 */
+      { t: Math.max(0, first.t - FADE), s: first.s, o: 0 },
       ...path.map((p) => ({ ...p, o: 1 })),
       { t: last.t + FADE, s: last.s, o: 0 },
       { t: 1, s: first.s, o: 0 },

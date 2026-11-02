@@ -18,6 +18,7 @@ import { pipeline } from "node:stream/promises";
 import path from "node:path";
 import { pdf } from "pdf-to-img";
 import sharp from "sharp";
+import { latestRelease } from "./lib/github.js";
 import { parseResume, RESUME_FILES } from "./resume-tex.js";
 
 const REPO = "Sagargupta16/latex-resume";
@@ -42,17 +43,15 @@ const toReleaseTag = (name) => {
 };
 
 const latestTag = async () => {
-   const headers = { Accept: "application/vnd.github+json" };
-   if (process.env.GITHUB_TOKEN)
-      headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
-   const r = await fetch(
-      `https://api.github.com/repos/${REPO}/releases/latest`,
-      { headers, signal: AbortSignal.timeout(15_000) },
+   const release = await latestRelease(
+      REPO,
+      process.env.GITHUB_TOKEN,
+      AbortSignal.timeout(15_000),
    );
-   const tag = r.ok ? toReleaseTag((await r.json()).tag_name) : null;
+   const tag = toReleaseTag(release.tag_name);
    if (!tag) {
       throw new Error(
-         `Cannot resolve the latest ${REPO} release (HTTP ${r.status})`,
+         `Cannot resolve the latest ${REPO} release (no vMAJOR.MINOR.PATCH tag)`,
       );
    }
    return tag;

@@ -13,8 +13,8 @@ import "./footer-end-note.css";
 const COPY = getUiCopy().footer;
 
 /* The end of the page, said plainly: an end-of-scroll line, a press-and-hold
-   control that copies his email (a ring fills while held; letting go early
-   cancels), and "your visit, measured on you": this page's own Core Web
+   control that copies his email (a ring fills while held; a plain click
+   copies at once), and "your visit, measured on you": this page's own Core Web
    Vitals read live from the visitor's browser via web-vitals (lazy chunk).
    Ideas from warmnfuzzy.tv, mattjinn.com and jamiemckaye.com. */
 
@@ -94,6 +94,9 @@ const HoldToCopy = ({ email }: { email: string }) => {
    const [failed, setFailed] = useState(false);
    const runRef = useRef<ReturnType<typeof animate> | null>(null);
    const resetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+   // Set when a hold copies, so the click that ends the same press does not
+   // copy a second time.
+   const heldRef = useRef(false);
 
    useEffect(
       () => () => {
@@ -125,12 +128,16 @@ const HoldToCopy = ({ email }: { email: string }) => {
    };
 
    const start = () => {
+      heldRef.current = false;
       if (copied) return;
       runRef.current?.stop();
       runRef.current = animate(progress, 1, {
          duration: reducedMotion ? 0 : HOLD_MS / 1000,
          ease: "linear",
-         onComplete: () => void copy(),
+         onComplete: () => {
+            heldRef.current = true;
+            void copy();
+         },
       });
    };
    const cancel = () => {
@@ -138,20 +145,32 @@ const HoldToCopy = ({ email }: { email: string }) => {
       runRef.current?.stop();
       animate(progress, 0, { duration: 0.2 });
    };
+   // A plain click copies at once, and so does a screen reader's activation,
+   // which sends no pointer or key events; the click that ends a completed
+   // hold has copied already.
+   const copyOnClick = () => {
+      if (heldRef.current) {
+         heldRef.current = false;
+         return;
+      }
+      if (!copied) void copy();
+   };
 
    return (
       <button
          type="button"
          className="hold-copy"
+         onClick={copyOnClick}
          onPointerDown={start}
          onPointerUp={cancel}
          onPointerLeave={cancel}
          onPointerCancel={cancel}
          onKeyDown={(e) => {
-            if ((e.key === "Enter" || e.key === " ") && !e.repeat) {
-               e.preventDefault();
-               start();
-            }
+            if (e.key !== "Enter" && e.key !== " ") return;
+            // Repeats too: a held key must not fire the button's own click,
+            // the hold does the copying.
+            e.preventDefault();
+            if (!e.repeat) start();
          }}
          onKeyUp={(e) => {
             if (e.key === "Enter" || e.key === " ") cancel();

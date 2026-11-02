@@ -1,25 +1,28 @@
-import type { ComponentType } from "react";
+import type { ComponentType, CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
-import type { OpenSourceContribution } from "@/types";
 import { MONO_FONT } from "@/constants/theme";
-import { staggerContainer, staggerItem } from "@utils/animations";
-import ContribCard from "./ContribCard";
+import {
+   staggerContainer,
+   staggerItem,
+   VIEWPORT_MARGIN,
+} from "@utils/animations";
 
-interface ContribSectionProps {
-   icon: ComponentType<{ size?: number; style?: React.CSSProperties }>;
+interface ContribSectionProps<T extends { url: string }> {
+   icon: ComponentType<{ size?: number; style?: CSSProperties }>;
+   /** The whole heading text, count included. */
    label: string;
-   count: number;
    color: string;
-   items: OpenSourceContribution[];
+   items: T[];
+   renderItem: (item: T) => ReactNode;
 }
 
-const ContribSection = ({
+const ContribSection = <T extends { url: string }>({
    icon: Icon,
    label,
-   count,
    color,
    items,
-}: ContribSectionProps) => (
+   renderItem,
+}: ContribSectionProps<T>) => (
    <>
       <div
          style={{
@@ -39,7 +42,7 @@ const ContribSection = ({
                letterSpacing: "0.03em",
             }}
          >
-            {label} ({count})
+            {label}
          </span>
       </div>
       <motion.div
@@ -47,11 +50,11 @@ const ContribSection = ({
          variants={staggerContainer}
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
       >
-         {items.map((contrib) => (
-            <motion.div key={contrib.url} variants={staggerItem}>
-               <ContribCard contrib={contrib} />
+         {items.map((item) => (
+            <motion.div key={item.url} variants={staggerItem}>
+               {renderItem(item)}
             </motion.div>
          ))}
       </motion.div>

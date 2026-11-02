@@ -10,23 +10,31 @@ import { getUiCopy } from "@data/ui";
 export interface Annotation {
    id: string;
    selector: string;
+   /** Narrows the selector's matches, for a test CSS cannot say safely. */
+   match?: (el: Element) => boolean;
    title: string;
    body: string;
 }
 
 type AnnotationId = keyof typeof annotationCopy;
+type PinTarget = Pick<Annotation, "selector" | "match"> & { id: AnnotationId };
 
 /* Pins in reading order. */
-const PINS: { id: AnnotationId; selector: string }[] = [
+const PINS: PinTarget[] = [
    {
       id: "palette",
       // The palette button, not its "How it's built" sibling: same class,
-      // told apart by the label the nav gives it in data/ui.json.
-      selector: `.palette-trigger[aria-label="${getUiCopy().nav.palette_label}"]`,
+      // told apart by the label the nav gives it in data/ui.json. Compared
+      // as a string, so a quote in the label cannot break a selector.
+      selector: ".palette-trigger",
+      match: (el) =>
+         el.getAttribute("aria-label") === getUiCopy().nav.palette_label,
    },
    { id: "headline", selector: "#hero h1" },
    { id: "bust", selector: ".sagar-face" },
-   { id: "mascot", selector: ".mascot-perch" },
+   // The perch and its .mascot box are zero-height anchors on the heading
+   // rule; the sprite frame is the only box with a size.
+   { id: "mascot", selector: ".mascot-frame" },
    { id: "news", selector: ".news-graph" },
    { id: "projects", selector: ".project-grid" },
    { id: "contributions", selector: ".contribution-grid" },
@@ -35,8 +43,11 @@ const PINS: { id: AnnotationId; selector: string }[] = [
    { id: "build", selector: ".footer-build" },
 ];
 
-export const ANNOTATIONS: Annotation[] = PINS.map(({ id, selector }) => ({
-   id,
-   selector,
-   ...annotationCopy[id],
-}));
+export const ANNOTATIONS: Annotation[] = PINS.map(
+   ({ id, selector, match }) => ({
+      id,
+      selector,
+      match,
+      ...annotationCopy[id],
+   }),
+);

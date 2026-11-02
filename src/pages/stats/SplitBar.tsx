@@ -17,11 +17,16 @@ const GROW: Variants = {
 interface SplitBarProps {
    heading: string;
    segments: SplitSegment[];
+   /** The weights' full-bar value, 100 for percentages: each slice then keeps
+    *  its own share and the track shows the remainder. Left out, the weights
+    *  are normalised to their sum and the slices fill the bar. */
+   scale?: number;
 }
 
 /** A stacked share bar with a legend: top languages, solved by difficulty. */
-const SplitBar = ({ heading, segments }: Readonly<SplitBarProps>) => {
+const SplitBar = ({ heading, segments, scale }: Readonly<SplitBarProps>) => {
    const { reducedMotion } = useMotionPreference();
+   const total = scale ?? segments.reduce((sum, { weight }) => sum + weight, 0);
 
    return (
       <motion.div
@@ -53,7 +58,7 @@ const SplitBar = ({ heading, segments }: Readonly<SplitBarProps>) => {
                   <span
                      key={segment.key}
                      style={{
-                        flex: `${segment.weight} 1 0`,
+                        flex: `${segment.weight / total} 1 0`,
                         background: segment.color,
                      }}
                   />

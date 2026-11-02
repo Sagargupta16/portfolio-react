@@ -8,6 +8,9 @@ export type CvInline =
    | { t: "icon"; name: string }
    | { t: "br" };
 
+/* A bullet, with the sub-bullets nested under it (empty when there are none). */
+export type CvBullet = { text: CvInline[]; sub: CvInline[][] };
+
 export type CvBlock =
    | {
         t: "entry";
@@ -15,9 +18,9 @@ export type CvBlock =
         subtitle: CvInline[];
         date: CvInline[];
         meta: CvInline[];
-        items: CvInline[][];
+        items: CvBullet[];
      }
-   | { t: "list"; items: { c: CvInline[]; aside?: CvInline[] }[] }
+   | { t: "list"; items: (CvBullet & { aside?: CvInline[] })[] }
    | { t: "rows"; rows: CvInline[][] }
    | { t: "para"; c: CvInline[] };
 

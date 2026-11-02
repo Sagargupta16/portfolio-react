@@ -1,12 +1,12 @@
 import { motion, type Variants } from "motion/react";
 import { VIEWPORT_MARGIN } from "@utils/animations";
 import { DURATION, EASING, MAX_WIDTH } from "@/constants/theme";
-import { CONTENT_SECTIONS } from "@/constants/sections";
+import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import AccentText from "./AccentText";
 import Mascot from "./Mascot";
 
 interface Props {
-   sectionId: string;
+   sectionId: ContentSectionId;
    title: string;
    subtitle?: string;
 }

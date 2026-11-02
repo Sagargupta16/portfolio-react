@@ -7,8 +7,9 @@ import MotionPreferenceControl from "@components/ui/MotionPreferenceControl";
 import QuickFacts from "@pages/about/QuickFacts";
 import ExpandableExtras from "@pages/education/ExpandableExtras";
 import ProjectCard from "@pages/projects/ProjectCard";
+import type { ProjectWithCategory } from "@pages/projects/projectConstants";
 import TimelineCardContent from "@pages/experience/TimelineCardContent";
-import type { Education, ProfessionalExperience, Project } from "@/types";
+import type { Education, ProfessionalExperience } from "@/types";
 import { BLUE_LIGHT } from "@/constants/theme";
 
 // MotionPreferenceControl reads useBreakpoint, which throws outside its
@@ -20,7 +21,7 @@ const renderWithMotion = (ui: React.ReactNode) =>
       </BreakpointProvider>,
    );
 
-const project: Project & { category: string } = {
+const project: ProjectWithCategory = {
    id: 3,
    title: "Portfolio React",
    description: "A portfolio project.",

@@ -5,6 +5,7 @@ import type {
    ProjectsFile,
 } from "@/types";
 import projectsData from "../../data/projects.json";
+import { listProjects } from "./projectLists";
 
 const projects = projectsData as ProjectsFile;
 
@@ -20,3 +21,7 @@ export const getOpenSourceContributions = (): OpenSourceContribution[] =>
    projects.open_source_contributions ?? [];
 export const getCommunityDiscussions = (): CommunityDiscussion[] =>
    projects.community_discussions ?? [];
+
+const allProjects = listProjects(projects);
+
+export const getAllProjects = (): Project[] => allProjects;

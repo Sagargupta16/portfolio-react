@@ -9,7 +9,8 @@ on:
    # only: the bot sync workflows dispatch it on their branch, because the
    # pull_request run for a PR their GITHUB_TOKEN opened never starts a job.
    workflow_dispatch:
-   # For a ping from latex-resume when it publishes a release.
+   # Nothing sends resume-released yet (latex-resume has no dispatch step), so
+   # a new release reaches the site through the six-hourly check below.
    repository_dispatch:
       types: [resume-released]
    # Picks up a latex-resume release nobody announced: resume-check compares

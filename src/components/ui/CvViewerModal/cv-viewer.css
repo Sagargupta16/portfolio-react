@@ -44,6 +44,14 @@
       position: absolute;
       inset: min(0px, calc(50% - 22px)) 0;
    }
+
+   /* The toolbar's zoom, open-PDF and Download controls are real 44px boxes. */
+   .cv-toolbar :is(.btn-outline, .btn-primary) {
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
+   }
 }
 
 .cv-sheet {
@@ -65,8 +73,10 @@
    text-decoration: none;
 }
 
-.cv-sheet a:hover {
-   text-decoration: underline;
+@media (hover: hover) {
+   .cv-sheet a:hover {
+      text-decoration: underline;
+   }
 }
 
 .cv-sheet svg {
@@ -188,6 +198,14 @@
 .cv-para + .cv-entry,
 .cv-entry + .cv-para {
    margin-top: 8px;
+}
+
+/* The PDF's page footer line: small, dark gray, centered. */
+.cv-disclaimer {
+   margin-top: 18px;
+   color: #444;
+   font-size: 10.5px;
+   text-align: center;
 }
 
 @media (max-width: 639px) {

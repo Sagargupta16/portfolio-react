@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.22.2-2563eb)
+![Version](https://img.shields.io/badge/version-4.22.3-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -51,7 +51,7 @@ Section links support reloads and browser history. Navigation loads the content 
 | **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                                          |
 | **Experience**   | Timeline of roles, each with an animated scene of what that role did; details modal with case-study briefs and a scene per engagement                                                                                                             |
 | **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                                                |
-| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (154 skills; static chips in Reduced)                                                                                                                         |
+| **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (154 primary skills (174 with the three secondary rails); static chips in Reduced)                                                                            |
 | **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; repo-accurate animated cover scenes for every project; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
 | **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                              |
 | **Focus Areas**  | Seven fact-based focus areas, Forward Deployed Engineering first across the full row with a wide scene, then an even grid; each card's scene shows the real mechanism, labels at the project covers' 8 px                                         |
@@ -124,6 +124,9 @@ data/                                  # JSON content files (edit these to custo
 └── contact.json
 src/
 ├── __tests__/                         # Navigation, real form/filter, accessibility, utility, and data tests
+├── assets/
+│   ├── brand/                         # Maker mark drawing, About bust, mascot frames
+│   └── logos/                         # Experience and education logos
 ├── components/
 │   ├── common/                        # ErrorBoundary
 │   ├── layout/
@@ -197,7 +200,7 @@ All portfolio content lives in JSON files under `data/` at the project root:
 | `annotations.json`  | "How it's built" pin titles and bodies, keyed by the pin ids in `src/constants/annotations.ts`               |
 | `contact.json`      | Contact options + EmailJS config                                                                             |
 
-Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. It also requires a heading in `sections.json` for every section registered in `src/constants/sections.ts`, in page order and with at most one `*accent*` word; only known `{name}` placeholders in the Stats tile notes; a label for every skill category; a unique service `key` registered in `ServiceAnimation.tsx`; one glossary term per matched phrase; and an `annotations.json` entry for every pin id. Existing text and metadata can usually be updated in JSON alone. Adding or removing a project also requires a matching cover registration; follow the [project editing recipe](CONTRIBUTING.md#add-or-remove-a-project).
+Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. It also requires a heading in `sections.json` for every section registered in `src/constants/sections.ts`, in page order and with at most one `*accent*` word; only known `{name}` placeholders in the Stats tile notes; a label for every skill category; a unique service `key` registered in `ServiceAnimation.tsx`; one glossary term per matched phrase; an `annotations.json` entry for every pin id; a valid IANA `personal.timezone`; project dates in the "September 2026" form; and demo copy (`projects.json` `demos`) for every demo in `demoRegistry.ts`. Existing text and metadata can usually be updated in JSON alone. Adding or removing a project also requires a matching cover registration; follow the [project editing recipe](CONTRIBUTING.md#add-or-remove-a-project).
 
 Each project sets a `status` (`active`, `beta` or `complete`) by hand. For active and beta projects, `scripts/sync-live-data.js` keeps `version` current every week: it takes the higher of the latest release tag and the root manifest version, and writes it only when it is higher than the stored one. A project whose live link is an npm package page shows the registry's latest published version instead, since that is what the link installs.
 
@@ -233,9 +236,9 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts
 
-Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. Every six hours a scheduled run compares the CV version the live site serves with the latest `latex-resume` release and rebuilds only when they differ; a `resume-released` repository dispatch deploys at once.
+Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. The resume is checked every six hours: a scheduled run compares the release tag of the CV the live site serves with the latest `latex-resume` release, and rebuilds the CV and deploys only when that tag has changed.
 
-The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each opens or updates its own pull request, then dispatches this workflow on that branch so the PR gets its `ci` check; a run on any branch other than `main` never deploys.
+The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each runs in two jobs: `sync` installs dependencies and runs the sync script with a read-only token and no stored git credential, then hands the changed data files on as an artifact; `open-pr` runs no npm code and alone holds the write token to push the branch, open or update the pull request, and dispatch this workflow on that branch so the PR gets its `ci` check. The pull_request run GitHub creates for that bot PR ends with no jobs, which is expected. A run on any branch other than `main` never deploys.
 
 ---
 

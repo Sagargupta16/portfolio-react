@@ -1,4 +1,4 @@
-import { stagger, type TransformProperties, type Variants } from "motion/react";
+import { stagger, type Variants } from "motion/react";
 import type { CSSProperties } from "react";
 import { DURATION, EASING } from "@/constants/theme";
 
@@ -101,12 +101,3 @@ export const HEADLINE_FIT_STYLE: CSSProperties = {
    fontSize: "max(1.125rem, min(1em, 5.6cqi))",
    letterSpacing: "-0.035em",
 };
-
-/* Once a whileTap settles, Motion writes `transform: none` inline, which beats
-   the .btn-* :hover lift in the stylesheet for good. Returning the generated
-   string as-is leaves the inline transform empty at rest, so CSS owns the
-   hover lift and Motion only writes during the press. */
-export const passThroughTransform = (
-   _transform: TransformProperties,
-   generated: string,
-) => generated;

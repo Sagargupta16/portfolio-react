@@ -11,20 +11,11 @@ import {
    TEXT_SECONDARY,
 } from "@/constants/theme";
 import MakerMark from "@components/ui/MakerMark";
-import { getSectionCopy } from "@data/sections";
 import { getUiCopy } from "@data/ui";
-import { fillTemplate } from "@utils/fillTemplate";
 import DesktopNav from "./DesktopNav";
+import type { NavSection } from "./Nav";
 
 const COPY = getUiCopy().nav;
-const CONTACT_LABEL = fillTemplate(COPY.navigate_label, {
-   label: getSectionCopy("contact").nav,
-});
-
-interface NavSection {
-   id: string;
-   label: string;
-}
 
 interface NavBarProps {
    scrolled: boolean;
@@ -162,7 +153,6 @@ const NavBar = ({
                      onClick={() => onNavigate("contact")}
                      className="btn-pill"
                      style={{ fontSize: 13, minHeight: 44 }}
-                     aria-label={CONTACT_LABEL}
                   >
                      {COPY.contact}
                   </button>

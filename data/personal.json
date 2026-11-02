@@ -39,9 +39,9 @@
          "derived_from": "aws_samples"
       },
       {
-         "value": "8x",
+         "value": "7x",
          "label": "TFC Ambassador",
-         "note": "AI/ML incl. Anthropic Claude, Cloud Ops, Serverless, Connect, NGDE",
+         "note": "AI/ML incl. Anthropic Claude, Cloud Ops, Serverless, Connect",
          "derived_from": "tfc_ambassador"
       },
       {

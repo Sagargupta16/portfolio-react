@@ -1,3 +1,4 @@
+import type { MotionValue } from "motion/react";
 import type { SkillIcon } from "@utils/skillIcons";
 import { getSkillIcon } from "@utils/skillIcons";
 import { getHeroStack } from "@data/skills";
@@ -35,8 +36,8 @@ export interface HeroStackSlot {
 export const HERO_STACK_SLOTS: readonly HeroStackSlot[] = [
    { x: 8, y: 12, depth: 6, period: 11, speed: 0.22 },
    { x: 92, y: 12, depth: 5, period: 12, speed: 0.18 },
-   { x: 17, y: 17, depth: 9, period: 13, speed: 0.3 },
-   { x: 83, y: 17, depth: 8, period: 10, speed: 0.26 },
+   { x: 21, y: 14, depth: 9, period: 13, speed: 0.3 },
+   { x: 79, y: 14, depth: 8, period: 10, speed: 0.26 },
    { x: 14, y: 86, depth: 7, period: 14, speed: 0.24 },
    { x: 90, y: 92, depth: 10, period: 9, speed: 0.32 },
 ];
@@ -85,9 +86,11 @@ export const END_FADE = { start: 0.95, span: 0.04 } as const;
 
 /**
  * Twelve flank slots alternating sides. `edge + depth` stays <= 32, so a
- * tile's furthest reach (edge + 44 tile + 5 drift + depth) is 81px, inside
- * the 85px the 1152px section column leaves free at 1280px. Speeds differ
- * so the flanks read as layers at several depths.
+ * tile's furthest reach (edge + 44 tile + 5 drift + depth) is 81px. The
+ * 1152px section column leaves less than that between 1280px and about
+ * 1330px (61px at 1280px with a scrollbar), so StackFieldBackdrop pulls a
+ * tile toward the screen edge there. Speeds differ so the flanks read as
+ * layers at several depths.
  */
 export const FLANK_SLOTS: readonly FlankSlot[] = [
    { side: "left", edge: 16, rest: 0.14, speed: 0.46, depth: 9, period: 11 },
@@ -172,6 +175,16 @@ const heroStackItems: readonly HeroStackItem[] = resolved;
 export interface Placement<S> {
    item: HeroStackItem;
    slot: S;
+}
+
+/**
+ * The MotionValues both layers hand each tile: page scroll and the two
+ * pointer springs. StackFieldBackdrop adds its own on top.
+ */
+export interface FieldValues {
+   scrollY: MotionValue<number>;
+   pointerX: MotionValue<number>;
+   pointerY: MotionValue<number>;
 }
 
 /** Slot i takes item i; slots past the last resolved item stay empty. */

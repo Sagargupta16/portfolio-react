@@ -70,7 +70,9 @@ const AnimatedCounter = ({
 
    // Digits roll into place (NumberFlow) once the tile is half in view: each
    // digit spins on its own wheel instead of a counter ticking through every
-   // value. Reduced renders the final value with no animation.
+   // value. Reduced renders the final value with no animation. NumberFlow's
+   // own OS reduced-motion check is off: only the in-app Full/Reduced setting
+   // decides, like every other animation on the site.
    const shown = inView || reducedMotion ? numericValue : 0;
    const timing = {
       duration: duration * 1000 * 0.6,
@@ -90,6 +92,7 @@ const AnimatedCounter = ({
          <NumberFlow
             value={shown}
             animated={!reducedMotion}
+            respectMotionPreference={false}
             locales="en-US"
             format={{
                minimumFractionDigits: decimals,

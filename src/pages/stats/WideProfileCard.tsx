@@ -153,7 +153,19 @@ export const Metrics = ({ items }: Readonly<MetricsProps>) => {
                   minWidth: 0,
                }}
             >
-               <dt style={{ ...CAPTION_STYLE, order: 1 }}>{item.label}</dt>
+               <dt
+                  style={{
+                     ...CAPTION_STYLE,
+                     order: 1,
+                     // Phones: tracking that keeps "Contributions" on one line
+                     letterSpacing: isMobile
+                        ? "0.02em"
+                        : CAPTION_STYLE.letterSpacing,
+                     overflowWrap: "break-word",
+                  }}
+               >
+                  {item.label}
+               </dt>
                <dd style={{ margin: 0, whiteSpace: "nowrap" }}>
                   <AnimatedCounter value={item.value} compact={isMobile} />
                </dd>

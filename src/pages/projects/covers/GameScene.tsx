@@ -26,6 +26,12 @@ const DEFAULT_GAME = "pacman";
 
 const GameScene = ({ tint, variant = DEFAULT_GAME }: CoverSceneProps) => {
    const Game = GAMES[variant] ?? Pacman;
+   /* An unknown key is a registry bug: say so in dev. */
+   if (import.meta.env.DEV && !Object.hasOwn(GAMES, variant)) {
+      console.warn(
+         `GameScene: unknown variant "${variant}", rendering "${DEFAULT_GAME}"`,
+      );
+   }
 
    return (
       <div

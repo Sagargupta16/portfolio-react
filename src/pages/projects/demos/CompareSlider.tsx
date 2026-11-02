@@ -19,6 +19,15 @@ interface CompareSliderProps {
    accent: string;
 }
 
+/** The one pointer that owns the current drag. */
+interface Drag {
+   id: number;
+   x: number;
+   y: number;
+   /** False until a touch drag turns horizontal; mouse and pen move at once. */
+   moving: boolean;
+}
+
 const KEY_STEP = 5;
 const START_POS = 50;
 // One gentle sweep on first view hints that the divider can be dragged.
@@ -39,7 +48,7 @@ const CompareSlider = ({
 }: CompareSliderProps) => {
    const { reducedMotion } = useMotionPreference();
    const frameRef = useRef<HTMLDivElement>(null);
-   const draggingRef = useRef(false);
+   const dragRef = useRef<Drag | null>(null);
    const touchedRef = useRef(false);
    const inView = useInView(frameRef, { once: true, amount: 0.6 });
    const [pos, setPos] = useState(START_POS);
@@ -66,20 +75,38 @@ const CompareSlider = ({
    };
 
    const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+      // Only the primary mouse button drags.
+      if (e.pointerType === "mouse" && e.button !== 0) return;
       // A second finger must not steal the drag from the first.
-      if (draggingRef.current) return;
+      if (dragRef.current) return;
       touchedRef.current = true;
-      draggingRef.current = true;
+      const touch = e.pointerType === "touch";
+      dragRef.current = {
+         id: e.pointerId,
+         x: e.clientX,
+         y: e.clientY,
+         moving: !touch,
+      };
       e.currentTarget.setPointerCapture(e.pointerId);
-      moveTo(e.clientX);
+      // A touch that starts a vertical scroll must not nudge the divider, so
+      // touch waits for its first horizontal move instead of jumping on down.
+      if (!touch) moveTo(e.clientX);
    };
 
    const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
-      if (draggingRef.current) moveTo(e.clientX);
+      const drag = dragRef.current;
+      if (!drag || drag.id !== e.pointerId) return;
+      if (!drag.moving) {
+         const dx = Math.abs(e.clientX - drag.x);
+         const dy = Math.abs(e.clientY - drag.y);
+         if (dx <= dy) return;
+         dragRef.current = { ...drag, moving: true };
+      }
+      moveTo(e.clientX);
    };
 
-   const stopDrag = () => {
-      draggingRef.current = false;
+   const stopDrag = (e: PointerEvent<HTMLDivElement>) => {
+      if (e.pointerId === dragRef.current?.id) dragRef.current = null;
    };
 
    const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {

@@ -6,13 +6,9 @@ import useFocusTrap from "@hooks/useFocusTrap";
 import useScrollLock from "@hooks/useScrollLock";
 import { getUiCopy } from "@data/ui";
 import { fillTemplate } from "@utils/fillTemplate";
+import type { NavSection } from "./Nav";
 
 const COPY = getUiCopy().nav;
-
-interface NavSection {
-   id: string;
-   label: string;
-}
 
 interface MobileMenuProps {
    open: boolean;
@@ -56,7 +52,9 @@ const MobileMenu = ({
       <AnimatePresence>
          {open && (
             <motion.div
-               style={{ position: "fixed", inset: 0, zIndex: 40 }}
+               // Above the annotation layer (45) and banner (46), under the
+               // nav (50).
+               style={{ position: "fixed", inset: 0, zIndex: 48 }}
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                exit={{ opacity: 0 }}

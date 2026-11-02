@@ -129,8 +129,10 @@ body {
    border-radius: 3px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-   background: rgb(var(--ch-white) / 0.3);
+@media (hover: hover) {
+   ::-webkit-scrollbar-thumb:hover {
+      background: rgb(var(--ch-white) / 0.3);
+   }
 }
 
 /* Selection */
@@ -254,17 +256,30 @@ html[data-motion="reduced"] *::after {
 }
 
 html[data-motion="reduced"]
-   :is(.btn-primary, .btn-outline, .btn-pill):is(:hover, :focus-visible),
+   :is(.btn-primary, .btn-outline, .btn-pill):focus-visible,
 html[data-motion="reduced"]
-   .project-card:is(:hover, :has(:focus-visible))
+   .project-card:has(:focus-visible)
    .project-cover-img {
    transform: none;
 }
 
+@media (hover: hover) {
+   html[data-motion="reduced"] :is(.btn-primary, .btn-outline, .btn-pill):hover,
+   html[data-motion="reduced"] .project-card:hover .project-cover-img {
+      transform: none;
+   }
+}
+
 /* The footer underline is state, not decoration: Reduced shows it in full
    the moment a link is hovered or focused instead of drawing it in. */
-html[data-motion="reduced"] .footer-link:is(:hover, :focus-visible)::after {
+html[data-motion="reduced"] .footer-link:focus-visible::after {
    transform: none;
+}
+
+@media (hover: hover) {
+   html[data-motion="reduced"] .footer-link:hover::after {
+      transform: none;
+   }
 }
 
 html[data-motion="reduced"] :is(a, button) .action-arrow,
@@ -324,8 +339,10 @@ html[data-motion="reduced"] .project-action:active {
 }
 
 .section-header-number {
+   flex: none;
    color: var(--color-accent-cyan);
    font-variant-numeric: tabular-nums;
+   white-space: nowrap;
 }
 
 .section-header-heading {
@@ -346,6 +363,23 @@ html[data-motion="reduced"] .project-action:active {
    letter-spacing: -0.03em;
    line-height: 1.05;
    text-wrap: balance;
+}
+
+/* Phones: leave the perched mascot's width (.mascot-perch: 78px, 60px from
+   640px down), its right offset and 8px of air free, so a long title or
+   eyebrow wraps instead of running under him. */
+@media (max-width: 767px) {
+   .section-header-heading h2,
+   .section-header-eyebrow {
+      max-width: calc(100% - 86px - clamp(4px, 4%, 48px));
+   }
+}
+
+@media (max-width: 640px) {
+   .section-header-heading h2,
+   .section-header-eyebrow {
+      max-width: calc(100% - 68px - clamp(4px, 4%, 48px));
+   }
 }
 
 .section-header-rule {
@@ -417,9 +451,16 @@ html[data-motion="reduced"] .project-action:active {
    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
 }
 
-.hero-latest-link:is(:hover, :focus-visible) {
+.hero-latest-link:focus-visible {
    color: var(--color-accent-cyan);
    text-decoration-color: currentColor;
+}
+
+@media (hover: hover) {
+   .hero-latest-link:hover {
+      color: var(--color-accent-cyan);
+      text-decoration-color: currentColor;
+   }
 }
 
 .mobile-nav-link {
@@ -441,10 +482,17 @@ html[data-motion="reduced"] .project-action:active {
       background-color 0.2s ease;
 }
 
-.mobile-nav-link:is(:hover, :focus-visible),
+.mobile-nav-link:focus-visible,
 .mobile-nav-link[aria-current="location"] {
    background: rgb(var(--ch-white) / 0.08);
    color: var(--color-text-primary);
+}
+
+@media (hover: hover) {
+   .mobile-nav-link:hover {
+      background: rgb(var(--ch-white) / 0.08);
+      color: var(--color-text-primary);
+   }
 }
 
 .mobile-nav-number {
@@ -500,14 +548,6 @@ html[data-motion="reduced"] .project-action:active {
    .project-card:hover .project-cover-img {
       transform: scale(1.045);
    }
-}
-
-.line-clamp-3 {
-   display: -webkit-box;
-   -webkit-line-clamp: 3;
-   line-clamp: 3;
-   -webkit-box-orient: vertical;
-   overflow: hidden;
 }
 
 /* Timeline spine list: the rail lives in a 0px first column that spans all rows
@@ -707,9 +747,18 @@ html[data-motion="reduced"] .sagar-face {
       border-color 0.2s ease;
 }
 
-.palette-trigger:hover {
-   color: var(--color-text-primary);
-   border-color: var(--color-border-hover);
+@media (hover: hover) {
+   .palette-trigger:hover {
+      color: var(--color-text-primary);
+      border-color: var(--color-border-hover);
+   }
+}
+
+/* Touch: the 36px trigger grows to a 44px tap target. */
+@media (pointer: coarse) {
+   .palette-trigger {
+      min-height: 44px;
+   }
 }
 
 .palette-trigger kbd {
@@ -845,8 +894,14 @@ html[data-motion="reduced"] .sagar-face {
    cursor: pointer;
 }
 
-.text-action:is(:hover, :focus-visible) {
+.text-action:focus-visible {
    text-decoration: underline;
+}
+
+@media (hover: hover) {
+   .text-action:hover {
+      text-decoration: underline;
+   }
 }
 
 .action-arrow {
@@ -910,11 +965,23 @@ html[data-motion="reduced"] .sagar-face {
    color: var(--disclosure-accent);
 }
 
-.disclosure > summary:is(:hover, :focus-visible),
+.disclosure > summary:focus-visible,
 .disclosure[open] > summary {
    border-color: color-mix(in srgb, var(--disclosure-accent) 35%, transparent);
    background: color-mix(in srgb, var(--disclosure-accent) 6%, transparent);
    color: var(--color-text-primary);
+}
+
+@media (hover: hover) {
+   .disclosure > summary:hover {
+      border-color: color-mix(
+         in srgb,
+         var(--disclosure-accent) 35%,
+         transparent
+      );
+      background: color-mix(in srgb, var(--disclosure-accent) 6%, transparent);
+      color: var(--color-text-primary);
+   }
 }
 
 .disclosure-chevron {
@@ -964,10 +1031,16 @@ html[data-motion="reduced"] .sagar-face {
    border: 1px solid rgb(var(--ch-blue) / 0.2);
 }
 
-.tag-purple:hover,
 .tag-purple:focus-visible {
    background: rgb(var(--ch-blue) / 0.2);
    border-color: rgb(var(--ch-blue) / 0.35);
+}
+
+@media (hover: hover) {
+   .tag-purple:hover {
+      background: rgb(var(--ch-blue) / 0.2);
+      border-color: rgb(var(--ch-blue) / 0.35);
+   }
 }
 
 /* Section header pill badge (akobir "Tech Stack" / "DevSpark" chip) */
@@ -1128,7 +1201,6 @@ html[data-motion="reduced"] .sagar-face {
    #stats,
    #services,
    #achievements,
-   canvas,
    button,
    .btn-primary,
    .btn-outline,

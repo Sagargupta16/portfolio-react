@@ -10,8 +10,8 @@ node_modules/
 
 # env files
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # editor directories and files
 .vscode/

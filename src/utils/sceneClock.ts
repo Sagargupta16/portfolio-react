@@ -8,15 +8,16 @@ import {
 
 /*
  * One shared 60 Hz clock for the scene loops (project covers, experience
- * scenes, Focus Areas art) on screens faster than 75 Hz.
+ * scenes, Focus Areas art) on screens faster than 85 Hz (90 Hz and up).
  *
  * Those loops animate SVG parts, which Chrome cannot hand to the compositor,
  * so it repaints the page for them on every display refresh: 240 times a
  * second on a 240 Hz panel, a full CPU core while Projects is on screen. On
  * the shared clock they update 60 times a second, the rate a 60 Hz screen
- * shows them at. Screens at 75 Hz or less keep Motion's own frame loop, so
- * nothing changes there, and scrolling, hover and every other animation keep
- * the display's full rate everywhere.
+ * shows them at. Screens at 85 Hz or less (60 and 75 Hz panels) keep Motion's
+ * own frame loop, so nothing changes there, and scrolling, hover and every
+ * other animation keep the display's full rate everywhere. While the page is
+ * hidden the clock stops, and it starts again when the page is shown.
  *
  * Motion's JS loops join through `transition.driver` (sceneDriver); scene
  * slots step their WAAPI loops on the same ticks with useSceneClock.
@@ -26,7 +27,9 @@ type Driver = NonNullable<ValueAnimationOptions["driver"]>;
 type Update = Parameters<Driver>[0];
 
 const STEP_MS = 1000 / 60;
-const HIGH_REFRESH_MS = 1000 / 75;
+// The cut sits at 85 Hz, well clear of 75 Hz: a 75 Hz frame is 13.33 ms, and
+// timestamps rounded to 0.1 ms can read it as 13.3 ms, under 1000 / 75.
+const HIGH_REFRESH_MS = 1000 / 85;
 const SAMPLE_FRAMES = 12;
 
 let decide: (active: boolean) => void = () => {};
@@ -69,9 +72,14 @@ let due = 0;
 let tickTime: number | undefined;
 
 const run = () => {
+   // Hidden page: stop the chain here; resumeOnShow starts it again.
+   if (document.hidden) {
+      timer = 0;
+      return;
+   }
    const now = performance.now();
    due += STEP_MS;
-   // fell behind (a throttled background tab): resume from now
+   // fell behind (a long task or a throttled timer): resume from now
    if (due < now) due = now + STEP_MS;
    timer = window.setTimeout(run, due - now);
    tickTime = now;
@@ -86,17 +94,28 @@ const run = () => {
    }
 };
 
+const startClock = () => {
+   due = performance.now() + STEP_MS;
+   timer = window.setTimeout(run, STEP_MS);
+};
+
 /* Calls `update` on every tick; `keepAlive: false` runs it once. */
 export const onSceneTick = (update: Update, keepAlive = true) => {
    subscribers.set(update, keepAlive);
-   if (!timer) {
-      due = performance.now() + STEP_MS;
-      timer = window.setTimeout(run, STEP_MS);
-   }
+   if (!timer) startClock();
    return () => {
       subscribers.delete(update);
    };
 };
+
+// One listener for the page's lifetime: when the page is shown again, the
+// chain that run stopped while it was hidden starts over.
+const resumeOnShow = () => {
+   if (!document.hidden && subscribers.size && !timer) startClock();
+};
+if (typeof document !== "undefined") {
+   document.addEventListener("visibilitychange", resumeOnShow);
+}
 
 /* Motion's default driver, for screens that keep the frame loop. */
 const frameDriver: Driver = (update) => {

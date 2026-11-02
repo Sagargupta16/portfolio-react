@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "motion/react";
+import { getTerminalDemoCopy } from "@data/demos";
 import useMotionPreference from "@hooks/useMotionPreference";
 import {
    CHROME_BAR_STYLE,
@@ -8,96 +9,16 @@ import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
+import type { TerminalLineKind } from "@/types";
 import type { ProjectDemoProps } from "./demoRegistry";
 
-// Scripts for aws-samples/sample-aws-terraform-org-governance (project 52).
-// Commands are the ones its README Quick Start and .gitlab-ci.yml document.
-// Plain output lines are stock Terraform messages; "#" lines are annotations
-// built from the README and data/projects.json, not tool output.
-type Line =
-   | { kind: "cmd"; text: string }
-   | { kind: "out"; text: string }
-   | { kind: "note"; text: string };
-
-interface Script {
-   id: string;
-   label: string;
-   lines: Line[];
-}
-
-const VAR_FILE = "examples/standard/terraform.tfvars";
-
-const SCRIPTS: Script[] = [
-   {
-      id: "plan",
-      label: "plan",
-      lines: [
-         { kind: "cmd", text: "ls examples" },
-         {
-            kind: "out",
-            text: "data-residency  enterprise  minimal  regulated-workload  standard",
-         },
-         { kind: "cmd", text: "terraform init" },
-         { kind: "out", text: "Initializing provider plugins..." },
-         { kind: "out", text: "Terraform has been successfully initialized!" },
-         { kind: "cmd", text: `terraform plan  -var-file=${VAR_FILE}` },
-         {
-            kind: "note",
-            text: "# standard: SCP + RCP + tag policies + daily backup plan",
-         },
-         {
-            kind: "note",
-            text: "# rejected at plan time: duplicate OU key, oversized policy,",
-         },
-         {
-            kind: "note",
-            text: "#   unresolvable target, unknown control name",
-         },
-      ],
-   },
-   {
-      id: "apply",
-      label: "apply",
-      lines: [
-         { kind: "cmd", text: `terraform apply -var-file=${VAR_FILE}` },
-         { kind: "out", text: "Do you want to perform these actions?" },
-         { kind: "out", text: "  Only 'yes' will be accepted to approve." },
-         { kind: "out", text: "  Enter a value: yes" },
-         {
-            kind: "note",
-            text: "# runs only in the management account",
-         },
-         {
-            kind: "note",
-            text: "# OU hierarchy up to 5 levels, baselines parent before child",
-         },
-         {
-            kind: "note",
-            text: "# 6 policy types as 20 policy documents",
-         },
-         {
-            kind: "note",
-            text: "# delegated administrators for 15 services",
-         },
-      ],
-   },
-   {
-      id: "validate",
-      label: "validate",
-      lines: [
-         { kind: "cmd", text: "terraform fmt -check -recursive -diff" },
-         { kind: "cmd", text: "terraform init -backend=false -input=false" },
-         { kind: "out", text: "Terraform has been successfully initialized!" },
-         { kind: "cmd", text: "terraform validate" },
-         { kind: "out", text: "Success! The configuration is valid." },
-         { kind: "cmd", text: "tflint --recursive" },
-         {
-            kind: "note",
-            text: "# same checks as pre-commit; CI is scan-only, no AWS access",
-         },
-      ],
-   },
-];
+// Scripts for aws-samples/sample-aws-terraform-org-governance (project 52),
+// held in data/projects.json under demos."52". Commands are the ones its README
+// Quick Start and .gitlab-ci.yml document. Plain output lines are stock
+// Terraform messages; "#" lines are annotations built from the README and the
+// project's own entry, not tool output.
+const COPY = getTerminalDemoCopy();
+const SCRIPTS = COPY.scripts;
 
 const TYPE_MS = 35;
 const AFTER_CMD_MS = 320;
@@ -116,7 +37,7 @@ const START: Progress = { line: 0, chars: 0 };
 // Tallest script plus its prompt line, so switching tabs never jumps.
 const MAX_LINES = Math.max(...SCRIPTS.map((s) => s.lines.length)) + 1;
 
-const lineColor = (kind: Line["kind"], accent: string) => {
+const lineColor = (kind: TerminalLineKind, accent: string) => {
    if (kind === "cmd") return TEXT_PRIMARY;
    if (kind === "note")
       return `color-mix(in srgb, ${accent} 70%, ${TEXT_MUTED})`;
@@ -196,7 +117,7 @@ const TerminalDemo = ({ accent, isMobile }: ProjectDemoProps) => {
          >
             {/* a set of toggle buttons: a fieldset, reset to a bare flex row */}
             <fieldset
-               aria-label="Terraform workflow step"
+               aria-label={COPY.step_label}
                style={{
                   display: "flex",
                   gap: 4,
@@ -244,7 +165,7 @@ const TerminalDemo = ({ accent, isMobile }: ProjectDemoProps) => {
                   minWidth: 0,
                }}
             >
-               management account
+               {COPY.context}
             </span>
          </div>
 

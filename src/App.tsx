@@ -17,9 +17,11 @@ import AnnotationsHost from "@components/ui/Annotations/AnnotationsHost";
 import { BreakpointProvider } from "@hooks/BreakpointProvider";
 import { MotionPreferenceProvider } from "@hooks/MotionPreferenceProvider";
 import { SectionNavigationProvider } from "@hooks/SectionNavigationProvider";
+import useMediaQuery from "@hooks/useMediaQuery";
 import useMotionPreference from "@hooks/useMotionPreference";
 import useLenisOnDemand from "@hooks/useLenisOnDemand";
 import { CONTENT_SECTIONS } from "@/constants/sections";
+import { MEDIA_QUERIES } from "@/constants/theme";
 import { getUiCopy } from "@data/ui";
 
 const LENIS_OPTIONS = {
@@ -38,7 +40,8 @@ const LENIS_OPTIONS = {
 };
 
 // Site-wide floating stack field (>= 1280px). Lazy so the skill glyph
-// registry stays out of the entry bundle.
+// registry stays out of the entry bundle, and rendered only at that width, so
+// narrower screens never request its chunk.
 const StackFieldBackdrop = lazy(
    () => import("@components/layout/StackFieldBackdrop"),
 );
@@ -95,6 +98,7 @@ const SmoothScroll = ({ children }: { children: ReactNode }) => {
 };
 
 const AppContent = () => {
+   const wide = useMediaQuery(MEDIA_QUERIES.wide);
    return (
       <SmoothScroll>
          <SectionNavigationProvider>
@@ -104,11 +108,13 @@ const AppContent = () => {
                <AmbientBackground />
                {/* Fixed at z-0 before the page wrapper in DOM order: above the
                 ambient glows (z -1), below every section (painted later). */}
-               <ErrorBoundary fallback={OMIT_BACKDROP}>
-                  <Suspense fallback={null}>
-                     <StackFieldBackdrop />
-                  </Suspense>
-               </ErrorBoundary>
+               {wide && (
+                  <ErrorBoundary fallback={OMIT_BACKDROP}>
+                     <Suspense fallback={null}>
+                        <StackFieldBackdrop />
+                     </Suspense>
+                  </ErrorBoundary>
+               )}
                <div className="relative min-h-dvh">
                   <a href="#main-content" className="skip-link">
                      {getUiCopy().skip_link}

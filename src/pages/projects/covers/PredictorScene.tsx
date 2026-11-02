@@ -89,17 +89,19 @@ const landCurve = (top: number): Cubic => sCurve(OUT, cardPort(top));
 const ROUTES = CONTEST_TOPS.map((top, i) =>
    route(feedCurve(top), line(IN, OUT), landCurve(CARD_TOPS[i])),
 );
-const [AT_IN, AT_OUT] = ROUTES[0].ends;
 
-/* each contest: feed, forward pass, land */
+/* each contest: feed, forward pass, land. It reaches IN and OUT at its own
+   route's ends: each contest's feed and land curves differ in length */
 const PASS_STARTS = [0.22, 0.5];
-const passStops = (t0: number): Stop[] => [
+const passStops = (t0: number, [atIn, atOut]: readonly number[]): Stop[] => [
    [t0, 0],
-   [t0 + 0.06, AT_IN],
-   [t0 + 0.18, AT_OUT],
+   [t0 + 0.06, atIn],
+   [t0 + 0.18, atOut],
    [t0 + 0.24, 1],
 ];
-const PASSES = PASS_STARTS.map((t0, i) => beat(ride(ROUTES[i], passStops(t0))));
+const PASSES = PASS_STARTS.map((t0, i) =>
+   beat(ride(ROUTES[i], passStops(t0, ROUTES[i].ends))),
+);
 
 /* forward pass windows: the packet crosses the network in each */
 const WINDOWS = PASS_STARTS.map((t0) => [t0 + 0.06, t0 + 0.18] as const);

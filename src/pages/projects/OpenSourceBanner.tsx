@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "motion/react";
 import {
    GitPullRequest,
@@ -8,8 +9,8 @@ import {
    MessageCircle,
 } from "lucide-react";
 import { getSectionCopy } from "@data/sections";
+import type { CommunityDiscussion, OpenSourceContribution } from "@/types";
 import {
-   MONO_FONT,
    BLUE_LIGHT,
    GREEN,
    ORANGE,
@@ -17,16 +18,38 @@ import {
    DURATION,
    EASING,
 } from "@/constants/theme";
-import { staggerContainer, staggerItem } from "@utils/animations";
 import { fillTemplate } from "@utils/fillTemplate";
 import {
    OPEN_SOURCE_CONTRIBUTIONS,
    COMMUNITY_DISCUSSIONS,
 } from "./projectConstants";
+import ContribCard from "./ContribCard";
 import ContribSection from "./ContribSection";
 import DiscussionCard from "./DiscussionCard";
 
 const COPY = getSectionCopy("projects");
+
+const countLabel = (label: string, count: number) => `${label} (${count})`;
+
+const renderContrib = (contrib: OpenSourceContribution) => (
+   <ContribCard contrib={contrib} />
+);
+const renderDiscussion = (discussion: CommunityDiscussion) => (
+   <DiscussionCard discussion={discussion} />
+);
+
+/** Hairline between two groups; `marginTop` is set on all but the first. */
+const Divider = ({ marginTop }: { marginTop?: number }) => (
+   <div
+      style={{
+         height: 1,
+         background:
+            "linear-gradient(to right, transparent, rgb(var(--ch-white) / 0.06), transparent)",
+         marginBottom: 16,
+         marginTop,
+      }}
+   />
+);
 
 const OpenSourceBanner = () => {
    const merged = OPEN_SOURCE_CONTRIBUTIONS.filter(
@@ -93,154 +116,67 @@ const OpenSourceBanner = () => {
                <div style={{ marginBottom: open.length > 0 ? 20 : 0 }}>
                   <ContribSection
                      icon={GitMerge}
-                     label={COPY.open_source.merged}
-                     count={merged.length}
+                     label={countLabel(COPY.open_source.merged, merged.length)}
                      color={SKY}
                      items={merged}
+                     renderItem={renderContrib}
                   />
                </div>
             )}
 
             {open.length > 0 && (
                <>
-                  {merged.length > 0 && (
-                     <div
-                        style={{
-                           height: 1,
-                           background:
-                              "linear-gradient(to right, transparent, rgb(var(--ch-white) / 0.06), transparent)",
-                           marginBottom: 16,
-                        }}
-                     />
-                  )}
+                  {merged.length > 0 && <Divider />}
                   <ContribSection
                      icon={CircleDot}
-                     label={COPY.open_source.open}
-                     count={open.length}
+                     label={countLabel(COPY.open_source.open, open.length)}
                      color={GREEN}
                      items={open}
+                     renderItem={renderContrib}
                   />
                </>
             )}
 
             {closed.length > 0 && (
                <>
-                  <div
-                     style={{
-                        height: 1,
-                        background:
-                           "linear-gradient(to right, transparent, rgb(var(--ch-white) / 0.06), transparent)",
-                        marginBottom: 16,
-                        marginTop: 4,
-                     }}
-                  />
+                  <Divider marginTop={4} />
                   <ContribSection
                      icon={GitPullRequestClosed}
-                     label={COPY.open_source.closed}
-                     count={closed.length}
+                     label={countLabel(COPY.open_source.closed, closed.length)}
                      color={ORANGE}
                      items={closed}
+                     renderItem={renderContrib}
                   />
                </>
             )}
 
             {acceptedDiscussions.length > 0 && (
                <>
-                  <div
-                     style={{
-                        height: 1,
-                        background:
-                           "linear-gradient(to right, transparent, rgb(var(--ch-white) / 0.06), transparent)",
-                        marginBottom: 16,
-                        marginTop: 4,
-                     }}
+                  <Divider marginTop={4} />
+                  <ContribSection
+                     icon={BadgeCheck}
+                     label={fillTemplate(COPY.open_source.accepted, {
+                        count: acceptedDiscussions.length,
+                     })}
+                     color={BLUE_LIGHT}
+                     items={acceptedDiscussions}
+                     renderItem={renderDiscussion}
                   />
-                  <div
-                     style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
-                        marginBottom: 12,
-                     }}
-                  >
-                     <BadgeCheck size={14} style={{ color: BLUE_LIGHT }} />
-                     <span
-                        style={{
-                           fontSize: 12,
-                           fontWeight: 700,
-                           color: BLUE_LIGHT,
-                           fontFamily: MONO_FONT,
-                           letterSpacing: "0.03em",
-                        }}
-                     >
-                        {fillTemplate(COPY.open_source.accepted, {
-                           count: acceptedDiscussions.length,
-                        })}
-                     </span>
-                  </div>
-                  <motion.div
-                     className="contribution-grid"
-                     variants={staggerContainer}
-                     initial="hidden"
-                     whileInView="visible"
-                     viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-                  >
-                     {acceptedDiscussions.map((d) => (
-                        <motion.div key={d.url} variants={staggerItem}>
-                           <DiscussionCard discussion={d} />
-                        </motion.div>
-                     ))}
-                  </motion.div>
                </>
             )}
 
             {helpfulDiscussions.length > 0 && (
                <>
-                  <div
-                     style={{
-                        height: 1,
-                        background:
-                           "linear-gradient(to right, transparent, rgb(var(--ch-white) / 0.06), transparent)",
-                        marginBottom: 16,
-                        marginTop: 4,
-                     }}
+                  <Divider marginTop={4} />
+                  <ContribSection
+                     icon={MessageCircle}
+                     label={fillTemplate(COPY.open_source.helpful, {
+                        count: helpfulDiscussions.length,
+                     })}
+                     color={SKY}
+                     items={helpfulDiscussions}
+                     renderItem={renderDiscussion}
                   />
-                  <div
-                     style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
-                        marginBottom: 12,
-                     }}
-                  >
-                     <MessageCircle size={14} style={{ color: SKY }} />
-                     <span
-                        style={{
-                           fontSize: 12,
-                           fontWeight: 700,
-                           color: SKY,
-                           fontFamily: MONO_FONT,
-                           letterSpacing: "0.03em",
-                        }}
-                     >
-                        {fillTemplate(COPY.open_source.helpful, {
-                           count: helpfulDiscussions.length,
-                        })}
-                     </span>
-                  </div>
-                  <motion.div
-                     className="contribution-grid"
-                     variants={staggerContainer}
-                     initial="hidden"
-                     whileInView="visible"
-                     viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-                  >
-                     {helpfulDiscussions.map((d) => (
-                        <motion.div key={d.url} variants={staggerItem}>
-                           <DiscussionCard discussion={d} />
-                        </motion.div>
-                     ))}
-                  </motion.div>
                </>
             )}
          </div>
@@ -248,4 +184,4 @@ const OpenSourceBanner = () => {
    );
 };
 
-export default OpenSourceBanner;
+export default memo(OpenSourceBanner);

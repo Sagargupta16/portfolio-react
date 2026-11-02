@@ -32,7 +32,7 @@ type ColorProps = Readonly<FdeAnimProps>;
  *   a module card fills line by line and its test pip goes green; a packet
  *   carries the pattern out along the hairline to SAMPLES, which lights on
  *   arrival; the engineer then leaves for the next engagement and the card
- *   clears. Eight animated nodes, one 6 s loop; everything that moves is
+ *   clears. Seven animated nodes, one 6 s loop; everything that moves is
  *   hidden or reset at both ends of the loop.
  */
 

@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import { GraduationCap } from "lucide-react";
 import {
    TEXT_SECONDARY,
    TEXT_MUTED,
@@ -63,10 +62,10 @@ const ModalContributions = ({
             }}
          >
             {items.map((c) => {
-               const Icon = CONTRIB_ICON[c.type] || GraduationCap;
+               const Icon = CONTRIB_ICON[c.type];
                const color = isAchievements
                   ? AMBER
-                  : CONTRIB_TYPE_COLOR[c.type] || AMBER;
+                  : CONTRIB_TYPE_COLOR[c.type];
                const bgBase = isAchievements
                   ? "rgb(var(--ch-amber) / 0.03)"
                   : "rgb(var(--ch-white) / 0.02)";

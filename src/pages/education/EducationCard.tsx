@@ -1,7 +1,7 @@
 import { motion, type Variants } from "motion/react";
 import { MapPin } from "lucide-react";
 import type { Education } from "@/types";
-import { staggerItem } from "@utils/animations";
+import { staggerItem, VIEWPORT_MARGIN } from "@utils/animations";
 import { splitDateRange } from "@utils/dateRange";
 import { MONO_FONT, SKY, TEXT_MUTED, EASING } from "@/constants/theme";
 import {
@@ -28,6 +28,8 @@ const timelineEntry: Variants = {
 };
 
 const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
+   const { start, end } = splitDateRange(item.date);
+
    if (isMobile) {
       return (
          <motion.div
@@ -39,7 +41,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
             custom={index}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+            viewport={{ once: true, margin: VIEWPORT_MARGIN }}
             style={{ marginBottom: 20 }}
          >
             <div
@@ -66,9 +68,9 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                         color: SKY,
                      }}
                   >
-                     {splitDateRange(item.date).start}
+                     {start}
                   </span>
-                  {splitDateRange(item.date).end && (
+                  {end && (
                      <span
                         style={{
                            fontFamily: MONO_FONT,
@@ -76,7 +78,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                            color: TEXT_MUTED,
                         }}
                      >
-                        - {splitDateRange(item.date).end}
+                        - {end}
                      </span>
                   )}
                   {item.location && (
@@ -115,7 +117,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
          // breakpoint remount (see TimelineCardDesktop).
          initial="hidden"
          whileInView="visible"
-         viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+         viewport={{ once: true, margin: VIEWPORT_MARGIN }}
       >
          {/* Left: Date + Location */}
          <div style={{ paddingTop: 4, textAlign: "right", paddingRight: 20 }}>
@@ -127,7 +129,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                   color: SKY,
                }}
             >
-               {item.date.split(" - ")[0]}
+               {start}
             </span>
             <span
                style={{
@@ -138,7 +140,7 @@ const EducationCard = ({ item, index, isMobile }: EducationCardProps) => {
                   marginTop: 2,
                }}
             >
-               {item.date.includes(" - ") ? item.date.split(" - ")[1] : ""}
+               {end ?? ""}
             </span>
             {item.location && (
                <p

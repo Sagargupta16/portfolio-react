@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { GREEN } from "@/constants/theme";
 import { Bar, Label, Packet, Panel, Pip, Shell, Wire } from "./kit/primitives";
@@ -51,7 +51,6 @@ const CASE_Y = 130;
 const CASE_W = 20;
 const CASE_STEP = 24;
 const CASES = [0, 1, 2, 3].map((i) => 108 + i * CASE_STEP);
-const CASES_ID = "arena-cases";
 
 /* right column: the Judge0 runner and the Live Status Board */
 const JUDGE: Box = [222, 18, 72, 46];
@@ -198,41 +197,45 @@ const Editor = ({ tint }: Readonly<{ tint: string }>) => (
    </>
 );
 
-/* test results: four cases, revealed one by one through a clip */
-const Results = () => (
-   <>
-      <Wire d={`M${SPLIT_X},${STRIP_Y} H${WIN_RIGHT}`} />
-      <Bar box={[108, 123, 26, 2.5]} fill={W25} />
-      <defs>
-         <clipPath id={CASES_ID}>
-            {CASES.map((x) => (
+/* test results: four cases, revealed one by one through a clip; the card and
+   the modal both mount this scene, so the clip id is per mount */
+const Results = () => {
+   const clipId = useId();
+   return (
+      <>
+         <Wire d={`M${SPLIT_X},${STRIP_Y} H${WIN_RIGHT}`} />
+         <Bar box={[108, 123, 26, 2.5]} fill={W25} />
+         <defs>
+            <clipPath id={clipId}>
+               {CASES.map((x) => (
+                  <rect
+                     key={x}
+                     x={x}
+                     y={CASE_Y}
+                     width={CASE_W}
+                     height={8}
+                     rx={2}
+                  />
+               ))}
+            </clipPath>
+         </defs>
+         {CASES.map((x) => (
+            <Panel key={x} box={[x, CASE_Y, CASE_W, 8]} rx={2} />
+         ))}
+         <g clipPath={`url(#${clipId})`}>
+            <Grow loop={PASSED}>
                <rect
-                  key={x}
-                  x={x}
+                  x={108}
                   y={CASE_Y}
-                  width={CASE_W}
+                  width={92}
                   height={8}
-                  rx={2}
+                  fill={`${GREEN}66`}
                />
-            ))}
-         </clipPath>
-      </defs>
-      {CASES.map((x) => (
-         <Panel key={x} box={[x, CASE_Y, CASE_W, 8]} rx={2} />
-      ))}
-      <g clipPath={`url(#${CASES_ID})`}>
-         <Grow loop={PASSED}>
-            <rect
-               x={108}
-               y={CASE_Y}
-               width={92}
-               height={8}
-               fill={`${GREEN}66`}
-            />
-         </Grow>
-      </g>
-   </>
-);
+            </Grow>
+         </g>
+      </>
+   );
+};
 
 const Judge = ({ tint }: Readonly<{ tint: string }>) => (
    <>

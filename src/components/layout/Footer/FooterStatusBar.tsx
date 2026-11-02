@@ -55,6 +55,20 @@ const labelStyle: React.CSSProperties = {
    fontFamily: MONO_FONT,
 };
 
+/* A zone name Intl rejects (a typo in personal.json) throws a RangeError while
+   the bar renders and blanks it, so the two lines that need the zone check it
+   first and a bad name just leaves them out. validate-data.js catches the name
+   at build. */
+const isKnownZone = (timeZone: string) => {
+   try {
+      Intl.DateTimeFormat("en", { timeZone });
+      return true;
+   } catch {
+      return false;
+   }
+};
+const ZONE_KNOWN = isKnownZone(getTimezone());
+
 interface ClockReading {
    text: string;
    zone: string;
@@ -153,9 +167,20 @@ const VisitorGap = ({ timeZone }: { timeZone: string }) => {
    );
    const [now, setNow] = useState(() => new Date());
 
+   // The line shows minutes, so it updates on each minute boundary.
    useEffect(() => {
-      const id = window.setInterval(() => setNow(new Date()), 30_000);
-      return () => window.clearInterval(id);
+      let id = 0;
+      const arm = () => {
+         id = window.setTimeout(
+            () => {
+               setNow(new Date());
+               arm();
+            },
+            60_000 - (Date.now() % 60_000),
+         );
+      };
+      arm();
+      return () => window.clearTimeout(id);
    }, []);
 
    const gap = describeGap(
@@ -227,8 +252,12 @@ const FooterStatusBar = () => {
                }}
             />
             <span style={labelStyle}>{city}</span>
-            <LocalClock timeZone={timeZone} />
-            <VisitorGap timeZone={timeZone} />
+            {ZONE_KNOWN && (
+               <>
+                  <LocalClock timeZone={timeZone} />
+                  <VisitorGap timeZone={timeZone} />
+               </>
+            )}
             {!isMobile && (
                <span
                   style={{

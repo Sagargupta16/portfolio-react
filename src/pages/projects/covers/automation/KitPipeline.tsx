@@ -67,7 +67,6 @@ interface Bar {
    h: number;
 }
 
-/* Marks that take theme.accent; drawn neutral in the cards first. */
 /* Card bands down the README, top to bottom. */
 const HERO = { y: 128, h: 164 };
 const HEADER_Y = 332;

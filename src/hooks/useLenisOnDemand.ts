@@ -1,6 +1,14 @@
 import { useEffect } from "react";
 import { useLenis } from "lenis/react";
 
+// The longest step one frame hands Lenis: two frames at 60 Hz.
+const MAX_STEP = 1000 / 30;
+// A frame that moves less than this has under half a pixel left at lerp 0.1,
+// on any panel up to 500 Hz.
+const SETTLED_PX = 0.005;
+// Long enough that Lenis's damping lands exactly on its target.
+const FINISH_STEP = 1e6;
+
 /**
  * Runs the root Lenis frame loop only while a smooth scroll is in flight.
  *
@@ -10,6 +18,17 @@ import { useLenis } from "lenis/react";
  * programmatic, sets `lenis-smooth` on the root element as it starts, so the
  * loop wakes on that class and sleeps once Lenis settles. Touch, keys and the
  * scrollbar scroll natively and never needed it. Pair with `autoRaf: false`.
+ *
+ * Lenis steps by the gap between the times it is handed, so it gets a clock
+ * of its own: the first frame of a run counts as one 60 Hz frame, and every
+ * later frame as its real gap capped at MAX_STEP. Neither the sleep before a
+ * run nor a stalled frame inside one can finish a scroll in a single jump.
+ *
+ * Lenis ends a run only when its rounded position meets the rounded target,
+ * so a target such as 110.5 reached from below never ends (it settles just
+ * under 110.5) and one just past a half pixel creeps on for seconds. Once a
+ * frame barely moves, one FINISH_STEP lands it on the target and Lenis ends
+ * the run its usual way: onComplete, scrollend and the classes.
  */
 const useLenisOnDemand = () => {
    const lenis = useLenis();
@@ -18,33 +37,35 @@ const useLenisOnDemand = () => {
       if (!lenis) return;
       const root = lenis.rootElement;
       let frame = 0;
-      let wokeAt = 0;
-      // Lenis steps from the last time it was handed. The clock it sees skips
-      // every sleep, so the first step after one is a single frame (as with
-      // the always-on loop) instead of finishing the whole scroll at once.
-      let fed = 0;
-      let slept = 0;
-      let last = 0;
-      let interval = 1000 / 60;
+      // Picks up from the last time this instance was handed, so a re-run of
+      // the effect never steps its clock backwards.
+      let clock = lenis.time;
+      let lastTime = 0;
 
       const tick = (time: number) => {
-         if (last) interval = time - last;
-         last = time;
-         fed = time - slept;
-         lenis.raf(fed);
+         const from = lenis.animatedScroll;
+         // Lenis takes no step the first time it is ever handed a time, so
+         // only a later frame of a run can show that it has settled.
+         const midRun = lastTime > 0;
+         clock += lastTime ? Math.min(time - lastTime, MAX_STEP) : 1000 / 60;
+         lastTime = time;
+         lenis.raf(clock);
+         if (
+            midRun &&
+            lenis.isScrolling === "smooth" &&
+            Math.abs(lenis.animatedScroll - from) < SETTLED_PX
+         ) {
+            clock += FINISH_STEP;
+            lenis.raf(clock);
+         }
          frame =
             lenis.isScrolling === "smooth" ? requestAnimationFrame(tick) : 0;
-         if (!frame) last = 0;
-      };
-      const first = (time: number) => {
-         slept = time - fed - Math.max(time - wokeAt, interval);
-         tick(time);
+         if (!frame) lastTime = 0;
       };
 
       const observer = new MutationObserver(() => {
          if (frame || !root.classList.contains("lenis-smooth")) return;
-         wokeAt = performance.now();
-         frame = requestAnimationFrame(first);
+         frame = requestAnimationFrame(tick);
       });
       observer.observe(root, { attributes: true, attributeFilter: ["class"] });
 

@@ -47,7 +47,7 @@ const Contact = () => {
                margin: "0 auto",
                display: "grid",
                gap: isMobile ? 24 : 32,
-               gridTemplateColumns: isMobile ? "1fr" : "2fr 3fr",
+               gridTemplateColumns: isMobile ? "minmax(0, 1fr)" : "2fr 3fr",
             }}
             variants={staggerContainer}
          >
