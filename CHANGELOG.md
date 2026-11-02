@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.22.5] - 2026-11-02
+
+### Fixed
+
+- **Skills no longer vanish after a motion switch.** Switching between Full and Reduced while the Skills section was already on screen left the chips invisible: Full to Reduced showed 0 of 46 chips in view, Reduced to Full 78 of 170. Each category reveals once when it scrolls in, and the layout it switches to (moving rails in Full, a wrapped grid in Reduced) mounted after that reveal and stayed hidden. The category is now keyed on its layout, so a switch remounts it and the new chips reveal; both directions show every chip (46 of 46, 170 of 170). The bug predates 4.22.3: the 4.22.2 build fails the same way.
+
 ## [4.22.4] - 2026-11-02
 
 The first load is 12.7 kB smaller (5.4 kB gzipped). The nav, the hero and the fixed controls read a few fields of `personal.json`, `ui.json` and `sections.json`, and a JSON import always lands whole, so the entry chunk carried the copy of every lazy section too: About, Stats, the footer, the command palette, the CV viewer and every section's headings. Measured on the production build in Chrome, every text node and accessible name on the page matches the previous build at 1280px, and the first screen and the phone menu match at 375px.

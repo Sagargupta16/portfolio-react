@@ -107,6 +107,11 @@ const SkillCategory = ({
 
    return (
       <motion.div
+         // Rails and the wrapped grid are different children, and a child
+         // mounted after the one-time in-view reveal stays on "hidden": keyed
+         // on the layout, a live Full/Reduced switch remounts the category so
+         // the new chips reveal instead of vanishing.
+         key={asRails ? "rails" : "grid"}
          initial="hidden"
          whileInView="visible"
          viewport={{ once: true, margin: VIEWPORT_MARGIN }}
