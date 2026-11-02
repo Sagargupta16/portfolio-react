@@ -199,7 +199,7 @@
          "description": "A self-hosted personal finance dashboard with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, 50/30/20 budgeting, bill calendar, GST analysis, subscription tracking, year-in-review, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
          "date": "July 2026",
          "status": "active",
-         "version": "2.34.1",
+         "version": "2.35.1",
          "tools_tech": [
             "TypeScript",
             "React 19",
@@ -873,7 +873,7 @@
          "description": "An agent harness plus a shared markdown brain that Claude Code, Codex and Kiro all read and write. Each fact is one markdown file with its source; facts get corrected or withdrawn with history, never silently overwritten, and recall runs over BM25 through a stdio MCP server. Ships with 15 skills, 7 subagents, safety hooks, always-on rules, and 27 public lessons from real failures.",
          "date": "October 2026",
          "status": "active",
-         "version": "0.1.3",
+         "version": "0.1.4",
          "tools_tech": [
             "Python",
             "MCP",
@@ -964,7 +964,7 @@
          "description": "A GitHub Action that finds your merged and open pull requests to other people's repos through the GitHub GraphQL search, with no manual list to maintain, and renders them as animated SVG cards in your own repo: a summary card, a merged list, and an in-review list. Published on the GitHub Marketplace.",
          "date": "September 2026",
          "status": "active",
-         "version": "1.0.0",
+         "version": "1.1.0",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
@@ -986,7 +986,7 @@
          "description": "A GitHub Action that turns one profile.yml into a matching set of self-hosted animated SVG cards for your GitHub profile README: hero, terminal, section headers, divider, footer, timeline, tiles, panels, stats, buttons, and project cards. One theme.accent colors the whole set. Published on the GitHub Marketplace.",
          "date": "September 2026",
          "status": "active",
-         "version": "1.0.0",
+         "version": "1.1.3",
          "tools_tech": ["Python 3.13", "GitHub Actions", "YAML", "SVG"],
          "features": [
             "One profile.yml drives every card, so the whole README stays visually consistent",
@@ -1003,7 +1003,7 @@
          "description": "Conformance suite for Agent Skills (SKILL.md), published on npm. Linters check syntax; skillcheck checks reality: 36 rules with exact skills-ref parity, a 19-field client-extension registry across 3 runtimes (Claude Code, Copilot, Cursor), structure and reference validation, SARIF output, and a drop-in GitHub Action listed on the GitHub Marketplace.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.2.5",
+         "version": "0.2.10",
          "tools_tech": [
             "TypeScript",
             "Node.js",
@@ -1044,7 +1044,7 @@
          "description": "Custom Claude Code plugin marketplace with 16 curated plugins covering dev workflow, Docker, dependency audits, refactoring, git workflows, open source contributions, Python clean code, animation, and more, plus svg-forge listed from its own repo. Installable via /plugin marketplace.",
          "date": "June 2026",
          "status": "active",
-         "version": "5.7.0",
+         "version": "5.7.1",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -1092,7 +1092,7 @@
          "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stability AI, Luma, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
          "date": "April 2026",
          "status": "active",
-         "version": "0.6.0",
+         "version": "0.7.1",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
