@@ -4,7 +4,7 @@ import { ArrowRight, X } from "lucide-react";
 import { TEXT_SECONDARY, GLASS_BORDER, DURATION } from "@/constants/theme";
 import useFocusTrap from "@hooks/useFocusTrap";
 import useScrollLock from "@hooks/useScrollLock";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 import { fillTemplate } from "@utils/fillTemplate";
 import type { NavSection } from "./Nav";
 

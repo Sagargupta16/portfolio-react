@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.22.4] - 2026-11-02
+
+The first load is 12.7 kB smaller (5.4 kB gzipped). The nav, the hero and the fixed controls read a few fields of `personal.json`, `ui.json` and `sections.json`, and a JSON import always lands whole, so the entry chunk carried the copy of every lazy section too: About, Stats, the footer, the command palette, the CV viewer and every section's headings. Measured on the production build in Chrome, every text node and accessible name on the page matches the previous build at 1280px, and the first screen and the phone menu match at 375px.
+
+### Performance
+
+- **The first screen ships only the copy it shows.** A build-time plugin (`copyShellPlugin.js`) slices the fields the entry reads (name, role, hero copy, nav labels and blurbs, skip link, loading and error states, the motion control) out of the three files and serves them as `virtual:copy-shell`, read through `@data/copyShell`; the hero's latest line reads it too. The lazy sections keep importing the full files through `@data/personal`, `@data/ui` and `@data/sections`, which now load with them. The entry chunk fell from 99.44 kB (34.94 kB gzip) to 86.71 kB (29.50 kB gzip). The fields are listed once in `copyShellSlices.ts` and the shell types come from that list, so an entry module that reads a field left out fails type-check.
+- **A guard keeps it that way.** The build fails if the entry chunk, or a chunk it imports statically, carries the full `personal.json`, `ui.json` or `sections.json` again.
+
 ## [4.22.3] - 2026-11-01
 
 A review of the whole repo found issues that a visitor, a crawler or the data pipeline could hit. This release fixes them. The repo checks pass, and the affected flows were checked in a headless browser at phone and desktop widths.

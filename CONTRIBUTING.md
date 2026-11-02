@@ -60,6 +60,8 @@ The page entry points match these sections:
 
 Content flows from `data/*.json` through typed getters in `src/data/` into page sections and layout components. Keep editable portfolio content in JSON and import the relevant domain module, such as `@data/projects`.
 
+Modules in the entry chunk (`App.tsx`, the nav, the hero, the intro splash and the fixed controls) import `@data/copyShell` instead of `@data/personal`, `@data/ui` or `@data/sections`. It holds only the fields listed in [copyShellSlices.ts](src/data/copyShellSlices.ts), which `copyShellPlugin.js` slices out of the JSON at build time, so a new field the first screen shows goes into that list; type-check fails if an entry module reads a field the list leaves out, and the build fails if the entry pulls in one of the full files.
+
 `App.tsx` assembles the hero, sections, footer, and providers. `DeferredSection` owns each section's stable anchor and loading/error boundary. `PageSection` supplies the section heading, spacing, and entrance animation. Navigation loads the sections before its destination and then scrolls to the stable anchor.
 
 Keep components used by one section beside that section. Put reusable UI in `src/components/`, shared behavior in `src/hooks/`, and pure helpers or icon registries in `src/utils/`. Shared components, hooks, utilities, and data modules must not import from `src/pages/`; ESLint checks this boundary.

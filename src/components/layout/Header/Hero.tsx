@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
 import ErrorBoundary from "@components/common/ErrorBoundary";
 import { MEDIA_QUERIES } from "@/constants/theme";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 import useMediaQuery from "@hooks/useMediaQuery";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import usePauseOffscreen, { SECTION_MARGIN } from "@hooks/usePauseOffscreen";

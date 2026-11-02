@@ -22,7 +22,7 @@ import useMotionPreference from "@hooks/useMotionPreference";
 import useLenisOnDemand from "@hooks/useLenisOnDemand";
 import { CONTENT_SECTIONS } from "@/constants/sections";
 import { MEDIA_QUERIES } from "@/constants/theme";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 
 const LENIS_OPTIONS = {
    lerp: 0.1,

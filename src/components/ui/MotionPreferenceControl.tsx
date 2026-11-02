@@ -10,7 +10,7 @@ import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
 import useScrolledPast from "@hooks/useScrolledPast";
 import type { MotionPreference } from "@hooks/motionPreferenceContext";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 import { fillTemplate } from "@utils/fillTemplate";
 
 // On phones the control would sit on the hero CTAs at the fold, so it waits

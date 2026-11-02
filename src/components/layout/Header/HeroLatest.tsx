@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { getHeroLatest } from "@data/heroLatest";
-import { getUiCopy, newTabLabel } from "@data/ui";
+import { getUiCopy, newTabLabel } from "@data/copyShell";
 import { fillTemplate } from "@utils/fillTemplate";
 import { MONO_FONT, TEXT_MUTED } from "@/constants/theme";
 import useBreakpoint from "@hooks/useBreakpoint";

@@ -1,4 +1,4 @@
-import { getSectionCopy } from "@data/sections";
+import { getSectionCopy } from "@data/copyShell";
 
 /* Page order. News sits near the end: the hero's LATEST line already
    surfaces the newest item at the top, so the full feed comes after the work.

@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.22.3-2563eb)
+![Version](https://img.shields.io/badge/version-4.22.4-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -200,7 +200,7 @@ All portfolio content lives in JSON files under `data/` at the project root:
 | `annotations.json`  | "How it's built" pin titles and bodies, keyed by the pin ids in `src/constants/annotations.ts`               |
 | `contact.json`      | Contact options + EmailJS config                                                                             |
 
-Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. It also requires a heading in `sections.json` for every section registered in `src/constants/sections.ts`, in page order and with at most one `*accent*` word; only known `{name}` placeholders in the Stats tile notes; a label for every skill category; a unique service `key` registered in `ServiceAnimation.tsx`; one glossary term per matched phrase; an `annotations.json` entry for every pin id; a valid IANA `personal.timezone`; project dates in the "September 2026" form; and demo copy (`projects.json` `demos`) for every demo in `demoRegistry.ts`. Existing text and metadata can usually be updated in JSON alone. Adding or removing a project also requires a matching cover registration; follow the [project editing recipe](CONTRIBUTING.md#add-or-remove-a-project).
+Domain modules under `src/data/` expose typed getters without forcing every JSON file into the initial bundle. The entry chunk reads the few fields of `personal.json`, `ui.json` and `sections.json` it shows from `@data/copyShell`, a slice the build makes (`src/data/copyShellPlugin.js`), and the build fails if a full file lands in it again. `scripts/validate-data.js` enforces required fields, unique IDs and URLs, status/date rules, consistent repository stars, credential fields, and exact project-cover parity. It also requires a heading in `sections.json` for every section registered in `src/constants/sections.ts`, in page order and with at most one `*accent*` word; only known `{name}` placeholders in the Stats tile notes; a label for every skill category; a unique service `key` registered in `ServiceAnimation.tsx`; one glossary term per matched phrase; an `annotations.json` entry for every pin id; a valid IANA `personal.timezone`; project dates in the "September 2026" form; and demo copy (`projects.json` `demos`) for every demo in `demoRegistry.ts`. Existing text and metadata can usually be updated in JSON alone. Adding or removing a project also requires a matching cover registration; follow the [project editing recipe](CONTRIBUTING.md#add-or-remove-a-project).
 
 Each project sets a `status` (`active`, `beta` or `complete`) by hand. For active and beta projects, `scripts/sync-live-data.js` keeps `version` current every week: it takes the higher of the latest release tag and the root manifest version, and writes it only when it is higher than the stored one. A project whose live link is an npm package page shows the registry's latest published version instead, since that is what the link installs.
 

@@ -5,7 +5,7 @@ import useMotionPreference from "@hooks/useMotionPreference";
 import useScrolledPast from "@hooks/useScrolledPast";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import { BLUE_LIGHT, DURATION, EASING, GLASS_BORDER } from "@/constants/theme";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 
 const SCROLL_THRESHOLD_PX = 500;
 

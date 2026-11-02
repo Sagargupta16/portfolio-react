@@ -7,7 +7,7 @@ import {
    TEXT_PRIMARY,
    TEXT_SECONDARY,
 } from "@/constants/theme";
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 
 interface ErrorBoundaryProps {
    children: ReactNode;

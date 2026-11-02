@@ -1,4 +1,4 @@
-import { getUiCopy } from "@data/ui";
+import { getUiCopy } from "@data/copyShell";
 import { fillTemplate } from "@utils/fillTemplate";
 
 interface SectionLoaderProps {
