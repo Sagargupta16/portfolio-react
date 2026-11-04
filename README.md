@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.22.5-2563eb)
+![Version](https://img.shields.io/badge/version-4.23.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -50,7 +50,7 @@ Section links support reloads and browser history. Navigation loads the content 
 | **Hero**         | Logo tile, status badge, data-driven introduction, latest project and upstream contribution                                                                                                                                                       |
 | **About**        | Character reveal, highlight cards with jargon tooltips, quick-facts band                                                                                                                                                                          |
 | **Experience**   | Timeline of roles, each with an animated scene of what that role did; details modal with case-study briefs and a scene per engagement                                                                                                             |
-| **Education**    | Academic timeline with SVG institution logos, CGPA counters and accessible achievement disclosures                                                                                                                                                |
+| **Education**    | Academic timeline on the same card as Experience: institution logos, a CGPA label with rolling digits, coursework chips and accessible achievement disclosures                                                                                    |
 | **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (154 primary skills (174 with the three secondary rails); static chips in Reduced)                                                                            |
 | **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; repo-accurate animated cover scenes for every project; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
 | **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                              |

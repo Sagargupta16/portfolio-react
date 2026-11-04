@@ -41,6 +41,7 @@
       "title": "Education",
       "subtitle": "NIT Warangal (MCA), DAVV (BCA)",
       "blurb": "NIT Warangal MCA and coursework",
+      "card": { "cgpa": "CGPA" },
       "extras": {
          "achievements_one": "{count} achievement",
          "achievements_many": "{count} achievements"

@@ -513,6 +513,7 @@ const SECTION_EXTRAS = {
       },
    },
    education: {
+      card: { cgpa: [] },
       extras: { achievements_one: ["count"], achievements_many: ["count"] },
    },
    projects: {

@@ -80,6 +80,8 @@ The hero's rotating line comes from `hero_taglines` in [data/personal.json](data
 
 Experience and education logos are mapped in [orgLogos.tsx](src/utils/orgLogos.tsx), with local images in `src/assets/logos/`. Updating this mapping updates both the cards and experience detail headers.
 
+Experience, Positions of Responsibility and Education render one card: [TimelineEntry.tsx](src/components/ui/TimelineEntry.tsx) lays out the row (date column, node, card; the dates go on top on phones) and [EntryHeader.tsx](src/components/ui/EntryHeader.tsx) the logo, name, label, title and supporting lines, with chips and bullets in [EntryDetails.tsx](src/components/ui/EntryDetails.tsx). Change the card there so the three lists stay alike; each section passes only its content (a role's scene, a degree's CGPA).
+
 The personal Maker mark uses [maker.json](src/assets/brand/maker.json) for its shared drawing and colors. Render it with [MakerMark.tsx](src/components/ui/MakerMark.tsx); only the hero enables expressions. After editing the drawing, run `pnpm brand:icons` to refresh the browser and app icons. See the [brand notes](src/assets/brand/README.md) for sizes and motion behavior.
 
 ### Add or remove a project

@@ -591,6 +591,7 @@ export interface SectionCopyMap extends Record<string, SectionCopy> {
       };
    };
    education: SectionCopy & {
+      card: { cgpa: string };
       extras: { achievements_one: string; achievements_many: string };
    };
    projects: SectionCopy & {

@@ -8,6 +8,8 @@ interface Props {
    duration?: number;
    /** One step smaller, for counters set three across on a phone. */
    compact?: boolean;
+   /** Take the size and colour of the text around it, for a value in a label. */
+   inline?: boolean;
 }
 
 const isDigit = (ch: string | undefined) =>
@@ -53,6 +55,7 @@ const AnimatedCounter = ({
    value,
    duration = 2,
    compact = false,
+   inline = false,
 }: Readonly<Props>) => {
    const ref = useRef<HTMLSpanElement>(null);
    const { reducedMotion } = useMotionPreference();
@@ -82,13 +85,18 @@ const AnimatedCounter = ({
    // Short suffixes ("+", "k") read as part of the number; long ones
    // (" merged + 12 open") are annotations and shrink so they don't dominate.
    const suffixIsAnnotation = suffix.trim().length > 2;
+   const affix = inline ? undefined : "text-accent-cyan/70";
 
    return (
       <span
          ref={ref}
-         className={`font-mono ${compact ? "text-2xl" : "text-3xl"} font-bold text-accent-cyan tabular-nums`}
+         className={
+            inline
+               ? "tabular-nums"
+               : `font-mono ${compact ? "text-2xl" : "text-3xl"} font-bold text-accent-cyan tabular-nums`
+         }
       >
-         {prefix && <span className="text-accent-cyan/70">{prefix}</span>}
+         {prefix && <span className={affix}>{prefix}</span>}
          <NumberFlow
             value={shown}
             animated={!reducedMotion}
@@ -104,7 +112,7 @@ const AnimatedCounter = ({
          />
          {suffix && (
             <span
-               className="text-accent-cyan/70"
+               className={affix}
                style={
                   suffixIsAnnotation
                      ? { fontSize: "0.5em", fontWeight: 600 }

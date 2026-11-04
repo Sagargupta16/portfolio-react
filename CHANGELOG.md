@@ -2,7 +2,23 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
-## [4.22.5] - 2026-11-02
+## [4.23.0] - 2026-11-05
+
+Experience, Positions of Responsibility and Education now share one card, so the three timelines read as one family. Checked on the production build at 1280px and 375px, including a resize across the phone breakpoint and a live Full/Reduced switch.
+
+### Changed
+
+- **One card for Experience and Education.** Both sections render the same row (`TimelineEntry`: date column, node, card, with the dates on top on phones) and the same head (`EntryHeader`: logo, name, label, title, supporting lines). The two cards used to disagree in 12 places: the logo, the name, the role or degree line, the right side of the card, the employment label, body text, the indent, chips, the expand control, the place format, the phone card and the phone date row. The Experience details view is unchanged.
+- **Logos.** Every organisation sits on the same 40px near-white tile Education already used, so the AWS and Ikarus marks match the school crests.
+- **Type.** Names are 18px (16px on phones) in both sections, the role or degree line 15px (14px) in sky, and body text 13px like Projects. Lines under a name now start exactly under it; in both sections they sat 2px to the right.
+- **Labels.** The employment type and the CGPA share one slot: right of the name on desktop, under the title on phones. The CGPA is a labelled pill ("CGPA 8.38", label in `sections.json`) instead of an unlabelled 30px number in a green box, and its digits still roll in. On desktop the role titles fit on one line again: the inline label had pushed "ProServe (Cloud Consultant) - DevOps/MLOps" onto two.
+- **Colour.** The Education rail, nodes and start dates use the same blue as Experience, and achievements open in that blue instead of amber, which stays with LeetCode. Chips are one size in every list and always shown: the Positions of Responsibility chips moved out of the Responsibilities disclosure, which gains an icon like the achievements one.
+- **Places** read City, Country everywhere ("Warangal, India"); the two Positions of Responsibility entries gained "India" in `experience.json`.
+- **Phones.** Both sections use the normal rounded card, without the 3px coloured edge (Education's curved with its corners), and the same date row: start date in blue, end date dimmed, place on the right.
+
+### Dependencies
+
+- @tailwindcss/vite and tailwindcss 4.3.4, lucide-react 1.67.0, @vitejs/plugin-react 6.2.1, vitest 5.1.0, globals 17.14.0, pdf-to-img 7.0.2 and rimraf 6.1.4; `pnpm outdated` now lists nothing. pnpm/action-setup is pinned to v6.1.1, which adds pnpm 12 support; every other workflow action was already on its latest release. TypeScript is unchanged: `tsc` already runs 7.0.2, the latest release, and the 6.0.2 alias stays for typescript-eslint, whose latest release (8.72.1) supports TypeScript below 6.1 only.
 
 ### Fixed
 

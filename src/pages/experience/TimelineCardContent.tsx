@@ -1,11 +1,12 @@
 import type { CSSProperties } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Building2, ListChecks } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
-import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import Disclosure from "@components/ui/Disclosure";
+import EntryHeader, { EntryMeta } from "@components/ui/EntryHeader";
+import { EntryBullets, EntryChips } from "@components/ui/EntryDetails";
+import { ENTRY_INDENT } from "@components/ui/entryStyles";
 import { getSectionCopy } from "@data/sections";
 import { fillTemplate } from "@utils/fillTemplate";
-import CompanyHeader from "./CompanyHeader";
 import TimelineCardScene from "./TimelineCardScene";
 
 const COPY = getSectionCopy("experience");
@@ -23,7 +24,7 @@ const TimelineCardContent = ({
    isMobile,
    onClick,
 }: TimelineCardContentProps) => {
-   const ml = isMobile ? 0 : 38;
+   const ml = isMobile ? 0 : ENTRY_INDENT;
    const hasDetail =
       ("projects" in item && (item.projects?.length ?? 0) > 0) ||
       ("internal_contributions" in item &&
@@ -32,16 +33,18 @@ const TimelineCardContent = ({
    // The role's own scene, so the work shows before any click.
    const roleScene = "scene" in item ? item.scene : undefined;
    const header = (
-      <CompanyHeader
-         item={item}
-         accentColor={accentColor}
+      <EntryHeader
+         org={item.company}
+         title={item.title}
+         meta={item.position ? <EntryMeta>{item.position}</EntryMeta> : null}
+         lines={item.summary ? [item.summary] : []}
+         fallbackIcon={Building2}
          isMobile={isMobile}
-         marginLeft={ml}
       />
    );
 
-   const content = (
-      <>
+   return (
+      <div>
          {roleScene ? (
             <TimelineCardScene
                header={header}
@@ -53,78 +56,32 @@ const TimelineCardContent = ({
             header
          )}
          {"description" in item && (
-            <div style={{ marginLeft: ml, marginTop: 12 }}>
-               <Disclosure
-                  label={COPY.card.responsibilities}
-                  accentColor={accentColor}
-               >
-                  <ul
-                     style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 6,
-                        color: TEXT_SECONDARY,
-                        fontSize: 12,
-                        lineHeight: 1.7,
-                     }}
+            <>
+               {item.skills.length > 0 && (
+                  <EntryChips
+                     items={item.skills}
+                     accentColor={accentColor}
+                     style={{ marginLeft: ml, marginTop: 12 }}
+                  />
+               )}
+               <div style={{ marginLeft: ml, marginTop: 12 }}>
+                  <Disclosure
+                     accentColor={accentColor}
+                     label={
+                        <>
+                           <ListChecks size={14} aria-hidden="true" />
+                           {COPY.card.responsibilities}
+                        </>
+                     }
                   >
-                     {Object.values(item.description).map((detail) => (
-                        <li
-                           key={detail}
-                           style={{
-                              display: "flex",
-                              alignItems: "flex-start",
-                              gap: 8,
-                           }}
-                        >
-                           <span
-                              style={{
-                                 width: 5,
-                                 height: 5,
-                                 borderRadius: "50%",
-                                 background: `${accentColor}80`,
-                                 marginTop: 8,
-                                 flexShrink: 0,
-                              }}
-                           />
-                           {detail}
-                        </li>
-                     ))}
-                  </ul>
-                  <div
-                     style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: 4,
-                        marginTop: 10,
-                     }}
-                  >
-                     {item.skills.map((skill) => (
-                        <span
-                           key={skill}
-                           style={{
-                              padding: "2px 7px",
-                              borderRadius: 6,
-                              color: accentColor,
-                              background: `${accentColor}0D`,
-                              border: `1px solid ${accentColor}20`,
-                              fontFamily: MONO_FONT,
-                              fontSize: 11,
-                           }}
-                        >
-                           {skill}
-                        </span>
-                     ))}
-                  </div>
-               </Disclosure>
-            </div>
+                     <EntryBullets
+                        items={Object.values(item.description)}
+                        accentColor={accentColor}
+                     />
+                  </Disclosure>
+               </div>
+            </>
          )}
-      </>
-   );
-
-   return (
-      <div>
-         {content}
          {hasDetail && onClick && (
             <button
                type="button"

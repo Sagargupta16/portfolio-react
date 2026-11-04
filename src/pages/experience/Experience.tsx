@@ -6,9 +6,10 @@ import { staggerContainer, fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import TimelineSpine from "@components/ui/TimelineSpine";
+import TimelineEntry from "@components/ui/TimelineEntry";
 import { BLUE_LIGHT, SKY, MAX_WIDTH_NARROW } from "@/constants/theme";
 import type { ProfessionalExperience } from "@/types";
-import TimelineCard from "./TimelineCard";
+import TimelineCardContent from "./TimelineCardContent";
 import ExperienceModal from "./ExperienceModal";
 
 const Experience = () => {
@@ -35,13 +36,20 @@ const Experience = () => {
                   count={experienceArray.length}
                >
                   {experienceArray.map((item) => (
-                     <TimelineCard
+                     <TimelineEntry
                         key={item.id}
-                        item={item}
+                        date={item.date}
+                        location={item.location}
                         accentColor={BLUE_LIGHT}
                         isMobile={isMobile}
-                        onClick={() => setSelectedExp(item)}
-                     />
+                     >
+                        <TimelineCardContent
+                           item={item}
+                           accentColor={BLUE_LIGHT}
+                           isMobile={isMobile}
+                           onClick={() => setSelectedExp(item)}
+                        />
+                     </TimelineEntry>
                   ))}
                </TimelineSpine>
             </motion.div>
@@ -64,12 +72,19 @@ const Experience = () => {
                         count={positionsArray.length}
                      >
                         {positionsArray.map((item) => (
-                           <TimelineCard
+                           <TimelineEntry
                               key={item.id}
-                              item={item}
+                              date={item.date}
+                              location={item.location}
                               accentColor={SKY}
                               isMobile={isMobile}
-                           />
+                           >
+                              <TimelineCardContent
+                                 item={item}
+                                 accentColor={SKY}
+                                 isMobile={isMobile}
+                              />
+                           </TimelineEntry>
                         ))}
                      </TimelineSpine>
                   </motion.div>
