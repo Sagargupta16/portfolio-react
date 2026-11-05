@@ -25,6 +25,7 @@
       },
       "card": {
          "responsibilities": "Responsibilities",
+         "skills": "Skills",
          "present": "Present",
          "active_role": "Currently active role"
       },
@@ -41,7 +42,7 @@
       "title": "Education",
       "subtitle": "NIT Warangal (MCA), DAVV (BCA)",
       "blurb": "NIT Warangal MCA and coursework",
-      "card": { "cgpa": "CGPA" },
+      "card": { "cgpa": "CGPA", "coursework": "Coursework" },
       "extras": {
          "achievements_one": "{count} achievement",
          "achievements_many": "{count} achievements"

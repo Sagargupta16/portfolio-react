@@ -4,6 +4,7 @@ import { TEXT_MUTED, BLUE_LIGHT, DURATION, EASING } from "@/constants/theme";
 import { waveCascadeContainer, waveCascadeItem } from "@utils/animations";
 import type { ProfessionalExperience } from "@/types";
 import { getSectionCopy } from "@data/sections";
+import useBreakpoint from "@hooks/useBreakpoint";
 import ModalProjectCard from "./ModalProjectCard";
 import ModalContributions from "./ModalContributions";
 
@@ -15,6 +16,10 @@ interface ModalContentProps {
 }
 
 const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
+   const { isTablet } = useBreakpoint();
+   // Desktop uses the wide dialog: two engagements a row, or one engagement
+   // with its scene beside the text; below desktop everything stacks.
+   const wide = !isMobile && !isTablet;
    const projects = experience.projects ?? [];
    const contributions = experience.internal_contributions ?? [];
    const achievements = experience.internal_achievements ?? [];
@@ -36,9 +41,27 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
    return (
       <div style={{ padding: isMobile ? "16px 14px 24px" : "20px 24px 28px" }}>
          {/* Projects */}
-         {projects.map((proj, i) => (
-            <ModalProjectCard key={proj.name} project={proj} index={i} />
-         ))}
+         <div
+            style={{
+               display: "grid",
+               gridTemplateColumns:
+                  wide && projects.length > 1
+                     ? "repeat(2, minmax(0, 1fr))"
+                     : "minmax(0, 1fr)",
+               alignItems: "start",
+               gap: 20,
+               marginBottom: projects.length > 0 ? 20 : 0,
+            }}
+         >
+            {projects.map((proj, i) => (
+               <ModalProjectCard
+                  key={proj.name}
+                  project={proj}
+                  index={i}
+                  row={wide && projects.length === 1}
+               />
+            ))}
+         </div>
 
          {/* Internal Contributions */}
          <ModalContributions
@@ -46,6 +69,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
             items={contributions}
             baseDelay={contribDelay}
             variant="contributions"
+            columns={wide ? 2 : 1}
          />
 
          {/* Internal Achievements */}
@@ -54,6 +78,7 @@ const ModalContent = ({ experience, isMobile }: ModalContentProps) => {
             items={achievements}
             baseDelay={achieveDelay}
             variant="achievements"
+            columns={wide ? 2 : 1}
          />
 
          {/* Key Skills */}

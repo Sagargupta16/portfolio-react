@@ -503,7 +503,7 @@ const SECTION_EXTRAS = {
          details: [],
          details_label: ["company"],
       },
-      card: { responsibilities: [], present: [], active_role: [] },
+      card: { responsibilities: [], skills: [], present: [], active_role: [] },
       modal: {
          close: [],
          contributions: [],
@@ -513,7 +513,7 @@ const SECTION_EXTRAS = {
       },
    },
    education: {
-      card: { cgpa: [] },
+      card: { cgpa: [], coursework: [] },
       extras: { achievements_one: ["count"], achievements_many: ["count"] },
    },
    projects: {

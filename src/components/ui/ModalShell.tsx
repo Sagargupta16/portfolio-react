@@ -20,6 +20,8 @@ interface ModalShellProps {
    isMobile: boolean;
    /** ID of the h1/h2/h3 that names this dialog for screen readers. */
    titleId: string;
+   /** Desktop width cap; phones always take the full width. */
+   maxWidth?: number;
    children: ReactNode;
 }
 
@@ -68,6 +70,7 @@ const ModalShell = ({
    dialogRef,
    isMobile,
    titleId,
+   maxWidth = 720,
    children,
 }: ModalShellProps) => {
    const dragControls = useDragControls();
@@ -163,7 +166,7 @@ const ModalShell = ({
                   style={{
                      position: "relative",
                      width: "100%",
-                     maxWidth: isMobile ? "100%" : 720,
+                     maxWidth: isMobile ? "100%" : maxWidth,
                      maxHeight: isMobile ? "calc(100dvh - 28px)" : "85dvh",
                      // Phones scroll an inner region so the grab handle
                      // stays put above the content.

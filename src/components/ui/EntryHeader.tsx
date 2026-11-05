@@ -4,19 +4,20 @@ import { SKY, TEXT_PRIMARY } from "@/constants/theme";
 import { getOrgLogo } from "@utils/orgLogos";
 import { ENTRY_INDENT, ENTRY_TEXT, LOGO_GAP, LOGO_TILE } from "./entryStyles";
 
-// Crests and wordmarks are full colour, so every tile is the same near-white
-// plate: the reds, greens and blues stay readable on the near-black canvas,
-// and a company logo sits on the same tile as a school crest.
+// The flat dark tile of the floating stack tiles: one fill step above the
+// card and a hairline edge, the mark in its own colours. Marks that need a
+// light field carry it themselves (the NITW shield, the DAVV and Kids Garden
+// seals); a lockup too wide or dark for the tile has a tile cut of its own
+// (src/assets/logos/README.md).
 const LOGO_SIZE = 30;
-// Wide marks (the Ikarus and Happy Days lockups) shrink to fit the tile.
-const LOGO_MAX_WIDTH = LOGO_TILE - 4;
+const LOGO_MAX_WIDTH = LOGO_TILE - 8;
 
 const TILE: CSSProperties = {
    width: LOGO_TILE,
    height: LOGO_TILE,
    borderRadius: 12,
-   background: "rgb(var(--ch-white) / 0.92)",
-   border: "1px solid rgb(var(--ch-white) / 0.12)",
+   background: "rgb(var(--ch-white) / 0.04)",
+   border: "1px solid rgb(var(--ch-white) / 0.08)",
    display: "flex",
    alignItems: "center",
    justifyContent: "center",
@@ -40,7 +41,7 @@ interface EntryHeaderProps {
    org: string;
    /** Role or degree. */
    title: string;
-   /** An EntryMeta: right of the name on desktop, after the title on phones. */
+   /** An EntryMeta: right of the name on desktop, under the title on phones. */
    meta?: ReactNode;
    /** Supporting lines under the title (a summary, a department, a board). */
    lines?: string[];
@@ -49,7 +50,10 @@ interface EntryHeaderProps {
    isMobile: boolean;
 }
 
-/** Logo, name, title and supporting lines: the head of every timeline card. */
+/**
+ * Logo, name, title and supporting lines: the head of every timeline card,
+ * on the project cards' type scale (20px title, 14px summary).
+ */
 const EntryHeader = ({
    org,
    title,
@@ -72,10 +76,11 @@ const EntryHeader = ({
                style={{
                   flex: 1,
                   minWidth: 0,
-                  fontSize: isMobile ? 16 : 18,
+                  fontSize: isMobile ? 18 : 20,
                   fontWeight: 700,
+                  lineHeight: 1.3,
+                  letterSpacing: "-0.02em",
                   color: TEXT_PRIMARY,
-                  lineHeight: 1.25,
                }}
             >
                {org}
@@ -93,7 +98,7 @@ const EntryHeader = ({
                alignItems: "center",
                columnGap: 8,
                rowGap: 6,
-               marginTop: 8,
+               marginTop: isMobile ? 10 : 4,
                marginLeft: indent,
             }}
          >
@@ -113,7 +118,7 @@ const EntryHeader = ({
          {lines.map((line) => (
             <p
                key={line}
-               style={{ ...ENTRY_TEXT, marginTop: 6, marginLeft: indent }}
+               style={{ ...ENTRY_TEXT, marginTop: 8, marginLeft: indent }}
             >
                {line}
             </p>

@@ -1,66 +1,35 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
 import type { EngagementSceneKey } from "@/types";
-import { GLASS_BORDER } from "@/constants/theme";
 import EngagementScene from "./scenes/EngagementScene";
 
 interface TimelineCardSceneProps {
-   /** The card's company, title and summary block. */
-   header: ReactNode;
    scene: EngagementSceneKey;
    tint: string;
-   isMobile: boolean;
+   /** Below desktop the scene is a strip across the top of the card. */
+   stacked: boolean;
 }
 
-const FRAME: CSSProperties = {
-   borderRadius: 12,
-   border: `1px solid ${GLASS_BORDER}`,
-};
-
-// Desktop: a 16:10 thumbnail beside the summary; it wraps below the text on
-// narrow tablets instead of squeezing it.
-const ROW: CSSProperties = {
-   display: "flex",
-   flexWrap: "wrap",
-   alignItems: "flex-start",
-   gap: 20,
-};
-const TEXT: CSSProperties = { flex: "1 1 280px", minWidth: 0 };
-const THUMB: CSSProperties = {
-   ...FRAME,
-   flex: "0 0 264px",
-   aspectRatio: "16 / 10",
-};
-
-// Phones: full width under the summary, capped so the card stays short.
+// Desktop: the card's right column, edge to edge like the service art, at
+// least as tall as a 16:10 frame of the column. Below desktop: a strip on top,
+// like a project cover, capped so the card stays short.
+const COLUMN: CSSProperties = { flex: 1, width: "100%", minHeight: 212 };
 const STRIP: CSSProperties = {
-   ...FRAME,
    width: "100%",
-   marginTop: 12,
    aspectRatio: "16 / 9",
-   maxHeight: 140,
+   maxHeight: 180,
 };
 
-/** The role's scene on its collapsed timeline card. */
+/** The role's scene on its timeline card. */
 const TimelineCardScene = ({
-   header,
    scene,
    tint,
-   isMobile,
-}: Readonly<TimelineCardSceneProps>) => {
-   if (isMobile) {
-      return (
-         <>
-            {header}
-            <EngagementScene scene={scene} tint={tint} style={STRIP} />
-         </>
-      );
-   }
-   return (
-      <div style={ROW}>
-         <div style={TEXT}>{header}</div>
-         <EngagementScene scene={scene} tint={tint} style={THUMB} />
-      </div>
-   );
-};
+   stacked,
+}: Readonly<TimelineCardSceneProps>) => (
+   <EngagementScene
+      scene={scene}
+      tint={tint}
+      style={stacked ? STRIP : COLUMN}
+   />
+);
 
 export default TimelineCardScene;

@@ -11,8 +11,8 @@ import useMotionPreference from "@hooks/useMotionPreference";
 
 // Desktop timeline row: date column, track column, card. Cards lay their grid
 // out with these so the rail lands exactly under their nodes.
-export const TIMELINE_DATE_COLUMN = 160;
-export const TIMELINE_TRACK_COLUMN = 40;
+export const TIMELINE_DATE_COLUMN = 176;
+export const TIMELINE_TRACK_COLUMN = 48;
 
 const RAIL_WIDTH = 2;
 const NODE_SIZE = 16;

@@ -20,3 +20,7 @@ export const isPresent = (range: string): boolean => {
    const { end } = splitDateRange(range);
    return end?.trim().toLowerCase() === "present";
 };
+
+/** "September 2021 - July 2024" -> "Sep 2021 - Jul 2024": month names cut to three letters. */
+export const shortMonths = (range: string): string =>
+   range.replaceAll(/\b([A-Z][a-z]{2})[a-z]+(?= \d{4})/g, "$1");

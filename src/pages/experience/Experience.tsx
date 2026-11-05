@@ -6,8 +6,7 @@ import { staggerContainer, fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import TimelineSpine from "@components/ui/TimelineSpine";
-import TimelineEntry from "@components/ui/TimelineEntry";
-import { BLUE_LIGHT, SKY, MAX_WIDTH_NARROW } from "@/constants/theme";
+import { BLUE_LIGHT, SKY, MAX_WIDTH } from "@/constants/theme";
 import type { ProfessionalExperience } from "@/types";
 import TimelineCardContent from "./TimelineCardContent";
 import ExperienceModal from "./ExperienceModal";
@@ -27,7 +26,7 @@ const Experience = () => {
          id="experience"
          title={title}
          subtitle={subtitle}
-         maxWidth={MAX_WIDTH_NARROW}
+         maxWidth={MAX_WIDTH}
       >
          <LayoutGroup>
             <motion.div variants={staggerContainer}>
@@ -36,20 +35,13 @@ const Experience = () => {
                   count={experienceArray.length}
                >
                   {experienceArray.map((item) => (
-                     <TimelineEntry
+                     <TimelineCardContent
                         key={item.id}
-                        date={item.date}
-                        location={item.location}
+                        item={item}
                         accentColor={BLUE_LIGHT}
                         isMobile={isMobile}
-                     >
-                        <TimelineCardContent
-                           item={item}
-                           accentColor={BLUE_LIGHT}
-                           isMobile={isMobile}
-                           onClick={() => setSelectedExp(item)}
-                        />
-                     </TimelineEntry>
+                        onClick={() => setSelectedExp(item)}
+                     />
                   ))}
                </TimelineSpine>
             </motion.div>
@@ -72,19 +64,12 @@ const Experience = () => {
                         count={positionsArray.length}
                      >
                         {positionsArray.map((item) => (
-                           <TimelineEntry
+                           <TimelineCardContent
                               key={item.id}
-                              date={item.date}
-                              location={item.location}
+                              item={item}
                               accentColor={SKY}
                               isMobile={isMobile}
-                           >
-                              <TimelineCardContent
-                                 item={item}
-                                 accentColor={SKY}
-                                 isMobile={isMobile}
-                              />
-                           </TimelineEntry>
+                           />
                         ))}
                      </TimelineSpine>
                   </motion.div>

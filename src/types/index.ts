@@ -581,7 +581,12 @@ export interface SectionCopyMap extends Record<string, SectionCopy> {
          details: string;
          details_label: string;
       };
-      card: { responsibilities: string; present: string; active_role: string };
+      card: {
+         responsibilities: string;
+         skills: string;
+         present: string;
+         active_role: string;
+      };
       modal: {
          close: string;
          contributions: string;
@@ -591,7 +596,7 @@ export interface SectionCopyMap extends Record<string, SectionCopy> {
       };
    };
    education: SectionCopy & {
-      card: { cgpa: string };
+      card: { cgpa: string; coursework: string };
       extras: { achievements_one: string; achievements_many: string };
    };
    projects: SectionCopy & {
