@@ -1,56 +1,72 @@
-import { BookOpen } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import type { Education } from "@/types";
-import { TEXT_MUTED } from "@/constants/theme";
-import EducationCardHeader from "./EducationCardHeader";
+import useBreakpoint from "@hooks/useBreakpoint";
+import AnimatedCounter from "@components/ui/AnimatedCounter";
+import EntryHeader, { EntryMeta } from "@components/ui/EntryHeader";
+import { EntryChipList } from "@components/ui/EntryDetails";
+import TimelineEntry from "@components/ui/TimelineEntry";
+import { getSectionCopy } from "@data/sections";
 import ExpandableExtras from "./ExpandableExtras";
+
+const COPY = getSectionCopy("education").card;
 
 interface EducationCardContentProps {
    item: Education;
+   accentColor: string;
    isMobile: boolean;
 }
 
+/**
+ * One degree or class on the Education timeline, on the same card as a role:
+ * the coursework in the card's list column, the achievements under the head.
+ */
 const EducationCardContent = ({
    item,
+   accentColor,
    isMobile,
 }: EducationCardContentProps) => {
-   const ml = isMobile ? 0 : 50;
+   const { isTablet } = useBreakpoint();
+   const lines = [item.department, item.board, item.field].filter(
+      (line): line is string => Boolean(line),
+   );
 
    return (
-      <>
-         <EducationCardHeader item={item} isMobile={isMobile} marginLeft={ml} />
-
-         {/* Board / Field / Department */}
-         {(item.board || item.field || item.department) && (
-            <div style={{ marginLeft: ml, marginTop: 4 }}>
-               {item.department && (
-                  <p
-                     style={{
-                        color: TEXT_MUTED,
-                        fontSize: 12,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 4,
-                     }}
-                  >
-                     <BookOpen size={12} style={{ flexShrink: 0 }} />
-                     {item.department}
-                  </p>
-               )}
-               {item.board && (
-                  <p style={{ color: TEXT_MUTED, fontSize: 12, marginTop: 3 }}>
-                     {item.board}
-                  </p>
-               )}
-               {item.field && (
-                  <p style={{ color: TEXT_MUTED, fontSize: 12, marginTop: 3 }}>
-                     {item.field}
-                  </p>
-               )}
-            </div>
-         )}
-
-         <ExpandableExtras item={item} marginLeft={ml} />
-      </>
+      <TimelineEntry
+         date={item.date}
+         location={item.location}
+         accentColor={accentColor}
+         isMobile={isMobile}
+         aside={
+            item.skills.length > 0 ? (
+               <EntryChipList
+                  label={COPY.coursework}
+                  items={item.skills}
+                  padded={!(isMobile || isTablet)}
+               />
+            ) : undefined
+         }
+         footer={
+            (item.achievements?.length ?? 0) > 0 ? (
+               <ExpandableExtras item={item} accentColor={accentColor} />
+            ) : undefined
+         }
+      >
+         <EntryHeader
+            org={item.institution}
+            title={item.title}
+            meta={
+               item.cgpa ? (
+                  <EntryMeta>
+                     {COPY.cgpa}
+                     <AnimatedCounter value={item.cgpa} inline />
+                  </EntryMeta>
+               ) : null
+            }
+            lines={lines}
+            fallbackIcon={GraduationCap}
+            isMobile={isMobile}
+         />
+      </TimelineEntry>
    );
 };
 

@@ -2,13 +2,14 @@
 
 These images are used beside the corresponding experience and education records.
 
-| Asset                    | Source                                                                                          | Preparation                                                                       |
-| ------------------------ | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `ikarus3d.webp`          | [Ikarus 3D header logo](https://d3cv7syas17klq.cloudfront.net/miscellaneous/Header_Logo_D.webp) | Crop the blue symbol from the supplied header logo and resize to 192 pixels wide. |
-| `nitw.svg`               | Hand-built vector redraw of the NIT Warangal crest (reference below)                            | Simplified trace, text converted to outlines, optimized with SVGO.                |
-| `davv.svg`               | Hand-built vector redraw of the Devi Ahilya Vishwavidyalaya seal (reference below)              | Simplified trace, text converted to outlines, optimized with SVGO.                |
-| `happy-days-school.svg`  | The school's own vector logo (reference below)                                                  | Vector paths copied out of the school's PDF, optimized with SVGO.                 |
-| `kids-garden-school.svg` | Vector trace of the Kids Garden School, Shivpuri emblem (reference below)                       | Traced color layers, motto typeset as outlines, optimized with SVGO.              |
+| Asset                        | Source                                                                                          | Preparation                                                                                                                                                                                                                    |
+| ---------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ikarus3d.webp`              | [Ikarus 3D header logo](https://d3cv7syas17klq.cloudfront.net/miscellaneous/Header_Logo_D.webp) | Crop the blue symbol from the supplied header logo and resize to 192 pixels wide.                                                                                                                                              |
+| `nitw.svg`                   | Hand-built vector redraw of the NIT Warangal crest (reference below)                            | Simplified trace, text converted to outlines, optimized with SVGO.                                                                                                                                                             |
+| `davv.svg`                   | Hand-built vector redraw of the Devi Ahilya Vishwavidyalaya seal (reference below)              | Simplified trace, text converted to outlines, optimized with SVGO.                                                                                                                                                             |
+| `happy-days-school.svg`      | The school's own vector logo (reference below)                                                  | Vector paths copied out of the school's PDF, optimized with SVGO.                                                                                                                                                              |
+| `kids-garden-school.svg`     | Vector trace of the Kids Garden School, Shivpuri emblem (reference below)                       | Traced color layers, motto typeset as outlines, optimized with SVGO.                                                                                                                                                           |
+| `happy-days-school-mark.svg` | Cut from `happy-days-school.svg` for the dark logo tile                                         | The rainbow emblem only (clouds, arcs, children, bird; shapes 0-7, 9, 10, 15-17 and 19 of the source, unchanged), viewBox cropped to it, the near-black detail (#1f1a17) recoloured #e9eef0. The full lockup stays the source. |
 
 All marks are trademarks of their institutions and appear here only to identify where the degrees and
 classes were completed.
@@ -50,5 +51,7 @@ glyph outlines in artwork).
 
 The old Kids Garden WebP was the logo of "Kids' Garden Primary School, Gaushala Road, Siwan" (Bihar),
 a different school, and is no longer used.
+
+Every mark sits on the same dark tile (a fill step above the card, hairline edge) since 4.23.0. A mark that is too wide or too dark for it gets a tile cut of its own, like the Happy Days rainbow, instead of a light plate.
 
 Register organization names in `src/utils/orgLogos.tsx`. Set `wide: true` for wide marks so they remain readable inside the existing icon frames.

@@ -2,6 +2,29 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.23.0] - 2026-11-05
+
+Experience, Positions of Responsibility and Education are rebuilt on one card that follows the project and service cards, at the full page width, and the Experience details view uses the wider screen. Checked on the production build at 1280px, 1024px and 375px, including a resize across the phone breakpoint and a live Full/Reduced switch.
+
+### Changed
+
+- **Full width.** Both sections use the 1152px column of About, Skills, Projects, Services and Achievements, so their headings and cards line up with the rest of the page (they sat in a 960px column).
+- **One card, built like the project and service cards.** Every role, position and degree renders the same row (`TimelineEntry`: date column, node, card; the dates go on top on phones) and the same head (`EntryHeader`). Art runs edge to edge in a tinted column on the right, like the service art: a role's scene, or for a position or degree its Skills or Coursework chips, so all nine cards have the same shape. Below 1024px the scene becomes a strip across the top, like a project cover, and the chips move into the card body. The cards take the project cards' 24px body (20px on phones), 20px titles, 14px summaries, neutral mono chips and the border light that follows the pointer. The two sections used to disagree in 12 places: the logo, the name, the role or degree line, the right side of the card, the employment label, body text, the indent, chips, the expand control, the place format, the phone card and the phone date row.
+- **Logos.** Every organisation sits on the dark 44px tile of the floating stack tiles instead of a white plate. The NITW, DAVV and Kids Garden marks carry their own light field; the Happy Days lockup is too wide and too dark for a tile, so the tile shows a cut of the school's own rainbow emblem (`happy-days-school-mark.svg`) with its dark detail lightened.
+- **Labels.** The employment type and the CGPA share one slot: right of the name on desktop, under the title on phones. The CGPA is a labelled pill ("CGPA 8.38", label in `sections.json`) instead of an unlabelled 30px number in a green box, and its digits still roll in. Role titles now fit on one line on desktop.
+- **Dates and places.** Months are cut to three letters ("Sep 2021"), the start date leads at 15px, and places read City, Country everywhere ("Warangal, India"); the two Positions of Responsibility entries gained "India" in `experience.json`.
+- **Colour.** The Education rail, nodes and start dates use the Experience blue, and achievements open in blue instead of amber, which stays with LeetCode. The Responsibilities disclosure gains an icon like the achievements one, and its bullets follow the service cards.
+- **Coursework.** Class X now lists its CBSE subjects (Mathematics, Science, History, Geography, Political Science, Economics, English, Sanskrit) and Class XII adds Physical Education and English Core to Physics, Chemistry and Mathematics, as in the CBSE schemes of studies for 2015-16 and 2017-18.
+- **Details view.** On desktop the Experience details dialog is up to 1024px wide (it was 720px): several engagements sit two to a row and a lone engagement spans the width, and the contributions and recognition lists use two columns. `ModalShell` takes a `maxWidth`; the project and CV dialogs keep 720px. On phones an engagement's date drops under its name instead of squeezing the name onto five lines.
+
+### Dependencies
+
+- @tailwindcss/vite and tailwindcss 4.3.4, lucide-react 1.67.0, @vitejs/plugin-react 6.2.1, vitest 5.1.0, globals 17.14.0, pdf-to-img 7.0.2 and rimraf 6.1.4; `pnpm outdated` now lists nothing. pnpm/action-setup is pinned to v6.1.1, which adds pnpm 12 support; every other workflow action was already on its latest release. TypeScript is unchanged: `tsc` already runs 7.0.2, the latest release, and the 6.0.2 alias stays for typescript-eslint, whose latest release (8.72.1) supports TypeScript below 6.1 only.
+
+### Fixed
+
+- **Skills no longer vanish after a motion switch.** Switching between Full and Reduced while the Skills section was already on screen left the chips invisible: Full to Reduced showed 0 of 46 chips in view, Reduced to Full 78 of 170. Each category reveals once when it scrolls in, and the layout it switches to (moving rails in Full, a wrapped grid in Reduced) mounted after that reveal and stayed hidden. The category is now keyed on its layout, so a switch remounts it and the new chips reveal; both directions show every chip (46 of 46, 170 of 170). The bug predates 4.22.3: the 4.22.2 build fails the same way.
+
 ## [4.22.4] - 2026-11-02
 
 The first load is 12.7 kB smaller (5.4 kB gzipped). The nav, the hero and the fixed controls read a few fields of `personal.json`, `ui.json` and `sections.json`, and a JSON import always lands whole, so the entry chunk carried the copy of every lazy section too: About, Stats, the footer, the command palette, the CV viewer and every section's headings. Measured on the production build in Chrome, every text node and accessible name on the page matches the previous build at 1280px, and the first screen and the phone menu match at 375px.

@@ -91,7 +91,7 @@ describe("accessible interactions", () => {
    });
 
    it("opens and closes education achievements with a native disclosure", () => {
-      render(<ExpandableExtras item={education} marginLeft={0} />);
+      render(<ExpandableExtras item={education} />);
       const disclosure = screen.getByRole("group") as HTMLDetailsElement;
       const trigger = disclosure.querySelector("summary")!;
       expect(trigger.textContent).toBe("1 achievement");
@@ -109,7 +109,7 @@ describe("accessible interactions", () => {
 
    it("keeps timeline headings outside the explicit Details control", () => {
       const onClick = vi.fn();
-      const { container } = render(
+      const { container } = renderWithMotion(
          <TimelineCardContent
             item={experience}
             accentColor={BLUE_LIGHT}

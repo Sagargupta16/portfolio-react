@@ -15,6 +15,8 @@ interface ModalContributionsProps {
    items: InternalContribution[];
    baseDelay: number;
    variant: "contributions" | "achievements";
+   /** Items per row: two in the wide desktop dialog. */
+   columns?: number;
 }
 
 const ModalContributions = ({
@@ -22,6 +24,7 @@ const ModalContributions = ({
    items,
    baseDelay,
    variant,
+   columns = 1,
 }: ModalContributionsProps) => {
    if (items.length === 0) return null;
 
@@ -56,8 +59,8 @@ const ModalContributions = ({
          </p>
          <div
             style={{
-               display: "flex",
-               flexDirection: "column",
+               display: "grid",
+               gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
                gap: 8,
             }}
          >

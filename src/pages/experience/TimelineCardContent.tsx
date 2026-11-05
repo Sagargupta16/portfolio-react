@@ -1,11 +1,13 @@
 import type { CSSProperties } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Building2, ListChecks } from "lucide-react";
 import type { ProfessionalExperience, PositionOfResponsibility } from "@/types";
-import { MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
+import useBreakpoint from "@hooks/useBreakpoint";
 import Disclosure from "@components/ui/Disclosure";
+import EntryHeader, { EntryMeta } from "@components/ui/EntryHeader";
+import { EntryBullets, EntryChipList } from "@components/ui/EntryDetails";
+import TimelineEntry from "@components/ui/TimelineEntry";
 import { getSectionCopy } from "@data/sections";
 import { fillTemplate } from "@utils/fillTemplate";
-import CompanyHeader from "./CompanyHeader";
 import TimelineCardScene from "./TimelineCardScene";
 
 const COPY = getSectionCopy("experience");
@@ -17,139 +19,100 @@ interface TimelineCardContentProps {
    onClick?: () => void;
 }
 
+/**
+ * One role or position on the Experience timeline: the role's scene in the
+ * card's art column, or a position's skills in its list column, and the
+ * responsibilities or View details under the head.
+ */
 const TimelineCardContent = ({
    item,
    accentColor,
    isMobile,
    onClick,
 }: TimelineCardContentProps) => {
-   const ml = isMobile ? 0 : 38;
+   const { isTablet } = useBreakpoint();
+   const stacked = isMobile || isTablet;
    const hasDetail =
       ("projects" in item && (item.projects?.length ?? 0) > 0) ||
       ("internal_contributions" in item &&
          (item.internal_contributions?.length ?? 0) > 0);
-
-   // The role's own scene, so the work shows before any click.
+   const showDetails = hasDetail && onClick;
    const roleScene = "scene" in item ? item.scene : undefined;
-   const header = (
-      <CompanyHeader
-         item={item}
-         accentColor={accentColor}
-         isMobile={isMobile}
-         marginLeft={ml}
-      />
-   );
+   const skills = "skills" in item ? item.skills : [];
+   const duties = "description" in item ? Object.values(item.description) : [];
 
-   const content = (
-      <>
-         {roleScene ? (
-            <TimelineCardScene
-               header={header}
-               scene={roleScene}
-               tint={accentColor}
-               isMobile={isMobile}
-            />
-         ) : (
-            header
-         )}
-         {"description" in item && (
-            <div style={{ marginLeft: ml, marginTop: 12 }}>
+   const footer =
+      duties.length > 0 || showDetails ? (
+         <>
+            {duties.length > 0 && (
                <Disclosure
-                  label={COPY.card.responsibilities}
                   accentColor={accentColor}
+                  label={
+                     <>
+                        <ListChecks size={14} aria-hidden="true" />
+                        {COPY.card.responsibilities}
+                     </>
+                  }
                >
-                  <ul
-                     style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 6,
-                        color: TEXT_SECONDARY,
-                        fontSize: 12,
-                        lineHeight: 1.7,
-                     }}
-                  >
-                     {Object.values(item.description).map((detail) => (
-                        <li
-                           key={detail}
-                           style={{
-                              display: "flex",
-                              alignItems: "flex-start",
-                              gap: 8,
-                           }}
-                        >
-                           <span
-                              style={{
-                                 width: 5,
-                                 height: 5,
-                                 borderRadius: "50%",
-                                 background: `${accentColor}80`,
-                                 marginTop: 8,
-                                 flexShrink: 0,
-                              }}
-                           />
-                           {detail}
-                        </li>
-                     ))}
-                  </ul>
-                  <div
-                     style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: 4,
-                        marginTop: 10,
-                     }}
-                  >
-                     {item.skills.map((skill) => (
-                        <span
-                           key={skill}
-                           style={{
-                              padding: "2px 7px",
-                              borderRadius: 6,
-                              color: accentColor,
-                              background: `${accentColor}0D`,
-                              border: `1px solid ${accentColor}20`,
-                              fontFamily: MONO_FONT,
-                              fontSize: 11,
-                           }}
-                        >
-                           {skill}
-                        </span>
-                     ))}
-                  </div>
+                  <EntryBullets items={duties} accentColor={accentColor} />
                </Disclosure>
-            </div>
-         )}
-      </>
-   );
+            )}
+            {showDetails && (
+               <button
+                  type="button"
+                  onClick={onClick}
+                  className="text-action"
+                  style={{ "--action-accent": accentColor } as CSSProperties}
+                  aria-label={fillTemplate(COPY.links.details_label, {
+                     company: item.company,
+                  })}
+               >
+                  {COPY.links.details}
+                  <ArrowRight
+                     size={16}
+                     className="action-arrow"
+                     aria-hidden="true"
+                  />
+               </button>
+            )}
+         </>
+      ) : undefined;
 
    return (
-      <div>
-         {content}
-         {hasDetail && onClick && (
-            <button
-               type="button"
-               onClick={onClick}
-               className="text-action"
-               style={
-                  {
-                     "--action-accent": accentColor,
-                     marginLeft: ml,
-                     marginTop: 4,
-                  } as CSSProperties
-               }
-               aria-label={fillTemplate(COPY.links.details_label, {
-                  company: item.company,
-               })}
-            >
-               {COPY.links.details}
-               <ArrowRight
-                  size={16}
-                  className="action-arrow"
-                  aria-hidden="true"
+      <TimelineEntry
+         date={item.date}
+         location={item.location}
+         accentColor={accentColor}
+         isMobile={isMobile}
+         media={
+            roleScene ? (
+               <TimelineCardScene
+                  scene={roleScene}
+                  tint={accentColor}
+                  stacked={stacked}
                />
-            </button>
-         )}
-      </div>
+            ) : undefined
+         }
+         aside={
+            !roleScene && skills.length > 0 ? (
+               <EntryChipList
+                  label={COPY.card.skills}
+                  items={skills}
+                  padded={!stacked}
+               />
+            ) : undefined
+         }
+         footer={footer}
+      >
+         <EntryHeader
+            org={item.company}
+            title={item.title}
+            meta={item.position ? <EntryMeta>{item.position}</EntryMeta> : null}
+            lines={item.summary ? [item.summary] : []}
+            fallbackIcon={Building2}
+            isMobile={isMobile}
+         />
+      </TimelineEntry>
    );
 };
 

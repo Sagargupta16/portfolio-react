@@ -4,6 +4,7 @@ import useBreakpoint from "@hooks/useBreakpoint";
 import useFocusTrap from "@hooks/useFocusTrap";
 import useScrollLock from "@hooks/useScrollLock";
 import ModalShell from "@components/ui/ModalShell";
+import { MAX_WIDTH_WIDE } from "@/constants/theme";
 import ModalHeader from "./ModalHeader";
 import ModalContent from "./ModalContent";
 
@@ -41,6 +42,8 @@ const ExperienceModal = ({ experience, onClose }: Props) => {
          dialogRef={dialogRef}
          isMobile={isMobile}
          titleId="experience-modal-title"
+         // Wide enough for two engagements side by side (ModalContent).
+         maxWidth={MAX_WIDTH_WIDE}
       >
          {experience && (
             <>

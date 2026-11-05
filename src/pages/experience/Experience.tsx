@@ -6,9 +6,9 @@ import { staggerContainer, fadeInUp } from "@utils/animations";
 import useBreakpoint from "@hooks/useBreakpoint";
 import PageSection from "@components/layout/PageSection";
 import TimelineSpine from "@components/ui/TimelineSpine";
-import { BLUE_LIGHT, SKY, MAX_WIDTH_NARROW } from "@/constants/theme";
+import { BLUE_LIGHT, SKY, MAX_WIDTH } from "@/constants/theme";
 import type { ProfessionalExperience } from "@/types";
-import TimelineCard from "./TimelineCard";
+import TimelineCardContent from "./TimelineCardContent";
 import ExperienceModal from "./ExperienceModal";
 
 const Experience = () => {
@@ -26,7 +26,7 @@ const Experience = () => {
          id="experience"
          title={title}
          subtitle={subtitle}
-         maxWidth={MAX_WIDTH_NARROW}
+         maxWidth={MAX_WIDTH}
       >
          <LayoutGroup>
             <motion.div variants={staggerContainer}>
@@ -35,7 +35,7 @@ const Experience = () => {
                   count={experienceArray.length}
                >
                   {experienceArray.map((item) => (
-                     <TimelineCard
+                     <TimelineCardContent
                         key={item.id}
                         item={item}
                         accentColor={BLUE_LIGHT}
@@ -64,7 +64,7 @@ const Experience = () => {
                         count={positionsArray.length}
                      >
                         {positionsArray.map((item) => (
-                           <TimelineCard
+                           <TimelineCardContent
                               key={item.id}
                               item={item}
                               accentColor={SKY}

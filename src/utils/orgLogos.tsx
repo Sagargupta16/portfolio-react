@@ -3,7 +3,8 @@ import { FaAws } from "react-icons/fa";
 import nitwLogo from "@assets/logos/nitw.svg";
 import davvLogo from "@assets/logos/davv.svg";
 import ikarusLogo from "@assets/logos/ikarus3d.webp";
-import happyDaysLogo from "@assets/logos/happy-days-school.svg";
+// The tile cut of the school logo: the rainbow emblem, lettering dropped (logos README).
+import happyDaysLogo from "@assets/logos/happy-days-school-mark.svg";
 import kidsGardenLogo from "@assets/logos/kids-garden-school.svg";
 
 const LOGO_IMAGES: Record<string, { src: string; wide?: boolean }> = {
