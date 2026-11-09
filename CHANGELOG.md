@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.23.1] - 2026-11-09
+
+Every piece of state that described one lifecycle with several flags now holds it in one value whose type lists the states, which fixes two screens that could show two states at once. Checked on the production build in Chrome with EmailJS, the CV files and the clipboard stubbed in the browser, so no message was sent.
+
+### Fixed
+
+- **A late send no longer leaves the timeout toast on the confirmation.** EmailJS cannot be aborted, so after 15 seconds the form says the send is taking too long and lets the request finish. When that request then went through, "Message sent!" appeared with the red "Sending is taking too long" toast still on screen (reproduced on 4.23.0 with a send answered after 18 seconds). The form's five flags (status, loading, toast, confirmation, sender name) are one `SendState` now (`src/pages/contact/sendState.ts`), and a late success replaces the error, toast included. Invalid email, dismissing the toast (the inline error clears 300 ms later), editing a field, a failed send, a fast send and "Send another message" behave as before.
+- **The CV toolbar no longer says "Loading..." for a loaded CV without a version.** The label read "still loading" from the version being missing. The manifest and cv.json are each a `LoadState` now, so a CV parsed without a version tag shows no label. A missing cv.json, a missing manifest and a page image that fails behave as before.
+
+### Changed
+
+- **One copy control.** The project link, the palette's email row and the footer's hold-to-copy share `useCopyFeedback` (`idle`, `copied`, `failed`, back to idle after the feedback), replacing two copies of the same timer code and the footer's `copied` and `failed` booleans. Measured with the clipboard allowed and blocked: same labels, same timings, and a blocked hold still empties the ring at once.
+- **One loading type.** `LoadState<T>` (`src/types/loadState.ts`) serves the CV viewer and the contribution heatmap, which had its own copy.
+- **Scene clock.** Its `decided` and `active` flags are one mode (`sampling`, `clock`, `frames`). On a screen running above 85 Hz the cover loops still update 60 times a second, and at 60 Hz they follow the display.
+- **CONTRIBUTING** says when state should be one typed value and when plain `useState` is right.
+
 ## [4.23.0] - 2026-11-05
 
 Experience, Positions of Responsibility and Education are rebuilt on one card that follows the project and service cards, at the full page width, and the Experience details view uses the wider screen. Checked on the production build at 1280px, 1024px and 375px, including a resize across the phone breakpoint and a live Full/Reduced switch.

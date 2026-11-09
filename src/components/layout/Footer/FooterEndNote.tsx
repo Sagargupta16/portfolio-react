@@ -5,6 +5,7 @@ import { getUiCopy } from "@data/ui";
 import { AMBER, GREEN, MONO_FONT, TEXT_SECONDARY } from "@/constants/theme";
 import useMotionPreference from "@hooks/useMotionPreference";
 import useBreakpoint from "@hooks/useBreakpoint";
+import useCopyFeedback, { type CopyResult } from "@hooks/useCopyFeedback";
 import AccentText from "@components/ui/AccentText";
 import { fillTemplate } from "@utils/fillTemplate";
 import SlideToContact from "./SlideToContact";
@@ -80,51 +81,31 @@ const useWebVitals = () => {
    return readings;
 };
 
-const holdLabel = (email: string, copied: boolean, failed: boolean) => {
-   if (copied) return COPY.copied;
-   if (failed) return COPY.copy_failed;
-   return fillTemplate(COPY.hold_copy, { email });
+const HOLD_LABEL: Record<CopyResult, string> = {
+   copied: COPY.copied,
+   failed: COPY.copy_failed,
 };
 
 const HoldToCopy = ({ email }: { email: string }) => {
    const { reducedMotion } = useMotionPreference();
    const progress = useMotionValue(0);
    const dashOffset = useTransform(progress, (p) => RING * (1 - p));
-   const [copied, setCopied] = useState(false);
-   const [failed, setFailed] = useState(false);
+   // The full ring stays up while "copied" shows, and empties as it ends.
+   const feedback = useCopyFeedback(1800, (ended) => {
+      if (ended === "copied") progress.set(0);
+   });
+   const copied = feedback.state === "copied";
    const runRef = useRef<ReturnType<typeof animate> | null>(null);
-   const resetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
    // Set when a hold copies, so the click that ends the same press does not
    // copy a second time.
    const heldRef = useRef(false);
 
-   useEffect(
-      () => () => {
-         runRef.current?.stop();
-         if (resetRef.current) clearTimeout(resetRef.current);
-      },
-      [],
-   );
+   useEffect(() => () => runRef.current?.stop(), []);
 
    const copy = async () => {
-      try {
-         await navigator.clipboard.writeText(email);
-      } catch {
-         // Permission refused, or no clipboard outside a secure context: say
-         // so and empty the ring, so the next hold can retry.
-         setFailed(true);
+      // A failed copy empties the ring at once, so the next hold can retry.
+      if ((await feedback.copy(email)) === "failed")
          animate(progress, 0, { duration: 0.2 });
-         if (resetRef.current) clearTimeout(resetRef.current);
-         resetRef.current = setTimeout(() => setFailed(false), 1800);
-         return;
-      }
-      setFailed(false);
-      setCopied(true);
-      if (resetRef.current) clearTimeout(resetRef.current);
-      resetRef.current = setTimeout(() => {
-         setCopied(false);
-         progress.set(0);
-      }, 1800);
    };
 
    const start = () => {
@@ -203,7 +184,11 @@ const HoldToCopy = ({ email }: { email: string }) => {
                }}
             />
          </svg>
-         <span aria-live="polite">{holdLabel(email, copied, failed)}</span>
+         <span aria-live="polite">
+            {feedback.state === "idle"
+               ? fillTemplate(COPY.hold_copy, { email })
+               : HOLD_LABEL[feedback.state]}
+         </span>
       </button>
    );
 };

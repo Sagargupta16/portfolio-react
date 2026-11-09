@@ -32,21 +32,23 @@ const STEP_MS = 1000 / 60;
 const HIGH_REFRESH_MS = 1000 / 85;
 const SAMPLE_FRAMES = 12;
 
-let decide: (active: boolean) => void = () => {};
-let active = false;
-let decided = false;
+/* sampling: the display rate is still being measured, and loops started now
+   keep Motion's frame loop; clock: a fast screen, loops share the 60 Hz
+   clock; frames: 85 Hz or less, loops keep Motion's frame loop for good. */
+type ClockMode = "sampling" | "clock" | "frames";
+let mode: ClockMode = "sampling";
+let decide: (useClock: boolean) => void = () => {};
 
 /* Resolves once the display rate is known; true means the clock is in use. */
 export const sceneClockReady = new Promise<boolean>((resolve) => {
-   decide = (value) => {
-      active = value;
-      decided = true;
-      resolve(value);
+   decide = (useClock) => {
+      mode = useClock ? "clock" : "frames";
+      resolve(useClock);
    };
 });
 
 /* True once the display is known to keep Motion's own frame loop. */
-export const isSceneClockOff = () => decided && !active;
+export const isSceneClockOff = () => mode === "frames";
 
 // The shortest gap between frames is the refresh interval; load jank only
 // makes gaps longer, which errs towards leaving Motion's loop in place.
@@ -141,4 +143,4 @@ const clockDriver: Driver = (update) => {
 
 /* `transition.driver` for every infinite scene loop. */
 export const sceneDriver: Driver = (update) =>
-   active ? clockDriver(update) : frameDriver(update);
+   mode === "clock" ? clockDriver(update) : frameDriver(update);

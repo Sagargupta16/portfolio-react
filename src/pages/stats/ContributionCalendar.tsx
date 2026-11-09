@@ -22,12 +22,10 @@ import {
    type CalendarSummary,
    type ContributionDay,
 } from "./calendarData";
+import { LOADING, type LoadState } from "@/types/loadState";
 import "./calendar.css";
 
-type LoadState =
-   | { status: "loading" }
-   | { status: "ready"; days: ContributionDay[] }
-   | { status: "error" };
+type Contributions = LoadState<ContributionDay[]>;
 
 /** pending: loaded but not yet on screen; wave: revealing; static: Reduced. */
 type Reveal = "pending" | "wave" | "static";
@@ -40,9 +38,9 @@ const SKELETON_KEYS = Array.from(
 );
 const TIP_GAP = 8;
 
-const initialState = (username: string): LoadState => {
-   const days = readCachedContributions(username);
-   return days ? { status: "ready", days } : { status: "loading" };
+const initialState = (username: string): Contributions => {
+   const data = readCachedContributions(username);
+   return data ? { status: "ready", data } : LOADING;
 };
 
 const revealFor = (reduced: boolean, inView: boolean): Reveal => {
@@ -92,7 +90,9 @@ const ContributionCalendar = ({
    username,
 }: Readonly<ContributionCalendarProps>) => {
    const { reducedMotion } = useMotionPreference();
-   const [state, setState] = useState<LoadState>(() => initialState(username));
+   const [state, setState] = useState<Contributions>(() =>
+      initialState(username),
+   );
    const [active, setActive] = useState<number | null>(null);
    const rootRef = useRef<HTMLDivElement>(null);
    const scrollerRef = useRef<HTMLDivElement>(null);
@@ -105,7 +105,7 @@ const ContributionCalendar = ({
       let live = true;
       loadContributions(username).then(
          (days) => {
-            if (live) setState({ status: "ready", days });
+            if (live) setState({ status: "ready", data: days });
          },
          (error: unknown) => {
             console.warn("GitHub contributions failed to load:", error);
@@ -118,7 +118,7 @@ const ContributionCalendar = ({
    }, [username, state.status]);
 
    const model = useMemo(
-      () => (state.status === "ready" ? buildCalendar(state.days) : null),
+      () => (state.status === "ready" ? buildCalendar(state.data) : null),
       [state],
    );
 

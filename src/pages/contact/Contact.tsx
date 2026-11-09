@@ -23,11 +23,7 @@ const Contact = () => {
    const {
       formRef,
       formData,
-      status,
-      isLoading,
-      toastVisible,
-      showConfirmation,
-      sentName,
+      send,
       handleChange,
       handleSubmit,
       dismissToast,
@@ -113,7 +109,7 @@ const Contact = () => {
             {/* Contact Form - Right Column */}
             <motion.div variants={rotateInUp}>
                <AnimatePresence mode="wait">
-                  {showConfirmation ? (
+                  {send.status === "sent" ? (
                      <motion.div
                         key="confirm"
                         initial={{ opacity: 0, y: 20 }}
@@ -123,7 +119,7 @@ const Contact = () => {
                      >
                         <SendConfirmation
                            onReset={resetConfirmation}
-                           senderName={sentName}
+                           senderName={send.name}
                         />
                      </motion.div>
                   ) : (
@@ -137,9 +133,13 @@ const Contact = () => {
                         <ContactForm
                            formRef={formRef}
                            formData={formData}
-                           isLoading={isLoading}
+                           isLoading={send.status === "sending"}
                            isMobile={isMobile}
-                           status={status}
+                           emailError={
+                              send.status === "error" && send.field === "email"
+                                 ? send.message
+                                 : ""
+                           }
                            onChange={handleChange}
                            onSubmit={handleSubmit}
                         />
@@ -148,9 +148,9 @@ const Contact = () => {
                </AnimatePresence>
 
                <Toast
-                  message={status.message || ""}
+                  message={send.status === "error" ? send.message : ""}
                   type="error"
-                  visible={toastVisible}
+                  visible={send.status === "error" && send.toast}
                   onClose={dismissToast}
                />
             </motion.div>

@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import {
    Calendar,
    Check,
@@ -9,6 +8,7 @@ import {
    FolderGit2,
 } from "lucide-react";
 import ModalHeaderShell from "@components/ui/ModalHeaderShell";
+import useCopyFeedback from "@hooks/useCopyFeedback";
 import useMediaQuery from "@hooks/useMediaQuery";
 import {
    TEXT_PRIMARY,
@@ -34,7 +34,6 @@ interface ProjectModalHeaderProps {
 
 const COPY = getSectionCopy("projects").modal;
 
-type CopyState = "idle" | "copied" | "failed";
 const COPY_FEEDBACK = {
    idle: { Icon: Link2, text: COPY.copy_link },
    copied: { Icon: Check, text: COPY.link_copied },
@@ -52,31 +51,12 @@ const COPY_HIT_AREA: React.CSSProperties = {
 /** Copies a link that reopens exactly this project's details. */
 const CopyLinkButton = ({ title }: { title: string }) => {
    const coarsePointer = useMediaQuery(MEDIA_QUERIES.coarse);
-   const [state, setState] = useState<CopyState>("idle");
-   const resetRef = useRef<ReturnType<typeof setTimeout> | undefined>(
-      undefined,
-   );
-   useEffect(() => () => clearTimeout(resetRef.current), []);
-
-   const copy = async () => {
-      let next: CopyState = "copied";
-      try {
-         await navigator.clipboard.writeText(
-            projectShareUrl(projectSlug(title)),
-         );
-      } catch {
-         // Permission refused, or no clipboard outside a secure context.
-         next = "failed";
-      }
-      setState(next);
-      clearTimeout(resetRef.current);
-      resetRef.current = setTimeout(() => setState("idle"), 1600);
-   };
-   const { Icon, text } = COPY_FEEDBACK[state];
+   const link = useCopyFeedback();
+   const { Icon, text } = COPY_FEEDBACK[link.state];
    return (
       <button
          type="button"
-         onClick={() => void copy()}
+         onClick={() => void link.copy(projectShareUrl(projectSlug(title)))}
          className="project-copy-link"
          style={{ position: "relative" }}
          aria-live="polite"

@@ -4,7 +4,7 @@ import useMotionPreference from "@hooks/useMotionPreference";
 import { getSectionCopy } from "@data/sections";
 import { passThroughTransform } from "@utils/animations";
 import { DURATION, EASING, TEXT_SECONDARY, RED } from "@/constants/theme";
-import type { FormData, Status } from "./contactConstants";
+import type { FormData } from "./contactConstants";
 import "./contact-form.css";
 
 const COPY = getSectionCopy("contact").form;
@@ -16,7 +16,9 @@ interface ContactFormProps {
    formData: FormData;
    isLoading: boolean;
    isMobile: boolean;
-   status: Status;
+   /** The only programmatic validation is the email-pattern check, so an
+    *  error about a field is always about the email; empty when none. */
+   emailError: string;
    onChange: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
    ) => void;
@@ -47,15 +49,11 @@ const ContactForm = ({
    formData,
    isLoading,
    isMobile,
-   status,
+   emailError,
    onChange,
    onSubmit,
 }: ContactFormProps) => {
    const { reducedMotion } = useMotionPreference();
-   // The only programmatic validation today is the email-pattern check, so an
-   // error status maps to the email field. Surface it inline + to AT.
-   const emailError =
-      status.type === "error" && status.field === "email" ? status.message : "";
    const hover = reducedMotion || isLoading ? undefined : HOVER;
    return (
       <form
