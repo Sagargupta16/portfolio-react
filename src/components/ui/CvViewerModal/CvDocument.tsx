@@ -1,4 +1,5 @@
 import {
+   useCallback,
    useEffect,
    useState,
    type Dispatch,
@@ -22,6 +23,7 @@ import {
    TEXT_MUTED,
    TEXT_SECONDARY,
 } from "@/constants/theme";
+import { LOADING, type LoadState } from "@/types/loadState";
 import CvWeb from "./CvWeb";
 import type { CvJson } from "./cvTypes";
 import "./cv-viewer.css";
@@ -59,45 +61,52 @@ const getJson = <T,>(url: string, signal: AbortSignal) =>
          : Promise.reject(new Error(`${r.status}`)),
    );
 
-/** Fetches the page manifest and the parsed CV once; aborts on unmount. */
+const load = <T,>(
+   url: string,
+   signal: AbortSignal,
+   set: (state: LoadState<T>) => void,
+) =>
+   getJson<T>(url, signal).then(
+      (data) => set({ status: "ready", data }),
+      (error: Error) => {
+         if (error.name !== "AbortError") set({ status: "error" });
+      },
+   );
+
+/** Fetches the page manifest and the parsed CV once; aborts on unmount.
+ *  A failed manifest, or a page image that will not load, fails the pages
+ *  view; a failed cv.json (older build, parse skipped) leaves the pages view
+ *  as all there is. */
 const useCvSources = () => {
-   const [manifest, setManifest] = useState<Manifest | null>(null);
-   const [cv, setCv] = useState<CvJson | null>(null);
-   const [cvMissing, setCvMissing] = useState(false);
-   const [failed, setFailed] = useState(false);
+   const [manifest, setManifest] = useState<LoadState<Manifest>>(LOADING);
+   const [cv, setCv] = useState<LoadState<CvJson>>(LOADING);
 
    useEffect(() => {
       const controller = new AbortController();
-      const { signal } = controller;
-      getJson<Manifest>(MANIFEST_URL, signal)
-         .then(setManifest)
-         .catch((error: Error) => {
-            if (error.name !== "AbortError") setFailed(true);
-         });
-      // Without cv.json (older build, parse skipped) the pages view is all there is.
-      getJson<CvJson>(CV_JSON_URL, signal)
-         .then(setCv)
-         .catch((error: Error) => {
-            if (error.name !== "AbortError") setCvMissing(true);
-         });
+      void load(MANIFEST_URL, controller.signal, setManifest);
+      void load(CV_JSON_URL, controller.signal, setCv);
       return () => controller.abort();
    }, []);
 
-   return { manifest, cv, cvMissing, failed, setFailed };
+   const failPages = useCallback(() => setManifest({ status: "error" }), []);
+
+   return { manifest, cv, failPages };
 };
 
 const statusLabelFor = (
    view: View,
-   cv: CvJson | null,
-   manifest: Manifest | null,
+   cv: LoadState<CvJson>,
+   manifest: LoadState<Manifest>,
 ) => {
-   if (view === "web" && cv?.version) return `${cv.version}`;
-   if (view === "pages" && manifest)
-      return fillTemplate(
-         manifest.pages === 1 ? COPY.pages_one : COPY.pages_many,
-         { count: manifest.pages },
-      );
-   return COPY.loading;
+   if (view === "web") {
+      // A CV parsed without a version tag shows no label, not "Loading".
+      return cv.status === "ready" ? (cv.data.version ?? "") : COPY.loading;
+   }
+   if (manifest.status !== "ready") return COPY.loading;
+   const { pages } = manifest.data;
+   return fillTemplate(pages === 1 ? COPY.pages_one : COPY.pages_many, {
+      count: pages,
+   });
 };
 
 interface ZoomControlsProps {
@@ -348,15 +357,18 @@ const CvPages = ({
 );
 
 const CvDocument = ({ isMobile, unavailable }: CvDocumentProps) => {
-   const { manifest, cv, cvMissing, failed, setFailed } = useCvSources();
+   const { manifest, cv, failPages } = useCvSources();
    const [view, setView] = useState<View>("web");
    const [zoomIdx, setZoomIdx] = useState(1);
 
    // A missing cv.json always lands on the pages view.
+   const cvMissing = cv.status === "error";
    const activeView: View = cvMissing ? "pages" : view;
-   const aspect = manifest ? manifest.width / manifest.height : 0.707;
+   const pages = manifest.status === "ready" ? manifest.data : null;
+   const aspect = pages ? pages.width / pages.height : 0.707;
 
-   if (failed && activeView === "pages") return unavailable;
+   if (manifest.status === "error" && activeView === "pages")
+      return unavailable;
 
    return (
       <div style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
@@ -370,14 +382,18 @@ const CvDocument = ({ isMobile, unavailable }: CvDocumentProps) => {
             setZoomIdx={setZoomIdx}
          />
          {activeView === "web" ? (
-            <CvWebView cv={cv} aspect={aspect} isMobile={isMobile} />
+            <CvWebView
+               cv={cv.status === "ready" ? cv.data : null}
+               aspect={aspect}
+               isMobile={isMobile}
+            />
          ) : (
             <CvPages
-               manifest={manifest}
+               manifest={pages}
                zoom={ZOOM_STEPS[zoomIdx]}
                aspect={aspect}
                isMobile={isMobile}
-               onError={() => setFailed(true)}
+               onError={failPages}
             />
          )}
       </div>

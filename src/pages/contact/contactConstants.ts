@@ -63,9 +63,3 @@ export interface FormData {
    email: string;
    message: string;
 }
-
-export interface Status {
-   type: "" | "error";
-   message: string;
-   field?: "email";
-}

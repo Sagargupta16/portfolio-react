@@ -66,6 +66,8 @@ Modules in the entry chunk (`App.tsx`, the nav, the hero, the intro splash and t
 
 Keep components used by one section beside that section. Put reusable UI in `src/components/`, shared behavior in `src/hooks/`, and pure helpers or icon registries in `src/utils/`. Shared components, hooks, utilities, and data modules must not import from `src/pages/`; ESLint checks this boundary.
 
+When state describes one lifecycle (loading, sending, copied), keep it in one value whose type lists every state, not in several booleans that must be kept in step by hand: two flags that should never both be true eventually are. A runtime fetch uses `LoadState<T>` from [loadState.ts](src/types/loadState.ts), a copy control uses [useCopyFeedback](src/hooks/useCopyFeedback.ts), and a lifecycle driven by several events gets a reducer beside its component, like the contact form's [sendState.ts](src/pages/contact/sendState.ts), whose header draws the transitions. Independent facts (a menu that is open, the active filter, a one-way "mounted" flag) stay plain `useState`.
+
 Use the existing import aliases (`@components`, `@pages`, `@hooks`, `@utils`, `@data`) across folders and relative imports within a feature. Aliases are defined in both [tsconfig.json](tsconfig.json) and [vite.config.js](vite.config.js).
 
 ## Common edits

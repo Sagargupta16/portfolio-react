@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Command } from "cmdk";
 import {
    ArrowUpRight,
@@ -17,6 +17,7 @@ import { getContactOptions } from "@data/contact";
 import { getResumeUrl, getSocialProfiles } from "@data/personal";
 import { getFeaturedProjects } from "@data/projects";
 import { getUiCopy } from "@data/ui";
+import useCopyFeedback, { type CopyState } from "@hooks/useCopyFeedback";
 import useMotionPreference from "@hooks/useMotionPreference";
 import useScrollLock from "@hooks/useScrollLock";
 import useSectionNavigation from "@hooks/useSectionNavigation";
@@ -34,7 +35,6 @@ import "./command-palette.css";
 const COPY = getUiCopy().palette;
 const ROWS = COPY.rows;
 
-type CopyState = "idle" | "copied" | "failed";
 const COPY_COMMAND: Record<CopyState, string> = {
    idle: ROWS.email.command,
    copied: ROWS.email.copied,
@@ -90,11 +90,7 @@ const CommandPalette = ({ open }: { open: boolean }) => {
    // Holds the page still behind the palette; the list scrolls itself
    // (data-lenis-prevent), since a stopped Lenis cancels every other wheel.
    useScrollLock(open);
-   const [copyState, setCopyState] = useState<CopyState>("idle");
-   const copyResetRef = useRef<ReturnType<typeof setTimeout> | undefined>(
-      undefined,
-   );
-   useEffect(() => () => clearTimeout(copyResetRef.current), []);
+   const emailCopy = useCopyFeedback();
    const annotationsOn = useAnnotationsOn();
    const contacts = getContactOptions();
    const email = contacts.find((c) => c.link.startsWith("mailto:"))?.value;
@@ -103,19 +99,6 @@ const CommandPalette = ({ open }: { open: boolean }) => {
    const go = (id: string) => {
       close();
       navigateToSection(id);
-   };
-
-   const copyEmail = async (address: string) => {
-      let next: CopyState = "copied";
-      try {
-         await navigator.clipboard.writeText(address);
-      } catch {
-         // Permission refused, or no clipboard outside a secure context.
-         next = "failed";
-      }
-      setCopyState(next);
-      clearTimeout(copyResetRef.current);
-      copyResetRef.current = setTimeout(() => setCopyState("idle"), 1600);
    };
 
    return (
@@ -171,10 +154,10 @@ const CommandPalette = ({ open }: { open: boolean }) => {
                {email && (
                   <Row
                      value={fillTemplate(ROWS.email.keywords, { email })}
-                     command={COPY_COMMAND[copyState]}
+                     command={COPY_COMMAND[emailCopy.state]}
                      hint={email}
                      icon={<Copy size={14} />}
-                     onSelect={() => void copyEmail(email)}
+                     onSelect={() => void emailCopy.copy(email)}
                   />
                )}
                <Row

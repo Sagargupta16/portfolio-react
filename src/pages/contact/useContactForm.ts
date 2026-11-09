@@ -1,8 +1,9 @@
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback, useEffect, useReducer } from "react";
 import emailjs from "@emailjs/browser";
 import { getEmailConfig } from "@data/contact";
 import { getSectionCopy } from "@data/sections";
-import type { FormData, Status } from "./contactConstants";
+import type { FormData } from "./contactConstants";
+import { IDLE, sendReducer } from "./sendState";
 
 const COPY = getSectionCopy("contact").form;
 
@@ -27,7 +28,7 @@ const useContactForm = () => {
    const formElementRef = useRef<HTMLFormElement>(null);
    // Armed by resetConfirmation, consumed the next time the form mounts. The
    // form only remounts after the confirmation's exit animation (AnimatePresence
-   // mode="wait"), so an effect keyed on showConfirmation would run while the
+   // mode="wait"), so an effect keyed on the "sent" state would run while the
    // form is still absent; the ref callback is the one hook that fires on mount.
    const focusFirstFieldOnMountRef = useRef(false);
    const formRef = useCallback((node: HTMLFormElement | null) => {
@@ -49,23 +50,16 @@ const useContactForm = () => {
       email: "",
       message: "",
    });
-   const [status, setStatus] = useState<Status>({ type: "", message: "" });
-   const [isLoading, setIsLoading] = useState(false);
-   const [toastVisible, setToastVisible] = useState(false);
-   const [showConfirmation, setShowConfirmation] = useState(false);
-   // Preserve the sender's name across the form reset so the success screen can
-   // still greet them -- formData is cleared in the same batch as showConfirmation.
-   const [sentName, setSentName] = useState("");
+   // One value for the whole lifecycle (sendState.ts). The sent state keeps
+   // the sender's name, so the confirmation still greets them after the
+   // fields are cleared.
+   const [send, dispatch] = useReducer(sendReducer, IDLE);
 
    // Success is shown via the SendConfirmation screen, not a toast, so the only
-   // toast path is errors. The toast is raised in the handlers alongside the
-   // error status (not via an effect mirroring status.type) and stays until the
-   // user dismisses it or edits a field -- no auto-dismiss timer.
+   // toast is an error's. It stays until the user dismisses it or edits a
+   // field -- no auto-dismiss timer.
    const showError = useCallback((message: string, field?: "email") => {
-      // A dismissal's pending clear must not wipe this newer error.
-      clearTimeout(clearTimerRef.current);
-      setStatus({ type: "error", message, field });
-      setToastVisible(true);
+      dispatch({ type: "fail", message, field });
    }, []);
 
    useEffect(() => () => clearTimeout(clearTimerRef.current), []);
@@ -74,10 +68,9 @@ const useContactForm = () => {
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
          const { name, value } = e.target;
          setFormData((prev) => ({ ...prev, [name]: value }));
-         if (status.message) setStatus({ type: "", message: "" });
-         if (toastVisible) setToastVisible(false);
+         dispatch({ type: "edit" });
       },
-      [status.message, toastVisible],
+      [],
    );
 
    const handleSubmit = useCallback(
@@ -102,17 +95,15 @@ const useContactForm = () => {
             }
          }
 
-         setIsLoading(true);
-         setStatus({ type: "", message: "" });
-         setToastVisible(false);
+         dispatch({ type: "submit" });
 
          const form = formElementRef.current;
          const senderName = formData.name;
-         let send = pendingSendRef.current;
-         if (!send) {
+         let request = pendingSendRef.current;
+         if (!request) {
             // The outcome is applied by the send itself, not by the race below,
             // so it still lands if the timer has already given up on it.
-            send = emailjs
+            request = emailjs
                .sendForm(
                   emailConfig.service_id,
                   emailConfig.template_id,
@@ -124,8 +115,7 @@ const useContactForm = () => {
                .then(
                   (result) => {
                      if (result.status === 200) {
-                        setSentName(senderName);
-                        setShowConfirmation(true);
+                        dispatch({ type: "sent", name: senderName });
                         setFormData({ name: "", email: "", message: "" });
                         form.reset();
                      } else {
@@ -139,44 +129,42 @@ const useContactForm = () => {
                .finally(() => {
                   pendingSendRef.current = null;
                });
-            pendingSendRef.current = send;
+            pendingSendRef.current = request;
          }
 
          try {
-            await withTimeout(send, SEND_TIMEOUT_MS);
+            await withTimeout(request, SEND_TIMEOUT_MS);
          } catch (error) {
             showError(
                error === SEND_TIMEOUT ? COPY.send_timeout : COPY.send_failed,
             );
          } finally {
-            setIsLoading(false);
+            dispatch({ type: "settle" });
          }
       },
       [emailConfig, formData.email, formData.name, showError],
    );
 
+   // The reducer only clears an error whose toast is already dismissed, so
+   // this timer cannot wipe a newer error.
    const dismissToast = useCallback(() => {
-      setToastVisible(false);
+      dispatch({ type: "dismiss" });
       clearTimeout(clearTimerRef.current);
       clearTimerRef.current = setTimeout(
-         () => setStatus({ type: "", message: "" }),
+         () => dispatch({ type: "clear" }),
          300,
       );
    }, []);
 
    const resetConfirmation = useCallback(() => {
       focusFirstFieldOnMountRef.current = true;
-      setShowConfirmation(false);
+      dispatch({ type: "reset" });
    }, []);
 
    return {
       formRef,
       formData,
-      status,
-      isLoading,
-      toastVisible,
-      showConfirmation,
-      sentName,
+      send,
       handleChange,
       handleSubmit,
       dismissToast,
