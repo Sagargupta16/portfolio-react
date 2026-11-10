@@ -1,5 +1,19 @@
 [
    {
+      "date": "2026-11-10",
+      "type": "community",
+      "text": "Accepted answer on mkshp-dev/obsidian-gallery-plugin: Can a gallery be displayed on an Obsidian Publish page?",
+      "link": "https://github.com/mkshp-dev/obsidian-gallery-plugin/discussions/225",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-10",
+      "type": "community",
+      "text": "Accepted answer on fastapicloud/support: Build failed uvloop 0.22.1",
+      "link": "https://github.com/fastapicloud/support/discussions/38",
+      "impact": "minor"
+   },
+   {
       "date": "2026-11-05",
       "type": "community",
       "text": "Accepted answer on LibreChat-AI/LibreChat: Restart of LibreChat in Docker resets MCP_SERVERS:Create permissions from true to false",
