@@ -316,9 +316,9 @@
          "top_percentage": "1.1%",
          "url": "https://leetcode.com/u/Sagargupta1610/",
          "solved_by_difficulty": {
-            "easy": 479,
-            "medium": 691,
-            "hard": 166
+            "easy": 480,
+            "medium": 692,
+            "hard": 168
          },
          "rating_history": [
             ["2022-02-13", 1435],
@@ -446,7 +446,7 @@
          "url": "https://github.com/Sagargupta16",
          "contributions": 8025,
          "pull_requests": 1903,
-         "longest_streak": 133,
+         "longest_streak": 126,
          "languages": [
             {
                "name": "TypeScript",
@@ -473,7 +473,7 @@
                "percent": 1.2
             }
          ],
-         "fetched": "2026-11-01"
+         "fetched": "2026-11-09"
       }
    }
 }

@@ -1,5 +1,19 @@
 [
    {
+      "date": "2026-11-05",
+      "type": "community",
+      "text": "Accepted answer on LibreChat-AI/LibreChat: Restart of LibreChat in Docker resets MCP_SERVERS:Create permissions from true to false",
+      "link": "https://github.com/LibreChat-AI/LibreChat/discussions/17816",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-04",
+      "type": "community",
+      "text": "Accepted answer on microsoft/vscode-discussions: node.js 24.22.1",
+      "link": "https://github.com/microsoft/vscode-discussions/discussions/3178",
+      "impact": "minor"
+   },
+   {
       "date": "2026-11-01",
       "type": "community",
       "text": "Accepted answer on community/community: GitHub Pages custom domain: InvalidDNSError and TLS certificate stuck in “new”",
