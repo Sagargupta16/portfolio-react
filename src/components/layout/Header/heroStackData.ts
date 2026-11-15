@@ -89,22 +89,25 @@ export const END_FADE = { start: 0.95, span: 0.04 } as const;
  * tile's furthest reach (edge + 44 tile + 5 drift + depth) is 81px. The
  * 1152px section column leaves less than that between 1280px and about
  * 1330px (61px at 1280px with a scrollbar), so StackFieldBackdrop pulls a
- * tile toward the screen edge there. Speeds differ so the flanks read as
- * layers at several depths.
+ * tile toward the screen edge there. The tiles on one side share one
+ * scroll speed and sit an even 0.14 of the band apart, so they keep their
+ * spacing as they recycle: tiles at different speeds in a 60px flank slid
+ * through each other. The sides differ in speed, and pointer depth still
+ * varies per tile, so the flanks keep their layered read.
  */
 export const FLANK_SLOTS: readonly FlankSlot[] = [
-   { side: "left", edge: 16, rest: 0.14, speed: 0.46, depth: 9, period: 11 },
-   { side: "right", edge: 20, rest: 0.2, speed: 0.24, depth: 5, period: 12 },
-   { side: "left", edge: 24, rest: 0.28, speed: 0.3, depth: 6, period: 13 },
-   { side: "right", edge: 14, rest: 0.34, speed: 0.5, depth: 10, period: 10 },
-   { side: "left", edge: 14, rest: 0.42, speed: 0.2, depth: 4, period: 14 },
-   { side: "right", edge: 24, rest: 0.48, speed: 0.36, depth: 7, period: 9 },
-   { side: "left", edge: 20, rest: 0.56, speed: 0.4, depth: 8, period: 12.5 },
-   { side: "right", edge: 16, rest: 0.62, speed: 0.22, depth: 5, period: 13.5 },
-   { side: "left", edge: 12, rest: 0.7, speed: 0.34, depth: 7, period: 9.5 },
-   { side: "right", edge: 22, rest: 0.76, speed: 0.44, depth: 9, period: 10.5 },
-   { side: "left", edge: 22, rest: 0.84, speed: 0.26, depth: 5, period: 11.5 },
-   { side: "right", edge: 12, rest: 0.87, speed: 0.32, depth: 6, period: 12.8 },
+   { side: "left", edge: 16, rest: 0.14, speed: 0.32, depth: 9, period: 11 },
+   { side: "right", edge: 20, rest: 0.2, speed: 0.38, depth: 5, period: 12 },
+   { side: "left", edge: 24, rest: 0.28, speed: 0.32, depth: 6, period: 13 },
+   { side: "right", edge: 14, rest: 0.34, speed: 0.38, depth: 10, period: 10 },
+   { side: "left", edge: 14, rest: 0.42, speed: 0.32, depth: 4, period: 14 },
+   { side: "right", edge: 24, rest: 0.48, speed: 0.38, depth: 7, period: 9 },
+   { side: "left", edge: 20, rest: 0.56, speed: 0.32, depth: 8, period: 12.5 },
+   { side: "right", edge: 16, rest: 0.62, speed: 0.38, depth: 5, period: 13.5 },
+   { side: "left", edge: 12, rest: 0.7, speed: 0.32, depth: 7, period: 9.5 },
+   { side: "right", edge: 22, rest: 0.76, speed: 0.38, depth: 9, period: 10.5 },
+   { side: "left", edge: 22, rest: 0.84, speed: 0.32, depth: 5, period: 11.5 },
+   { side: "right", edge: 12, rest: 0.9, speed: 0.38, depth: 6, period: 12.8 },
 ];
 
 export interface TileSize {

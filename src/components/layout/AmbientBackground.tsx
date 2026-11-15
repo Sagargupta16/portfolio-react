@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import type { Easing } from "motion/react";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { MAX_WIDTH } from "@/constants/theme";
 
 /**
  * Site-wide premium backdrop (aceternity/reactbits-style, CSS only):
@@ -9,7 +10,8 @@ import useMotionPreference from "@hooks/useMotionPreference";
  *   animates `transform` directly so Motion hands the loop to WAAPI and the
  *   compositor owns the layer while it runs: no will-change, no repaint.
  * - a faint dot lattice
- * - two diagonal light beams sweeping on long loops
+ * - two diagonal light beams sweeping on long loops, dimmed over the
+ *   content column
  * Fixed, behind everything, pointer-events none. Transform/opacity only.
  */
 const EASE_IN_OUT: Easing = "easeInOut";
@@ -32,6 +34,22 @@ const BEAM_SWEEP = [0, 14, 126, 140].map(beamAt);
 const glowStyle = {
    position: "absolute",
    borderRadius: "50%",
+} as const;
+
+/* The beams sweep the whole viewport, so on the scrolling page they crossed
+   card gaps, News rows and form fields. Over the content column (MAX_WIDTH)
+   they drop to 30%, ramping back to full strength over 80px past its edges,
+   so the flanks keep them. A static mask on the beams' wrapper: the sweeps
+   underneath still run on the compositor. */
+const COLUMN_HALF = MAX_WIDTH / 2;
+const COLUMN_RAMP = 80;
+const COLUMN_DIM = "rgb(0 0 0 / 0.3)";
+const BEAM_COLUMN_MASK = `linear-gradient(90deg, black 0, black calc(50% - ${COLUMN_HALF + COLUMN_RAMP}px), ${COLUMN_DIM} calc(50% - ${COLUMN_HALF}px), ${COLUMN_DIM} calc(50% + ${COLUMN_HALF}px), black calc(50% + ${COLUMN_HALF + COLUMN_RAMP}px), black 100%)`;
+const BEAMS_STYLE = {
+   position: "absolute",
+   inset: 0,
+   maskImage: BEAM_COLUMN_MASK,
+   WebkitMaskImage: BEAM_COLUMN_MASK,
 } as const;
 
 const AmbientBackground = () => {
@@ -125,60 +143,62 @@ const AmbientBackground = () => {
             transition={{ duration: 40, repeat: Infinity, ease: GLOW_EASE }}
          />
 
-         {/* Beam 1: thin diagonal light streak sweeping across */}
-         <motion.div
-            style={{
-               position: "absolute",
-               top: "-10%",
-               left: "-20%",
-               width: 1,
-               height: "130%",
-               background:
-                  "linear-gradient(180deg, transparent, rgb(var(--ch-blue-light) / 0.35) 30%, rgb(var(--ch-blue-light) / 0.35) 70%, transparent)",
-               rotate: BEAM_TILT,
-               transformOrigin: "top center",
-               opacity: reducedMotion ? 0 : undefined,
-            }}
-            animate={
-               reducedMotion
-                  ? undefined
-                  : { transform: BEAM_SWEEP, opacity: [0, 0.9, 0.9, 0] }
-            }
-            transition={{
-               duration: 14,
-               repeat: Infinity,
-               ease: "linear",
-               times: BEAM_TIMES,
-            }}
-         />
+         <div style={BEAMS_STYLE}>
+            {/* Beam 1: thin diagonal light streak sweeping across */}
+            <motion.div
+               style={{
+                  position: "absolute",
+                  top: "-10%",
+                  left: "-20%",
+                  width: 1,
+                  height: "130%",
+                  background:
+                     "linear-gradient(180deg, transparent, rgb(var(--ch-blue-light) / 0.35) 30%, rgb(var(--ch-blue-light) / 0.35) 70%, transparent)",
+                  rotate: BEAM_TILT,
+                  transformOrigin: "top center",
+                  opacity: reducedMotion ? 0 : undefined,
+               }}
+               animate={
+                  reducedMotion
+                     ? undefined
+                     : { transform: BEAM_SWEEP, opacity: [0, 0.9, 0.9, 0] }
+               }
+               transition={{
+                  duration: 14,
+                  repeat: Infinity,
+                  ease: "linear",
+                  times: BEAM_TIMES,
+               }}
+            />
 
-         {/* Beam 2: slower, fainter, offset phase */}
-         <motion.div
-            style={{
-               position: "absolute",
-               top: "-10%",
-               left: "-20%",
-               width: 1,
-               height: "130%",
-               background:
-                  "linear-gradient(180deg, transparent, rgb(var(--ch-sky) / 0.22) 30%, rgb(var(--ch-sky) / 0.22) 70%, transparent)",
-               rotate: BEAM_TILT,
-               transformOrigin: "top center",
-               opacity: reducedMotion ? 0 : undefined,
-            }}
-            animate={
-               reducedMotion
-                  ? undefined
-                  : { transform: BEAM_SWEEP, opacity: [0, 0.8, 0.8, 0] }
-            }
-            transition={{
-               duration: 21,
-               repeat: Infinity,
-               ease: "linear",
-               delay: 7,
-               times: BEAM_TIMES,
-            }}
-         />
+            {/* Beam 2: slower, fainter, offset phase */}
+            <motion.div
+               style={{
+                  position: "absolute",
+                  top: "-10%",
+                  left: "-20%",
+                  width: 1,
+                  height: "130%",
+                  background:
+                     "linear-gradient(180deg, transparent, rgb(var(--ch-sky) / 0.22) 30%, rgb(var(--ch-sky) / 0.22) 70%, transparent)",
+                  rotate: BEAM_TILT,
+                  transformOrigin: "top center",
+                  opacity: reducedMotion ? 0 : undefined,
+               }}
+               animate={
+                  reducedMotion
+                     ? undefined
+                     : { transform: BEAM_SWEEP, opacity: [0, 0.8, 0.8, 0] }
+               }
+               transition={{
+                  duration: 21,
+                  repeat: Infinity,
+                  ease: "linear",
+                  delay: 7,
+                  times: BEAM_TIMES,
+               }}
+            />
+         </div>
 
          {/* Vignette to keep edges near-black and text contrast high */}
          <div

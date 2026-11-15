@@ -600,7 +600,18 @@ const SECTION_EXTRAS = {
          send_failed: [],
          send_timeout: [],
       },
-      sent: { title: [], thanks: ["name"], again: [] },
+      sent: {
+         title: [],
+         thanks: ["name"],
+         again: [],
+         log: {
+            prompt: [],
+            command: [],
+            counting: [],
+            writing: [],
+            done: ["name"],
+         },
+      },
    },
 };
 // Single fields beyond the heading: section -> field -> placeholders.
