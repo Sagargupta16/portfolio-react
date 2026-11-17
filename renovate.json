@@ -1,7 +1,10 @@
 {
    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
    "extends": ["github>Sagargupta16/shared-workflows"],
+   "minimumReleaseAge": "3 days",
+   "vulnerabilityAlerts": { "minimumReleaseAge": null },
    "description": [
+      "A new npm release waits three days before Renovate proposes it, so a hijacked release is likely pulled before it can auto-merge; security fixes skip the wait.",
       "Repo-level exceptions to the shared preset. Each rule names the compatibility constraint it protects; remove the rule when the constraint clears.",
       "The TypeScript 7 compiler runs beside the TypeScript 6 API alias required by typescript-eslint. Override selectors stay protected from unsafe cross-major rewrites."
    ],

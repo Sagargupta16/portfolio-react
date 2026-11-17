@@ -2,7 +2,37 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
-## [4.24.0] - 2026-11-14
+## [4.24.1] - 2026-11-17
+
+A whole-repo bug hunt on 4.24.0 kept 45 findings after a refute pass; this release fixes the 40 that live in this repo, plus the two internship titles. The other five are repository settings, hosting headers, analytics consent, one teammate's link and the latex-resume count, which stay with their owners.
+
+### Fixed
+
+- **About quotes the synced numbers.** The About lines wrote 5 active AWS certifications, the 2166 peak, top 1.1%, 1800+ problems and 107 contests by hand, so they drifted from the Stats band after a sync. They are placeholders now (`{active_aws_certs}`, `{lc_peak}`, `{lc_top}`, `{problems_solved}`, `{lc_contests}`), filled from `data/achievements.json` by `scripts/lib/about-facts.js` on the page and in the machine view. A certification counts as active through its expiry day, so the count drops on its own when one lapses, and `pnpm validate:data` rejects an unknown placeholder.
+- **Internship titles say intern.** The AWS internship reads "Professional Services - Intern" (it was "Associate Professional Services - DevOps") and the Ikarus-3D one "Software Developer - Intern", on the Experience cards and in their News lines.
+- **Orrery has its Live link** (`sagargupta.online/orrery/`), so it also reaches the hero's latest line, and the icon count from its README (18,300).
+- **An edit after a slow send is no longer lost.** After the 15-second notice the fields stayed editable, so a changed message was never sent while the confirmation said it was. The fields are read-only until the request settles.
+- **Hold-to-copy from the keyboard.** A quick Enter or Space on the footer email did nothing; it copies at once now, like a click.
+- **Phones.** The command palette list stops above the on-screen keyboard. The error toast sits at the top instead of over the Send button. Long badge names show three lines on touch screens. News text on unlinked rows is no longer clamped, and clamped rows open on hover and keyboard focus. The News filter counts read at full muted contrast. The footer, status bar, About and compare-caption grids use `minmax(0, 1fr)` tracks.
+- **CV viewer.** Its fetches time out after 10 seconds instead of showing "Loading" forever.
+- **Data checks.** `pnpm validate:data` rejects impossible dates (2026-13-05, 2026-02-30) and a LeetCode record missing a field the tiles read.
+- **Live-data sync.** Every request times out after 20 seconds, an error status is reported before its body is parsed, an empty GitHub answer keeps the stored numbers instead of writing 0, each skipped source shows as a warning on the run, and accepted-answer news is dated by when the answer was accepted. A run of either sync that finds nothing new closes the stale sync PR and keeps its branch.
+- **CV build.** A failed download of the resume sources is retried once, then reported as a warning on the run instead of dropping the web view silently. A `\href` keeps its link only for an `https:` or `mailto:` target.
+
+### Security
+
+- Renovate waits 3 days before taking a new release; security fixes still land at once.
+- The deploy job's checkout no longer keeps the workflow token on disk.
+- The contact form passes EmailJS `blockHeadless` and a 10-second `limitRate`.
+
+### Changed
+
+- **Dependencies.** pnpm 12.21.0, now named only in `packageManager` (the workflows read it from there); `engines` asks for Node 26, which CI runs; jsdom 31, Vite 8.3.8, Motion 14.14.0, Tailwind 4.3.5, ESLint 10.15.0, typescript-eslint 8.72.2, lucide-react 1.73.0, Prettier 3.10.1, `@eslint-react/eslint-plugin` 5.30.3 and the remaining patch releases. `pnpm outdated` is empty.
+- **Tokens.** `--color-accent-cyan` and `--color-accent-purple` are `--color-accent-blue-light` and `--color-accent-sky`, the colours they held. Three hex literals use their tokens, and the Stats caption reuses `CAPTION_STYLE`.
+- **Code.** 12 exports with no importer are module-local, and `getCodingPlatformStats` returns one shared empty record.
+- **Docs.** README and the sync workflows describe the bot PR's CI as it runs now and the schedule as GitHub runs it (about twice a day). The 4.24.0 entry carries its release date.
+
+## [4.24.0] - 2026-11-17
 
 A polish pass over four of the plainest sections and two page-wide flaws. Checked on the production build at 375px and 1280px, in Full and Reduced; EmailJS was answered inside the browser, so no message was sent.
 

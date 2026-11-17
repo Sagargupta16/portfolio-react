@@ -14,7 +14,7 @@
 }
 
 .project-search {
-   --project-accent: var(--color-accent-cyan);
+   --project-accent: var(--color-accent-blue-light);
    display: flex;
    align-items: center;
    gap: 12px;
@@ -30,7 +30,7 @@
 }
 
 .project-search:focus-within {
-   border-color: var(--color-accent-cyan);
+   border-color: var(--color-accent-blue-light);
 }
 
 .project-search > svg {
@@ -567,11 +567,11 @@ html[data-motion="full"] .contribution-link:active {
 
 /* Status: Active is a solid blue dot, Beta a sky ring, Complete muted. */
 .evidence-badge--status-active {
-   --evidence-tint: #60a5fa;
+   --evidence-tint: rgb(var(--ch-blue-light));
 }
 
 .evidence-badge--status-beta {
-   --evidence-tint: #38bdf8;
+   --evidence-tint: rgb(var(--ch-sky));
 }
 
 .evidence-badge--status-beta .evidence-dot,
@@ -636,7 +636,7 @@ html:not([data-motion="reduced"]) .evidence-badge--live .evidence-dot::after {
 }
 
 .terminal-tab:focus-visible {
-   outline: 2px solid var(--color-accent-cyan);
+   outline: 2px solid var(--color-accent-blue-light);
    outline-offset: 1px;
 }
 
@@ -764,8 +764,12 @@ html:not([data-motion="reduced"]) .compare-slider:active .compare-knob {
 
 .compare-captions div {
    display: grid;
-   grid-template-columns: 52px 1fr;
+   grid-template-columns: 52px minmax(0, 1fr);
    gap: 8px;
+}
+
+.compare-captions dd {
+   overflow-wrap: anywhere;
 }
 
 .compare-captions dt {

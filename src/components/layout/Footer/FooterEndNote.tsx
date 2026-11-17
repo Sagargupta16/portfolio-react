@@ -14,9 +14,10 @@ import "./footer-end-note.css";
 const COPY = getUiCopy().footer;
 
 /* The end of the page, said plainly: an end-of-scroll line, a press-and-hold
-   control that copies his email (a ring fills while held; a plain click
-   copies at once), and "your visit, measured on you": this page's own Core Web
-   Vitals read live from the visitor's browser via web-vitals (lazy chunk).
+   control that copies his email (a ring fills while held; a plain click or
+   an Enter or Space press copies at once), and "your visit, measured on
+   you": this page's own Core Web Vitals read live from the visitor's
+   browser via web-vitals (lazy chunk).
    Ideas from warmnfuzzy.tv, mattjinn.com and jamiemckaye.com. */
 
 const HOLD_MS = 650;
@@ -148,13 +149,14 @@ const HoldToCopy = ({ email }: { email: string }) => {
          onPointerCancel={cancel}
          onKeyDown={(e) => {
             if (e.key !== "Enter" && e.key !== " ") return;
-            // Repeats too: a held key must not fire the button's own click,
-            // the hold does the copying.
+            // preventDefault stops the button's own click; a key press copies
+            // at once through the same path, and repeats are ignored.
             e.preventDefault();
-            if (!e.repeat) start();
-         }}
-         onKeyUp={(e) => {
-            if (e.key === "Enter" || e.key === " ") cancel();
+            if (e.repeat || copied) return;
+            heldRef.current = false;
+            runRef.current?.stop();
+            progress.set(1);
+            void copy();
          }}
          onContextMenu={(e) => e.preventDefault()}
       >
@@ -172,7 +174,7 @@ const HoldToCopy = ({ email }: { email: string }) => {
                cy="11"
                r="9"
                fill="none"
-               stroke="var(--color-accent-cyan)"
+               stroke="var(--color-accent-blue-light)"
                strokeWidth="2"
                strokeLinecap="round"
                strokeDasharray={RING}

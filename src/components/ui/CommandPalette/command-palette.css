@@ -45,7 +45,7 @@
    gap: 10px;
    padding: 14px 16px;
    border-bottom: 1px solid rgb(255 255 255 / 0.06);
-   color: var(--color-accent-cyan);
+   color: var(--color-accent-blue-light);
    font-family: var(--font-mono);
    font-size: 13px;
 }
@@ -81,6 +81,19 @@
    padding: 6px;
 }
 
+/* The on-screen keyboard covers the lower part of the viewport without
+   shrinking vh, so on touch screens the list is capped and the panel sits
+   higher, keeping the input and the results above the keyboard. */
+@media (pointer: coarse) {
+   .palette {
+      top: max(env(safe-area-inset-top), 8px);
+   }
+
+   .palette-list {
+      max-height: min(420px, 38dvh);
+   }
+}
+
 .palette-group [cmdk-group-heading] {
    padding: 10px 10px 6px;
    color: var(--color-text-muted);
@@ -107,7 +120,7 @@
 }
 
 .palette-item[data-selected="true"] .palette-command {
-   color: var(--color-accent-cyan);
+   color: var(--color-accent-blue-light);
 }
 
 .palette-icon {

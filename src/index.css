@@ -29,8 +29,8 @@
    --color-text-muted: #8a97a0;
 
    --color-accent-blue: #2563eb;
-   --color-accent-cyan: #60a5fa;
-   --color-accent-purple: #38bdf8;
+   --color-accent-blue-light: #60a5fa;
+   --color-accent-sky: #38bdf8;
 
    /* Easing curves; cinematic and standard match EASING in theme.ts. Named
       so they sit beside Tailwind ease-in, ease-out and ease-in-out instead of
@@ -143,7 +143,7 @@ body {
 
 /* Focus */
 :focus-visible {
-   outline: 2px solid var(--color-accent-cyan);
+   outline: 2px solid var(--color-accent-blue-light);
    outline-offset: 3px;
 }
 
@@ -303,7 +303,7 @@ html[data-motion="reduced"] .project-action:active {
    font-weight: 400;
    font-size: 1.08em;
    letter-spacing: -0.01em;
-   color: var(--color-accent-cyan);
+   color: var(--color-accent-blue-light);
    padding-inline-end: 0.04em;
 }
 
@@ -340,7 +340,7 @@ html[data-motion="reduced"] .project-action:active {
 
 .section-header-number {
    flex: none;
-   color: var(--color-accent-cyan);
+   color: var(--color-accent-blue-light);
    font-variant-numeric: tabular-nums;
    white-space: nowrap;
 }
@@ -452,13 +452,13 @@ html[data-motion="reduced"] .project-action:active {
 }
 
 .hero-latest-link:focus-visible {
-   color: var(--color-accent-cyan);
+   color: var(--color-accent-blue-light);
    text-decoration-color: currentColor;
 }
 
 @media (hover: hover) {
    .hero-latest-link:hover {
-      color: var(--color-accent-cyan);
+      color: var(--color-accent-blue-light);
       text-decoration-color: currentColor;
    }
 }
@@ -503,12 +503,12 @@ html[data-motion="reduced"] .project-action:active {
 }
 
 .mobile-nav-link[aria-current="location"] .mobile-nav-number {
-   color: var(--color-accent-cyan);
+   color: var(--color-accent-blue-light);
 }
 
 .mobile-nav-link > .action-arrow {
    margin-left: auto;
-   color: var(--color-accent-cyan);
+   color: var(--color-accent-blue-light);
 }
 
 /* ===== Flat Card (was glass-card) ===== */
@@ -775,7 +775,7 @@ html[data-motion="reduced"] .sagar-face {
 
 .annotations-trigger.is-on {
    color: var(--color-text-primary);
-   border-color: var(--color-accent-cyan);
+   border-color: var(--color-accent-blue-light);
    background: rgb(96 165 250 / 0.12);
 }
 
@@ -885,7 +885,7 @@ html[data-motion="reduced"] .sagar-face {
    border: 0;
    border-radius: 6px;
    background: transparent;
-   color: var(--action-accent, var(--color-accent-cyan));
+   color: var(--action-accent, var(--color-accent-blue-light));
    font-size: 13px;
    font-weight: 600;
    line-height: 1.5;
@@ -1027,7 +1027,7 @@ html[data-motion="reduced"] .sagar-face {
 
 .tag-purple {
    background: rgb(var(--ch-blue) / 0.12);
-   color: var(--color-accent-purple);
+   color: var(--color-accent-sky);
    border: 1px solid rgb(var(--ch-blue) / 0.2);
 }
 

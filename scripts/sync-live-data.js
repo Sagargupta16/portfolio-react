@@ -32,7 +32,12 @@
 import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { getJson, githubHeaders, latestRelease } from "./lib/github.js";
+import {
+   FETCH_TIMEOUT_MS,
+   getJson,
+   githubHeaders,
+   latestRelease,
+} from "./lib/github.js";
 import { mapPool } from "./lib/pool.js";
 import { writeJson } from "./lib/write-json.js";
 
@@ -62,8 +67,18 @@ const clean = (value) =>
    Array.from(String(value), (ch) => (isControl(ch) ? " " : ch))
       .join("")
       .slice(0, 300);
-const warn = (what, err) =>
-   console.warn(`skip ${clean(what)}: ${clean(err?.message ?? err)}`);
+// Also an Actions annotation, so a skipped source shows on the run summary;
+// the exit code stays 0 because the open-pr job needs a green sync job.
+const warn = (what, err) => {
+   const message = clean(err?.message ?? err);
+   console.warn(`skip ${clean(what)}: ${message}`);
+   console.log(
+      `::warning title=sync skip::${clean(what)}: ${message}`.replaceAll(
+         /[\r\n]+/g,
+         " ",
+      ),
+   );
+};
 // En and em dash, built from code points so this file stays plain ASCII.
 const DASHES = new RegExp(`[${String.fromCodePoint(0x2013, 0x2014)}]`, "g");
 // A discussion title goes into projects.json and news.json as written, and
@@ -90,9 +105,14 @@ async function ghGraphql(query, variables) {
       method: "POST",
       headers: { ...ghHeaders, "Content-Type": "application/json" },
       body: JSON.stringify({ query, variables }),
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
    });
+   if (!res.ok) throw new Error(`GraphQL -> ${res.status}`);
    const body = await res.json();
-   if (!res.ok || body.errors) throw new Error(`GraphQL -> ${res.status}`);
+   if (body.errors) {
+      const first = clean(body.errors[0]?.message ?? "unknown error");
+      throw new Error(`GraphQL -> ${res.status}: ${first}`);
+   }
    return body.data;
 }
 
@@ -227,7 +247,7 @@ const DISCUSSION = `query($o:String!,$r:String!,$n:Int!){repository(owner:$o,nam
 const SEARCH = `query($q:String!,$c:String){ search(type:DISCUSSION, query:$q, first:50, after:$c){
   pageInfo { hasNextPage endCursor }
   nodes { ... on Discussion { number title url author { login } repository { nameWithOwner }
-          answer { author { login } createdAt } } } } }`;
+          answer { author { login } createdAt } answerChosenAt } } } }`;
 
 const discussionNumber = (url) =>
    Number(/discussions\/(\d+)/.exec(url || "")?.[1]);
@@ -304,7 +324,7 @@ async function addNewAcceptedDiscussions(list) {
       });
       known.add(discussionKey(repo, node.number));
       addNews({
-         date: node.answer.createdAt.slice(0, 10),
+         date: (node.answerChosenAt ?? node.answer.createdAt).slice(0, 10),
          type: "community",
          text: `Accepted answer on ${repo}: ${title}`.slice(0, 159),
          link: node.url,
@@ -391,6 +411,7 @@ async function syncLeetcode(lc) {
             query: LEETCODE,
             variables: { u: LEETCODE_USER },
          }),
+         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const { data } = await res.json();
@@ -493,6 +514,10 @@ async function syncGithubStats(gh) {
          longest_streak: longestStreak(days),
          languages: topLanguages(await ownedRepos(user.repositories)),
       };
+      // An empty answer is a bad response, not a quiet year: keep last week's.
+      if (!fields.contributions || fields.languages.length === 0) {
+         throw new Error("empty contribution total or language list");
+      }
       // Contributions tick up daily; like stars, only a real move rewrites the
       // card, so most weeks open no PR. The date moves only with the numbers.
       if (applyFields(gh, movedGithubStats(gh, fields), "github")) {

@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.24.0-2563eb)
+![Version](https://img.shields.io/badge/version-4.24.1-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -69,7 +69,7 @@ Section links support reloads and browser history. Navigation loads the content 
 git clone https://github.com/Sagargupta16/portfolio-react.git
 cd portfolio-react
 
-# Install dependencies (requires pnpm >=11, Node >=24.11)
+# Install dependencies (requires pnpm >=11, Node >=26)
 pnpm install
 
 # Start dev server (port 3000)
@@ -236,9 +236,9 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts
 
-Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. The resume is checked every six hours: a scheduled run compares the release tag of the CV the live site serves with the latest `latex-resume` release, and rebuilds the CV and deploys only when that tag has changed.
+Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. The resume check is scheduled every six hours, and GitHub runs it about twice a day in practice: a scheduled run compares the release tag of the CV the live site serves with the latest `latex-resume` release, and rebuilds the CV and deploys only when that tag has changed.
 
-The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each runs in two jobs: `sync` installs dependencies and runs the sync script with a read-only token and no stored git credential, then hands the changed data files on as an artifact; `open-pr` runs no npm code and alone holds the write token to push the branch, open or update the pull request, and dispatch this workflow on that branch so the PR gets its `ci` check. The pull_request run GitHub creates for that bot PR ends with no jobs, which is expected. A run on any branch other than `main` never deploys.
+The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each runs in two jobs: `sync` installs dependencies and runs the sync script with a read-only token and no stored git credential, then hands the changed data files on as an artifact; `open-pr` runs no npm code and alone holds the write token to push the branch, open or update the pull request, and dispatch this workflow on that branch so the PR always gets its `ci` check. The PR's own pull_request run may or may not start, because GitHub can hold runs from the workflow token for approval. When a later sync finds nothing to change, a third job closes a still-open bot PR. A run on any branch other than `main` never deploys.
 
 ---
 

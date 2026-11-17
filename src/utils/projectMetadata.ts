@@ -15,7 +15,7 @@ const MONTHS: Record<string, number> = {
 
 /** Parse the "September 2026" dates shared by project cards and the hero;
  *  null when the month name or the year is not recognised. */
-export const tryParseProjectDate = (dateStr: string): Date | null => {
+const tryParseProjectDate = (dateStr: string): Date | null => {
    const [month, year] = dateStr.split(" ");
    const y = Number(year);
    const m = MONTHS[month];

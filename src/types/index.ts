@@ -363,7 +363,7 @@ export type PipelineNodeId =
    | "drift"
    | "retrain";
 
-export interface PipelineNodeCopy {
+interface PipelineNodeCopy {
    title: string;
    detail: string[];
 }
@@ -378,12 +378,12 @@ export interface PipelineDemoCopy {
 /** A typed command, tool output, or a "#" annotation. */
 export type TerminalLineKind = "cmd" | "out" | "note";
 
-export interface TerminalLine {
+interface TerminalLine {
    kind: TerminalLineKind;
    text: string;
 }
 
-export interface TerminalScript {
+interface TerminalScript {
    id: string;
    label: string;
    lines: TerminalLine[];
@@ -398,9 +398,9 @@ export interface TerminalDemoCopy {
 }
 
 /** Picks the traffic colour; Blue and Green are the only two environments. */
-export type BlueGreenEnv = "Blue" | "Green";
+type BlueGreenEnv = "Blue" | "Green";
 
-export interface BlueGreenRoute {
+interface BlueGreenRoute {
    listener: string;
    env: BlueGreenEnv;
    state: string;
@@ -423,7 +423,7 @@ export interface BlueGreenDemoCopy {
 }
 
 /** Keyed by the project ids in pages/projects/demos/demoRegistry.ts. */
-export interface ProjectDemosCopy {
+interface ProjectDemosCopy {
    "13": BlueGreenDemoCopy;
    "49": PipelineDemoCopy;
    "52": TerminalDemoCopy;

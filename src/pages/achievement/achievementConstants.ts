@@ -17,7 +17,7 @@ export const LEVEL_ORDER: Record<string, number> = {
    box is scaled so every badge reads `target` tall. Every issuer in
    data/achievements.json needs a row: validate-data fails on one that has
    none, so a Credly sync with a new issuer cannot shrink or grow it unseen. */
-export type BadgeKind = "certification" | "badge";
+type BadgeKind = "certification" | "badge";
 
 export const badgeArtScale = (
    kind: BadgeKind,

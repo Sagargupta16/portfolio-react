@@ -43,6 +43,10 @@ const useContactForm = () => {
       undefined,
    );
    const pendingSendRef = useRef<Promise<void> | null>(null);
+   // The request's own lifecycle, independent of SendState: it outlives the
+   // timeout, and a retry waits on it, so the fields are read-only meanwhile
+   // (an edit made then would never be sent, yet be cleared on success).
+   const [requestInFlight, setRequestInFlight] = useState(false);
    const emailConfig = getEmailConfig();
 
    const [formData, setFormData] = useState<FormData>({
@@ -110,6 +114,8 @@ const useContactForm = () => {
                   form,
                   {
                      publicKey: emailConfig.public_key,
+                     blockHeadless: true,
+                     limitRate: { id: "contact", throttle: 10_000 },
                   },
                )
                .then(
@@ -128,8 +134,10 @@ const useContactForm = () => {
                )
                .finally(() => {
                   pendingSendRef.current = null;
+                  setRequestInFlight(false);
                });
             pendingSendRef.current = request;
+            setRequestInFlight(true);
          }
 
          try {
@@ -165,6 +173,7 @@ const useContactForm = () => {
       formRef,
       formData,
       send,
+      requestInFlight,
       handleChange,
       handleSubmit,
       dismissToast,

@@ -17,7 +17,7 @@
    place-items: center;
    border-radius: 50%;
    border: 1px solid rgb(255 255 255 / 0.5);
-   background: var(--color-accent-blue, #2563eb);
+   background: var(--color-accent-blue);
    color: #fff;
    font-family: var(--font-mono);
    font-size: 11px;
@@ -38,7 +38,7 @@
    position: absolute;
    inset: -1px;
    border-radius: 50%;
-   border: 2px solid var(--color-accent-cyan, #60a5fa);
+   border: 2px solid var(--color-accent-blue-light);
    animation: annotation-ping 2.2s ease-out infinite;
    pointer-events: none;
 }

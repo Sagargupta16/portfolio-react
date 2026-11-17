@@ -24,6 +24,7 @@ const Contact = () => {
       formRef,
       formData,
       send,
+      requestInFlight,
       handleChange,
       handleSubmit,
       dismissToast,
@@ -132,6 +133,7 @@ const Contact = () => {
                      >
                         <ContactForm
                            formRef={formRef}
+                           locked={requestInFlight}
                            formData={formData}
                            isLoading={send.status === "sending"}
                            isMobile={isMobile}

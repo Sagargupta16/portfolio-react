@@ -218,7 +218,7 @@ const FooterStatusBar = () => {
       <motion.div
          style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr auto 1fr",
+            gridTemplateColumns: isMobile ? "minmax(0, 1fr)" : "1fr auto 1fr",
             alignItems: "center",
             gap: isMobile ? 14 : 24,
             width: "100%",

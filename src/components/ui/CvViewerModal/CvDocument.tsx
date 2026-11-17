@@ -55,7 +55,9 @@ interface CvDocumentProps {
 }
 
 const getJson = <T,>(url: string, signal: AbortSignal) =>
-   fetch(url, { signal }).then((r) =>
+   fetch(url, {
+      signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
+   }).then((r) =>
       r.ok
          ? (r.json() as Promise<T>)
          : Promise.reject(new Error(`${r.status}`)),

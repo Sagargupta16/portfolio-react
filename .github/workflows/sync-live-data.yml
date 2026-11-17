@@ -4,10 +4,11 @@ name: Sync Live Data
 # stars, project versions, accepted discussion answers, LeetCode stats and rating history,
 # GitHub contribution and language stats). Opens or updates one PR for review instead of
 # pushing to main. GitHub does create a pull_request run for a PR this GITHUB_TOKEN opens
-# or pushes, but holds it for approval or ends it with no jobs, so the PR never gets a
-# `ci` check that way. workflow_dispatch is the one trigger GITHUB_TOKEN may fire, so the
-# open-pr job dispatches CI/CD on the sync branch itself; that run puts the `ci` check on
-# the PR's head commit and deploys nothing. Merging the PR triggers the normal CI/CD deploy.
+# or pushes, but it may be held for approval, so the PR's own run may or may not start.
+# workflow_dispatch is the one trigger GITHUB_TOKEN may fire, so the open-pr job
+# dispatches CI/CD on the sync branch itself; that run guarantees a `ci` check on the PR's
+# head commit and deploys nothing. Merging the PR triggers the normal CI/CD deploy. When a
+# later run finds nothing to change, close-stale-pr closes the still-open PR.
 #
 # Two jobs, so the write token never meets npm code. `sync` installs dependencies and runs
 # the sync scripts with a read-only token and no stored git credential, then passes the
@@ -44,8 +45,6 @@ jobs:
 
          - name: Setup pnpm
            uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
-           with:
-              version: 12.16.1
 
          - name: Setup Node.js
            uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
@@ -122,6 +121,25 @@ jobs:
               if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
                  gh pr create --base main --head "$BRANCH" \
                     --title "chore: sync live data" \
-                    --body "Weekly refresh from public APIs (PR status and stars, project versions, accepted discussion answers, LeetCode stats and rating history, GitHub contribution and language stats). Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. A red pull_request run on this PR is expected (it ends with no jobs); the ci check on the head commit comes from the dispatched CI/CD run. Review the diff, then merge to deploy."
+                    --body "Weekly refresh from public APIs (PR status and stars, project versions, accepted discussion answers, LeetCode stats and rating history, GitHub contribution and language stats). Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. This PR's own pull_request run may or may not start (GitHub can hold runs from the workflow token for approval); the dispatched CI/CD run guarantees the ci check on the head commit. Review the diff, then merge to deploy."
               fi
               gh workflow run ci-cd.yml --ref "$BRANCH"
+
+   close-stale-pr:
+      needs: sync
+      # The sync found nothing to change: a PR still open from an earlier run is stale.
+      if: github.ref == 'refs/heads/main' && needs.sync.outputs.changed != 'true'
+      runs-on: ubuntu-latest
+      timeout-minutes: 5
+      permissions:
+         pull-requests: write
+      env:
+         BRANCH: chore/sync-live-data
+         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GH_REPO: ${{ github.repository }}
+      steps:
+         - name: Close a stale sync PR
+           run: |
+              for pr in $(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number'); do
+                 gh pr close "$pr" --comment "Closing: the data on main is current, so this sync has nothing to change. The branch is kept."
+              done

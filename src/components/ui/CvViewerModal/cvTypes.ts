@@ -9,7 +9,7 @@ export type CvInline =
    | { t: "br" };
 
 /* A bullet, with the sub-bullets nested under it (empty when there are none). */
-export type CvBullet = { text: CvInline[]; sub: CvInline[][] };
+type CvBullet = { text: CvInline[]; sub: CvInline[][] };
 
 export type CvBlock =
    | {

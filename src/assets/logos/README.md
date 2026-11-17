@@ -21,10 +21,10 @@ articles use low-resolution non-free PNGs. Both SVGs are therefore simplified re
 from the official raster marks. They keep the layout, colors and inscriptions of the originals but are
 not the institutions' own artwork.
 
-| Asset      | Traced from                                                                                                                                                                                                                                         |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Asset      | Traced from                                                                                                                                                                                                                                     |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `nitw.svg` | [nitw.ac.in header logo](https://www.nitw.ac.in/images/logo-170x172.png) (colors) and [Wikipedia's file](https://en.wikipedia.org/wiki/File:National_Institute_of_Technology,_Warangal_logo.png) (shape, 286 x 349). Motto: "कर्मणैव हि संसिद्धिः". |
-| `davv.svg` | [dauniv.ac.in logo](https://www.dauniv.ac.in/newassets/images/davvLogo.png) (400 x 404). Inscriptions: "देवी अहिल्या विश्वविद्यालय, इन्दौर" and "धियो यो नः प्रचोदयात्".                                                                            |
+| `davv.svg` | [dauniv.ac.in logo](https://www.dauniv.ac.in/newassets/images/davvLogo.png) (400 x 404). Inscriptions: "देवी अहिल्या विश्वविद्यालय, इन्दौर" and "धियो यो नः प्रचोदयात्".                                                                               |
 
 Inscriptions are drawn as outlines so the files need no fonts: Arimo Bold for the NITW lettering and
 Noto Sans Devanagari for the Devanagari text (both SIL Open Font License 1.1, which permits embedding

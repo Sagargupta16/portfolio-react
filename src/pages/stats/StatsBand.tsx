@@ -21,12 +21,13 @@ import {
 } from "@utils/animations";
 import { isCertActive } from "@utils/certStatus";
 import { fillTemplate, type TemplateValues } from "@utils/fillTemplate";
-import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
+import { TEXT_MUTED } from "@/constants/theme";
 import type { Highlight, StatsTileKey } from "@/types";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { isPodium } from "@pages/achievement/achievementConstants";
 import StatFigure from "./StatFigure";
+import { CAPTION_STYLE } from "./statsTokens";
 import {
    bars,
    chevrons,
@@ -141,18 +142,7 @@ const StatTile = ({
          height={isMobile ? 20 : 24}
       />
       <AnimatedCounter value={stat.value} />
-      <span
-         style={{
-            fontFamily: MONO_FONT,
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: TEXT_SECONDARY,
-         }}
-      >
-         {stat.label}
-      </span>
+      <span style={CAPTION_STYLE}>{stat.label}</span>
       {stat.note && (
          <span style={{ fontSize: 12, color: TEXT_MUTED, lineHeight: 1.4 }}>
             {stat.note}

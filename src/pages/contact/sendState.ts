@@ -13,7 +13,7 @@
    (`toast: false`) and its message cleared 300 ms later, so the inline email
    error does not vanish while the toast is still sliding out. */
 
-export type SendState =
+type SendState =
    | { status: "idle" }
    | { status: "sending" }
    | {
@@ -25,7 +25,7 @@ export type SendState =
      }
    | { status: "sent"; name: string };
 
-export type SendEvent =
+type SendEvent =
    | { type: "submit" }
    | { type: "sent"; name: string }
    | { type: "fail"; message: string; field?: "email" }

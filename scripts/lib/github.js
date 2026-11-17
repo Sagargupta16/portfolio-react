@@ -7,8 +7,15 @@ export const githubHeaders = (token) => ({
    ...(token ? { Authorization: `Bearer ${token}` } : {}),
 });
 
+/** Longest a sync request may take before it is aborted, in milliseconds. */
+export const FETCH_TIMEOUT_MS = 20_000;
+
 /** GET a JSON URL; a failed response throws an Error carrying its status. */
-export async function getJson(url, headers, signal) {
+export async function getJson(
+   url,
+   headers,
+   signal = AbortSignal.timeout(FETCH_TIMEOUT_MS),
+) {
    const res = await fetch(url, { headers, signal });
    if (!res.ok) {
       const error = new Error(`GET ${url} -> ${res.status}`);

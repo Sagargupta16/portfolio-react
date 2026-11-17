@@ -15,6 +15,9 @@ interface ContactFormProps {
    formRef: React.Ref<HTMLFormElement>;
    formData: FormData;
    isLoading: boolean;
+   /** True while an EmailJS request is unsettled (it can outlive the
+    *  timeout); the fields are read-only so no edit goes unsent. */
+   locked?: boolean;
    isMobile: boolean;
    /** The only programmatic validation is the email-pattern check, so an
     *  error about a field is always about the email; empty when none. */
@@ -48,6 +51,7 @@ const ContactForm = ({
    formRef,
    formData,
    isLoading,
+   locked = false,
    isMobile,
    emailError,
    onChange,
@@ -92,6 +96,7 @@ const ContactForm = ({
                   placeholder={COPY.name_placeholder}
                   value={formData.name}
                   onChange={onChange}
+                  readOnly={locked}
                   autoComplete="name"
                   maxLength={100}
                   required
@@ -112,6 +117,7 @@ const ContactForm = ({
                   placeholder={COPY.email_placeholder}
                   value={formData.email}
                   onChange={onChange}
+                  readOnly={locked}
                   autoComplete="email"
                   maxLength={254}
                   required
@@ -149,6 +155,7 @@ const ContactForm = ({
                   placeholder={COPY.message_placeholder}
                   value={formData.message}
                   onChange={onChange}
+                  readOnly={locked}
                   minLength={10}
                   maxLength={5000}
                   required
@@ -184,8 +191,8 @@ const ContactForm = ({
                   style={{
                      width: 20,
                      height: 20,
-                     border: "2px solid rgba(255,255,255,0.3)",
-                     borderTopColor: "#fff",
+                     border: "2px solid rgb(var(--ch-white) / 0.3)",
+                     borderTopColor: "rgb(var(--ch-white))",
                      borderRadius: "50%",
                      animation: `spin ${DURATION.slow}s linear infinite`,
                   }}

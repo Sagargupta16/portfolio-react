@@ -7,14 +7,17 @@ on:
       branches: [main]
    # On main this builds and deploys. On any other branch it runs the gates
    # only: the bot sync workflows dispatch it on their branch, because the
-   # pull_request run for a PR their GITHUB_TOKEN opened never starts a job.
+   # pull_request run for a PR their GITHUB_TOKEN opened may or may not start
+   # (GitHub can hold it for approval), and the dispatched run guarantees a
+   # ci check on the PR's head commit.
    workflow_dispatch:
    # Nothing sends resume-released yet (latex-resume has no dispatch step), so
-   # a new release reaches the site through the six-hourly check below.
+   # a new release reaches the site through the scheduled check below.
    repository_dispatch:
       types: [resume-released]
    # Picks up a latex-resume release nobody announced: resume-check compares
    # the live CV with the latest release and the build runs only on a gap.
+   # Scheduled every six hours; GitHub runs it about twice a day in practice.
    schedule:
       - cron: "23 */6 * * *"
 
@@ -72,11 +75,11 @@ jobs:
       steps:
          - name: Checkout code
            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+           with:
+              persist-credentials: false
 
          - name: Setup pnpm
            uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
-           with:
-              version: 12.16.1
 
          - name: Setup Node.js
            uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7

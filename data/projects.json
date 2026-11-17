@@ -341,7 +341,7 @@
          "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with an animated SVG cover scene for every project, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
          "date": "October 2022",
          "status": "active",
-         "version": "4.24.0",
+         "version": "4.24.1",
          "tools_tech": [
             "React 19",
             "Vite 8",
@@ -829,7 +829,7 @@
       {
          "id": 57,
          "title": "orrery",
-         "description": "Animated architecture and system design diagrams from one YAML spec, with 16,682 official icons from AWS, Azure, Google Cloud, Kubernetes, GitHub and IBM. The Eclipse Layout Kernel places nested boundaries and routes edges, packets travel every edge and numbered steps play in order, and one spec renders to SVG, PNG, editable draw.io, a React component and an HTML viewer. Ships as an Agent Skill and Claude Code plugin.",
+         "description": "Animated architecture and system design diagrams from one YAML spec, with 18,300 icons, including the official AWS, Azure, Google Cloud, Kubernetes, GitHub and IBM sets. The Eclipse Layout Kernel places nested boundaries and routes edges, packets travel every edge and numbered steps play in order, and one spec renders to SVG, PNG, editable draw.io, a React component and an HTML viewer. Ships as an Agent Skill and Claude Code plugin.",
          "date": "October 2026",
          "status": "active",
          "version": "0.12.2",
@@ -848,7 +848,7 @@
             "orrery review scores a diagram at the width readers see it, and three reviewer agents only keep patches that raise the score"
          ],
          "github": "https://github.com/Sagargupta16/orrery",
-         "live": ""
+         "live": "https://sagargupta.online/orrery/"
       },
       {
          "id": 58,

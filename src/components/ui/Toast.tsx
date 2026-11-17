@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle, XCircle, X } from "lucide-react";
 import { GREEN, RED, TEXT_PRIMARY, TEXT_MUTED } from "@/constants/theme";
 import { getUiCopy } from "@data/ui";
+import useBreakpoint from "@hooks/useBreakpoint";
 
 interface ToastProps {
    message: string;
@@ -34,6 +35,7 @@ const DISMISS_HIT_AREA: React.CSSProperties = {
 const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
    const config = TOAST_COLORS[type] || TOAST_COLORS.success;
    const Icon = config.icon;
+   const { isMobile } = useBreakpoint();
 
    return createPortal(
       <AnimatePresence>
@@ -41,14 +43,29 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
             <motion.div
                role={type === "error" ? "alert" : "status"}
                aria-live={type === "error" ? undefined : "polite"}
-               initial={{ opacity: 0, y: 40, x: 20, scale: 0.95 }}
+               initial={
+                  isMobile
+                     ? { opacity: 0, y: -40, scale: 0.95 }
+                     : { opacity: 0, y: 40, x: 20, scale: 0.95 }
+               }
                animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-               exit={{ opacity: 0, y: 20, x: 20, scale: 0.95 }}
+               exit={
+                  isMobile
+                     ? { opacity: 0, y: -20, scale: 0.95 }
+                     : { opacity: 0, y: 20, x: 20, scale: 0.95 }
+               }
                transition={{ type: "spring", stiffness: 400, damping: 30 }}
                style={{
                   position: "fixed",
-                  bottom: 88,
-                  right: 32,
+                  // Phones: the toast sits at the top so it never covers the
+                  // contact form's Send button.
+                  ...(isMobile
+                     ? {
+                          top: "calc(env(safe-area-inset-top) + 76px)",
+                          left: 16,
+                          right: 16,
+                       }
+                     : { bottom: 88, right: 32 }),
                   zIndex: 300,
                   display: "flex",
                   alignItems: "center",
@@ -60,8 +77,8 @@ const Toast = ({ message, type = "success", visible, onClose }: ToastProps) => {
                   WebkitBackdropFilter: "blur(24px)",
                   border: `1px solid ${config.border}`,
                   boxShadow: "0 10px 40px rgb(var(--ch-black) / 0.4)",
-                  maxWidth: 360,
-                  minWidth: 240,
+                  maxWidth: isMobile ? undefined : 360,
+                  minWidth: isMobile ? 0 : 240,
                }}
             >
                <Icon
