@@ -9,6 +9,7 @@ import {
    TEXT_MUTED,
 } from "@/constants/theme";
 import { getSectionCopy } from "@data/sections";
+import { getUiCopy } from "@data/ui";
 import useBreakpoint from "@hooks/useBreakpoint";
 import useMotionPreference from "@hooks/useMotionPreference";
 import { fillTemplate } from "@utils/fillTemplate";
@@ -16,6 +17,8 @@ import "./contact-form.css";
 
 const COPY = getSectionCopy("contact").sent;
 const LOG = COPY.log;
+// The same shell prompt as the command palette.
+const PROMPT = getUiCopy().palette.prompt;
 
 /* The push log's timeline, in seconds from mount: the command types itself
    in, each output line lands in turn, then the title block follows, about
@@ -53,7 +56,7 @@ interface PushLogProps {
 const PushLog = ({ senderName, reducedMotion }: PushLogProps) => (
    <div className="push-log" aria-hidden="true">
       <div className="push-log-prompt">
-         <span className="push-log-sign">{LOG.prompt}</span>
+         <span className="push-log-sign">{PROMPT}</span>
          <span className="push-log-command">
             {COMMAND_CHARS.map(({ key, char, delay }) => (
                <motion.span

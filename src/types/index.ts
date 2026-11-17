@@ -678,7 +678,6 @@ export interface SectionCopyMap extends Record<string, SectionCopy> {
          again: string;
          /** The shell-style push log the confirmation plays on success. */
          log: {
-            prompt: string;
             command: string;
             counting: string;
             writing: string;

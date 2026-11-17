@@ -203,7 +203,7 @@ const StatsBand = () => {
    const { isMobile } = useBreakpoint();
    const { headings } = getStatsCopy();
 
-   const { impact, delivery, openSource, competitive } = useMemo(() => {
+   const band = useMemo(() => {
       // A tile's label and note come from the data; `values` fills the note.
       // Its figure is drawn from the same derived numbers as its value.
       const { tiles } = getStatsCopy();
@@ -312,8 +312,19 @@ const StatsBand = () => {
       const contests = countOf(leetcode?.contests);
       const contestCells =
          ratings.length === contests ? heat(ratings) : split(contests, 0);
+      // The hard tile's bars: easy, medium and hard solved, to one scale.
+      const solved = leetcode?.solved_by_difficulty;
+      const difficultySplit = solved
+         ? [solved.easy, solved.medium, solved.hard]
+         : [];
 
       return {
+         highlights: getHighlights().map((highlight): Stat => ({
+            value: highlight.value,
+            label: highlight.label,
+            note: highlight.note,
+            figure: highlightFigure(highlight, ratings),
+         })),
          impact: [
             {
                ...tile(
@@ -387,7 +398,11 @@ const StatsBand = () => {
             tile("contests", leetcode?.contests ?? "", waffle(contestCells), {
                rank: leetcode?.best_contest_rank,
             }),
-            tile("hard_solved", leetcode?.hard_solved ?? "", tiers()),
+            tile(
+               "hard_solved",
+               leetcode?.hard_solved ?? "",
+               tiers(difficultySplit),
+            ),
          ] satisfies Stat[],
          openSource: [
             {
@@ -419,16 +434,7 @@ const StatsBand = () => {
          ] satisfies Stat[],
       };
    }, []);
-
-   const highlights = useMemo(() => {
-      const ratings = leetcodeRatings();
-      return getHighlights().map((highlight): Stat => ({
-         value: highlight.value,
-         label: highlight.label,
-         note: highlight.note,
-         figure: highlightFigure(highlight, ratings),
-      }));
-   }, []);
+   const { highlights, impact, delivery, openSource, competitive } = band;
 
    return (
       <div

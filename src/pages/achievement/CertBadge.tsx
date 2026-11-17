@@ -17,6 +17,7 @@ import { fillTemplate } from "@utils/fillTemplate";
 import { getSectionCopy } from "@data/sections";
 import { newTabLabel } from "@data/ui";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { badgeArtScale } from "./achievementConstants";
 import "./achievements.css";
 
 const COPY = getSectionCopy("achievements").certifications;
@@ -42,15 +43,6 @@ const EXPIRY_WARNING_DAYS = 90;
 const DAY_MS = 86_400_000;
 const MAX_STAGGER_S = 0.3;
 
-/* Optical size: every badge's artwork is scaled so it reads this tall (as a
-   share of the square image box). The ratios are the measured alpha bounds of
-   the 220px Credly thumbnails (2026-11-14): the AWS hexagons fill 0.97 of the
-   box, the HashiCorp shield 0.88. An issuer not listed keeps scale 1. */
-const ART_HEIGHT_TARGET = 0.9;
-const ART_HEIGHT_BY_ISSUER: Record<string, number> = {
-   "Amazon Web Services Training and Certification": 0.97,
-   "IBM Professional Certification": 0.88,
-};
 /* The name label is wider than the image so two mono lines hold a full name. */
 const NAME_PAD = 40;
 
@@ -117,8 +109,7 @@ const CertBadge = ({
    // If the CDN's resized variant fails (transient 5xx / cold cache on newly
    // synced badges), fall back to the original full-size URL once.
    const [useOriginal, setUseOriginal] = useState(false);
-   const artScale =
-      ART_HEIGHT_TARGET / (ART_HEIGHT_BY_ISSUER[issuer] ?? ART_HEIGHT_TARGET);
+   const artScale = badgeArtScale("certification", { issuer, name });
    const accent = LEVEL_COLOR[level ?? ""] ?? BLUE_LIGHT;
    const expiryMeta = getExpiryMeta(expiryDate);
    // aria-label replaces the anchor's content for assistive tech, so the level

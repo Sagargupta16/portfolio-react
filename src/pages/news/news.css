@@ -92,7 +92,10 @@
 }
 
 /* The rail is drawn per item, node centre to node centre, so a two-line row
-   (taller than --row-h) never leaves a tail below the last node. */
+   (taller than --row-h) never leaves a tail below the last node. A row that
+   is animating out (AnimatePresence popLayout tags it data-motion-pop-id and
+   keeps it in the DOM) draws no rail and is not counted as the first or last
+   row, so a filter swap never leaves a stub under the new last node. */
 .news-graph > li {
    position: relative;
 }
@@ -107,16 +110,20 @@
    background: color-mix(in srgb, var(--color-accent-blue) 45%, transparent);
 }
 
-.news-graph > li:first-child::before {
+.news-graph > li:nth-child(1 of :not([data-motion-pop-id]))::before {
    top: calc(var(--row-h) / 2);
 }
 
-.news-graph > li:last-child::before {
+.news-graph > li:nth-last-child(1 of :not([data-motion-pop-id]))::before {
    bottom: auto;
    height: calc(var(--row-h) / 2);
 }
 
-.news-graph > li:only-child::before {
+.news-graph
+   > li:nth-child(1 of :not([data-motion-pop-id])):nth-last-child(
+      1 of :not([data-motion-pop-id])
+   )::before,
+.news-graph > li[data-motion-pop-id]::before {
    display: none;
 }
 
@@ -173,7 +180,7 @@ a.news-row:focus-visible .news-row-arrow {
 /* The node is the row's tone lifted toward white, with a 1px ring of the tone
    at low alpha just outside the cut. Hover and focus lift it. */
 .news-row {
-   --node-fill: color-mix(in srgb, var(--news-tone) 78%, #fff);
+   --node-fill: color-mix(in srgb, var(--news-tone) 78%, rgb(var(--ch-white)));
    --node-ring: color-mix(in srgb, var(--news-tone) 28%, transparent);
 }
 
@@ -205,7 +212,7 @@ a.news-row:focus-visible .news-row-arrow {
 }
 
 a.news-row:focus-visible {
-   --node-fill: color-mix(in srgb, var(--news-tone) 55%, #fff);
+   --node-fill: color-mix(in srgb, var(--news-tone) 55%, rgb(var(--ch-white)));
    --node-ring: color-mix(in srgb, var(--news-tone) 55%, transparent);
 }
 
@@ -215,7 +222,11 @@ a.news-row:focus-visible .news-node::before {
 
 @media (hover: hover) and (pointer: fine) {
    .news-row:hover {
-      --node-fill: color-mix(in srgb, var(--news-tone) 55%, #fff);
+      --node-fill: color-mix(
+         in srgb,
+         var(--news-tone) 55%,
+         rgb(var(--ch-white))
+      );
       --node-ring: color-mix(in srgb, var(--news-tone) 55%, transparent);
    }
 

@@ -608,26 +608,38 @@ export const tally = (groups: number[]): Figure | undefined => {
    };
 };
 
-const TIER_H = [7, 12, 17];
+const TIER_MAX_H = 17;
+const TIER_MIN_H = 2;
 const TIER_W = 5;
 const TIER_PITCH = 7;
 const TIER_BASE = MID + 8.5;
 
-/** Easy, medium and hard as rising bars, the hard tier solid. */
-export const tiers = (): Figure => ({
-   width: r1(2 * PAD + (TIER_H.length - 1) * TIER_PITCH + TIER_W),
-   parts: TIER_H.map((h, i) =>
-      group(
-         "rise",
-         step(i, TIER_H.length, 0.3),
-         rect(
-            PAD + i * TIER_PITCH,
-            TIER_BASE - h,
-            TIER_W,
-            h,
-            i === TIER_H.length - 1 ? "solid" : "faint",
-            1,
-         ),
-      ),
-   ),
-});
+/** Easy, medium and hard solved as bars to one scale (the tallest is the
+ *  largest group), the hard bar solid. No honest picture without all three. */
+export const tiers = (counts: readonly number[]): Figure | undefined => {
+   if (
+      counts.length !== 3 ||
+      !counts.every((n) => Number.isFinite(n) && n >= 0)
+   )
+      return undefined;
+   const top = Math.max(...counts);
+   if (top <= 0) return undefined;
+   return {
+      width: r1(2 * PAD + (counts.length - 1) * TIER_PITCH + TIER_W),
+      parts: counts.map((count, i) => {
+         const h = Math.max(TIER_MIN_H, (count / top) * TIER_MAX_H);
+         return group(
+            "rise",
+            step(i, counts.length, 0.3),
+            rect(
+               PAD + i * TIER_PITCH,
+               TIER_BASE - h,
+               TIER_W,
+               h,
+               i === counts.length - 1 ? "solid" : "faint",
+               1,
+            ),
+         );
+      }),
+   };
+};

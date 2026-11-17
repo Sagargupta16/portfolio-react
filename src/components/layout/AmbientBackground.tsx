@@ -38,13 +38,18 @@ const glowStyle = {
 
 /* The beams sweep the whole viewport, so on the scrolling page they crossed
    card gaps, News rows and form fields. Over the content column (MAX_WIDTH)
-   they drop to 30%, ramping back to full strength over 80px past its edges,
-   so the flanks keep them. A static mask on the beams' wrapper: the sweeps
-   underneath still run on the compositor. */
+   they drop to 30% and ramp back to full strength across the flanks: over
+   80px where the flank is that wide, and over the whole flank where it is
+   narrower (64px at 1280px), so the screen edge is always at full strength.
+   On phones the column fills the screen and the beams stay at 30%. A static
+   mask on the beams' wrapper: the sweeps underneath still run on the
+   compositor. */
 const COLUMN_HALF = MAX_WIDTH / 2;
 const COLUMN_RAMP = 80;
 const COLUMN_DIM = "rgb(0 0 0 / 0.3)";
-const BEAM_COLUMN_MASK = `linear-gradient(90deg, black 0, black calc(50% - ${COLUMN_HALF + COLUMN_RAMP}px), ${COLUMN_DIM} calc(50% - ${COLUMN_HALF}px), ${COLUMN_DIM} calc(50% + ${COLUMN_HALF}px), black calc(50% + ${COLUMN_HALF + COLUMN_RAMP}px), black 100%)`;
+const columnEdge = `max(0px, 50% - ${COLUMN_HALF}px)`;
+const rampEdge = `max(0px, 50% - ${COLUMN_HALF + COLUMN_RAMP}px)`;
+const BEAM_COLUMN_MASK = `linear-gradient(90deg, black ${rampEdge}, ${COLUMN_DIM} ${columnEdge}, ${COLUMN_DIM} calc(100% - ${columnEdge}), black calc(100% - ${rampEdge}))`;
 const BEAMS_STYLE = {
    position: "absolute",
    inset: 0,
