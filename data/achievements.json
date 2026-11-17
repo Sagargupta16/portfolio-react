@@ -316,7 +316,7 @@
          "top_percentage": "1.1%",
          "url": "https://leetcode.com/u/Sagargupta1610/",
          "solved_by_difficulty": {
-            "easy": 480,
+            "easy": 483,
             "medium": 693,
             "hard": 168
          },
@@ -446,34 +446,34 @@
          "url": "https://github.com/Sagargupta16",
          "contributions": 8025,
          "pull_requests": 2001,
-         "longest_streak": 126,
+         "longest_streak": 84,
          "languages": [
             {
                "name": "TypeScript",
-               "percent": 53.8
+               "percent": 49.9
             },
             {
                "name": "Python",
-               "percent": 25.7
+               "percent": 31.5
             },
             {
                "name": "JavaScript",
-               "percent": 11.7
+               "percent": 10.6
             },
             {
                "name": "CSS",
-               "percent": 2.5
+               "percent": 2.2
             },
             {
                "name": "C++",
-               "percent": 2.1
+               "percent": 1.8
             },
             {
                "name": "Shell",
                "percent": 1.2
             }
          ],
-         "fetched": "2026-11-10"
+         "fetched": "2026-11-16"
       }
    }
 }

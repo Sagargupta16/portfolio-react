@@ -163,7 +163,7 @@
          "description": "A Chrome extension plus web dashboard that adds deep GitHub profile insights - 9-stat grid, coding personality badges, language breakdown, activity heatmap, contribution donut, repo growth timeline, profile comparison, and a leaderboard across everyone you follow. Published on the Chrome Web Store with GitHub OAuth for traffic analytics.",
          "date": "March 2026",
          "status": "active",
-         "version": "1.2.3",
+         "version": "1.3.0",
          "tools_tech": [
             "JavaScript",
             "TypeScript",
@@ -642,7 +642,7 @@
          "description": "Fully automated Instagram publisher powered by AWS Bedrock and Composio v3, posting live up to twice a day. It publishes only animated SVG Reels (how-it-works explainers, stat stories, and timelines) drawn as SMIL SVG, rendered with headless Chrome and ffmpeg, and set to licensed music. Every number on screen must appear in the fetched source text or the slot fails, and each publish is checkpointed so a lost response never reposts - all through GitHub Actions.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.18.0",
+         "version": "0.19.0",
          "tools_tech": [
             "Python",
             "AWS Bedrock",
@@ -1026,7 +1026,7 @@
          "description": "Local-first MCP server that walks you through filing an Indian income tax return, published on npm. 12 tools spanning form selection, deterministic computation, old-vs-new regime comparison, advance tax planning, and document parsing - all on your machine. The LLM never does arithmetic; every number comes from a versioned, auditable rule pack. Works with Claude Desktop, Claude Code, and any MCP client.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.3.0",
+         "version": "0.7.0",
          "tools_tech": ["TypeScript", "MCP Protocol", "Node.js", "npm"],
          "features": [
             "recommend_itr_form picks ITR-1/2/3/4 with rule-by-rule reasoning, including brought-forward losses that force ITR-3",
@@ -1044,7 +1044,7 @@
          "description": "Custom Claude Code plugin marketplace with 16 curated plugins covering dev workflow, Docker, dependency audits, refactoring, git workflows, open source contributions, Python clean code, animation, and more, plus svg-forge listed from its own repo. Installable via /plugin marketplace.",
          "date": "June 2026",
          "status": "active",
-         "version": "5.7.2",
+         "version": "5.10.3",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -1067,7 +1067,7 @@
          "description": "Installable Claude Code plugin with a cost-mode skill for concise responses, model routing, budget hooks, and efficient workflow patterns, plus claude-rate, a local CLI that grades a project, your ~/.claude setup, and 30 days of real usage. Includes web-based Repo Analyzer, Cost Calculator, and Badge Checker tools.",
          "date": "March 2026",
          "status": "active",
-         "version": "1.19.0",
+         "version": "1.20.0",
          "tools_tech": [
             "Claude Code",
             "Plugin Marketplace",
@@ -1092,7 +1092,7 @@
          "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stability AI, Luma, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
          "date": "April 2026",
          "status": "active",
-         "version": "0.7.1",
+         "version": "0.8.1",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
@@ -1234,7 +1234,7 @@
          "description": "A GitHub Action that auto-syncs your Credly certifications and badges to your GitHub profile README - no more manual updates when you earn a new cert. Categorizes badges into Industry Certifications, Professional/Partner, and Knowledge/Learning with non-destructive HTML-marker updates. Since v1.1.0 an SVG card mode (output readme, svg, or both) draws every badge into one animated SVG card in two or three groups, and since v1.2.0 the card inlines its badges as WebP at under a third of the old size.",
          "date": "March 2026",
          "status": "active",
-         "version": "1.4.0",
+         "version": "1.5.0",
          "tools_tech": [
             "Python 3.13",
             "GitHub Actions",
@@ -1322,7 +1322,7 @@
          "stars": 5861,
          "title": "Infinite scroll, configurable commit count, and performance improvements",
          "url": "https://github.com/NirmalScaria/le-git-graph/pull/109",
-         "status": "open"
+         "status": "closed"
       },
       {
          "repo": "forem/selfhost",
@@ -1397,7 +1397,7 @@
          "stars": 87,
          "title": "name_prefix, tag propagation, external role support, MCP examples",
          "url": "https://github.com/aws-ia/terraform-aws-bedrock/pull/172",
-         "status": "open"
+         "status": "closed"
       },
       {
          "repo": "anthropics/skills",
@@ -1538,6 +1538,90 @@
          "repo": "fastapicloud/support",
          "title": "Build failed uvloop 0.22.1",
          "url": "https://github.com/fastapicloud/support/discussions/38",
+         "status": "accepted"
+      },
+      {
+         "repo": "leonieziechmann/invoice-pro",
+         "title": "How to hide/disable the automatic footer?",
+         "url": "https://github.com/leonieziechmann/invoice-pro/discussions/54",
+         "status": "accepted"
+      },
+      {
+         "repo": "fiso64/sockseek",
+         "title": "Some help downloading from a txt file source?",
+         "url": "https://github.com/fiso64/sockseek/discussions/224",
+         "status": "accepted"
+      },
+      {
+         "repo": "PaulWoitaschek/Voice",
+         "title": "Audiobookshelf",
+         "url": "https://github.com/PaulWoitaschek/Voice/discussions/4243",
+         "status": "accepted"
+      },
+      {
+         "repo": "docker-mailserver/docker-mailserver",
+         "title": "Alternative to fail2ban",
+         "url": "https://github.com/orgs/docker-mailserver/discussions/4853",
+         "status": "accepted"
+      },
+      {
+         "repo": "suchnsuch/Tangent",
+         "title": "Automatically update links when target is renamed",
+         "url": "https://github.com/suchnsuch/Tangent/discussions/495",
+         "status": "accepted"
+      },
+      {
+         "repo": "super-productivity/super-productivity",
+         "title": "different handling of regular and recurring tasks in Planer mode",
+         "url": "https://github.com/super-productivity/super-productivity/discussions/11727",
+         "status": "accepted"
+      },
+      {
+         "repo": "VHDL-LS/rust_hdl",
+         "title": "Are matching relational operators supported by vhdl_ls for VHDL 2008?",
+         "url": "https://github.com/VHDL-LS/rust_hdl/discussions/536",
+         "status": "accepted"
+      },
+      {
+         "repo": "marcosnils/bin",
+         "title": "Monorepo support",
+         "url": "https://github.com/marcosnils/bin/discussions/319",
+         "status": "accepted"
+      },
+      {
+         "repo": "super-productivity/super-productivity",
+         "title": "No local backup setting available, only Sync",
+         "url": "https://github.com/super-productivity/super-productivity/discussions/11666",
+         "status": "accepted"
+      },
+      {
+         "repo": "chiiya/filament-access-control",
+         "title": "TWO_FACTOR not sending email code",
+         "url": "https://github.com/chiiya/filament-access-control/discussions/88",
+         "status": "accepted"
+      },
+      {
+         "repo": "PaulWoitaschek/Voice",
+         "title": "How can I display the total duration of an audiobook on Android Auto?",
+         "url": "https://github.com/PaulWoitaschek/Voice/discussions/4227",
+         "status": "accepted"
+      },
+      {
+         "repo": "VDA5050/VDA5050",
+         "title": "Using initializePosition only to set lastNodeId after start-up - intended use or misuse?",
+         "url": "https://github.com/VDA5050/VDA5050/discussions/682",
+         "status": "accepted"
+      },
+      {
+         "repo": "qltysh/qlty",
+         "title": "Help me understand how the qlty prettier plugin actually works",
+         "url": "https://github.com/orgs/qltysh/discussions/3011",
+         "status": "accepted"
+      },
+      {
+         "repo": "mikebrady/shairport-sync",
+         "title": "Raspberry pi zero W 2 or pico 2 W?",
+         "url": "https://github.com/mikebrady/shairport-sync/discussions/2342",
          "status": "accepted"
       },
       {

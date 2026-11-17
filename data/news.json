@@ -1,5 +1,82 @@
 [
    {
+      "date": "2026-11-16",
+      "type": "community",
+      "text": "Accepted answer on leonieziechmann/invoice-pro: How to hide/disable the automatic footer?",
+      "link": "https://github.com/leonieziechmann/invoice-pro/discussions/54",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-16",
+      "type": "community",
+      "text": "Accepted answer on fiso64/sockseek: Some help downloading from a txt file source?",
+      "link": "https://github.com/fiso64/sockseek/discussions/224",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-15",
+      "type": "community",
+      "text": "Accepted answer on PaulWoitaschek/Voice: Audiobookshelf",
+      "link": "https://github.com/PaulWoitaschek/Voice/discussions/4243",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-14",
+      "type": "community",
+      "text": "Accepted answer on docker-mailserver/docker-mailserver: Alternative to fail2ban",
+      "link": "https://github.com/orgs/docker-mailserver/discussions/4853",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-14",
+      "type": "community",
+      "text": "Accepted answer on suchnsuch/Tangent: Automatically update links when target is renamed",
+      "link": "https://github.com/suchnsuch/Tangent/discussions/495",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-13",
+      "type": "community",
+      "text": "Accepted answer on VHDL-LS/rust_hdl: Are matching relational operators supported by vhdl_ls for VHDL 2008?",
+      "link": "https://github.com/VHDL-LS/rust_hdl/discussions/536",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-12",
+      "type": "community",
+      "text": "Accepted answer on super-productivity/super-productivity: different handling of regular and recurring tasks in Planer mode",
+      "link": "https://github.com/super-productivity/super-productivity/discussions/11727",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-12",
+      "type": "community",
+      "text": "Accepted answer on marcosnils/bin: Monorepo support",
+      "link": "https://github.com/marcosnils/bin/discussions/319",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-12",
+      "type": "community",
+      "text": "Accepted answer on PaulWoitaschek/Voice: How can I display the total duration of an audiobook on Android Auto?",
+      "link": "https://github.com/PaulWoitaschek/Voice/discussions/4227",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-12",
+      "type": "community",
+      "text": "Accepted answer on VDA5050/VDA5050: Using initializePosition only to set lastNodeId after start-up - intended use or misuse?",
+      "link": "https://github.com/VDA5050/VDA5050/discussions/682",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-11",
+      "type": "community",
+      "text": "Accepted answer on super-productivity/super-productivity: No local backup setting available, only Sync",
+      "link": "https://github.com/super-productivity/super-productivity/discussions/11666",
+      "impact": "minor"
+   },
+   {
       "date": "2026-11-10",
       "type": "community",
       "text": "Accepted answer on mkshp-dev/obsidian-gallery-plugin: Can a gallery be displayed on an Obsidian Publish page?",
@@ -11,6 +88,27 @@
       "type": "community",
       "text": "Accepted answer on fastapicloud/support: Build failed uvloop 0.22.1",
       "link": "https://github.com/fastapicloud/support/discussions/38",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-10",
+      "type": "community",
+      "text": "Accepted answer on chiiya/filament-access-control: TWO_FACTOR not sending email code",
+      "link": "https://github.com/chiiya/filament-access-control/discussions/88",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-10",
+      "type": "community",
+      "text": "Accepted answer on qltysh/qlty: Help me understand how the qlty prettier plugin actually works",
+      "link": "https://github.com/orgs/qltysh/discussions/3011",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-10",
+      "type": "community",
+      "text": "Accepted answer on mikebrady/shairport-sync: Raspberry pi zero W 2 or pico 2 W?",
+      "link": "https://github.com/mikebrady/shairport-sync/discussions/2342",
       "impact": "minor"
    },
    {
