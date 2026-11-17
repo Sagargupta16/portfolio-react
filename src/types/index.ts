@@ -672,7 +672,18 @@ export interface SectionCopyMap extends Record<string, SectionCopy> {
          send_failed: string;
          send_timeout: string;
       };
-      sent: { title: string; thanks: string; again: string };
+      sent: {
+         title: string;
+         thanks: string;
+         again: string;
+         /** The shell-style push log the confirmation plays on success. */
+         log: {
+            command: string;
+            counting: string;
+            writing: string;
+            done: string;
+         };
+      };
    };
 }
 

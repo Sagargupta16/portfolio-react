@@ -13,6 +13,8 @@ import { fillTemplate } from "@utils/fillTemplate";
 import { getSectionCopy } from "@data/sections";
 import { newTabLabel } from "@data/ui";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { badgeArtScale } from "./achievementConstants";
+import "./achievements.css";
 
 const CREDENTIAL = getSectionCopy("achievements").certifications.credential;
 
@@ -24,7 +26,7 @@ interface RailBadgeProps {
 }
 
 /* Extra width under the image so the mono name gets two full lines. */
-const NAME_PAD = 20;
+const NAME_PAD = 44;
 
 /* One hover label on the anchor; image and name animate their own "hover"
    variant so the badge responds as a unit with zero React state. */
@@ -45,6 +47,7 @@ const RailBadge = ({ badge, size, decorative = false }: RailBadgeProps) => {
    // synced badges), fall back to the original full-size URL once.
    const [useOriginal, setUseOriginal] = useState(false);
    const hover = reducedMotion ? undefined : HOVER;
+   const artScale = badgeArtScale("badge", badge);
 
    return (
       <motion.a
@@ -67,35 +70,39 @@ const RailBadge = ({ badge, size, decorative = false }: RailBadgeProps) => {
             textDecoration: "none",
          }}
       >
-         <motion.img
-            src={useOriginal ? badge.imageUrl : credlyThumb(badge.imageUrl)}
-            onError={() => setUseOriginal(true)}
-            alt={badge.name}
-            loading="lazy"
-            width={size}
-            height={size}
-            variants={imageVariants}
-            transition={IMAGE_SPRING}
-            style={{ width: size, height: size, objectFit: "contain" }}
-         />
-         <motion.span
-            variants={nameVariants}
-            transition={NAME_TRANSITION}
+         <div
+            className="badge-art"
             style={{
-               fontSize: 11,
-               fontWeight: 600,
-               fontFamily: MONO_FONT,
-               color: TEXT_MUTED,
-               textAlign: "center",
-               lineHeight: 1.2,
-               display: "-webkit-box",
-               WebkitLineClamp: 2,
-               WebkitBoxOrient: "vertical",
-               overflow: "hidden",
+               width: size,
+               height: size,
+               transform: `scale(${artScale})`,
             }}
          >
-            {badge.name}
-         </motion.span>
+            <motion.img
+               src={useOriginal ? badge.imageUrl : credlyThumb(badge.imageUrl)}
+               onError={() => setUseOriginal(true)}
+               alt={badge.name}
+               loading="lazy"
+               width={size}
+               height={size}
+               variants={imageVariants}
+               transition={IMAGE_SPRING}
+               style={{ width: size, height: size, objectFit: "contain" }}
+            />
+         </div>
+         <div className="badge-name" style={{ width: size + NAME_PAD }}>
+            <motion.span
+               className="badge-name__text"
+               variants={nameVariants}
+               transition={NAME_TRANSITION}
+               style={{ fontFamily: MONO_FONT, color: TEXT_MUTED }}
+            >
+               {badge.name}
+            </motion.span>
+            <span className="badge-name__tip" aria-hidden="true">
+               {badge.name}
+            </span>
+         </div>
       </motion.a>
    );
 };

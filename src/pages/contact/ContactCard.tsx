@@ -7,7 +7,13 @@ import { newTabLabel } from "@data/ui";
 import { staggerItem } from "@utils/animations";
 import { fillTemplate } from "@utils/fillTemplate";
 import useMotionPreference from "@hooks/useMotionPreference";
-import { DURATION, EASING, TEXT_MUTED, TEXT_PRIMARY } from "@/constants/theme";
+import {
+   BLUE_LIGHT,
+   DURATION,
+   EASING,
+   TEXT_MUTED,
+   TEXT_PRIMARY,
+} from "@/constants/theme";
 import { CONTACT_META, DEFAULT_CONTACT_META } from "./contactConstants";
 
 interface ContactCardProps {
@@ -17,7 +23,9 @@ interface ContactCardProps {
 
 /* Same lift language as the About highlight cards: one hover label on the
    link, the icon tile and the arrow animate their own "hover" variant.
-   .glass-card CSS owns the border and background shift. */
+   .glass-card CSS owns the border and background shift. The left rule and
+   the link cue use the site's one blue; a network's brand colour stays on
+   its icon and tile. */
 const HOVER = "hover";
 const LIFT_SPRING = { type: "spring", stiffness: 380, damping: 26 } as const;
 const ICON_SPRING = { type: "spring", stiffness: 420, damping: 16 } as const;
@@ -54,7 +62,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
             display: "flex",
             alignItems: "center",
             gap: 12,
-            borderLeft: `3px solid ${colors.accent}`,
+            borderLeft: `3px solid ${BLUE_LIGHT}`,
             borderRadius: "0 16px 16px 0",
             textDecoration: "none",
             cursor: "pointer",
@@ -115,7 +123,7 @@ const ContactCard = ({ option, isMobile }: ContactCardProps) => {
                display: "flex",
                alignItems: "center",
                gap: 4,
-               color: colors.accent,
+               color: BLUE_LIGHT,
                fontSize: 12,
                fontWeight: 500,
                flexShrink: 0,

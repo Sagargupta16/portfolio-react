@@ -11,7 +11,9 @@ interface ContactColors {
    border: string;
 }
 
-// LinkedIn, Instagram and GitHub keep their own brand colours on purpose.
+// The icon and its tile only: LinkedIn, Instagram and GitHub keep their own
+// brand colours there on purpose. The card's left rule and link cue are the
+// site's one blue (ContactCard).
 const CONTACT_COLORS: Record<string, ContactColors> = {
    email: {
       accent: BLUE_LIGHT,

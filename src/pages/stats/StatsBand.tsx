@@ -22,10 +22,31 @@ import {
 import { isCertActive } from "@utils/certStatus";
 import { fillTemplate, type TemplateValues } from "@utils/fillTemplate";
 import { MONO_FONT, TEXT_MUTED, TEXT_SECONDARY } from "@/constants/theme";
-import type { StatsTileKey } from "@/types";
+import type { Highlight, StatsTileKey } from "@/types";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import useBreakpoint from "@hooks/useBreakpoint";
 import { isPodium } from "@pages/achievement/achievementConstants";
+import StatFigure from "./StatFigure";
+import {
+   bars,
+   chevrons,
+   curve,
+   glyphs,
+   heat,
+   hexes,
+   nodes,
+   pips,
+   podiumSteps,
+   rail,
+   ruler,
+   split,
+   spokes,
+   tally,
+   tiers,
+   waffle,
+   years,
+   type Figure,
+} from "./tileFigures";
 
 /* The site's only numeric summary -- the hero deliberately carries no figures.
    Highlights lead: the strongest sourced results, kept in personal.json
@@ -41,10 +62,45 @@ interface Stat {
    value: string;
    label: string;
    note?: string;
+   /** Small flat picture of this tile's own number (tileFigures). */
+   figure?: Figure;
 }
 
 // The repos tile note says "10k+"; keep the two in step.
 const BIG_REPO_STARS = 10_000;
+
+// A tile's figure starts as the tile's own reveal settles, one tile after
+// another like the tiles themselves (staggerContainer's 0.06 s).
+const FIGURE_DELAY = 0.3;
+const FIGURE_STAGGER = 0.06;
+
+/** "7x" -> 7, "2+" -> 2, "1300+" -> 1300; anything else -> 0. */
+const countOf = (value?: string) => Number.parseInt(value ?? "", 10) || 0;
+
+/** LeetCode contest ratings, oldest first (the platform card's history). */
+const leetcodeRatings = () =>
+   (getCodingPlatformStats().leetcode?.rating_history ?? []).map(
+      ([, rating]) => rating,
+   );
+
+/** Highlights carry no tile key, so the figure follows the fact a highlight
+ *  restates (`derived_from`); one without it is a plain count of nodes. */
+const highlightFigure = (
+   { value, derived_from }: Highlight,
+   ratings: number[],
+) => {
+   const count = countOf(value);
+   switch (derived_from) {
+      case "aws_samples":
+         return glyphs(["repo", count]);
+      case "tfc_ambassador":
+         return pips(count);
+      case "leetcode_peak":
+         return curve(ratings);
+      default:
+         return nodes(count);
+   }
+};
 
 // Credly issuer names are long ("Amazon Web Services Training and
 // Certification", "AWS Worldwide Field Enablement"); the tiles need one word.
@@ -55,7 +111,15 @@ const shortIssuer = (issuer: string) =>
 const formatStars = (n: number): string =>
    n >= 1000 ? `${Math.floor(n / 1000)}k+` : String(n);
 
-const StatTile = ({ stat, isMobile }: { stat: Stat; isMobile: boolean }) => (
+const StatTile = ({
+   stat,
+   index,
+   isMobile,
+}: {
+   stat: Stat;
+   index: number;
+   isMobile: boolean;
+}) => (
    <motion.div
       variants={staggerItem}
       style={{
@@ -69,6 +133,13 @@ const StatTile = ({ stat, isMobile }: { stat: Stat; isMobile: boolean }) => (
          minWidth: 0,
       }}
    >
+      {/* Its own row above the number, so wide values (1800+, 236k+) never
+          crowd it on a 375px phone, where tiles sit two to a row. */}
+      <StatFigure
+         figure={stat.figure}
+         delay={FIGURE_DELAY + index * FIGURE_STAGGER}
+         height={isMobile ? 20 : 24}
+      />
       <AnimatedCounter value={stat.value} />
       <span
          style={{
@@ -116,8 +187,13 @@ const StatGroup = ({
             gap: isMobile ? 12 : 16,
          }}
       >
-         {stats.map((stat) => (
-            <StatTile key={stat.label} stat={stat} isMobile={isMobile} />
+         {stats.map((stat, index) => (
+            <StatTile
+               key={stat.label}
+               stat={stat}
+               index={index}
+               isMobile={isMobile}
+            />
          ))}
       </motion.div>
    </div>
@@ -127,16 +203,23 @@ const StatsBand = () => {
    const { isMobile } = useBreakpoint();
    const { headings } = getStatsCopy();
 
-   const { impact, delivery, openSource, competitive } = useMemo(() => {
+   const band = useMemo(() => {
       // A tile's label and note come from the data; `values` fills the note.
+      // Its figure is drawn from the same derived numbers as its value.
       const { tiles } = getStatsCopy();
       const tile = (
          key: StatsTileKey,
          value: string,
+         figure: Figure | undefined,
          values?: TemplateValues,
       ): Stat => {
          const { label, note } = tiles[key];
-         return { value, label, note: note && fillTemplate(note, values) };
+         return {
+            value,
+            label,
+            note: note && fillTemplate(note, values),
+            figure,
+         };
       };
 
       // Expired certifications drop out of the count, and both notes name the
@@ -160,9 +243,13 @@ const StatsBand = () => {
       const internal = getExperience().flatMap(
          (job) => job.internal_contributions ?? [],
       );
-      const speakingCount = internal
-         .filter((c) => c.type === "talk" || c.type === "publication")
-         .reduce((sum, c) => sum + (c.count ?? 1), 0);
+      const countType = (type: string) =>
+         internal
+            .filter((c) => c.type === type)
+            .reduce((sum, c) => sum + (c.count ?? 1), 0);
+      const talkCount = countType("talk");
+      const sampleCount = countType("publication");
+      const speakingCount = talkCount + sampleCount;
       const speakerCerts = getExperience()
          .flatMap((job) => job.internal_achievements ?? [])
          .filter((a) => /Speaker Certification/.test(a.title)).length;
@@ -216,63 +303,138 @@ const StatsBand = () => {
       const platforms = getCodingPlatformStats();
       const leetcode = platforms.leetcode;
       const gfg = platforms.geeksforgeeks;
-      const solvedCount = (value?: string) =>
-         Number.parseInt(value ?? "", 10) || 0;
-      const solvedTotal =
-         solvedCount(leetcode?.problems_solved) +
-         solvedCount(gfg?.problems_solved);
+      const leetcodeSolved = countOf(leetcode?.problems_solved);
+      const gfgSolved = countOf(gfg?.problems_solved);
+      const solvedTotal = leetcodeSolved + gfgSolved;
+      // The contests tile shades one cell per contest by the rating it ended
+      // on, but only when the history covers every contest the tile counts.
+      const ratings = leetcodeRatings();
+      const contests = countOf(leetcode?.contests);
+      const contestCells =
+         ratings.length === contests ? heat(ratings) : split(contests, 0);
+      // The hard tile's bars: easy, medium and hard solved, to one scale.
+      const solved = leetcode?.solved_by_difficulty;
+      const difficultySplit = solved
+         ? [solved.easy, solved.medium, solved.hard]
+         : [];
 
       return {
+         highlights: getHighlights().map((highlight): Stat => ({
+            value: highlight.value,
+            label: highlight.label,
+            note: highlight.note,
+            figure: highlightFigure(highlight, ratings),
+         })),
          impact: [
             {
-               ...tile("clients_served", impactData.clients_served),
+               ...tile(
+                  "clients_served",
+                  impactData.clients_served,
+                  spokes(countOf(impactData.clients_served)),
+               ),
                note: impactData.clients_note,
             },
-            tile("years_at_aws", impactData.years_at_aws),
-            tile("speaker_certs", String(speakerCerts)),
-            tile("talks", String(speakingCount)),
+            tile(
+               "years_at_aws",
+               impactData.years_at_aws,
+               years(
+                  countOf(impactData.years_at_aws),
+                  impactData.years_at_aws.includes("+"),
+               ),
+            ),
+            tile("speaker_certs", String(speakerCerts), chevrons(speakerCerts)),
+            tile(
+               "talks",
+               String(speakingCount),
+               glyphs(["talk", talkCount], ["repo", sampleCount]),
+            ),
          ] satisfies Stat[],
          delivery: [
-            tile("projects", String(projectCount), { featured: featuredCount }),
+            tile(
+               "projects",
+               String(projectCount),
+               waffle(split(projectCount, featuredCount)),
+               { featured: featuredCount },
+            ),
             {
-               ...tile("certifications", String(certs.length)),
+               ...tile(
+                  "certifications",
+                  String(certs.length),
+                  glyphs(["cert", certs.length]),
+               ),
                note: certIssuers.join(" + "),
             },
             {
-               ...tile("badges", String(badges.length)),
+               ...tile("badges", String(badges.length), hexes(badges.length)),
                note: badgeNote,
             },
-            tile("podium", String(podium.length), {
-               first: place("1st"),
-               second: place("2nd"),
-               third: place("3rd"),
-            }),
+            tile(
+               "podium",
+               String(podium.length),
+               podiumSteps([place("1st"), place("2nd"), place("3rd")]),
+               {
+                  first: place("1st"),
+                  second: place("2nd"),
+                  third: place("3rd"),
+               },
+            ),
          ] satisfies Stat[],
          competitive: [
-            tile("leetcode_rating", leetcode?.best_rating ?? "", {
-               badge: leetcode?.badge,
-               top: leetcode?.top_percentage,
-            }),
-            tile("problems_solved", `${solvedTotal}+`, {
-               leetcode: leetcode?.problems_solved,
-               gfg: gfg?.problems_solved,
-            }),
-            tile("contests", leetcode?.contests ?? "", {
+            tile(
+               "leetcode_rating",
+               leetcode?.best_rating ?? "",
+               ruler(Number.parseFloat(leetcode?.top_percentage ?? "")),
+               { badge: leetcode?.badge, top: leetcode?.top_percentage },
+            ),
+            tile(
+               "problems_solved",
+               `${solvedTotal}+`,
+               tally([leetcodeSolved, gfgSolved]),
+               {
+                  leetcode: leetcode?.problems_solved,
+                  gfg: gfg?.problems_solved,
+               },
+            ),
+            tile("contests", leetcode?.contests ?? "", waffle(contestCells), {
                rank: leetcode?.best_contest_rank,
             }),
-            tile("hard_solved", leetcode?.hard_solved ?? ""),
+            tile(
+               "hard_solved",
+               leetcode?.hard_solved ?? "",
+               tiers(difficultySplit),
+            ),
          ] satisfies Stat[],
          openSource: [
-            { ...tile("merged_prs", String(mergedPrs)), note: mergedNote },
-            tile("stars", formatStars(starsReached)),
-            tile("repos", String(repoStars.size), { big: bigRepos }),
-            tile("answers", String(discussions.length), {
-               accepted,
-               helpful: discussions.length - accepted,
-            }),
+            {
+               ...tile(
+                  "merged_prs",
+                  String(mergedPrs),
+                  rail(mergedPrs, coAuthored),
+               ),
+               note: mergedNote,
+            },
+            tile(
+               "stars",
+               formatStars(starsReached),
+               bars([...repoStars.values()]),
+            ),
+            tile(
+               "repos",
+               String(repoStars.size),
+               // the 10k+ repos lead, solid; the rest are rings
+               pips(repoStars.size, bigRepos),
+               { big: bigRepos },
+            ),
+            tile(
+               "answers",
+               String(discussions.length),
+               waffle(split(discussions.length, accepted)),
+               { accepted, helpful: discussions.length - accepted },
+            ),
          ] satisfies Stat[],
       };
    }, []);
+   const { highlights, impact, delivery, openSource, competitive } = band;
 
    return (
       <div
@@ -287,7 +449,7 @@ const StatsBand = () => {
              recruiters are actually assessing comes first. */}
          <StatGroup
             heading={headings.highlights}
-            stats={getHighlights()}
+            stats={highlights}
             isMobile={isMobile}
          />
          <StatGroup

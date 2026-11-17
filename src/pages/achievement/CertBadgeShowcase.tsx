@@ -60,6 +60,7 @@ const CertBadgeShowcase = ({ certifications }: CertBadgeShowcaseProps) => {
                <CertBadge
                   key={cert.badgeId}
                   name={cert.name}
+                  issuer={cert.issuer}
                   imageUrl={cert.imageUrl}
                   badgeUrl={cert.badgeUrl}
                   level={cert.level}

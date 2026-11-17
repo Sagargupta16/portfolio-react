@@ -167,6 +167,7 @@ These were built, seen on the real page and dropped. Check this list before prop
 | 2026-10-24 | Hairline isometric figures on project covers, experience scenes and Focus Areas cards (#268) | Closed unmerged; the Motion scenes stay. The kit is kept on branch `feat/hairline-figures` for a new placement |
 | 2026-10-25 | Researched rewrite of the headline, taglines and About                                       | Rejected; copy stays in the owner's own words                                                                  |
 | 2026-10-25 | Moving SVG loops to WAAPI for idle CPU                                                       | Measured no gain; loops pause off-screen and share one 60 Hz clock instead                                     |
+| 2026-11-14 | Hairline line figures on the Education cards                                                 | Reverted before merge; the cards keep their coursework chips                                                   |
 
 ## Verify your change
 

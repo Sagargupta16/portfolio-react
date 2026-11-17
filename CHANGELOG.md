@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.24.0] - 2026-11-14
+
+A polish pass over four of the plainest sections and two page-wide flaws. Checked on the production build at 375px and 1280px, in Full and Reduced; EmailJS was answered inside the browser, so no message was sent.
+
+### Changed
+
+- **Stats.** Every Stats band tile (20, in five groups) carries a small flat figure drawn from its own number: 7 dots for 7x TFC Ambassador, the real 107-contest rating line peaking at 2166, a 49-cell grid with the 11 featured projects filled, one bar per repository for the stars. The figures draw in once when the tile scrolls into view; Reduced shows them finished.
+- **Achievements.** Certification and learning-badge names run to two lines of whole words, with the full name in a flat tip on hover and keyboard focus (it was already in each link's accessible name). Every badge reads the same height: the art box is scaled per issuer from the measured artwork bounds, so the HashiCorp shield no longer looks bigger than the AWS hexagons. The measured heights live in one table (`src/pages/achievement/badgeArt.json`), and `pnpm validate:data` fails when a synced badge's issuer has no row, so a new issuer from the Credly sync cannot render off size unseen.
+- **News.** Titles wrap to two lines on desktop instead of ending in an ellipsis, rail nodes are brighter and take their type's tint, and the nodes pop in down the rail once. The type tints are all blues now (the certifications type was indigo).
+- **Contact.** The cards' left borders are one blue; brand colours stay on the icons. Fields focus with a crisp blue border and underline. A successful send plays a short `git push` log (`data/sections.json` `contact.sent.log`) before "Message sent!", and "Send another message" stays inert until it is visible.
+
+### Fixed
+
+- **The floating stack tiles no longer overlap.** The six tiles on each side moved at six different scroll speeds in a 60px flank, so faster ones slid through slower ones: on 4.23.1 tiles overlapped in 54 of 57 scroll positions (up to 8 pairs at once), now in 0 of 57. Each side shares one speed, and the sides differ.
+- **The background beams no longer cut through content.** Over the 1152px content column they drop to 30% and ramp back to full strength across the flanks (over the whole flank where it is narrower than 80px, as at 1280px), so they stop crossing News rows, card gaps and form fields; on phones, where the column fills the screen, they stay at 30%.
+
 ## [4.23.1] - 2026-11-09
 
 Every piece of state that described one lifecycle with several flags now holds it in one value whose type lists the states, which fixes two screens that could show two states at once. Checked on the production build in Chrome with EmailJS, the CV files and the clipboard stubbed in the browser, so no message was sent.

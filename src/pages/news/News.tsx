@@ -19,6 +19,8 @@ const SECTION_ID = "news";
 // entering rows stagger by at most MAX_STAGGER in total.
 const STAGGER = 0.03;
 const MAX_STAGGER = 0.18;
+const NODE_STAGGER = 0.06;
+const MAX_NODE_DELAY = 0.5;
 const LAYOUT: Transition = { duration: 0.2, ease: EASING.brisk };
 const EXIT: Transition = { duration: 0.12, ease: EASING.brisk };
 const HIDDEN = { opacity: 0, y: -4 };
@@ -93,6 +95,9 @@ const News = () => {
       enterTransition(
          Math.min(Math.max(index - staggerFrom, 0) * STAGGER, MAX_STAGGER),
       );
+   // Rail nodes pop in top to bottom as the list scrolls into view.
+   const nodeDelay = (index: number) =>
+      Math.min(Math.max(index - staggerFrom, 0) * NODE_STAGGER, MAX_NODE_DELAY);
    // Reduced: rows and years mount and unmount as they are, nothing tweens.
    const rowEnter = reducedMotion ? false : HIDDEN;
    const yearEnter = reducedMotion ? false : FADED;
@@ -139,7 +144,10 @@ const News = () => {
                                  exit={exit}
                                  transition={rowTransition(index)}
                               >
-                                 <NewsRow item={item} />
+                                 <NewsRow
+                                    item={item}
+                                    revealDelay={nodeDelay(index)}
+                                 />
                               </motion.li>
                            ))}
                         </AnimatePresence>

@@ -17,11 +17,14 @@ import { fillTemplate } from "@utils/fillTemplate";
 import { getSectionCopy } from "@data/sections";
 import { newTabLabel } from "@data/ui";
 import useMotionPreference from "@hooks/useMotionPreference";
+import { badgeArtScale } from "./achievementConstants";
+import "./achievements.css";
 
 const COPY = getSectionCopy("achievements").certifications;
 
 interface CertBadgeProps {
    name: string;
+   issuer: string;
    imageUrl: string;
    badgeUrl: string;
    level?: string;
@@ -39,6 +42,9 @@ const SESSION_TIME = Date.now();
 const EXPIRY_WARNING_DAYS = 90;
 const DAY_MS = 86_400_000;
 const MAX_STAGGER_S = 0.3;
+
+/* The name label is wider than the image so two mono lines hold a full name. */
+const NAME_PAD = 40;
 
 /* One hover label on the anchor; every child animates its own "hover" variant
    so the whole badge responds as a unit with zero React state. */
@@ -90,6 +96,7 @@ const getExpiryMeta = (expiryDate?: string): ExpiryMeta | null => {
 
 const CertBadge = ({
    name,
+   issuer,
    imageUrl,
    badgeUrl,
    level,
@@ -102,6 +109,7 @@ const CertBadge = ({
    // If the CDN's resized variant fails (transient 5xx / cold cache on newly
    // synced badges), fall back to the original full-size URL once.
    const [useOriginal, setUseOriginal] = useState(false);
+   const artScale = badgeArtScale("certification", { issuer, name });
    const accent = LEVEL_COLOR[level ?? ""] ?? BLUE_LIGHT;
    const expiryMeta = getExpiryMeta(expiryDate);
    // aria-label replaces the anchor's content for assistive tech, so the level
@@ -158,21 +166,30 @@ const CertBadge = ({
             animate={floatLoop}
             variants={floatVariants}
          >
-            <motion.img
-               src={useOriginal ? imageUrl : credlyThumb(imageUrl)}
-               onError={() => setUseOriginal(true)}
-               alt={name}
-               loading="lazy"
-               width={size}
-               height={size}
-               variants={imageVariants}
-               transition={IMAGE_SPRING}
+            <div
+               className="badge-art"
                style={{
                   width: size,
                   height: size,
-                  objectFit: "contain",
+                  transform: `scale(${artScale})`,
                }}
-            />
+            >
+               <motion.img
+                  src={useOriginal ? imageUrl : credlyThumb(imageUrl)}
+                  onError={() => setUseOriginal(true)}
+                  alt={name}
+                  loading="lazy"
+                  width={size}
+                  height={size}
+                  variants={imageVariants}
+                  transition={IMAGE_SPRING}
+                  style={{
+                     width: size,
+                     height: size,
+                     objectFit: "contain",
+                  }}
+               />
+            </div>
          </motion.div>
 
          {/* Cert name + level */}
@@ -185,24 +202,18 @@ const CertBadge = ({
                minHeight: expiryMeta ? 58 : 42,
             }}
          >
-            <motion.span
-               variants={nameVariants}
-               style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  fontFamily: MONO_FONT,
-                  color: TEXT_MUTED,
-                  textAlign: "center",
-                  maxWidth: size + 20,
-                  lineHeight: 1.2,
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-               }}
-            >
-               {name}
-            </motion.span>
+            <div className="badge-name" style={{ width: size + NAME_PAD }}>
+               <motion.span
+                  className="badge-name__text"
+                  variants={nameVariants}
+                  style={{ fontFamily: MONO_FONT, color: TEXT_MUTED }}
+               >
+                  {name}
+               </motion.span>
+               <span className="badge-name__tip" aria-hidden="true">
+                  {name}
+               </span>
+            </div>
             {level && (
                <span
                   style={{

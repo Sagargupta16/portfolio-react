@@ -600,7 +600,17 @@ const SECTION_EXTRAS = {
          send_failed: [],
          send_timeout: [],
       },
-      sent: { title: [], thanks: ["name"], again: [] },
+      sent: {
+         title: [],
+         thanks: ["name"],
+         again: [],
+         log: {
+            command: [],
+            counting: [],
+            writing: [],
+            done: ["name"],
+         },
+      },
    },
 };
 // Single fields beyond the heading: section -> field -> placeholders.
@@ -1435,6 +1445,38 @@ if (requireRecord(achievements, "achievements")) {
       ...(Array.isArray(badges) ? badges : []),
    ];
    requireUnique(allBadges, "badgeId", "achievements.all_badges");
+   // Every issuer needs its measured art height, or its badges render off
+   // size (src/pages/achievement/badgeArt.json, badgeArtScale).
+   const BADGE_ART_SOURCE = "src/pages/achievement/badgeArt.json";
+   const badgeArt = loadJson(BADGE_ART_SOURCE);
+   if (badgeArt) {
+      const prefixes = Object.keys(badgeArt.badge_prefix ?? {});
+      const requireArt = (list, kind, path) => {
+         for (const [index, entry] of (Array.isArray(list)
+            ? list
+            : []
+         ).entries()) {
+            const prefixed =
+               kind === "badge" &&
+               prefixes.some((prefix) => String(entry.name).startsWith(prefix));
+            if (
+               !prefixed &&
+               !Object.hasOwn(badgeArt[kind] ?? {}, entry.issuer)
+            ) {
+               fail(
+                  `${path}[${index}].issuer`,
+                  `"${entry.issuer}" has no measured art height in ${BADGE_ART_SOURCE} (${kind})`,
+               );
+            }
+         }
+      };
+      requireArt(
+         certifications,
+         "certification",
+         "achievements.certifications",
+      );
+      requireArt(badges, "badge", "achievements.learning_badges");
+   }
    for (const [index, badge] of allBadges.entries()) {
       const badgePath = `achievements.all_badges[${index}]`;
       requireIsoDate(badge.issueDate, `${badgePath}.issueDate`);

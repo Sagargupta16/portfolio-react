@@ -158,3 +158,75 @@
       margin-right: 8px;
    }
 }
+
+/* ===== Credential badge art and names (CertBadge.tsx, RailBadge.tsx) =====
+   The art box is a fixed square; the component scales it so every issuer's
+   artwork reads the same height. The name is two lines of whole words; the
+   full name shows in a flat tip above it on hover (fine pointers) and on
+   keyboard focus, and always sits in the anchor's aria-label. */
+.badge-art {
+   flex-shrink: 0;
+   transform-origin: 50% 50%;
+}
+
+.badge-name {
+   position: relative;
+   max-width: 100%;
+}
+
+.badge-name__text {
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;
+   line-clamp: 2;
+   overflow: hidden;
+   font-size: 11px;
+   font-weight: 600;
+   line-height: 1.2;
+   text-align: center;
+   text-wrap: balance;
+   overflow-wrap: normal;
+   word-break: normal;
+   hyphens: none;
+}
+
+.badge-name__tip {
+   position: absolute;
+   z-index: 10;
+   bottom: calc(100% + 6px);
+   left: 50%;
+   width: max-content;
+   max-width: 100%;
+   padding: 6px 8px;
+   border: 1px solid var(--color-border-hover);
+   border-radius: 8px;
+   background: var(--color-bg-card);
+   color: var(--color-text-primary);
+   font-family: var(--font-mono);
+   font-size: 11px;
+   font-weight: 600;
+   line-height: 1.3;
+   text-align: center;
+   opacity: 0;
+   pointer-events: none;
+   transform: translate(-50%, 4px);
+   transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+   visibility: hidden;
+}
+
+a:focus-visible .badge-name__tip {
+   opacity: 1;
+   transform: translate(-50%, 0);
+   visibility: visible;
+}
+
+@media (hover: hover) {
+   a:hover .badge-name__tip {
+      opacity: 1;
+      transform: translate(-50%, 0);
+      transition-delay: 0.2s;
+      visibility: visible;
+   }
+}

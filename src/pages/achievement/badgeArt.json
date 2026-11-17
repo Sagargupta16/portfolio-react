@@ -1,0 +1,15 @@
+{
+   "target": 0.9,
+   "certification": {
+      "Amazon Web Services Training and Certification": 0.97,
+      "IBM Professional Certification": 0.88
+   },
+   "badge": {
+      "Anthropic": 1,
+      "AWS Worldwide Field Enablement": 1,
+      "Amazon Web Services Training and Certification": 0.81
+   },
+   "badge_prefix": {
+      "AWS Partner:": 0.84
+   }
+}

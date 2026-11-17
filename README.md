@@ -12,7 +12,7 @@
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
 ![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.23.1-2563eb)
+![Version](https://img.shields.io/badge/version-4.24.0-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -53,11 +53,11 @@ Section links support reloads and browser history. Navigation loads the content 
 | **Education**    | Academic timeline on the same card as Experience: institution logos, a CGPA label with rolling digits, coursework chips and accessible achievement disclosures                                                                                    |
 | **Skills**       | Moving brand-icon rails under dashed category rules, every AWS service in one group (154 primary skills (174 with the three secondary rails); static chips in Reduced)                                                                            |
 | **Projects**     | Filterable cards with status (Active, Beta, Complete, plus the synced version) and evidence badges; repo-accurate animated cover scenes for every project; detail sheet with an at-a-glance brief, live demos and a Copy link (`?project=<slug>`) |
-| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges, and competitions                                                                                                                                                              |
+| **Achievements** | Certifications with expiry state (auto-synced from Credly), badges sized to one visual height with two-line names and a full-name tip, and competitions                                                                                           |
 | **Focus Areas**  | Seven fact-based focus areas, Forward Deployed Engineering first across the full row with a wide scene, then an even grid; each card's scene shows the real mechanism, labels at the project covers' 8 px                                         |
-| **Stats**        | Highlights, impact, delivery, open-source and contest counters; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                                                                         |
-| **News**         | Dated milestones as a one-line commit graph with stable hashes, filterable by type                                                                                                                                                                |
-| **Contact**      | Bounded EmailJS form with inline validation, error toast, persistent confirmation, a vCard download, and slide-to-email on phones                                                                                                                 |
+| **Stats**        | Highlights, impact, delivery, open-source and contest counters, each with a small figure drawn from its own number; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                     |
+| **News**         | Dated milestones as a commit graph with stable hashes and a tint per type (titles up to two lines on desktop), filterable by type                                                                                                                 |
+| **Contact**      | Bounded EmailJS form with inline validation, error toast, a confirmation that plays a short `git push` log, a vCard download, and slide-to-email on phones                                                                                        |
 | **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build                           |
 
 ---

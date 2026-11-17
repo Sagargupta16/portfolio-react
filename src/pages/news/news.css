@@ -91,19 +91,40 @@
    flex-direction: column;
 }
 
-.news-graph::before {
+/* The rail is drawn per item, node centre to node centre, so a two-line row
+   (taller than --row-h) never leaves a tail below the last node. A row that
+   is animating out (AnimatePresence popLayout tags it data-motion-pop-id and
+   keeps it in the DOM) draws no rail and is not counted as the first or last
+   row, so a filter swap never leaves a stub under the new last node. */
+.news-graph > li {
+   position: relative;
+}
+
+.news-graph > li::before {
    content: "";
    position: absolute;
-   top: calc(var(--row-h) / 2);
-   bottom: calc(var(--row-h) / 2);
+   top: 0;
+   bottom: 0;
    left: var(--rail-x);
    width: 2px;
-   border-radius: 2px;
-   background: linear-gradient(
-      to bottom,
-      var(--color-accent-blue),
-      rgb(37 99 235 / 0.15)
-   );
+   background: color-mix(in srgb, var(--color-accent-blue) 45%, transparent);
+}
+
+.news-graph > li:nth-child(1 of :not([data-motion-pop-id]))::before {
+   top: calc(var(--row-h) / 2);
+}
+
+.news-graph > li:nth-last-child(1 of :not([data-motion-pop-id]))::before {
+   bottom: auto;
+   height: calc(var(--row-h) / 2);
+}
+
+.news-graph
+   > li:nth-child(1 of :not([data-motion-pop-id])):nth-last-child(
+      1 of :not([data-motion-pop-id])
+   )::before,
+.news-graph > li[data-motion-pop-id]::before {
+   display: none;
 }
 
 .news-row {
@@ -156,13 +177,25 @@ a.news-row:focus-visible .news-row-arrow {
    height: 12px;
 }
 
+/* The node is the row's tone lifted toward white, with a 1px ring of the tone
+   at low alpha just outside the cut. Hover and focus lift it. */
+.news-row {
+   --node-fill: color-mix(in srgb, var(--news-tone) 78%, rgb(var(--ch-white)));
+   --node-ring: color-mix(in srgb, var(--news-tone) 28%, transparent);
+}
+
 .news-node::before {
    content: "";
    width: 8px;
    height: 8px;
    border-radius: 50%;
-   background: var(--news-tone);
-   box-shadow: 0 0 0 3px var(--color-bg-primary);
+   background: var(--node-fill);
+   box-shadow:
+      0 0 0 3px var(--color-bg-primary),
+      0 0 0 4px var(--node-ring);
+   transition:
+      transform 0.2s ease,
+      background-color 0.2s ease;
 }
 
 .news-row--major .news-node::before {
@@ -173,8 +206,33 @@ a.news-row:focus-visible .news-row-arrow {
 .news-row--minor .news-node::before {
    background: var(--color-bg-primary);
    box-shadow:
-      inset 0 0 0 1.5px var(--news-tone),
-      0 0 0 3px var(--color-bg-primary);
+      inset 0 0 0 1.5px var(--node-fill),
+      0 0 0 3px var(--color-bg-primary),
+      0 0 0 4px var(--node-ring);
+}
+
+a.news-row:focus-visible {
+   --node-fill: color-mix(in srgb, var(--news-tone) 55%, rgb(var(--ch-white)));
+   --node-ring: color-mix(in srgb, var(--news-tone) 55%, transparent);
+}
+
+a.news-row:focus-visible .news-node::before {
+   transform: scale(1.3);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .news-row:hover {
+      --node-fill: color-mix(
+         in srgb,
+         var(--news-tone) 55%,
+         rgb(var(--ch-white))
+      );
+      --node-ring: color-mix(in srgb, var(--news-tone) 55%, transparent);
+   }
+
+   .news-row:hover .news-node::before {
+      transform: scale(1.3);
+   }
 }
 
 .news-date {
@@ -243,6 +301,45 @@ a.news-row:focus-visible .news-row-arrow {
    display: flex;
    justify-content: center;
    margin-top: 28px;
+}
+
+/* Desktop (a pointer that hovers, 768px and up): a title wraps to at most two
+   lines; the rest stays in the title attribute on hover. Rows align to the
+   first line (20px) and are padded so a one-line row is still --row-h tall
+   and its node sits where the rail expects it. */
+@media (hover: hover) and (min-width: 768px) {
+   .news-row {
+      align-items: flex-start;
+      padding-block: 9px;
+   }
+
+   .news-node {
+      margin-top: 4px;
+   }
+
+   .news-date,
+   .news-text,
+   .news-hash {
+      line-height: 20px;
+   }
+
+   .news-icon {
+      margin-top: 3px;
+   }
+
+   .news-row-arrow {
+      margin-top: 3.5px;
+   }
+
+   .news-text {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      overflow-wrap: break-word;
+      text-overflow: clip;
+      white-space: normal;
+   }
 }
 
 /* Wrapped rows, on touch screens at any width (there is no hover to reveal
