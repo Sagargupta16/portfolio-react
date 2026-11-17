@@ -3,6 +3,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ABOUT_FACT_KEYS } from "./lib/about-facts.js";
 import { DATA_FILES } from "./lib/data-files.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -145,9 +146,24 @@ const requireUrlOnHost = (value, path, hostname, pathPrefix = "/") => {
    }
 };
 
+// A YYYY-MM-DD string that is a real calendar day (2026-02-30 and 2026-13-05
+// pass the shape but not the round trip). A YYYY-MM month is checked as its 1st.
+const isRealDate = (value) => {
+   const text = String(value ?? "");
+   const day = /^\d{4}-\d{2}$/.test(text) ? `${text}-01` : text;
+   if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return false;
+   const parsed = new Date(`${day}T00:00:00Z`);
+   return (
+      !Number.isNaN(parsed.getTime()) &&
+      parsed.toISOString().slice(0, 10) === day
+   );
+};
+
 const requireIsoDate = (value, path) => {
    if (!/^\d{4}-\d{2}-\d{2}$/.test(value ?? "")) {
       fail(path, "must use YYYY-MM-DD format");
+   } else if (!isRealDate(value)) {
+      fail(path, "must be a real calendar date");
    }
 };
 
@@ -223,7 +239,10 @@ if (requireArray(news, "news")) {
    news.forEach((item, index) => {
       const path = `news[${index}]`;
       if (!requireRecord(item, path)) return;
-      if (!/^\d{4}-\d{2}(-\d{2})?$/.test(item.date ?? "")) {
+      if (
+         !/^\d{4}-\d{2}(-\d{2})?$/.test(item.date ?? "") ||
+         !isRealDate(item.date)
+      ) {
          fail(`${path}.date`, "must use YYYY-MM or YYYY-MM-DD");
       }
       if (!NEWS_TYPES.has(item.type)) {
@@ -318,7 +337,7 @@ if (requireRecord(personal, "data/personal.json")) {
    }
    if (requireRecord(personal.about, "personal.about")) {
       for (const [key, value] of Object.entries(personal.about)) {
-         requireString(value, `personal.about.${key}`);
+         requireTemplate(value, `personal.about.${key}`, ABOUT_FACT_KEYS);
       }
    }
    if (requireRecord(personal.impact, "personal.impact")) {
@@ -1373,6 +1392,7 @@ const isRatingPair = (pair) =>
    Array.isArray(pair) &&
    pair.length === 2 &&
    /^\d{4}-\d{2}-\d{2}$/.test(String(pair[0])) &&
+   isRealDate(pair[0]) &&
    isCount(pair[1]);
 
 const checkRatingHistory = (stats, path) => {
@@ -1397,6 +1417,19 @@ const checkRatingHistory = (stats, path) => {
 };
 
 const checkLeetcodeSeries = (stats, path) => {
+   // The tiles and the About facts read these; a missing one would render "0".
+   for (const field of [
+      "best_rating",
+      "contests",
+      "hard_solved",
+      "problems_solved",
+      "top_percentage",
+      "badge",
+   ]) {
+      if (!isNonEmptyString(stats[field])) {
+         fail(`${path}.${field}`, "must be a non-empty string");
+      }
+   }
    checkSolvedSplit(stats.solved_by_difficulty, `${path}.solved_by_difficulty`);
    checkRatingHistory(stats, path);
 };

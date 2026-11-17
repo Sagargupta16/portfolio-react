@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { motion, type Variants } from "motion/react";
 import { getAbout, getAvailability } from "@data/personal";
+import { getCertifications, getCodingPlatformStats } from "@data/achievements";
 import { getSectionCopy } from "@data/sections";
 import { staggerContainer, fadeInLeft, fadeInRight } from "@utils/animations";
 import { GREEN, MONO_FONT, TEXT_PRIMARY, MAX_WIDTH } from "@/constants/theme";
@@ -10,6 +11,7 @@ import PageSection from "@components/layout/PageSection";
 import CharacterReveal from "@components/ui/CharacterReveal";
 import HighlightCard from "./HighlightCard";
 import QuickFacts from "./QuickFacts";
+import { aboutFacts, fillAbout } from "../../../scripts/lib/about-facts.js";
 
 /* The bio fades in as one block; its highlight cards then cascade in behind
    it. Colocated because the shared staggerContainer runs a tighter step, and
@@ -32,15 +34,18 @@ const About = () => {
    const { title, subtitle } = getSectionCopy("about");
    const { isMobile } = useBreakpoint();
 
-   const highlights = useMemo(
-      () => [
+   const highlights = useMemo(() => {
+      const facts = aboutFacts({
+         certifications: getCertifications(),
+         coding_platform_stats: getCodingPlatformStats(),
+      });
+      return [
          aboutInfo.current_role,
          aboutInfo.education,
          aboutInfo.specialization,
          aboutInfo.competitive_programming,
-      ],
-      [aboutInfo],
-   );
+      ].map((line) => fillAbout(line, facts));
+   }, [aboutInfo]);
 
    return (
       <PageSection id="about" title={title} subtitle={subtitle}>
@@ -48,7 +53,9 @@ const About = () => {
             <motion.div
                style={{
                   display: "grid",
-                  gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+                  gridTemplateColumns: isMobile
+                     ? "minmax(0, 1fr)"
+                     : "repeat(2, minmax(0, 1fr))",
                   gap: isMobile ? 32 : 56,
                   alignItems: "center",
                }}

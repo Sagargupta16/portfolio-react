@@ -4,7 +4,7 @@ This is a React and TypeScript portfolio with JSON content, reusable UI componen
 
 ## Run locally
 
-Use Node.js 24.11 or newer and the pnpm version in the `packageManager` field of [package.json](package.json).
+Use Node.js 26 or newer and the pnpm version in the `packageManager` field of [package.json](package.json).
 
 ```sh
 pnpm install --frozen-lockfile
@@ -194,4 +194,4 @@ Before opening a pull request, describe what changed and how you checked it usin
 
 Use `pnpm fetch:resume` when working on the CV viewer locally. It needs network access, and it fails when the latest release tag cannot be resolved (the PDF and the web view must come from the same tag). Normal application development and pull request builds do not require fetching the resume. See [scripts/prepare-resume.js](scripts/prepare-resume.js) for that pipeline.
 
-[CI](.github/workflows/ci-cd.yml) runs the code and data checks for pull requests. Verified builds from `main` fetch the resume and deploy to GitHub Pages: on a push, on a manual run, and from a scheduled check every six hours that rebuilds the CV only when the latest `latex-resume` release tag differs from the one the live site serves. The weekly Credly and live-data syncs open pull requests and dispatch CI on their branch; a run on any branch other than `main` never deploys. Keep Vite's `/portfolio-react/` base path and `build/` output aligned with that workflow.
+[CI](.github/workflows/ci-cd.yml) runs the code and data checks for pull requests. Verified builds from `main` fetch the resume and deploy to GitHub Pages: on a push, on a manual run, and from a check scheduled every six hours (GitHub runs it about twice a day in practice) that rebuilds the CV only when the latest `latex-resume` release tag differs from the one the live site serves. The weekly Credly and live-data syncs open pull requests and dispatch CI on their branch; a run on any branch other than `main` never deploys. Keep Vite's `/portfolio-react/` base path and `build/` output aligned with that workflow.

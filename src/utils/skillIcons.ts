@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import { getSkills } from "@data/skills";
+import { BLUE_LIGHT } from "@/constants/theme";
 import {
    SiPython,
    SiJavascript,
@@ -129,7 +130,7 @@ export interface SkillIcon {
    color: string;
 }
 
-const BLUE = "#60a5fa";
+const BLUE = BLUE_LIGHT;
 const AWS_ORANGE = "#FF9900";
 
 /**

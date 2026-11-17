@@ -5,6 +5,7 @@
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { aboutFacts, fillAbout } from "./lib/about-facts.js";
 import { PUBLIC_DATA_FILES } from "./lib/data-files.js";
 import { newsHash } from "./lib/news-hash.js";
 
@@ -177,14 +178,17 @@ const isActive = (cert, today) => !cert.expiryDate || cert.expiryDate >= today;
 const bullets = (record) =>
    sortedValues(record).map((bullet) => `- ${clean(bullet)}`);
 
-const aboutBlock = (personal) => [
-   "## About",
-   "",
-   ...Object.values(personal.about ?? {}).map(
-      (line) => `- ${stripLeadToken(line)}`,
-   ),
-   "",
-];
+const aboutBlock = ({ personal, achievements, today }) => {
+   const facts = aboutFacts(achievements, new Date(`${today}T00:00:00Z`));
+   return [
+      "## About",
+      "",
+      ...Object.values(personal.about ?? {}).map(
+         (line) => `- ${stripLeadToken(fillAbout(line, facts))}`,
+      ),
+      "",
+   ];
+};
 
 const impactBlock = (personal) => [
    "## Impact",
@@ -409,7 +413,7 @@ function buildMarkdown(d) {
       "",
       ...sectionLines(d.sections),
       "",
-      ...aboutBlock(personal),
+      ...aboutBlock(d),
       ...impactBlock(personal),
       ...experienceBlock(d.experience),
       ...projectsBlock(d.projects),

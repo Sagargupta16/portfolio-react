@@ -16,6 +16,9 @@ export const getAchievements = (): Achievement[] =>
    achievementsData.achievements as Achievement[];
 // JSON imports widen the [date, rating] pairs to (string | number)[], so the
 // cast goes through unknown; validate-data.js enforces the pair shape.
+// Held once, like learningBadges: a missing record would otherwise hand
+// back a new {} on every call.
+const EMPTY_PLATFORMS = {};
 export const getCodingPlatformStats = (): CodingPlatformStats =>
    (achievementsData.coding_platform_stats ??
-      {}) as unknown as CodingPlatformStats;
+      EMPTY_PLATFORMS) as unknown as CodingPlatformStats;

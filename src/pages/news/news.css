@@ -48,7 +48,11 @@
 
 .news-chip-count {
    font-variant-numeric: tabular-nums;
-   opacity: 0.65;
+   color: var(--color-text-muted);
+}
+
+.news-chip[aria-pressed="true"] .news-chip-count {
+   color: rgb(255 255 255 / 0.85);
 }
 
 /* Touch: an invisible strip grows each chip to at least a 44px tap target
@@ -281,7 +285,7 @@ a.news-row:focus-visible .news-node::before {
 .news-row-arrow {
    flex: none;
    margin-left: -6px;
-   color: var(--color-accent-cyan);
+   color: var(--color-accent-blue-light);
    transition: transform 0.2s ease;
 }
 
@@ -339,6 +343,16 @@ a.news-row:focus-visible .news-node::before {
       overflow-wrap: break-word;
       text-overflow: clip;
       white-space: normal;
+   }
+
+   /* A linked row reveals the whole line on hover or focus; an unlinked row
+      (a div) has no hover target, so it is never clamped. */
+   div.news-row .news-text,
+   a.news-row:hover .news-text,
+   a.news-row:focus-visible .news-text {
+      display: block;
+      -webkit-line-clamp: unset;
+      line-clamp: unset;
    }
 }
 

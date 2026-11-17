@@ -190,6 +190,14 @@
    hyphens: none;
 }
 
+/* Touch has no hover tip, so let the name use a third line. */
+@media (hover: none) {
+   .badge-name__text {
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+   }
+}
+
 .badge-name__tip {
    position: absolute;
    z-index: 10;

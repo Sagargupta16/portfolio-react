@@ -46,7 +46,7 @@ const wrap = (value: number, length: number) =>
 
 /**
  * Tile top inside the band for this scroll offset. Scrolling down carries
- * the tile up at its own speed; past the band's top it re-enters from the
+ * the tile up at its side's shared speed; past the band's top it re-enters from the
  * bottom, so the field recycles instead of emptying.
  */
 const bandPosition = (
@@ -198,7 +198,7 @@ const RestingTiles = () =>
  * hero_stack glyphs as flat tiles in the two viewport flanks, outside the
  * content column, on a fixed layer between the ambient glows and the page.
  * Three movements stack per tile: its own drift loop, a scroll-linked
- * parallax at its own speed (wrapped, so tiles recycle through the band
+ * parallax at the speed its side shares (wrapped, so tiles recycle through the band
  * instead of leaving it for good) and pointer parallax where the pointer can
  * hover. Decorative only: aria-hidden, no pointer events. The in-app motion
  * preference is the only gate: Reduced keeps every tile visible at its rest

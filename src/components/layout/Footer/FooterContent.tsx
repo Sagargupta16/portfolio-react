@@ -93,7 +93,9 @@ const FooterContent = () => {
          <motion.div
             style={{
                display: "grid",
-               gridTemplateColumns: isMobile ? "1fr" : "1fr auto auto",
+               gridTemplateColumns: isMobile
+                  ? "minmax(0, 1fr)"
+                  : "1fr auto auto",
                gap: isMobile ? 32 : 80,
                alignItems: "start",
                width: "100%",

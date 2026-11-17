@@ -133,7 +133,14 @@ const trimRun = (nodes) => {
 const emitCommand = (src, pos, name, out) => {
    if (name === "href") {
       const { args, end } = readArgs(src, pos, 2);
-      out.push({ t: "a", href: args[0], c: parseInline(args[1]) });
+      const c = parseInline(args[1]);
+      // Only https and mailto links survive; any other scheme (javascript:,
+      // data:) keeps its text and loses the link.
+      if (/^(https:|mailto:)/i.test((args[0] ?? "").trim())) {
+         out.push({ t: "a", href: args[0].trim(), c });
+      } else {
+         out.push(...c);
+      }
       return end;
    }
    if (STYLE[name]) {

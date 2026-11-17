@@ -85,7 +85,7 @@ const AnimatedCounter = ({
    // Short suffixes ("+", "k") read as part of the number; long ones
    // (" merged + 12 open") are annotations and shrink so they don't dominate.
    const suffixIsAnnotation = suffix.trim().length > 2;
-   const affix = inline ? undefined : "text-accent-cyan/70";
+   const affix = inline ? undefined : "text-accent-blue-light/70";
 
    return (
       <span
@@ -93,7 +93,7 @@ const AnimatedCounter = ({
          className={
             inline
                ? "tabular-nums"
-               : `font-mono ${compact ? "text-2xl" : "text-3xl"} font-bold text-accent-cyan tabular-nums`
+               : `font-mono ${compact ? "text-2xl" : "text-3xl"} font-bold text-accent-blue-light tabular-nums`
          }
       >
          {prefix && <span className={affix}>{prefix}</span>}

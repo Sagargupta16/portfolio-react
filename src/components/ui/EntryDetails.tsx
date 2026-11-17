@@ -7,7 +7,7 @@ interface EntryChipsProps {
 }
 
 /** Skill or coursework chips: the project cards' neutral mono chip. */
-export const EntryChips = ({ items, style }: Readonly<EntryChipsProps>) => (
+const EntryChips = ({ items, style }: Readonly<EntryChipsProps>) => (
    <div className="entry-chips" style={style}>
       {items.map((item) => (
          <span key={item}>{item}</span>

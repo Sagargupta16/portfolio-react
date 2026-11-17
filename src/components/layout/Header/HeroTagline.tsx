@@ -100,7 +100,7 @@ const HeroTagline = () => {
       <motion.div
          ref={ref}
          variants={heroLabel}
-         className="hero-tagline w-full min-w-0 font-semibold leading-relaxed text-accent-cyan"
+         className="hero-tagline w-full min-w-0 font-semibold leading-relaxed text-accent-blue-light"
          style={{ fontSize: "clamp(0.9375rem, 2vw, 1.125rem)" }}
       >
          <span className="sr-only">{TAGLINES[0]}</span>

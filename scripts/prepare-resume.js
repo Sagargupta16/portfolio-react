@@ -113,12 +113,20 @@ console.log("Parsing resume sources for the web view...");
 try {
    const sources = await Promise.all(
       RESUME_FILES.map(async (file) => {
-         const r = await fetch(
-            `https://raw.githubusercontent.com/${REPO}/${tag}/${file}`,
-            { signal: AbortSignal.timeout(15_000) },
-         );
-         if (!r.ok) throw new Error(`${file}: HTTP ${r.status}`);
-         return [file, await r.text()];
+         // An idempotent GET: one retry rides out a transient failure.
+         const get = async () => {
+            const r = await fetch(
+               `https://raw.githubusercontent.com/${REPO}/${tag}/${file}`,
+               { signal: AbortSignal.timeout(15_000) },
+            );
+            if (!r.ok) throw new Error(`${file}: HTTP ${r.status}`);
+            return r.text();
+         };
+         try {
+            return [file, await get()];
+         } catch {
+            return [file, await get()];
+         }
       }),
    );
    const cv = parseResume(Object.fromEntries(sources));
@@ -130,4 +138,7 @@ try {
    console.log(`  cv.json: ${cv.sections.length} sections (${tag})`);
 } catch (error) {
    console.warn(`  Skipped the web view: ${error.message}`);
+   console.log(
+      `::warning title=CV web view skipped::${String(error.message).replaceAll("\n", " ")}`,
+   );
 }
