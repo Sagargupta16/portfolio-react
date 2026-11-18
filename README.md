@@ -11,7 +11,7 @@
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178c6)
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
-![Tests](https://img.shields.io/badge/tests-65%20passing-22c55e)
+![Tests](https://img.shields.io/badge/tests-68%20passing-22c55e)
 ![Version](https://img.shields.io/badge/version-4.24.2-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
@@ -91,7 +91,7 @@ For a file map, editing recipes, and contribution checks, read the [contributor 
 | `pnpm dev`           | Start development server                       |
 | `pnpm build`         | Validate data and build to `/build`            |
 | `pnpm preview`       | Preview production build                       |
-| `pnpm test`          | Run 65 focused Vitest tests                    |
+| `pnpm test`          | Run 68 focused Vitest tests                    |
 | `pnpm validate:data` | Validate JSON schemas and cross-file rules     |
 | `pnpm lint`          | ESLint app and scripts (zero warnings)         |
 | `pnpm lint:fix`      | ESLint with auto-fix                           |
@@ -231,8 +231,8 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 3. Lint application code and Node scripts with zero warnings
 4. Run strict TypeScript checking
 5. Validate JSON schemas and cross-file invariants
-6. Run all 65 focused tests
-7. Fail on high-severity advisories in any dependency
+6. Run all 68 focused tests
+7. Audit all dependencies for high and critical advisories and verify the [local picomatch fix](CONTRIBUTING.md#dependency-audit)
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts
 

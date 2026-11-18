@@ -10,6 +10,7 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 - The PDF viewer enlarges pages at 125% and 150%. If a page or its manifest fails to load, the viewer falls back to the text CV when available.
 - The GitHub contribution calendar exposes each date and its count through a keyboard-accessible day picker.
 - The weekly data sync updates the profile highlight alongside a new LeetCode peak. An incomplete refresh preserves an existing update pull request.
+- The build tools now reject the repeated glob syntax affected by GHSA-fc5q-39xc-vjpf. CI verifies the local `picomatch` patch against every installed copy while auditing all dependencies.
 
 ## [4.24.1] - 2026-11-17
 

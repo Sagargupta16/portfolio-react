@@ -184,6 +184,9 @@ overrides:
   source-map-js: '>=1.2.2'
   zod: ^4.6.6
 
+patchedDependencies:
+  picomatch@4.0.7: 9703aecdd53ec3e41eaf5c0ab8bcabb91a33d35481a91b23affc7cf140a17dfc
+
 importers:
 
   .:
@@ -4076,9 +4079,9 @@ snapshots:
 
   fast-levenshtein@2.0.6: {}
 
-  fdir@6.5.0(picomatch@4.0.7):
+  fdir@6.5.0(picomatch@4.0.7(patch_hash=9703aecdd53ec3e41eaf5c0ab8bcabb91a33d35481a91b23affc7cf140a17dfc)):
     optionalDependencies:
-      picomatch: 4.0.7
+      picomatch: 4.0.7(patch_hash=9703aecdd53ec3e41eaf5c0ab8bcabb91a33d35481a91b23affc7cf140a17dfc)
 
   file-entry-cache@11.1.5:
     dependencies:
@@ -4382,7 +4385,7 @@ snapshots:
 
   picocolors@1.1.1: {}
 
-  picomatch@4.0.7: {}
+  picomatch@4.0.7(patch_hash=9703aecdd53ec3e41eaf5c0ab8bcabb91a33d35481a91b23affc7cf140a17dfc): {}
 
   postcss@8.5.33:
     dependencies:
@@ -4537,8 +4540,8 @@ snapshots:
 
   tinyglobby@0.2.17:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.7)
-      picomatch: 4.0.7
+      fdir: 6.5.0(picomatch@4.0.7(patch_hash=9703aecdd53ec3e41eaf5c0ab8bcabb91a33d35481a91b23affc7cf140a17dfc))
+      picomatch: 4.0.7(patch_hash=9703aecdd53ec3e41eaf5c0ab8bcabb91a33d35481a91b23affc7cf140a17dfc)
 
   tldts-core@7.5.4: {}
 
@@ -4632,7 +4635,7 @@ snapshots:
   vite@8.3.8(esbuild@0.28.2)(jiti@2.7.0):
     dependencies:
       lightningcss: 1.33.0
-      picomatch: 4.0.7
+      picomatch: 4.0.7(patch_hash=9703aecdd53ec3e41eaf5c0ab8bcabb91a33d35481a91b23affc7cf140a17dfc)
       postcss: 8.5.33
       rolldown: 1.2.19
       tinyglobby: 0.2.17
@@ -4650,7 +4653,7 @@ snapshots:
       expect-type: 1.4.0
       magic-string: 1.4.5
       obug: 3.0.0
-      picomatch: 4.0.7
+      picomatch: 4.0.7(patch_hash=9703aecdd53ec3e41eaf5c0ab8bcabb91a33d35481a91b23affc7cf140a17dfc)
       std-env: 4.3.0
       tinybench: 6.2.2
       tinyexec: 1.3.1
