@@ -215,6 +215,18 @@ const ContributionCalendar = ({
       };
    }, [active, model]);
 
+   // Mark the picked day the same way, so the cell list stays memoized.
+   useLayoutEffect(() => {
+      const cell = gridRef.current?.querySelector<HTMLElement>(
+         `[data-i="${selectedIndex}"]`,
+      );
+      if (!cell) return;
+      cell.dataset.selected = "";
+      return () => {
+         delete cell.dataset.selected;
+      };
+   }, [selectedIndex, model]);
+
    const cells = useMemo(() => {
       if (!model) return null;
       const lastIndex = model.cells.length - 1;
@@ -225,11 +237,10 @@ const ContributionCalendar = ({
             data-i={cell.index}
             data-level={cell.level}
             data-today={cell.index === lastIndex || undefined}
-            data-selected={cell.index === selectedIndex || undefined}
             style={cellStyle(cell, model.lead)}
          />
       ));
-   }, [model, selectedIndex]);
+   }, [model]);
 
    const dateOptions = useMemo(
       () =>

@@ -198,7 +198,7 @@ describe("navigation and persistent UI state", () => {
       expect(document.documentElement.style.overflow).toBe("hidden");
    });
 
-   it("repairs a legacy history entry for the already open project in place", async () => {
+   it("keeps the open project when Back reaches a legacy entry for it", async () => {
       const { title } = getFeaturedProjects()[0];
       const query = `?project=${projectSlug(title)}`;
       const { history } = globalThis;
@@ -211,7 +211,9 @@ describe("navigation and persistent UI state", () => {
       history.back();
       await waitFor(() => {
          expect(history.state).toBe("legacy");
-         expect(globalThis.location.hash).toBe("#projects");
+         // Only the address the page loaded with is repaired; history
+         // navigation afterwards is left as the visitor chose it.
+         expect(globalThis.location.hash).toBe("#about");
       });
       expect(screen.getByRole("dialog", { name: title })).toBe(dialog);
       expect(history.length).toBe(entries);

@@ -9,6 +9,8 @@ name: Sync Live Data
 # dispatches CI/CD on the sync branch itself; that run guarantees a `ci` check on the PR's
 # head commit and deploys nothing. Merging the PR triggers the normal CI/CD deploy. When a
 # later complete refresh finds nothing to change, close-stale-pr closes the still-open PR.
+# A refresh that missed a source adds its changes on top of an open PR instead of
+# rebuilding it from main, so the pending values from that source stay.
 #
 # Two jobs, so the write token never meets npm code. `sync` installs dependencies and runs
 # the sync scripts with a read-only token and no stored git credential, then passes the
@@ -114,19 +116,37 @@ jobs:
               COMPLETE: ${{ needs.sync.outputs.complete }}
            run: |
               pr="$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')"
-              # A rebuild from main would erase pending changes from a source we could not check.
-              if [ -n "$pr" ] && [ "$COMPLETE" != "true" ]; then
-                 echo "Keeping PR #$pr as it is because this refresh was incomplete."
-                 exit 0
-              fi
+              files=(data/projects.json data/achievements.json data/news.json data/personal.json)
               git config user.name "github-actions[bot]"
               git config user.email "github-actions[bot]@users.noreply.github.com"
-              git switch -c "$BRANCH"
-              cp sync-out/projects.json sync-out/achievements.json sync-out/news.json sync-out/personal.json data/
-              git add data/projects.json data/achievements.json data/news.json data/personal.json
-              git commit -m "chore: sync live data [automated]"
-              # The bot branch is rebuilt from main each run; only this branch is force-pushed.
-              git push --force origin "$BRANCH"
+              if [ -n "$pr" ] && [ "$COMPLETE" != "true" ]; then
+                 # A rebuild from main would erase pending changes from a source this run
+                 # could not check, so apply only this run's own changes on top of the PR.
+                 cp sync-out/projects.json sync-out/achievements.json sync-out/news.json sync-out/personal.json data/
+                 git diff --full-index -- "${files[@]}" > "$RUNNER_TEMP/fresh.patch"
+                 git checkout -- "${files[@]}"
+                 git fetch --no-tags origin "$BRANCH"
+                 git switch -c "$BRANCH" FETCH_HEAD
+                 # jq ships on the runner; a merge that leaves invalid JSON keeps the PR too.
+                 if ! git apply --3way "$RUNNER_TEMP/fresh.patch" || ! jq empty "${files[@]}"; then
+                    echo "Keeping PR #$pr as it is: this incomplete refresh does not apply cleanly on top of it."
+                    exit 0
+                 fi
+                 git add "${files[@]}"
+                 if git diff --cached --quiet; then
+                    echo "PR #$pr already carries every change from this incomplete refresh."
+                    exit 0
+                 fi
+                 git commit -m "chore: sync live data [automated]"
+                 git push origin "$BRANCH"
+              else
+                 git switch -c "$BRANCH"
+                 cp sync-out/projects.json sync-out/achievements.json sync-out/news.json sync-out/personal.json data/
+                 git add "${files[@]}"
+                 git commit -m "chore: sync live data [automated]"
+                 # A complete refresh rebuilds the bot branch from main; only this branch is force-pushed.
+                 git push --force origin "$BRANCH"
+              fi
               if [ -z "$pr" ]; then
                  gh pr create --base main --head "$BRANCH" \
                     --title "chore: sync live data" \

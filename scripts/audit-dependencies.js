@@ -32,14 +32,17 @@ function verifyInstalledMatchers() {
    const directories = list.stdout
       .split(/\r?\n/)
       .filter((directory) => basename(directory) === "picomatch");
-   assert.ok(directories.length, "Missing patched picomatch installation");
    const require = createRequire(import.meta.url);
+   let patched = 0;
    for (const directory of directories) {
       const { name, version } = JSON.parse(
          readFileSync(join(directory, "package.json"), "utf8"),
       );
       assert.equal(name, "picomatch");
-      assert.equal(version, patchedVersion);
+      // A copy at another version carries no patch. checkAudit has already
+      // failed if the advisory names one, so a newer copy here is unaffected.
+      if (version !== patchedVersion) continue;
+      patched += 1;
       const match = require(directory);
       for (const pattern of ["+(ab)", "*(ab)"]) {
          assert.throws(() => match(pattern), {
@@ -49,6 +52,7 @@ function verifyInstalledMatchers() {
       }
       assert.ok(match("**/*.js")("scripts/check.js"));
    }
+   assert.ok(patched, "Missing patched picomatch installation");
 }
 
 export function checkAudit(report, status, verify = verifyInstalledMatchers) {

@@ -165,12 +165,17 @@ const Projects = () => {
    const address = new URL(href);
    const slug = readProjectParam(address);
    const selectedProject = slug ? (PROJECTS_BY_SLUG.get(slug) ?? null) : null;
+   const locationCheckedRef = useRef(false);
    useEffect(() => {
+      const firstCheck = !locationCheckedRef.current;
+      locationCheckedRef.current = true;
       if (slug === null) return;
       if (!selectedProject) {
          writeProjectParam(null);
-      } else if (address.hash !== "#projects") {
-         // Repair a legacy link in place before scrolling to its project.
+      } else if (firstCheck && address.hash !== "#projects") {
+         // Repair the legacy link the page loaded with, then scroll to its
+         // project. A later fragment change (an edited hash, an old history
+         // entry) is the visitor's navigation, so it is left as it is.
          writeProjectParam(slug);
          navigateToSection("projects");
       }

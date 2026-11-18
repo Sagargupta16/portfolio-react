@@ -625,9 +625,8 @@ async function latestVersion(repo) {
       releaseVersion(repo),
       manifestVersion(repo),
    ]);
-   // GitHub also returns 404 for inaccessible repositories. If neither source
-   // has a version, confirm we could read the repo before calling the refresh complete.
-   if (!release && !manifest) await ghRest(`/repos/${repo}`);
+   // Neither source having a version (an unversioned or unreadable repo) is a
+   // no-op, not a failed source: probing it would mark every refresh incomplete.
    if (!release || !manifest) return release ?? manifest;
    return newer(release, manifest) ? release : manifest;
 }
@@ -687,7 +686,7 @@ await syncProjectVersions(
 if (achievements.coding_platform_stats?.leetcode) {
    await syncLeetcode(
       achievements.coding_platform_stats.leetcode,
-      personal.highlights,
+      personal.highlights ?? [],
    );
 }
 if (achievements.coding_platform_stats?.github) {

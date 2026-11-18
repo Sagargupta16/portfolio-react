@@ -238,9 +238,9 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 
 Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. The resume check is scheduled every six hours, and GitHub runs it about twice a day in practice: a scheduled run compares the release tag of the CV the live site serves with the latest `latex-resume` release, and rebuilds the CV and deploys only when that tag has changed.
 
-The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) run their sync scripts with a read-only token. They pass changed data files to a separate job that pushes a bot branch, opens or updates its PR, and dispatches CI on that branch. This gives the PR a `ci` check even when GitHub holds its own pull request run for approval. Deployment runs only on `main`.
+The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each runs in two jobs, so the write token never meets npm code: `sync` installs dependencies and runs the sync script with a read-only token and no stored git credential, then passes the changed data files on as an artifact; `open-pr` runs no npm code and alone holds the write token to push a bot branch, open or update its PR, and dispatch CI on that branch. This gives the PR a `ci` check even when GitHub holds its own pull request run for approval. Deployment runs only on `main`.
 
-A complete refresh with no changes closes a pending bot PR. If a live-data source is unavailable, the workflow keeps an existing PR intact. If there is no open PR, the workflow can still open one with changes from the sources it reached.
+A complete refresh with no changes closes a pending bot PR. If a live-data source is unavailable while a PR is open, the workflow adds the changes it did get on top of that PR, so the PR keeps its pending values from the missing source; when they do not apply cleanly, it leaves the PR as it is. If there is no open PR, the workflow can still open one with changes from the sources it reached.
 
 ---
 

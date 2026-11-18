@@ -6,10 +6,10 @@ All notable changes to this project are documented here. Follows [Semantic Versi
 
 ### Fixed
 
-- Project addresses now reopen the selected details, including older links copied after scrolling from another section. Back and Forward restore the dialog along with the URL. On mobile, opening search dismisses the navigation menu so the destination is visible.
+- Project addresses now reopen the selected details, including older links copied after scrolling from another section. Moving Back or Forward to a history entry that names a project reopens its details; opening and closing a project replace the current entry rather than adding one. On mobile, opening search dismisses the navigation menu so the destination is visible.
 - The PDF viewer enlarges pages at 125% and 150%. If a page or its manifest fails to load, the viewer falls back to the text CV when available.
 - The GitHub contribution calendar exposes each date and its count through a keyboard-accessible day picker.
-- The weekly data sync updates the profile highlight alongside a new LeetCode peak. An incomplete refresh preserves an existing update pull request.
+- The weekly data sync updates the profile highlight alongside a new LeetCode peak. An incomplete refresh adds its changes on top of an open update pull request instead of rebuilding it, so the pending values from the source it missed stay.
 - The build tools now reject the repeated glob syntax affected by GHSA-fc5q-39xc-vjpf. CI verifies the local `picomatch` patch against every installed copy while auditing all dependencies.
 
 ## [4.24.1] - 2026-11-17

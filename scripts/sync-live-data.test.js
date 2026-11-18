@@ -140,9 +140,9 @@ it("distinguishes an outage with no changes from a complete refresh", async () =
 
 it.each([
    [200, true],
-   [404, false],
+   [404, true],
 ])(
-   "checks a repo returning %i when its release and manifests are absent",
+   "treats a repo returning %i with no release or manifest as a no-op",
    async (repoStatus, complete) => {
       const written = await runSync({
          repoStatus,
