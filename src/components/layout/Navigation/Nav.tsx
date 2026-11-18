@@ -3,6 +3,7 @@ import useBreakpoint from "@hooks/useBreakpoint";
 import useScrolledPast from "@hooks/useScrolledPast";
 import useSectionNavigation from "@hooks/useSectionNavigation";
 import { NAV_SECTIONS } from "@/constants/sections";
+import { setPaletteOpen } from "@utils/paletteState";
 import NavBar from "./NavBar";
 import MobileMenu from "./MobileMenu";
 
@@ -55,6 +56,10 @@ const Nav = () => {
 
    const toggleMenu = useCallback(() => setMobileMenuOpen((o) => !o), []);
    const closeMenu = useCallback(() => setMobileMenuOpen(false), []);
+   const openPalette = useCallback(() => {
+      setMobileMenuOpen(false);
+      setPaletteOpen(true);
+   }, []);
 
    return (
       <>
@@ -66,6 +71,7 @@ const Nav = () => {
             mobileMenuOpen={mobileMenuOpen}
             onNavigate={scrollToSection}
             onToggleMenu={toggleMenu}
+            onOpenPalette={openPalette}
          />
 
          {/* Mobile overlay menu, closed while the desktop layout is up */}

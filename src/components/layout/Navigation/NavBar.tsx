@@ -1,7 +1,6 @@
 import { memo, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, ScanEye, Search, X } from "lucide-react";
-import { setPaletteOpen } from "@utils/paletteState";
 import { toggleAnnotations, useAnnotationsOn } from "@utils/annotationsState";
 import {
    DURATION,
@@ -25,6 +24,7 @@ interface NavBarProps {
    mobileMenuOpen: boolean;
    onNavigate: (id: string) => void;
    onToggleMenu: () => void;
+   onOpenPalette: () => void;
 }
 
 const ENTRANCE_TRANSITION = {
@@ -56,6 +56,7 @@ const NavBar = ({
    mobileMenuOpen,
    onNavigate,
    onToggleMenu,
+   onOpenPalette,
 }: NavBarProps) => {
    const annotationsOn = useAnnotationsOn();
    // A fresh array each render would break DesktopNav's memo on every scroll
@@ -141,7 +142,7 @@ const NavBar = ({
                   </button>
                   <button
                      type="button"
-                     onClick={() => setPaletteOpen(true)}
+                     onClick={onOpenPalette}
                      className="palette-trigger"
                      aria-label={COPY.palette_label}
                      aria-keyshortcuts="Control+K Meta+K"
@@ -174,7 +175,7 @@ const NavBar = ({
                   </button>
                   <button
                      type="button"
-                     onClick={() => setPaletteOpen(true)}
+                     onClick={onOpenPalette}
                      className="palette-trigger palette-trigger-icon"
                      aria-label={COPY.palette_label}
                   >

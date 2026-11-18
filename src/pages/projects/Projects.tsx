@@ -3,7 +3,9 @@ import {
    useMemo,
    useCallback,
    useDeferredValue,
+   useEffect,
    useRef,
+   useSyncExternalStore,
    type CSSProperties,
 } from "react";
 import { motion, type Variants } from "motion/react";
@@ -27,12 +29,15 @@ import {
 } from "@/constants/theme";
 import PageSection from "@components/layout/PageSection";
 import useMotionPreference from "@hooks/useMotionPreference";
+import useSectionNavigation from "@hooks/useSectionNavigation";
 import type { Project, ProjectFilter } from "@/types";
 import { fillTemplate } from "@utils/fillTemplate";
 import { parseProjectDate } from "@utils/projectMetadata";
 import {
    projectSlug,
+   readLocationHref,
    readProjectParam,
+   subscribeProjectLocation,
    writeProjectParam,
 } from "@utils/projectLink";
 import { FILTERS, filterLabel } from "./projectConstants";
@@ -132,22 +137,16 @@ const COUNTS: Record<ProjectFilter, number> = {
 // "All" is kept even at zero so the bar still renders with a fallback.
 const VISIBLE_FILTERS = FILTERS.filter((f) => f === "All" || COUNTS[f] > 0);
 
-/** The project a shared ?project=<slug> link points at, with its category. */
-const projectFromLink = (): ProjectWithCategory | null => {
-   const slug = readProjectParam();
-   if (!slug) return null;
-   const match = PROJECTS.find(
-      (project) => projectSlug(project.title) === slug,
-   );
-   if (match) return match;
-   // The slug names no project, so the link is stale: drop it from the address
-   // bar instead of leaving it there for the next share or reload.
-   writeProjectParam(null);
-   return null;
-};
+const PROJECTS_BY_SLUG = new Map(
+   PROJECTS.map((project) => [projectSlug(project.title), project]),
+);
+const openProject = (project: ProjectWithCategory) =>
+   writeProjectParam(projectSlug(project.title));
+const closeProject = () => writeProjectParam(null);
 
 const Projects = () => {
    const { reducedMotion } = useMotionPreference();
+   const { navigateToSection } = useSectionNavigation();
    const [activeFilter, setActiveFilter] = useState<ProjectFilter>("Featured");
    const { title, subtitle, search } = getSectionCopy("projects");
    const [query, setQuery] = useState("");
@@ -159,9 +158,23 @@ const Projects = () => {
    // Flips on the first filter change: cards mounted afterwards enter with the
    // short swap rise instead of the taller first-scroll reveal.
    const [hasFiltered, setHasFiltered] = useState(false);
-   // A shared link opens straight into that project's details.
-   const [selectedProject, setSelectedProject] =
-      useState<ProjectWithCategory | null>(projectFromLink);
+   const href = useSyncExternalStore(
+      subscribeProjectLocation,
+      readLocationHref,
+   );
+   const address = new URL(href);
+   const slug = readProjectParam(address);
+   const selectedProject = slug ? (PROJECTS_BY_SLUG.get(slug) ?? null) : null;
+   useEffect(() => {
+      if (slug === null) return;
+      if (!selectedProject) {
+         writeProjectParam(null);
+      } else if (address.hash !== "#projects") {
+         // Repair a legacy link in place before scrolling to its project.
+         writeProjectParam(slug);
+         navigateToSection("projects");
+      }
+   }, [slug, address.hash, selectedProject, navigateToSection]);
 
    const handleFilterChange = useCallback((filter: ProjectFilter) => {
       setActiveFilter(filter);
@@ -215,16 +228,6 @@ const Projects = () => {
       searchRef.current?.focus();
    };
 
-   const handleOpenProject = useCallback((project: ProjectWithCategory) => {
-      setSelectedProject(project);
-      writeProjectParam(projectSlug(project.title));
-   }, []);
-
-   const handleCloseProject = useCallback(() => {
-      setSelectedProject(null);
-      writeProjectParam(null);
-   }, []);
-
    // One element per deferred result, so a keystroke's urgent render reuses
    // it and skips the grid until the deferred filter has caught up.
    const projectGrid = useMemo(
@@ -233,10 +236,10 @@ const Projects = () => {
             projects={filteredProjects}
             spotlightProjectId={spotlightProjectId}
             hasFiltered={hasFiltered}
-            onOpenProject={handleOpenProject}
+            onOpenProject={openProject}
          />
       ),
-      [filteredProjects, spotlightProjectId, hasFiltered, handleOpenProject],
+      [filteredProjects, spotlightProjectId, hasFiltered],
    );
 
    return (
@@ -389,7 +392,7 @@ const Projects = () => {
             <OpenSourceBanner />
          </div>
 
-         <ProjectModal project={selectedProject} onClose={handleCloseProject} />
+         <ProjectModal project={selectedProject} onClose={closeProject} />
       </PageSection>
    );
 };
