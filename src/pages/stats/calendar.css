@@ -145,6 +145,11 @@
    outline-offset: -1px;
 }
 
+.cal-cell[data-selected] {
+   outline: 2px solid var(--color-accent-blue-light);
+   outline-offset: -2px;
+}
+
 .cal-grid[data-loading] {
    animation: cal-pulse 1.6s ease-in-out infinite;
 }
@@ -232,6 +237,33 @@
 .cal-swatch {
    width: 11px;
    height: 11px;
+}
+
+.cal-picker {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 6px 10px;
+   color: var(--color-text-secondary);
+   font-family: var(--font-mono);
+   font-size: 12px;
+}
+
+.cal-picker select {
+   min-height: 32px;
+   max-width: 100%;
+   padding: 4px 8px;
+   border: 1px solid var(--color-border-hover);
+   border-radius: 6px;
+   background-color: var(--color-bg-card);
+   color: var(--color-text-primary);
+   color-scheme: dark;
+}
+
+@media (pointer: coarse) {
+   .cal-picker select {
+      min-height: 44px;
+   }
 }
 
 .cal-tip {

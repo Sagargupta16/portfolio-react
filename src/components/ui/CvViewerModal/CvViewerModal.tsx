@@ -17,7 +17,7 @@ const COPY = getUiCopy().cv;
 
 /* Shown when the CV cannot load, whether the viewer chunk itself failed (the
    ErrorBoundary below, which also keeps the root boundary from blanking the
-   page) or CvDocument could not fetch its pages. The download link stays. */
+   page) or both document views failed. The download link stays. */
 const CV_UNAVAILABLE = (
    <div
       style={{
