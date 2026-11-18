@@ -11,8 +11,8 @@
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178c6)
 ![Vite Version](https://img.shields.io/badge/vite-8-purple)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-v4-06b6d4)
-![Tests](https://img.shields.io/badge/tests-47%20passing-22c55e)
-![Version](https://img.shields.io/badge/version-4.24.1-2563eb)
+![Tests](https://img.shields.io/badge/tests-68%20passing-22c55e)
+![Version](https://img.shields.io/badge/version-4.24.2-2563eb)
 
 **Live:** [sagargupta.online/portfolio-react](https://sagargupta.online/portfolio-react/)
 
@@ -22,7 +22,7 @@
 
 A minimal dark personal portfolio: near-black canvas, one blue accent family, flat bordered cards, and an ambient aurora-and-beams background. Every project card carries an animated SVG cover scene that shows how that project actually works. Built as a single-page scroll application with strict TypeScript, sections loaded near the viewport, data validation, and a persisted Full/Reduced motion preference.
 
-Section links support reloads and browser history. Navigation loads the content before scrolling to its destination, while motion changes preserve form drafts, project filters, and keyboard focus.
+Section and project detail links support reloads and browser history. Opening a project's details gives you a link you can share directly. Navigation loads the content before scrolling to its destination, while motion changes preserve form drafts, project filters, and keyboard focus.
 
 ---
 
@@ -91,7 +91,7 @@ For a file map, editing recipes, and contribution checks, read the [contributor 
 | `pnpm dev`           | Start development server                       |
 | `pnpm build`         | Validate data and build to `/build`            |
 | `pnpm preview`       | Preview production build                       |
-| `pnpm test`          | Run 47 focused Vitest tests                    |
+| `pnpm test`          | Run 68 focused Vitest tests                    |
 | `pnpm validate:data` | Validate JSON schemas and cross-file rules     |
 | `pnpm lint`          | ESLint app and scripts (zero warnings)         |
 | `pnpm lint:fix`      | ESLint with auto-fix                           |
@@ -231,14 +231,16 @@ Automated via GitHub Actions CI/CD pipeline (all actions pinned to SHA hashes):
 3. Lint application code and Node scripts with zero warnings
 4. Run strict TypeScript checking
 5. Validate JSON schemas and cross-file invariants
-6. Run all 47 focused tests
-7. Fail on high-severity advisories in any dependency
+6. Run all 68 focused tests
+7. Audit all dependencies for high and critical advisories and verify the [local picomatch fix](CONTRIBUTING.md#dependency-audit)
 8. Fetch and pre-render the latest resume only for deployment builds
 9. Build and deploy to GitHub Pages only from verified `main` artifacts
 
 Pull requests run every code/data gate and a production build without depending on the external resume release. A push to `main` deploys, and so does a manual run on `main`. The resume check is scheduled every six hours, and GitHub runs it about twice a day in practice: a scheduled run compares the release tag of the CV the live site serves with the latest `latex-resume` release, and rebuilds the CV and deploys only when that tag has changed.
 
-The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each runs in two jobs: `sync` installs dependencies and runs the sync script with a read-only token and no stored git credential, then hands the changed data files on as an artifact; `open-pr` runs no npm code and alone holds the write token to push the branch, open or update the pull request, and dispatch this workflow on that branch so the PR always gets its `ci` check. The PR's own pull_request run may or may not start, because GitHub can hold runs from the workflow token for approval. When a later sync finds nothing to change, a third job closes a still-open bot PR. A run on any branch other than `main` never deploys.
+The two weekly bot workflows (`sync-live-data.yml`, `sync-credly.yml`) never push to `main`. Each runs in two jobs, so the write token never meets npm code: `sync` installs dependencies and runs the sync script with a read-only token and no stored git credential, then passes the changed data files on as an artifact; `open-pr` runs no npm code and alone holds the write token to push a bot branch, open or update its PR, and dispatch CI on that branch. This gives the PR a `ci` check even when GitHub holds its own pull request run for approval. Deployment runs only on `main`.
+
+A complete refresh with no changes closes a pending bot PR. If a live-data source is unavailable while a PR is open, the workflow adds the changes it did get on top of that PR, so the PR keeps its pending values from the missing source; when they do not apply cleanly, it leaves the PR as it is. If there is no open PR, the workflow can still open one with changes from the sources it reached.
 
 ---
 

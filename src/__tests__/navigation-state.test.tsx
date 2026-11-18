@@ -2,6 +2,9 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { CONTENT_SECTIONS } from "@/constants/sections";
+import { MEDIA_QUERIES } from "@/constants/theme";
+import { getFeaturedProjects } from "@data/projects";
+import { projectSlug } from "@utils/projectLink";
 
 // Keep the real shell, navigation, project filters and contact form. Stub only
 // unrelated sections and artwork; no request can send an email in these tests.
@@ -113,6 +116,133 @@ describe("navigation and persistent UI state", () => {
       expect(all.isConnected).toBe(true);
       expect(all.getAttribute("aria-pressed")).toBe("true");
       expect(globalThis.location.hash).toBe("#projects");
+   });
+
+   it("reopens the project from an address copied after scrolling from another section", async () => {
+      const { title } = getFeaturedProjects()[0];
+      globalThis.history.replaceState(
+         null,
+         "",
+         "/portfolio-react/?ref=cv#contact",
+      );
+      const page = render(<App />);
+      // A visitor can scroll back up from Contact without changing its hash.
+      fireEvent.click(
+         await screen.findByRole("button", {
+            name: `View details for ${title}`,
+         }),
+      );
+      const address = new URL(globalThis.location.href);
+      expect(address.hash).toBe("#projects");
+      expect(address.searchParams.get("project")).toBe(projectSlug(title));
+      expect(address.searchParams.get("ref")).toBe("cv");
+      page.unmount();
+      render(<App />);
+      expect(await screen.findByRole("dialog", { name: title })).toBeTruthy();
+   });
+
+   it.each(["", "#about"])(
+      "resolves a legacy project address with fragment '%s'",
+      async (fragment) => {
+         const { title } = getFeaturedProjects()[0];
+         globalThis.history.replaceState(
+            null,
+            "",
+            `?project=${projectSlug(title)}${fragment}`,
+         );
+         render(<App />);
+         expect(
+            await screen.findByRole("dialog", { name: title }),
+         ).toBeTruthy();
+         await waitFor(() => {
+            expect(globalThis.location.hash).toBe("#projects");
+            expect(
+               vi.mocked(HTMLElement.prototype.scrollIntoView).mock.contexts,
+            ).toContain(document.getElementById("projects"));
+         });
+      },
+   );
+
+   it("preserves the requested section when a legacy project slug is stale", async () => {
+      globalThis.history.replaceState(
+         null,
+         "",
+         "?ref=cv&project=removed-project#about",
+      );
+      render(<App />);
+      await waitFor(() => expect(globalThis.location.search).toBe("?ref=cv"));
+      expect(globalThis.location.hash).toBe("#about");
+      expect(screen.queryByRole("dialog")).toBeNull();
+   });
+
+   it("closes and restores project details with browser Back and Forward", async () => {
+      const { title } = getFeaturedProjects()[0];
+      render(<App />);
+      fireEvent.click(
+         screen.getByRole("button", { name: "Navigate to Projects" }),
+      );
+      fireEvent.click(
+         await screen.findByRole("button", {
+            name: `View details for ${title}`,
+         }),
+      );
+      expect(await screen.findByRole("dialog", { name: title })).toBeTruthy();
+      globalThis.history.back();
+      await waitFor(() => {
+         expect(globalThis.location.hash).toBe("");
+         expect(document.documentElement.style.overflow).not.toBe("hidden");
+         expect(screen.queryByRole("dialog")).toBeNull();
+      });
+      globalThis.history.forward();
+      expect(await screen.findByRole("dialog", { name: title })).toBeTruthy();
+      expect(document.documentElement.style.overflow).toBe("hidden");
+   });
+
+   it("keeps the open project when Back reaches a legacy entry for it", async () => {
+      const { title } = getFeaturedProjects()[0];
+      const query = `?project=${projectSlug(title)}`;
+      const { history } = globalThis;
+      history.replaceState("legacy", "", `${query}#about`);
+      history.pushState("canonical", "", `${query}#projects`);
+      const entries = history.length;
+      render(<App />);
+      const dialog = await screen.findByRole("dialog", { name: title });
+
+      history.back();
+      await waitFor(() => {
+         expect(history.state).toBe("legacy");
+         // Only the address the page loaded with is repaired; history
+         // navigation afterwards is left as the visitor chose it.
+         expect(globalThis.location.hash).toBe("#about");
+      });
+      expect(screen.getByRole("dialog", { name: title })).toBe(dialog);
+      expect(history.length).toBe(entries);
+      history.forward();
+      await waitFor(() => expect(history.state).toBe("canonical"));
+   });
+
+   it("reveals the destination chosen from search after opening the mobile menu", async () => {
+      const media = globalThis.matchMedia("");
+      globalThis.matchMedia = (query) => ({
+         ...media,
+         media: query,
+         matches:
+            query === MEDIA_QUERIES.mobile || query === MEDIA_QUERIES.tablet,
+      });
+      render(<App />);
+      fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+      expect(
+         screen.getByRole("dialog", { name: "Navigation menu" }),
+      ).toBeTruthy();
+      fireEvent.click(
+         screen.getByRole("button", { name: "Open command palette" }),
+      );
+      fireEvent.click(await screen.findByRole("option", { name: /cd about/ }));
+      await waitFor(() => {
+         expect(globalThis.location.hash).toBe("#about");
+         expect(document.documentElement.style.overflow).not.toBe("hidden");
+         expect(screen.queryByRole("dialog")).toBeNull();
+      });
    });
 
    it("loads and focuses a direct contact link after preceding sections mount", async () => {

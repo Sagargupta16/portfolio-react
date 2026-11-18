@@ -50,7 +50,7 @@ interface Manifest {
 
 interface CvDocumentProps {
    isMobile: boolean;
-   /** Rendered in place of the viewer when the CV pages cannot load. */
+   /** Rendered when both the web CV and the PDF pages fail to load. */
    unavailable: ReactNode;
 }
 
@@ -335,7 +335,7 @@ const CvPages = ({
                  onError={onError}
                  style={{
                     width: `${zoom * 100}%`,
-                    maxWidth: zoom === 1 ? 860 : undefined,
+                    maxWidth: zoom > 1 ? "none" : 860,
                     height: "auto",
                     borderRadius: 6,
                     boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
@@ -363,21 +363,21 @@ const CvDocument = ({ isMobile, unavailable }: CvDocumentProps) => {
    const [view, setView] = useState<View>("web");
    const [zoomIdx, setZoomIdx] = useState(1);
 
-   // A missing cv.json always lands on the pages view.
    const cvMissing = cv.status === "error";
-   const activeView: View = cvMissing ? "pages" : view;
+   const pagesMissing = manifest.status === "error";
+   const activeView: View =
+      cvMissing || (view === "pages" && !pagesMissing) ? "pages" : "web";
    const pages = manifest.status === "ready" ? manifest.data : null;
    const aspect = pages ? pages.width / pages.height : 0.707;
 
-   if (manifest.status === "error" && activeView === "pages")
-      return unavailable;
+   if (cvMissing && pagesMissing) return unavailable;
 
    return (
       <div style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
          <CvToolbar
             isMobile={isMobile}
             view={activeView}
-            showToggle={!cvMissing}
+            showToggle={!cvMissing && !pagesMissing}
             onViewChange={setView}
             statusLabel={statusLabelFor(activeView, cv, manifest)}
             zoomIdx={zoomIdx}

@@ -10,6 +10,7 @@ import { useLenis } from "lenis/react";
 import { CONTENT_SECTIONS, type ContentSectionId } from "@/constants/sections";
 import useMotionPreference from "./useMotionPreference";
 import { isScrollLocked } from "./useScrollLock";
+import { readProjectParam } from "@utils/projectLink";
 import { SectionNavigationContext } from "./sectionNavigationContext";
 
 const SECTION_IDS = new Set<string>([
@@ -23,6 +24,13 @@ const readHash = () => {
    const id = globalThis.location.hash.slice(1);
    return SECTION_IDS.has(id) ? id : "hero";
 };
+// Older address-bar links can name a project from any section. Mount Projects
+// so it can resolve the slug and direct a valid link to its canonical section.
+const loadIndexFor = (id: string) =>
+   Math.max(
+      sectionIndex(id),
+      readProjectParam() ? sectionIndex("projects") : -1,
+   );
 
 interface NavigationRequest {
    id: string;
@@ -38,7 +46,7 @@ export const SectionNavigationProvider = ({
    const lenis = useLenis();
    const { reducedMotion } = useMotionPreference();
    const [loadThrough, setLoadThrough] = useState(() =>
-      sectionIndex(readHash()),
+      loadIndexFor(readHash()),
    );
    const [readySections, setReadySections] = useState<Set<string>>(
       () => new Set(),
@@ -54,7 +62,7 @@ export const SectionNavigationProvider = ({
       handledRequestRef.current = null;
       // Earlier sections must settle before measuring a distant destination.
       // Keep them mounted afterwards so navigation never discards local state.
-      setLoadThrough((current) => Math.max(current, sectionIndex(id)));
+      setLoadThrough((current) => Math.max(current, loadIndexFor(id)));
       setRequest({ id, immediate, focus: true });
    }, []);
 

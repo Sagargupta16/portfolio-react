@@ -18,6 +18,7 @@
  *   achievements.json  coding_platform_stats.github    contributions, pull requests and longest
  *                                             streak over the last year, top languages
  *                                             (GitHub GraphQL)
+ *   personal.json  highlights                 LeetCode peak rating from the same contest history
  *
  * Writes only when something changed and prints a one-line summary per change.
  * A source that fails (rate limit, LeetCode blocking a CI IP) is skipped, never zeroed.
@@ -29,7 +30,7 @@
  *        LEETCODE_USER (default sagargupta1610)
  */
 
-import { readFileSync } from "node:fs";
+import { appendFileSync, readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -45,6 +46,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECTS_PATH = resolve(__dirname, "../data/projects.json");
 const NEWS_PATH = resolve(__dirname, "../data/news.json");
 const ACHIEVEMENTS_PATH = resolve(__dirname, "../data/achievements.json");
+const PERSONAL_PATH = resolve(__dirname, "../data/personal.json");
 const GITHUB_USER = process.env.GITHUB_USER || "Sagargupta16";
 const LEETCODE_USER = process.env.LEETCODE_USER || "sagargupta1610";
 const TOKEN = process.env.GITHUB_TOKEN || "";
@@ -56,6 +58,7 @@ const LANGUAGE_DRIFT = 2; // percentage points
 const MAX_IN_FLIGHT = 8; // most GitHub requests running at once
 
 const changes = [];
+let complete = true;
 const note = (msg) => changes.push(msg);
 // API text is untrusted: drop control characters and cap the length before logging.
 const isControl = (ch) => {
@@ -67,9 +70,10 @@ const clean = (value) =>
    Array.from(String(value), (ch) => (isControl(ch) ? " " : ch))
       .join("")
       .slice(0, 300);
-// Also an Actions annotation, so a skipped source shows on the run summary;
-// the exit code stays 0 because the open-pr job needs a green sync job.
+// An incomplete refresh can propose fresh data, but it cannot establish
+// whether the changes in an existing PR are still needed.
 const warn = (what, err) => {
+   complete = false;
    const message = clean(err?.message ?? err);
    console.warn(`skip ${clean(what)}: ${message}`);
    console.log(
@@ -398,7 +402,7 @@ function applyFields(target, fields, label) {
    return changed;
 }
 
-async function syncLeetcode(lc) {
+async function syncLeetcode(lc, highlights) {
    try {
       const res = await fetch("https://leetcode.com/graphql", {
          method: "POST",
@@ -414,8 +418,13 @@ async function syncLeetcode(lc) {
          signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const { data } = await res.json();
+      const { data, errors } = await res.json();
+      if (errors?.length) throw new Error(errors[0].message);
       applyFields(lc, leetcodeFields(data, lc.badge), "leetcode");
+      for (const highlight of highlights) {
+         if (highlight.derived_from === "leetcode_peak")
+            applyFields(highlight, { value: lc.best_rating }, "leetcode_peak");
+      }
    } catch (err) {
       warn("LeetCode", err);
    }
@@ -616,6 +625,8 @@ async function latestVersion(repo) {
       releaseVersion(repo),
       manifestVersion(repo),
    ]);
+   // Neither source having a version (an unversioned or unreadable repo) is a
+   // no-op, not a failed source: probing it would mark every refresh incomplete.
    if (!release || !manifest) return release ?? manifest;
    return newer(release, manifest) ? release : manifest;
 }
@@ -657,7 +668,9 @@ async function syncProjectVersions(list) {
 
 const projects = JSON.parse(readFileSync(PROJECTS_PATH, "utf8"));
 const achievements = JSON.parse(readFileSync(ACHIEVEMENTS_PATH, "utf8"));
-const before = JSON.stringify([projects, achievements, news]);
+const personal = JSON.parse(readFileSync(PERSONAL_PATH, "utf8"));
+const datasets = [projects, achievements, news, personal];
+const before = JSON.stringify(datasets);
 
 await syncPullRequests(projects.open_source_contributions || []);
 await refreshKnownDiscussions(projects.community_discussions || []);
@@ -671,19 +684,28 @@ await syncProjectVersions(
    ].flatMap((group) => projects[group] || []),
 );
 if (achievements.coding_platform_stats?.leetcode) {
-   await syncLeetcode(achievements.coding_platform_stats.leetcode);
+   await syncLeetcode(
+      achievements.coding_platform_stats.leetcode,
+      personal.highlights ?? [],
+   );
 }
 if (achievements.coding_platform_stats?.github) {
    await syncGithubStats(achievements.coding_platform_stats.github);
 }
 
-if (JSON.stringify([projects, achievements, news]) === before) {
-   console.log("No changes.");
+if (JSON.stringify(datasets) === before) {
+   console.log(
+      complete ? "No changes." : "No changes in the sources that responded.",
+   );
 } else {
    await writeJson(NEWS_PATH, news);
    await writeJson(PROJECTS_PATH, projects);
    await writeJson(ACHIEVEMENTS_PATH, achievements);
+   await writeJson(PERSONAL_PATH, personal);
    console.log(
       `${changes.length} change(s):\n- ${changes.map(clean).join("\n- ")}`,
    );
+}
+if (process.env.GITHUB_OUTPUT) {
+   appendFileSync(process.env.GITHUB_OUTPUT, `complete=${complete}\n`);
 }

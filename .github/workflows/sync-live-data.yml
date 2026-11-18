@@ -8,7 +8,9 @@ name: Sync Live Data
 # workflow_dispatch is the one trigger GITHUB_TOKEN may fire, so the open-pr job
 # dispatches CI/CD on the sync branch itself; that run guarantees a `ci` check on the PR's
 # head commit and deploys nothing. Merging the PR triggers the normal CI/CD deploy. When a
-# later run finds nothing to change, close-stale-pr closes the still-open PR.
+# later complete refresh finds nothing to change, close-stale-pr closes the still-open PR.
+# A refresh that missed a source adds its changes on top of an open PR instead of
+# rebuilding it from main, so the pending values from that source stay.
 #
 # Two jobs, so the write token never meets npm code. `sync` installs dependencies and runs
 # the sync scripts with a read-only token and no stored git credential, then passes the
@@ -37,6 +39,7 @@ jobs:
          contents: read
       outputs:
          changed: ${{ steps.changes.outputs.changed }}
+         complete: ${{ steps.refresh.outputs.complete }}
       steps:
          - name: Checkout code
            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -57,6 +60,7 @@ jobs:
 
          # The script writes Prettier-formatted JSON itself.
          - name: Fetch live data
+           id: refresh
            env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            run: node scripts/sync-live-data.js
@@ -73,7 +77,7 @@ jobs:
            if: steps.changes.outputs.changed == 'true'
            run: |
               mkdir sync-out
-              cp data/projects.json data/achievements.json data/news.json sync-out/
+              cp data/projects.json data/achievements.json data/news.json data/personal.json sync-out/
 
          - name: Pass the changed data to the next job
            if: steps.changes.outputs.changed == 'true'
@@ -109,16 +113,41 @@ jobs:
          - name: Open or update the sync PR
            env:
               GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              COMPLETE: ${{ needs.sync.outputs.complete }}
            run: |
+              pr="$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')"
+              files=(data/projects.json data/achievements.json data/news.json data/personal.json)
               git config user.name "github-actions[bot]"
               git config user.email "github-actions[bot]@users.noreply.github.com"
-              git switch -c "$BRANCH"
-              cp sync-out/projects.json sync-out/achievements.json sync-out/news.json data/
-              git add data/projects.json data/achievements.json data/news.json
-              git commit -m "chore: sync live data [automated]"
-              # The bot branch is rebuilt from main each run; only this branch is force-pushed.
-              git push --force origin "$BRANCH"
-              if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
+              if [ -n "$pr" ] && [ "$COMPLETE" != "true" ]; then
+                 # A rebuild from main would erase pending changes from a source this run
+                 # could not check, so apply only this run's own changes on top of the PR.
+                 cp sync-out/projects.json sync-out/achievements.json sync-out/news.json sync-out/personal.json data/
+                 git diff --full-index -- "${files[@]}" > "$RUNNER_TEMP/fresh.patch"
+                 git checkout -- "${files[@]}"
+                 git fetch --no-tags origin "$BRANCH"
+                 git switch -c "$BRANCH" FETCH_HEAD
+                 # jq ships on the runner; a merge that leaves invalid JSON keeps the PR too.
+                 if ! git apply --3way "$RUNNER_TEMP/fresh.patch" || ! jq empty "${files[@]}"; then
+                    echo "Keeping PR #$pr as it is: this incomplete refresh does not apply cleanly on top of it."
+                    exit 0
+                 fi
+                 git add "${files[@]}"
+                 if git diff --cached --quiet; then
+                    echo "PR #$pr already carries every change from this incomplete refresh."
+                    exit 0
+                 fi
+                 git commit -m "chore: sync live data [automated]"
+                 git push origin "$BRANCH"
+              else
+                 git switch -c "$BRANCH"
+                 cp sync-out/projects.json sync-out/achievements.json sync-out/news.json sync-out/personal.json data/
+                 git add "${files[@]}"
+                 git commit -m "chore: sync live data [automated]"
+                 # A complete refresh rebuilds the bot branch from main; only this branch is force-pushed.
+                 git push --force origin "$BRANCH"
+              fi
+              if [ -z "$pr" ]; then
                  gh pr create --base main --head "$BRANCH" \
                     --title "chore: sync live data" \
                     --body "Weekly refresh from public APIs (PR status and stars, project versions, accepted discussion answers, LeetCode stats and rating history, GitHub contribution and language stats). Data gates passed in the sync job, and CI/CD runs on this branch for the ci check. This PR's own pull_request run may or may not start (GitHub can hold runs from the workflow token for approval); the dispatched CI/CD run guarantees the ci check on the head commit. Review the diff, then merge to deploy."
@@ -127,8 +156,8 @@ jobs:
 
    close-stale-pr:
       needs: sync
-      # The sync found nothing to change: a PR still open from an earlier run is stale.
-      if: github.ref == 'refs/heads/main' && needs.sync.outputs.changed != 'true'
+      # Only a complete refresh can establish that main is already current.
+      if: github.ref == 'refs/heads/main' && needs.sync.outputs.complete == 'true' && needs.sync.outputs.changed == 'false'
       runs-on: ubuntu-latest
       timeout-minutes: 5
       permissions:

@@ -88,19 +88,24 @@ const plural = (n: number, one: string, many: string): string =>
 export const formatDays = (n: number): string =>
    plural(n, CALENDAR_COPY.days_one, CALENDAR_COPY.days_many);
 
+export const formatCalendarDate = (date: string): string =>
+   DATE_FORMAT.format(toUtc(date));
+
+export const formatContributions = (count: number): string =>
+   count === 0
+      ? CALENDAR_COPY.contributions_none
+      : plural(
+           count,
+           CALENDAR_COPY.contributions_one,
+           CALENDAR_COPY.contributions_many,
+        );
+
 /** "12 contributions on Sep 29, 2026", singular for 1, "No contributions" for 0. */
-export const formatDayTip = ({ date, count }: ContributionDay): string => {
-   const when = DATE_FORMAT.format(toUtc(date));
-   const what =
-      count === 0
-         ? CALENDAR_COPY.contributions_none
-         : plural(
-              count,
-              CALENDAR_COPY.contributions_one,
-              CALENDAR_COPY.contributions_many,
-           );
-   return fillTemplate(CALENDAR_COPY.tip, { what, when });
-};
+export const formatDayTip = ({ date, count }: ContributionDay): string =>
+   fillTemplate(CALENDAR_COPY.tip, {
+      what: formatContributions(count),
+      when: formatCalendarDate(date),
+   });
 
 /** Five levels by quartile of the active days, so one huge day (an import, a
  *  bulk migration) does not flatten every other day into the palest green. */

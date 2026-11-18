@@ -1,5 +1,6 @@
 import {
    useEffect,
+   useId,
    useLayoutEffect,
    useMemo,
    useRef,
@@ -14,6 +15,8 @@ import {
    LEVELS,
    buildCalendar,
    describeCalendar,
+   formatCalendarDate,
+   formatContributions,
    formatDayTip,
    formatDays,
    loadContributions,
@@ -94,6 +97,8 @@ const ContributionCalendar = ({
       initialState(username),
    );
    const [active, setActive] = useState<number | null>(null);
+   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+   const pickerId = useId();
    const rootRef = useRef<HTMLDivElement>(null);
    const scrollerRef = useRef<HTMLDivElement>(null);
    const gridRef = useRef<HTMLDivElement>(null);
@@ -210,6 +215,18 @@ const ContributionCalendar = ({
       };
    }, [active, model]);
 
+   // Mark the picked day the same way, so the cell list stays memoized.
+   useLayoutEffect(() => {
+      const cell = gridRef.current?.querySelector<HTMLElement>(
+         `[data-i="${selectedIndex}"]`,
+      );
+      if (!cell) return;
+      cell.dataset.selected = "";
+      return () => {
+         delete cell.dataset.selected;
+      };
+   }, [selectedIndex, model]);
+
    const cells = useMemo(() => {
       if (!model) return null;
       const lastIndex = model.cells.length - 1;
@@ -225,10 +242,36 @@ const ContributionCalendar = ({
       ));
    }, [model]);
 
+   const dateOptions = useMemo(
+      () =>
+         model?.cells
+            .map((cell) => (
+               <option key={cell.date} value={cell.index}>
+                  {formatCalendarDate(cell.date)}
+               </option>
+            ))
+            .reverse(),
+      [model],
+   );
+
+   const selectDay = (index: number) => {
+      setSelectedIndex(index);
+      const scroller = scrollerRef.current;
+      const cell = gridRef.current?.children.item(index);
+      if (!scroller || !cell) return;
+      // Center the chosen day inside the horizontal scroller. Keep the date
+      // picker focused and the document at the visitor's reading position.
+      const view = scroller.getBoundingClientRect();
+      const day = cell.getBoundingClientRect();
+      scroller.scrollLeft +=
+         day.left - view.left + (day.width - view.width) / 2;
+   };
+
    if (state.status === "error" || model?.cells.length === 0) return null;
 
    const summary = model?.summary;
    const activeCell = active === null ? undefined : model?.cells[active];
+   const selected = model?.cells[selectedIndex ?? model.cells.length - 1];
    const bodyStyle = {
       "--weeks": model?.weeks ?? SKELETON_WEEKS,
    } as CSSProperties;
@@ -294,6 +337,25 @@ const ContributionCalendar = ({
                <span>{CALENDAR_COPY.more}</span>
             </div>
          </div>
+
+         {selected && (
+            <div className="cal-picker">
+               <select
+                  id={pickerId}
+                  aria-label={CALENDAR_COPY.label}
+                  aria-describedby={`${pickerId}-count`}
+                  value={selected.index}
+                  onChange={(event) =>
+                     selectDay(Number(event.currentTarget.value))
+                  }
+               >
+                  {dateOptions}
+               </select>
+               <output id={`${pickerId}-count`} htmlFor={pickerId}>
+                  {formatContributions(selected.count)}
+               </output>
+            </div>
+         )}
 
          {activeCell && (
             <div ref={tipRef} className="cal-tip" aria-hidden="true">

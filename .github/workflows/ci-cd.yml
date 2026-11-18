@@ -106,7 +106,7 @@ jobs:
            run: pnpm test
 
          - name: Security audit
-           run: pnpm audit --audit-level=high
+           run: pnpm exec node scripts/audit-dependencies.js
 
          # Deployment builds self-host the latest released CV. Pull requests
          # and runs on other branches skip this network dependency; Vite can

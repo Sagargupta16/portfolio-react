@@ -10,16 +10,37 @@ export const projectSlug = (title: string) =>
       .replaceAll(/[^a-z0-9]+/g, "-")
       .replaceAll(/^-|-$/g, "");
 
-export const readProjectParam = () =>
-   new URL(globalThis.location.href).searchParams.get(PARAM);
+export const readLocationHref = () => globalThis.location.href;
+export const readProjectParam = (url = new URL(readLocationHref())) =>
+   url.searchParams.get(PARAM);
+
+// replaceState is silent. Native history and fragment changes can also
+// revisit the same project with a different section in the address bar.
+const projectChanges = new EventTarget();
+export const subscribeProjectLocation = (notify: () => void) => {
+   projectChanges.addEventListener("change", notify);
+   globalThis.addEventListener("popstate", notify);
+   globalThis.addEventListener("hashchange", notify);
+   return () => {
+      projectChanges.removeEventListener("change", notify);
+      globalThis.removeEventListener("popstate", notify);
+      globalThis.removeEventListener("hashchange", notify);
+   };
+};
 
 /** Reflect the open project in the address bar without a history entry. */
 export const writeProjectParam = (slug: string | null) => {
    const url = new URL(globalThis.location.href);
-   if (slug) url.searchParams.set(PARAM, slug);
-   else url.searchParams.delete(PARAM);
-   if (url.href !== globalThis.location.href)
+   if (slug) {
+      url.searchParams.set(PARAM, slug);
+      url.hash = "projects";
+   } else {
+      url.searchParams.delete(PARAM);
+   }
+   if (url.href !== globalThis.location.href) {
       globalThis.history.replaceState(globalThis.history.state, "", url);
+      projectChanges.dispatchEvent(new Event("change"));
+   }
 };
 
 /** Absolute link for copying: the site root plus the project query. */

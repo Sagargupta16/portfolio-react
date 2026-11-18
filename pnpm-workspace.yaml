@@ -13,3 +13,6 @@ overrides:
    esbuild: ">=0.28.1"
    source-map-js: ">=1.2.2"
    zod: "^4.6.6"
+
+patchedDependencies:
+   picomatch@4.0.7: patches/picomatch@4.0.7.patch

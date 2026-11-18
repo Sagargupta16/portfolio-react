@@ -188,6 +188,12 @@ If formatting fails, format the files you changed with `pnpm exec prettier --wri
 
 Before opening a pull request, describe what changed and how you checked it using the [PR template](.github/pull_request_template.md). Include browser verification for visible or interactive changes.
 
+### Dependency audit
+
+`pnpm exec node scripts/audit-dependencies.js` runs the same audit as CI. The registry flags `picomatch` 4.0.7 because it evaluates published versions. This repository carries a pnpm patch that disables the two repeating extglob operators in its build tools. CI accepts this one advisory only after checking every installed copy. Other high or critical advisories, an unavailable audit service, or a fixed version listed in the advisory fail the check.
+
+When a fixed release is available, update the dependency, remove the local patch and restore the direct `pnpm audit --audit-level=high` step. [Upstream advisory](https://github.com/advisories/GHSA-fc5q-39xc-vjpf)
+
 ## Generated assets and deployment
 
 `node_modules/`, `build/`, and `graphify-out/` are generated or local files and are ignored by Git. The resume PDF and its page images under `public/` are generated from the latest `latex-resume` release.
