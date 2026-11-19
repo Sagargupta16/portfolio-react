@@ -56,7 +56,7 @@ const OMIT_BACKDROP = <></>;
 // at the same scroll position before and after the chunk arrives.
 const Footer = lazy(() => import("@components/layout/Footer/Footer"));
 const FOOTER_PLACEHOLDER = (
-   <div aria-hidden="true" className="footer-fade" style={{ minHeight: 480 }} />
+   <div aria-hidden="true" className="footer-placeholder" />
 );
 
 // DeferredSection renders these only near the viewport or on navigation.

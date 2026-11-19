@@ -58,7 +58,8 @@ Section and project detail links support reloads and browser history. Opening a 
 | **Stats**        | Highlights, impact, delivery, open-source and contest counters, each with a small figure drawn from its own number; GitHub card with a contribution heatmap and languages; LeetCode rating curve; weekly sync                                     |
 | **News**         | Dated milestones as a commit graph with stable hashes and a tint per type (titles up to two lines on desktop), filterable by type                                                                                                                 |
 | **Contact**      | Bounded EmailJS form with inline validation, error toast, a confirmation that plays a short `git push` log, a vCard download, and slide-to-email on phones                                                                                        |
-| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, a footer clock with the visitor's time gap, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build                           |
+| **Site-wide**    | Ctrl+K command palette, "How it's built" annotation pins, swipe-to-close sheets on phones, and a machine view (`llms.txt`, `index.md`, `rss.xml`, vCard) generated at build                                                                       |
+| **Footer**       | Four switchable scenes (Rooftop by default, Rush hour, Pictionary, Around me) that each answer the email control, a scene switcher with swipe on touch, the end line, hold-to-copy or slide-to-email, icon-only social links                      |
 
 ---
 
@@ -126,6 +127,7 @@ src/
 ├── __tests__/                         # Navigation, real form/filter, accessibility, utility, and data tests
 ├── assets/
 │   ├── brand/                         # Maker mark drawing, About bust, mascot frames
+│   ├── footer/                        # Footer scene art: cast sprite strips, two backdrops, provenance README
 │   └── logos/                         # Experience and education logos
 ├── components/
 │   ├── common/                        # ErrorBoundary
@@ -133,7 +135,8 @@ src/
 │   │   ├── AmbientBackground.tsx      # Aurora glows + dot lattice + light beams
 │   │   ├── Header/                    # Hero (split into sub-components)
 │   │   ├── Navigation/                # Nav + DesktopNav (+ More menu) + MobileMenu
-│   │   ├── Footer/                    # Footer + SITE/SOCIAL columns
+│   │   ├── Footer/                    # Footer, FooterStage (loads and swaps scenes), HoldToCopy, SlideToContact, FooterSocial
+│   │   │   └── scenes/                # types.ts contract, registry.ts, one folder per scene, cast/ sprite engine
 │   │   ├── DeferredSection.tsx        # Stable anchors + lazy loading/error boundaries
 │   │   └── PageSection.tsx            # Shared section heading and content layout
 │   └── ui/
@@ -142,6 +145,7 @@ src/
 │       ├── GlassCard.tsx              # Flat card with optional pointer tilt
 │       ├── MotionPreferenceControl.tsx # Persisted Full/Reduced motion toggle
 │       ├── TechTag.tsx                # Reusable skill/tech tag
+│       ├── VariantSwitcher.tsx        # Arrows, dots and a name for choosing between versions of a section
 │       └── ...
 ├── constants/
 │   ├── annotations.ts                 # "How it's built" pin ids and selectors
@@ -152,7 +156,7 @@ src/
 │   ├── projects.ts
 │   ├── sections.ts                    # getSectionCopy: section headings
 │   └── ...
-├── hooks/                             # Breakpoint, focus, section-navigation, and motion providers; off-screen loop pause, on-demand Lenis, scene clock
+├── hooks/                             # Breakpoint, focus, section-navigation, and motion providers; off-screen loop pause, on-demand Lenis, scene clock, useStoredChoice (a remembered choice from a fixed list)
 ├── pages/                             # 10 page sections (each split into sub-files)
 │   ├── about/
 │   ├── experience/

@@ -270,18 +270,6 @@ html[data-motion="reduced"]
    }
 }
 
-/* The footer underline is state, not decoration: Reduced shows it in full
-   the moment a link is hovered or focused instead of drawing it in. */
-html[data-motion="reduced"] .footer-link:focus-visible::after {
-   transform: none;
-}
-
-@media (hover: hover) {
-   html[data-motion="reduced"] .footer-link:hover::after {
-      transform: none;
-   }
-}
-
 html[data-motion="reduced"] :is(a, button) .action-arrow,
 html[data-motion="reduced"] .project-action:active {
    transform: none;
@@ -307,7 +295,7 @@ html[data-motion="reduced"] .project-action:active {
    padding-inline-end: 0.04em;
 }
 
-/* Signature script for the name only (intro, hero, footer). Script caps sit
+/* Signature script for the name only (intro, hero). Script caps sit
    lower and read smaller than Bricolage at the same size, so it is scaled up. */
 .font-signature {
    font-family: "Yellowtail", var(--font-display);
@@ -1133,53 +1121,17 @@ html[data-motion="reduced"] .sagar-face {
    pointer-events: none;
 }
 
-/* ===== Footer teal fade (akobir bottom-of-page glow) ===== */
-.footer-fade {
-   background: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgb(13 60 68 / 0.55) 55%,
-      rgb(34 130 143 / 0.75) 100%
-   );
+/* ===== Footer placeholder =====
+   Holds the footer height (Footer/footer.css, measured at 375 and 1024 px)
+   until its lazy chunk arrives, so a deep link to the last section lands
+   where it will stay. */
+.footer-placeholder {
+   min-height: 628px;
 }
 
-/* Footer column links: a hairline slides in from the left on hover (pointer
-   devices) and keyboard focus. fit-content keeps the line as wide as the
-   label, not the column. */
-.footer-link {
-   position: relative;
-   width: fit-content;
-}
-
-/* At least 44px wide to tap (Home and Stats are ~33-39px), no visual change. */
-.footer-link::before {
-   content: "";
-   position: absolute;
-   inset-block: 0;
-   inset-inline-start: 0;
-   width: max(100%, 44px);
-}
-
-.footer-link::after {
-   content: "";
-   position: absolute;
-   left: 0;
-   right: 0;
-   bottom: 2px;
-   height: 1px;
-   background: currentColor;
-   transform: scaleX(0);
-   transform-origin: left;
-   transition: transform 0.25s ease;
-}
-
-.footer-link:focus-visible::after {
-   transform: scaleX(1);
-}
-
-@media (hover: hover) {
-   .footer-link:hover::after {
-      transform: scaleX(1);
+@media (min-width: 768px) {
+   .footer-placeholder {
+      min-height: 561px;
    }
 }
 

@@ -1,0 +1,449 @@
+{
+   "size": [372, 500],
+   "ground": {
+      "idle": 0.995,
+      "wink": 0.995,
+      "crouch": 0.995,
+      "jump": 0.995,
+      "land": 0.918,
+      "wave": 0.952,
+      "sit": 0.584,
+      "sleep": 0.584
+   },
+   "members": [
+      {
+         "id": "sagar",
+         "order": [
+            "idle",
+            "wink",
+            "crouch",
+            "jump",
+            "land",
+            "wave",
+            "sit",
+            "sleep"
+         ],
+         "sizes": [250, 375, 500],
+         "frames": {
+            "idle": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [77, 3, 277, 500]
+            },
+            "wink": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [82, 6, 280, 500]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [60, 177, 303, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.898,
+               "bbox": [33, 0, 345, 449]
+            },
+            "land": {
+               "ground": 0.918,
+               "bottom": 0.918,
+               "bbox": [18, 97, 362, 459]
+            },
+            "wave": {
+               "ground": 0.952,
+               "bottom": 0.952,
+               "bbox": [49, 1, 278, 476]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.91,
+               "bbox": [1, 7, 330, 455]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.914,
+               "bbox": [72, 51, 324, 457]
+            }
+         }
+      },
+      {
+         "id": "denim",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 0.99,
+               "bottom": 0.99,
+               "bbox": [79, 7, 276, 495]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [61, 177, 304, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.902,
+               "bbox": [43, 0, 336, 451]
+            },
+            "land": {
+               "ground": 0.93,
+               "bottom": 0.93,
+               "bbox": [30, 95, 361, 465]
+            },
+            "wave": {
+               "ground": 0.956,
+               "bottom": 0.956,
+               "bbox": [74, 9, 277, 478]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.91,
+               "bbox": [43, 10, 321, 455]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.916,
+               "bbox": [71, 57, 290, 458]
+            }
+         }
+      },
+      {
+         "id": "teal",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [75, 3, 277, 500]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [61, 91, 303, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.902,
+               "bbox": [43, 2, 336, 451]
+            },
+            "land": {
+               "ground": 0.92,
+               "bottom": 0.92,
+               "bbox": [30, 27, 365, 460]
+            },
+            "wave": {
+               "ground": 0.966,
+               "bottom": 0.966,
+               "bbox": [74, 2, 277, 483]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.988,
+               "bbox": [39, 0, 317, 494]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.966,
+               "bbox": [68, 9, 291, 483]
+            }
+         }
+      },
+      {
+         "id": "mustard",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [82, 4, 277, 500]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [60, 174, 304, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.9,
+               "bbox": [43, 1, 337, 450]
+            },
+            "land": {
+               "ground": 0.918,
+               "bottom": 0.918,
+               "bbox": [29, 93, 362, 459]
+            },
+            "wave": {
+               "ground": 0.962,
+               "bottom": 0.962,
+               "bbox": [73, 4, 277, 481]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.912,
+               "bbox": [33, 8, 319, 456]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.914,
+               "bbox": [72, 50, 292, 457]
+            }
+         }
+      },
+      {
+         "id": "bob",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [77, 4, 278, 500]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [62, 164, 304, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.9,
+               "bbox": [43, 2, 336, 450]
+            },
+            "land": {
+               "ground": 0.918,
+               "bottom": 0.918,
+               "bbox": [30, 96, 360, 459]
+            },
+            "wave": {
+               "ground": 0.982,
+               "bottom": 0.982,
+               "bbox": [77, 4, 279, 491]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.912,
+               "bbox": [35, 9, 316, 456]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.916,
+               "bbox": [71, 37, 292, 458]
+            }
+         }
+      },
+      {
+         "id": "backpack",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 0.998,
+               "bottom": 0.998,
+               "bbox": [76, 4, 275, 499]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [45, 176, 304, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.9,
+               "bbox": [43, 0, 336, 450]
+            },
+            "land": {
+               "ground": 0.936,
+               "bottom": 0.936,
+               "bbox": [30, 94, 363, 468]
+            },
+            "wave": {
+               "ground": 0.966,
+               "bottom": 0.966,
+               "bbox": [77, 4, 277, 483]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.914,
+               "bbox": [37, 7, 317, 457]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.916,
+               "bbox": [50, 53, 291, 458]
+            }
+         }
+      },
+      {
+         "id": "grey",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 0.976,
+               "bottom": 0.976,
+               "bbox": [80, 3, 253, 488]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [64, 175, 304, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.9,
+               "bbox": [43, 0, 337, 450]
+            },
+            "land": {
+               "ground": 0.918,
+               "bottom": 0.918,
+               "bbox": [30, 90, 364, 459]
+            },
+            "wave": {
+               "ground": 0.956,
+               "bottom": 0.956,
+               "bbox": [74, 2, 278, 478]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.914,
+               "bbox": [41, 6, 316, 457]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.918,
+               "bbox": [72, 52, 293, 459]
+            }
+         }
+      },
+      {
+         "id": "rose",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [80, 6, 277, 500]
+            },
+            "crouch": {
+               "ground": 0.998,
+               "bottom": 0.998,
+               "bbox": [60, 176, 303, 499]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.902,
+               "bbox": [43, 2, 336, 451]
+            },
+            "land": {
+               "ground": 0.924,
+               "bottom": 0.924,
+               "bbox": [30, 96, 363, 462]
+            },
+            "wave": {
+               "ground": 0.954,
+               "bottom": 0.954,
+               "bbox": [74, 3, 278, 477]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.976,
+               "bbox": [38, 8, 320, 488]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.92,
+               "bbox": [73, 55, 293, 460]
+            }
+         }
+      },
+      {
+         "id": "blazer",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [81, 4, 278, 500]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [58, 175, 302, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.898,
+               "bbox": [44, 0, 338, 449]
+            },
+            "land": {
+               "ground": 0.92,
+               "bottom": 0.92,
+               "bbox": [29, 95, 363, 460]
+            },
+            "wave": {
+               "ground": 0.966,
+               "bottom": 0.966,
+               "bbox": [75, 5, 268, 483]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.914,
+               "bbox": [39, 7, 316, 457]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.918,
+               "bbox": [60, 33, 292, 459]
+            }
+         }
+      },
+      {
+         "id": "visitor",
+         "order": ["idle", "crouch", "jump", "land", "wave", "sit", "sleep"],
+         "sizes": [250, 375],
+         "frames": {
+            "idle": {
+               "ground": 0.974,
+               "bottom": 0.974,
+               "bbox": [78, 4, 258, 487]
+            },
+            "crouch": {
+               "ground": 1.0,
+               "bottom": 1.0,
+               "bbox": [62, 176, 303, 500]
+            },
+            "jump": {
+               "ground": 0.995,
+               "bottom": 0.898,
+               "bbox": [44, 0, 338, 449]
+            },
+            "land": {
+               "ground": 0.918,
+               "bottom": 0.918,
+               "bbox": [30, 96, 362, 459]
+            },
+            "wave": {
+               "ground": 0.958,
+               "bottom": 0.958,
+               "bbox": [73, 1, 275, 479]
+            },
+            "sit": {
+               "ground": 0.584,
+               "bottom": 0.874,
+               "bbox": [52, 10, 321, 437]
+            },
+            "sleep": {
+               "ground": 0.584,
+               "bottom": 0.924,
+               "bbox": [73, 52, 289, 462]
+            }
+         }
+      }
+   ]
+}

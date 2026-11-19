@@ -1,0 +1,195 @@
+/* ===== Footer: scene stage, switcher bar, end line, email, legal =====
+   Imported by Footer.tsx, so it ships in the lazy footer chunk. One stage
+   box for every scene, so a switch never changes the footer's height:
+   544 to 572 px at 768 px and wider, 592 to 628 px below (the placeholder
+   in index.css holds them before the chunk arrives). */
+.footer {
+   position: relative;
+   background: var(--color-bg-primary);
+}
+
+/* A scene fills this box; two .footer-scene layers exist only during a
+   switch. pan-y leaves vertical scrolling to the page and sideways swipes
+   to the switcher; pinch-zoom keeps zoom working over the picture. */
+.footer-stage {
+   position: relative;
+   height: 300px;
+   overflow: hidden;
+   touch-action: pan-y pinch-zoom;
+}
+
+.footer-scene {
+   position: absolute;
+   inset: 0;
+}
+
+/* The layer coming in or going out (also inert): hits fall through to the
+   one showing. */
+.footer-scene[aria-hidden="true"] {
+   pointer-events: none;
+}
+
+.footer-bar {
+   display: flex;
+   justify-content: center;
+   padding: 8px 16px 4px;
+}
+
+.footer-body {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 12px;
+   max-width: 1152px;
+   margin: 0 auto;
+   padding: 6px 16px 16px;
+   text-align: center;
+}
+
+.footer-end-line {
+   font-size: 21px;
+   line-height: 1.12;
+   color: var(--color-text-primary);
+   text-wrap: balance;
+}
+
+/* The accent word's hand-drawn underline: hidden until a scene's landing
+   draws it (FooterStage.tsx animates the clip, data-shown holds it). */
+.footer-accent {
+   position: relative;
+}
+
+.footer-uline {
+   position: absolute;
+   left: -3%;
+   right: -5%;
+   bottom: -0.16em;
+   height: 0.3em;
+   clip-path: inset(0 100% 0 0);
+   pointer-events: none;
+}
+
+.footer-uline[data-shown] {
+   clip-path: inset(0 0 0 0);
+}
+
+.footer-uline svg {
+   display: block;
+   width: 100%;
+   height: 100%;
+   overflow: visible;
+}
+
+.footer-uline path {
+   fill: none;
+   stroke: var(--color-accent-blue-light);
+   stroke-width: 3px;
+   stroke-linecap: round;
+   vector-effect: non-scaling-stroke;
+}
+
+.footer-actions {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: center;
+   gap: 12px;
+   width: 100%;
+}
+
+.footer-email {
+   display: flex;
+   justify-content: center;
+   width: min(320px, 100%);
+}
+
+.footer-social {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+/* Centred between the two fixed corner buttons (44 px squares 20 px from
+   the edges on phones, so 64 px each side, plus 3 px of air: from 360 px up
+   the copyright still fits on one line); on desktop the motion pill on the
+   left is wider. */
+.footer-legal {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 2px;
+   max-width: min(232px, calc(100vw - 134px));
+   font-size: 11px;
+   line-height: 1.4;
+   color: rgb(var(--ch-text) / 0.56);
+}
+
+.footer-legal p:first-child {
+   font-size: 11.5px;
+   color: rgb(var(--ch-text) / 0.72);
+}
+
+.hold-copy {
+   display: inline-flex;
+   align-items: center;
+   gap: 10px;
+   min-height: 44px;
+   padding: 8px 18px 8px 12px;
+   border: 1px solid rgb(255 255 255 / 0.1);
+   border-radius: 999px;
+   background: var(--color-bg-card);
+   color: var(--color-text-primary);
+   font-family: var(--font-mono);
+   font-size: 12px;
+   letter-spacing: 0.02em;
+   white-space: nowrap;
+   cursor: pointer;
+   user-select: none;
+   -webkit-touch-callout: none;
+   touch-action: manipulation;
+   transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+}
+
+@media (hover: hover) {
+   .hold-copy:hover {
+      border-color: var(--color-border-hover);
+   }
+}
+
+.hold-copy:active {
+   transform: scale(0.98);
+}
+
+@media (min-width: 768px) {
+   .footer-stage {
+      height: 360px;
+   }
+
+   .footer-body {
+      padding: 8px 24px 20px;
+   }
+
+   .footer-end-line {
+      font-size: clamp(21px, 2.6vw, 26px);
+   }
+
+   .footer-email {
+      width: auto;
+   }
+
+   /* Clear of the motion pill (left) and Back to top (right). */
+   .footer-legal {
+      flex-flow: row wrap;
+      justify-content: center;
+      gap: 0 14px;
+      max-width: none;
+      padding: 0 184px;
+      font-size: 12px;
+   }
+
+   .footer-legal p:first-child {
+      font-size: 12px;
+   }
+}

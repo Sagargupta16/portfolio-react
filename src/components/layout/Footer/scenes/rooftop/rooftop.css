@@ -1,0 +1,212 @@
+/* Footer scene "rooftop" (index.ts). The painting is a background at its own
+   aspect ratio; the stage shows a band of it whose bottom is the 0.95 line
+   (geometry.ts). index.ts sets the custom properties from layout:
+   --rt-ih (painting height), --rt-top (its top edge), --rt-fade-from and
+   --rt-fade-to (the sky fade), --rt-flight (the plane's lane) and --rt-edge
+   (the dark sides on screens wider than the painting). */
+.rt-scene {
+   position: absolute;
+   inset: 0;
+   overflow: hidden;
+   /* the cast's contact shadow, a night tone that suits this floor */
+   --cast-shadow: radial-gradient(
+      closest-side,
+      rgb(4 8 12 / 0.62),
+      rgb(4 8 12 / 0)
+   );
+}
+
+.rt-scene > .rt-cast {
+   position: absolute;
+   inset: 0;
+}
+
+.rt-art {
+   position: absolute;
+   left: 50%;
+   top: var(--rt-top);
+   height: var(--rt-ih);
+   aspect-ratio: 2560 / 1067;
+   translate: -50% 0;
+}
+
+.rt-paint {
+   position: absolute;
+   inset: 0;
+   background-position: 0 0;
+   background-size: 100% 100%;
+   background-repeat: no-repeat;
+   /* the sky fades into the page, and the floor's last strip into the footer */
+   mask-image: linear-gradient(
+      180deg,
+      transparent var(--rt-fade-from),
+      #000 var(--rt-fade-to),
+      #000 90%,
+      transparent 95%
+   );
+}
+
+/* one flat dark layer seats the painting in the page */
+.rt-shade {
+   position: absolute;
+   inset: 0;
+   background: rgb(var(--ch-bg) / 0.25);
+}
+
+/* Wider than the painting: the whole scene fades out at the painting's
+   sides, so the friends come in out of the dark. The fade is narrow (0.12 of
+   the painting's height): it softens the edge and stays clear of the
+   visitor's mark. */
+.rt-scene[data-edge] {
+   mask-image: linear-gradient(
+      90deg,
+      transparent var(--rt-edge),
+      #000 calc(var(--rt-edge) + var(--rt-ih) * 0.12),
+      #000 calc(100% - var(--rt-edge) - var(--rt-ih) * 0.12),
+      transparent calc(100% - var(--rt-edge))
+   );
+}
+
+/* ---------- small life in the painting: opacity and transform only ----------
+   The light colours are the painting's own (a warm window glow, a dark pane,
+   a cold star): art tones, not site tokens. */
+.rt-win,
+.rt-star {
+   position: absolute;
+   left: calc(var(--rt-x) * 100%);
+   top: calc(var(--rt-y) * 100%);
+}
+
+/* a lit window brightens and settles back on its own long period */
+.rt-win {
+   width: calc(var(--rt-w) * 100%);
+   height: calc(var(--rt-h) * 100%);
+   background: #fff0c2;
+   opacity: 0;
+   animation: rt-win var(--rt-p) ease-in-out var(--rt-d) infinite;
+}
+
+/* these go dark for a while instead */
+.rt-win-off {
+   background: #0b0f12;
+   animation-name: rt-win-off;
+}
+
+@keyframes rt-win {
+   0%,
+   100% {
+      opacity: 0;
+   }
+
+   45%,
+   60% {
+      opacity: 0.6;
+   }
+}
+
+@keyframes rt-win-off {
+   0%,
+   55%,
+   100% {
+      opacity: 0;
+   }
+
+   62%,
+   88% {
+      opacity: 0.82;
+   }
+}
+
+.rt-star {
+   width: 3px;
+   height: 3px;
+   margin: -1.5px 0 0 -1.5px;
+   border-radius: 50%;
+   background: #eaf3ff;
+   opacity: 0.25;
+   animation: rt-twinkle var(--rt-p) ease-in-out var(--rt-d) infinite;
+}
+
+@keyframes rt-twinkle {
+   0%,
+   100% {
+      opacity: 0.2;
+      transform: scale(0.7);
+   }
+
+   50% {
+      opacity: 0.95;
+      transform: scale(1.15);
+   }
+}
+
+/* one plane light crosses the sky every 26 s, blinking */
+.rt-flight {
+   position: absolute;
+   left: 0;
+   top: var(--rt-flight);
+   width: 100%;
+   height: 0;
+   transform: translateX(-100%);
+   animation: rt-fly 26s linear -15s infinite;
+}
+
+.rt-plane {
+   position: absolute;
+   right: -4px;
+   top: 0;
+   width: 3px;
+   height: 3px;
+   border-radius: 50%;
+   background: rgb(var(--ch-white));
+   animation: rt-blink 1.6s steps(1) infinite;
+}
+
+@keyframes rt-fly {
+   0% {
+      transform: translate(-100%, 0);
+   }
+
+   50%,
+   100% {
+      transform: translate(0%, 14px);
+   }
+}
+
+/* a dim light with a short bright flash at the end of each period */
+@keyframes rt-blink {
+   0% {
+      opacity: 0.4;
+   }
+
+   86%,
+   100% {
+      opacity: 1;
+   }
+}
+
+/* held (off screen, or waiting for a swap): every backdrop loop waits */
+.rt-scene[data-hold] :is(.rt-win, .rt-star, .rt-flight, .rt-plane) {
+   animation-play-state: paused;
+}
+
+/* Reduced (the site's toggle): the lights hold still at a lit level */
+.rt-scene[data-still] :is(.rt-win, .rt-star, .rt-flight, .rt-plane) {
+   animation: none;
+}
+
+.rt-scene[data-still] .rt-win {
+   opacity: 0.22;
+}
+
+.rt-scene[data-still] .rt-win-off {
+   opacity: 0;
+}
+
+.rt-scene[data-still] .rt-star {
+   opacity: 0.7;
+}
+
+.rt-scene[data-still] .rt-flight {
+   display: none;
+}

@@ -43,11 +43,6 @@
    "footer": {
       "copyright": "© {year} {name}. All rights reserved.",
       "disclaimer": "Personal projects and opinions are my own and do not represent Amazon or AWS.",
-      "site": "Site",
-      "site_label": "Footer site links",
-      "social": "Social",
-      "social_label": "Footer social links",
-      "download_cv": "Download CV",
       "easter_egg": "You found the secret! Thanks for exploring.",
       "end_line": "You've reached the bottom. Everything from here is an *email*.",
       "hold_copy": "Hold to copy {email}",
@@ -56,22 +51,69 @@
       "slide": "slide to email me",
       "slide_label": "Slide to email me",
       "slide_sent": "Opening mail",
-      "vitals": "Your visit, measured on you",
-      "vitals_label": "Your visit, measured live",
-      "vitals_pending": "...",
-      "vitals_pending_inp": "tap anything",
-      "visitor_gap": "{time} your time · {gap} of you",
-      "gap_hours": "{count}h",
-      "gap_minutes": "{count}m",
-      "gap_ahead": "{span} ahead",
-      "gap_behind": "{span} behind",
-      "built_with": "Built with",
-      "build": "Build",
-      "machine_link_label": "{file}, {label}",
-      "machine_links": {
-         "index.md": "This page as Markdown",
-         "llms.txt": "llms.txt, the index for AI agents",
-         "rss.xml": "RSS feed of the news timeline"
+      "scene_label": "Footer scene",
+      "scene_previous": "Previous scene",
+      "scene_next": "Next scene",
+      "scene_show": "Show {scene}",
+      "scenes": {
+         "rooftop": {
+            "name": "Rooftop",
+            "label": "{name} with his friends on a city rooftop at night"
+         },
+         "street": {
+            "name": "Rush hour",
+            "label": "{name} stands still on a busy street while people walk past",
+            "wave": "Wave at {first_name}"
+         },
+         "pictionary": {
+            "name": "Pictionary",
+            "label": "{name} hosts a drawing game beside a board while his friends on a bench shout guesses and jump up when they get one right",
+            "board": "guess the doodle",
+            "prompt": "your guess",
+            "replay": "play again",
+            "pause": "Pause the board",
+            "resume": "Play the board",
+            "right": "Right: {answer}",
+            "wrong": "Not {answer}",
+            "doodles": {
+               "cloud": {
+                  "answer": "cloud",
+                  "wrong": "a sheep?",
+                  "right": "cloud!",
+                  "option_1": "sheep",
+                  "option_2": "cloud",
+                  "option_3": "rain"
+               },
+               "containers": {
+                  "answer": "containers",
+                  "wrong": "a barcode?",
+                  "right": "containers!",
+                  "option_1": "containers",
+                  "option_2": "fence",
+                  "option_3": "barcode"
+               },
+               "pipeline": {
+                  "answer": "pipeline",
+                  "wrong": "a train?",
+                  "right": "pipeline!",
+                  "option_1": "train",
+                  "option_2": "dominoes",
+                  "option_3": "pipeline"
+               },
+               "email": {
+                  "answer": "email",
+                  "wrong": "a letter?",
+                  "right": "email!",
+                  "option_1": "map",
+                  "option_2": "email",
+                  "option_3": "tent"
+               }
+            }
+         },
+         "carousel": {
+            "name": "Around me",
+            "label": "{name} stands still in the middle of a ring of friends who hop round him, one mark on every beat"
+         }
       }
    },
    "motion": {

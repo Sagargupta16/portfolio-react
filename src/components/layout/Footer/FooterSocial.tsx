@@ -1,9 +1,4 @@
-import {
-   motion,
-   type TargetAndTransition,
-   type Transition,
-} from "motion/react";
-import { staggerItem } from "@utils/animations";
+import type { TargetAndTransition, Transition } from "motion/react";
 import {
    TEXT_SECONDARY,
    BLUE_LIGHT,
@@ -50,16 +45,7 @@ const TILE_TRANSITION: Transition = {
 };
 
 const FooterSocial = () => (
-   <motion.div
-      style={{
-         display: "flex",
-         flexWrap: "wrap",
-         alignItems: "center",
-         justifyContent: "flex-start",
-         gap: 12,
-      }}
-      variants={staggerItem}
-   >
+   <div className="footer-social">
       <SocialTiles
          tileStyle={TILE_STYLE}
          hover={TILE_HOVER}
@@ -67,7 +53,7 @@ const FooterSocial = () => (
          transition={TILE_TRANSITION}
          iconSize={16}
       />
-   </motion.div>
+   </div>
 );
 
 export default FooterSocial;

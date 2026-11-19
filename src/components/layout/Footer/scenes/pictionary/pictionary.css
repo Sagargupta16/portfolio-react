@@ -1,0 +1,547 @@
+/* The footer scene Pictionary (ported from the footer lab draft Pictionary
+   night). The stage holds two things: the scene box (a flat board on a
+   simple easel, him past its right edge, and a long low bench in front of
+   the board where the players sit) and, in a band along its bottom edge,
+   the row of answer chips. index.ts sets the geometry as custom properties
+   on .pn, in px from the stage centre or above the floor:
+   --pn-band (the height of the chip band), --pn-pad, --pn-half,
+   --pn-floor, --pn-board-l/-w/-b/-h, --pn-bench-l/-w/-h, --pn-host-x/-h,
+   --pn-ans-l/-w, --pn-out/-in, and board.ts sets --pn-ink-t/-h/-w on the
+   board. */
+
+.pn {
+   position: absolute;
+   inset: 0;
+}
+
+/* ---------- the scene ---------- */
+.pn-scene {
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: var(--pn-band, 52px);
+   --cast-shadow: radial-gradient(
+      closest-side,
+      rgb(var(--ch-white) / 0.1),
+      rgb(var(--ch-white) / 0)
+   );
+}
+/* The cast layer: the whole width of the stage, so an entrance starts past
+   the edge of the screen (the stage clips it there). */
+.pn-scene > .pn-cast {
+   position: absolute;
+   inset: 0;
+   z-index: 10;
+   pointer-events: none;
+}
+/* On a stage much wider than the play area the layer fades out at both
+   ends instead, and entrants come out of the dark. */
+.pn[data-masked] .pn-scene > .pn-cast {
+   mask-image: linear-gradient(
+      90deg,
+      transparent calc(50% - var(--pn-out)),
+      rgb(var(--ch-black)) calc(50% - var(--pn-in)),
+      rgb(var(--ch-black)) calc(50% + var(--pn-in)),
+      transparent calc(50% + var(--pn-out))
+   );
+}
+.pn-floor {
+   position: absolute;
+   left: max(0px, calc(50% - var(--pn-half) - 70px));
+   right: max(0px, calc(50% - var(--pn-half) - 70px));
+   bottom: var(--pn-floor);
+   height: 1px;
+   background: rgb(var(--ch-white) / 0.1);
+   mask-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--ch-black)) 6%,
+      rgb(var(--ch-black)) 94%,
+      transparent
+   );
+}
+
+/* the board on its easel */
+.pn-easel {
+   position: absolute;
+   z-index: 1;
+   left: calc(50% + var(--pn-board-l));
+   bottom: var(--pn-floor);
+   width: var(--pn-board-w);
+   height: calc(var(--pn-board-b) + 24px);
+   overflow: visible;
+}
+.pn-easel line {
+   stroke: rgb(var(--ch-white) / 0.15);
+   stroke-width: 2px;
+   stroke-linecap: round;
+   vector-effect: non-scaling-stroke;
+}
+.pn-board {
+   position: absolute;
+   z-index: 2;
+   left: calc(50% + var(--pn-board-l));
+   bottom: calc(var(--pn-floor) + var(--pn-board-b));
+   width: var(--pn-board-w);
+   height: var(--pn-board-h);
+   background: var(--color-bg-card);
+   border: 1px solid rgb(var(--ch-white) / 0.09);
+   border-radius: 16px;
+}
+.pn-label,
+.pn-ans-label {
+   font-family: var(--font-mono);
+   font-size: 11px;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+   color: rgb(var(--ch-text) / 0.8);
+}
+.pn-label {
+   position: absolute;
+   left: 16px;
+   top: 14px;
+   line-height: 1;
+}
+.pn-tray {
+   position: absolute;
+   left: -8px;
+   right: -8px;
+   bottom: -7px;
+   height: 7px;
+   border-radius: 4px;
+   background: var(--color-bg-card-hover);
+   border: 1px solid rgb(var(--ch-white) / 0.1);
+}
+/* The drawing area, 16 by 10. Each doodle is an HTML layer holding its own
+   svg, so a wipe fades on the compositor; the pen dot has the last svg. */
+.pn-ink {
+   position: absolute;
+   left: 50%;
+   top: var(--pn-ink-t);
+   height: var(--pn-ink-h);
+   aspect-ratio: 16 / 10;
+   translate: -50% 0;
+}
+.pn-doodle {
+   position: absolute;
+   inset: 0;
+}
+.pn-ink svg {
+   position: absolute;
+   inset: 0;
+   width: 100%;
+   height: 100%;
+   overflow: visible;
+}
+/* The colour change of a finished stroke is stepped: a paint transition on
+   an svg node runs on the main thread, once per display refresh. */
+.pn-ink path {
+   fill: none;
+   stroke: rgb(var(--ch-text) / 0.92);
+   stroke-width: var(--pn-ink-w);
+   stroke-linecap: round;
+   stroke-linejoin: round;
+   stroke-dasharray: 1 2;
+   stroke-dashoffset: 1;
+   visibility: hidden;
+   transition: stroke 0.45s steps(27, end);
+}
+.pn-ink path.pn-on {
+   visibility: visible;
+}
+.pn-ink path.pn-new {
+   stroke: var(--color-accent-blue-light);
+}
+.pn-pen {
+   fill: var(--color-accent-blue-light);
+   opacity: 0;
+}
+/* the resting board: the three things he does, small, with their words */
+.pn-recap {
+   position: absolute;
+   left: 7%;
+   right: 7%;
+   top: 16%;
+   bottom: 14%;
+   display: grid;
+   grid-template-columns: repeat(3, minmax(0, 1fr));
+   align-items: center;
+   gap: 14px;
+   opacity: 0;
+   pointer-events: none;
+}
+.pn-recap-item {
+   display: grid;
+   justify-items: center;
+   gap: 10px;
+}
+.pn-recap svg {
+   width: 100%;
+   max-height: min(92px, calc(var(--pn-board-h) * 0.7 - 26px));
+   overflow: visible;
+}
+.pn-recap path {
+   fill: none;
+   stroke: rgb(var(--ch-text) / 0.9);
+   stroke-width: 8px;
+   stroke-linecap: round;
+   stroke-linejoin: round;
+}
+.pn-recap-word {
+   font-family: var(--font-mono);
+   font-size: 11px;
+   line-height: 1;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+   color: var(--color-accent-blue-light);
+}
+
+/* the bench: a seat plank with a 1 px top edge on thin legs; the sit pose
+   puts each player on its top edge, legs hanging in front */
+.pn-bench {
+   position: absolute;
+   z-index: 6;
+   left: calc(50% + var(--pn-bench-l));
+   bottom: var(--pn-floor);
+   width: var(--pn-bench-w);
+   height: var(--pn-bench-h);
+}
+.pn-bench::before {
+   content: "";
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 0;
+   height: 9px;
+   border-radius: 3px;
+   background: var(--color-bg-card-hover);
+   border: 1px solid rgb(var(--ch-white) / 0.08);
+   border-top-color: rgb(var(--ch-white) / 0.18);
+}
+.pn-bench i {
+   position: absolute;
+   top: 9px;
+   bottom: 0;
+   width: 2px;
+   background: rgb(var(--ch-white) / 0.09);
+}
+.pn-bench i:nth-child(1) {
+   left: 3%;
+}
+.pn-bench i:nth-child(2) {
+   left: 50%;
+}
+.pn-bench i:nth-child(3) {
+   right: 3%;
+}
+
+/* the guesses they shout, over their heads */
+.pn-says {
+   position: absolute;
+   inset: 0;
+   z-index: 40;
+   pointer-events: none;
+}
+.pn-say {
+   position: absolute;
+   padding: 6px 9px;
+   border-radius: 8px;
+   background: var(--color-bg-card);
+   border: 1px solid rgb(var(--ch-white) / 0.16);
+   font-family: var(--font-mono);
+   font-size: 12px;
+   line-height: 1;
+   white-space: nowrap;
+   color: rgb(var(--ch-text) / 0.92);
+   transform-origin: var(--pn-tail) 100%;
+}
+.pn-say::after {
+   content: "";
+   position: absolute;
+   left: calc(var(--pn-tail) - 4px);
+   bottom: -4.5px;
+   width: 7px;
+   height: 7px;
+   background: inherit;
+   border: inherit;
+   border-top: 0;
+   border-left: 0;
+   rotate: 45deg;
+   border-radius: 0 0 2px 0;
+}
+.pn-say.pn-say-ok {
+   color: var(--color-accent-blue-light);
+   border-color: rgb(var(--ch-blue-light) / 0.6);
+}
+.pn-say.pn-say-x {
+   color: rgb(var(--ch-text) / 0.5);
+   text-decoration: line-through;
+   text-decoration-color: rgb(var(--ch-text) / 0.6);
+}
+
+/* a tap on him at rest plays again */
+.pn-host-hit {
+   position: absolute;
+   z-index: 35;
+   left: calc(50% + var(--pn-host-x) - 44px);
+   bottom: var(--pn-floor);
+   width: 88px;
+   height: calc(var(--pn-host-h) * 0.96);
+   padding: 0;
+   border: 0;
+   border-radius: 12px;
+   background: none;
+   cursor: pointer;
+   -webkit-tap-highlight-color: transparent;
+}
+.pn-host-hit[hidden] {
+   display: none;
+}
+
+/* pause, in the top right corner of the board: a 44 px target around a
+   small round mark */
+.pn-pause {
+   position: absolute;
+   z-index: 4;
+   left: calc(50% + var(--pn-board-l) + var(--pn-board-w) - 46px);
+   bottom: calc(var(--pn-floor) + var(--pn-board-b) + var(--pn-board-h) - 46px);
+   width: 44px;
+   height: 44px;
+   padding: 0;
+   display: grid;
+   place-items: center;
+   border: 0;
+   background: none;
+   color: rgb(var(--ch-text) / 0.7);
+   cursor: pointer;
+   -webkit-tap-highlight-color: transparent;
+}
+.pn-pause > span {
+   display: grid;
+   place-items: center;
+   width: 28px;
+   height: 28px;
+   border-radius: 50%;
+   border: 1px solid rgb(var(--ch-white) / 0.12);
+   background: var(--color-bg-tertiary);
+   transition:
+      border-color 0.2s var(--ease-standard),
+      color 0.2s var(--ease-standard);
+}
+.pn-pause svg {
+   fill: currentColor;
+   display: block;
+}
+.pn-pause .pn-i-play,
+.pn-pause[data-paused] .pn-i-pause {
+   display: none;
+}
+.pn-pause[data-paused] .pn-i-play {
+   display: block;
+}
+.pn-pause[hidden] {
+   display: none;
+}
+
+/* ---------- the answers of the reader, along the bottom edge ---------- */
+.pn-answers {
+   position: absolute;
+   z-index: 2;
+   left: calc(50% + var(--pn-ans-l));
+   bottom: var(--pn-pad);
+   width: var(--pn-ans-w);
+   height: 44px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+}
+.pn-ans-label {
+   margin-right: 4px;
+   white-space: nowrap;
+}
+.pn-answers[data-mode="replay"] .pn-ans-label,
+.pn-answers[data-mode="replay"] .pn-ans {
+   display: none;
+}
+.pn-ans,
+.pn-replay {
+   height: 44px;
+   padding: 0 20px;
+   border-radius: 9999px;
+   border: 1px solid rgb(var(--ch-white) / 0.12);
+   background: var(--color-bg-card);
+   color: rgb(var(--ch-text) / 0.9);
+   font-family: var(--font-mono);
+   font-size: 13px;
+   line-height: 1;
+   letter-spacing: 0.02em;
+   white-space: nowrap;
+   cursor: pointer;
+   -webkit-tap-highlight-color: transparent;
+   transition:
+      background-color 0.25s var(--ease-standard),
+      border-color 0.25s var(--ease-standard),
+      color 0.25s var(--ease-standard),
+      opacity 0.25s var(--ease-standard);
+}
+.pn-answers[data-open] .pn-ans:not([aria-disabled="true"]) {
+   border-color: rgb(var(--ch-blue-light) / 0.35);
+}
+.pn-ans.pn-ok {
+   background: var(--color-accent-blue);
+   border-color: var(--color-accent-blue);
+   color: rgb(var(--ch-white));
+}
+.pn-ans.pn-shown {
+   border-color: rgb(var(--ch-blue-light) / 0.6);
+   color: var(--color-accent-blue-light);
+}
+.pn-ans.pn-dim {
+   opacity: 0.4;
+}
+.pn-ans.pn-nope {
+   text-decoration: line-through;
+   color: rgb(var(--ch-text) / 0.5);
+}
+.pn-ans[aria-disabled="true"] {
+   cursor: default;
+}
+.pn-replay {
+   display: none;
+   align-items: center;
+   gap: 8px;
+}
+.pn-answers[data-mode="replay"] .pn-replay {
+   display: inline-flex;
+}
+@media (hover: hover) {
+   .pn-pause:hover > span {
+      border-color: rgb(var(--ch-white) / 0.26);
+      color: var(--color-text-primary);
+   }
+   .pn-ans:not([aria-disabled="true"]):hover,
+   .pn-replay:hover {
+      border-color: rgb(var(--ch-white) / 0.26);
+   }
+   .pn-answers[data-open] .pn-ans:not([aria-disabled="true"]):hover {
+      border-color: rgb(var(--ch-blue-light) / 0.6);
+   }
+}
+/* results, for a screen reader */
+.pn-live {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   margin: -1px;
+   overflow: hidden;
+   clip-path: inset(50%);
+   white-space: nowrap;
+}
+
+/* The envelope on its way to the email control: a fixed layer on the body
+   (the stage clips its own content), there for one second. */
+.pn-fly {
+   position: fixed;
+   z-index: 20;
+   pointer-events: none;
+}
+.pn-fly-inner {
+   position: absolute;
+   inset: 0;
+}
+.pn-fly svg {
+   width: 100%;
+   height: 100%;
+   overflow: visible;
+}
+.pn-fly path {
+   fill: none;
+   stroke: var(--color-accent-blue-light);
+   stroke-linecap: round;
+   stroke-linejoin: round;
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 767px) {
+   .pn-scene {
+      bottom: var(--pn-band, 50px);
+   }
+   .pn-board {
+      border-radius: 12px;
+   }
+   .pn-label {
+      left: 11px;
+      top: 10px;
+   }
+   .pn-tray {
+      left: -5px;
+      right: -5px;
+   }
+   .pn-recap {
+      left: 5%;
+      right: 5%;
+      gap: 4px;
+   }
+   .pn-recap-item {
+      gap: 6px;
+   }
+   .pn-recap path {
+      stroke-width: 11px;
+   }
+   .pn-recap-word {
+      font-size: 10px;
+      letter-spacing: 0.02em;
+   }
+   .pn-say {
+      font-size: 11px;
+      padding: 5px 7px;
+   }
+   .pn-pause {
+      left: calc(50% + var(--pn-board-l) + var(--pn-board-w) - 44px);
+      bottom: calc(
+         var(--pn-floor) + var(--pn-board-b) + var(--pn-board-h) - 44px
+      );
+   }
+   .pn-pause > span {
+      width: 26px;
+      height: 26px;
+   }
+   .pn-answers {
+      gap: 8px;
+   }
+   .pn-ans-label {
+      display: none;
+   }
+   .pn-ans {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0 8px;
+      font-size: 12.5px;
+   }
+}
+/* a 320 px phone: the label clears the pause button on a 170 px board, the
+   three recap words fit side by side, and the longest answer fits its chip */
+@media (max-width: 359px) {
+   .pn-label {
+      font-size: 10px;
+   }
+   .pn-recap {
+      left: 3%;
+      right: 3%;
+      gap: 2px;
+   }
+   .pn-recap-word {
+      font-size: 9px;
+      letter-spacing: 0;
+   }
+   .pn-answers {
+      gap: 6px;
+   }
+   .pn-ans {
+      padding: 0 4px;
+      font-size: 12px;
+      letter-spacing: 0;
+   }
+}
