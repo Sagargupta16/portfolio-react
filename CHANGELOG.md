@@ -2,6 +2,33 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.25.0] - 2026-11-19
+
+The footer is rebuilt around a picture that plays above it, and the visitor can change the picture.
+
+### Added
+
+- **Four footer scenes, switchable.** Rooftop is the default: him at the centre of a city rooftop at night with friends around him, eight of them on wide screens and four on phones, plus a figure in a blue hood for the visitor. Rush hour: he stands still while a night street passes; scrolling speeds it up or winds it back, and when the scroll rests the street freezes like a photo. Pictionary: a board draws four doodles, the seated players guess, the visitor can guess with the three chips, and the last doodle flies to the email control. Around me: a ring of friends hopping round him. The names come from `footer.scenes.<id>.name` in `data/ui.json`.
+- **A scene switcher** under the picture: previous arrow, one dot per scene, next arrow and the scene's name. On a touch screen a sideways swipe on the picture switches too. The choice is kept in `localStorage` under `portfolio-footer-scene`; a missing or unknown value means Rooftop, and nothing rotates by itself.
+- **Each scene answers the email control.** A hold, a copy or a slide to email has its own reply in every scene: on the rooftop the visitor's figure walks over to him and the roof cheers, in Rush hour the street slows and the copy takes the photo, in Pictionary he winks, and in Around me the visitor hops into the ring beside him and everyone cheers.
+- **`VariantSwitcher` and `useStoredChoice`.** `src/components/ui/VariantSwitcher.tsx` is a generic option switcher and `src/hooks/useStoredChoice.ts` remembers one choice out of a fixed list, so another section can offer more than one version of itself later. No other section uses them yet.
+- **Footer art.** 25 AVIF files under `src/assets/footer/` (about 1.6 MB together; a scene loads only the strips it shows): sprite strips for ten people and two painted backdrops. His own figure comes from his own pose sheet; the other nine are invented people made on 2026-11-19 with Stability models on Amazon Bedrock. `src/assets/footer/README.md` records where each file came from.
+
+### Changed
+
+- **The footer, top to bottom:** the picture, the switcher, his end line, the email control (hold to copy at 768px and wider, slide to email below), three icon-only social links, the copyright and the AWS disclaimer. The konami easter egg stays.
+- **Scenes are plain DOM modules, not React components.** Each one is built with CSS and Web Animations behind one contract (`src/components/layout/Footer/scenes/types.ts`) and is its own lazy chunk (`scenes/registry.ts`). Nothing of a scene loads until the footer is about one screen away. Every scene fills the same box, 360px tall at 768px and wider and 300px below, so switching never changes the footer's height. Off screen a scene holds its timers and animations. In Reduced a scene shows one composed still, and the swap between scenes is instant.
+
+### Removed
+
+- From the footer: the brand block, the SITE and SOCIAL link columns, Download CV, the live Web Vitals readout, the status bar (the clock, the visitor's time gap and availability), the "Built with" strip, the build stamp and machine links, and the teal fade. `index.md`, `llms.txt` and `rss.xml` are still generated at build.
+- What only they used: the `web-vitals` dependency, `src/utils/timeGap.ts`, the `vitals` and `build` "How it's built" pins, their footer copy keys in `data/ui.json`, and the build-time defines in `vite.config.js`.
+
+### Fixed
+
+- **Project covers reveal on scroll.** The scroll-driven reveal added in 4.12.0 never played. The card's `overflow: hidden` made the cover's `view()` timeline follow the card instead of the page, and production builds lost the rule: the minifier folded `animation-timeline` into the `animation` shorthand, which browsers drop. The card now clips with `overflow: clip` and the timeline sits in a rule of its own, so each cover opens from its inset as it scrolls in. Reduced still skips it.
+- **Reduced no longer breaks Projects.** With a live reveal, switching to Reduced threw in `useFreezeAnimations`, which set a time on a scroll-driven animation, and Projects showed its error fallback. The freeze now skips scroll-driven animations.
+
 ## [4.24.2] - 2026-11-18
 
 ### Fixed

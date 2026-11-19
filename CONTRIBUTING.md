@@ -147,6 +147,29 @@ Use [Disclosure.tsx](src/components/ui/Disclosure.tsx) for expandable content. I
 
 Check the affected section at phone and desktop widths, with keyboard navigation and in both motion modes.
 
+### Add a footer scene
+
+The footer plays one scene above its switcher. A scene is a plain DOM module (CSS and Web Animations, no React) that implements `FooterSceneMount` from [scenes/types.ts](src/components/layout/Footer/scenes/types.ts); that file is the contract. The footer's shell owns the switcher, the end line, the email control, the social links and the legal lines. A scene:
+
+- builds inside the empty `stage` it is given and never reaches outside it; the stage already has its final size (360px tall at 768px and wider, 300px below), so read the size from layout and watch it with a `ResizeObserver`, and never change the footer's height;
+- calls `ctx.ready()` once, when its first frame can be seen, and takes every visible or screen-reader string from `ctx.copy`;
+- follows `ctx.reduced` and `handle.setReduced`: Reduced shows one composed still with nothing moving. The OS setting is never read;
+- holds every timer and animation while `handle.setVisible(false)` is in force, and removes every node, listener, timer, observer and animation in `handle.destroy()`;
+- answers the email control through the optional `handle.email` events (`holdStart`, `holdCancel`, `copied`, `slide`, `slideEnd`) and `ctx.email` (`pulse`, `arrive`, `underline`, `rect`); `ctx.endLine.rect()` tells it where the end line's words are, so anything it sends to the control can pass beside them;
+- builds DOM with `createElement` and `textContent`, keeps motion on `transform` and `opacity`, and prefixes its class names (`rt-`, `st-`, `pn-`, `cr-` are taken).
+
+To add one:
+
+1. Add its id to `FOOTER_SCENE_IDS` in [scenes/types.ts](src/components/layout/Footer/scenes/types.ts). The order is the switcher's order and the first id is the default.
+2. Create `scenes/<id>/` with an `index.ts` that exports `mount`, and a stylesheet with its own class prefix.
+3. Add its lazy import to `FOOTER_SCENES` in [scenes/registry.ts](src/components/layout/Footer/scenes/registry.ts), so it ships as its own chunk.
+4. Add its copy under `footer.scenes.<id>` in [data/ui.json](data/ui.json) (at least `name`, which labels the switcher, and `label`, which describes the picture to a screen reader). Type it in `FooterScenesCopy` in [src/types/index.ts](src/types/index.ts) and list its keys and placeholders under `footer.scenes` in [scripts/validate-data.js](scripts/validate-data.js); `pnpm validate:data` fails on a missing or unknown key.
+5. Art goes under `src/assets/footer/` with its origin recorded in that folder's [README](src/assets/footer/README.md); a scene loads only the files it shows, because most visitors are on phones.
+
+Check it at 375, 473 and 1280px in Full and Reduced, with the switcher, a swipe, and a hold and a slide on the email control.
+
+`VariantSwitcher` ([src/components/ui/VariantSwitcher.tsx](src/components/ui/VariantSwitcher.tsx)) and `useStoredChoice` ([src/hooks/useStoredChoice.ts](src/hooks/useStoredChoice.ts)) are not footer-specific: another section can offer a choice of versions the same way, with the caller owning the choice and its localStorage key.
+
 ## Design directions already tried
 
 These were built, seen on the real page and dropped. Check this list before proposing a redesign or a new visual language, and pilot anything new on one surface first, as an addition beside the current design rather than a replacement for it.
@@ -168,6 +191,8 @@ These were built, seen on the real page and dropped. Check this list before prop
 | 2026-10-25 | Researched rewrite of the headline, taglines and About                                       | Rejected; copy stays in the owner's own words                                                                  |
 | 2026-10-25 | Moving SVG loops to WAAPI for idle CPU                                                       | Measured no gain; loops pause off-screen and share one 60 Hz clock instead                                     |
 | 2026-11-14 | Hairline line figures on the Education cards                                                 | Reverted before merge; the cards keep their coursework chips                                                   |
+
+Generated art of invented people is allowed where it reads global and modern, as in the footer scenes (see [src/assets/footer/README.md](src/assets/footer/README.md)). The owner's own likeness is never generated or redrawn: his figure comes only from his own pose sheet.
 
 ## Verify your change
 

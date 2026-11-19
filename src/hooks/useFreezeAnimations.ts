@@ -21,6 +21,14 @@ const useFreezeAnimations = (ref: RefObject<HTMLElement | null>) => {
 
       const freeze = () => {
          for (const animation of el.getAnimations({ subtree: true })) {
+            // A scroll-driven animation (the cover reveal) has no clock to
+            // hold, and setting a time on it throws. Its own CSS drops it
+            // in Reduced.
+            if (
+               typeof ScrollTimeline !== "undefined" &&
+               animation.timeline instanceof ScrollTimeline
+            )
+               continue;
             animation.pause();
             animation.currentTime = 0;
          }

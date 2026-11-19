@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { ArrowRight, Mail } from "lucide-react";
 import { getUiCopy } from "@data/ui";
+import type { FooterSceneEmailEvents } from "./scenes/types";
 import "./slide-to-contact.css";
 
 const COPY = getUiCopy().footer;
@@ -9,14 +10,20 @@ const COPY = getUiCopy().footer;
 /* Phone version of the footer email control: drag the knob to the end of the
    track to open the mail app (slide-to-unlock, from aashuu.me). It is still a
    real mailto link, so a tap or the keyboard opens it the ordinary way; a
-   drag that lands short springs back. Desktop keeps press-and-hold copy. */
+   drag that lands short springs back. Desktop keeps press-and-hold copy.
+   The drag is reported to the footer scene on stage. */
 
 const KNOB = 44;
 const PAD = 4;
 const COMMIT = 0.85;
 const SPRING = { type: "spring", stiffness: 520, damping: 38 } as const;
 
-const SlideToContact = ({ href }: { href: string }) => {
+interface SlideToContactProps {
+   href: string;
+   events: FooterSceneEmailEvents;
+}
+
+const SlideToContact = ({ href, events }: SlideToContactProps) => {
    const trackRef = useRef<HTMLAnchorElement>(null);
    const draggedRef = useRef(false);
    const resetRef = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -60,7 +67,9 @@ const SlideToContact = ({ href }: { href: string }) => {
    useEffect(() => () => clearTimeout(resetRef.current), []);
 
    const onDragEnd = () => {
-      if (x.get() >= maxX * COMMIT) {
+      const sent = x.get() >= maxX * COMMIT;
+      events.slideEnd?.(sent);
+      if (sent) {
          void animate(x, maxX, SPRING);
          setSent(true);
          globalThis.location.href = href;
@@ -124,6 +133,11 @@ const SlideToContact = ({ href }: { href: string }) => {
                onDragStart={() => {
                   draggedRef.current = true;
                }}
+               onDrag={() =>
+                  events.slide?.(
+                     maxX ? Math.min(1, Math.max(0, x.get() / maxX)) : 0,
+                  )
+               }
                onDragEnd={onDragEnd}
             >
                <Mail size={18} />

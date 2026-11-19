@@ -1,0 +1,381 @@
+/* Footer scene "Rush hour": the painted night street with him in the middle.
+   Ported from the footer lab draft rush-hour-night/street.css. index.ts
+   builds the nodes and sets every box from the numbers in score.ts.
+
+   The greys and the warm window light below are scene art, matched by eye
+   to the painting, so they are literals. Anything the site names (the page
+   colour, the white and text channels, the accent blue, the mono face, the
+   easing curves) is a token. */
+.st-scene {
+   position: absolute;
+   inset: 0;
+   overflow: hidden;
+   contain: layout paint;
+}
+
+/* Held back until the painting has decoded, then the whole stage (painting,
+   walkers, him, the rail) comes in as one. The shell fades the scene in when
+   it reports ready, so the fade here only runs when the painting arrives
+   after the scene is already showing. */
+.st-street {
+   position: absolute;
+   inset: 0;
+   opacity: 0;
+}
+
+.st-street.st-ready {
+   opacity: 1;
+}
+
+.st-street.st-late {
+   transition: opacity 0.6s var(--ease-cinematic);
+}
+
+.st-street > * {
+   position: absolute;
+}
+
+/* The painted street: tiles of the painting (every other one mirrored), the
+   road going on below it in its own bottom-row colour, one flat dark layer. */
+.st-art {
+   left: 0;
+   right: 0;
+}
+
+.st-art > i {
+   position: absolute;
+   display: block;
+}
+
+.st-road-on {
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: rgb(42 73 109);
+}
+
+.st-tile {
+   top: 0;
+   background: var(--st-art) 0 0 / 100% 100% no-repeat;
+}
+
+.st-tile.st-flip {
+   transform: scaleX(-1);
+}
+
+.st-shade {
+   inset: 0;
+   background: rgb(var(--ch-bg) / 0.42);
+}
+
+/* A lit window that brightens and settles on its own slow period. */
+.st-glow {
+   translate: -50% -50%;
+   border-radius: 50%;
+   background: radial-gradient(
+      closest-side,
+      rgb(255 220 160 / 0.34),
+      rgb(255 220 160 / 0.16) 60%,
+      rgb(255 220 160 / 0)
+   );
+   opacity: 0;
+   animation: st-glow var(--st-p) ease-in-out var(--st-d) infinite;
+}
+
+@keyframes st-glow {
+   0%,
+   100% {
+      opacity: 0;
+   }
+
+   50% {
+      opacity: 1;
+   }
+}
+
+/* While hidden and in a freeze the lights hold still; Reduced shows them as
+   a still. */
+.st-scene.st-hush .st-glow {
+   animation-play-state: paused;
+}
+
+.st-scene.st-still .st-glow {
+   animation: none;
+   opacity: 0.5;
+}
+
+/* The near pavement: in shadow across the road from the lit shops; a kerb
+   stone at the road edge, then slabs. */
+.st-pave {
+   left: 0;
+   right: 0;
+   display: block;
+   background:
+      linear-gradient(
+         180deg,
+         #2a3237 0 5px,
+         rgb(var(--ch-black) / 0.35) 5px 6px,
+         transparent 6px
+      ),
+      repeating-linear-gradient(
+            90deg,
+            transparent 0 95px,
+            rgb(var(--ch-white) / 0.035) 95px 96px
+         )
+         0 6px / 100% 100% no-repeat,
+      #1b2226;
+   border-top: 1px solid rgb(var(--ch-white) / 0.14);
+}
+
+.st-lane {
+   inset: 0;
+   pointer-events: none;
+}
+
+/* The body tones of a walker (people.ts paints with them; each lane sets its
+   own). Registered, so a walker stepped back for the photo (st-soft: the far
+   tone, set on the street by index.ts) changes tone in steps and back. */
+@property --st-wf {
+   syntax: "<color>";
+   inherits: true;
+   initial-value: #0b1013;
+}
+
+@property --st-wb {
+   syntax: "<color>";
+   inherits: true;
+   initial-value: #070a0c;
+}
+
+@property --st-wc {
+   syntax: "<color>";
+   inherits: true;
+   initial-value: #020304;
+}
+
+/* The tone repaints the figure, so it steps (about 43 updates a second)
+   instead of running at the display rate. */
+.st-w {
+   position: absolute;
+   left: 0;
+   will-change: transform;
+   transition:
+      --st-wf 280ms steps(12),
+      --st-wb 280ms steps(12),
+      --st-wc 280ms steps(12);
+}
+
+.st-w.st-soft {
+   --st-wf: var(--st-sf);
+   --st-wb: var(--st-sb);
+   --st-wc: var(--st-sc);
+}
+
+.st-w[hidden] {
+   display: none;
+}
+
+.st-pose {
+   position: absolute;
+   left: 0;
+   top: 0;
+   transform-origin: 0 0;
+   transition: transform 140ms linear;
+}
+
+.st-vp {
+   position: absolute;
+   overflow: hidden;
+}
+
+.st-strip {
+   will-change: transform;
+}
+
+.st-strip-wave {
+   position: absolute;
+   left: 0;
+   top: 0;
+   opacity: 0;
+}
+
+.st-strip svg {
+   display: block;
+}
+
+/* A short kerbside rail behind him: two rails, two posts. */
+.st-rail i {
+   position: absolute;
+   display: block;
+   background: #172024;
+   border: 1px solid rgb(var(--ch-white) / 0.12);
+}
+
+.st-rail i:nth-child(1) {
+   left: 0;
+   right: 0;
+   top: 0;
+   height: 5px;
+   border-radius: 3px;
+}
+
+.st-rail i:nth-child(2) {
+   left: 4px;
+   right: 4px;
+   top: 42%;
+   height: 4px;
+   border-radius: 2px;
+}
+
+.st-rail i:nth-child(3),
+.st-rail i:nth-child(4) {
+   top: 2px;
+   bottom: 0;
+   width: 6px;
+   border-radius: 2px;
+}
+
+.st-rail i:nth-child(3) {
+   left: 6px;
+}
+
+.st-rail i:nth-child(4) {
+   right: 6px;
+}
+
+/* The kerb: the line he stands on, and its painted face. */
+.st-kerb {
+   left: 0;
+   right: 0;
+   display: block;
+   border-top: 1px solid rgb(var(--ch-white) / 0.2);
+   background:
+      repeating-linear-gradient(90deg, #10171a 0 46px, #0c1214 46px 92px) top /
+         100% 24px no-repeat,
+      #0a0f11;
+   transform-origin: 50% 0;
+}
+
+/* The stairwell beside him (wide layout): above the near lane, so it cuts
+   the walkers on the stairs. */
+.st-stairwell {
+   display: block;
+   overflow: hidden;
+   pointer-events: none;
+}
+
+.st-stairwell svg {
+   display: block;
+}
+
+/* Him: the only colour on the street. */
+.st-me {
+   top: 0;
+   pointer-events: none;
+}
+
+.st-me-in,
+.st-me-breath,
+.st-me-pose {
+   position: absolute;
+   inset: 0;
+}
+
+/* One pose: a window one frame wide onto his strip. */
+.st-cut {
+   position: absolute;
+   left: 0;
+   opacity: 0;
+   background-repeat: no-repeat;
+}
+
+.st-cut.st-on {
+   opacity: 1;
+}
+
+.st-me-hit {
+   position: absolute;
+   z-index: 3;
+   padding: 0;
+   border: 0;
+   border-radius: 28px;
+   background: transparent;
+   cursor: pointer;
+   -webkit-tap-highlight-color: transparent;
+}
+
+/* Focus brackets and the photo stamp: shown on the freeze. */
+.st-brackets {
+   opacity: 0;
+   pointer-events: none;
+}
+
+.st-brackets.st-on {
+   opacity: 1;
+}
+
+.st-brackets i {
+   position: absolute;
+   width: 20px;
+   height: 20px;
+   border: 0 solid var(--color-accent-blue-light);
+}
+
+.st-brackets i:nth-child(1) {
+   left: 0;
+   top: 0;
+   border-left-width: 2px;
+   border-top-width: 2px;
+}
+
+.st-brackets i:nth-child(2) {
+   right: 0;
+   top: 0;
+   border-right-width: 2px;
+   border-top-width: 2px;
+}
+
+.st-brackets i:nth-child(3) {
+   left: 0;
+   bottom: 0;
+   border-left-width: 2px;
+   border-bottom-width: 2px;
+}
+
+.st-brackets i:nth-child(4) {
+   right: 0;
+   bottom: 0;
+   border-right-width: 2px;
+   border-bottom-width: 2px;
+}
+
+.st-stamp {
+   font-family: var(--font-mono);
+   font-variant-numeric: tabular-nums;
+   font-size: 10.5px;
+   line-height: 1.5;
+   letter-spacing: 0.12em;
+   color: var(--color-accent-blue-light);
+   white-space: nowrap;
+   opacity: 0;
+   pointer-events: none;
+}
+
+.st-stamp.st-on {
+   opacity: 1;
+}
+
+/* The narrow layout (index.ts sets st-phone from the stage width). */
+.st-phone .st-brackets i {
+   width: 16px;
+   height: 16px;
+}
+
+.st-phone .st-stamp {
+   font-size: 9.5px;
+   letter-spacing: 0.1em;
+}
+
+.st-phone .st-rail i:nth-child(1) {
+   height: 4px;
+}

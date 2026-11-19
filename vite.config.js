@@ -3,21 +3,11 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "node:url";
 import { parse, resolve } from "node:path";
-import {
-   copyFileSync,
-   mkdirSync,
-   readdirSync,
-   readFileSync,
-   writeFileSync,
-} from "node:fs";
+import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { PRIVATE_DATA_FILES } from "./scripts/lib/data-files.js";
 import { buildMachineFiles } from "./scripts/machine-view.js";
 import heroLatest from "./src/data/heroLatestPlugin.js";
 import copyShell from "./src/data/copyShellPlugin.js";
-
-const pkg = JSON.parse(
-   readFileSync(new URL("./package.json", import.meta.url), "utf8"),
-);
 
 // Publish data/*.json as static files (build/data/), so other tools can read the same
 // source of truth at /portfolio-react/data/<name>.json. contact.json is the one
@@ -163,13 +153,6 @@ export default defineConfig(() => ({
       copyShell(),
    ],
    base: "/portfolio-react/",
-   // Build stamp shown in the footer status bar.
-   define: {
-      "import.meta.env.APP_VERSION": JSON.stringify(pkg.version),
-      "import.meta.env.BUILD_DATE": JSON.stringify(
-         new Date().toISOString().slice(0, 10),
-      ),
-   },
    resolve: {
       alias: {
          "@": fileURLToPath(new URL("./src", import.meta.url)),

@@ -1,0 +1,76 @@
+/* The layers of one cast actor (see index.ts). The sprite relies on custom
+   properties and on the individual `scale` property. The engine sets --h and
+   --w (frame size in CSS px) and --n (frames in the strip) on .cast-actor,
+   --flip and --dim on .cast-sprite, --cast-floor on the stage, and the
+   strip's transform (which frame shows). No will-change here: the engine
+   sets it on an actor only while it moves across. */
+.cast-stage {
+   position: relative;
+   overflow: hidden;
+}
+/* A zero-size box at the actor's ground contact point. */
+.cast-actor {
+   position: absolute;
+   left: 50%;
+   bottom: var(--cast-floor, 0px);
+   width: 0;
+   height: 0;
+   pointer-events: none;
+}
+/* Soft flat contact shadow: a gradient ellipse, no blur filter. A scene sets
+   --cast-shadow to suit its floor (white at low alpha on near-black). */
+.cast-shadow {
+   position: absolute;
+   left: calc(var(--w) * -0.34);
+   top: calc(var(--h) * -0.028);
+   width: calc(var(--w) * 0.68);
+   height: calc(var(--h) * 0.056);
+   border-radius: 50%;
+   background: var(
+      --cast-shadow,
+      radial-gradient(
+         closest-side,
+         rgb(var(--ch-black) / 0.5),
+         rgb(var(--ch-black) / 0)
+      )
+   );
+}
+.cast-lift,
+.cast-squash {
+   position: absolute;
+   left: 0;
+   top: 0;
+   width: 0;
+   height: 0;
+}
+/* Squash, stretch and sway pivot on the ground point. */
+.cast-squash {
+   transform-origin: 0 0;
+}
+/* One frame wide, its bottom centre on the ground point (breath and flip
+   pivot there). It clips only sideways: a frame whose ground row is above
+   its bottom edge (land, sit) hangs below the box. */
+.cast-sprite {
+   position: absolute;
+   left: calc(var(--w) * -0.5);
+   bottom: 0;
+   width: var(--w);
+   height: var(--h);
+   overflow-x: clip;
+   overflow-y: visible;
+   transform-origin: 50% 100%;
+   scale: var(--flip, 1) 1;
+   opacity: calc(1 - var(--dim, 0));
+}
+/* The whole strip. Its transform (set by the engine) shows one frame with
+   that frame's ground row on the box's bottom edge; a move animates the same
+   transform in steps. */
+.cast-strip {
+   position: absolute;
+   left: 0;
+   top: 0;
+   width: calc(var(--w) * var(--n));
+   height: var(--h);
+   background-repeat: no-repeat;
+   background-size: 100% 100%;
+}

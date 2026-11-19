@@ -700,6 +700,41 @@ interface PaletteActionCopy extends PaletteRowCopy {
    hint: string;
 }
 
+/** One Pictionary doodle in the footer: the answer, what the row shouts
+ *  (wrong first, then right) and the three answer chips. The answer is one
+ *  of the options (validate-data.js checks it). */
+export interface FooterDoodleCopy {
+   answer: string;
+   wrong: string;
+   right: string;
+   option_1: string;
+   option_2: string;
+   option_3: string;
+}
+
+/** data/ui.json `footer.scenes`: what each footer scene says. `name` is the
+ *  switcher's label; `label` describes the picture to a screen reader. */
+export interface FooterScenesCopy {
+   rooftop: { name: string; label: string };
+   street: { name: string; label: string; wave: string };
+   pictionary: {
+      name: string;
+      label: string;
+      board: string;
+      prompt: string;
+      replay: string;
+      pause: string;
+      resume: string;
+      right: string;
+      wrong: string;
+      doodles: Record<
+         "cloud" | "containers" | "pipeline" | "email",
+         FooterDoodleCopy
+      >;
+   };
+   carousel: { name: string; label: string };
+}
+
 /** data/ui.json: copy for the parts of the page that are not a content
  *  section (nav, hero actions, footer, modals, palette, error states).
  *  Templates take the `{name}` placeholders validate-data.js lists. */
@@ -750,11 +785,6 @@ export interface UiCopy {
    footer: {
       copyright: string;
       disclaimer: string;
-      site: string;
-      site_label: string;
-      social: string;
-      social_label: string;
-      download_cv: string;
       easter_egg: string;
       /** May mark ONE word as *accent*, like a section title. */
       end_line: string;
@@ -764,20 +794,13 @@ export interface UiCopy {
       slide: string;
       slide_label: string;
       slide_sent: string;
-      vitals: string;
-      vitals_label: string;
-      vitals_pending: string;
-      vitals_pending_inp: string;
-      visitor_gap: string;
-      gap_hours: string;
-      gap_minutes: string;
-      gap_ahead: string;
-      gap_behind: string;
-      built_with: string;
-      build: string;
-      machine_link_label: string;
-      /** Keyed by the file scripts/machine-view.js writes. */
-      machine_links: Record<"index.md" | "llms.txt" | "rss.xml", string>;
+      /** The scene switcher: its group label, the two arrows and one dot. */
+      scene_label: string;
+      scene_previous: string;
+      scene_next: string;
+      scene_show: string;
+      /** One block per footer scene; the keys match FOOTER_SCENE_IDS. */
+      scenes: FooterScenesCopy;
    };
    motion: {
       modes: { full: string; reduced: string };

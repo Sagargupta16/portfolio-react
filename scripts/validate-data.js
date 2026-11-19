@@ -790,6 +790,9 @@ for (const [type, copy] of requireKeyedEntries(
    requireCopy(copy, `sections.news.types.${type}`, { chip: [], label: [] });
 }
 
+// The footer's Pictionary doodles, in the order the board draws them.
+const FOOTER_DOODLES = ["cloud", "containers", "pipeline", "email"];
+
 // Site chrome copy (data/ui.json): field -> the placeholders it may use.
 const UI_COPY = {
    common: { reload: [] },
@@ -833,11 +836,6 @@ const UI_COPY = {
    footer: {
       copyright: ["year", "name"],
       disclaimer: [],
-      site: [],
-      site_label: [],
-      social: [],
-      social_label: [],
-      download_cv: [],
       easter_egg: [],
       end_line: [],
       hold_copy: ["email"],
@@ -846,20 +844,40 @@ const UI_COPY = {
       slide: [],
       slide_label: [],
       slide_sent: [],
-      vitals: [],
-      vitals_label: [],
-      vitals_pending: [],
-      vitals_pending_inp: [],
-      visitor_gap: ["time", "gap"],
-      gap_hours: ["count"],
-      gap_minutes: ["count"],
-      gap_ahead: ["span"],
-      gap_behind: ["span"],
-      built_with: [],
-      build: [],
-      machine_link_label: ["file", "label"],
-      // One per file scripts/machine-view.js writes for the status bar.
-      machine_links: { "index.md": [], "llms.txt": [], "rss.xml": [] },
+      scene_label: [],
+      scene_previous: [],
+      scene_next: [],
+      scene_show: ["scene"],
+      // One block per footer scene (FOOTER_SCENE_IDS in scenes/types.ts).
+      scenes: {
+         rooftop: { name: [], label: ["name"] },
+         street: { name: [], label: ["name"], wave: ["first_name"] },
+         pictionary: {
+            name: [],
+            label: ["name"],
+            board: [],
+            prompt: [],
+            replay: [],
+            pause: [],
+            resume: [],
+            right: ["answer"],
+            wrong: ["answer"],
+            doodles: Object.fromEntries(
+               FOOTER_DOODLES.map((doodle) => [
+                  doodle,
+                  {
+                     answer: [],
+                     wrong: [],
+                     right: [],
+                     option_1: [],
+                     option_2: [],
+                     option_3: [],
+                  },
+               ]),
+            ),
+         },
+         carousel: { name: [], label: ["name"] },
+      },
    },
    motion: {
       modes: { full: [], reduced: [] },
@@ -953,6 +971,17 @@ const UI_COPY = {
 };
 requireCopy(ui, "ui", UI_COPY);
 requireOneAccent(ui?.footer?.end_line, "ui.footer.end_line");
+// A doodle nobody can answer would stall the footer's Pictionary round.
+for (const doodle of FOOTER_DOODLES) {
+   const copy = ui?.footer?.scenes?.pictionary?.doodles?.[doodle];
+   const options = [copy?.option_1, copy?.option_2, copy?.option_3];
+   if (copy && !options.includes(copy.answer)) {
+      fail(
+         `ui.footer.scenes.pictionary.doodles.${doodle}.answer`,
+         "must be one of its three options",
+      );
+   }
+}
 
 // Glossary (data/glossary.json): every surface form maps to one term.
 if (requireArray(glossary, "glossary")) {

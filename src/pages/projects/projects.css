@@ -77,7 +77,9 @@
    flex-direction: column;
    height: 100%;
    min-width: 0;
-   overflow: hidden;
+   /* clip, not hidden: hidden would make the card a scroll container, and the
+      cover's view() timeline below would follow the card instead of the page. */
+   overflow: clip;
    /* .glass-card's two fills, plus the keyboard lift below. */
    transition:
       background 0.3s var(--ease-standard),
@@ -501,10 +503,18 @@ html[data-motion="full"] .contribution-link:active {
 
 /* Scroll-driven reveal (CSS only, runs on the compositor): each cover opens
    from an inset clip as it scrolls into view. Browsers without view()
-   timelines (Firefox today) simply show the cover; Reduced skips it. */
+   timelines (Firefox today) simply show the cover; Reduced skips it.
+   The timeline sits in a rule of its own, under a selector the minifier
+   cannot merge with the first: in one rule the build folds it into the
+   `animation` shorthand, browsers drop that declaration whole, and the
+   reveal is gone from production. `:root` also outranks `html`, so the
+   shorthand's reset of the timeline loses. */
 @supports (animation-timeline: view()) {
    html:not([data-motion="reduced"]) .project-cover {
       animation: cover-reveal linear both;
+   }
+
+   :root:not([data-motion="reduced"]) .project-cover {
       animation-timeline: view();
       animation-range: entry 0% cover 30%;
    }

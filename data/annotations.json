@@ -30,13 +30,5 @@
    "contact": {
       "title": "No backend to run",
       "body": "The form sends through EmailJS straight from the browser. A hidden honeypot field drops most bots before anything is sent."
-   },
-   "vitals": {
-      "title": "Measured on your device",
-      "body": "Your Core Web Vitals for this visit, read live by the web-vitals library. The numbers stay in your browser."
-   },
-   "build": {
-      "title": "Every push is gated",
-      "body": "Each push to main runs format, lint, type-check, data validation, tests and a dependency audit before Vite builds and GitHub Pages deploys. index.md and llms.txt come out of that same build."
    }
 }

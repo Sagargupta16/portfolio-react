@@ -39,8 +39,6 @@ const PINS: PinTarget[] = [
    { id: "projects", selector: ".project-grid" },
    { id: "contributions", selector: ".contribution-grid" },
    { id: "contact", selector: "#contact form" },
-   { id: "vitals", selector: ".footer-vitals" },
-   { id: "build", selector: ".footer-build" },
 ];
 
 export const ANNOTATIONS: Annotation[] = PINS.map(
