@@ -26,7 +26,8 @@ The footer is rebuilt around a picture that plays above it, and the visitor can 
 
 ### Fixed
 
-- **Reduced on the dev server.** Switching to Reduced threw in `useFreezeAnimations`, which set a time on the project covers' scroll-driven reveal, and Projects showed its error fallback. The freeze now skips scroll-driven animations. Production was not affected, because its minified CSS drops that reveal; the reveal itself is not fixed here.
+- **Project covers reveal on scroll.** The scroll-driven reveal added in 4.12.0 never played. The card's `overflow: hidden` made the cover's `view()` timeline follow the card instead of the page, and production builds lost the rule: the minifier folded `animation-timeline` into the `animation` shorthand, which browsers drop. The card now clips with `overflow: clip` and the timeline sits in a rule of its own, so each cover opens from its inset as it scrolls in. Reduced still skips it.
+- **Reduced no longer breaks Projects.** With a live reveal, switching to Reduced threw in `useFreezeAnimations`, which set a time on a scroll-driven animation, and Projects showed its error fallback. The freeze now skips scroll-driven animations.
 
 ## [4.24.2] - 2026-11-18
 
