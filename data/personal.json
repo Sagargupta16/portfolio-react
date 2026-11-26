@@ -65,7 +65,9 @@
          "competitive": "Competitive programming"
       },
       "tiles": {
-         "clients_served": { "label": "Customer engagements" },
+         "clients_served": {
+            "label": "Customer engagements"
+         },
          "years_at_aws": {
             "label": "Years at AWS",
             "note": "Professional Services since 2024"
@@ -82,8 +84,12 @@
             "label": "Projects shipped",
             "note": "{featured} featured"
          },
-         "certifications": { "label": "Active certifications" },
-         "badges": { "label": "Learning badges" },
+         "certifications": {
+            "label": "Active certifications"
+         },
+         "badges": {
+            "label": "Learning badges"
+         },
          "podium": {
             "label": "Podium finishes",
             "note": "{first} first, {second} second, {third} third"
@@ -175,8 +181,14 @@
       }
    },
    "languages": [
-      { "name": "English", "level": "Professional Working" },
-      { "name": "Hindi", "level": "Native" }
+      {
+         "name": "English",
+         "level": "Professional Working"
+      },
+      {
+         "name": "Hindi",
+         "level": "Native"
+      }
    ],
    "social_profiles": [
       {
