@@ -262,6 +262,7 @@ const answeredByMe = (d) => d?.answer?.author?.login?.toLowerCase() === ME;
 // accepted one, helpful again once it is unaccepted or another answer
 // replaces it. A discussion the API does not return is left as it is.
 async function refreshKnownDiscussions(list) {
+   const changed = new Set();
    await mapPool(list, MAX_IN_FLIGHT, async (d) => {
       const [owner, repo] = d.repo.split("/");
       const n = discussionNumber(d.url);
@@ -273,12 +274,33 @@ async function refreshKnownDiscussions(list) {
          if (status !== d.status) {
             note(`discussion ${d.repo}#${n}: ${d.status} -> ${status}`);
             d.status = status;
+            changed.add(d);
          }
       } catch (err) {
          warn(`discussion ${d.url}`, err);
       }
    });
+   regroupDiscussions(list, changed);
 }
+
+// The list is two runs, accepted then helpful, each oldest first: the page
+// shows the newest of a group by reading its run backwards. A discussion
+// whose status just changed joins the end of its new run.
+function regroupDiscussions(list, changed) {
+   const run = (status) => {
+      const members = list.filter((d) => d.status === status);
+      return [
+         ...members.filter((d) => !changed.has(d)),
+         ...members.filter((d) => changed.has(d)),
+      ];
+   };
+   const ordered = [...run("accepted"), ...run("helpful")];
+   if (ordered.every((d, i) => d === list[i])) return;
+   list.splice(0, list.length, ...ordered);
+   note("discussions regrouped: accepted, then helpful");
+}
+
+const acceptedAt = (node) => node.answerChosenAt ?? node.answer.createdAt;
 
 // Paginate with recursion so each page waits for the previous cursor.
 async function searchCommented(cursor = null, found = []) {
@@ -315,7 +337,12 @@ async function addNewAcceptedDiscussions(list) {
       warn("discussion search", err);
       return;
    }
-   for (const node of nodes.filter((n) => isNewAcceptedAnswer(n, known))) {
+   // Oldest first, so the accepted run stays in the order answers were
+   // accepted (the search returns them newest first).
+   const fresh = nodes
+      .filter((n) => isNewAcceptedAnswer(n, known))
+      .sort((a, b) => acceptedAt(a).localeCompare(acceptedAt(b)));
+   for (const node of fresh) {
       const repo = node.repository.nameWithOwner;
       const title = cleanTitle(node.title);
       // Keep accepted answers grouped ahead of the "helpful" ones.
@@ -328,7 +355,7 @@ async function addNewAcceptedDiscussions(list) {
       });
       known.add(discussionKey(repo, node.number));
       addNews({
-         date: (node.answerChosenAt ?? node.answer.createdAt).slice(0, 10),
+         date: acceptedAt(node).slice(0, 10),
          type: "community",
          text: `Accepted answer on ${repo}: ${title}`.slice(0, 159),
          link: node.url,

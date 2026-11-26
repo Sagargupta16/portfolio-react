@@ -199,7 +199,7 @@
          "description": "A self-hosted personal finance dashboard with an AI chatbot that uses 15 read-only tool calls to answer questions about your spending, trends, tax, and goals. Upload Excel/CSV bank statements, get SHA-256 deduplication, 50/30/20 budgeting, bill calendar, GST analysis, subscription tracking, year-in-review, FIRE planning (Lean/Barista/Standard/Fat), India FY tax estimation, Sankey cash flow, and a Financial Health Score across 8 metrics.",
          "date": "July 2026",
          "status": "active",
-         "version": "2.36.0",
+         "version": "2.37.0",
          "tools_tech": [
             "TypeScript",
             "React 19",
@@ -341,7 +341,7 @@
          "description": "This site - a minimal dark developer portfolio with an ambient aurora background, project cards with an animated SVG cover scene for every project, and a fully data-driven JSON architecture. Built with React 19, Vite 8, Tailwind CSS v4, Motion, and Lenis smooth scroll.",
          "date": "October 2022",
          "status": "active",
-         "version": "4.24.2",
+         "version": "4.25.0",
          "tools_tech": [
             "React 19",
             "Vite 8",
@@ -642,7 +642,7 @@
          "description": "Fully automated Instagram publisher powered by AWS Bedrock and Composio v3, posting live up to twice a day. It publishes only animated SVG Reels (how-it-works explainers, stat stories, and timelines) drawn as SMIL SVG, rendered with headless Chrome and ffmpeg, and set to licensed music. Every number on screen must appear in the fetched source text or the slot fails, and each publish is checkpointed so a lost response never reposts - all through GitHub Actions.",
          "date": "July 2026",
          "status": "active",
-         "version": "0.19.0",
+         "version": "0.20.1",
          "tools_tech": [
             "Python",
             "AWS Bedrock",
@@ -832,7 +832,7 @@
          "description": "Animated architecture and system design diagrams from one YAML spec, with 18,300 icons, including the official AWS, Azure, Google Cloud, Kubernetes, GitHub and IBM sets. The Eclipse Layout Kernel places nested boundaries and routes edges, packets travel every edge and numbered steps play in order, and one spec renders to SVG, PNG, editable draw.io, a React component and an HTML viewer. Ships as an Agent Skill and Claude Code plugin.",
          "date": "October 2026",
          "status": "active",
-         "version": "0.12.2",
+         "version": "0.13.0",
          "tools_tech": [
             "TypeScript",
             "ELK",
@@ -1092,7 +1092,7 @@
          "description": "MCP server for AWS Bedrock - text, image, video generation, and embeddings across Llama 4, Mistral, Nova, Cohere, DeepSeek, Qwen, GPT-OSS, Stability AI, Luma, and Claude. Use any Bedrock model from Claude Code or any MCP client. Supports bearer token auth and side-by-side model comparison.",
          "date": "April 2026",
          "status": "active",
-         "version": "0.8.1",
+         "version": "0.9.0",
          "tools_tech": [
             "TypeScript",
             "MCP Protocol",
@@ -1308,7 +1308,8 @@
          "stars": 117,
          "title": "Replace deprecated hash_key/range_key with key_schema",
          "url": "https://github.com/terraform-aws-modules/terraform-aws-dynamodb-table/pull/117",
-         "status": "open"
+         "status": "merged",
+         "merged_at": "2026-11-25"
       },
       {
          "repo": "hashicorp/terraform-provider-aws",
@@ -1476,7 +1477,8 @@
          "stars": 588,
          "title": "Avoid null filter attribute lookups on Terraform versions before 1.12",
          "url": "https://github.com/terraform-aws-modules/terraform-aws-s3-bucket/pull/416",
-         "status": "open"
+         "status": "merged",
+         "merged_at": "2026-11-16"
       }
    ],
    "community_discussions": [
@@ -1625,6 +1627,102 @@
          "status": "accepted"
       },
       {
+         "repo": "strands-agents/harness-sdk",
+         "title": "AWS Lambda Layer Python installation issues",
+         "url": "https://github.com/strands-agents/harness-sdk/discussions/1467",
+         "status": "accepted"
+      },
+      {
+         "repo": "community/community",
+         "title": "The repository homepage sidebar still lists cursoragent (Cursor Agent) under Contributors after removing",
+         "url": "https://github.com/orgs/community/discussions/211394",
+         "status": "accepted"
+      },
+      {
+         "repo": "francisreboucas/constructcraft",
+         "title": "Change the number of risers on a stair",
+         "url": "https://github.com/francisreboucas/constructcraft/discussions/390",
+         "status": "accepted"
+      },
+      {
+         "repo": "Stirling-Tools/Stirling-PDF",
+         "title": "Is it possible to get this snappy full page changing scrolling instead of the slow full page scrolling?",
+         "url": "https://github.com/Stirling-Tools/Stirling-PDF/discussions/8890",
+         "status": "accepted"
+      },
+      {
+         "repo": "Alishahryar1/free-claude-code",
+         "title": "Omniroute, Freellmapi for FCC",
+         "url": "https://github.com/Alishahryar1/free-claude-code/discussions/2466",
+         "status": "accepted"
+      },
+      {
+         "repo": "langfuse/langfuse",
+         "title": "Need help and guidance to rotate encryption keys",
+         "url": "https://github.com/orgs/langfuse/discussions/20404",
+         "status": "accepted"
+      },
+      {
+         "repo": "danielgtaylor/huma",
+         "title": "Opinionated Project Layout -- Do we have such thing in Huma?",
+         "url": "https://github.com/danielgtaylor/huma/discussions/1167",
+         "status": "accepted"
+      },
+      {
+         "repo": "sqlitebrowser/sqlitebrowser",
+         "title": "Reorder More than 1 Field/Column at a time",
+         "url": "https://github.com/sqlitebrowser/sqlitebrowser/discussions/4261",
+         "status": "accepted"
+      },
+      {
+         "repo": "jyourstone/jellyfin-smartlists-plugin",
+         "title": "how to get user rating to recognise items without a rating?",
+         "url": "https://github.com/jyourstone/jellyfin-smartlists-plugin/discussions/583",
+         "status": "accepted"
+      },
+      {
+         "repo": "adoptium/adoptium-support",
+         "title": "Docker images missing for Java4Shell fixes 21.0.13.1+2 and 8u514-b01",
+         "url": "https://github.com/adoptium/adoptium-support/discussions/1583",
+         "status": "accepted"
+      },
+      {
+         "repo": "TraceApps/cooktrace",
+         "title": "non-food shopping/pantry use cases and other workflows?",
+         "url": "https://github.com/TraceApps/cooktrace/discussions/104",
+         "status": "accepted"
+      },
+      {
+         "repo": "jundot/omlx",
+         "title": "gemma-4-26B-A4B-it-qat-mxfp8 aggressively takes over RAM cache",
+         "url": "https://github.com/jundot/omlx/discussions/5450",
+         "status": "accepted"
+      },
+      {
+         "repo": "firewalld/firewalld",
+         "title": "Adding new ipset not working",
+         "url": "https://github.com/firewalld/firewalld/discussions/1640",
+         "status": "accepted"
+      },
+      {
+         "repo": "morluto/rea",
+         "title": "how to set it up?",
+         "url": "https://github.com/morluto/rea/discussions/8864",
+         "status": "accepted"
+      },
+      {
+         "repo": "codefori/vscode-ibmi",
+         "title": "Can Go to File dropdown values come from the library list?",
+         "url": "https://github.com/orgs/codefori/discussions/3529",
+         "status": "accepted"
+      },
+      {
+         "repo": "supabase/supabase",
+         "title": "Phone + password without SMS provider on hosted Supabase",
+         "url": "https://github.com/orgs/supabase/discussions/53390",
+         "status": "accepted"
+      },
+      {
          "repo": "community/community",
          "title": "git filter-repo rewrote all branch histories - branches now show 5500+ commits ahead/behind main",
          "url": "https://github.com/orgs/community/discussions/190689",
@@ -1673,22 +1771,10 @@
          "status": "helpful"
       },
       {
-         "repo": "strands-agents/harness-sdk",
-         "title": "AWS Lambda Layer Python installation issues",
-         "url": "https://github.com/strands-agents/harness-sdk/discussions/1467",
-         "status": "accepted"
-      },
-      {
          "repo": "langgenius/dify",
          "title": "Dify+MCP Agent finishes without executing any tool call",
          "url": "https://github.com/langgenius/dify/discussions/31751",
          "status": "helpful"
-      },
-      {
-         "repo": "community/community",
-         "title": "The repository homepage sidebar still lists cursoragent (Cursor Agent) under Contributors after removing",
-         "url": "https://github.com/orgs/community/discussions/211394",
-         "status": "accepted"
       },
       {
          "repo": "PicPeak/picpeak",

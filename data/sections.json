@@ -109,14 +109,20 @@
          "accepted": "Accepted Discussion Answers ({count})",
          "helpful": "Discussion Contributions ({count})"
       },
-      "contribution_status": {
-         "merged": "Merged",
-         "open": "Open",
-         "closed": "Closed"
-      },
-      "discussion_status": {
-         "accepted": "Accepted",
-         "helpful": "Helpful"
+      "open_source_digest": {
+         "tabs": {
+            "merged": "Merged",
+            "open": "Under Review",
+            "closed": "Community Impact",
+            "accepted": "Accepted Answers",
+            "helpful": "Discussions"
+         },
+         "group_label": "Contribution groups",
+         "show_all": "Show all {count}",
+         "close": "Close contributions",
+         "search_placeholder": "Search repo or title",
+         "search_label": "Search contributions",
+         "empty": "Nothing in this group matches."
       },
       "modal": {
          "close": "Close project details",

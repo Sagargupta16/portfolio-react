@@ -1,5 +1,109 @@
 [
    {
+      "date": "2026-11-25",
+      "type": "oss",
+      "text": "Merged into terraform-aws-modules/terraform-aws-dynamodb-table: Replace deprecated hash_key/range_key with key_schema",
+      "link": "https://github.com/terraform-aws-modules/terraform-aws-dynamodb-table/pull/117"
+   },
+   {
+      "date": "2026-11-24",
+      "type": "community",
+      "text": "Accepted answer on supabase/supabase: Phone + password without SMS provider on hosted Supabase",
+      "link": "https://github.com/orgs/supabase/discussions/53390",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-23",
+      "type": "community",
+      "text": "Accepted answer on codefori/vscode-ibmi: Can Go to File dropdown values come from the library list?",
+      "link": "https://github.com/orgs/codefori/discussions/3529",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-21",
+      "type": "community",
+      "text": "Accepted answer on TraceApps/cooktrace: non-food shopping/pantry use cases and other workflows?",
+      "link": "https://github.com/TraceApps/cooktrace/discussions/104",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-21",
+      "type": "community",
+      "text": "Accepted answer on jundot/omlx: gemma-4-26B-A4B-it-qat-mxfp8 aggressively takes over RAM cache",
+      "link": "https://github.com/jundot/omlx/discussions/5450",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-21",
+      "type": "community",
+      "text": "Accepted answer on firewalld/firewalld: Adding new ipset not working",
+      "link": "https://github.com/firewalld/firewalld/discussions/1640",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-21",
+      "type": "community",
+      "text": "Accepted answer on morluto/rea: how to set it up?",
+      "link": "https://github.com/morluto/rea/discussions/8864",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-20",
+      "type": "community",
+      "text": "Accepted answer on jyourstone/jellyfin-smartlists-plugin: how to get user rating to recognise items without a rating?",
+      "link": "https://github.com/jyourstone/jellyfin-smartlists-plugin/discussions/583",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-20",
+      "type": "community",
+      "text": "Accepted answer on adoptium/adoptium-support: Docker images missing for Java4Shell fixes 21.0.13.1+2 and 8u514-b01",
+      "link": "https://github.com/adoptium/adoptium-support/discussions/1583",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-19",
+      "type": "community",
+      "text": "Accepted answer on langfuse/langfuse: Need help and guidance to rotate encryption keys",
+      "link": "https://github.com/orgs/langfuse/discussions/20404",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-19",
+      "type": "community",
+      "text": "Accepted answer on danielgtaylor/huma: Opinionated Project Layout -- Do we have such thing in Huma?",
+      "link": "https://github.com/danielgtaylor/huma/discussions/1167",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-19",
+      "type": "community",
+      "text": "Accepted answer on sqlitebrowser/sqlitebrowser: Reorder More than 1 Field/Column at a time",
+      "link": "https://github.com/sqlitebrowser/sqlitebrowser/discussions/4261",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-18",
+      "type": "community",
+      "text": "Accepted answer on Alishahryar1/free-claude-code: Omniroute, Freellmapi for FCC",
+      "link": "https://github.com/Alishahryar1/free-claude-code/discussions/2466",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-17",
+      "type": "community",
+      "text": "Accepted answer on francisreboucas/constructcraft: Change the number of risers on a stair",
+      "link": "https://github.com/francisreboucas/constructcraft/discussions/390",
+      "impact": "minor"
+   },
+   {
+      "date": "2026-11-17",
+      "type": "community",
+      "text": "Accepted answer on Stirling-Tools/Stirling-PDF: Is it possible to get this snappy full page changing scrolling instead of the slow full page scrolling?",
+      "link": "https://github.com/Stirling-Tools/Stirling-PDF/discussions/8890",
+      "impact": "minor"
+   },
+   {
       "date": "2026-11-16",
       "type": "community",
       "text": "Accepted answer on leonieziechmann/invoice-pro: How to hide/disable the automatic footer?",
@@ -12,6 +116,12 @@
       "text": "Accepted answer on fiso64/sockseek: Some help downloading from a txt file source?",
       "link": "https://github.com/fiso64/sockseek/discussions/224",
       "impact": "minor"
+   },
+   {
+      "date": "2026-11-16",
+      "type": "oss",
+      "text": "Merged into terraform-aws-modules/terraform-aws-s3-bucket: Avoid null filter attribute lookups on Terraform versions before 1.12",
+      "link": "https://github.com/terraform-aws-modules/terraform-aws-s3-bucket/pull/416"
    },
    {
       "date": "2026-11-15",

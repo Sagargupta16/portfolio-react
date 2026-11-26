@@ -308,7 +308,7 @@
       "leetcode": {
          "username": "Sagargupta1610",
          "problems_solved": "1300+",
-         "hard_solved": "160+",
+         "hard_solved": "170+",
          "contests": "107",
          "best_rating": "2166",
          "best_contest_rank": "63",
@@ -316,9 +316,9 @@
          "top_percentage": "1.1%",
          "url": "https://leetcode.com/u/Sagargupta1610/",
          "solved_by_difficulty": {
-            "easy": 483,
-            "medium": 693,
-            "hard": 168
+            "easy": 485,
+            "medium": 694,
+            "hard": 170
          },
          "rating_history": [
             ["2022-02-13", 1435],
@@ -445,7 +445,7 @@
          "username": "Sagargupta16",
          "url": "https://github.com/Sagargupta16",
          "contributions": 8025,
-         "pull_requests": 2001,
+         "pull_requests": 2105,
          "longest_streak": 84,
          "languages": [
             {
@@ -473,7 +473,7 @@
                "percent": 1.2
             }
          ],
-         "fetched": "2026-11-16"
+         "fetched": "2026-11-20"
       }
    }
 }

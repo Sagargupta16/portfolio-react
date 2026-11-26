@@ -1,70 +1,41 @@
-import { memo } from "react";
+import { memo, useCallback, useState } from "react";
 import { motion } from "motion/react";
-import {
-   GitPullRequest,
-   GitMerge,
-   CircleDot,
-   GitPullRequestClosed,
-   BadgeCheck,
-   MessageCircle,
-} from "lucide-react";
+import { ArrowRight, GitPullRequest } from "lucide-react";
 import { getSectionCopy } from "@data/sections";
-import type { CommunityDiscussion, OpenSourceContribution } from "@/types";
-import {
-   BLUE_LIGHT,
-   GREEN,
-   ORANGE,
-   SKY,
-   DURATION,
-   EASING,
-} from "@/constants/theme";
+import { GREEN, DURATION, EASING } from "@/constants/theme";
 import { fillTemplate } from "@utils/fillTemplate";
 import {
-   OPEN_SOURCE_CONTRIBUTIONS,
-   COMMUNITY_DISCUSSIONS,
-} from "./projectConstants";
-import ContribCard from "./ContribCard";
-import ContribSection from "./ContribSection";
-import DiscussionCard from "./DiscussionCard";
+   staggerContainer,
+   staggerItem,
+   VIEWPORT_MARGIN,
+} from "@utils/animations";
+import {
+   CONTRIB_GROUPS,
+   CONTRIB_TOTAL,
+   type ContribGroupId,
+} from "./contribGroups";
+import ContribRow from "./ContribRow";
+import ContribSheet from "./ContribSheet";
+import ContribTabs from "./ContribTabs";
 
 const COPY = getSectionCopy("projects");
 
-const countLabel = (label: string, count: number) => `${label} (${count})`;
+/** Rows the digest shows per group. The card's height comes from this, not
+ *  from how many contributions there are; the rest is in the sheet. */
+const DIGEST_ROWS = 5;
 
-const renderContrib = (contrib: OpenSourceContribution) => (
-   <ContribCard contrib={contrib} />
-);
-const renderDiscussion = (discussion: CommunityDiscussion) => (
-   <DiscussionCard discussion={discussion} />
-);
-
-/** Hairline between two groups; `marginTop` is set on all but the first. */
-const Divider = ({ marginTop }: { marginTop?: number }) => (
-   <div
-      style={{
-         height: 1,
-         background:
-            "linear-gradient(to right, transparent, rgb(var(--ch-white) / 0.06), transparent)",
-         marginBottom: 16,
-         marginTop,
-      }}
-   />
-);
+const LIST_ID = "contrib-digest-list";
 
 const OpenSourceBanner = () => {
-   const merged = OPEN_SOURCE_CONTRIBUTIONS.filter(
-      (c) => c.status === "merged",
+   const [active, setActive] = useState<ContribGroupId | undefined>(
+      CONTRIB_GROUPS[0]?.id,
    );
-   const open = OPEN_SOURCE_CONTRIBUTIONS.filter((c) => c.status === "open");
-   const closed = OPEN_SOURCE_CONTRIBUTIONS.filter(
-      (c) => c.status === "closed",
-   );
-   const acceptedDiscussions = COMMUNITY_DISCUSSIONS.filter(
-      (d) => d.status === "accepted",
-   );
-   const helpfulDiscussions = COMMUNITY_DISCUSSIONS.filter(
-      (d) => d.status === "helpful",
-   );
+   const [sheetOpen, setSheetOpen] = useState(false);
+   const closeSheet = useCallback(() => setSheetOpen(false), []);
+
+   const group =
+      CONTRIB_GROUPS.find(({ id }) => id === active) ?? CONTRIB_GROUPS[0];
+   if (!group) return null;
 
    return (
       <motion.div
@@ -81,105 +52,67 @@ const OpenSourceBanner = () => {
                aria-hidden="true"
             />
             <h3>{COPY.subsections.open_source}</h3>
-            <span className="subsection-count">
-               {OPEN_SOURCE_CONTRIBUTIONS.length + COMMUNITY_DISCUSSIONS.length}
-            </span>
+            <span className="subsection-count">{CONTRIB_TOTAL}</span>
          </div>
 
-         <div
-            className="glass-card"
-            style={{
-               padding: 16,
-               border: "1px solid rgb(var(--ch-green) / 0.2)",
-               position: "relative",
-               overflow: "hidden",
-            }}
-         >
-            <div
-               style={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: "inherit",
-                  padding: 1,
-                  background:
-                     "linear-gradient(135deg, rgb(var(--ch-sky) / 0.3), rgb(var(--ch-green) / 0.3), rgb(var(--ch-blue-light) / 0.3))",
-                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  maskComposite: "exclude",
-                  WebkitMask:
-                     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  pointerEvents: "none",
-               }}
+         <div className="glass-card contrib-digest">
+            <div className="contrib-digest-ring" aria-hidden="true" />
+
+            <ContribTabs
+               groups={CONTRIB_GROUPS}
+               active={group.id}
+               onSelect={setActive}
+               controls={LIST_ID}
+               pillId="contrib-tab-digest"
             />
 
-            {merged.length > 0 && (
-               <div style={{ marginBottom: open.length > 0 ? 20 : 0 }}>
-                  <ContribSection
-                     icon={GitMerge}
-                     label={countLabel(COPY.open_source.merged, merged.length)}
-                     color={SKY}
-                     items={merged}
-                     renderItem={renderContrib}
-                  />
-               </div>
-            )}
+            {/* Keyed by group, so a switch mounts a new list and its rows
+                stagger in again. */}
+            <motion.ul
+               key={group.id}
+               id={LIST_ID}
+               className="contrib-list contrib-list--digest"
+               variants={staggerContainer}
+               initial="hidden"
+               whileInView="visible"
+               viewport={{ once: true, margin: VIEWPORT_MARGIN }}
+            >
+               {group.items.slice(0, DIGEST_ROWS).map((item) => (
+                  <motion.li key={item.url} variants={staggerItem}>
+                     <ContribRow
+                        item={item}
+                        color={group.color}
+                        Icon={group.Icon}
+                     />
+                  </motion.li>
+               ))}
+            </motion.ul>
 
-            {open.length > 0 && (
-               <>
-                  {merged.length > 0 && <Divider />}
-                  <ContribSection
-                     icon={CircleDot}
-                     label={countLabel(COPY.open_source.open, open.length)}
-                     color={GREEN}
-                     items={open}
-                     renderItem={renderContrib}
+            {group.items.length > DIGEST_ROWS && (
+               <button
+                  type="button"
+                  className="project-action contrib-show-all"
+                  aria-haspopup="dialog"
+                  onClick={() => setSheetOpen(true)}
+               >
+                  {fillTemplate(COPY.open_source_digest.show_all, {
+                     count: group.items.length,
+                  })}
+                  <ArrowRight
+                     size={14}
+                     className="action-arrow"
+                     aria-hidden="true"
                   />
-               </>
-            )}
-
-            {closed.length > 0 && (
-               <>
-                  <Divider marginTop={4} />
-                  <ContribSection
-                     icon={GitPullRequestClosed}
-                     label={countLabel(COPY.open_source.closed, closed.length)}
-                     color={ORANGE}
-                     items={closed}
-                     renderItem={renderContrib}
-                  />
-               </>
-            )}
-
-            {acceptedDiscussions.length > 0 && (
-               <>
-                  <Divider marginTop={4} />
-                  <ContribSection
-                     icon={BadgeCheck}
-                     label={fillTemplate(COPY.open_source.accepted, {
-                        count: acceptedDiscussions.length,
-                     })}
-                     color={BLUE_LIGHT}
-                     items={acceptedDiscussions}
-                     renderItem={renderDiscussion}
-                  />
-               </>
-            )}
-
-            {helpfulDiscussions.length > 0 && (
-               <>
-                  <Divider marginTop={4} />
-                  <ContribSection
-                     icon={MessageCircle}
-                     label={fillTemplate(COPY.open_source.helpful, {
-                        count: helpfulDiscussions.length,
-                     })}
-                     color={SKY}
-                     items={helpfulDiscussions}
-                     renderItem={renderDiscussion}
-                  />
-               </>
+               </button>
             )}
          </div>
+
+         <ContribSheet
+            isOpen={sheetOpen}
+            onClose={closeSheet}
+            active={group.id}
+            onSelect={setActive}
+         />
       </motion.div>
    );
 };
