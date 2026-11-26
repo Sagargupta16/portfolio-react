@@ -615,13 +615,25 @@ export interface SectionCopyMap extends Record<string, SectionCopy> {
       card: { spotlight: string; evidence_label: string };
       project_status: Record<ProjectStatus, string>;
       evidence: { aws: string; live: string; source: string };
-      /** Open source banner group labels, by PR or discussion status. */
+      /** Open source group names in full, by PR or discussion status. */
       open_source: Record<
          OpenSourceContribution["status"] | CommunityDiscussion["status"],
          string
       >;
-      contribution_status: Record<OpenSourceContribution["status"], string>;
-      discussion_status: Record<CommunityDiscussion["status"], string>;
+      /** The digest card and the sheet that holds the whole list. */
+      open_source_digest: {
+         /** Short group names for the chips. */
+         tabs: Record<
+            OpenSourceContribution["status"] | CommunityDiscussion["status"],
+            string
+         >;
+         group_label: string;
+         show_all: string;
+         close: string;
+         search_placeholder: string;
+         search_label: string;
+         empty: string;
+      };
       modal: ProjectModalCopy;
    };
    achievements: SectionCopy & {

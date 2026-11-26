@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here. Follows [Semantic Versioning](https://semver.org/).
 
+## [4.26.0] - 2026-11-26
+
+The open source block in Projects no longer grows with the lists behind it.
+
+### Changed
+
+- **Open source digest.** The block was one card per item, all of them always shown: 70 cards, 7,542px tall on a 375px phone (half of the Projects section) and 2,727px at 1280px. It is now one card of a fixed height: a row of group chips with their counts (Merged, Under Review, Community Impact, Accepted Answers, Discussions), the five newest rows of the selected group, and "Show all N". It measured 600px on a phone and 419px at 1280px with 77 items and the same with 84, so it stays that size as the lists grow.
+- **The whole list is in a sheet.** "Show all" opens the same kind of sheet the project details use, with the group chips, every row of the group and a search over repo and title. While a search is typed each chip shows how many rows match in its group. The first Escape clears the search, the next closes the sheet.
+- **Rows instead of cards.** A row is the group icon, the repo, the title and the external arrow. The per-card status chip is gone because the group already says it, and with it the `contribution_status` and `discussion_status` copy keys. New copy sits under `projects.open_source_digest` in `data/sections.json`.
+- **The sync keeps discussions in order.** `scripts/sync-live-data.js` now keeps `community_discussions` as two runs, accepted then helpful, each oldest first: newly accepted answers are added oldest first (they were added newest first within a week's batch), and a discussion whose status changes moves to the end of its new run. The page reads a run backwards to show the newest.
+- **Synced data.** Two upstream PRs merged (terraform-aws-modules/terraform-aws-s3-bucket#416 and terraform-aws-modules/terraform-aws-dynamodb-table#117), 14 newly accepted discussion answers with their News items, five project versions, the LeetCode solved counts and the GitHub pull request count.
+
+### Removed
+
+- `ContribCard.tsx`, `ContribSection.tsx`, `DiscussionCard.tsx` and the `.contribution-*` card styles.
+
 ## [4.25.0] - 2026-11-19
 
 The footer is rebuilt around a picture that plays above it, and the visitor can change the picture.

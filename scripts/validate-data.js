@@ -570,8 +570,15 @@ const SECTION_EXTRAS = {
          accepted: ["count"],
          helpful: ["count"],
       },
-      contribution_status: { merged: [], open: [], closed: [] },
-      discussion_status: { accepted: [], helpful: [] },
+      open_source_digest: {
+         tabs: { merged: [], open: [], closed: [], accepted: [], helpful: [] },
+         group_label: [],
+         show_all: ["count"],
+         close: [],
+         search_placeholder: [],
+         search_label: [],
+         empty: [],
+      },
       modal: {
          close: [],
          glance: [],

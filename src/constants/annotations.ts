@@ -37,7 +37,7 @@ const PINS: PinTarget[] = [
    { id: "mascot", selector: ".mascot-frame" },
    { id: "news", selector: ".news-graph" },
    { id: "projects", selector: ".project-grid" },
-   { id: "contributions", selector: ".contribution-grid" },
+   { id: "contributions", selector: ".contrib-digest" },
    { id: "contact", selector: "#contact form" },
 ];
 
